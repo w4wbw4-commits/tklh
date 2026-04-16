@@ -5,36 +5,27 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type { EventRow, MilestoneRow, MilestoneStatus } from "./types";
+import { useTranslation } from "react-i18next";
+import { fmtNumber, fmtDate } from "@/i18n/format";
 
 export const EventTimeline = ({ event }: { event: EventRow }) => {
+  const { t } = useTranslation();
   const [items, setItems] = useState<MilestoneRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("timeline_milestones")
-      .select("*")
-      .eq("event_id", event.id)
-      .order("sort_order", { ascending: true });
+    const { data } = await supabase.from("timeline_milestones").select("*")
+      .eq("event_id", event.id).order("sort_order", { ascending: true });
     setItems((data ?? []) as MilestoneRow[]);
     setLoading(false);
   };
 
-  useEffect(() => {
-    load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event.id]);
+  useEffect(() => { load(); /* eslint-disable-next-line */ }, [event.id]);
 
   const updateStatus = async (id: string, status: MilestoneStatus) => {
-    const { error } = await supabase
-      .from("timeline_milestones")
-      .update({ status })
-      .eq("id", id);
-    if (error) {
-      toast.error("تعذر التحديث");
-      return;
-    }
+    const { error } = await supabase.from("timeline_milestones").update({ status }).eq("id", id);
+    if (error) { toast.error(t("customer.timeline.updateFailed")); return; }
     setItems((prev) => prev.map((m) => (m.id === id ? { ...m, status } : m)));
   };
 
@@ -54,116 +45,71 @@ export const EventTimeline = ({ event }: { event: EventRow }) => {
       <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-arabic text-lg font-semibold">خارطة الطريق</h3>
+            <h3 className="font-arabic text-lg font-semibold">{t("customer.timeline.title")}</h3>
             <p className="text-xs text-foreground/65">
-              {totalDone} من {items.length} مهمة مكتملة
+              {t("customer.timeline.progress", { done: fmtNumber(totalDone), total: fmtNumber(items.length) })}
             </p>
           </div>
-          <div className="font-arabic text-2xl font-bold text-primary">
-            {Math.round(progress)}%
-          </div>
+          <div className="font-arabic text-2xl font-bold text-primary">{Math.round(progress)}%</div>
         </div>
         <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-secondary">
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.6 }}
-            className="h-full bg-primary"
-          />
+          <motion.div initial={{ width: 0 }} animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.6 }} className="h-full bg-primary" />
         </div>
       </div>
 
       <div className="relative space-y-4 ps-8">
-        <div className="absolute right-[14px] top-2 bottom-2 w-px bg-border" />
+        <div className="absolute end-[14px] top-2 bottom-2 w-px bg-border" />
         {items.map((m, i) => {
-          const Icon =
-            m.status === "done"
-              ? CheckCircle2
-              : m.status === "in_progress"
-              ? Clock
-              : Circle;
-          const color =
-            m.status === "done"
-              ? "text-primary bg-primary/10"
-              : m.status === "in_progress"
-              ? "text-amber-700 bg-amber-100"
-              : "text-foreground/55 bg-secondary";
+          const Icon = m.status === "done" ? CheckCircle2 : m.status === "in_progress" ? Clock : Circle;
+          const color = m.status === "done" ? "text-primary bg-primary/10"
+            : m.status === "in_progress" ? "text-amber-700 bg-amber-100"
+            : "text-foreground/55 bg-secondary";
           const dueDate = new Date(m.due_date);
-          const daysAway = Math.ceil(
-            (dueDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24),
-          );
-
+          const daysAway = Math.ceil((dueDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
           return (
-            <motion.div
-              key={m.id}
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.05 }}
-              className="relative"
-            >
-              <div
-                className={`absolute -right-8 grid h-7 w-7 place-items-center rounded-full ring-4 ring-background ${color}`}
-              >
+            <motion.div key={m.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.05 }} className="relative">
+              <div className={`absolute -end-8 grid h-7 w-7 place-items-center rounded-full ring-4 ring-background ${color}`}>
                 <Icon className="h-4 w-4" />
               </div>
-
               <div className="rounded-2xl border border-border bg-card p-4 shadow-card">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="flex-1">
                     <h4 className="font-arabic text-sm font-semibold">{m.title}</h4>
-                    {m.description && (
-                      <p className="mt-1 text-xs text-foreground/65">{m.description}</p>
-                    )}
+                    {m.description && <p className="mt-1 text-xs text-foreground/65">{m.description}</p>}
                     <div className="mt-2 flex items-center gap-3 text-[11px] text-foreground/60">
-                      <span>
-                        {dueDate.toLocaleDateString("ar-SA", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
-                      </span>
+                      <span>{fmtDate(dueDate, { year: "numeric", month: "short", day: "numeric" })}</span>
                       {m.status !== "done" && daysAway >= 0 && (
                         <span className="rounded-full bg-secondary px-2 py-0.5 text-foreground/70">
-                          خلال {daysAway} يوماً
+                          {t("customer.timeline.within", { days: fmtNumber(daysAway) })}
                         </span>
                       )}
                       {m.status !== "done" && daysAway < 0 && (
                         <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-destructive">
-                          متأخر {Math.abs(daysAway)} يوم
+                          {t("customer.timeline.overdue", { days: fmtNumber(Math.abs(daysAway)) })}
                         </span>
                       )}
                     </div>
                   </div>
-
                   <div className="flex items-center gap-1">
                     {m.status !== "done" ? (
                       <>
                         {m.status !== "in_progress" && (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="rounded-full text-xs"
-                            onClick={() => updateStatus(m.id, "in_progress")}
-                          >
-                            ابدأ
+                          <Button size="sm" variant="ghost" className="rounded-full text-xs"
+                            onClick={() => updateStatus(m.id, "in_progress")}>
+                            {t("customer.timeline.start")}
                           </Button>
                         )}
-                        <Button
-                          size="sm"
-                          className="rounded-full bg-primary text-xs text-primary-foreground hover:bg-primary/90"
-                          onClick={() => updateStatus(m.id, "done")}
-                        >
-                          أنجزت ✓
+                        <Button size="sm" className="rounded-full bg-primary text-xs text-primary-foreground hover:bg-primary/90"
+                          onClick={() => updateStatus(m.id, "done")}>
+                          {t("customer.timeline.done")}
                         </Button>
                       </>
                     ) : (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="rounded-full text-xs text-foreground/60"
-                        onClick={() => updateStatus(m.id, "pending")}
-                      >
-                        تراجع
+                      <Button size="sm" variant="ghost" className="rounded-full text-xs text-foreground/60"
+                        onClick={() => updateStatus(m.id, "pending")}>
+                        {t("customer.timeline.undo")}
                       </Button>
                     )}
                   </div>
