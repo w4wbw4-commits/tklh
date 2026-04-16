@@ -3,8 +3,9 @@ import { useMemo } from "react";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
-import { PackageCheck, Calculator, Sparkles, AlertTriangle, TrendingUp } from "lucide-react";
+import { PackageCheck, Calculator, Sparkles, AlertTriangle, TrendingUp, Users } from "lucide-react";
 import { allocationCatalog, realisticMinimum, type BudgetMode, type ServiceKey } from "./types";
+import { useMarketPrices } from "@/hooks/useMarketPrices";
 
 interface Props {
   budgetMode: BudgetMode;
@@ -22,14 +23,23 @@ export const StepBudget = ({
   budgetMode, setBudgetMode, budget, setBudget,
   guests, allocations, setAllocation,
 }: Props) => {
+  const { prices: market } = useMarketPrices();
+
+  // Effective realistic minimum for an item: max of static formula and market avg from real vendors
+  const effectiveMin = (item: typeof allocationCatalog[number]) => {
+    const staticMin = realisticMinimum(item, guests);
+    const marketAvg = market[item.key]?.avg ?? null;
+    return marketAvg ? Math.max(staticMin, Math.round(marketAvg)) : staticMin;
+  };
+
   const total = useMemo(
     () => Object.values(allocations).reduce((s, v) => s + v, 0),
     [allocations]
   );
 
   const globalMinimum = useMemo(
-    () => allocationCatalog.reduce((s, item) => s + realisticMinimum(item, guests), 0),
-    [guests]
+    () => allocationCatalog.reduce((s, item) => s + effectiveMin(item), 0),
+    [guests, market] // eslint-disable-line react-hooks/exhaustive-deps
   );
   const isBelowMinimum = total < globalMinimum;
 
@@ -138,16 +148,22 @@ export const StepBudget = ({
 
                 {allocationCatalog.map((item) => {
                   const value = allocations[item.key];
-                  const min = realisticMinimum(item, guests);
+                  const min = effectiveMin(item);
                   const isLow = value < min;
                   const pct = Math.min(100, (value / Math.max(min * 2, 1)) * 100);
+                  const vendorCount = market[item.key]?.count ?? 0;
                   return (
                     <div key={item.key} className="rounded-2xl border border-border/70 bg-background p-4 sm:p-5">
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <div>
                           <div className="font-arabic text-base font-semibold text-foreground">{item.label}</div>
-                          <div className="mt-0.5 text-xs text-foreground/60">
-                            الحد الأدنى الواقعي: <span className="font-medium text-foreground/80">{fmt(min)} ر.س</span>
+                          <div className="mt-0.5 flex items-center gap-2 text-xs text-foreground/60">
+                            <span>الحد الأدنى الواقعي: <span className="font-medium text-foreground/80">{fmt(min)} ر.س</span></span>
+                            {vendorCount > 0 && (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                                <Users className="h-2.5 w-2.5" /> متوسط {vendorCount} مزوّد
+                              </span>
+                            )}
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
