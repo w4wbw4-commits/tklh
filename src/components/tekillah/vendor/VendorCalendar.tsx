@@ -22,7 +22,7 @@ const formatDate = (d: Date) => {
 
 const STATUS_META = {
   blocked: { label: "محجوب", color: "bg-foreground/70", icon: Ban },
-  pending: { label: "بانتظار التأكيد", color: "bg-amber-500", icon: Clock },
+  pending: { label: "بانتظار التأكيد", color: "bg-primary/60", icon: Clock },
   booked: { label: "محجوز", color: "bg-primary", icon: CheckCircle2 },
 };
 
@@ -120,7 +120,7 @@ export const VendorCalendar = ({ vendorId }: Props) => {
                 modifiersClassNames={{
                   blocked: "bg-foreground/15 text-foreground",
                   booked: "bg-primary text-primary-foreground",
-                  pending: "bg-amber-500/30 text-foreground",
+                  pending: "bg-primary/30 text-foreground",
                 }}
                 className="p-3 pointer-events-auto"
               />
@@ -134,7 +134,7 @@ export const VendorCalendar = ({ vendorId }: Props) => {
 
           <div className="mt-4 space-y-2 text-xs text-foreground/70">
             <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-sm bg-primary" /> محجوز (مؤكَّد)</div>
-            <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-sm bg-amber-500/60" /> بانتظار التأكيد</div>
+            <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-sm bg-primary/40" /> بانتظار التأكيد</div>
             <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-sm bg-foreground/20" /> محجوب يدوياً</div>
           </div>
         </div>

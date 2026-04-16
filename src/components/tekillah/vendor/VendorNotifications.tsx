@@ -11,9 +11,9 @@ import type { NotificationRow } from "./types";
 
 const TYPE_META: Record<string, { icon: any; color: string }> = {
   booking_request: { icon: CalendarCheck, color: "bg-primary/10 text-primary" },
-  booking_confirmed: { icon: Check, color: "bg-green-500/10 text-green-700" },
-  payment_confirmed: { icon: CreditCard, color: "bg-amber-500/10 text-amber-700" },
-  event_reminder: { icon: Clock, color: "bg-blue-500/10 text-blue-700" },
+  booking_confirmed: { icon: Check, color: "bg-primary/15 text-primary" },
+  payment_confirmed: { icon: CreditCard, color: "bg-secondary text-foreground" },
+  event_reminder: { icon: Clock, color: "bg-accent text-accent-foreground" },
   general: { icon: Bell, color: "bg-secondary text-foreground" },
 };
 
