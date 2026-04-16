@@ -13,25 +13,26 @@
   :root {
     /* Brand surfaces */
     --background: 60 14% 96%;        /* #F5F5F0 luxury off-white */
-    --foreground: 80 18% 14%;        /* deep olive ink */
+    --foreground: 80 30% 10%;        /* deep olive ink — high contrast body */
 
     --card: 0 0% 100%;
-    --card-foreground: 80 18% 14%;
+    --card-foreground: 80 30% 10%;
 
     --popover: 60 14% 98%;
-    --popover-foreground: 80 18% 14%;
+    --popover-foreground: 80 30% 10%;
 
-    /* Primary — Deep Olive Green #556B2F */
-    --primary: 82 39% 30%;
-    --primary-foreground: 60 14% 96%;
+    /* Primary — Deep Olive Green #556B2F (slightly deepened for AA contrast) */
+    --primary: 82 42% 26%;
+    --primary-foreground: 60 14% 97%;
     --primary-glow: 82 35% 45%;
+    --primary-deep: 82 45% 18%;       /* heading ink */
 
     /* Secondary — Soft Beige #E8DCCB */
     --secondary: 35 36% 85%;
-    --secondary-foreground: 80 25% 18%;
+    --secondary-foreground: 82 45% 16%;
 
     --muted: 40 22% 92%;
-    --muted-foreground: 80 10% 40%;
+    --muted-foreground: 80 18% 28%;   /* darker for readability */
 
     --accent: 35 36% 85%;
     --accent-foreground: 80 25% 18%;
