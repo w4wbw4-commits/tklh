@@ -14,16 +14,319 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          created_at: string
+          customer_id: string
+          event_date: string
+          guest_count: number | null
+          id: string
+          notes: string | null
+          package_id: string | null
+          status: Database["public"]["Enums"]["booking_status"]
+          total_price: number | null
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id: string
+          event_date: string
+          guest_count?: number | null
+          id?: string
+          notes?: string | null
+          package_id?: string | null
+          status?: Database["public"]["Enums"]["booking_status"]
+          total_price?: number | null
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          event_date?: string
+          guest_count?: number | null
+          id?: string
+          notes?: string | null
+          package_id?: string | null
+          status?: Database["public"]["Enums"]["booking_status"]
+          total_price?: number | null
+          updated_at?: string
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          read: boolean
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          read?: boolean
+          title: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          read?: boolean
+          title?: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      packages: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          id: string
+          includes: string[]
+          name: string
+          price: number
+          tier: Database["public"]["Enums"]["package_tier"]
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          includes?: string[]
+          name: string
+          price: number
+          tier?: Database["public"]["Enums"]["package_tier"]
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          includes?: string[]
+          name?: string
+          price?: number
+          tier?: Database["public"]["Enums"]["package_tier"]
+          updated_at?: string
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "packages_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vendor_availability: {
+        Row: {
+          booking_id: string | null
+          created_at: string
+          date: string
+          id: string
+          note: string | null
+          status: Database["public"]["Enums"]["availability_status"]
+          vendor_id: string
+        }
+        Insert: {
+          booking_id?: string | null
+          created_at?: string
+          date: string
+          id?: string
+          note?: string | null
+          status: Database["public"]["Enums"]["availability_status"]
+          vendor_id: string
+        }
+        Update: {
+          booking_id?: string | null
+          created_at?: string
+          date?: string
+          id?: string
+          note?: string | null
+          status?: Database["public"]["Enums"]["availability_status"]
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_availability_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vendors: {
+        Row: {
+          active: boolean
+          bio: string | null
+          business_name: string
+          category: Database["public"]["Enums"]["vendor_category"]
+          city: string | null
+          commercial_register_url: string | null
+          created_at: string
+          daily_capacity: number
+          id: string
+          phone: string | null
+          portfolio_urls: string[]
+          starting_price: number
+          updated_at: string
+          user_id: string
+          verified: boolean
+        }
+        Insert: {
+          active?: boolean
+          bio?: string | null
+          business_name: string
+          category: Database["public"]["Enums"]["vendor_category"]
+          city?: string | null
+          commercial_register_url?: string | null
+          created_at?: string
+          daily_capacity?: number
+          id?: string
+          phone?: string | null
+          portfolio_urls?: string[]
+          starting_price?: number
+          updated_at?: string
+          user_id: string
+          verified?: boolean
+        }
+        Update: {
+          active?: boolean
+          bio?: string | null
+          business_name?: string
+          category?: Database["public"]["Enums"]["vendor_category"]
+          city?: string | null
+          commercial_register_url?: string | null
+          created_at?: string
+          daily_capacity?: number
+          id?: string
+          phone?: string | null
+          portfolio_urls?: string[]
+          starting_price?: number
+          updated_at?: string
+          user_id?: string
+          verified?: boolean
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "customer" | "vendor" | "admin"
+      availability_status: "blocked" | "booked" | "pending"
+      booking_status:
+        | "pending"
+        | "confirmed"
+        | "rejected"
+        | "completed"
+        | "cancelled"
+      notification_type:
+        | "booking_request"
+        | "booking_confirmed"
+        | "payment_confirmed"
+        | "event_reminder"
+        | "general"
+      package_tier: "basic" | "premium" | "royal"
+      vendor_category:
+        | "hall"
+        | "catering"
+        | "photography"
+        | "dj"
+        | "decor"
+        | "cars"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +453,32 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["customer", "vendor", "admin"],
+      availability_status: ["blocked", "booked", "pending"],
+      booking_status: [
+        "pending",
+        "confirmed",
+        "rejected",
+        "completed",
+        "cancelled",
+      ],
+      notification_type: [
+        "booking_request",
+        "booking_confirmed",
+        "payment_confirmed",
+        "event_reminder",
+        "general",
+      ],
+      package_tier: ["basic", "premium", "royal"],
+      vendor_category: [
+        "hall",
+        "catering",
+        "photography",
+        "dj",
+        "decor",
+        "cars",
+      ],
+    },
   },
 } as const

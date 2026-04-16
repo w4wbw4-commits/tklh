@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
-import { Globe } from "lucide-react";
+import { Globe, Building2 } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
@@ -46,14 +47,25 @@ export const Navbar = () => {
             <Button
               variant="ghost"
               size="sm"
+              asChild
+              className="hidden rounded-full text-xs text-foreground/80 hover:text-primary sm:inline-flex"
+            >
+              <Link to="/vendor">
+                <Building2 className="me-1 h-3.5 w-3.5" />
+                {lang === "ar" ? "دخول الشركاء" : "Partners"}
+              </Link>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={toggleLang}
               className="rounded-full text-xs"
             >
               <Globe className="me-1 h-3.5 w-3.5" />
               {lang === "ar" ? "EN" : "ع"}
             </Button>
-            <Button size="sm" className="hidden rounded-full bg-primary text-primary-foreground hover:bg-primary/90 sm:inline-flex">
-              {lang === "ar" ? "ابدأ" : "Start"}
+            <Button size="sm" asChild className="hidden rounded-full bg-primary text-primary-foreground hover:bg-primary/90 sm:inline-flex">
+              <a href="#wizard">{lang === "ar" ? "ابدأ" : "Start"}</a>
             </Button>
           </div>
         </div>
