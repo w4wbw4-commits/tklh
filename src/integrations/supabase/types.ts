@@ -19,10 +19,12 @@ export type Database = {
           created_at: string
           customer_id: string
           event_date: string
+          event_id: string | null
           guest_count: number | null
           id: string
           notes: string | null
           package_id: string | null
+          paid_amount: number
           status: Database["public"]["Enums"]["booking_status"]
           total_price: number | null
           updated_at: string
@@ -32,10 +34,12 @@ export type Database = {
           created_at?: string
           customer_id: string
           event_date: string
+          event_id?: string | null
           guest_count?: number | null
           id?: string
           notes?: string | null
           package_id?: string | null
+          paid_amount?: number
           status?: Database["public"]["Enums"]["booking_status"]
           total_price?: number | null
           updated_at?: string
@@ -45,16 +49,25 @@ export type Database = {
           created_at?: string
           customer_id?: string
           event_date?: string
+          event_id?: string | null
           guest_count?: number | null
           id?: string
           notes?: string | null
           package_id?: string | null
+          paid_amount?: number
           status?: Database["public"]["Enums"]["booking_status"]
           total_price?: number | null
           updated_at?: string
           vendor_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "bookings_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "bookings_package_id_fkey"
             columns: ["package_id"]
@@ -67,6 +80,95 @@ export type Database = {
             columns: ["vendor_id"]
             isOneToOne: false
             referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          city: string | null
+          created_at: string
+          customer_id: string
+          event_date: string
+          guest_count: number | null
+          id: string
+          notes: string | null
+          theme: string | null
+          title: string
+          total_budget: number | null
+          updated_at: string
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string
+          customer_id: string
+          event_date: string
+          guest_count?: number | null
+          id?: string
+          notes?: string | null
+          theme?: string | null
+          title?: string
+          total_budget?: number | null
+          updated_at?: string
+        }
+        Update: {
+          city?: string | null
+          created_at?: string
+          customer_id?: string
+          event_date?: string
+          guest_count?: number | null
+          id?: string
+          notes?: string | null
+          theme?: string | null
+          title?: string
+          total_budget?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      guests: {
+        Row: {
+          created_at: string
+          customer_id: string
+          event_id: string
+          id: string
+          name: string
+          notes: string | null
+          phone: string | null
+          rsvp_status: Database["public"]["Enums"]["rsvp_status"]
+          seats: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id: string
+          event_id: string
+          id?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          rsvp_status?: Database["public"]["Enums"]["rsvp_status"]
+          seats?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          event_id?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          rsvp_status?: Database["public"]["Enums"]["rsvp_status"]
+          seats?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guests_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
             referencedColumns: ["id"]
           },
         ]
@@ -177,6 +279,53 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      timeline_milestones: {
+        Row: {
+          created_at: string
+          customer_id: string
+          description: string | null
+          due_date: string
+          event_id: string
+          id: string
+          sort_order: number
+          status: Database["public"]["Enums"]["milestone_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id: string
+          description?: string | null
+          due_date: string
+          event_id: string
+          id?: string
+          sort_order?: number
+          status?: Database["public"]["Enums"]["milestone_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          description?: string | null
+          due_date?: string
+          event_id?: string
+          id?: string
+          sort_order?: number
+          status?: Database["public"]["Enums"]["milestone_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "timeline_milestones_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -313,6 +462,7 @@ export type Database = {
         | "rejected"
         | "completed"
         | "cancelled"
+      milestone_status: "pending" | "in_progress" | "done"
       notification_type:
         | "booking_request"
         | "booking_confirmed"
@@ -320,6 +470,7 @@ export type Database = {
         | "event_reminder"
         | "general"
       package_tier: "basic" | "premium" | "royal"
+      rsvp_status: "pending" | "confirmed" | "declined"
       vendor_category:
         | "hall"
         | "catering"
@@ -463,6 +614,7 @@ export const Constants = {
         "completed",
         "cancelled",
       ],
+      milestone_status: ["pending", "in_progress", "done"],
       notification_type: [
         "booking_request",
         "booking_confirmed",
@@ -471,6 +623,7 @@ export const Constants = {
         "general",
       ],
       package_tier: ["basic", "premium", "royal"],
+      rsvp_status: ["pending", "confirmed", "declined"],
       vendor_category: [
         "hall",
         "catering",
