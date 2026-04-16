@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
-import { Globe, Building2 } from "lucide-react";
+import { Globe, Building2, LayoutDashboard } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
@@ -50,9 +50,20 @@ export const Navbar = () => {
               asChild
               className="hidden rounded-full text-xs text-foreground/80 hover:text-primary sm:inline-flex"
             >
+              <Link to="/dashboard">
+                <LayoutDashboard className="me-1 h-3.5 w-3.5" />
+                {lang === "ar" ? "لوحتي" : "Dashboard"}
+              </Link>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="hidden rounded-full text-xs text-foreground/80 hover:text-primary sm:inline-flex"
+            >
               <Link to="/vendor">
                 <Building2 className="me-1 h-3.5 w-3.5" />
-                {lang === "ar" ? "دخول الشركاء" : "Partners"}
+                {lang === "ar" ? "الشركاء" : "Partners"}
               </Link>
             </Button>
             <Button
