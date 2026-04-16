@@ -15,8 +15,8 @@ export const Hero = () => {
           height={1024}
           className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/30 to-background" />
-        <div className="absolute inset-0 bg-gradient-to-l from-primary/30 via-transparent to-primary/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-foreground/55 via-foreground/35 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-l from-primary-deep/40 via-transparent to-primary/20" />
       </div>
 
       {/* Content */}
@@ -37,11 +37,11 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="font-arabic text-balance text-5xl font-semibold leading-[1.1] text-foreground sm:text-6xl md:text-7xl lg:text-[88px]"
+          className="font-arabic text-balance text-5xl font-bold leading-[1.1] text-background text-shadow-hero sm:text-6xl md:text-7xl lg:text-[88px]"
         >
           تِكِلّة...
           <br />
-          <span className="bg-gradient-to-l from-primary via-primary/90 to-primary/70 bg-clip-text text-transparent">
+          <span className="text-background text-shadow-hero">
             خلّي ليلتك علينا
           </span>
         </motion.h1>
@@ -50,7 +50,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 max-w-2xl text-balance text-base text-muted-foreground sm:text-lg md:text-xl"
+          className="mt-6 max-w-2xl text-balance text-base font-semibold text-background/95 text-shadow-soft sm:text-lg md:text-xl"
         >
           من القاعة إلى التصوير، ومن التنسيق إلى التوصيل — نخطّط، نحجز، وننسّق
           مناسبتك بأدق تفاصيلها. ثقة، اعتماد، وراحة بال.

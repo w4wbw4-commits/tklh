@@ -30,19 +30,19 @@ export const StepVision = ({ vision, setVision, selectedChips, toggleChip }: Pro
     >
       <div className="flex items-center gap-2">
         <Sparkles className="h-5 w-5 text-primary" />
-        <h3 className="font-arabic text-2xl font-semibold text-foreground">ارسم رؤيتك لليلتك</h3>
+        <h3 className="font-arabic text-2xl font-semibold text-foreground">ارسم لنا رؤيتك لتفاصيل الحفل</h3>
       </div>
-      <p className="mt-2 text-sm text-foreground/70">
-        اكتب تفاصيل ليلتك المثالية بكلماتك — كل تفصيلة تساعدنا نحقّقها لك.
+      <p className="mt-2 text-sm font-medium text-foreground/75">
+        كل تفصيلة تكتبها تساعدنا نحقّق ليلتك كما تتخيّلها تماماً.
       </p>
 
       <div className="mt-8 space-y-3">
-        <Label className="font-arabic text-foreground">وصف ليلتك</Label>
+        <Label className="font-arabic text-base font-semibold text-foreground">وصف الحفل</Label>
         <Textarea
           value={vision}
           onChange={(e) => setVision(e.target.value)}
-          placeholder="مثال: أتخيّل قاعة بإضاءة دافئة، طاولات طويلة بزهور بيضاء وأخضر زيتوني، وفقرة DJ هادئة في البداية..."
-          className="min-h-[180px] rounded-2xl border-border bg-card p-5 font-arabic text-base leading-relaxed text-foreground placeholder:text-foreground/40 focus-visible:ring-primary"
+          placeholder="اكتب وصفاً مختصراً لأجواء الحفل التي تتخيلها..."
+          className="min-h-[180px] rounded-2xl border-border bg-card p-5 font-arabic text-base leading-relaxed text-foreground placeholder:text-foreground/45 focus-visible:ring-primary"
         />
       </div>
 

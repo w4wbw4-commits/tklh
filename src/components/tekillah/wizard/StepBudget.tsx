@@ -27,6 +27,12 @@ export const StepBudget = ({
     [allocations]
   );
 
+  const globalMinimum = useMemo(
+    () => allocationCatalog.reduce((s, item) => s + realisticMinimum(item, guests), 0),
+    [guests]
+  );
+  const isBelowMinimum = total < globalMinimum;
+
   return (
     <motion.div
       key="step-budget"
@@ -90,6 +96,9 @@ export const StepBudget = ({
                   <div className="mt-1 text-xs text-foreground/60">
                     لـ {guests.toLocaleString("ar-SA")} ضيف · ≈ {fmt(total / Math.max(guests, 1))} ر.س / ضيف
                   </div>
+                  <div className="mt-1 text-xs text-foreground/70">
+                    الحد الأدنى الواقعي للجودة: <span className="font-semibold text-foreground">{fmt(globalMinimum)} ر.س</span>
+                  </div>
                 </div>
                 <div className="w-full sm:w-72">
                   <div className="flex items-center justify-between text-xs text-foreground/70">
@@ -102,6 +111,23 @@ export const StepBudget = ({
                   />
                 </div>
               </div>
+
+              <AnimatePresence>
+                {isBelowMinimum && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="mt-5 flex items-start gap-3 rounded-2xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive"
+                  >
+                    <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
+                    <div className="font-arabic leading-relaxed">
+                      الميزانية الإجمالية أقل من الحد الأدنى الواقعي لحفل بهذا الحجم.
+                      نوصي برفعها إلى <span className="font-semibold">{fmt(globalMinimum)} ر.س</span> على الأقل للحفاظ على جودة المناسبة.
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {/* Per-service rows */}
               <div className="mt-6 space-y-5">

@@ -136,4 +136,10 @@
   .shadow-card {
     box-shadow: var(--shadow-card);
   }
+  .text-shadow-hero {
+    text-shadow: 0 2px 24px hsl(80 30% 8% / 0.55), 0 1px 3px hsl(80 30% 8% / 0.45);
+  }
+  .text-shadow-soft {
+    text-shadow: 0 1px 12px hsl(80 30% 8% / 0.45);
+  }
 }
