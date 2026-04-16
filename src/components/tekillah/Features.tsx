@@ -1,30 +1,16 @@
 import { motion } from "framer-motion";
 import { Brain, CalendarCheck, Wallet, Radio } from "lucide-react";
-
-const features = [
-  {
-    icon: Brain,
-    title: "تخطيط ذكي",
-    desc: "نظام يقترح عليك أفضل الخيارات حسب نوع المناسبة، عدد الضيوف، وميزانيتك.",
-  },
-  {
-    icon: CalendarCheck,
-    title: "حجز مباشر",
-    desc: "احجز القاعة، التصوير، التنسيق والضيافة في خطوات بسيطة دون عناء.",
-  },
-  {
-    icon: Wallet,
-    title: "إدارة الميزانية",
-    desc: "تحكّم كامل بميزانيتك مع توزيع ذكي وتتبّع آني لكل مصروف.",
-  },
-  {
-    icon: Radio,
-    title: "تنسيق لحظي",
-    desc: "تابع جاهزية كل مزوّد خدمة في يوم المناسبة عبر الوضع المباشر.",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export const Features = () => {
+  const { t } = useTranslation();
+  const features = [
+    { icon: Brain, key: "smart" },
+    { icon: CalendarCheck, key: "booking" },
+    { icon: Wallet, key: "budget" },
+    { icon: Radio, key: "live" },
+  ] as const;
+
   return (
     <section id="features" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-6">
@@ -36,20 +22,20 @@ export const Features = () => {
           className="mx-auto max-w-2xl text-center"
         >
           <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
-            المميزات
+            {t("features.kicker")}
           </span>
           <h2 className="mt-4 font-arabic text-balance text-4xl font-semibold text-foreground sm:text-5xl">
-            كل ما تحتاجه لمناسبة لا تُنسى
+            {t("features.title")}
           </h2>
           <p className="mt-4 text-muted-foreground sm:text-lg">
-            منظومة متكاملة تجمع التخطيط، الحجز، والتنسيق في مكان واحد.
+            {t("features.subtitle")}
           </p>
         </motion.div>
 
         <div className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((f, i) => (
             <motion.div
-              key={f.title}
+              key={f.key}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
@@ -62,10 +48,10 @@ export const Features = () => {
                   <f.icon className="h-6 w-6 text-primary" strokeWidth={1.6} />
                 </div>
                 <h3 className="font-arabic text-xl font-semibold text-foreground">
-                  {f.title}
+                  {t(`features.${f.key}.title`)}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {f.desc}
+                  {t(`features.${f.key}.desc`)}
                 </p>
               </div>
             </motion.div>

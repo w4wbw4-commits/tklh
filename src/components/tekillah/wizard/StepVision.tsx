@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Sparkles, Plus, Check } from "lucide-react";
-import { visionChips } from "./types";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   vision: string;
@@ -12,6 +12,9 @@ interface Props {
 }
 
 export const StepVision = ({ vision, setVision, selectedChips, toggleChip }: Props) => {
+  const { t } = useTranslation();
+  const chips = t("wizard.vision.chips", { returnObjects: true }) as string[];
+
   const insertChip = (chip: string) => {
     toggleChip(chip);
     if (!vision.includes(chip)) {
@@ -30,18 +33,18 @@ export const StepVision = ({ vision, setVision, selectedChips, toggleChip }: Pro
     >
       <div className="flex items-center gap-2">
         <Sparkles className="h-5 w-5 text-primary" />
-        <h3 className="font-arabic text-2xl font-semibold text-foreground">ارسم لنا رؤيتك لتفاصيل الحفل</h3>
+        <h3 className="font-arabic text-2xl font-semibold text-foreground">{t("wizard.vision.title")}</h3>
       </div>
       <p className="mt-2 text-sm font-medium text-foreground/75">
-        كل تفصيلة تكتبها تساعدنا نحقّق ليلتك كما تتخيّلها تماماً.
+        {t("wizard.vision.desc")}
       </p>
 
       <div className="mt-8 space-y-3">
-        <Label className="font-arabic text-base font-semibold text-foreground">وصف الحفل</Label>
+        <Label className="font-arabic text-base font-semibold text-foreground">{t("wizard.vision.label")}</Label>
         <Textarea
           value={vision}
           onChange={(e) => setVision(e.target.value)}
-          placeholder="اكتب وصفاً مختصراً لأجواء الحفل التي تتخيلها..."
+          placeholder={t("wizard.vision.placeholder")}
           className="min-h-[180px] rounded-2xl border-border bg-card p-5 font-arabic text-base leading-relaxed text-foreground placeholder:text-foreground/45 focus-visible:ring-primary"
         />
       </div>
@@ -49,10 +52,10 @@ export const StepVision = ({ vision, setVision, selectedChips, toggleChip }: Pro
       <div className="mt-8">
         <div className="mb-3 flex items-center gap-2 text-sm font-medium text-foreground">
           <Sparkles className="h-4 w-4 text-primary" />
-          اقتراحات سريعة — اضغط لإضافتها
+          {t("wizard.vision.suggestions")}
         </div>
         <div className="flex flex-wrap gap-2">
-          {visionChips.map((chip) => {
+          {chips.map((chip) => {
             const isOn = selectedChips.includes(chip);
             return (
               <motion.button
