@@ -3,24 +3,22 @@ import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
 import { Globe, Building2, LayoutDashboard } from "lucide-react";
-import { useState } from "react";
-
-const navItems = [
-  { ar: "الرئيسية", en: "Home", href: "#home" },
-  { ar: "المميزات", en: "Features", href: "#features" },
-  { ar: "خطّط الآن", en: "Plan", href: "#wizard" },
-  { ar: "لوحة التحكم", en: "Dashboard", href: "#dashboard" },
-];
+import { useTranslation } from "react-i18next";
 
 export const Navbar = () => {
-  const [lang, setLang] = useState<"ar" | "en">("ar");
+  const { t, i18n } = useTranslation();
+  const isAr = i18n.language === "ar";
 
   const toggleLang = () => {
-    const next = lang === "ar" ? "en" : "ar";
-    setLang(next);
-    document.documentElement.dir = next === "ar" ? "rtl" : "ltr";
-    document.documentElement.lang = next;
+    i18n.changeLanguage(isAr ? "en" : "ar");
   };
+
+  const navItems = [
+    { key: "home", href: "#home" },
+    { key: "features", href: "#features" },
+    { key: "plan", href: "#wizard" },
+    { key: "dashboard", href: "#dashboard" },
+  ] as const;
 
   return (
     <motion.header
@@ -39,7 +37,7 @@ export const Navbar = () => {
                 href={item.href}
                 className="rounded-full px-4 py-2 text-sm text-foreground/75 transition-colors hover:bg-secondary hover:text-foreground"
               >
-                {lang === "ar" ? item.ar : item.en}
+                {t(`nav.${item.key}`)}
               </a>
             ))}
           </nav>
@@ -52,7 +50,7 @@ export const Navbar = () => {
             >
               <Link to="/dashboard">
                 <LayoutDashboard className="me-1 h-3.5 w-3.5" />
-                {lang === "ar" ? "لوحتي" : "Dashboard"}
+                {t("nav.myDashboard")}
               </Link>
             </Button>
             <Button
@@ -63,7 +61,7 @@ export const Navbar = () => {
             >
               <Link to="/vendor">
                 <Building2 className="me-1 h-3.5 w-3.5" />
-                {lang === "ar" ? "الشركاء" : "Partners"}
+                {t("nav.partners")}
               </Link>
             </Button>
             <Button
@@ -73,10 +71,10 @@ export const Navbar = () => {
               className="rounded-full text-xs"
             >
               <Globe className="me-1 h-3.5 w-3.5" />
-              {lang === "ar" ? "EN" : "ع"}
+              {t("nav.lang")}
             </Button>
             <Button size="sm" asChild className="hidden rounded-full bg-primary text-primary-foreground hover:bg-primary/90 sm:inline-flex">
-              <a href="#wizard">{lang === "ar" ? "ابدأ" : "Start"}</a>
+              <a href="#wizard">{t("nav.start")}</a>
             </Button>
           </div>
         </div>

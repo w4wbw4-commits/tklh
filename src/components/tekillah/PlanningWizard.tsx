@@ -12,11 +12,12 @@ import {
   type BudgetMode,
   type ServiceKey,
 } from "./wizard/types";
-
-const stepLabels = ["تفاصيل المناسبة", "اختيار الخدمات", "ارسم رؤيتك", "الميزانية"];
+import { useTranslation } from "react-i18next";
 
 export const PlanningWizard = () => {
+  const { t, i18n } = useTranslation();
   const [step, setStep] = useState(0);
+  const isAr = i18n.language === "ar";
 
   // Step 0
   const [city, setCity] = useState("");
@@ -41,7 +42,6 @@ export const PlanningWizard = () => {
   const [budget, setBudget] = useState(80000);
   const guests = men + women;
 
-  // Initial allocations from suggested percentages, adjusted to realistic min
   const initialAllocations = useMemo(() => {
     const out = {} as Record<ServiceKey, number>;
     allocationCatalog.forEach((item) => {
@@ -61,6 +61,18 @@ export const PlanningWizard = () => {
   const next = () => setStep((s) => Math.min(s + 1, 3));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
+  const stepLabels = [
+    t("wizard.step1"),
+    t("wizard.step2"),
+    t("wizard.step3"),
+    t("wizard.step4"),
+  ];
+
+  // In LTR, "previous" arrow points left and "next" points right.
+  // In RTL, the visual semantics flip.
+  const PrevIcon = isAr ? ArrowRight : ArrowLeft;
+  const NextIcon = isAr ? ArrowLeft : ArrowRight;
+
   return (
     <section id="wizard" className="relative bg-gradient-soft py-24 sm:py-32">
       <div className="mx-auto max-w-5xl px-6">
@@ -72,10 +84,10 @@ export const PlanningWizard = () => {
           className="text-center"
         >
           <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
-            معالج التخطيط الذكي
+            {t("wizard.kicker")}
           </span>
           <h2 className="mt-4 font-arabic text-balance text-4xl font-semibold text-foreground sm:text-5xl">
-            ابدأ بتخطيط ليلتك في ٤ خطوات
+            {t("wizard.title")}
           </h2>
         </motion.div>
 
@@ -103,7 +115,7 @@ export const PlanningWizard = () => {
                   <motion.div
                     initial={false}
                     animate={{ scaleX: i < step ? 1 : 0 }}
-                    style={{ originX: 1 }}
+                    style={{ originX: isAr ? 1 : 0 }}
                     transition={{ duration: 0.5 }}
                     className="absolute inset-0 bg-primary"
                   />
@@ -113,7 +125,6 @@ export const PlanningWizard = () => {
           ))}
         </div>
 
-        {/* Card */}
         <div className="mt-10 overflow-hidden rounded-3xl border border-border bg-card shadow-luxury">
           <AnimatePresence mode="wait">
             {step === 0 && (
@@ -142,21 +153,20 @@ export const PlanningWizard = () => {
             )}
           </AnimatePresence>
 
-          {/* Footer / nav */}
           <div className="flex items-center justify-between border-t border-border bg-secondary/30 px-6 py-4 sm:px-10">
             <Button variant="ghost" onClick={prev} disabled={step === 0} className="rounded-full text-foreground">
-              <ArrowRight className="me-2 h-4 w-4" />
-              السابق
+              <PrevIcon className="me-2 h-4 w-4" />
+              {t("common.previous")}
             </Button>
             {step < 3 ? (
               <Button onClick={next} className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
-                التالي
-                <ArrowLeft className="ms-2 h-4 w-4" />
+                {t("common.next")}
+                <NextIcon className="ms-2 h-4 w-4" />
               </Button>
             ) : (
               <Button className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
                 <Check className="ms-2 h-4 w-4" />
-                إنهاء التخطيط
+                {t("wizard.finish")}
               </Button>
             )}
           </div>
