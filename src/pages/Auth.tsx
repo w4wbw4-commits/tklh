@@ -20,7 +20,7 @@ const Auth = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const initialMode = params.get("mode") === "signup" ? "signup" : "signin";
-  const redirectTo = params.get("redirect") || "/vendor";
+  const redirectTo = params.get("redirect") || "/dashboard";
 
   const { user, loading: authLoading } = useAuth();
   const [tab, setTab] = useState<"signin" | "signup">(initialMode);
@@ -68,7 +68,7 @@ const Auth = () => {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/vendor`,
+        emailRedirectTo: `${window.location.origin}${redirectTo}`,
         data: { display_name: displayName },
       },
     });
@@ -102,10 +102,10 @@ const Auth = () => {
               <Building2 className="h-6 w-6" />
             </div>
             <h1 className="font-arabic text-3xl font-semibold text-foreground">
-              دخول الشركاء
+              {redirectTo.includes("vendor") ? "دخول الشركاء" : "حسابك في تكلّة"}
             </h1>
             <p className="mt-2 text-sm text-foreground/65">
-              سجّل دخولك لإدارة لوحتك ومواعيدك
+              سجّل دخولك للوصول إلى لوحتك ومناسباتك
             </p>
           </div>
 
