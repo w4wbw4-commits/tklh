@@ -250,6 +250,141 @@ export type Database = {
           },
         ]
       }
+      payments: {
+        Row: {
+          amount: number
+          booking_id: string
+          created_at: string
+          customer_id: string
+          id: string
+          method: Database["public"]["Enums"]["payment_method"]
+          platform_fee: number
+          reference: string | null
+          refund_reason: string | null
+          refunded_at: string | null
+          released_at: string | null
+          released_by: string | null
+          status: Database["public"]["Enums"]["payment_status"]
+          total_charged: number
+          updated_at: string
+          vat_amount: number
+          vendor_id: string
+          vendor_net: number
+        }
+        Insert: {
+          amount: number
+          booking_id: string
+          created_at?: string
+          customer_id: string
+          id?: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          platform_fee?: number
+          reference?: string | null
+          refund_reason?: string | null
+          refunded_at?: string | null
+          released_at?: string | null
+          released_by?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          total_charged?: number
+          updated_at?: string
+          vat_amount?: number
+          vendor_id: string
+          vendor_net?: number
+        }
+        Update: {
+          amount?: number
+          booking_id?: string
+          created_at?: string
+          customer_id?: string
+          id?: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          platform_fee?: number
+          reference?: string | null
+          refund_reason?: string | null
+          refunded_at?: string | null
+          released_at?: string | null
+          released_by?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          total_charged?: number
+          updated_at?: string
+          vat_amount?: number
+          vendor_id?: string
+          vendor_net?: number
+        }
+        Relationships: []
+      }
+      payout_requests: {
+        Row: {
+          amount: number
+          approved_at: string | null
+          approved_by: string | null
+          bank_info: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          paid_at: string | null
+          status: Database["public"]["Enums"]["payout_status"]
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          amount: number
+          approved_at?: string | null
+          approved_by?: string | null
+          bank_info?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          status?: Database["public"]["Enums"]["payout_status"]
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          amount?: number
+          approved_at?: string | null
+          approved_by?: string | null
+          bank_info?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          status?: Database["public"]["Enums"]["payout_status"]
+          updated_at?: string
+          vendor_id?: string
+        }
+        Relationships: []
+      }
+      platform_settings: {
+        Row: {
+          auto_release_days: number
+          commission_percent: number
+          currency: string
+          id: string
+          updated_at: string
+          updated_by: string | null
+          vat_percent: number
+        }
+        Insert: {
+          auto_release_days?: number
+          commission_percent?: number
+          currency?: string
+          id?: string
+          updated_at?: string
+          updated_by?: string | null
+          vat_percent?: number
+        }
+        Update: {
+          auto_release_days?: number
+          commission_percent?: number
+          currency?: string
+          id?: string
+          updated_at?: string
+          updated_by?: string | null
+          vat_percent?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -445,6 +580,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      compute_payment_split: {
+        Args: { _amount: number }
+        Returns: {
+          platform_fee: number
+          total: number
+          vat: number
+          vendor_net: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -470,6 +614,16 @@ export type Database = {
         | "event_reminder"
         | "general"
       package_tier: "basic" | "premium" | "royal"
+      payment_method:
+        | "mada"
+        | "apple_pay"
+        | "stc_pay"
+        | "credit_card"
+        | "tamara"
+        | "tabby"
+        | "mock"
+      payment_status: "held" | "released" | "refunded" | "failed"
+      payout_status: "requested" | "approved" | "paid" | "rejected"
       rsvp_status: "pending" | "confirmed" | "declined"
       vendor_category:
         | "hall"
@@ -623,6 +777,17 @@ export const Constants = {
         "general",
       ],
       package_tier: ["basic", "premium", "royal"],
+      payment_method: [
+        "mada",
+        "apple_pay",
+        "stc_pay",
+        "credit_card",
+        "tamara",
+        "tabby",
+        "mock",
+      ],
+      payment_status: ["held", "released", "refunded", "failed"],
+      payout_status: ["requested", "approved", "paid", "rejected"],
       rsvp_status: ["pending", "confirmed", "declined"],
       vendor_category: [
         "hall",
