@@ -431,6 +431,7 @@ export type Database = {
           id: string
           updated_at: string
           updated_by: string | null
+          vat_number: string | null
           vat_percent: number
         }
         Insert: {
@@ -440,6 +441,7 @@ export type Database = {
           id?: string
           updated_at?: string
           updated_by?: string | null
+          vat_number?: string | null
           vat_percent?: number
         }
         Update: {
@@ -449,6 +451,7 @@ export type Database = {
           id?: string
           updated_at?: string
           updated_by?: string | null
+          vat_number?: string | null
           vat_percent?: number
         }
         Relationships: []
@@ -566,6 +569,42 @@ export type Database = {
           rating?: number
           updated_at?: string
           vendor_id?: string
+        }
+        Relationships: []
+      }
+      terms_acceptances: {
+        Row: {
+          accepted_at: string
+          created_at: string
+          id: string
+          ip_address: string | null
+          related_id: string | null
+          scope: Database["public"]["Enums"]["terms_scope"]
+          user_agent: string | null
+          user_id: string
+          version: string
+        }
+        Insert: {
+          accepted_at?: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          related_id?: string | null
+          scope: Database["public"]["Enums"]["terms_scope"]
+          user_agent?: string | null
+          user_id: string
+          version?: string
+        }
+        Update: {
+          accepted_at?: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          related_id?: string | null
+          scope?: Database["public"]["Enums"]["terms_scope"]
+          user_agent?: string | null
+          user_id?: string
+          version?: string
         }
         Relationships: []
       }
@@ -822,6 +861,7 @@ export type Database = {
       report_status: "pending" | "approved" | "removed"
       report_target: "review" | "reply"
       rsvp_status: "pending" | "confirmed" | "declined"
+      terms_scope: "booking" | "vendor_onboarding"
       vendor_category:
         | "hall"
         | "catering"
@@ -990,6 +1030,7 @@ export const Constants = {
       report_status: ["pending", "approved", "removed"],
       report_target: ["review", "reply"],
       rsvp_status: ["pending", "confirmed", "declined"],
+      terms_scope: ["booking", "vendor_onboarding"],
       vendor_category: [
         "hall",
         "catering",
