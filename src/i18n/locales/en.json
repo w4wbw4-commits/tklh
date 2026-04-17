@@ -618,6 +618,22 @@
     "tabReviews": "Reviews",
     "tabModeration": "Pending reports",
     "tabVerification": "Verification queue",
+    "grand": {
+      "title": "Grand control overview",
+      "subtitle": "Live snapshot of pending docs, flagged content, and system health.",
+      "customers": "Customers",
+      "vendors": "Vendors",
+      "activeBookings": "Active bookings",
+      "pendingDocs": "Pending docs",
+      "flagged": "Flagged",
+      "pendingDocsHeading": "Documents awaiting review",
+      "flaggedHeading": "Flagged content",
+      "noPendingDocs": "All caught up — no documents waiting.",
+      "noFlagged": "No flagged content right now.",
+      "iban": "IBAN cert",
+      "cr": "CR doc",
+      "viewAll": "View all"
+    },
     "verify": {
       "title": "Vendor verification queue",
       "subtitle": "Review vendor documents and new packages before they go live for customers.",
