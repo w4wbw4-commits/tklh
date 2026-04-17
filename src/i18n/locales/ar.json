@@ -240,7 +240,14 @@
       "calendar": "التقويم",
       "packages": "الباقات",
       "bookings": "الحجوزات",
+      "reviews": "التقييمات",
       "notifications": "الإشعارات"
+    },
+    "reviews": {
+      "title": "تقييمات العملاء",
+      "subtitle": "اطّلع على آراء عملائك واستمر في تطوير خدمتك.",
+      "avgRating": "متوسط التقييم",
+      "totalReviews": "إجمالي التقييمات"
     },
     "bookings": {
       "title": "طلبات الحجز",
@@ -603,6 +610,44 @@
       "released": "محرَّر",
       "refunded": "مُسترد",
       "failed": "فشل"
+    },
+    "tabReviews": "التقييمات",
+    "reviews": {
+      "empty": "لا توجد تقييمات بعد.",
+      "deleteBtn": "حذف التقييم",
+      "deleteConfirmTitle": "حذف هذا التقييم؟",
+      "deleteConfirmDesc": "سيتم حذف التقييم نهائياً. استخدم هذا الإجراء فقط للتعليقات المسيئة أو الاحتيالية.",
+      "deleteConfirmCta": "نعم، احذف"
+    }
+  },
+  "reviews": {
+    "rateService": "قيّم الخدمة",
+    "alreadyRated": "تم التقييم",
+    "topRated": "الأعلى تقييماً",
+    "new": "جديد",
+    "empty": "لا توجد تقييمات بعد. كن أول من يشارك تجربته.",
+    "anonymous": "عميل مجهول",
+    "deleteBtn": "حذف",
+    "dialog": {
+      "title": "قيّم تجربتك",
+      "subtitle": "ساعد العملاء القادمين بمشاركة رأيك في {{vendor}}.",
+      "submit": "إرسال التقييم"
+    },
+    "fields": {
+      "overall": "التقييم العام",
+      "communication": "التواصل",
+      "punctuality": "الالتزام بالمواعيد",
+      "quality": "جودة الخدمة",
+      "comment": "تجربتك",
+      "commentPlaceholder": "شارك تفاصيل تساعد الآخرين (اختياري، حد أقصى 1000 حرف)…"
+    },
+    "errors": {
+      "pickRating": "اختر نجمة واحدة على الأقل.",
+      "alreadyReviewed": "لقد قمت بتقييم هذا الحجز مسبقاً."
+    },
+    "success": {
+      "submitted": "شكراً لتقييمك!",
+      "deleted": "تم حذف التقييم"
     }
   }
 }

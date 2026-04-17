@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Loader2, ShieldAlert, Wallet, TrendingUp, Lock, ListChecks,
-  CheckCircle2, Clock, LogOut, Receipt,
+  CheckCircle2, Clock, LogOut, Receipt, Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
@@ -18,6 +18,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { AdminReviewsPanel } from "@/components/tekillah/admin/AdminReviewsPanel";
 
 interface PaymentRow {
   id: string;
@@ -168,6 +169,9 @@ const Admin = () => {
               <TabsTrigger value="bookings" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <ListChecks className="h-4 w-4" /> {t("admin.tabBookings")}
               </TabsTrigger>
+              <TabsTrigger value="reviews" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <Star className="h-4 w-4" /> {t("admin.tabReviews")}
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="payments" className="mt-6">
@@ -262,6 +266,10 @@ const Admin = () => {
                   ))}
                 </div>
               )}
+            </TabsContent>
+
+            <TabsContent value="reviews" className="mt-6">
+              <AdminReviewsPanel />
             </TabsContent>
           </Tabs>
         </div>

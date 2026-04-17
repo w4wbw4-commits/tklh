@@ -240,7 +240,14 @@
       "calendar": "Calendar",
       "packages": "Packages",
       "bookings": "Bookings",
+      "reviews": "Reviews",
       "notifications": "Notifications"
+    },
+    "reviews": {
+      "title": "Customer reviews",
+      "subtitle": "See what your customers say to keep improving your service.",
+      "avgRating": "Average rating",
+      "totalReviews": "Total reviews"
     },
     "bookings": {
       "title": "Booking requests",
@@ -603,6 +610,44 @@
       "released": "Released",
       "refunded": "Refunded",
       "failed": "Failed"
+    },
+    "tabReviews": "Reviews",
+    "reviews": {
+      "empty": "No reviews submitted yet.",
+      "deleteBtn": "Delete review",
+      "deleteConfirmTitle": "Delete this review?",
+      "deleteConfirmDesc": "This will permanently remove the review. Use this only for fraudulent or inappropriate content.",
+      "deleteConfirmCta": "Yes, delete"
+    }
+  },
+  "reviews": {
+    "rateService": "Rate this service",
+    "alreadyRated": "Reviewed",
+    "topRated": "Top Rated",
+    "new": "New",
+    "empty": "No reviews yet. Be the first to share your experience.",
+    "anonymous": "Anonymous customer",
+    "deleteBtn": "Delete",
+    "dialog": {
+      "title": "Rate your experience",
+      "subtitle": "Help future customers by reviewing {{vendor}}.",
+      "submit": "Submit review"
+    },
+    "fields": {
+      "overall": "Overall",
+      "communication": "Communication",
+      "punctuality": "Punctuality",
+      "quality": "Service quality",
+      "comment": "Your experience",
+      "commentPlaceholder": "Share details that would help others (optional, max 1000 characters)…"
+    },
+    "errors": {
+      "pickRating": "Please pick at least one star.",
+      "alreadyReviewed": "You have already reviewed this booking."
+    },
+    "success": {
+      "submitted": "Thank you for your review!",
+      "deleted": "Review deleted"
     }
   }
 }

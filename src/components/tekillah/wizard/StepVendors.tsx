@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Loader2, Check, Building2, UtensilsCrossed, Camera, Music2, Flower2, Car, Star, MapPin } from "lucide-react";
+import { Loader2, Check, Building2, UtensilsCrossed, Camera, Music2, Flower2, Car, MapPin, BadgeCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import type { ServiceKey } from "./types";
 import { fmtNumber } from "@/i18n/format";
+import { VendorRatingBadge } from "@/components/tekillah/reviews/VendorRatingBadge";
 
 const ICONS: Record<ServiceKey, typeof Building2> = {
   hall: Building2, catering: UtensilsCrossed, photography: Camera,
@@ -19,6 +20,9 @@ export interface VendorOption {
   city: string | null;
   starting_price: number;
   verified: boolean;
+  avg_rating: number;
+  reviews_count: number;
+  completed_bookings: number;
   packages: { id: string; name: string; tier: string; price: number; description: string | null }[];
 }
 
@@ -43,17 +47,33 @@ export const StepVendors = ({ selectedServices, picks, setPick }: Props) => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const { data: v } = await supabase
-        .from("vendors")
-        .select("id, business_name, category, city, starting_price, verified, packages(id, name, tier, price, description, active)")
-        .eq("active", true)
-        .in("category", selectedServices.length ? selectedServices : ["hall"]);
-      const mapped = (v ?? []).map((x) => ({
-        ...x,
-        packages: ((x as unknown as { packages: VendorOption["packages"] & { active: boolean }[] }).packages ?? [])
-          .filter((p) => (p as unknown as { active: boolean }).active)
-          .sort((a, b) => Number(a.price) - Number(b.price)),
-      })) as unknown as VendorOption[];
+      const [{ data: v }, { data: ratings }] = await Promise.all([
+        supabase
+          .from("vendors")
+          .select("id, business_name, category, city, starting_price, verified, packages(id, name, tier, price, description, active)")
+          .eq("active", true)
+          .in("category", selectedServices.length ? selectedServices : ["hall"]),
+        supabase.from("vendor_ratings_summary" as never).select("vendor_id, avg_rating, reviews_count, completed_bookings"),
+      ]);
+      const ratingMap = new Map<string, { avg: number; count: number; done: number }>();
+      ((ratings ?? []) as { vendor_id: string; avg_rating: number; reviews_count: number; completed_bookings: number }[])
+        .forEach((r) => ratingMap.set(r.vendor_id, {
+          avg: Number(r.avg_rating ?? 0),
+          count: Number(r.reviews_count ?? 0),
+          done: Number(r.completed_bookings ?? 0),
+        }));
+      const mapped = (v ?? []).map((x) => {
+        const r = ratingMap.get(x.id) ?? { avg: 0, count: 0, done: 0 };
+        return {
+          ...x,
+          avg_rating: r.avg,
+          reviews_count: r.count,
+          completed_bookings: r.done,
+          packages: ((x as unknown as { packages: VendorOption["packages"] & { active: boolean }[] }).packages ?? [])
+            .filter((p) => (p as unknown as { active: boolean }).active)
+            .sort((a, b) => Number(a.price) - Number(b.price)),
+        };
+      }) as unknown as VendorOption[];
       setVendors(mapped);
       setLoading(false);
     })();
@@ -61,7 +81,17 @@ export const StepVendors = ({ selectedServices, picks, setPick }: Props) => {
 
   const grouped = useMemo(() => {
     const out: Record<string, VendorOption[]> = {};
-    selectedServices.forEach((cat) => { out[cat] = vendors.filter((v) => v.category === cat); });
+    selectedServices.forEach((cat) => {
+      out[cat] = vendors
+        .filter((v) => v.category === cat)
+        // Smart boost: higher rating + more completed bookings ranked first.
+        // Score = (avg * 20) + (completed * 2) + (verified bonus 5)
+        .sort((a, b) => {
+          const score = (x: VendorOption) =>
+            (x.avg_rating * 20) + (x.completed_bookings * 2) + (x.verified ? 5 : 0);
+          return score(b) - score(a);
+        });
+    });
     return out;
   }, [vendors, selectedServices]);
 
@@ -119,12 +149,15 @@ export const StepVendors = ({ selectedServices, picks, setPick }: Props) => {
                   {list.map((v) => (
                     <div key={v.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
                       <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <div className="font-arabic text-sm font-semibold text-foreground">
-                            {v.business_name}
-                            {v.verified && <Star className="ms-1 inline h-3 w-3 fill-primary text-primary" />}
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <span className="font-arabic text-sm font-semibold text-foreground">{v.business_name}</span>
+                            {v.verified && <BadgeCheck className="h-3.5 w-3.5 text-primary" />}
                           </div>
-                          <div className="mt-0.5 flex items-center gap-2 text-[11px] text-foreground/55">
+                          <div className="mt-1">
+                            <VendorRatingBadge avg={v.avg_rating} count={v.reviews_count} />
+                          </div>
+                          <div className="mt-1.5 flex items-center gap-2 text-[11px] text-foreground/55">
                             {v.city && <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" />{v.city}</span>}
                             <span>•</span>
                             <span>{t("wizard.vendors.from")} {fmtNumber(Number(v.starting_price))} {t("common.currency")}</span>

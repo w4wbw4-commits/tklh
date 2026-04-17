@@ -79,6 +79,13 @@ export type Database = {
             foreignKeyName: "bookings_vendor_id_fkey"
             columns: ["vendor_id"]
             isOneToOne: false
+            referencedRelation: "vendor_ratings_summary"
+            referencedColumns: ["vendor_id"]
+          },
+          {
+            foreignKeyName: "bookings_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
             referencedRelation: "vendors"
             referencedColumns: ["id"]
           },
@@ -241,6 +248,13 @@ export type Database = {
           vendor_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "packages_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_ratings_summary"
+            referencedColumns: ["vendor_id"]
+          },
           {
             foreignKeyName: "packages_vendor_id_fkey"
             columns: ["vendor_id"]
@@ -415,6 +429,48 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          booking_id: string
+          comment: string | null
+          communication: number
+          created_at: string
+          customer_id: string
+          id: string
+          punctuality: number
+          quality: number
+          rating: number
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          booking_id: string
+          comment?: string | null
+          communication: number
+          created_at?: string
+          customer_id: string
+          id?: string
+          punctuality: number
+          quality: number
+          rating: number
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          booking_id?: string
+          comment?: string | null
+          communication?: number
+          created_at?: string
+          customer_id?: string
+          id?: string
+          punctuality?: number
+          quality?: number
+          rating?: number
+          updated_at?: string
+          vendor_id?: string
+        }
+        Relationships: []
+      }
       timeline_milestones: {
         Row: {
           created_at: string
@@ -516,6 +572,13 @@ export type Database = {
             foreignKeyName: "vendor_availability_vendor_id_fkey"
             columns: ["vendor_id"]
             isOneToOne: false
+            referencedRelation: "vendor_ratings_summary"
+            referencedColumns: ["vendor_id"]
+          },
+          {
+            foreignKeyName: "vendor_availability_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
             referencedRelation: "vendors"
             referencedColumns: ["id"]
           },
@@ -577,7 +640,18 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      vendor_ratings_summary: {
+        Row: {
+          avg_communication: number | null
+          avg_punctuality: number | null
+          avg_quality: number | null
+          avg_rating: number | null
+          completed_bookings: number | null
+          reviews_count: number | null
+          vendor_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       compute_payment_split: {

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
-import { LogOut, User, Calendar, Package, Bell, Loader2, ListChecks } from "lucide-react";
+import { LogOut, User, Calendar, Package, Bell, Loader2, ListChecks, Star } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { VendorProfileForm } from "@/components/tekillah/vendor/VendorProfileForm";
@@ -12,6 +12,7 @@ import { VendorCalendar } from "@/components/tekillah/vendor/VendorCalendar";
 import { VendorPackages } from "@/components/tekillah/vendor/VendorPackages";
 import { VendorBookings } from "@/components/tekillah/vendor/VendorBookings";
 import { VendorNotifications } from "@/components/tekillah/vendor/VendorNotifications";
+import { VendorReviews } from "@/components/tekillah/vendor/VendorReviews";
 import type { VendorRow } from "@/components/tekillah/vendor/types";
 import { useTranslation } from "react-i18next";
 
@@ -88,7 +89,7 @@ const VendorPage = () => {
           </div>
 
           <Tabs value={tab} onValueChange={setTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 rounded-2xl bg-card p-1 shadow-card sm:grid-cols-5">
+            <TabsList className="grid w-full grid-cols-2 rounded-2xl bg-card p-1 shadow-card sm:grid-cols-6">
               <TabsTrigger value="profile" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <User className="h-4 w-4" /> {t("vendor.tabs.profile")}
               </TabsTrigger>
@@ -100,6 +101,9 @@ const VendorPage = () => {
               </TabsTrigger>
               <TabsTrigger value="packages" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <Package className="h-4 w-4" /> {t("vendor.tabs.packages")}
+              </TabsTrigger>
+              <TabsTrigger value="reviews" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <Star className="h-4 w-4" /> {t("vendor.tabs.reviews")}
               </TabsTrigger>
               <TabsTrigger value="notifications" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <Bell className="h-4 w-4" /> {t("vendor.tabs.notifications")}
@@ -118,6 +122,9 @@ const VendorPage = () => {
               </TabsContent>
               <TabsContent value="packages">
                 {vendor && <VendorPackages vendorId={vendor.id} />}
+              </TabsContent>
+              <TabsContent value="reviews">
+                {vendor && <VendorReviews vendorId={vendor.id} />}
               </TabsContent>
               <TabsContent value="notifications">
                 <VendorNotifications userId={user.id} />

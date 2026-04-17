@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Download, Loader2, Wallet, ReceiptText, TrendingUp, CreditCard, FileText } from "lucide-react";
+import { Download, Loader2, Wallet, ReceiptText, TrendingUp, CreditCard, FileText, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
@@ -9,13 +9,24 @@ import { supabase } from "@/integrations/supabase/client";
 import type { EventRow, BookingWithVendor } from "./types";
 import { useTranslation } from "react-i18next";
 import { fmtNumber } from "@/i18n/format";
+import { RateBookingDialog } from "@/components/tekillah/reviews/RateBookingDialog";
+import { useAuth } from "@/hooks/useAuth";
 
 export const PaymentsPanel = ({ event }: { event: EventRow }) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const [bookings, setBookings] = useState<BookingWithVendor[]>([]);
   const [loading, setLoading] = useState(true);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set());
+  const [rateOpenFor, setRateOpenFor] = useState<BookingWithVendor | null>(null);
   const cur = t("common.currency");
+
+  const refreshReviewed = async (bookingIds: string[]) => {
+    if (!bookingIds.length) { setReviewedIds(new Set()); return; }
+    const { data } = await supabase.from("reviews").select("booking_id").in("booking_id", bookingIds);
+    setReviewedIds(new Set((data ?? []).map((r) => r.booking_id)));
+  };
 
   useEffect(() => {
     (async () => {
@@ -23,7 +34,9 @@ export const PaymentsPanel = ({ event }: { event: EventRow }) => {
       const { data } = await supabase.from("bookings")
         .select("*, vendor:vendors(business_name, category, city), package:packages(name, tier)")
         .eq("event_id", event.id).order("created_at", { ascending: false });
-      setBookings((data ?? []) as unknown as BookingWithVendor[]);
+      const list = (data ?? []) as unknown as BookingWithVendor[];
+      setBookings(list);
+      await refreshReviewed(list.map((b) => b.id));
       setLoading(false);
     })();
   }, [event.id]);
@@ -129,6 +142,20 @@ export const PaymentsPanel = ({ event }: { event: EventRow }) => {
                       {downloadingId === b.id ? <Loader2 className="me-1 h-4 w-4 animate-spin" /> : <Download className="me-1 h-4 w-4" />}
                       PDF
                     </Button>
+                    {b.status === "completed" && !reviewedIds.has(b.id) && (
+                      <Button size="sm" variant="outline"
+                        onClick={() => setRateOpenFor(b)}
+                        className="rounded-full border-amber-400/40 text-amber-700 hover:bg-amber-400/10">
+                        <Star className="me-1 h-4 w-4 fill-amber-400 text-amber-400" />
+                        {t("reviews.rateService")}
+                      </Button>
+                    )}
+                    {b.status === "completed" && reviewedIds.has(b.id) && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-3 py-1 text-[11px] font-semibold text-emerald-700">
+                        <Star className="h-3 w-3 fill-emerald-600 text-emerald-600" />
+                        {t("reviews.alreadyRated")}
+                      </span>
+                    )}
                   </div>
                 </motion.div>
               );
@@ -136,6 +163,18 @@ export const PaymentsPanel = ({ event }: { event: EventRow }) => {
           </div>
         )}
       </div>
+
+      {rateOpenFor && user && (
+        <RateBookingDialog
+          open={!!rateOpenFor}
+          onOpenChange={(v) => !v && setRateOpenFor(null)}
+          bookingId={rateOpenFor.id}
+          vendorId={rateOpenFor.vendor_id}
+          customerId={user.id}
+          vendorName={rateOpenFor.vendor?.business_name ?? ""}
+          onSubmitted={() => refreshReviewed(bookings.map((b) => b.id))}
+        />
+      )}
     </div>
   );
 };
