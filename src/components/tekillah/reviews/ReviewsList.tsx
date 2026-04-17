@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, Trash2, MessageSquareText, Reply, Pencil, Flag } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { EmptyState } from "@/components/tekillah/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
