@@ -14,6 +14,10 @@ import { fmtNumber, fmtDate } from "@/i18n/format";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface PaymentRow {
   id: string;
@@ -192,11 +196,33 @@ const Admin = () => {
                       </div>
                       {p.status === "held" && (
                         <div className="mt-3 flex justify-end">
-                          <Button size="sm" onClick={() => releasePayment(p.id)} disabled={releasingId === p.id}
-                            className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
-                            {releasingId === p.id ? <Loader2 className="me-1 h-4 w-4 animate-spin" /> : <CheckCircle2 className="me-1 h-4 w-4" />}
-                            {t("admin.releasePayment")}
-                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button size="sm" disabled={releasingId === p.id}
+                                className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
+                                {releasingId === p.id ? <Loader2 className="me-1 h-4 w-4 animate-spin" /> : <CheckCircle2 className="me-1 h-4 w-4" />}
+                                {t("admin.releasePayment")}
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>{t("admin.releaseConfirmTitle")}</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  {t("admin.releaseConfirmDesc")}
+                                  <span className="mt-3 block rounded-lg bg-secondary p-3 font-arabic font-semibold text-foreground">
+                                    {fmtNumber(Number(p.vendor_net))} {t("common.currency")}
+                                  </span>
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel className="rounded-full">{t("common.cancel")}</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => releasePayment(p.id)}
+                                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
+                                  {t("admin.releaseConfirmCta")}
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </div>
                       )}
                     </div>

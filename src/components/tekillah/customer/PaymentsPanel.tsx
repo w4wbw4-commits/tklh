@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Download, Loader2, Wallet, ReceiptText, TrendingUp } from "lucide-react";
+import { Download, Loader2, Wallet, ReceiptText, TrendingUp, CreditCard, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
@@ -107,11 +108,28 @@ export const PaymentsPanel = ({ event }: { event: EventRow }) => {
                         : t("customer.payments.unpaid")}
                     </div>
                   </div>
-                  <Button size="sm" variant="outline" onClick={() => downloadInvoice(b)}
-                    disabled={downloadingId === b.id} className="rounded-full">
-                    {downloadingId === b.id ? <Loader2 className="me-1 h-4 w-4 animate-spin" /> : <Download className="me-1 h-4 w-4" />}
-                    PDF
-                  </Button>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {!fully && (
+                      <Button asChild size="sm"
+                        className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
+                        <Link to={`/checkout/${b.id}`}>
+                          <CreditCard className="me-1 h-4 w-4" />
+                          {t("customer.payments.payNow")}
+                        </Link>
+                      </Button>
+                    )}
+                    <Button asChild size="sm" variant="outline" className="rounded-full">
+                      <Link to={`/invoice/${b.id}`}>
+                        <FileText className="me-1 h-4 w-4" />
+                        {t("customer.payments.viewInvoice")}
+                      </Link>
+                    </Button>
+                    <Button size="sm" variant="ghost" onClick={() => downloadInvoice(b)}
+                      disabled={downloadingId === b.id} className="rounded-full">
+                      {downloadingId === b.id ? <Loader2 className="me-1 h-4 w-4 animate-spin" /> : <Download className="me-1 h-4 w-4" />}
+                      PDF
+                    </Button>
+                  </div>
                 </motion.div>
               );
             })}

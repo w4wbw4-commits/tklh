@@ -84,8 +84,22 @@
     "step2": "Choose services",
     "step3": "Describe your vision",
     "step4": "Budget",
+    "step5": "Vendors",
     "finish": "Finish planning",
+    "confirmBooking": "Confirm booking",
+    "eventCreated": "Event created successfully",
+    "bookingsCreated": "{{count}} bookings created",
+    "bookingsFailed": "Could not create bookings",
     "signInToSave": "Sign in to save your event and continue planning",
+    "vendors": {
+      "title": "Pick your trusted vendors",
+      "desc": "Choose a package from each service. We will reserve the date and notify the vendor.",
+      "selected": "Selected",
+      "from": "From",
+      "empty": "No vendors available for this service yet.",
+      "noServices": "Pick at least one service in step 2 first.",
+      "pickAtLeastOne": "Please pick at least one vendor before confirming."
+    },
     "details": {
       "title": "Event details",
       "desc": "Tell us about your event so we can suggest the best options.",
@@ -196,7 +210,20 @@
       "profile": "Profile",
       "calendar": "Calendar",
       "packages": "Packages",
+      "bookings": "Bookings",
       "notifications": "Notifications"
+    },
+    "bookings": {
+      "title": "Booking requests",
+      "subtitle": "Review incoming requests, confirm or decline. Confirmed dates lock your calendar automatically.",
+      "empty": "No booking requests yet.",
+      "eventDate": "Event date",
+      "guests": "Guests",
+      "amount": "Amount",
+      "accept": "Accept",
+      "reject": "Decline",
+      "confirmed": "Booking confirmed",
+      "rejected": "Booking declined"
     },
     "profile": {
       "editTitle": "Business profile",
@@ -408,7 +435,9 @@
       "downloadSuccess": "Invoice downloaded",
       "downloadFailed": "Download failed",
       "noInvoice": "No invoice received",
-      "customer": "Customer"
+      "customer": "Customer",
+      "payNow": "Pay now",
+      "viewInvoice": "View invoice"
     },
     "day": {
       "kicker": "Event day mode",
@@ -494,6 +523,57 @@
     "title": "Payment confirmed ✨",
     "subtitle": "Your booking is safely saved. You'll be notified once the vendor confirms — full details are in your dashboard.",
     "refNumber": "Reference no.",
-    "cta": "Go to my dashboard"
+    "cta": "Go to my dashboard",
+    "viewInvoice": "View invoice"
+  },
+  "invoice": {
+    "title": "Tax invoice",
+    "tagline": "Luxury event planning · Saudi Arabia",
+    "billTo": "Billed to",
+    "eventDate": "Event date",
+    "issueDate": "Issue date",
+    "serviceCol": "Service",
+    "amountCol": "Amount",
+    "subtotal": "Subtotal",
+    "paid": "Paid",
+    "balanceDue": "Balance due",
+    "guests": "{{count}} guests",
+    "print": "Print",
+    "downloadPdf": "Download PDF",
+    "escrowProtected": "Escrow protected",
+    "thanks": "Thank you for trusting Tekillah with your night."
+  },
+  "admin": {
+    "kicker": "Admin",
+    "title": "Master control panel",
+    "subtitle": "Real-time financials, bookings and payouts across the platform.",
+    "totalRevenue": "Total revenue",
+    "heldFunds": "Held funds (escrow)",
+    "platformProfit": "Platform profit",
+    "totalBookings": "Total bookings",
+    "tabPayments": "Payments",
+    "tabBookings": "Bookings",
+    "noPayments": "No payments yet.",
+    "noBookings": "No bookings yet.",
+    "amount": "Amount",
+    "vat": "VAT",
+    "fee": "Platform fee",
+    "vendorNet": "Vendor net",
+    "eventDate": "Event date",
+    "totalPrice": "Total price",
+    "paid": "Paid",
+    "releasePayment": "Release payment",
+    "releaseSuccess": "Payment released to vendor",
+    "releaseConfirmTitle": "Release this payment?",
+    "releaseConfirmDesc": "This will transfer the vendor's net amount out of escrow and mark the payment as released. This action cannot be undone.",
+    "releaseConfirmCta": "Yes, release now",
+    "deniedTitle": "Access denied",
+    "deniedDesc": "This area is reserved for the platform administrator.",
+    "payStatus": {
+      "held": "Held",
+      "released": "Released",
+      "refunded": "Refunded",
+      "failed": "Failed"
+    }
   }
 }
