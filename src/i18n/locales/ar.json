@@ -612,6 +612,21 @@
       "failed": "فشل"
     },
     "tabReviews": "التقييمات",
+    "tabModeration": "بلاغات مراجعة المحتوى",
+    "moderation": {
+      "empty": "لا توجد بلاغات بانتظار المراجعة حالياً.",
+      "approveBtn": "اعتماد وإبقاء المحتوى",
+      "removeBtn": "حذف المحتوى",
+      "approved": "تم اعتماد البلاغ والإبقاء على المحتوى",
+      "removed": "تم حذف المحتوى",
+      "removeConfirmTitle": "حذف هذا المحتوى؟",
+      "removeConfirmDesc": "سيتم حذف التقييم أو الرد المُبلَّغ عنه نهائياً.",
+      "removeConfirmCta": "نعم، احذف",
+      "target": {
+        "review": "تقييم",
+        "reply": "رد المزوّد"
+      }
+    },
     "reviews": {
       "empty": "لا توجد تقييمات بعد.",
       "deleteBtn": "حذف التقييم",

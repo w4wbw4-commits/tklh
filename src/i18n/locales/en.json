@@ -612,6 +612,21 @@
       "failed": "Failed"
     },
     "tabReviews": "Reviews",
+    "tabModeration": "Pending reports",
+    "moderation": {
+      "empty": "No pending reports right now.",
+      "approveBtn": "Approve & keep",
+      "removeBtn": "Delete content",
+      "approved": "Report approved — content kept",
+      "removed": "Content removed",
+      "removeConfirmTitle": "Delete this content?",
+      "removeConfirmDesc": "This permanently removes the reported review or reply.",
+      "removeConfirmCta": "Yes, delete",
+      "target": {
+        "review": "Review",
+        "reply": "Vendor reply"
+      }
+    },
     "reviews": {
       "empty": "No reviews submitted yet.",
       "deleteBtn": "Delete review",
