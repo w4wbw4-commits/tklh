@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
-import { LogOut, User, Calendar, Package, Bell, Loader2, ListChecks } from "lucide-react";
+import { LogOut, User, Calendar, Package, Bell, Loader2, ListChecks, Star } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { VendorProfileForm } from "@/components/tekillah/vendor/VendorProfileForm";
@@ -12,6 +12,7 @@ import { VendorCalendar } from "@/components/tekillah/vendor/VendorCalendar";
 import { VendorPackages } from "@/components/tekillah/vendor/VendorPackages";
 import { VendorBookings } from "@/components/tekillah/vendor/VendorBookings";
 import { VendorNotifications } from "@/components/tekillah/vendor/VendorNotifications";
+import { VendorReviews } from "@/components/tekillah/vendor/VendorReviews";
 import type { VendorRow } from "@/components/tekillah/vendor/types";
 import { useTranslation } from "react-i18next";
 
