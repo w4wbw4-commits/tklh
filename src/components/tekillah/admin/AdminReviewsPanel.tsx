@@ -25,9 +25,18 @@ interface AdminReview {
   vendor: { business_name: string } | null;
 }
 
+interface ReplyRow {
+  id: string;
+  review_id: string;
+  body: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export const AdminReviewsPanel = () => {
   const { t } = useTranslation();
   const [reviews, setReviews] = useState<AdminReview[]>([]);
+  const [replies, setReplies] = useState<Record<string, ReplyRow>>({});
   const [loading, setLoading] = useState(true);
   const [profiles, setProfiles] = useState<Record<string, string>>({});
 
@@ -47,6 +56,18 @@ export const AdminReviewsPanel = () => {
       (profs ?? []).forEach((p) => { map[p.user_id] = p.display_name ?? "—"; });
       setProfiles(map);
     }
+    const reviewIds = list.map((r) => r.id);
+    if (reviewIds.length) {
+      const { data: reps } = await supabase
+        .from("review_replies" as never)
+        .select("id, review_id, body, created_at, updated_at")
+        .in("review_id", reviewIds);
+      const map: Record<string, ReplyRow> = {};
+      ((reps ?? []) as unknown as ReplyRow[]).forEach((r) => { map[r.review_id] = r; });
+      setReplies(map);
+    } else {
+      setReplies({});
+    }
     setLoading(false);
   };
 
@@ -56,6 +77,13 @@ export const AdminReviewsPanel = () => {
     const { error } = await supabase.from("reviews").delete().eq("id", id);
     if (error) { toast.error(error.message); return; }
     toast.success(t("reviews.success.deleted"));
+    load();
+  };
+
+  const removeReply = async (id: string) => {
+    const { error } = await supabase.from("review_replies" as never).delete().eq("id", id);
+    if (error) { toast.error(error.message); return; }
+    toast.success(t("reviews.success.replyDeleted"));
     load();
   };
 
