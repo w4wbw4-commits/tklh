@@ -56,6 +56,7 @@ const Admin = () => {
   const [bookings, setBookings] = useState<BookingRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [releasingId, setReleasingId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState("verification");
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth?redirect=/admin", { replace: true });
@@ -128,7 +129,6 @@ const Admin = () => {
   const heldFunds = payments.filter((p) => p.status === "held").reduce((s, p) => s + Number(p.vendor_net ?? 0), 0);
   const platformProfit = payments.reduce((s, p) => s + Number(p.platform_fee ?? 0), 0);
   const totalBookings = bookings.length;
-  const [activeTab, setActiveTab] = useState("verification");
 
   return (
     <div className="min-h-screen bg-gradient-soft">
