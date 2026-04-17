@@ -306,15 +306,10 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
         targetId={reportTarget.id}
       />
     )}
-  </div>
-);
-};
-          </div>
-        );
-      })}
     </div>
   );
 };
+
 
 const SubRating = ({ label, value }: { label: string; value: number }) => (
   <div className="rounded-lg bg-background px-2 py-1.5 text-center">
