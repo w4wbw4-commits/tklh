@@ -142,10 +142,11 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
 
   if (reviews.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-sm text-foreground/55">
-        <MessageSquareText className="mx-auto mb-2 h-6 w-6" />
-        {t("reviews.empty")}
-      </div>
+      <EmptyState
+        icon={MessageSquareText}
+        title={t("reviews.empty")}
+        description={t("reviews.emptyDesc")}
+      />
     );
   }
 

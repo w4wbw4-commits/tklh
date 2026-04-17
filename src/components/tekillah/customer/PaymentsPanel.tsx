@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { fmtNumber } from "@/i18n/format";
 import { RateBookingDialog } from "@/components/tekillah/reviews/RateBookingDialog";
 import { useAuth } from "@/hooks/useAuth";
+import { EmptyState } from "@/components/tekillah/EmptyState";
 
 export const PaymentsPanel = ({ event }: { event: EventRow }) => {
   const { t } = useTranslation();
@@ -94,9 +95,7 @@ export const PaymentsPanel = ({ event }: { event: EventRow }) => {
             <Loader2 className="h-5 w-5 animate-spin text-primary" />
           </div>
         ) : bookings.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border bg-card p-8 text-center text-sm text-foreground/65">
-            {t("customer.payments.empty")}
-          </div>
+          <EmptyState icon={ReceiptText} title={t("customer.payments.empty")} description={t("customer.payments.emptyDesc")} />
         ) : (
           <div className="space-y-2">
             {bookings.map((b, i) => {

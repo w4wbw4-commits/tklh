@@ -2,12 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Calendar, CheckCircle2, Clock, CreditCard, Building2,
-  UtensilsCrossed, Camera, Music2, Flower2, Car,
+  UtensilsCrossed, Camera, Music2, Flower2, Car, Sparkles,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { EventRow, BookingWithVendor } from "./types";
 import { useTranslation } from "react-i18next";
 import { fmtNumber, fmtDateTime } from "@/i18n/format";
+import { EmptyState } from "@/components/tekillah/EmptyState";
 
 const categoryIcons: Record<string, typeof Building2> = {
   hall: Building2, catering: UtensilsCrossed, photography: Camera,
@@ -107,9 +108,11 @@ export const EventOverview = ({ event }: { event: EventRow }) => {
         {loading ? (
           <div className="rounded-2xl border border-border bg-card p-8 text-center text-sm text-foreground/60">{t("common.loading")}</div>
         ) : bookings.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border bg-card p-8 text-center text-sm text-foreground/65">
-            {t("customer.overview.noBookings")}
-          </div>
+          <EmptyState
+            icon={Sparkles}
+            title={t("customer.overview.noBookings")}
+            description={t("customer.overview.noBookingsDesc")}
+          />
         ) : (
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {bookings.map((b) => {
