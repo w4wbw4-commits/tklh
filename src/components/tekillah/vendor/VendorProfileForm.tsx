@@ -16,6 +16,9 @@ import {
   Landmark, MapPin, AlertTriangle, Clock, CheckCircle2, XCircle,
 } from "lucide-react";
 import { CATEGORY_LABELS, type VendorRow } from "./types";
+import { TermsCheckbox } from "@/components/tekillah/TermsCheckbox";
+import { recordTermsAcceptance } from "@/lib/terms";
+import { useTranslation } from "react-i18next";
 
 // IBAN: Saudi format SA + 22 digits, but accept generic 15-34 alphanumeric for flexibility
 const ibanRegex = /^[A-Z]{2}[0-9A-Z]{13,32}$/;
@@ -53,6 +56,8 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [mapsUrl, setMapsUrl] = useState("");
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [acceptedTos, setAcceptedTos] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (vendor) {
@@ -117,6 +122,10 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
     }
     if (!ibanCertUrl) {
       toast.error("لا يمكن إكمال التسجيل بدون رفع شهادة الآيبان");
+      return;
+    }
+    if (!vendor && !acceptedTos) {
+      toast.error(t("terms.mustAccept"));
       return;
     }
     const parsed = vendorSchema.safeParse({
