@@ -1,7 +1,7 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { CheckCircle2, ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
+import { CheckCircle2, ArrowLeft, ArrowRight, Sparkles, Receipt } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
 
@@ -91,7 +91,15 @@ const Success = () => {
               <ArrowI className="ms-2 h-4 w-4" />
             </Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="rounded-full px-8">
+          {bookingId && (
+            <Button asChild size="lg" variant="outline" className="rounded-full px-8">
+              <Link to={`/invoice/${bookingId}`}>
+                <Receipt className="me-2 h-4 w-4" />
+                {t("success.viewInvoice")}
+              </Link>
+            </Button>
+          )}
+          <Button asChild size="lg" variant="ghost" className="rounded-full px-8">
             <Link to="/">{t("common.backToHome")}</Link>
           </Button>
         </motion.div>

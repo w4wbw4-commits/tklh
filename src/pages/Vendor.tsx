@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
-import { LogOut, User, Calendar, Package, Bell, Loader2 } from "lucide-react";
+import { LogOut, User, Calendar, Package, Bell, Loader2, ListChecks } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { VendorProfileForm } from "@/components/tekillah/vendor/VendorProfileForm";
 import { VendorCalendar } from "@/components/tekillah/vendor/VendorCalendar";
 import { VendorPackages } from "@/components/tekillah/vendor/VendorPackages";
+import { VendorBookings } from "@/components/tekillah/vendor/VendorBookings";
 import { VendorNotifications } from "@/components/tekillah/vendor/VendorNotifications";
 import type { VendorRow } from "@/components/tekillah/vendor/types";
 import { useTranslation } from "react-i18next";
@@ -87,9 +88,12 @@ const VendorPage = () => {
           </div>
 
           <Tabs value={tab} onValueChange={setTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 rounded-2xl bg-card p-1 shadow-card sm:grid-cols-4">
+            <TabsList className="grid w-full grid-cols-2 rounded-2xl bg-card p-1 shadow-card sm:grid-cols-5">
               <TabsTrigger value="profile" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <User className="h-4 w-4" /> {t("vendor.tabs.profile")}
+              </TabsTrigger>
+              <TabsTrigger value="bookings" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <ListChecks className="h-4 w-4" /> {t("vendor.tabs.bookings")}
               </TabsTrigger>
               <TabsTrigger value="calendar" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <Calendar className="h-4 w-4" /> {t("vendor.tabs.calendar")}
@@ -105,6 +109,9 @@ const VendorPage = () => {
             <div className="mt-8">
               <TabsContent value="profile">
                 <VendorProfileForm userId={user.id} vendor={vendor} onSaved={setVendor} />
+              </TabsContent>
+              <TabsContent value="bookings">
+                {vendor && <VendorBookings vendorId={vendor.id} />}
               </TabsContent>
               <TabsContent value="calendar">
                 {vendor && <VendorCalendar vendorId={vendor.id} />}

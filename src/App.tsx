@@ -10,6 +10,8 @@ import Vendor from "./pages/Vendor.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Checkout from "./pages/Checkout.tsx";
 import Success from "./pages/Success.tsx";
+import Invoice from "./pages/Invoice.tsx";
+import Admin from "./pages/Admin.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -27,7 +29,9 @@ const App = () => (
             <Route path="/vendor" element={<Vendor />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/checkout/:bookingId" element={<Checkout />} />
+            <Route path="/invoice/:bookingId" element={<Invoice />} />
             <Route path="/success" element={<Success />} />
+            <Route path="/admin" element={<Admin />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
