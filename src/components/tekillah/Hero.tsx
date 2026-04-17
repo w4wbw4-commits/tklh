@@ -14,6 +14,9 @@ export const Hero = () => {
           alt={t("hero.imgAlt")}
           width={1536}
           height={1024}
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
           className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/55 via-foreground/35 to-background" />
