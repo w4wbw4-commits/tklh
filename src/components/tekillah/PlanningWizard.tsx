@@ -8,6 +8,7 @@ import { StepDetails } from "./wizard/StepDetails";
 import { StepServices } from "./wizard/StepServices";
 import { StepVision } from "./wizard/StepVision";
 import { StepBudget } from "./wizard/StepBudget";
+import { StepVendors, type VendorPick } from "./wizard/StepVendors";
 import {
   allocationCatalog,
   realisticMinimum,
@@ -65,7 +66,18 @@ export const PlanningWizard = () => {
   const setAllocation = (key: ServiceKey, value: number) =>
     setAllocations((a) => ({ ...a, [key]: value }));
 
-  const next = () => setStep((s) => Math.min(s + 1, 3));
+  // Step 4 — Vendor picks
+  const [picks, setPicks] = useState<Record<string, VendorPick>>({});
+  const setPick = (category: ServiceKey, pick: VendorPick | null) => {
+    setPicks((p) => {
+      const copy = { ...p };
+      if (pick) copy[category] = pick;
+      else delete copy[category];
+      return copy;
+    });
+  };
+
+  const next = () => setStep((s) => Math.min(s + 1, 4));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
   const handleFinish = async () => {
@@ -75,9 +87,19 @@ export const PlanningWizard = () => {
       return;
     }
     if (!date) { toast.error(t("customer.create.futureDate")); setStep(0); return; }
+
+    const pickList = Object.values(picks);
+    if (pickList.length === 0) {
+      toast.error(t("wizard.vendors.pickAtLeastOne"));
+      setStep(4);
+      return;
+    }
+
     setSubmitting(true);
     const visionNote = [vision, selectedChips.join(" • ")].filter(Boolean).join("\n");
-    const { data, error } = await supabase.from("events").insert({
+
+    // 1. Create event
+    const { data: ev, error: evErr } = await supabase.from("events").insert({
       customer_id: user.id,
       title: eventType ? t(`eventTypes.${eventType}`) : t("customer.create.defaultTitle"),
       event_date: date,
@@ -87,10 +109,43 @@ export const PlanningWizard = () => {
       theme: selectedChips[0] || null,
       notes: visionNote || null,
     }).select("id").single();
+
+    if (evErr || !ev) {
+      setSubmitting(false);
+      toast.error(t("customer.create.createFailed"));
+      return;
+    }
+
+    // 2. Create bookings (one per vendor pick) — DB triggers will block date + notify vendor
+    const bookingsToInsert = pickList.map((p) => ({
+      customer_id: user.id,
+      vendor_id: p.vendorId,
+      package_id: p.packageId,
+      event_id: ev.id,
+      event_date: date,
+      guest_count: guests,
+      total_price: p.price,
+      status: "pending" as const,
+    }));
+
+    const { data: createdBookings, error: bErr } = await supabase
+      .from("bookings")
+      .insert(bookingsToInsert)
+      .select("id");
+
     setSubmitting(false);
-    if (error || !data) { toast.error(t("customer.create.createFailed")); return; }
-    toast.success(t("customer.create.createSuccess"));
-    navigate("/dashboard");
+
+    if (bErr || !createdBookings) {
+      toast.error(t("wizard.bookingsFailed"));
+      return;
+    }
+
+    toast.success(t("wizard.eventCreated"));
+    toast.success(t("wizard.bookingsCreated", { count: createdBookings.length }));
+
+    // 3. Redirect to first booking checkout
+    const firstBookingId = createdBookings[0].id;
+    navigate(`/checkout/${firstBookingId}`);
   };
 
   const stepLabels = [
@@ -98,10 +153,9 @@ export const PlanningWizard = () => {
     t("wizard.step2"),
     t("wizard.step3"),
     t("wizard.step4"),
+    t("wizard.step5"),
   ];
 
-  // In LTR, "previous" arrow points left and "next" points right.
-  // In RTL, the visual semantics flip.
   const PrevIcon = isAr ? ArrowRight : ArrowLeft;
   const NextIcon = isAr ? ArrowLeft : ArrowRight;
 
@@ -183,6 +237,13 @@ export const PlanningWizard = () => {
                 allocations={allocations} setAllocation={setAllocation}
               />
             )}
+            {step === 4 && (
+              <StepVendors
+                selectedServices={selected as ServiceKey[]}
+                picks={picks}
+                setPick={setPick}
+              />
+            )}
           </AnimatePresence>
 
           <div className="flex items-center justify-between border-t border-border bg-secondary/30 px-6 py-4 sm:px-10">
@@ -190,7 +251,7 @@ export const PlanningWizard = () => {
               <PrevIcon className="me-2 h-4 w-4" />
               {t("common.previous")}
             </Button>
-            {step < 3 ? (
+            {step < 4 ? (
               <Button onClick={next} className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
                 {t("common.next")}
                 <NextIcon className="ms-2 h-4 w-4" />
@@ -199,7 +260,7 @@ export const PlanningWizard = () => {
               <Button onClick={handleFinish} disabled={submitting}
                 className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
                 {submitting ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : <Check className="me-2 h-4 w-4" />}
-                {t("wizard.finish")}
+                {t("wizard.confirmBooking")}
               </Button>
             )}
           </div>
