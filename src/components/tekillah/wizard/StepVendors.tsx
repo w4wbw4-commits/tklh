@@ -19,6 +19,9 @@ export interface VendorOption {
   city: string | null;
   starting_price: number;
   verified: boolean;
+  avg_rating: number;
+  reviews_count: number;
+  completed_bookings: number;
   packages: { id: string; name: string; tier: string; price: number; description: string | null }[];
 }
 
@@ -43,17 +46,33 @@ export const StepVendors = ({ selectedServices, picks, setPick }: Props) => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const { data: v } = await supabase
-        .from("vendors")
-        .select("id, business_name, category, city, starting_price, verified, packages(id, name, tier, price, description, active)")
-        .eq("active", true)
-        .in("category", selectedServices.length ? selectedServices : ["hall"]);
-      const mapped = (v ?? []).map((x) => ({
-        ...x,
-        packages: ((x as unknown as { packages: VendorOption["packages"] & { active: boolean }[] }).packages ?? [])
-          .filter((p) => (p as unknown as { active: boolean }).active)
-          .sort((a, b) => Number(a.price) - Number(b.price)),
-      })) as unknown as VendorOption[];
+      const [{ data: v }, { data: ratings }] = await Promise.all([
+        supabase
+          .from("vendors")
+          .select("id, business_name, category, city, starting_price, verified, packages(id, name, tier, price, description, active)")
+          .eq("active", true)
+          .in("category", selectedServices.length ? selectedServices : ["hall"]),
+        supabase.from("vendor_ratings_summary" as never).select("vendor_id, avg_rating, reviews_count, completed_bookings"),
+      ]);
+      const ratingMap = new Map<string, { avg: number; count: number; done: number }>();
+      ((ratings ?? []) as { vendor_id: string; avg_rating: number; reviews_count: number; completed_bookings: number }[])
+        .forEach((r) => ratingMap.set(r.vendor_id, {
+          avg: Number(r.avg_rating ?? 0),
+          count: Number(r.reviews_count ?? 0),
+          done: Number(r.completed_bookings ?? 0),
+        }));
+      const mapped = (v ?? []).map((x) => {
+        const r = ratingMap.get(x.id) ?? { avg: 0, count: 0, done: 0 };
+        return {
+          ...x,
+          avg_rating: r.avg,
+          reviews_count: r.count,
+          completed_bookings: r.done,
+          packages: ((x as unknown as { packages: VendorOption["packages"] & { active: boolean }[] }).packages ?? [])
+            .filter((p) => (p as unknown as { active: boolean }).active)
+            .sort((a, b) => Number(a.price) - Number(b.price)),
+        };
+      }) as unknown as VendorOption[];
       setVendors(mapped);
       setLoading(false);
     })();
@@ -61,7 +80,17 @@ export const StepVendors = ({ selectedServices, picks, setPick }: Props) => {
 
   const grouped = useMemo(() => {
     const out: Record<string, VendorOption[]> = {};
-    selectedServices.forEach((cat) => { out[cat] = vendors.filter((v) => v.category === cat); });
+    selectedServices.forEach((cat) => {
+      out[cat] = vendors
+        .filter((v) => v.category === cat)
+        // Smart boost: higher rating + more completed bookings ranked first.
+        // Score = (avg * 20) + (completed * 2) + (verified bonus 5)
+        .sort((a, b) => {
+          const score = (x: VendorOption) =>
+            (x.avg_rating * 20) + (x.completed_bookings * 2) + (x.verified ? 5 : 0);
+          return score(b) - score(a);
+        });
+    });
     return out;
   }, [vendors, selectedServices]);
 
