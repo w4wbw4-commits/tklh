@@ -8,7 +8,7 @@ export const Hero = () => {
   const { t } = useTranslation();
   return (
     <section id="home" className="relative min-h-screen w-full overflow-hidden bg-background">
-      {/* Background: blurred luxury still life — palette of beige, off-white, olive */}
+      {/* Background: lightly-blurred celebration scene — 70% clarity */}
       <div className="absolute inset-0">
         <img
           src={heroImage}
@@ -18,13 +18,15 @@ export const Hero = () => {
           loading="eager"
           fetchPriority="high"
           decoding="async"
-          className="h-full w-full scale-105 object-cover"
-          style={{ filter: "blur(12px) saturate(1.05)" }}
+          className="h-full w-full scale-[1.03] object-cover"
+          style={{ filter: "blur(4px) saturate(1.05)" }}
         />
-        {/* Warm cream wash to maintain readability without darkening */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/65 via-background/50 to-background" />
-        {/* Subtle olive vignette for depth */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_30%,_hsl(var(--primary-deep)/0.22)_100%)]" />
+        {/* Light cream wash — keeps palette warm without hiding decor */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/35 via-background/25 to-background" />
+        {/* Centre olive vignette for depth + edge focus */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_45%,_hsl(var(--primary-deep)/0.18)_100%)]" />
+        {/* Smooth fade-out into next section */}
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 pt-32 pb-20 text-center">
@@ -33,7 +35,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-10 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background/70 px-5 py-2 shadow-soft backdrop-blur-md"
+          className="mb-10 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/80 px-5 py-2 shadow-soft backdrop-blur-md"
         >
           <Sparkles className="h-3.5 w-3.5 text-primary" strokeWidth={1.5} />
           <span className="text-xs font-medium tracking-[0.18em] text-primary-deep">
@@ -41,38 +43,61 @@ export const Hero = () => {
           </span>
         </motion.div>
 
-        {/* Brand wordmark — تكلة in deep olive Kufi */}
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="font-display text-balance text-[88px] font-semibold leading-[0.95] text-primary-deep text-shadow-hero sm:text-[120px] md:text-[150px] lg:text-[180px]"
-          style={{ color: "hsl(var(--primary-deep))" }}
-        >
-          {t("hero.titleA")}
-        </motion.h1>
+        {/* Frosted scrim that guarantees text legibility against the clearer background */}
+        <div className="relative mx-auto inline-flex flex-col items-center px-8 py-6 sm:px-14 sm:py-8">
+          {/* Soft radial scrim sitting only behind the wordmark + tagline */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 -z-10 rounded-[3rem]"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, hsl(var(--background) / 0.78) 0%, hsl(var(--background) / 0.55) 55%, hsl(var(--background) / 0) 100%)",
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(6px)",
+            }}
+          />
 
-        {/* Hairline divider — small olive mark */}
-        <motion.div
-          initial={{ opacity: 0, scaleX: 0 }}
-          animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 mb-6 flex items-center gap-3"
-        >
-          <span className="h-px w-10 bg-primary/40" />
-          <span className="h-1.5 w-1.5 rounded-full bg-primary/60" />
-          <span className="h-px w-10 bg-primary/40" />
-        </motion.div>
+          {/* Brand wordmark — تكلة in deep olive Kufi */}
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="font-display text-balance text-[88px] font-bold leading-[0.95] text-primary-deep sm:text-[120px] md:text-[150px] lg:text-[180px]"
+            style={{
+              color: "hsl(var(--primary-deep))",
+              textShadow:
+                "0 2px 24px hsl(var(--background) / 0.85), 0 1px 4px hsl(var(--background) / 0.7), 0 0 1px hsl(var(--primary-deep) / 0.25)",
+            }}
+          >
+            {t("hero.titleA")}
+          </motion.h1>
 
-        {/* Tagline — elegant Naskh-style serif */}
-        <motion.p
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="font-tagline max-w-2xl text-balance text-xl leading-[1.7] text-primary-deep/80 text-shadow-soft sm:text-2xl md:text-[28px]"
-        >
-          {t("hero.titleB")}
-        </motion.p>
+          {/* Hairline divider — small olive mark */}
+          <motion.div
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-6 mb-6 flex items-center gap-3"
+          >
+            <span className="h-px w-10 bg-primary/50" />
+            <span className="h-1.5 w-1.5 rounded-full bg-primary/70" />
+            <span className="h-px w-10 bg-primary/50" />
+          </motion.div>
+
+          {/* Tagline — elegant Naskh-style serif */}
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="font-tagline max-w-2xl text-balance text-xl leading-[1.7] text-primary-deep sm:text-2xl md:text-[28px]"
+            style={{
+              textShadow:
+                "0 1px 12px hsl(var(--background) / 0.9), 0 1px 2px hsl(var(--background) / 0.7)",
+            }}
+          >
+            {t("hero.titleB")}
+          </motion.p>
+        </div>
 
         {/* Supporting description */}
         <motion.p
