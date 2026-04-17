@@ -25,9 +25,18 @@ interface AdminReview {
   vendor: { business_name: string } | null;
 }
 
+interface ReplyRow {
+  id: string;
+  review_id: string;
+  body: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export const AdminReviewsPanel = () => {
   const { t } = useTranslation();
   const [reviews, setReviews] = useState<AdminReview[]>([]);
+  const [replies, setReplies] = useState<Record<string, ReplyRow>>({});
   const [loading, setLoading] = useState(true);
   const [profiles, setProfiles] = useState<Record<string, string>>({});
 
@@ -47,6 +56,18 @@ export const AdminReviewsPanel = () => {
       (profs ?? []).forEach((p) => { map[p.user_id] = p.display_name ?? "—"; });
       setProfiles(map);
     }
+    const reviewIds = list.map((r) => r.id);
+    if (reviewIds.length) {
+      const { data: reps } = await supabase
+        .from("review_replies" as never)
+        .select("id, review_id, body, created_at, updated_at")
+        .in("review_id", reviewIds);
+      const map: Record<string, ReplyRow> = {};
+      ((reps ?? []) as unknown as ReplyRow[]).forEach((r) => { map[r.review_id] = r; });
+      setReplies(map);
+    } else {
+      setReplies({});
+    }
     setLoading(false);
   };
 
@@ -56,6 +77,13 @@ export const AdminReviewsPanel = () => {
     const { error } = await supabase.from("reviews").delete().eq("id", id);
     if (error) { toast.error(error.message); return; }
     toast.success(t("reviews.success.deleted"));
+    load();
+  };
+
+  const removeReply = async (id: string) => {
+    const { error } = await supabase.from("review_replies" as never).delete().eq("id", id);
+    if (error) { toast.error(error.message); return; }
+    toast.success(t("reviews.success.replyDeleted"));
     load();
   };
 
@@ -96,6 +124,43 @@ export const AdminReviewsPanel = () => {
 
           {r.comment && (
             <p className="mt-3 rounded-xl bg-secondary/40 p-3 text-sm text-foreground/80">{r.comment}</p>
+          )}
+
+          {replies[r.id] && (
+            <div className="mt-3 rounded-xl border-s-4 border-primary/60 bg-primary/5 p-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
+                  {t("reviews.reply.label")}
+                </span>
+                <span className="text-[11px] text-foreground/55">{fmtDate(replies[r.id].updated_at)}</span>
+              </div>
+              <p className="mt-2 text-sm text-foreground/85">{replies[r.id].body}</p>
+              <div className="mt-2 flex justify-end">
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button size="sm" variant="ghost" className="rounded-full text-destructive hover:bg-destructive/10">
+                      <Trash2 className="me-1 h-3.5 w-3.5" />
+                      {t("reviews.deleteReplyBtn")}
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>{t("reviews.deleteReplyConfirmTitle")}</AlertDialogTitle>
+                      <AlertDialogDescription>{t("reviews.deleteReplyConfirmDesc")}</AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="rounded-full">{t("common.cancel")}</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => removeReply(replies[r.id].id)}
+                        className="rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        {t("reviews.deleteReplyConfirmCta")}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            </div>
           )}
 
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2">

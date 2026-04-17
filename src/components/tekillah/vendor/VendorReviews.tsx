@@ -12,7 +12,7 @@ interface Summary {
   avg_quality: number;
 }
 
-export const VendorReviews = ({ vendorId }: { vendorId: string }) => {
+export const VendorReviews = ({ vendorId, vendorUserId }: { vendorId: string; vendorUserId: string }) => {
   const { t } = useTranslation();
   const [summary, setSummary] = useState<Summary | null>(null);
   const [loading, setLoading] = useState(true);
@@ -71,7 +71,7 @@ export const VendorReviews = ({ vendorId }: { vendorId: string }) => {
         />
       </div>
 
-      <ReviewsList vendorId={vendorId} />
+      <ReviewsList vendorId={vendorId} canReply vendorUserId={vendorUserId} />
     </div>
   );
 };

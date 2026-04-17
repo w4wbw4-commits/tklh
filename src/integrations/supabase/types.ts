@@ -429,6 +429,44 @@ export type Database = {
         }
         Relationships: []
       }
+      review_replies: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          review_id: string
+          updated_at: string
+          vendor_id: string
+          vendor_user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          review_id: string
+          updated_at?: string
+          vendor_id: string
+          vendor_user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          review_id?: string
+          updated_at?: string
+          vendor_id?: string
+          vendor_user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_replies_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: true
+            referencedRelation: "reviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reviews: {
         Row: {
           booking_id: string
