@@ -149,12 +149,15 @@ export const StepVendors = ({ selectedServices, picks, setPick }: Props) => {
                   {list.map((v) => (
                     <div key={v.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
                       <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <div className="font-arabic text-sm font-semibold text-foreground">
-                            {v.business_name}
-                            {v.verified && <Star className="ms-1 inline h-3 w-3 fill-primary text-primary" />}
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <span className="font-arabic text-sm font-semibold text-foreground">{v.business_name}</span>
+                            {v.verified && <BadgeCheck className="h-3.5 w-3.5 text-primary" />}
                           </div>
-                          <div className="mt-0.5 flex items-center gap-2 text-[11px] text-foreground/55">
+                          <div className="mt-1">
+                            <VendorRatingBadge avg={v.avg_rating} count={v.reviews_count} />
+                          </div>
+                          <div className="mt-1.5 flex items-center gap-2 text-[11px] text-foreground/55">
                             {v.city && <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" />{v.city}</span>}
                             <span>•</span>
                             <span>{t("wizard.vendors.from")} {fmtNumber(Number(v.starting_price))} {t("common.currency")}</span>
