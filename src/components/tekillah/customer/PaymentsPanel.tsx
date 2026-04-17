@@ -142,6 +142,20 @@ export const PaymentsPanel = ({ event }: { event: EventRow }) => {
                       {downloadingId === b.id ? <Loader2 className="me-1 h-4 w-4 animate-spin" /> : <Download className="me-1 h-4 w-4" />}
                       PDF
                     </Button>
+                    {b.status === "completed" && !reviewedIds.has(b.id) && (
+                      <Button size="sm" variant="outline"
+                        onClick={() => setRateOpenFor(b)}
+                        className="rounded-full border-amber-400/40 text-amber-700 hover:bg-amber-400/10">
+                        <Star className="me-1 h-4 w-4 fill-amber-400 text-amber-400" />
+                        {t("reviews.rateService")}
+                      </Button>
+                    )}
+                    {b.status === "completed" && reviewedIds.has(b.id) && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-3 py-1 text-[11px] font-semibold text-emerald-700">
+                        <Star className="h-3 w-3 fill-emerald-600 text-emerald-600" />
+                        {t("reviews.alreadyRated")}
+                      </span>
+                    )}
                   </div>
                 </motion.div>
               );
@@ -149,6 +163,18 @@ export const PaymentsPanel = ({ event }: { event: EventRow }) => {
           </div>
         )}
       </div>
+
+      {rateOpenFor && user && (
+        <RateBookingDialog
+          open={!!rateOpenFor}
+          onOpenChange={(v) => !v && setRateOpenFor(null)}
+          bookingId={rateOpenFor.id}
+          vendorId={rateOpenFor.vendor_id}
+          customerId={user.id}
+          vendorName={rateOpenFor.vendor?.business_name ?? ""}
+          onSubmitted={() => refreshReviewed(bookings.map((b) => b.id))}
+        />
+      )}
     </div>
   );
 };
