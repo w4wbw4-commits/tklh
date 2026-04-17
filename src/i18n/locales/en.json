@@ -84,8 +84,22 @@
     "step2": "Choose services",
     "step3": "Describe your vision",
     "step4": "Budget",
+    "step5": "Vendors",
     "finish": "Finish planning",
+    "confirmBooking": "Confirm booking",
+    "eventCreated": "Event created successfully",
+    "bookingsCreated": "{{count}} bookings created",
+    "bookingsFailed": "Could not create bookings",
     "signInToSave": "Sign in to save your event and continue planning",
+    "vendors": {
+      "title": "Pick your trusted vendors",
+      "desc": "Choose a package from each service. We will reserve the date and notify the vendor.",
+      "selected": "Selected",
+      "from": "From",
+      "empty": "No vendors available for this service yet.",
+      "noServices": "Pick at least one service in step 2 first.",
+      "pickAtLeastOne": "Please pick at least one vendor before confirming."
+    },
     "details": {
       "title": "Event details",
       "desc": "Tell us about your event so we can suggest the best options.",
@@ -196,7 +210,20 @@
       "profile": "Profile",
       "calendar": "Calendar",
       "packages": "Packages",
+      "bookings": "Bookings",
       "notifications": "Notifications"
+    },
+    "bookings": {
+      "title": "Booking requests",
+      "subtitle": "Review incoming requests, confirm or decline. Confirmed dates lock your calendar automatically.",
+      "empty": "No booking requests yet.",
+      "eventDate": "Event date",
+      "guests": "Guests",
+      "amount": "Amount",
+      "accept": "Accept",
+      "reject": "Decline",
+      "confirmed": "Booking confirmed",
+      "rejected": "Booking declined"
     },
     "profile": {
       "editTitle": "Business profile",
