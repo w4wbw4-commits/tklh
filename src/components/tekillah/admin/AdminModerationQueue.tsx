@@ -34,7 +34,7 @@ export const AdminModerationQueue = () => {
   const load = async () => {
     setLoading(true);
     const { data } = await supabase
-      .from("content_reports" as never)
+      .from("content_reports")
       .select("*")
       .eq("status", "pending")
       .order("created_at", { ascending: false });
@@ -58,7 +58,7 @@ export const AdminModerationQueue = () => {
     }
     if (replyIds.length) {
       const { data: reps } = await supabase
-        .from("review_replies" as never)
+        .from("review_replies")
         .select("id, body, vendor_id");
       ((reps ?? []) as unknown as Array<{ id: string; body: string }>).forEach((r) => {
         contentMap[r.id] = r.body;
@@ -88,10 +88,10 @@ export const AdminModerationQueue = () => {
     if (r.target_type === "review") {
       await supabase.from("reviews").update({ flagged: false }).eq("id", r.target_id);
     } else {
-      await supabase.from("review_replies" as never).update({ flagged: false }).eq("id", r.target_id);
+      await supabase.from("review_replies").update({ flagged: false }).eq("id", r.target_id);
     }
     const { error } = await supabase
-      .from("content_reports" as never)
+      .from("content_reports")
       .update({ status: "approved", resolved_at: new Date().toISOString() })
       .eq("id", r.id);
     setBusy(null);
@@ -105,10 +105,10 @@ export const AdminModerationQueue = () => {
     if (r.target_type === "review") {
       await supabase.from("reviews").delete().eq("id", r.target_id);
     } else {
-      await supabase.from("review_replies" as never).delete().eq("id", r.target_id);
+      await supabase.from("review_replies").delete().eq("id", r.target_id);
     }
     const { error } = await supabase
-      .from("content_reports" as never)
+      .from("content_reports")
       .update({ status: "removed", resolved_at: new Date().toISOString() })
       .eq("id", r.id);
     setBusy(null);

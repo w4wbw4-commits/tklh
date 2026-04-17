@@ -1,6 +1,7 @@
 import { Logo } from "./Logo";
 import { Instagram, Twitter, Mail } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 export const Footer = () => {
   const { t } = useTranslation();
@@ -41,13 +42,19 @@ export const Footer = () => {
               <li><a href="#" className="hover:text-primary">{t("footer.aboutUs")}</a></li>
               <li><a href="#" className="hover:text-primary">{t("footer.joinVendor")}</a></li>
               <li><a href="#" className="hover:text-primary">{t("footer.contact")}</a></li>
+              <li><Link to="/terms" className="hover:text-primary">{t("footer.terms")}</Link></li>
+              <li><Link to="/privacy" className="hover:text-primary">{t("footer.privacy")}</Link></li>
             </ul>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row">
           <span>© {new Date().getFullYear()} Tekillah. {t("footer.rights")}</span>
-          <span className="font-arabic">{t("footer.madeIn")}</span>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <Link to="/terms" className="hover:text-primary">{t("footer.terms")}</Link>
+            <Link to="/privacy" className="hover:text-primary">{t("footer.privacy")}</Link>
+            <span className="font-arabic">{t("footer.madeIn")}</span>
+          </div>
         </div>
       </div>
     </footer>

@@ -10,7 +10,7 @@ export const recordTermsAcceptance = async (
   relatedId?: string,
 ) => {
   try {
-    await supabase.from("terms_acceptances" as never).insert({
+    await supabase.from("terms_acceptances").insert({
       user_id: userId,
       scope,
       version: TERMS_VERSION,

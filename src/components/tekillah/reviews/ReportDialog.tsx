@@ -31,7 +31,7 @@ export const ReportDialog = ({ open, onOpenChange, targetType, targetId }: Props
   const submit = async () => {
     if (!user) { toast.error(t("report.errors.mustLogin")); return; }
     setSaving(true);
-    const { error } = await supabase.from("content_reports" as never).insert({
+    const { error } = await supabase.from("content_reports").insert({
       target_type: targetType,
       target_id: targetId,
       reporter_id: user.id,

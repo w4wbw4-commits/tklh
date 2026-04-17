@@ -76,7 +76,9 @@
     "joinVendor": "Join as a vendor",
     "contact": "Contact us",
     "rights": "All rights reserved.",
-    "madeIn": "Proudly made in Saudi Arabia 🇸🇦"
+    "madeIn": "Proudly made in Saudi Arabia 🇸🇦",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy"
   },
   "wizard": {
     "kicker": "Smart planning wizard",
