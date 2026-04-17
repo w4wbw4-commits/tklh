@@ -68,6 +68,31 @@ export const PlanningWizard = () => {
   const next = () => setStep((s) => Math.min(s + 1, 3));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
+  const handleFinish = async () => {
+    if (!user) {
+      toast.info(t("wizard.signInToSave"));
+      navigate("/auth?redirect=/dashboard");
+      return;
+    }
+    if (!date) { toast.error(t("customer.create.futureDate")); setStep(0); return; }
+    setSubmitting(true);
+    const visionNote = [vision, selectedChips.join(" • ")].filter(Boolean).join("\n");
+    const { data, error } = await supabase.from("events").insert({
+      customer_id: user.id,
+      title: eventType ? t(`eventTypes.${eventType}`) : t("customer.create.defaultTitle"),
+      event_date: date,
+      city: city ? t(`cities.${city}`) : null,
+      guest_count: guests,
+      total_budget: budget,
+      theme: selectedChips[0] || null,
+      notes: visionNote || null,
+    }).select("id").single();
+    setSubmitting(false);
+    if (error || !data) { toast.error(t("customer.create.createFailed")); return; }
+    toast.success(t("customer.create.createSuccess"));
+    navigate("/dashboard");
+  };
+
   const stepLabels = [
     t("wizard.step1"),
     t("wizard.step2"),
@@ -171,8 +196,9 @@ export const PlanningWizard = () => {
                 <NextIcon className="ms-2 h-4 w-4" />
               </Button>
             ) : (
-              <Button className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
-                <Check className="ms-2 h-4 w-4" />
+              <Button onClick={handleFinish} disabled={submitting}
+                className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
+                {submitting ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : <Check className="me-2 h-4 w-4" />}
                 {t("wizard.finish")}
               </Button>
             )}
