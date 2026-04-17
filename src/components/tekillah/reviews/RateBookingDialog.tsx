@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { containsProfanity } from "@/lib/profanity";
 import { StarRating } from "./StarRating";
 
 interface Props {
@@ -32,6 +33,10 @@ export const RateBookingDialog = ({ open, onOpenChange, bookingId, vendorId, cus
 
   const submit = async () => {
     if (rating < 1) { toast.error(t("reviews.errors.pickRating")); return; }
+    if (comment.trim() && containsProfanity(comment)) {
+      toast.error(t("moderation.profanityBlocked"));
+      return;
+    }
     setSaving(true);
     const { error } = await supabase.from("reviews").insert({
       booking_id: bookingId,
