@@ -523,6 +523,57 @@
     "title": "Payment confirmed ✨",
     "subtitle": "Your booking is safely saved. You'll be notified once the vendor confirms — full details are in your dashboard.",
     "refNumber": "Reference no.",
-    "cta": "Go to my dashboard"
+    "cta": "Go to my dashboard",
+    "viewInvoice": "View invoice"
+  },
+  "invoice": {
+    "title": "Tax invoice",
+    "tagline": "Luxury event planning · Saudi Arabia",
+    "billTo": "Billed to",
+    "eventDate": "Event date",
+    "issueDate": "Issue date",
+    "serviceCol": "Service",
+    "amountCol": "Amount",
+    "subtotal": "Subtotal",
+    "paid": "Paid",
+    "balanceDue": "Balance due",
+    "guests": "{{count}} guests",
+    "print": "Print",
+    "downloadPdf": "Download PDF",
+    "escrowProtected": "Escrow protected",
+    "thanks": "Thank you for trusting Tekillah with your night."
+  },
+  "admin": {
+    "kicker": "Admin",
+    "title": "Master control panel",
+    "subtitle": "Real-time financials, bookings and payouts across the platform.",
+    "totalRevenue": "Total revenue",
+    "heldFunds": "Held funds (escrow)",
+    "platformProfit": "Platform profit",
+    "totalBookings": "Total bookings",
+    "tabPayments": "Payments",
+    "tabBookings": "Bookings",
+    "noPayments": "No payments yet.",
+    "noBookings": "No bookings yet.",
+    "amount": "Amount",
+    "vat": "VAT",
+    "fee": "Platform fee",
+    "vendorNet": "Vendor net",
+    "eventDate": "Event date",
+    "totalPrice": "Total price",
+    "paid": "Paid",
+    "releasePayment": "Release payment",
+    "releaseSuccess": "Payment released to vendor",
+    "releaseConfirmTitle": "Release this payment?",
+    "releaseConfirmDesc": "This will transfer the vendor's net amount out of escrow and mark the payment as released. This action cannot be undone.",
+    "releaseConfirmCta": "Yes, release now",
+    "deniedTitle": "Access denied",
+    "deniedDesc": "This area is reserved for the platform administrator.",
+    "payStatus": {
+      "held": "Held",
+      "released": "Released",
+      "refunded": "Refunded",
+      "failed": "Failed"
+    }
   }
 }
