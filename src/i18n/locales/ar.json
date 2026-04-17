@@ -435,7 +435,9 @@
       "downloadSuccess": "تم تحميل الفاتورة",
       "downloadFailed": "تعذر التحميل",
       "noInvoice": "لم يتم استلام الفاتورة",
-      "customer": "العميل"
+      "customer": "العميل",
+      "payNow": "ادفع الآن",
+      "viewInvoice": "عرض الفاتورة"
     },
     "day": {
       "kicker": "وضع يوم الحفل",

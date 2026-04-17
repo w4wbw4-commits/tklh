@@ -435,7 +435,9 @@
       "downloadSuccess": "Invoice downloaded",
       "downloadFailed": "Download failed",
       "noInvoice": "No invoice received",
-      "customer": "Customer"
+      "customer": "Customer",
+      "payNow": "Pay now",
+      "viewInvoice": "View invoice"
     },
     "day": {
       "kicker": "Event day mode",
