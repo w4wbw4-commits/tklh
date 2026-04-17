@@ -89,7 +89,7 @@ const VendorPage = () => {
           </div>
 
           <Tabs value={tab} onValueChange={setTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 rounded-2xl bg-card p-1 shadow-card sm:grid-cols-5">
+            <TabsList className="grid w-full grid-cols-2 rounded-2xl bg-card p-1 shadow-card sm:grid-cols-6">
               <TabsTrigger value="profile" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <User className="h-4 w-4" /> {t("vendor.tabs.profile")}
               </TabsTrigger>
@@ -101,6 +101,9 @@ const VendorPage = () => {
               </TabsTrigger>
               <TabsTrigger value="packages" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <Package className="h-4 w-4" /> {t("vendor.tabs.packages")}
+              </TabsTrigger>
+              <TabsTrigger value="reviews" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <Star className="h-4 w-4" /> {t("vendor.tabs.reviews")}
               </TabsTrigger>
               <TabsTrigger value="notifications" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <Bell className="h-4 w-4" /> {t("vendor.tabs.notifications")}
@@ -119,6 +122,9 @@ const VendorPage = () => {
               </TabsContent>
               <TabsContent value="packages">
                 {vendor && <VendorPackages vendorId={vendor.id} />}
+              </TabsContent>
+              <TabsContent value="reviews">
+                {vendor && <VendorReviews vendorId={vendor.id} />}
               </TabsContent>
               <TabsContent value="notifications">
                 <VendorNotifications userId={user.id} />
