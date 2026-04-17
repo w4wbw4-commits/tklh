@@ -160,6 +160,9 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
     } else {
       result = await supabase.from("vendors").insert(payload).select().single();
       await supabase.from("user_roles").insert({ user_id: userId, role: "vendor" });
+      if (!result.error) {
+        await recordTermsAcceptance(userId, "vendor_onboarding", (result.data as VendorRow).id);
+      }
     }
     setSaving(false);
     if (result.error) { toast.error(result.error.message); return; }
@@ -371,9 +374,13 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
         </div>
       </div>
 
+      {!vendor && (
+        <TermsCheckbox checked={acceptedTos} onCheckedChange={setAcceptedTos} id="vendor-tos" />
+      )}
+
       <div className="flex justify-end">
-        <Button onClick={handleSave} disabled={saving || uploading}
-          className="h-12 rounded-full bg-primary px-8 text-primary-foreground shadow-luxury hover:bg-primary/90">
+        <Button onClick={handleSave} disabled={saving || uploading || (!vendor && !acceptedTos)}
+          className="h-12 rounded-full bg-primary px-8 text-primary-foreground shadow-luxury hover:bg-primary/90 disabled:opacity-50">
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Save className="me-2 h-4 w-4" /> حفظ الملف وإرسال للمراجعة</>}
         </Button>
       </div>
