@@ -8,9 +8,11 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
+import { TermsCheckbox } from "@/components/tekillah/TermsCheckbox";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { fmtNumber, fmtDate } from "@/i18n/format";
+import { recordTermsAcceptance } from "@/lib/terms";
 import type { Database } from "@/integrations/supabase/types";
 
 type Booking = Database["public"]["Tables"]["bookings"]["Row"] & {
@@ -44,7 +46,9 @@ const Checkout = () => {
   const [method, setMethod] = useState<PaymentMethodKey>("mada");
   const [vatPercent, setVatPercent] = useState(15);
   const [commissionPercent, setCommissionPercent] = useState(12);
+  const [vatNumber, setVatNumber] = useState<string>("3000000000003");
   const [submitting, setSubmitting] = useState(false);
+  const [acceptedTos, setAcceptedTos] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) navigate(`/auth?redirect=/checkout/${bookingId}`, { replace: true });
@@ -60,12 +64,14 @@ const Checkout = () => {
           .select("*, vendor:vendors(business_name, category), package:packages(name)")
           .eq("id", bookingId)
           .maybeSingle(),
-        supabase.from("platform_settings").select("vat_percent, commission_percent").maybeSingle(),
+        supabase.from("platform_settings").select("vat_percent, commission_percent, vat_number").maybeSingle(),
       ]);
       setBooking(b as unknown as Booking | null);
       if (s) {
         setVatPercent(Number(s.vat_percent));
         setCommissionPercent(Number(s.commission_percent));
+        const sAny = s as unknown as { vat_number?: string | null };
+        if (sAny.vat_number) setVatNumber(sAny.vat_number);
       }
       setLoading(false);
     })();
@@ -82,7 +88,12 @@ const Checkout = () => {
 
   const handlePay = async () => {
     if (!user || !booking) return;
+    if (!acceptedTos) {
+      toast.error(t("terms.mustAccept"));
+      return;
+    }
     setSubmitting(true);
+    await recordTermsAcceptance(user.id, "booking", booking.id);
     const { error } = await supabase.from("payments").insert({
       booking_id: booking.id,
       customer_id: user.id,
