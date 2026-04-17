@@ -240,7 +240,14 @@
       "calendar": "Calendar",
       "packages": "Packages",
       "bookings": "Bookings",
+      "reviews": "Reviews",
       "notifications": "Notifications"
+    },
+    "reviews": {
+      "title": "Customer reviews",
+      "subtitle": "See what your customers say to keep improving your service.",
+      "avgRating": "Average rating",
+      "totalReviews": "Total reviews"
     },
     "bookings": {
       "title": "Booking requests",

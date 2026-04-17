@@ -240,7 +240,14 @@
       "calendar": "التقويم",
       "packages": "الباقات",
       "bookings": "الحجوزات",
+      "reviews": "التقييمات",
       "notifications": "الإشعارات"
+    },
+    "reviews": {
+      "title": "تقييمات العملاء",
+      "subtitle": "اطّلع على آراء عملائك واستمر في تطوير خدمتك.",
+      "avgRating": "متوسط التقييم",
+      "totalReviews": "إجمالي التقييمات"
     },
     "bookings": {
       "title": "طلبات الحجز",
