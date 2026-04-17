@@ -85,6 +85,7 @@
     "step3": "Describe your vision",
     "step4": "Budget",
     "finish": "Finish planning",
+    "signInToSave": "Sign in to save your event and continue planning",
     "details": {
       "title": "Event details",
       "desc": "Tell us about your event so we can suggest the best options.",
@@ -454,5 +455,45 @@
   },
   "preview": {
     "kicker": "Dashboard"
+  },
+  "checkout": {
+    "kicker": "Checkout",
+    "title": "Pay securely to confirm your booking",
+    "subtitle": "Your data and payments are protected by Tekillah's escrow system.",
+    "activeMethods": "Available payment methods",
+    "installments": "Installment services",
+    "installmentsDesc": "We're enabling installment plans soon via certified partners.",
+    "comingSoon": "Coming soon",
+    "methods": {
+      "mada": "Mada",
+      "apple_pay": "Apple Pay",
+      "stc_pay": "STC Pay",
+      "credit_card": "Credit card"
+    },
+    "providers": {
+      "tamara": "Tamara",
+      "tabby": "Tabby"
+    },
+    "summary": "Order summary",
+    "eventDate": "Event date",
+    "subtotal": "Subtotal",
+    "vat": "VAT ({{pct}}%)",
+    "platformFee": "Platform fee ({{pct}}%)",
+    "total": "Total due",
+    "payNow": "Pay now",
+    "payFailed": "Payment failed",
+    "paySuccess": "Payment received successfully",
+    "notFound": "Booking not found",
+    "backToDashboard": "Back to dashboard",
+    "escrowTitle": "Escrow protection",
+    "escrowDesc": "Funds are held safely and released to the vendor once the service is delivered.",
+    "badgeSecure": "100% Secure payment",
+    "badgeSaudi": "Saudi Payments certified"
+  },
+  "success": {
+    "title": "Payment confirmed ✨",
+    "subtitle": "Your booking is safely saved. You'll be notified once the vendor confirms — full details are in your dashboard.",
+    "refNumber": "Reference no.",
+    "cta": "Go to my dashboard"
   }
 }
