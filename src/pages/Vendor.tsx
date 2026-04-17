@@ -124,7 +124,7 @@ const VendorPage = () => {
                 {vendor && <VendorPackages vendorId={vendor.id} />}
               </TabsContent>
               <TabsContent value="reviews">
-                {vendor && <VendorReviews vendorId={vendor.id} />}
+                {vendor && <VendorReviews vendorId={vendor.id} vendorUserId={user.id} />}
               </TabsContent>
               <TabsContent value="notifications">
                 <VendorNotifications userId={user.id} />
