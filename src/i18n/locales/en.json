@@ -612,6 +612,21 @@
       "failed": "Failed"
     },
     "tabReviews": "Reviews",
+    "tabModeration": "Pending reports",
+    "moderation": {
+      "empty": "No pending reports right now.",
+      "approveBtn": "Approve & keep",
+      "removeBtn": "Delete content",
+      "approved": "Report approved — content kept",
+      "removed": "Content removed",
+      "removeConfirmTitle": "Delete this content?",
+      "removeConfirmDesc": "This permanently removes the reported review or reply.",
+      "removeConfirmCta": "Yes, delete",
+      "target": {
+        "review": "Review",
+        "reply": "Vendor reply"
+      }
+    },
     "reviews": {
       "empty": "No reviews submitted yet.",
       "deleteBtn": "Delete review",
@@ -668,5 +683,29 @@
       "tooLong": "Reply must be 1000 characters or fewer",
       "empty": "Reply cannot be empty"
     }
+  },
+  "report": {
+    "openBtn": "Report",
+    "submit": "Submit report",
+    "success": "Thanks — our moderation team will review this shortly.",
+    "reasonLabel": "Reason for reporting",
+    "detailsLabel": "Additional details (optional)",
+    "detailsPlaceholder": "Add any context that helps us understand the issue…",
+    "dialog": {
+      "title": "Report this content",
+      "subtitle": "Tell us what's wrong. Your report stays anonymous to the author."
+    },
+    "reasons": {
+      "inappropriate": "Inappropriate language",
+      "spam": "Spam or advertising",
+      "harassment": "Harassment or hate speech",
+      "other": "Other"
+    },
+    "errors": {
+      "mustLogin": "Please sign in to report content."
+    }
+  },
+  "moderation": {
+    "profanityBlocked": "Sorry, this comment can't be posted because it contains inappropriate language. Please keep things professional."
   }
 }

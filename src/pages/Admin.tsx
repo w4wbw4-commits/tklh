@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Loader2, ShieldAlert, Wallet, TrendingUp, Lock, ListChecks,
-  CheckCircle2, Clock, LogOut, Receipt, Star,
+  CheckCircle2, Clock, LogOut, Receipt, Star, Flag,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
@@ -19,6 +19,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { AdminReviewsPanel } from "@/components/tekillah/admin/AdminReviewsPanel";
+import { AdminModerationQueue } from "@/components/tekillah/admin/AdminModerationQueue";
 
 interface PaymentRow {
   id: string;
@@ -172,6 +173,9 @@ const Admin = () => {
               <TabsTrigger value="reviews" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <Star className="h-4 w-4" /> {t("admin.tabReviews")}
               </TabsTrigger>
+              <TabsTrigger value="moderation" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <Flag className="h-4 w-4" /> {t("admin.tabModeration")}
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="payments" className="mt-6">
@@ -270,6 +274,10 @@ const Admin = () => {
 
             <TabsContent value="reviews" className="mt-6">
               <AdminReviewsPanel />
+            </TabsContent>
+
+            <TabsContent value="moderation" className="mt-6">
+              <AdminModerationQueue />
             </TabsContent>
           </Tabs>
         </div>

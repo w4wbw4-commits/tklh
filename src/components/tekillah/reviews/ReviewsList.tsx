@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Loader2, Trash2, MessageSquareText, Reply, Pencil } from "lucide-react";
+import { Loader2, Trash2, MessageSquareText, Reply, Pencil, Flag } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { fmtRelative } from "@/i18n/format";
+import { containsProfanity } from "@/lib/profanity";
 import { StarRating } from "./StarRating";
+import { ReportDialog } from "./ReportDialog";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
@@ -52,6 +54,7 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [reportTarget, setReportTarget] = useState<{ type: "review" | "reply"; id: string } | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -106,6 +109,7 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
     const body = draft.trim();
     if (!body) { toast.error(t("reviews.reply.empty")); return; }
     if (body.length > 1000) { toast.error(t("reviews.reply.tooLong")); return; }
+    if (containsProfanity(body)) { toast.error(t("moderation.profanityBlocked")); return; }
     if (!vendorUserId) return;
     setBusyId(reviewId);
     const existing = replies[reviewId];
@@ -182,18 +186,26 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
                   <span className="text-[11px] text-foreground/55">{fmtRelative(reply.updated_at)}</span>
                 </div>
                 <p className="mt-2 text-sm text-foreground/85">{reply.body}</p>
-                {(canReply || isAdmin) && (
-                  <div className="mt-2 flex justify-end gap-1">
-                    {canReply && (
-                      <Button
-                        size="sm" variant="ghost"
-                        onClick={() => startReply(r.id, reply.body)}
-                        className="rounded-full text-foreground/70"
-                      >
-                        <Pencil className="me-1 h-3.5 w-3.5" />
-                        {t("reviews.reply.editBtn")}
-                      </Button>
-                    )}
+                <div className="mt-2 flex justify-end gap-1">
+                  {canReply && (
+                    <Button
+                      size="sm" variant="ghost"
+                      onClick={() => startReply(r.id, reply.body)}
+                      className="rounded-full text-foreground/70"
+                    >
+                      <Pencil className="me-1 h-3.5 w-3.5" />
+                      {t("reviews.reply.editBtn")}
+                    </Button>
+                  )}
+                  <Button
+                    size="sm" variant="ghost"
+                    onClick={() => setReportTarget({ type: "reply", id: reply.id })}
+                    className="rounded-full text-foreground/65 hover:bg-secondary/60"
+                  >
+                    <Flag className="me-1 h-3.5 w-3.5" />
+                    {t("report.openBtn")}
+                  </Button>
+                  {(canReply || isAdmin) && (
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Button size="sm" variant="ghost" className="rounded-full text-destructive hover:bg-destructive/10">
@@ -217,8 +229,8 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             )}
 
@@ -251,35 +263,53 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
               </div>
             )}
 
-            {/* Action row */}
-            <div className="mt-3 flex flex-wrap justify-end gap-1">
-              {canReply && !reply && !isEditing && (
-                <Button
-                  size="sm" variant="ghost"
-                  onClick={() => startReply(r.id)}
-                  className="rounded-full text-primary hover:bg-primary/10"
-                >
-                  <Reply className="me-1 h-3.5 w-3.5" />
-                  {t("reviews.reply.openBtn")}
-                </Button>
-              )}
-              {isAdmin && (
-                <Button
-                  size="sm" variant="ghost"
-                  onClick={() => removeReview(r.id)}
-                  className="rounded-full text-destructive hover:bg-destructive/10"
-                >
-                  <Trash2 className="me-1 h-3.5 w-3.5" />
-                  {t("reviews.deleteBtn")}
-                </Button>
-              )}
-            </div>
+          {/* Action row */}
+          <div className="mt-3 flex flex-wrap justify-end gap-1">
+            {canReply && !reply && !isEditing && (
+              <Button
+                size="sm" variant="ghost"
+                onClick={() => startReply(r.id)}
+                className="rounded-full text-primary hover:bg-primary/10"
+              >
+                <Reply className="me-1 h-3.5 w-3.5" />
+                {t("reviews.reply.openBtn")}
+              </Button>
+            )}
+            <Button
+              size="sm" variant="ghost"
+              onClick={() => setReportTarget({ type: "review", id: r.id })}
+              className="rounded-full text-foreground/65 hover:bg-secondary/60"
+            >
+              <Flag className="me-1 h-3.5 w-3.5" />
+              {t("report.openBtn")}
+            </Button>
+            {isAdmin && (
+              <Button
+                size="sm" variant="ghost"
+                onClick={() => removeReview(r.id)}
+                className="rounded-full text-destructive hover:bg-destructive/10"
+              >
+                <Trash2 className="me-1 h-3.5 w-3.5" />
+                {t("reviews.deleteBtn")}
+              </Button>
+            )}
           </div>
-        );
-      })}
+        </div>
+      );
+    })}
+
+    {reportTarget && (
+      <ReportDialog
+        open={!!reportTarget}
+        onOpenChange={(o) => !o && setReportTarget(null)}
+        targetType={reportTarget.type}
+        targetId={reportTarget.id}
+      />
+    )}
     </div>
   );
 };
+
 
 const SubRating = ({ label, value }: { label: string; value: number }) => (
   <div className="rounded-lg bg-background px-2 py-1.5 text-center">
