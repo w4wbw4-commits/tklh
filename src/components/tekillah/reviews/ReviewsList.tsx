@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Loader2, Trash2, MessageSquareText, Reply, Pencil } from "lucide-react";
+import { Loader2, Trash2, MessageSquareText, Reply, Pencil, Flag } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { fmtRelative } from "@/i18n/format";
+import { containsProfanity } from "@/lib/profanity";
 import { StarRating } from "./StarRating";
+import { ReportDialog } from "./ReportDialog";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
@@ -52,6 +54,7 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [reportTarget, setReportTarget] = useState<{ type: "review" | "reply"; id: string } | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -106,6 +109,7 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
     const body = draft.trim();
     if (!body) { toast.error(t("reviews.reply.empty")); return; }
     if (body.length > 1000) { toast.error(t("reviews.reply.tooLong")); return; }
+    if (containsProfanity(body)) { toast.error(t("moderation.profanityBlocked")); return; }
     if (!vendorUserId) return;
     setBusyId(reviewId);
     const existing = replies[reviewId];
