@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Sparkles } from "lucide-react";
-import heroImage from "@/assets/hero-tekillah-luxury.jpg";
+import heroImage from "@/assets/hero-tekillah-celebration.jpg";
 import { useTranslation } from "react-i18next";
 
 export const Hero = () => {
@@ -18,13 +18,13 @@ export const Hero = () => {
           loading="eager"
           fetchPriority="high"
           decoding="async"
-          className="h-full w-full scale-110 object-cover"
-          style={{ filter: "blur(28px) saturate(1.05)" }}
+          className="h-full w-full scale-105 object-cover"
+          style={{ filter: "blur(12px) saturate(1.05)" }}
         />
         {/* Warm cream wash to maintain readability without darkening */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/55 via-background/45 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/65 via-background/50 to-background" />
         {/* Subtle olive vignette for depth */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_35%,_hsl(var(--primary-deep)/0.18)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_30%,_hsl(var(--primary-deep)/0.22)_100%)]" />
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 pt-32 pb-20 text-center">
