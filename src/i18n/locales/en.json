@@ -186,18 +186,47 @@
     "password": "Password",
     "name": "Name",
     "namePlaceholder": "Your name or business name",
-    "passwordPlaceholder": "At least 6 characters",
+    "passwordPlaceholder": "At least 8 characters",
     "createAccount": "Create account",
+    "forgotPassword": "Forgot password?",
+    "backToSignIn": "Back to sign in",
+    "continueWithGoogle": "Continue with Google",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
     "errors": {
       "invalidEmail": "Invalid email address",
-      "shortPassword": "Password must be at least 6 characters",
+      "shortPassword": "Password must be at least 8 characters",
       "shortName": "Name is too short",
       "invalidCreds": "Invalid login credentials",
-      "alreadyExists": "This email is already registered"
+      "alreadyExists": "This email is already registered",
+      "googleFailed": "Google sign-in failed. Please try again.",
+      "passwordsMismatch": "Passwords do not match"
     },
     "success": {
       "signin": "Signed in",
       "signup": "Account created"
+    },
+    "forgot": {
+      "title": "Forgot your password?",
+      "desc": "Enter your email and we'll send you a secure link to reset it.",
+      "send": "Send recovery link",
+      "sentTitle": "Check your inbox",
+      "sentDesc": "We've sent a recovery link to your email.",
+      "sentToast": "Recovery email sent",
+      "checkInbox": "Open the email we sent and click the link to set a new password.",
+      "resend": "Send to a different email"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "desc": "Choose a strong password to secure your account.",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password",
+      "ruleLength": "At least 8 characters",
+      "ruleMatch": "Both passwords match",
+      "update": "Update password",
+      "success": "Password updated. You can now sign in.",
+      "invalidLink": "This recovery link is invalid or has expired.",
+      "requestNew": "Request a new link"
     }
   },
   "vendor": {
