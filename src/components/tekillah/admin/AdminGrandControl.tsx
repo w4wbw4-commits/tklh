@@ -113,7 +113,7 @@ export const AdminGrandControl = ({ onJump }: { onJump?: (tab: string) => void }
       </div>
 
       {/* System health */}
-      <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5">
+      <div className="mt-4 grid grid-cols-2 gap-2 xs:grid-cols-3 sm:grid-cols-5">
         <Mini icon={Users} label={t("admin.grand.customers")} value={stats.customers} />
         <Mini icon={Briefcase} label={t("admin.grand.vendors")} value={stats.vendors} />
         <Mini icon={CalendarCheck} label={t("admin.grand.activeBookings")} value={stats.activeBookings} />
