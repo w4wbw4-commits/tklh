@@ -333,12 +333,6 @@ const Spinner = () => (
     <Loader2 className="h-5 w-5 animate-spin text-primary" />
   </div>
 );
-const Empty = ({ msg }: { msg: string }) => (
-  <div className="rounded-2xl border border-dashed border-border bg-card p-12 text-center text-sm text-foreground/55">
-    <Clock className="mx-auto mb-2 h-6 w-6" />
-    {msg}
-  </div>
-);
 
 const statusBadge = (s: string) => {
   if (s === "held") return "bg-primary/15 text-primary";
