@@ -78,7 +78,7 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
     const reviewIds = list.map((r) => r.id);
     if (reviewIds.length) {
       const { data: reps } = await supabase
-        .from("review_replies" as never)
+        .from("review_replies")
         .select("id, review_id, vendor_id, vendor_user_id, body, created_at, updated_at")
         .in("review_id", reviewIds);
       const repMap: Record<string, ReplyItem> = {};
@@ -114,8 +114,8 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
     setBusyId(reviewId);
     const existing = replies[reviewId];
     const { error } = existing
-      ? await supabase.from("review_replies" as never).update({ body }).eq("id", existing.id)
-      : await supabase.from("review_replies" as never).insert({
+      ? await supabase.from("review_replies").update({ body }).eq("id", existing.id)
+      : await supabase.from("review_replies").insert({
           review_id: reviewId, vendor_id: vendorId, vendor_user_id: vendorUserId, body,
         });
     setBusyId(null);
@@ -126,7 +126,7 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
   };
 
   const deleteReply = async (replyId: string) => {
-    const { error } = await supabase.from("review_replies" as never).delete().eq("id", replyId);
+    const { error } = await supabase.from("review_replies").delete().eq("id", replyId);
     if (error) { toast.error(error.message); return; }
     toast.success(t("reviews.success.replyDeleted"));
     load();

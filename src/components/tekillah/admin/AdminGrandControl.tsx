@@ -61,7 +61,7 @@ export const AdminGrandControl = ({ onJump }: { onJump?: (tab: string) => void }
         .order("created_at", { ascending: false })
         .limit(5),
       supabase.from("reviews").select("id, comment").eq("flagged", true).limit(10),
-      supabase.from("review_replies" as never).select("id, body").eq("flagged", true).limit(10),
+      supabase.from("review_replies").select("id, body").eq("flagged", true).limit(10),
     ]);
 
     const flaggedList: FlaggedRow[] = [
