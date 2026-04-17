@@ -50,8 +50,9 @@ export const StepVendors = ({ selectedServices, picks, setPick }: Props) => {
       const [{ data: v }, { data: ratings }] = await Promise.all([
         supabase
           .from("vendors")
-          .select("id, business_name, category, city, starting_price, verified, packages(id, name, tier, price, description, active)")
+          .select("id, business_name, category, city, starting_price, verified, packages(id, name, tier, price, description, active, approval_status)")
           .eq("active", true)
+          .eq("approval_status", "approved")
           .in("category", selectedServices.length ? selectedServices : ["hall"]),
         supabase.from("vendor_ratings_summary" as never).select("vendor_id, avg_rating, reviews_count, completed_bookings"),
       ]);
@@ -69,11 +70,12 @@ export const StepVendors = ({ selectedServices, picks, setPick }: Props) => {
           avg_rating: r.avg,
           reviews_count: r.count,
           completed_bookings: r.done,
-          packages: ((x as unknown as { packages: VendorOption["packages"] & { active: boolean }[] }).packages ?? [])
-            .filter((p) => (p as unknown as { active: boolean }).active)
+          packages: ((x as unknown as { packages: (VendorOption["packages"][number] & { active: boolean; approval_status: string })[] }).packages ?? [])
+            .filter((p) => p.active && p.approval_status === "approved")
             .sort((a, b) => Number(a.price) - Number(b.price)),
         };
-      }) as unknown as VendorOption[];
+      })
+      .filter((x) => (x.packages?.length ?? 0) > 0) as unknown as VendorOption[];
       setVendors(mapped);
       setLoading(false);
     })();

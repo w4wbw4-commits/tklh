@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Loader2, ShieldAlert, Wallet, TrendingUp, Lock, ListChecks,
-  CheckCircle2, Clock, LogOut, Receipt, Star, Flag,
+  CheckCircle2, Clock, LogOut, Receipt, Star, Flag, ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { AdminReviewsPanel } from "@/components/tekillah/admin/AdminReviewsPanel";
 import { AdminModerationQueue } from "@/components/tekillah/admin/AdminModerationQueue";
+import { AdminVerificationQueue } from "@/components/tekillah/admin/AdminVerificationQueue";
 
 interface PaymentRow {
   id: string;
@@ -162,8 +163,11 @@ const Admin = () => {
         </div>
 
         <div className="mt-8">
-          <Tabs defaultValue="payments">
-            <TabsList className="rounded-2xl bg-card p-1 shadow-card">
+          <Tabs defaultValue="verification">
+            <TabsList className="rounded-2xl bg-card p-1 shadow-card flex-wrap h-auto">
+              <TabsTrigger value="verification" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <ShieldCheck className="h-4 w-4" /> {t("admin.tabVerification")}
+              </TabsTrigger>
               <TabsTrigger value="payments" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <Receipt className="h-4 w-4" /> {t("admin.tabPayments")}
               </TabsTrigger>
@@ -177,6 +181,10 @@ const Admin = () => {
                 <Flag className="h-4 w-4" /> {t("admin.tabModeration")}
               </TabsTrigger>
             </TabsList>
+
+            <TabsContent value="verification" className="mt-6">
+              <AdminVerificationQueue />
+            </TabsContent>
 
             <TabsContent value="payments" className="mt-6">
               {loading ? (
