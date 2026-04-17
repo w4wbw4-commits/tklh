@@ -1,5 +1,5 @@
 // Edge function: generate-invoice
-// Generates an elegant PDF invoice and returns it as a base64 data URL
+// Generates an elegant PDF invoice with VAT and platform fee breakdown
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { jsPDF } from "https://esm.sh/jspdf@2.5.1";
 
@@ -18,6 +18,8 @@ interface InvoicePayload {
   totalPrice: number;
   paidAmount: number;
   bookingId: string;
+  vatPercent?: number;       // default 15
+  platformPercent?: number;  // default 12
 }
 
 Deno.serve(async (req) => {
@@ -25,6 +27,14 @@ Deno.serve(async (req) => {
 
   try {
     const p: InvoicePayload = await req.json();
+    const vatPct = p.vatPercent ?? 15;
+    const feePct = p.platformPercent ?? 12;
+    const subtotal = Number(p.totalPrice || 0);
+    const vat = Math.round(subtotal * vatPct) / 100 * 100; // keep integer-friendly
+    const platformFee = Math.round(subtotal * feePct) / 100 * 100;
+    const totalDue = subtotal + Math.round(subtotal * vatPct / 100);
+    const paid = Number(p.paidAmount || 0);
+    const balance = Math.max(0, totalDue - paid);
 
     const doc = new jsPDF({ unit: "pt", format: "a4" });
     const pageW = doc.internal.pageSize.getWidth();
@@ -42,10 +52,10 @@ Deno.serve(async (req) => {
     doc.setFont("helvetica", "normal");
     doc.text("Luxury Event Planning Platform", 40, 68);
 
-    // Invoice meta (right side)
+    // Invoice meta
     doc.setFontSize(20);
     doc.setFont("helvetica", "bold");
-    doc.text("INVOICE", pageW - 40, 50, { align: "right" });
+    doc.text("TAX INVOICE", pageW - 40, 50, { align: "right" });
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
     doc.text(`#${p.bookingId.slice(0, 8).toUpperCase()}`, pageW - 40, 68, { align: "right" });
@@ -63,9 +73,7 @@ Deno.serve(async (req) => {
     doc.setFont("helvetica", "bold");
     doc.text("EVENT DATE", pageW - 40, y, { align: "right" });
     doc.setFont("helvetica", "normal");
-    doc.text(new Date(p.eventDate).toLocaleDateString("en-GB"), pageW - 40, y + 16, {
-      align: "right",
-    });
+    doc.text(new Date(p.eventDate).toLocaleDateString("en-GB"), pageW - 40, y + 16, { align: "right" });
 
     y += 60;
 
@@ -108,47 +116,58 @@ Deno.serve(async (req) => {
 
     doc.setTextColor(40, 50, 25);
     doc.setFontSize(11);
-    doc.text(p.totalPrice.toLocaleString("en-US"), pageW - 40, y, { align: "right" });
+    doc.text(subtotal.toLocaleString("en-US"), pageW - 40, y, { align: "right" });
 
     y += 50;
     doc.line(40, y, pageW - 40, y);
 
-    // Totals
+    // Totals breakdown
     y += 24;
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
-    doc.text("Subtotal", pageW - 160, y);
-    doc.text(p.totalPrice.toLocaleString("en-US"), pageW - 40, y, { align: "right" });
+    doc.text("Subtotal", pageW - 200, y);
+    doc.text(subtotal.toLocaleString("en-US"), pageW - 40, y, { align: "right" });
 
     y += 18;
-    doc.text("Paid", pageW - 160, y);
-    doc.text(p.paidAmount.toLocaleString("en-US"), pageW - 40, y, { align: "right" });
+    doc.setTextColor(120, 130, 100);
+    doc.text(`Platform fee (${feePct}%)`, pageW - 200, y);
+    doc.text(platformFee.toLocaleString("en-US"), pageW - 40, y, { align: "right" });
 
     y += 18;
-    const remaining = Math.max(0, p.totalPrice - p.paidAmount);
+    doc.setTextColor(40, 50, 25);
+    doc.text(`VAT (${vatPct}%)`, pageW - 200, y);
+    doc.text(Math.round(subtotal * vatPct / 100).toLocaleString("en-US"), pageW - 40, y, { align: "right" });
+
+    y += 18;
+    doc.text("Paid", pageW - 200, y);
+    doc.text(paid.toLocaleString("en-US"), pageW - 40, y, { align: "right" });
+
+    y += 24;
+    doc.setDrawColor(85, 107, 47);
+    doc.setLineWidth(1);
+    doc.line(pageW - 200, y - 10, pageW - 40, y - 10);
+
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(12);
+    doc.setFontSize(13);
     doc.setTextColor(85, 107, 47);
-    doc.text("Balance Due", pageW - 160, y);
-    doc.text(`${remaining.toLocaleString("en-US")} SAR`, pageW - 40, y, { align: "right" });
+    doc.text("Balance Due", pageW - 200, y);
+    doc.text(`${balance.toLocaleString("en-US")} SAR`, pageW - 40, y, { align: "right" });
 
-    // Footer
+    // Trust footer
     doc.setFontSize(8);
     doc.setTextColor(120, 130, 100);
     doc.setFont("helvetica", "normal");
-    doc.text(
-      "Thank you for choosing Tekillah. This invoice is generated automatically.",
-      pageW / 2,
-      pageH - 40,
-      { align: "center" },
-    );
+    doc.text("100% Secure Payment  •  Saudi Payments Certified  •  Escrow Protected",
+      pageW / 2, pageH - 60, { align: "center" });
+    doc.text("Thank you for choosing Tekillah. This invoice is generated automatically.",
+      pageW / 2, pageH - 40, { align: "center" });
 
     const dataUri = doc.output("datauristring");
     return new Response(JSON.stringify({ pdf: dataUri }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : "خطأ غير متوقع";
+    const msg = err instanceof Error ? err.message : "Unexpected error";
     console.error("generate-invoice error:", msg);
     return new Response(JSON.stringify({ error: msg }), {
       status: 500,
