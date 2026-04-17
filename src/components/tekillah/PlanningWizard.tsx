@@ -20,7 +20,10 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const PlanningWizard = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [step, setStep] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
   const isAr = i18n.language === "ar";
 
   // Step 0
