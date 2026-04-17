@@ -21,6 +21,7 @@ import {
 import { AdminReviewsPanel } from "@/components/tekillah/admin/AdminReviewsPanel";
 import { AdminModerationQueue } from "@/components/tekillah/admin/AdminModerationQueue";
 import { AdminVerificationQueue } from "@/components/tekillah/admin/AdminVerificationQueue";
+import { AdminGrandControl } from "@/components/tekillah/admin/AdminGrandControl";
 
 interface PaymentRow {
   id: string;
@@ -127,6 +128,7 @@ const Admin = () => {
   const heldFunds = payments.filter((p) => p.status === "held").reduce((s, p) => s + Number(p.vendor_net ?? 0), 0);
   const platformProfit = payments.reduce((s, p) => s + Number(p.platform_fee ?? 0), 0);
   const totalBookings = bookings.length;
+  const [activeTab, setActiveTab] = useState("verification");
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -154,7 +156,7 @@ const Admin = () => {
           <p className="mt-2 text-foreground/65">{t("admin.subtitle")}</p>
         </motion.div>
 
-        {/* KPIs */}
+        {/* KPIs — always visible above every tab */}
         <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Kpi icon={TrendingUp} label={t("admin.totalRevenue")} value={`${fmtNumber(totalRevenue)} ${t("common.currency")}`} highlight />
           <Kpi icon={Lock} label={t("admin.heldFunds")} value={`${fmtNumber(heldFunds)} ${t("common.currency")}`} />
@@ -162,8 +164,13 @@ const Admin = () => {
           <Kpi icon={ListChecks} label={t("admin.totalBookings")} value={fmtNumber(totalBookings)} />
         </div>
 
+        {/* Grand Control summary — always visible above every tab */}
+        <div className="mt-4">
+          <AdminGrandControl onJump={setActiveTab} />
+        </div>
+
         <div className="mt-8">
-          <Tabs defaultValue="verification">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="rounded-2xl bg-card p-1 shadow-card flex-wrap h-auto">
               <TabsTrigger value="verification" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <ShieldCheck className="h-4 w-4" /> {t("admin.tabVerification")}

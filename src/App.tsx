@@ -14,6 +14,8 @@ import Checkout from "./pages/Checkout.tsx";
 import Success from "./pages/Success.tsx";
 import Invoice from "./pages/Invoice.tsx";
 import Admin from "./pages/Admin.tsx";
+import Terms from "./pages/Terms.tsx";
+import Privacy from "./pages/Privacy.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -36,6 +38,8 @@ const App = () => (
             <Route path="/invoice/:bookingId" element={<Invoice />} />
             <Route path="/success" element={<Success />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
