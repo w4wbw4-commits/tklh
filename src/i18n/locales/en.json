@@ -94,6 +94,14 @@
     "bookingsCreated": "{{count}} bookings created",
     "bookingsFailed": "Could not create bookings",
     "signInToSave": "Sign in to save your event and continue planning",
+    "visuals": {
+      "step1Caption": "Every detail starts with an idea",
+      "step2Caption": "Choose the services worthy of your night",
+      "step3Caption": "Sketch your vision in colors and mood",
+      "step4Caption": "Plan smart, spend with ease",
+      "step5Caption": "A curated circle of trusted vendors",
+      "finalCaption": "Your night deserves to be remembered"
+    },
     "vendors": {
       "title": "Pick your trusted vendors",
       "desc": "Choose a package from each service. We will reserve the date and notify the vendor.",

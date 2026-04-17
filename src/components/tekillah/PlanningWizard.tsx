@@ -15,6 +15,7 @@ import {
   type BudgetMode,
   type ServiceKey,
 } from "./wizard/types";
+import { WizardVisual } from "./wizard/WizardVisual";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -161,7 +162,7 @@ export const PlanningWizard = () => {
 
   return (
     <section id="wizard" className="relative bg-gradient-soft py-24 sm:py-32">
-      <div className="mx-auto max-w-5xl px-6">
+      <div className="mx-auto max-w-6xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -177,8 +178,13 @@ export const PlanningWizard = () => {
           </h2>
         </motion.div>
 
+        {/* Mobile-only visual header */}
+        <div className="mx-auto mt-10 max-w-3xl lg:hidden">
+          <WizardVisual step={step} variant="header" />
+        </div>
+
         {/* Progress */}
-        <div className="mx-auto mt-12 flex max-w-3xl items-center justify-between gap-2">
+        <div className="mx-auto mt-10 flex max-w-3xl items-center justify-between gap-2">
           {stepLabels.map((label, i) => (
             <div key={i} className="flex flex-1 items-center gap-2">
               <div className="flex flex-col items-center">
@@ -211,58 +217,63 @@ export const PlanningWizard = () => {
           ))}
         </div>
 
-        <div className="mt-10 overflow-hidden rounded-3xl border border-border bg-card shadow-luxury">
-          <AnimatePresence mode="wait">
-            {step === 0 && (
-              <StepDetails
-                city={city} setCity={setCity}
-                eventType={eventType} setEventType={setEventType}
-                date={date} setDate={setDate}
-                men={men} setMen={setMen}
-                women={women} setWomen={setWomen}
-              />
-            )}
-            {step === 1 && <StepServices selected={selected} toggleService={toggleService} />}
-            {step === 2 && (
-              <StepVision
-                vision={vision} setVision={setVision}
-                selectedChips={selectedChips} toggleChip={toggleChip}
-              />
-            )}
-            {step === 3 && (
-              <StepBudget
-                budgetMode={budgetMode} setBudgetMode={setBudgetMode}
-                budget={budget} setBudget={setBudget}
-                guests={guests}
-                allocations={allocations} setAllocation={setAllocation}
-              />
-            )}
-            {step === 4 && (
-              <StepVendors
-                selectedServices={selected as ServiceKey[]}
-                picks={picks}
-                setPick={setPick}
-              />
-            )}
-          </AnimatePresence>
+        {/* Side-by-side visual + form on desktop */}
+        <div className="mt-10 grid gap-0 overflow-hidden rounded-3xl border border-border bg-card shadow-luxury lg:grid-cols-[minmax(0,360px),1fr]">
+          <WizardVisual step={step} variant="side" />
 
-          <div className="flex items-center justify-between border-t border-border bg-secondary/30 px-6 py-4 sm:px-10">
-            <Button variant="ghost" onClick={prev} disabled={step === 0} className="rounded-full text-foreground">
-              <PrevIcon className="me-2 h-4 w-4" />
-              {t("common.previous")}
-            </Button>
-            {step < 4 ? (
-              <Button onClick={next} className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
-                {t("common.next")}
-                <NextIcon className="ms-2 h-4 w-4" />
+          <div className="flex min-w-0 flex-col">
+            <AnimatePresence mode="wait">
+              {step === 0 && (
+                <StepDetails
+                  city={city} setCity={setCity}
+                  eventType={eventType} setEventType={setEventType}
+                  date={date} setDate={setDate}
+                  men={men} setMen={setMen}
+                  women={women} setWomen={setWomen}
+                />
+              )}
+              {step === 1 && <StepServices selected={selected} toggleService={toggleService} />}
+              {step === 2 && (
+                <StepVision
+                  vision={vision} setVision={setVision}
+                  selectedChips={selectedChips} toggleChip={toggleChip}
+                />
+              )}
+              {step === 3 && (
+                <StepBudget
+                  budgetMode={budgetMode} setBudgetMode={setBudgetMode}
+                  budget={budget} setBudget={setBudget}
+                  guests={guests}
+                  allocations={allocations} setAllocation={setAllocation}
+                />
+              )}
+              {step === 4 && (
+                <StepVendors
+                  selectedServices={selected as ServiceKey[]}
+                  picks={picks}
+                  setPick={setPick}
+                />
+              )}
+            </AnimatePresence>
+
+            <div className="mt-auto flex items-center justify-between border-t border-border bg-secondary/30 px-6 py-4 sm:px-10">
+              <Button variant="ghost" onClick={prev} disabled={step === 0} className="rounded-full text-foreground">
+                <PrevIcon className="me-2 h-4 w-4" />
+                {t("common.previous")}
               </Button>
-            ) : (
-              <Button onClick={handleFinish} disabled={submitting}
-                className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
-                {submitting ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : <Check className="me-2 h-4 w-4" />}
-                {t("wizard.confirmBooking")}
-              </Button>
-            )}
+              {step < 4 ? (
+                <Button onClick={next} className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
+                  {t("common.next")}
+                  <NextIcon className="ms-2 h-4 w-4" />
+                </Button>
+              ) : (
+                <Button onClick={handleFinish} disabled={submitting}
+                  className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
+                  {submitting ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : <Check className="me-2 h-4 w-4" />}
+                  {t("wizard.confirmBooking")}
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
