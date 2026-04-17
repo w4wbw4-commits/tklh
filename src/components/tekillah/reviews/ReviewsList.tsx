@@ -186,18 +186,26 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
                   <span className="text-[11px] text-foreground/55">{fmtRelative(reply.updated_at)}</span>
                 </div>
                 <p className="mt-2 text-sm text-foreground/85">{reply.body}</p>
-                {(canReply || isAdmin) && (
-                  <div className="mt-2 flex justify-end gap-1">
-                    {canReply && (
-                      <Button
-                        size="sm" variant="ghost"
-                        onClick={() => startReply(r.id, reply.body)}
-                        className="rounded-full text-foreground/70"
-                      >
-                        <Pencil className="me-1 h-3.5 w-3.5" />
-                        {t("reviews.reply.editBtn")}
-                      </Button>
-                    )}
+                <div className="mt-2 flex justify-end gap-1">
+                  {canReply && (
+                    <Button
+                      size="sm" variant="ghost"
+                      onClick={() => startReply(r.id, reply.body)}
+                      className="rounded-full text-foreground/70"
+                    >
+                      <Pencil className="me-1 h-3.5 w-3.5" />
+                      {t("reviews.reply.editBtn")}
+                    </Button>
+                  )}
+                  <Button
+                    size="sm" variant="ghost"
+                    onClick={() => setReportTarget({ type: "reply", id: reply.id })}
+                    className="rounded-full text-foreground/65 hover:bg-secondary/60"
+                  >
+                    <Flag className="me-1 h-3.5 w-3.5" />
+                    {t("report.openBtn")}
+                  </Button>
+                  {(canReply || isAdmin) && (
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Button size="sm" variant="ghost" className="rounded-full text-destructive hover:bg-destructive/10">
@@ -221,8 +229,8 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             )}
 
@@ -255,29 +263,52 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
               </div>
             )}
 
-            {/* Action row */}
-            <div className="mt-3 flex flex-wrap justify-end gap-1">
-              {canReply && !reply && !isEditing && (
-                <Button
-                  size="sm" variant="ghost"
-                  onClick={() => startReply(r.id)}
-                  className="rounded-full text-primary hover:bg-primary/10"
-                >
-                  <Reply className="me-1 h-3.5 w-3.5" />
-                  {t("reviews.reply.openBtn")}
-                </Button>
-              )}
-              {isAdmin && (
-                <Button
-                  size="sm" variant="ghost"
-                  onClick={() => removeReview(r.id)}
-                  className="rounded-full text-destructive hover:bg-destructive/10"
-                >
-                  <Trash2 className="me-1 h-3.5 w-3.5" />
-                  {t("reviews.deleteBtn")}
-                </Button>
-              )}
-            </div>
+          {/* Action row */}
+          <div className="mt-3 flex flex-wrap justify-end gap-1">
+            {canReply && !reply && !isEditing && (
+              <Button
+                size="sm" variant="ghost"
+                onClick={() => startReply(r.id)}
+                className="rounded-full text-primary hover:bg-primary/10"
+              >
+                <Reply className="me-1 h-3.5 w-3.5" />
+                {t("reviews.reply.openBtn")}
+              </Button>
+            )}
+            <Button
+              size="sm" variant="ghost"
+              onClick={() => setReportTarget({ type: "review", id: r.id })}
+              className="rounded-full text-foreground/65 hover:bg-secondary/60"
+            >
+              <Flag className="me-1 h-3.5 w-3.5" />
+              {t("report.openBtn")}
+            </Button>
+            {isAdmin && (
+              <Button
+                size="sm" variant="ghost"
+                onClick={() => removeReview(r.id)}
+                className="rounded-full text-destructive hover:bg-destructive/10"
+              >
+                <Trash2 className="me-1 h-3.5 w-3.5" />
+                {t("reviews.deleteBtn")}
+              </Button>
+            )}
+          </div>
+        </div>
+      );
+    })}
+
+    {reportTarget && (
+      <ReportDialog
+        open={!!reportTarget}
+        onOpenChange={(o) => !o && setReportTarget(null)}
+        targetType={reportTarget.type}
+        targetId={reportTarget.id}
+      />
+    )}
+  </div>
+);
+};
           </div>
         );
       })}
