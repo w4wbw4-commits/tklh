@@ -12,9 +12,11 @@ import { VendorCalendar } from "@/components/tekillah/vendor/VendorCalendar";
 import { VendorPackages } from "@/components/tekillah/vendor/VendorPackages";
 import { VendorNotifications } from "@/components/tekillah/vendor/VendorNotifications";
 import type { VendorRow } from "@/components/tekillah/vendor/types";
+import { useTranslation } from "react-i18next";
 
 const VendorPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { user, loading: authLoading, signOut } = useAuth();
   const [vendor, setVendor] = useState<VendorRow | null>(null);
   const [vendorLoading, setVendorLoading] = useState(true);
@@ -54,16 +56,16 @@ const VendorPage = () => {
           <div className="flex items-center gap-4">
             <Logo />
             <span className="hidden text-xs uppercase tracking-[0.2em] text-primary sm:inline">
-              لوحة الشركاء
+              {t("vendor.kicker")}
             </span>
           </div>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" asChild className="rounded-full">
-              <Link to="/">الموقع الرئيسي</Link>
+              <Link to="/">{t("common.main")}</Link>
             </Button>
             <Button variant="ghost" size="sm" onClick={() => signOut().then(() => navigate("/"))}
               className="rounded-full text-destructive hover:bg-destructive/10">
-              <LogOut className="me-1 h-4 w-4" /> خروج
+              <LogOut className="me-1 h-4 w-4" /> {t("common.logout")}
             </Button>
           </div>
         </div>
@@ -77,28 +79,26 @@ const VendorPage = () => {
         >
           <div className="mb-6">
             <h1 className="font-arabic text-3xl font-semibold text-foreground sm:text-4xl">
-              {vendor ? `أهلاً، ${vendor.business_name}` : "أهلاً بك في لوحة الشركاء"}
+              {vendor ? t("vendor.welcomeNamed", { name: vendor.business_name }) : t("vendor.welcome")}
             </h1>
             <p className="mt-2 text-foreground/65">
-              {vendor
-                ? "أدر ملفك، تقويمك، باقاتك، وإشعاراتك من مكان واحد."
-                : "أكمل ملف عملك لتبدأ في استقبال الطلبات من العملاء."}
+              {vendor ? t("vendor.subtitleNamed") : t("vendor.subtitle")}
             </p>
           </div>
 
           <Tabs value={tab} onValueChange={setTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2 rounded-2xl bg-card p-1 shadow-card sm:grid-cols-4">
               <TabsTrigger value="profile" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <User className="h-4 w-4" /> الملف
+                <User className="h-4 w-4" /> {t("vendor.tabs.profile")}
               </TabsTrigger>
               <TabsTrigger value="calendar" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <Calendar className="h-4 w-4" /> التقويم
+                <Calendar className="h-4 w-4" /> {t("vendor.tabs.calendar")}
               </TabsTrigger>
               <TabsTrigger value="packages" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <Package className="h-4 w-4" /> الباقات
+                <Package className="h-4 w-4" /> {t("vendor.tabs.packages")}
               </TabsTrigger>
               <TabsTrigger value="notifications" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <Bell className="h-4 w-4" /> الإشعارات
+                <Bell className="h-4 w-4" /> {t("vendor.tabs.notifications")}
               </TabsTrigger>
             </TabsList>
 
