@@ -617,7 +617,12 @@
       "deleteBtn": "Delete review",
       "deleteConfirmTitle": "Delete this review?",
       "deleteConfirmDesc": "This will permanently remove the review. Use this only for fraudulent or inappropriate content.",
-      "deleteConfirmCta": "Yes, delete"
+      "deleteConfirmCta": "Yes, delete",
+      "deleteReplyBtn": "Delete reply",
+      "deleteReplyConfirmTitle": "Delete this reply?",
+      "deleteReplyConfirmDesc": "This will permanently remove the vendor's response.",
+      "deleteReplyConfirmCta": "Yes, delete reply",
+      "replyDeleted": "Reply deleted"
     }
   },
   "reviews": {
@@ -647,7 +652,21 @@
     },
     "success": {
       "submitted": "Thank you for your review!",
-      "deleted": "Review deleted"
+      "deleted": "Review deleted",
+      "replyPosted": "Your reply has been posted",
+      "replyUpdated": "Reply updated",
+      "replyDeleted": "Reply deleted"
+    },
+    "reply": {
+      "label": "Vendor Response",
+      "openBtn": "Reply",
+      "editBtn": "Edit reply",
+      "deleteBtn": "Delete reply",
+      "placeholder": "Write your response here…",
+      "submit": "Post reply",
+      "cancel": "Cancel",
+      "tooLong": "Reply must be 1000 characters or fewer",
+      "empty": "Reply cannot be empty"
     }
   }
 }

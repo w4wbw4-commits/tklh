@@ -617,7 +617,12 @@
       "deleteBtn": "حذف التقييم",
       "deleteConfirmTitle": "حذف هذا التقييم؟",
       "deleteConfirmDesc": "سيتم حذف التقييم نهائياً. استخدم هذا الإجراء فقط للتعليقات المسيئة أو الاحتيالية.",
-      "deleteConfirmCta": "نعم، احذف"
+      "deleteConfirmCta": "نعم، احذف",
+      "deleteReplyBtn": "حذف الرد",
+      "deleteReplyConfirmTitle": "حذف هذا الرد؟",
+      "deleteReplyConfirmDesc": "سيتم حذف رد المزوّد نهائياً.",
+      "deleteReplyConfirmCta": "نعم، احذف الرد",
+      "replyDeleted": "تم حذف الرد"
     }
   },
   "reviews": {
@@ -647,7 +652,21 @@
     },
     "success": {
       "submitted": "شكراً لتقييمك!",
-      "deleted": "تم حذف التقييم"
+      "deleted": "تم حذف التقييم",
+      "replyPosted": "تم نشر ردك بنجاح",
+      "replyUpdated": "تم تحديث الرد",
+      "replyDeleted": "تم حذف الرد"
+    },
+    "reply": {
+      "label": "رد المزوّد",
+      "openBtn": "رد",
+      "editBtn": "تعديل الرد",
+      "deleteBtn": "حذف الرد",
+      "placeholder": "اكتب ردك هنا…",
+      "submit": "نشر الرد",
+      "cancel": "إلغاء",
+      "tooLong": "يجب ألا يتجاوز الرد 1000 حرف",
+      "empty": "لا يمكن إرسال رد فارغ"
     }
   }
 }
