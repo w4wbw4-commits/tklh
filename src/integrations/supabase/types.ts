@@ -91,6 +91,48 @@ export type Database = {
           },
         ]
       }
+      content_reports: {
+        Row: {
+          created_at: string
+          details: string | null
+          id: string
+          reason: Database["public"]["Enums"]["report_reason"]
+          reporter_id: string
+          resolved_at: string | null
+          resolved_by: string | null
+          status: Database["public"]["Enums"]["report_status"]
+          target_id: string
+          target_type: Database["public"]["Enums"]["report_target"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason: Database["public"]["Enums"]["report_reason"]
+          reporter_id: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          target_id: string
+          target_type: Database["public"]["Enums"]["report_target"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason?: Database["public"]["Enums"]["report_reason"]
+          reporter_id?: string
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          target_id?: string
+          target_type?: Database["public"]["Enums"]["report_target"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           city: string | null
@@ -433,6 +475,7 @@ export type Database = {
         Row: {
           body: string
           created_at: string
+          flagged: boolean
           id: string
           review_id: string
           updated_at: string
@@ -442,6 +485,7 @@ export type Database = {
         Insert: {
           body: string
           created_at?: string
+          flagged?: boolean
           id?: string
           review_id: string
           updated_at?: string
@@ -451,6 +495,7 @@ export type Database = {
         Update: {
           body?: string
           created_at?: string
+          flagged?: boolean
           id?: string
           review_id?: string
           updated_at?: string
@@ -474,6 +519,7 @@ export type Database = {
           communication: number
           created_at: string
           customer_id: string
+          flagged: boolean
           id: string
           punctuality: number
           quality: number
@@ -487,6 +533,7 @@ export type Database = {
           communication: number
           created_at?: string
           customer_id: string
+          flagged?: boolean
           id?: string
           punctuality: number
           quality: number
@@ -500,6 +547,7 @@ export type Database = {
           communication?: number
           created_at?: string
           customer_id?: string
+          flagged?: boolean
           id?: string
           punctuality?: number
           quality?: number
@@ -736,6 +784,9 @@ export type Database = {
         | "mock"
       payment_status: "held" | "released" | "refunded" | "failed"
       payout_status: "requested" | "approved" | "paid" | "rejected"
+      report_reason: "inappropriate" | "spam" | "harassment" | "other"
+      report_status: "pending" | "approved" | "removed"
+      report_target: "review" | "reply"
       rsvp_status: "pending" | "confirmed" | "declined"
       vendor_category:
         | "hall"
@@ -900,6 +951,9 @@ export const Constants = {
       ],
       payment_status: ["held", "released", "refunded", "failed"],
       payout_status: ["requested", "approved", "paid", "rejected"],
+      report_reason: ["inappropriate", "spam", "harassment", "other"],
+      report_status: ["pending", "approved", "removed"],
+      report_target: ["review", "reply"],
       rsvp_status: ["pending", "confirmed", "declined"],
       vendor_category: [
         "hall",
