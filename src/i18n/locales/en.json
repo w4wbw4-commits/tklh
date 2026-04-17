@@ -683,5 +683,29 @@
       "tooLong": "Reply must be 1000 characters or fewer",
       "empty": "Reply cannot be empty"
     }
+  },
+  "report": {
+    "openBtn": "Report",
+    "submit": "Submit report",
+    "success": "Thanks — our moderation team will review this shortly.",
+    "reasonLabel": "Reason for reporting",
+    "detailsLabel": "Additional details (optional)",
+    "detailsPlaceholder": "Add any context that helps us understand the issue…",
+    "dialog": {
+      "title": "Report this content",
+      "subtitle": "Tell us what's wrong. Your report stays anonymous to the author."
+    },
+    "reasons": {
+      "inappropriate": "Inappropriate language",
+      "spam": "Spam or advertising",
+      "harassment": "Harassment or hate speech",
+      "other": "Other"
+    },
+    "errors": {
+      "mustLogin": "Please sign in to report content."
+    }
+  },
+  "moderation": {
+    "profanityBlocked": "Sorry, this comment can't be posted because it contains inappropriate language. Please keep things professional."
   }
 }
