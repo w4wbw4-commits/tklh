@@ -243,15 +243,22 @@ const Checkout = () => {
                      value={booking.package?.name ?? "—"} muted />
                 <Row label={t("checkout.eventDate")} value={fmtDate(booking.event_date)} muted />
                 <hr className="border-border" />
-                <Row label={t("checkout.subtotal")} value={`${fmtNumber(split.amount)} ${cur}`} />
+                <Row label={t("checkout.basePrice")} value={`${fmtNumber(split.amount)} ${cur}`} />
                 <Row label={t("checkout.platformFee", { pct: commissionPercent })} value={`${fmtNumber(split.platformFee)} ${cur}`} muted small />
                 <Row label={t("checkout.vat", { pct: vatPercent })} value={`${fmtNumber(split.vat)} ${cur}`} />
+                <div className="text-[10px] text-foreground/55">
+                  {t("checkout.vatNumber")}: <span className="font-mono">{vatNumber}</span>
+                </div>
                 <hr className="border-border" />
-                <Row label={t("checkout.total")} value={`${fmtNumber(split.total)} ${cur}`} bold />
+                <Row label={t("checkout.finalTotal")} value={`${fmtNumber(split.total)} ${cur}`} bold />
               </div>
 
-              <Button onClick={handlePay} disabled={submitting}
-                className="mt-6 h-12 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
+              <div className="mt-5">
+                <TermsCheckbox checked={acceptedTos} onCheckedChange={setAcceptedTos} id="checkout-tos" />
+              </div>
+
+              <Button onClick={handlePay} disabled={submitting || !acceptedTos}
+                className="mt-4 h-12 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
                 {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : t("checkout.payNow")}
               </Button>
 
