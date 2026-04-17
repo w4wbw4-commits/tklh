@@ -255,36 +255,48 @@ export type Database = {
       packages: {
         Row: {
           active: boolean
+          approval_status: Database["public"]["Enums"]["approval_status"]
           created_at: string
           description: string | null
           id: string
           includes: string[]
           name: string
           price: number
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
           tier: Database["public"]["Enums"]["package_tier"]
           updated_at: string
           vendor_id: string
         }
         Insert: {
           active?: boolean
+          approval_status?: Database["public"]["Enums"]["approval_status"]
           created_at?: string
           description?: string | null
           id?: string
           includes?: string[]
           name: string
           price: number
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           tier?: Database["public"]["Enums"]["package_tier"]
           updated_at?: string
           vendor_id: string
         }
         Update: {
           active?: boolean
+          approval_status?: Database["public"]["Enums"]["approval_status"]
           created_at?: string
           description?: string | null
           id?: string
           includes?: string[]
           name?: string
           price?: number
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           tier?: Database["public"]["Enums"]["package_tier"]
           updated_at?: string
           vendor_id?: string
@@ -673,6 +685,7 @@ export type Database = {
       vendors: {
         Row: {
           active: boolean
+          approval_status: Database["public"]["Enums"]["approval_status"]
           bio: string | null
           business_name: string
           category: Database["public"]["Enums"]["vendor_category"]
@@ -680,9 +693,15 @@ export type Database = {
           commercial_register_url: string | null
           created_at: string
           daily_capacity: number
+          google_maps_url: string | null
+          iban: string | null
+          iban_certificate_url: string | null
           id: string
           phone: string | null
           portfolio_urls: string[]
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
           starting_price: number
           updated_at: string
           user_id: string
@@ -690,6 +709,7 @@ export type Database = {
         }
         Insert: {
           active?: boolean
+          approval_status?: Database["public"]["Enums"]["approval_status"]
           bio?: string | null
           business_name: string
           category: Database["public"]["Enums"]["vendor_category"]
@@ -697,9 +717,15 @@ export type Database = {
           commercial_register_url?: string | null
           created_at?: string
           daily_capacity?: number
+          google_maps_url?: string | null
+          iban?: string | null
+          iban_certificate_url?: string | null
           id?: string
           phone?: string | null
           portfolio_urls?: string[]
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           starting_price?: number
           updated_at?: string
           user_id: string
@@ -707,6 +733,7 @@ export type Database = {
         }
         Update: {
           active?: boolean
+          approval_status?: Database["public"]["Enums"]["approval_status"]
           bio?: string | null
           business_name?: string
           category?: Database["public"]["Enums"]["vendor_category"]
@@ -714,9 +741,15 @@ export type Database = {
           commercial_register_url?: string | null
           created_at?: string
           daily_capacity?: number
+          google_maps_url?: string | null
+          iban?: string | null
+          iban_certificate_url?: string | null
           id?: string
           phone?: string | null
           portfolio_urls?: string[]
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           starting_price?: number
           updated_at?: string
           user_id?: string
@@ -759,6 +792,7 @@ export type Database = {
     }
     Enums: {
       app_role: "customer" | "vendor" | "admin"
+      approval_status: "pending_approval" | "approved" | "rejected"
       availability_status: "blocked" | "booked" | "pending"
       booking_status:
         | "pending"
@@ -923,6 +957,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["customer", "vendor", "admin"],
+      approval_status: ["pending_approval", "approved", "rejected"],
       availability_status: ["blocked", "booked", "pending"],
       booking_status: [
         "pending",

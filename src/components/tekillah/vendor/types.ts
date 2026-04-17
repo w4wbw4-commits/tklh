@@ -13,6 +13,8 @@ export const TIER_LABELS: Record<string, string> = {
   royal: "رويال",
 };
 
+export type ApprovalStatus = "pending_approval" | "approved" | "rejected";
+
 export interface VendorRow {
   id: string;
   user_id: string;
@@ -23,10 +25,15 @@ export interface VendorRow {
   phone: string | null;
   portfolio_urls: string[];
   commercial_register_url: string | null;
+  iban: string | null;
+  iban_certificate_url: string | null;
+  google_maps_url: string | null;
   daily_capacity: number;
   starting_price: number;
   verified: boolean;
   active: boolean;
+  approval_status: ApprovalStatus;
+  rejection_reason: string | null;
 }
 
 export interface PackageRow {
@@ -38,6 +45,8 @@ export interface PackageRow {
   description: string | null;
   includes: string[];
   active: boolean;
+  approval_status: ApprovalStatus;
+  rejection_reason: string | null;
 }
 
 export interface AvailabilityRow {

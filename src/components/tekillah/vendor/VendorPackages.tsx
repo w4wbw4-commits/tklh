@@ -11,7 +11,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Plus, Trash2, Crown, Star, Sparkles } from "lucide-react";
+import { Loader2, Plus, Trash2, Crown, Star, Sparkles, Clock, CheckCircle2, XCircle } from "lucide-react";
 import { TIER_LABELS, type PackageRow } from "./types";
 
 const TIER_ICONS = { basic: Star, premium: Sparkles, royal: Crown };
@@ -168,7 +168,13 @@ export const VendorPackages = ({ vendorId }: Props) => {
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
-                <div className="mt-4 font-arabic text-lg font-semibold text-foreground">{p.name}</div>
+                <div className="mt-3"><PkgStatusBadge status={p.approval_status} /></div>
+                {p.approval_status === "rejected" && p.rejection_reason && (
+                  <div className="mt-2 rounded-lg border border-destructive/30 bg-destructive/5 p-2 text-xs text-destructive">
+                    سبب الرفض: {p.rejection_reason}
+                  </div>
+                )}
+                <div className="mt-3 font-arabic text-lg font-semibold text-foreground">{p.name}</div>
                 <div className="mt-2 font-arabic text-2xl font-semibold text-primary">
                   {Number(p.price).toLocaleString("ar-SA")} <span className="text-sm font-normal text-foreground/60">ر.س</span>
                 </div>
@@ -189,4 +195,14 @@ export const VendorPackages = ({ vendorId }: Props) => {
       )}
     </div>
   );
+};
+
+const PkgStatusBadge = ({ status }: { status: "pending_approval" | "approved" | "rejected" }) => {
+  if (status === "approved") {
+    return <Badge className="gap-1 bg-emerald-500/15 text-emerald-700 hover:bg-emerald-500/20 text-[10px]"><CheckCircle2 className="h-3 w-3" /> موافَق عليها — ظاهرة للعملاء</Badge>;
+  }
+  if (status === "rejected") {
+    return <Badge className="gap-1 bg-destructive/15 text-destructive hover:bg-destructive/20 text-[10px]"><XCircle className="h-3 w-3" /> مرفوضة</Badge>;
+  }
+  return <Badge className="gap-1 bg-amber-500/15 text-amber-700 hover:bg-amber-500/20 text-[10px]"><Clock className="h-3 w-3" /> قيد المراجعة — غير ظاهرة</Badge>;
 };
