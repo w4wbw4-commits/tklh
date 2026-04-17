@@ -8,9 +8,11 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
+import { TermsCheckbox } from "@/components/tekillah/TermsCheckbox";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { fmtNumber, fmtDate } from "@/i18n/format";
+import { recordTermsAcceptance } from "@/lib/terms";
 import type { Database } from "@/integrations/supabase/types";
 
 type Booking = Database["public"]["Tables"]["bookings"]["Row"] & {
@@ -44,7 +46,9 @@ const Checkout = () => {
   const [method, setMethod] = useState<PaymentMethodKey>("mada");
   const [vatPercent, setVatPercent] = useState(15);
   const [commissionPercent, setCommissionPercent] = useState(12);
+  const [vatNumber, setVatNumber] = useState<string>("3000000000003");
   const [submitting, setSubmitting] = useState(false);
+  const [acceptedTos, setAcceptedTos] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) navigate(`/auth?redirect=/checkout/${bookingId}`, { replace: true });
@@ -60,12 +64,14 @@ const Checkout = () => {
           .select("*, vendor:vendors(business_name, category), package:packages(name)")
           .eq("id", bookingId)
           .maybeSingle(),
-        supabase.from("platform_settings").select("vat_percent, commission_percent").maybeSingle(),
+        supabase.from("platform_settings").select("vat_percent, commission_percent, vat_number").maybeSingle(),
       ]);
       setBooking(b as unknown as Booking | null);
       if (s) {
         setVatPercent(Number(s.vat_percent));
         setCommissionPercent(Number(s.commission_percent));
+        const sAny = s as unknown as { vat_number?: string | null };
+        if (sAny.vat_number) setVatNumber(sAny.vat_number);
       }
       setLoading(false);
     })();
@@ -82,7 +88,12 @@ const Checkout = () => {
 
   const handlePay = async () => {
     if (!user || !booking) return;
+    if (!acceptedTos) {
+      toast.error(t("terms.mustAccept"));
+      return;
+    }
     setSubmitting(true);
+    await recordTermsAcceptance(user.id, "booking", booking.id);
     const { error } = await supabase.from("payments").insert({
       booking_id: booking.id,
       customer_id: user.id,
@@ -232,15 +243,22 @@ const Checkout = () => {
                      value={booking.package?.name ?? "—"} muted />
                 <Row label={t("checkout.eventDate")} value={fmtDate(booking.event_date)} muted />
                 <hr className="border-border" />
-                <Row label={t("checkout.subtotal")} value={`${fmtNumber(split.amount)} ${cur}`} />
+                <Row label={t("checkout.basePrice")} value={`${fmtNumber(split.amount)} ${cur}`} />
                 <Row label={t("checkout.platformFee", { pct: commissionPercent })} value={`${fmtNumber(split.platformFee)} ${cur}`} muted small />
                 <Row label={t("checkout.vat", { pct: vatPercent })} value={`${fmtNumber(split.vat)} ${cur}`} />
+                <div className="text-[10px] text-foreground/55">
+                  {t("checkout.vatNumber")}: <span className="font-mono">{vatNumber}</span>
+                </div>
                 <hr className="border-border" />
-                <Row label={t("checkout.total")} value={`${fmtNumber(split.total)} ${cur}`} bold />
+                <Row label={t("checkout.finalTotal")} value={`${fmtNumber(split.total)} ${cur}`} bold />
               </div>
 
-              <Button onClick={handlePay} disabled={submitting}
-                className="mt-6 h-12 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
+              <div className="mt-5">
+                <TermsCheckbox checked={acceptedTos} onCheckedChange={setAcceptedTos} id="checkout-tos" />
+              </div>
+
+              <Button onClick={handlePay} disabled={submitting || !acceptedTos}
+                className="mt-4 h-12 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
                 {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : t("checkout.payNow")}
               </Button>
 

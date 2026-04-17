@@ -18,6 +18,7 @@
     "yes": "Yes",
     "no": "No",
     "or": "or",
+    "and": "and",
     "currency": "SAR",
     "guests": "guests",
     "day": "day",
@@ -542,9 +543,12 @@
     "summary": "Order summary",
     "eventDate": "Event date",
     "subtotal": "Subtotal",
+    "basePrice": "Base price",
     "vat": "VAT ({{pct}}%)",
-    "platformFee": "Platform fee ({{pct}}%)",
+    "vatNumber": "VAT registration no.",
+    "platformFee": "Platform service fee ({{pct}}%)",
     "total": "Total due",
+    "finalTotal": "Final total",
     "payNow": "Pay now",
     "payFailed": "Payment failed",
     "paySuccess": "Payment received successfully",
@@ -614,6 +618,22 @@
     "tabReviews": "Reviews",
     "tabModeration": "Pending reports",
     "tabVerification": "Verification queue",
+    "grand": {
+      "title": "Grand control overview",
+      "subtitle": "Live snapshot of pending docs, flagged content, and system health.",
+      "customers": "Customers",
+      "vendors": "Vendors",
+      "activeBookings": "Active bookings",
+      "pendingDocs": "Pending docs",
+      "flagged": "Flagged",
+      "pendingDocsHeading": "Documents awaiting review",
+      "flaggedHeading": "Flagged content",
+      "noPendingDocs": "All caught up — no documents waiting.",
+      "noFlagged": "No flagged content right now.",
+      "iban": "IBAN cert",
+      "cr": "CR doc",
+      "viewAll": "View all"
+    },
     "verify": {
       "title": "Vendor verification queue",
       "subtitle": "Review vendor documents and new packages before they go live for customers.",
@@ -735,5 +755,30 @@
   },
   "moderation": {
     "profanityBlocked": "Sorry, this comment can't be posted because it contains inappropriate language. Please keep things professional."
+  },
+  "terms": {
+    "tosTitle": "Terms of Service",
+    "privacyTitle": "Privacy Policy",
+    "tosLink": "Terms of Service",
+    "privacyLink": "Privacy Policy",
+    "agreePrefix": "I have read and agree to the",
+    "mustAccept": "You must accept the Terms of Service & Privacy Policy to continue.",
+    "lastUpdated": "Last updated: {{date}}",
+    "tosBody": [
+      "Welcome to Tekillah. By using our platform you agree to these Terms. Tekillah is a Saudi-based marketplace that connects customers with verified event vendors.",
+      "Bookings are confirmed once the customer pays through our secure escrow system. Funds are held until the service is delivered, then released to the vendor net of platform fees and applicable VAT.",
+      "Vendors must provide accurate business information, a valid IBAN certificate, and a Commercial Register or Freelance Work Document. Submissions are reviewed by our team before going live.",
+      "Customers and vendors agree to behave professionally. Reviews, replies, and any user-generated content must comply with our content guidelines. Tekillah may remove content or suspend accounts that violate these standards.",
+      "Refunds and disputes are handled in line with the escrow rules and Saudi consumer protection law. Contact support for assistance.",
+      "These Terms may be updated from time to time. Continued use after an update constitutes acceptance of the new Terms."
+    ],
+    "privacyBody": [
+      "This Privacy Policy explains how Tekillah collects and uses your data. We collect only what we need to operate the platform: account info, contact details, booking history, and payment metadata.",
+      "Vendor banking documents (IBAN certificate) and business documents are stored in private, encrypted storage and are accessible only to authorised admin reviewers.",
+      "We never sell your personal data. We share data with payment partners (Mada, STC Pay, Apple Pay providers) strictly for processing transactions.",
+      "You have the right to access, correct, or request deletion of your data. Contact our team to exercise these rights.",
+      "We retain transaction and tax records as required by Saudi tax and accounting laws.",
+      "Cookies and analytics are used only to improve performance and detect abuse — never for third-party advertising."
+    ]
   }
 }

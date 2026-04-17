@@ -115,7 +115,7 @@ export const InvitationDialog = ({ open, onOpenChange, event }: Props) => {
           <TabsContent value="ai" className="mt-6">
             <div className="flex flex-col items-center gap-4">
               {aiImage ? (
-                <img src={aiImage} alt={t("customer.invitation.altAi")}
+                <img src={aiImage} alt={t("customer.invitation.altAi")} loading="lazy" decoding="async"
                   className="aspect-[3/4] w-full max-w-xs rounded-3xl border border-border object-cover shadow-luxury" />
               ) : (
                 <div className="grid aspect-[3/4] w-full max-w-xs place-items-center rounded-3xl border border-dashed border-border bg-card p-6 text-center text-sm text-foreground/60">

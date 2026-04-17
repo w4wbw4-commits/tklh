@@ -216,7 +216,7 @@ export const AdminVerificationQueue = () => {
                         </div>
                         <div className="flex gap-2 overflow-x-auto">
                           {v.portfolio_urls.slice(0, 6).map((u) => (
-                            <img key={u} src={u} alt="" className="h-16 w-16 rounded-lg object-cover" />
+                            <img key={u} src={u} alt="" loading="lazy" decoding="async" className="h-16 w-16 rounded-lg object-cover" />
                           ))}
                         </div>
                       </div>
