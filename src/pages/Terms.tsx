@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
+
+interface TosSection { title: string; body: string; }
 
 const Terms = () => {
   const { t, i18n } = useTranslation();
@@ -13,6 +15,8 @@ const Terms = () => {
   useEffect(() => {
     document.title = `${t("terms.tosTitle")} · Tekillah`;
   }, [t]);
+
+  const sections = (t("terms.tosSections", { returnObjects: true }) as TosSection[]) || [];
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -26,14 +30,26 @@ const Terms = () => {
       </header>
 
       <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-        <h1 className="font-arabic text-3xl font-semibold text-foreground sm:text-4xl">
-          {t("terms.tosTitle")}
-        </h1>
-        <p className="mt-2 text-sm text-foreground/60">{t("terms.lastUpdated", { date: "April 2026" })}</p>
+        <div className="flex items-start gap-4">
+          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
+            <ScrollText className="h-5 w-5" />
+          </div>
+          <div>
+            <h1 className="font-arabic text-3xl font-semibold text-foreground sm:text-4xl">{t("terms.tosTitle")}</h1>
+            <p className="mt-2 text-sm text-foreground/60">{t("terms.lastUpdated", { date: "April 2026" })}</p>
+          </div>
+        </div>
 
-        <article className="prose prose-sm mt-8 max-w-none space-y-5 text-foreground/80">
-          {(t("terms.tosBody", { returnObjects: true }) as string[]).map((p, i) => (
-            <p key={i} className="leading-relaxed">{p}</p>
+        <p className="mt-8 rounded-2xl border border-border bg-card p-5 text-[15px] leading-relaxed text-foreground/80 shadow-card">
+          {t("terms.tosIntro")}
+        </p>
+
+        <article className="mt-8 space-y-6">
+          {sections.map((s, i) => (
+            <section key={i} className="rounded-2xl border border-border bg-card p-6 shadow-card">
+              <h2 className="font-arabic text-lg font-semibold text-primary-deep">{s.title}</h2>
+              <p className="mt-2 text-[15px] leading-relaxed text-foreground/80">{s.body}</p>
+            </section>
           ))}
         </article>
       </main>

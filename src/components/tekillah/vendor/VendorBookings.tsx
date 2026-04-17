@@ -64,10 +64,11 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
           <Loader2 className="h-5 w-5 animate-spin text-primary" />
         </div>
       ) : list.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-border bg-card p-12 text-center text-sm text-foreground/55">
-          <Clock className="mx-auto mb-2 h-6 w-6" />
-          {t("vendor.bookings.empty")}
-        </div>
+        <EmptyState
+          icon={Inbox}
+          title={t("vendor.bookings.empty")}
+          description={t("vendor.bookings.emptyDesc")}
+        />
       ) : (
         <div className="space-y-3">
           {list.map((b, i) => (

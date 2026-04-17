@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Loader2, ShieldAlert, Wallet, TrendingUp, Lock, ListChecks,
-  CheckCircle2, Clock, LogOut, Receipt, Star, Flag, ShieldCheck,
+  CheckCircle2, LogOut, Receipt, Star, Flag, ShieldCheck, Percent, HandCoins, Inbox,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
@@ -22,6 +22,7 @@ import { AdminReviewsPanel } from "@/components/tekillah/admin/AdminReviewsPanel
 import { AdminModerationQueue } from "@/components/tekillah/admin/AdminModerationQueue";
 import { AdminVerificationQueue } from "@/components/tekillah/admin/AdminVerificationQueue";
 import { AdminGrandControl } from "@/components/tekillah/admin/AdminGrandControl";
+import { EmptyState } from "@/components/tekillah/EmptyState";
 
 interface PaymentRow {
   id: string;
@@ -125,10 +126,13 @@ const Admin = () => {
     );
   }
 
-  const totalRevenue = payments.reduce((s, p) => s + Number(p.total_charged ?? 0), 0);
-  const heldFunds = payments.filter((p) => p.status === "held").reduce((s, p) => s + Number(p.vendor_net ?? 0), 0);
-  const platformProfit = payments.reduce((s, p) => s + Number(p.platform_fee ?? 0), 0);
-  const totalBookings = bookings.length;
+  // Financial split: separate VAT, platform commission, and vendor net payouts
+  const totalRevenue   = payments.reduce((s, p) => s + Number(p.total_charged ?? 0), 0);
+  const heldFunds      = payments.filter((p) => p.status === "held").reduce((s, p) => s + Number(p.vendor_net ?? 0), 0);
+  const platformProfit = payments.reduce((s, p) => s + Number(p.platform_fee ?? 0), 0);   // commission only, excl VAT
+  const vatCollected   = payments.reduce((s, p) => s + Number(p.vat_amount ?? 0), 0);     // 15% VAT line item
+  const vendorPayouts  = payments.reduce((s, p) => s + Number(p.vendor_net ?? 0), 0);     // net to vendors
+  const totalBookings  = bookings.length;
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -157,10 +161,12 @@ const Admin = () => {
         </motion.div>
 
         {/* KPIs — always visible above every tab */}
-        <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           <Kpi icon={TrendingUp} label={t("admin.totalRevenue")} value={`${fmtNumber(totalRevenue)} ${t("common.currency")}`} highlight />
-          <Kpi icon={Lock} label={t("admin.heldFunds")} value={`${fmtNumber(heldFunds)} ${t("common.currency")}`} />
-          <Kpi icon={Wallet} label={t("admin.platformProfit")} value={`${fmtNumber(platformProfit)} ${t("common.currency")}`} />
+          <Kpi icon={Percent}    label={t("admin.platformProfit")} value={`${fmtNumber(platformProfit)} ${t("common.currency")}`} />
+          <Kpi icon={Receipt}    label={t("admin.vatCollected")} value={`${fmtNumber(vatCollected)} ${t("common.currency")}`} />
+          <Kpi icon={HandCoins}  label={t("admin.vendorPayouts")} value={`${fmtNumber(vendorPayouts)} ${t("common.currency")}`} />
+          <Kpi icon={Lock}       label={t("admin.heldFunds")} value={`${fmtNumber(heldFunds)} ${t("common.currency")}`} />
           <Kpi icon={ListChecks} label={t("admin.totalBookings")} value={fmtNumber(totalBookings)} />
         </div>
 
@@ -197,7 +203,7 @@ const Admin = () => {
               {loading ? (
                 <Spinner />
               ) : payments.length === 0 ? (
-                <Empty msg={t("admin.noPayments")} />
+                <EmptyState icon={Receipt} title={t("admin.noPayments")} description={t("admin.noPaymentsDesc")} />
               ) : (
                 <div className="space-y-3">
                   {payments.map((p) => (
@@ -258,7 +264,7 @@ const Admin = () => {
               {loading ? (
                 <Spinner />
               ) : bookings.length === 0 ? (
-                <Empty msg={t("admin.noBookings")} />
+                <EmptyState icon={Inbox} title={t("admin.noBookings")} description={t("admin.noBookingsDesc")} />
               ) : (
                 <div className="space-y-3">
                   {bookings.map((b) => (
@@ -325,12 +331,6 @@ const Field = ({ label, value, highlight }: { label: string; value: string; high
 const Spinner = () => (
   <div className="grid place-items-center rounded-2xl border border-border bg-card p-12">
     <Loader2 className="h-5 w-5 animate-spin text-primary" />
-  </div>
-);
-const Empty = ({ msg }: { msg: string }) => (
-  <div className="rounded-2xl border border-dashed border-border bg-card p-12 text-center text-sm text-foreground/55">
-    <Clock className="mx-auto mb-2 h-6 w-6" />
-    {msg}
   </div>
 );
 

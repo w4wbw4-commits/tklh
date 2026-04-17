@@ -256,6 +256,7 @@
       "title": "Booking requests",
       "subtitle": "Review incoming requests, confirm or decline. Confirmed dates lock your calendar automatically.",
       "empty": "No booking requests yet.",
+      "emptyDesc": "Once a customer reserves your service, their request will appear here so you can confirm and lock the date.",
       "eventDate": "Event date",
       "guests": "Guests",
       "amount": "Amount",
@@ -391,7 +392,9 @@
       "outOf": "of {{total}}",
       "yourBookings": "Your bookings",
       "vendorCount": "{{count}} vendors",
-      "noBookings": "No bookings yet. Browse vendors and add services.",
+      "noBookings": "No bookings yet — start planning your night!",
+      "noBookingsDesc": "Browse trusted vendors and reserve your favourite venue, catering, photographer and more in just a few taps.",
+      "noBookingsCta": "Plan your night now",
       "vendorFallback": "Vendor",
       "serviceFallback": "Service",
       "fullyPaid": "Paid 💰",
@@ -468,6 +471,7 @@
       "progress": "Payment progress",
       "invoices": "Invoices",
       "empty": "No invoices yet.",
+      "emptyDesc": "Once you reserve a service, your booking summaries and downloadable invoices will appear here.",
       "fullyPaid": "Fully paid",
       "paidPartial": "Paid: {{amount}}",
       "unpaid": "Unpaid",
@@ -596,7 +600,11 @@
     "tabPayments": "Payments",
     "tabBookings": "Bookings",
     "noPayments": "No payments yet.",
+    "noPaymentsDesc": "Once a customer pays for a booking, transactions and escrow status will appear here.",
     "noBookings": "No bookings yet.",
+    "noBookingsDesc": "Bookings will show up here as soon as customers start reserving services on the platform.",
+    "vendorPayouts": "Vendor Payouts (Net)",
+    "vatCollected": "VAT Collected (15%)",
     "amount": "Amount",
     "vat": "VAT",
     "fee": "Platform fee",
@@ -695,7 +703,8 @@
     "alreadyRated": "Reviewed",
     "topRated": "Top Rated",
     "new": "New",
-    "empty": "No reviews yet. Be the first to share your experience.",
+    "empty": "Be the first to review this vendor.",
+    "emptyDesc": "Share your honest experience to help other Tekillah customers choose with confidence.",
     "anonymous": "Anonymous customer",
     "deleteBtn": "Delete",
     "dialog": {
@@ -766,21 +775,25 @@
     "agreePrefix": "I have read and agree to the",
     "mustAccept": "You must accept the Terms of Service & Privacy Policy to continue.",
     "lastUpdated": "Last updated: {{date}}",
-    "tosBody": [
-      "Welcome to Tekillah. By using our platform you agree to these Terms. Tekillah is a Saudi-based marketplace that connects customers with verified event vendors.",
-      "Bookings are confirmed once the customer pays through our secure escrow system. Funds are held until the service is delivered, then released to the vendor net of platform fees and applicable VAT.",
-      "Vendors must provide accurate business information, a valid IBAN certificate, and a Commercial Register or Freelance Work Document. Submissions are reviewed by our team before going live.",
-      "Customers and vendors agree to behave professionally. Reviews, replies, and any user-generated content must comply with our content guidelines. Tekillah may remove content or suspend accounts that violate these standards.",
-      "Refunds and disputes are handled in line with the escrow rules and Saudi consumer protection law. Contact support for assistance.",
-      "These Terms may be updated from time to time. Continued use after an update constitutes acceptance of the new Terms."
+    "tosIntro": "Please read these Terms carefully before using Tekillah. They govern your access to and use of our platform, including all bookings, payments, and content.",
+    "tosSections": [
+      { "title": "1. About Tekillah", "body": "Tekillah is a Saudi-based marketplace that connects customers with verified event vendors — wedding halls, catering, photography, decor, transportation and more. We facilitate discovery, booking, secure payment, and post-event reviews." },
+      { "title": "2. Bookings & Escrow", "body": "Bookings are confirmed once the customer pays through our secure escrow system. Funds are held by Tekillah until the service is delivered, and are then released to the vendor net of platform fees and applicable VAT (15%). Escrow protects both parties from non-delivery and disputes." },
+      { "title": "3. Vendor Verification", "body": "Vendors must provide accurate business information, a valid IBAN certificate, and a Commercial Register or Freelance Work Document. All submissions are reviewed by Tekillah's compliance team before going live. Vendors that misrepresent their business may be permanently suspended." },
+      { "title": "4. Customer Conduct & Content", "body": "Customers and vendors agree to behave professionally. Reviews, replies, and any user-generated content must comply with our content guidelines. Tekillah reserves the right to remove content or suspend accounts that violate these standards." },
+      { "title": "5. Refunds & Disputes", "body": "Refunds and disputes are handled in line with the escrow rules and Saudi consumer-protection law. If a vendor cancels a confirmed booking, the customer is eligible for a full refund. For other cases, contact our support team within 14 days of the event." },
+      { "title": "6. Fees & VAT", "body": "Tekillah charges a transparent platform fee on each booking, and applies VAT at the statutory rate (currently 15%). All fees are shown clearly at checkout before payment is confirmed." },
+      { "title": "7. Updates to These Terms", "body": "These Terms may be updated from time to time. We'll notify users of material changes by email or in-app notification. Continued use of Tekillah after an update constitutes acceptance of the new Terms." }
     ],
-    "privacyBody": [
-      "This Privacy Policy explains how Tekillah collects and uses your data. We collect only what we need to operate the platform: account info, contact details, booking history, and payment metadata.",
-      "Vendor banking documents (IBAN certificate) and business documents are stored in private, encrypted storage and are accessible only to authorised admin reviewers.",
-      "We never sell your personal data. We share data with payment partners (Mada, STC Pay, Apple Pay providers) strictly for processing transactions.",
-      "You have the right to access, correct, or request deletion of your data. Contact our team to exercise these rights.",
-      "We retain transaction and tax records as required by Saudi tax and accounting laws.",
-      "Cookies and analytics are used only to improve performance and detect abuse — never for third-party advertising."
+    "privacyIntro": "This Privacy Policy explains how Tekillah collects, uses, and safeguards your data in line with Saudi PDPL and international best practice.",
+    "privacySections": [
+      { "title": "1. Data We Collect", "body": "We collect only what we need to operate the platform: account info (name, email, phone), booking history, payment metadata (we never store full card numbers), and vendor onboarding documents." },
+      { "title": "2. How We Use Your Data", "body": "We use your data to operate the marketplace, process payments, send transactional notifications (booking, payment, review activity), enforce platform safety, and comply with Saudi tax and accounting laws." },
+      { "title": "3. Vendor Documents", "body": "Vendor banking documents (IBAN certificate) and business documents (Commercial Register / Freelance Work Document) are stored in private, encrypted storage and are accessible only to authorised admin reviewers." },
+      { "title": "4. Sharing With Third Parties", "body": "We never sell your personal data. We share data only with payment partners (Mada, STC Pay, Apple Pay providers) strictly for processing transactions, and with Saudi tax authorities as required by law." },
+      { "title": "5. Your Rights", "body": "You have the right to access, correct, or request deletion of your personal data. You can also request a copy of your data. Contact our support team to exercise these rights." },
+      { "title": "6. Retention", "body": "We retain transaction and tax records as required by Saudi tax and accounting laws (typically up to 10 years). Account data is deleted on request, except where retention is legally required." },
+      { "title": "7. Cookies & Analytics", "body": "Cookies and analytics are used only to improve performance and detect abuse — never for third-party advertising or behavioural tracking." }
     ]
   }
 }
