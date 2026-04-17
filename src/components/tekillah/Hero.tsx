@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Sparkles } from "lucide-react";
-import heroImage from "@/assets/hero-tekillah-luxury.jpg";
+import heroImage from "@/assets/hero-tekillah-celebration.jpg";
 import { useTranslation } from "react-i18next";
 
 export const Hero = () => {
