@@ -62,7 +62,9 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="font-display text-balance text-[88px] font-bold leading-[0.95] text-primary-deep sm:text-[120px] md:text-[150px] lg:text-[180px]"
+            className="font-wordmark text-balance text-[88px] font-bold leading-[1.15] text-primary-deep sm:text-[120px] md:text-[150px] lg:text-[180px]"
+            lang="ar"
+            dir="rtl"
             style={{
               color: "hsl(var(--primary-deep))",
               textShadow:

@@ -143,11 +143,20 @@
     text-shadow: 0 1px 10px hsl(60 14% 98% / 0.7);
   }
   .font-display {
-    font-family: 'Reem Kufi', 'IBM Plex Sans Arabic', system-ui, sans-serif;
-    font-feature-settings: "kern", "liga";
-    letter-spacing: -0.01em;
+    /* Amiri = elegant Naskh with crystal-clear final ه (no dots) and proper tashkeel positioning */
+    font-family: 'Amiri', 'Reem Kufi', 'IBM Plex Sans Arabic', system-ui, serif;
+    font-feature-settings: "kern", "liga", "mark", "mkmk", "calt";
+    letter-spacing: 0.02em;
+  }
+  .font-wordmark {
+    /* Hero brand name — extra breathing room so Shadda + Kasra never collide with letters */
+    font-family: 'Amiri', 'Reem Kufi', 'IBM Plex Sans Arabic', system-ui, serif;
+    font-feature-settings: "kern", "liga", "mark", "mkmk", "calt";
+    letter-spacing: 0.04em;
+    font-variant-ligatures: contextual;
   }
   .font-tagline {
     font-family: 'Amiri', 'IBM Plex Sans Arabic', serif;
+    font-feature-settings: "kern", "liga", "mark", "mkmk";
   }
 }
