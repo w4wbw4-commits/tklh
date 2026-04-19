@@ -58,17 +58,18 @@ export const Hero = () => {
             }}
           />
 
-          {/* Brand wordmark — تِكِلّه in Amiri, perfectly centered with breathing room for tashkeel */}
+          {/* Brand wordmark — تِكِلّه in bold geometric Kufic, blocky and impactful */}
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="font-wordmark text-balance text-center text-[84px] font-bold leading-[1.35] text-primary-deep sm:text-[116px] md:text-[144px] lg:text-[172px]"
+            className="font-wordmark text-balance text-center text-[88px] font-black leading-[1.25] text-primary-deep sm:text-[124px] md:text-[156px] lg:text-[188px]"
             lang="ar"
             dir="rtl"
             style={{
               color: "hsl(var(--primary-deep))",
-              letterSpacing: "0.06em",
+              fontWeight: 800,
+              letterSpacing: "-0.01em",
               textShadow:
                 "0 2px 28px hsl(60 14% 98% / 0.9), 0 1px 4px hsl(60 14% 98% / 0.75), 0 0 1px hsl(var(--primary-deep) / 0.25)",
             }}
