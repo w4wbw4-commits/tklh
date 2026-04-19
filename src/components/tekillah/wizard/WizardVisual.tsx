@@ -1,10 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import step1Img from "@/assets/wizard-step-1-details.jpg";
-import step2Img from "@/assets/wizard-step-4-services.jpg";
-import step3Img from "@/assets/wizard-step-2-vision.jpg";
-import step4Img from "@/assets/wizard-step-3-budget.jpg";
-import step5Img from "@/assets/wizard-step-5-vendors.jpg";
+// Order matches PlanningWizard steps: details → services → vision → budget → vendors
+import detailsImg from "@/assets/wizard-step-1-details.jpg";
+import servicesImg from "@/assets/wizard-step-4-services.jpg";
+import visionImg from "@/assets/wizard-step-2-vision.jpg";
+import budgetImg from "@/assets/wizard-step-3-budget.jpg";
+import vendorsImg from "@/assets/wizard-step-5-vendors.jpg";
 import finalImg from "@/assets/wizard-step-6-celebration.jpg";
 
 /**
@@ -14,11 +15,11 @@ import finalImg from "@/assets/wizard-step-6-celebration.jpg";
  * surfaced on a success screen in the future).
  */
 const visuals = [
-  { src: step1Img, captionKey: "wizard.visuals.step1Caption" },
-  { src: step2Img, captionKey: "wizard.visuals.step2Caption" },
-  { src: step3Img, captionKey: "wizard.visuals.step3Caption" },
-  { src: step4Img, captionKey: "wizard.visuals.step4Caption" },
-  { src: step5Img, captionKey: "wizard.visuals.step5Caption" },
+  { src: detailsImg, captionKey: "wizard.visuals.step1Caption" },
+  { src: servicesImg, captionKey: "wizard.visuals.step2Caption" },
+  { src: visionImg, captionKey: "wizard.visuals.step3Caption" },
+  { src: budgetImg, captionKey: "wizard.visuals.step4Caption" },
+  { src: vendorsImg, captionKey: "wizard.visuals.step5Caption" },
 ];
 
 interface Props {
