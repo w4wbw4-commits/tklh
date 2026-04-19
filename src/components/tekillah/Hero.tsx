@@ -8,7 +8,7 @@ export const Hero = () => {
   const { t } = useTranslation();
   return (
     <section id="home" className="relative min-h-screen w-full overflow-hidden bg-background">
-      {/* Background: lightly-blurred celebration scene — 70% clarity */}
+      {/* Background: celebration scene at 80% clarity (only ~20% blur) */}
       <div className="absolute inset-0">
         <img
           src={heroImage}
@@ -18,13 +18,13 @@ export const Hero = () => {
           loading="eager"
           fetchPriority="high"
           decoding="async"
-          className="h-full w-full scale-[1.03] object-cover"
-          style={{ filter: "blur(4px) saturate(1.05)" }}
+          className="h-full w-full scale-[1.02] object-cover"
+          style={{ filter: "blur(1.5px) saturate(1.08)" }}
         />
-        {/* Light cream wash — keeps palette warm without hiding decor */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/35 via-background/25 to-background" />
+        {/* Lighter cream wash — lets the celebration details show through */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/10 to-background/95" />
         {/* Centre olive vignette for depth + edge focus */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_45%,_hsl(var(--primary-deep)/0.18)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_55%,_hsl(var(--primary-deep)/0.22)_100%)]" />
         {/* Smooth fade-out into next section */}
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       </div>
@@ -45,16 +45,16 @@ export const Hero = () => {
 
         {/* Glass scrim — soft off-white blur, low opacity, feathered edges */}
         <div className="relative mx-auto inline-flex flex-col items-center px-10 py-8 sm:px-16 sm:py-10 text-center">
-          {/* Frosted off-white card with feathered radial mask */}
+          {/* Frosted off-white card with feathered radial mask — slightly stronger to keep wordmark crisp on clearer bg */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 -z-10 rounded-[3rem] border border-primary/10"
+            className="pointer-events-none absolute inset-0 -z-10 rounded-[3rem] border border-primary/15"
             style={{
               background:
-                "radial-gradient(ellipse at center, hsl(60 14% 98% / 0.55) 0%, hsl(60 14% 98% / 0.32) 60%, hsl(60 14% 98% / 0) 100%)",
-              backdropFilter: "blur(14px) saturate(1.05)",
-              WebkitBackdropFilter: "blur(14px) saturate(1.05)",
-              boxShadow: "0 30px 80px -40px hsl(82 45% 18% / 0.18)",
+                "radial-gradient(ellipse at center, hsl(60 14% 98% / 0.72) 0%, hsl(60 14% 98% / 0.45) 60%, hsl(60 14% 98% / 0) 100%)",
+              backdropFilter: "blur(18px) saturate(1.08)",
+              WebkitBackdropFilter: "blur(18px) saturate(1.08)",
+              boxShadow: "0 30px 80px -40px hsl(82 45% 18% / 0.22)",
             }}
           />
 
@@ -71,9 +71,9 @@ export const Hero = () => {
               WebkitTextFillColor: "hsl(var(--primary-deep))",
               fontWeight: 700,
               letterSpacing: "0",
-              // Soft single-tone glow only — no second color, so dots + tashkeel stay pure olive
+              // Stronger single-tone halo for legibility on the clearer background
               textShadow:
-                "0 2px 24px hsl(60 14% 98% / 0.85), 0 1px 3px hsl(60 14% 98% / 0.7)",
+                "0 2px 30px hsl(60 14% 98% / 0.95), 0 1px 4px hsl(60 14% 98% / 0.8), 0 0 14px hsl(60 14% 98% / 0.6)",
             }}
           >
             {t("hero.titleA")}
@@ -99,7 +99,7 @@ export const Hero = () => {
             className="font-tagline max-w-2xl text-balance text-center text-xl leading-[1.8] text-primary-deep sm:text-2xl md:text-[28px]"
             style={{
               textShadow:
-                "0 1px 12px hsl(60 14% 98% / 0.92), 0 1px 2px hsl(60 14% 98% / 0.75)",
+                "0 1px 14px hsl(60 14% 98% / 0.95), 0 1px 3px hsl(60 14% 98% / 0.8)",
             }}
           >
             {t("hero.titleB")}
