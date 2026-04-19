@@ -57,7 +57,7 @@ export const Hero = () => {
             }}
           />
 
-          {/* Brand wordmark — تكلة in deep olive Kufi */}
+          {/* Brand wordmark — تِكِلّه in deep olive Kufi */}
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
