@@ -39,7 +39,7 @@ export const WizardVisual = ({ step, variant = "side" }: Props) => {
     <div
       className={
         isHeader
-          ? "relative h-44 w-full overflow-hidden rounded-2xl border border-primary/15 sm:h-56"
+          ? "relative h-28 w-full overflow-hidden rounded-2xl border border-primary/15 sm:h-40"
           : "relative hidden h-full min-h-[520px] w-full overflow-hidden rounded-l-3xl border-r border-primary/10 lg:block"
       }
     >
