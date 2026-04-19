@@ -43,58 +43,60 @@ export const Hero = () => {
           </span>
         </motion.div>
 
-        {/* Frosted scrim that guarantees text legibility against the clearer background */}
-        <div className="relative mx-auto inline-flex flex-col items-center px-8 py-6 sm:px-14 sm:py-8">
-          {/* Soft radial scrim sitting only behind the wordmark + tagline */}
+        {/* Glass scrim — soft off-white blur, low opacity, feathered edges */}
+        <div className="relative mx-auto inline-flex flex-col items-center px-10 py-8 sm:px-16 sm:py-10 text-center">
+          {/* Frosted off-white card with feathered radial mask */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 -z-10 rounded-[3rem]"
+            className="pointer-events-none absolute inset-0 -z-10 rounded-[3rem] border border-primary/10"
             style={{
               background:
-                "radial-gradient(ellipse at center, hsl(var(--background) / 0.78) 0%, hsl(var(--background) / 0.55) 55%, hsl(var(--background) / 0) 100%)",
-              backdropFilter: "blur(6px)",
-              WebkitBackdropFilter: "blur(6px)",
+                "radial-gradient(ellipse at center, hsl(60 14% 98% / 0.55) 0%, hsl(60 14% 98% / 0.32) 60%, hsl(60 14% 98% / 0) 100%)",
+              backdropFilter: "blur(14px) saturate(1.05)",
+              WebkitBackdropFilter: "blur(14px) saturate(1.05)",
+              boxShadow: "0 30px 80px -40px hsl(82 45% 18% / 0.18)",
             }}
           />
 
-          {/* Brand wordmark — تِكِلّه in deep olive Kufi */}
+          {/* Brand wordmark — تِكِلّه in Amiri, perfectly centered with breathing room for tashkeel */}
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="font-wordmark text-balance text-[88px] font-bold leading-[1.15] text-primary-deep sm:text-[120px] md:text-[150px] lg:text-[180px]"
+            className="font-wordmark text-balance text-center text-[84px] font-bold leading-[1.35] text-primary-deep sm:text-[116px] md:text-[144px] lg:text-[172px]"
             lang="ar"
             dir="rtl"
             style={{
               color: "hsl(var(--primary-deep))",
+              letterSpacing: "0.06em",
               textShadow:
-                "0 2px 24px hsl(var(--background) / 0.85), 0 1px 4px hsl(var(--background) / 0.7), 0 0 1px hsl(var(--primary-deep) / 0.25)",
+                "0 2px 28px hsl(60 14% 98% / 0.9), 0 1px 4px hsl(60 14% 98% / 0.75), 0 0 1px hsl(var(--primary-deep) / 0.25)",
             }}
           >
             {t("hero.titleA")}
           </motion.h1>
 
-          {/* Hairline divider — small olive mark */}
+          {/* Hairline divider — olive accent */}
           <motion.div
             initial={{ opacity: 0, scaleX: 0 }}
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 mb-6 flex items-center gap-3"
+            className="mt-8 mb-7 flex items-center gap-3"
           >
-            <span className="h-px w-10 bg-primary/50" />
+            <span className="h-px w-12 bg-primary/50" />
             <span className="h-1.5 w-1.5 rounded-full bg-primary/70" />
-            <span className="h-px w-10 bg-primary/50" />
+            <span className="h-px w-12 bg-primary/50" />
           </motion.div>
 
-          {/* Tagline — elegant Naskh-style serif */}
+          {/* Tagline — Amiri serif, balanced spacing under the wordmark */}
           <motion.p
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="font-tagline max-w-2xl text-balance text-xl leading-[1.7] text-primary-deep sm:text-2xl md:text-[28px]"
+            className="font-tagline max-w-2xl text-balance text-center text-xl leading-[1.8] text-primary-deep sm:text-2xl md:text-[28px]"
             style={{
               textShadow:
-                "0 1px 12px hsl(var(--background) / 0.9), 0 1px 2px hsl(var(--background) / 0.7)",
+                "0 1px 12px hsl(60 14% 98% / 0.92), 0 1px 2px hsl(60 14% 98% / 0.75)",
             }}
           >
             {t("hero.titleB")}
