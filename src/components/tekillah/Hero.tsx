@@ -63,15 +63,17 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="font-wordmark text-balance text-center text-[88px] font-black leading-[1.25] text-primary-deep sm:text-[124px] md:text-[156px] lg:text-[188px]"
+            className="font-wordmark text-balance text-center text-[88px] font-bold leading-[1.3] text-primary-deep sm:text-[124px] md:text-[156px] lg:text-[188px]"
             lang="ar"
             dir="rtl"
             style={{
               color: "hsl(var(--primary-deep))",
-              fontWeight: 800,
-              letterSpacing: "-0.01em",
+              WebkitTextFillColor: "hsl(var(--primary-deep))",
+              fontWeight: 700,
+              letterSpacing: "0",
+              // Soft single-tone glow only — no second color, so dots + tashkeel stay pure olive
               textShadow:
-                "0 2px 28px hsl(60 14% 98% / 0.9), 0 1px 4px hsl(60 14% 98% / 0.75), 0 0 1px hsl(var(--primary-deep) / 0.25)",
+                "0 2px 24px hsl(60 14% 98% / 0.85), 0 1px 3px hsl(60 14% 98% / 0.7)",
             }}
           >
             {t("hero.titleA")}

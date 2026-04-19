@@ -149,12 +149,16 @@
     letter-spacing: 0.02em;
   }
   .font-wordmark {
-    /* Hero brand name — bold geometric Kufic with sharp, square letterforms */
-    font-family: 'Reem Kufi Fun', 'Kufam', 'Cairo', 'Reem Kufi', 'IBM Plex Sans Arabic', system-ui, sans-serif;
-    font-feature-settings: "kern", "liga", "mark", "mkmk", "calt", "ss01";
+    /* Hero brand name — bold geometric Kufic with sharp, square letterforms.
+       Reem Kufi renders the final ه as a clean closed circle (no dots / no ة look). */
+    font-family: 'Reem Kufi', 'Kufam', 'Cairo', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+    font-feature-settings: "kern", "liga", "mark", "mkmk", "calt";
     font-weight: 700;
-    letter-spacing: -0.005em;
+    letter-spacing: 0;
     font-variant-ligatures: contextual;
+    /* Force diacritics + dots to inherit the exact same olive color as the letters */
+    -webkit-text-fill-color: currentColor;
+    color: inherit;
   }
   .font-tagline {
     /* Clean, geometric complement — lighter weight than the wordmark */
