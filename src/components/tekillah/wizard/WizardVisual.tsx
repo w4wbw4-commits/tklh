@@ -39,7 +39,7 @@ export const WizardVisual = ({ step, variant = "side" }: Props) => {
     <div
       className={
         isHeader
-          ? "relative h-44 w-full overflow-hidden rounded-2xl border border-primary/15 sm:h-56"
+          ? "relative h-28 w-full overflow-hidden rounded-2xl border border-primary/15 sm:h-40"
           : "relative hidden h-full min-h-[520px] w-full overflow-hidden rounded-l-3xl border-r border-primary/10 lg:block"
       }
     >
@@ -72,15 +72,15 @@ export const WizardVisual = ({ step, variant = "side" }: Props) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.55, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-x-6 bottom-6"
+          className={isHeader ? "absolute inset-x-4 bottom-3 sm:inset-x-6 sm:bottom-6" : "absolute inset-x-6 bottom-6"}
         >
-          <div className="mb-2 flex items-center gap-2">
-            <span className="h-px w-8 bg-background/80" />
-            <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-background/80">
+          <div className="mb-1 flex items-center gap-2 sm:mb-2">
+            <span className="h-px w-6 bg-background/80 sm:w-8" />
+            <span className="text-[9px] font-medium uppercase tracking-[0.3em] text-background/80 sm:text-[10px]">
               {String(safeIndex + 1).padStart(2, "0")}
             </span>
           </div>
-          <p className="font-arabic text-balance text-lg font-semibold leading-snug text-background drop-shadow-md sm:text-xl">
+          <p className={`font-arabic text-balance font-semibold leading-snug text-background drop-shadow-md ${isHeader ? "text-sm sm:text-lg" : "text-lg sm:text-xl"}`}>
             {t(v.captionKey)}
           </p>
         </motion.div>
