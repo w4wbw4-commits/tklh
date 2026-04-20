@@ -157,7 +157,7 @@ const Auth = () => {
       setOtp("");
       setOtpError(null);
       setOtpVerified(false);
-      toast.success(t("auth.phone.codeSentDev", { code }), { duration: 8000 });
+      showDevCodeToast(code);
     } catch {
       toast.error(t("auth.phone.errors.sendFailed"));
     } finally {
