@@ -94,6 +94,9 @@
     "bookingsCreated": "{{count}} bookings created",
     "bookingsFailed": "Could not create bookings",
     "signInToSave": "Sign in to save your event and continue planning",
+    "planSaved": "We saved your choices. Sign in to finish the booking.",
+    "planRestored": "Plan recovered — continue where you left off!",
+    "planRestoreFailed": "Could not restore your saved plan. Please try the wizard again.",
     "visuals": {
       "step1Caption": "Every detail starts with an idea",
       "step2Caption": "Choose the services worthy of your night",

@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
@@ -18,6 +19,8 @@ import { CreateEventDialog } from "@/components/tekillah/customer/CreateEventDia
 import type { EventRow } from "@/components/tekillah/customer/types";
 import { useTranslation } from "react-i18next";
 import { fmtDate } from "@/i18n/format";
+import { clearPendingPlan, isPendingPlanReady, loadPendingPlan } from "@/lib/pendingPlan";
+import { finalisePlan } from "@/lib/finalisePlan";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -34,6 +37,36 @@ const Dashboard = () => {
       navigate("/auth?redirect=/dashboard", { replace: true });
     }
   }, [user, authLoading, navigate]);
+
+
+
+  // ---------------------------------------------------------------------------
+  // Recover a pending plan saved by guest wizard before sign-in.
+  // Runs once per user — finalises → toast → redirect to checkout.
+  // ---------------------------------------------------------------------------
+  const consumedPlanRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!user || consumedPlanRef.current === user.id) return;
+    const snap = loadPendingPlan();
+    if (!isPendingPlanReady(snap)) return;
+    consumedPlanRef.current = user.id;
+    (async () => {
+      try {
+        const result = await finalisePlan({ userId: user.id, plan: snap, t });
+        clearPendingPlan();
+        toast.success(t("wizard.planRestored"));
+        if (result.bookingIds.length > 0) {
+          navigate(`/checkout/${result.bookingIds[0]}`, { replace: true });
+        } else {
+          await loadEvents();
+        }
+      } catch {
+        // Keep the snapshot so the user can retry — it's their work.
+        toast.error(t("wizard.planRestoreFailed"));
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const loadEvents = async () => {
     if (!user) return;

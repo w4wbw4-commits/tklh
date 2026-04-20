@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowLeft, ArrowRight, Loader2, Sparkles } from "lucide-react";
@@ -21,6 +21,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { WhatsAppCTA } from "./WhatsAppCTA";
 import { upsertCustomerLead } from "@/lib/leads";
+import { clearPendingPlan, loadPendingPlan, savePendingPlan } from "@/lib/pendingPlan";
+import { finalisePlan } from "@/lib/finalisePlan";
 
 export const PlanningWizard = () => {
   const { t, i18n } = useTranslation();
@@ -99,12 +101,59 @@ export const PlanningWizard = () => {
     });
   };
 
+  // ---------------------------------------------------------------------------
+  // Hydrate from a previously-saved snapshot (e.g. guest finished wizard,
+  // signed in, came back). Runs once on mount.
+  // ---------------------------------------------------------------------------
+  const hydratedRef = useRef(false);
+  useEffect(() => {
+    if (hydratedRef.current) return;
+    hydratedRef.current = true;
+    const snap = loadPendingPlan();
+    if (!snap) return;
+    setCity(snap.city ?? "");
+    setEventType(snap.eventType ?? "");
+    setDate(snap.date ?? "");
+    setMen(snap.men ?? 150);
+    setWomen(snap.women ?? 150);
+    setSelected(snap.selected ?? []);
+    setVision(snap.vision ?? "");
+    setSelectedChips(snap.selectedChips ?? []);
+    setBudgetMode(snap.budgetMode ?? null);
+    setBudget(snap.budget ?? 80000);
+    if (snap.allocations) setAllocations(snap.allocations);
+    if (snap.enabledServices) setEnabledServices(snap.enabledServices);
+    if (snap.picks) setPicks(snap.picks);
+    // Land them on the last meaningful step so they don't redo work.
+    if (Object.keys(snap.picks ?? {}).length > 0) setStep(4);
+    else if (snap.budget) setStep(3);
+    else if (snap.selected?.length) setStep(1);
+  }, []);
+
+  // Persist a snapshot on every meaningful change. Cheap — JSON of <3KB.
+  useEffect(() => {
+    if (!hydratedRef.current) return;
+    savePendingPlan({
+      city, eventType, date, men, women,
+      selected, vision, selectedChips,
+      budgetMode, budget,
+      allocations, enabledServices, picks,
+    });
+  }, [city, eventType, date, men, women, selected, vision, selectedChips, budgetMode, budget, allocations, enabledServices, picks]);
+
   const next = () => setStep((s) => Math.min(s + 1, 4));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
   const handleFinish = async () => {
     if (!user) {
-      toast.info(t("wizard.signInToSave"));
+      // Persist the latest snapshot so the dashboard can finalise after sign-in.
+      savePendingPlan({
+        city, eventType, date, men, women,
+        selected, vision, selectedChips,
+        budgetMode, budget,
+        allocations, enabledServices, picks,
+      });
+      toast.success(t("wizard.planSaved"));
       navigate("/auth?redirect=/dashboard");
       return;
     }
@@ -118,56 +167,28 @@ export const PlanningWizard = () => {
     }
 
     setSubmitting(true);
-    const visionNote = [vision, selectedChips.join(" • ")].filter(Boolean).join("\n");
-
-    // 1. Create event
-    const { data: ev, error: evErr } = await supabase.from("events").insert({
-      customer_id: user.id,
-      title: eventType ? t(`eventTypes.${eventType}`) : t("customer.create.defaultTitle"),
-      event_date: date,
-      city: city ? t(`cities.${city}`) : null,
-      guest_count: guests,
-      total_budget: budget,
-      theme: selectedChips[0] || null,
-      notes: visionNote || null,
-    }).select("id").single();
-
-    if (evErr || !ev) {
-      setSubmitting(false);
-      toast.error(t("customer.create.createFailed"));
-      return;
-    }
-
-    // 2. Create bookings (one per vendor pick) — DB triggers will block date + notify vendor
-    const bookingsToInsert = pickList.map((p) => ({
-      customer_id: user.id,
-      vendor_id: p.vendorId,
-      package_id: p.packageId,
-      event_id: ev.id,
-      event_date: date,
-      guest_count: guests,
-      total_price: p.price,
-      status: "pending" as const,
-    }));
-
-    const { data: createdBookings, error: bErr } = await supabase
-      .from("bookings")
-      .insert(bookingsToInsert)
-      .select("id");
-
-    setSubmitting(false);
-
-    if (bErr || !createdBookings) {
+    try {
+      const result = await finalisePlan({
+        userId: user.id,
+        t,
+        plan: {
+          version: 1, savedAt: Date.now(),
+          city, eventType, date, men, women,
+          selected, vision, selectedChips,
+          budgetMode, budget,
+          allocations, enabledServices, picks,
+        },
+      });
+      // Snapshot is fully consumed — clear so we don't re-run on next visit.
+      clearPendingPlan();
+      toast.success(t("wizard.eventCreated"));
+      toast.success(t("wizard.bookingsCreated", { count: result.bookingIds.length }));
+      navigate(`/checkout/${result.bookingIds[0]}`);
+    } catch {
       toast.error(t("wizard.bookingsFailed"));
-      return;
+    } finally {
+      setSubmitting(false);
     }
-
-    toast.success(t("wizard.eventCreated"));
-    toast.success(t("wizard.bookingsCreated", { count: createdBookings.length }));
-
-    // 3. Redirect to first booking checkout
-    const firstBookingId = createdBookings[0].id;
-    navigate(`/checkout/${firstBookingId}`);
   };
 
   const stepLabels = [
