@@ -38,11 +38,7 @@ const Dashboard = () => {
     }
   }, [user, authLoading, navigate]);
 
-  useEffect(() => {
-    if (!authLoading && !user) {
-      navigate("/auth?redirect=/dashboard", { replace: true });
-    }
-  }, [user, authLoading, navigate]);
+
 
   // ---------------------------------------------------------------------------
   // Recover a pending plan saved by guest wizard before sign-in.
