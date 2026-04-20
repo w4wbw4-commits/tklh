@@ -184,7 +184,16 @@
         "decor": "Decor",
         "dj": "DJ & Sound",
         "cars": "Cars"
-      }
+      },
+      "includeService": "Include in budget",
+      "excludedHint": "Off — not counted in total",
+      "tierLabel": "Your budget tier",
+      "tierEconomy": "Economy",
+      "tierStandard": "Standard",
+      "tierLuxury": "Luxury",
+      "tierEconomyDesc": "Below {{max}} SAR — we'll surface budget-friendly vendors.",
+      "tierStandardDesc": "Between {{min}} and {{max}} SAR — popular mid-range packages.",
+      "tierLuxuryDesc": "Above {{min}} SAR — premium and royal-tier vendors."
     }
   },
   "auth": {
