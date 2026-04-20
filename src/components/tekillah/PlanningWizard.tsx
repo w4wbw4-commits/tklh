@@ -145,7 +145,14 @@ export const PlanningWizard = () => {
 
   const handleFinish = async () => {
     if (!user) {
-      toast.info(t("wizard.signInToSave"));
+      // Persist the latest snapshot so the dashboard can finalise after sign-in.
+      savePendingPlan({
+        city, eventType, date, men, women,
+        selected, vision, selectedChips,
+        budgetMode, budget,
+        allocations, enabledServices, picks,
+      });
+      toast.success(t("wizard.planSaved"));
       navigate("/auth?redirect=/dashboard");
       return;
     }
