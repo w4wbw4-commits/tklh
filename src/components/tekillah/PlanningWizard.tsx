@@ -264,6 +264,7 @@ export const PlanningWizard = () => {
                   budget={budget} setBudget={setBudget}
                   guests={guests}
                   allocations={allocations} setAllocation={setAllocation}
+                  enabledServices={enabledServices} toggleEnabled={toggleEnabled}
                 />
               )}
               {step === 4 && (
@@ -271,6 +272,8 @@ export const PlanningWizard = () => {
                   selectedServices={selected as ServiceKey[]}
                   picks={picks}
                   setPick={setPick}
+                  budget={liveBudget || budget}
+                  allocations={allocations}
                 />
               )}
             </AnimatePresence>
