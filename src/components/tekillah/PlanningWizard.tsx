@@ -154,7 +154,16 @@ export const PlanningWizard = () => {
         allocations, enabledServices, picks,
       });
       toast.success(t("wizard.planSaved"));
-      navigate("/auth?redirect=/dashboard");
+      // Encode where to resume after auth:
+      //  - If they reached the final step (have picks) → /dashboard will auto-
+      //    finalise the snapshot and forward to checkout.
+      //  - Otherwise → return to the homepage wizard section on the exact step
+      //    they left, with a `resume=1` marker.
+      const hasPicks = Object.keys(picks).length > 0;
+      const resumeTarget = hasPicks
+        ? "/dashboard"
+        : `/?resume=1&step=${step}#wizard`;
+      navigate(`/auth?redirect=${encodeURIComponent(resumeTarget)}`);
       return;
     }
     if (!date) { toast.error(t("customer.create.futureDate")); setStep(0); return; }
