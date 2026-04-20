@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowLeft, ArrowRight, Loader2, Sparkles } from "lucide-react";
@@ -21,6 +21,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { WhatsAppCTA } from "./WhatsAppCTA";
 import { upsertCustomerLead } from "@/lib/leads";
+import { loadPendingPlan, savePendingPlan } from "@/lib/pendingPlan";
 
 export const PlanningWizard = () => {
   const { t, i18n } = useTranslation();
