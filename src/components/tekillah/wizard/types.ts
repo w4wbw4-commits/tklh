@@ -22,6 +22,23 @@ export const allocationCatalog: AllocationItem[] = [
 export const realisticMinimum = (item: AllocationItem, guests: number) =>
   Math.max(item.flatMin, item.perGuestMin * guests);
 
+// ---------------------------------------------------------------------------
+// Budget tiers — used by StepBudget banner and StepVendors smart matching.
+// Thresholds are total event budget in SAR.
+// ---------------------------------------------------------------------------
+export type BudgetTier = "economy" | "standard" | "luxury";
+
+export const BUDGET_TIER_THRESHOLDS = {
+  economyMax: 60000,
+  standardMax: 150000,
+} as const;
+
+export const tierForBudget = (total: number): BudgetTier => {
+  if (total < BUDGET_TIER_THRESHOLDS.economyMax) return "economy";
+  if (total <= BUDGET_TIER_THRESHOLDS.standardMax) return "standard";
+  return "luxury";
+};
+
 export const visionChips = [
   "أجواء شتوية دافئة",
   "فخامة ملكية كلاسيكية",

@@ -109,7 +109,10 @@
       "from": "From",
       "empty": "No vendors available for this service yet.",
       "noServices": "Pick at least one service in step 2 first.",
-      "pickAtLeastOne": "Please pick at least one vendor before confirming."
+      "pickAtLeastOne": "Please pick at least one vendor before confirming.",
+      "matchesBudget": "Matches your budget",
+      "outsideBudget": "Above your service budget",
+      "filterAllInRange": "Showing vendors that match your tier"
     },
     "details": {
       "title": "Event details",
@@ -184,7 +187,16 @@
         "decor": "Decor",
         "dj": "DJ & Sound",
         "cars": "Cars"
-      }
+      },
+      "includeService": "Include in budget",
+      "excludedHint": "Off — not counted in total",
+      "tierLabel": "Your budget tier",
+      "tierEconomy": "Economy",
+      "tierStandard": "Standard",
+      "tierLuxury": "Luxury",
+      "tierEconomyDesc": "Below {{max}} SAR — we'll surface budget-friendly vendors.",
+      "tierStandardDesc": "Between {{min}} and {{max}} SAR — popular mid-range packages.",
+      "tierLuxuryDesc": "Above {{min}} SAR — premium and royal-tier vendors."
     }
   },
   "auth": {
