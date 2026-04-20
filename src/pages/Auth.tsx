@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
@@ -11,7 +11,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { ArrowRight, Loader2, Phone, MessageSquareLock, Pencil } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, Phone, MessageSquareLock, Pencil } from "lucide-react";
 import { Logo } from "@/components/tekillah/Logo";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -40,6 +40,9 @@ const Auth = () => {
   const [otp, setOtp] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
+  const [otpError, setOtpError] = useState<string | null>(null);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const verifyInFlightRef = useRef(false);
 
   useEffect(() => {
     if (!authLoading && user) navigate(redirectTo, { replace: true });
@@ -65,6 +68,9 @@ const Auth = () => {
       setPhoneE164(normalized);
       setStage("otp");
       setResendCooldown(30);
+      setOtp("");
+      setOtpError(null);
+      setOtpVerified(false);
       // Dev visibility — production swap will remove this toast.
       toast.success(t("auth.phone.codeSentDev", { code }), { duration: 8000 });
     } catch {
@@ -75,69 +81,58 @@ const Auth = () => {
   };
 
   const handleVerify = async (codeOverride?: string) => {
-    if (!phoneE164) return;
+    if (!phoneE164 || verifyInFlightRef.current) return;
     const code = codeOverride ?? otp;
+    setOtpError(null);
+    setOtpVerified(false);
+
     if (code.length !== 6) {
-      toast.error(t("auth.phone.errors.codeLength"));
+      setOtpError(t("auth.phone.errors.codeLength"));
       return;
     }
     if (!verifyOtp(phoneE164, code)) {
-      toast.error(t("auth.phone.errors.codeInvalid"));
+      setOtpError(t("auth.phone.errors.codeInvalid"));
       return;
     }
 
+    verifyInFlightRef.current = true;
     setSubmitting(true);
+    setOtpVerified(true);
 
-    // Phone-only auth: mint a deterministic synthetic email + password so the
-    // same phone always maps to the same auth.users row.
-    const email = phoneToSyntheticEmail(phoneE164);
-    const password = await phoneToSyntheticPassword(phoneE164);
+    try {
+      const email = phoneToSyntheticEmail(phoneE164);
+      const password = await phoneToSyntheticPassword(phoneE164);
 
-    // Try sign-in first (returning user). If that fails with invalid creds,
-    // sign up. Synthetic credentials keep the flow phone-first; the user
-    // never sees or types email/password.
-    let signedInUserId: string | null = null;
-    const { data: signInData, error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
-    if (signInData.user) {
-      signedInUserId = signInData.user.id;
-    } else if (signInErr) {
-      const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}${redirectTo}`,
-          data: { phone: phoneE164, display_name: phoneE164 },
+      const { error: bootstrapError, data: bootstrapData } = await supabase.functions.invoke("mock-phone-auth", {
+        body: {
+          email,
+          password,
+          phone: phoneE164,
+          displayName: phoneE164,
         },
       });
-      if (signUpErr || !signUpData.user) {
-        setSubmitting(false);
-        toast.error(t("auth.phone.errors.authFailed"));
-        return;
-      }
-      signedInUserId = signUpData.user.id;
-      // Sign-in afterwards in case session wasn't auto-issued.
-      await supabase.auth.signInWithPassword({ email, password });
-    }
 
-    // Update profile.phone so admin lists are always consistent.
-    if (signedInUserId) {
-      await supabase
-        .from("profiles")
-        .update({ phone: phoneE164 })
-        .eq("user_id", signedInUserId);
+      if (bootstrapError) throw bootstrapError;
 
-      // Fire-and-forget lead capture — never block the redirect on this.
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInError || !signInData.user) throw signInError ?? new Error("Sign-in failed");
+
       upsertCustomerLead({
-        userId: signedInUserId,
+        userId: bootstrapData?.userId ?? signInData.user.id,
         phone: phoneE164,
         status: "verified",
         source: "phone_otp",
       });
-    }
 
-    setSubmitting(false);
-    toast.success(t("auth.phone.verified"));
-    navigate(redirectTo, { replace: true });
+      toast.success(t("auth.phone.verified"));
+      setTimeout(() => navigate(redirectTo, { replace: true }), 250);
+    } catch {
+      setOtpVerified(false);
+      setOtpError(t("auth.phone.errors.authFailed"));
+    } finally {
+      setSubmitting(false);
+      verifyInFlightRef.current = false;
+    }
   };
 
   const handleResend = async () => {
@@ -147,6 +142,8 @@ const Auth = () => {
       const code = await sendOtp(phoneE164);
       setResendCooldown(30);
       setOtp("");
+      setOtpError(null);
+      setOtpVerified(false);
       toast.success(t("auth.phone.codeSentDev", { code }), { duration: 8000 });
     } catch {
       toast.error(t("auth.phone.errors.sendFailed"));
@@ -260,7 +257,7 @@ const Auth = () => {
                     <Label>{t("auth.phone.codeLabel")}</Label>
                     <button
                       type="button"
-                      onClick={() => { setStage("phone"); setOtp(""); }}
+                      onClick={() => { setStage("phone"); setOtp(""); setOtpError(null); setOtpVerified(false); }}
                       className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
                     >
                       <Pencil className="h-3 w-3" />
@@ -272,26 +269,44 @@ const Auth = () => {
                     <InputOTP
                       maxLength={6}
                       value={otp}
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      pattern="[0-9]*"
+                      containerClassName="justify-center"
                       onChange={(v) => {
+                        setOtpError(null);
+                        if (otpVerified) setOtpVerified(false);
                         setOtp(v);
                         if (v.length === 6) handleVerify(v);
                       }}
+                      className="tabular-nums"
                     >
-                      <InputOTPGroup>
-                        <InputOTPSlot index={0} />
-                        <InputOTPSlot index={1} />
-                        <InputOTPSlot index={2} />
-                        <InputOTPSlot index={3} />
-                        <InputOTPSlot index={4} />
-                        <InputOTPSlot index={5} />
+                      <InputOTPGroup className="gap-2">
+                        <InputOTPSlot index={0} className={otpVerified ? "border-success ring-1 ring-success/20 text-success" : otpError ? "border-destructive" : ""} />
+                        <InputOTPSlot index={1} className={otpVerified ? "border-success ring-1 ring-success/20 text-success" : otpError ? "border-destructive" : ""} />
+                        <InputOTPSlot index={2} className={otpVerified ? "border-success ring-1 ring-success/20 text-success" : otpError ? "border-destructive" : ""} />
+                        <InputOTPSlot index={3} className={otpVerified ? "border-success ring-1 ring-success/20 text-success" : otpError ? "border-destructive" : ""} />
+                        <InputOTPSlot index={4} className={otpVerified ? "border-success ring-1 ring-success/20 text-success" : otpError ? "border-destructive" : ""} />
+                        <InputOTPSlot index={5} className={otpVerified ? "border-success ring-1 ring-success/20 text-success" : otpError ? "border-destructive" : ""} />
                       </InputOTPGroup>
                     </InputOTP>
+                  </div>
+
+                  <div className="min-h-5 text-center text-xs">
+                    {otpVerified ? (
+                      <span className="inline-flex items-center gap-1 font-medium text-success">
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        {t("auth.phone.verified")}
+                      </span>
+                    ) : otpError ? (
+                      <span className="text-destructive">{otpError}</span>
+                    ) : null}
                   </div>
 
                   <Button
                     type="button"
                     onClick={() => handleVerify()}
-                    disabled={submitting || otp.length !== 6}
+                    disabled={submitting || otp.length !== 6 || otpVerified}
                     className="h-11 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
                   >
                     {submitting ? (
