@@ -10,7 +10,9 @@
 import type { ServiceKey } from "@/components/tekillah/wizard/types";
 import type { VendorPick } from "@/components/tekillah/wizard/StepVendors";
 
-export const PENDING_PLAN_KEY = "pending_event_plan";
+export const PENDING_PLAN_KEY = "tekillah_draft_plan";
+// Legacy key — migrated on first read so early testers don't lose their draft.
+const LEGACY_PENDING_PLAN_KEY = "pending_event_plan";
 const PENDING_PLAN_VERSION = 1;
 // Snapshots older than 24h are dropped — keeps stale guest data from haunting
 // future sign-ins on shared devices.
