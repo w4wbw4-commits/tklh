@@ -100,6 +100,46 @@ export const PlanningWizard = () => {
     });
   };
 
+  // ---------------------------------------------------------------------------
+  // Hydrate from a previously-saved snapshot (e.g. guest finished wizard,
+  // signed in, came back). Runs once on mount.
+  // ---------------------------------------------------------------------------
+  const hydratedRef = useRef(false);
+  useEffect(() => {
+    if (hydratedRef.current) return;
+    hydratedRef.current = true;
+    const snap = loadPendingPlan();
+    if (!snap) return;
+    setCity(snap.city ?? "");
+    setEventType(snap.eventType ?? "");
+    setDate(snap.date ?? "");
+    setMen(snap.men ?? 150);
+    setWomen(snap.women ?? 150);
+    setSelected(snap.selected ?? []);
+    setVision(snap.vision ?? "");
+    setSelectedChips(snap.selectedChips ?? []);
+    setBudgetMode(snap.budgetMode ?? null);
+    setBudget(snap.budget ?? 80000);
+    if (snap.allocations) setAllocations(snap.allocations);
+    if (snap.enabledServices) setEnabledServices(snap.enabledServices);
+    if (snap.picks) setPicks(snap.picks);
+    // Land them on the last meaningful step so they don't redo work.
+    if (Object.keys(snap.picks ?? {}).length > 0) setStep(4);
+    else if (snap.budget) setStep(3);
+    else if (snap.selected?.length) setStep(1);
+  }, []);
+
+  // Persist a snapshot on every meaningful change. Cheap — JSON of <3KB.
+  useEffect(() => {
+    if (!hydratedRef.current) return;
+    savePendingPlan({
+      city, eventType, date, men, women,
+      selected, vision, selectedChips,
+      budgetMode, budget,
+      allocations, enabledServices, picks,
+    });
+  }, [city, eventType, date, men, women, selected, vision, selectedChips, budgetMode, budget, allocations, enabledServices, picks]);
+
   const next = () => setStep((s) => Math.min(s + 1, 4));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
