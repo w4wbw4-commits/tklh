@@ -133,6 +133,66 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_leads: {
+        Row: {
+          booking_id: string | null
+          created_at: string
+          display_name: string | null
+          event_id: string | null
+          id: string
+          last_contacted_at: string | null
+          notes: string | null
+          phone: string
+          source: string
+          status: Database["public"]["Enums"]["lead_status"]
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          booking_id?: string | null
+          created_at?: string
+          display_name?: string | null
+          event_id?: string | null
+          id?: string
+          last_contacted_at?: string | null
+          notes?: string | null
+          phone: string
+          source?: string
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          booking_id?: string | null
+          created_at?: string
+          display_name?: string | null
+          event_id?: string | null
+          id?: string
+          last_contacted_at?: string | null
+          notes?: string | null
+          phone?: string
+          source?: string
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_leads_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_leads_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       events: {
         Row: {
           city: string | null
@@ -839,6 +899,7 @@ export type Database = {
         | "rejected"
         | "completed"
         | "cancelled"
+      lead_status: "verified" | "planned" | "booked" | "completed" | "lost"
       milestone_status: "pending" | "in_progress" | "done"
       notification_type:
         | "booking_request"
@@ -1006,6 +1067,7 @@ export const Constants = {
         "completed",
         "cancelled",
       ],
+      lead_status: ["verified", "planned", "booked", "completed", "lost"],
       milestone_status: ["pending", "in_progress", "done"],
       notification_type: [
         "booking_request",

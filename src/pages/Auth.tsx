@@ -1,103 +1,158 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { z } from "zod";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowRight, Loader2, Building2, Eye, EyeOff } from "lucide-react";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import { ArrowRight, Loader2, Phone, MessageSquareLock, Pencil } from "lucide-react";
 import { Logo } from "@/components/tekillah/Logo";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
+import {
+  formatSaudiLocal,
+  normalizeSaudiPhone,
+  phoneToSyntheticEmail,
+  phoneToSyntheticPassword,
+  sendOtp,
+  verifyOtp,
+} from "@/lib/phone";
+import { upsertCustomerLead } from "@/lib/leads";
+
+type Stage = "phone" | "otp";
 
 const Auth = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const initialMode = params.get("mode") === "signup" ? "signup" : "signin";
   const redirectTo = params.get("redirect") || "/dashboard";
 
   const { user, loading: authLoading } = useAuth();
-  const [tab, setTab] = useState<"signin" | "signup">(initialMode);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [showPass, setShowPass] = useState(false);
+  const [stage, setStage] = useState<Stage>("phone");
+  const [localInput, setLocalInput] = useState("");
+  const [phoneE164, setPhoneE164] = useState<string | null>(null);
+  const [otp, setOtp] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
-
-  const emailSchema = z.string().trim().email({ message: t("auth.errors.invalidEmail") }).max(255);
-  const passwordSchema = z.string().min(8, { message: t("auth.errors.shortPassword") }).max(72);
-  const nameSchema = z.string().trim().min(2, { message: t("auth.errors.shortName") }).max(80);
+  const [resendCooldown, setResendCooldown] = useState(0);
 
   useEffect(() => {
     if (!authLoading && user) navigate(redirectTo, { replace: true });
   }, [user, authLoading, navigate, redirectTo]);
 
-  const handleSignIn = async (e: React.FormEvent) => {
+  // Cooldown ticker for the "Resend" button
+  useEffect(() => {
+    if (!resendCooldown) return;
+    const id = setTimeout(() => setResendCooldown((s) => Math.max(0, s - 1)), 1000);
+    return () => clearTimeout(id);
+  }, [resendCooldown]);
+
+  const handleSendCode = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      emailSchema.parse(email);
-      passwordSchema.parse(password);
-    } catch (err) {
-      if (err instanceof z.ZodError) toast.error(err.errors[0].message);
+    const normalized = normalizeSaudiPhone(localInput);
+    if (!normalized) {
+      toast.error(t("auth.phone.errors.invalid"));
       return;
     }
     setSubmitting(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setSubmitting(false);
-    if (error) {
-      toast.error(error.message === "Invalid login credentials" ? t("auth.errors.invalidCreds") : error.message);
-      return;
-    }
-    toast.success(t("auth.success.signin"));
-    navigate(redirectTo, { replace: true });
-  };
-
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
     try {
-      nameSchema.parse(displayName);
-      emailSchema.parse(email);
-      passwordSchema.parse(password);
-    } catch (err) {
-      if (err instanceof z.ZodError) toast.error(err.errors[0].message);
+      const code = await sendOtp(normalized);
+      setPhoneE164(normalized);
+      setStage("otp");
+      setResendCooldown(30);
+      // Dev visibility — production swap will remove this toast.
+      toast.success(t("auth.phone.codeSentDev", { code }), { duration: 8000 });
+    } catch {
+      toast.error(t("auth.phone.errors.sendFailed"));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleVerify = async (codeOverride?: string) => {
+    if (!phoneE164) return;
+    const code = codeOverride ?? otp;
+    if (code.length !== 6) {
+      toast.error(t("auth.phone.errors.codeLength"));
       return;
     }
+    if (!verifyOtp(phoneE164, code)) {
+      toast.error(t("auth.phone.errors.codeInvalid"));
+      return;
+    }
+
     setSubmitting(true);
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}${redirectTo}`,
-        data: { display_name: displayName },
-      },
-    });
-    setSubmitting(false);
-    if (error) {
-      toast.error(error.message.includes("already") ? t("auth.errors.alreadyExists") : error.message);
-      return;
+
+    // Phone-only auth: mint a deterministic synthetic email + password so the
+    // same phone always maps to the same auth.users row.
+    const email = phoneToSyntheticEmail(phoneE164);
+    const password = await phoneToSyntheticPassword(phoneE164);
+
+    // Try sign-in first (returning user). If that fails with invalid creds,
+    // sign up. Synthetic credentials keep the flow phone-first; the user
+    // never sees or types email/password.
+    let signedInUserId: string | null = null;
+    const { data: signInData, error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
+    if (signInData.user) {
+      signedInUserId = signInData.user.id;
+    } else if (signInErr) {
+      const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}${redirectTo}`,
+          data: { phone: phoneE164, display_name: phoneE164 },
+        },
+      });
+      if (signUpErr || !signUpData.user) {
+        setSubmitting(false);
+        toast.error(t("auth.phone.errors.authFailed"));
+        return;
+      }
+      signedInUserId = signUpData.user.id;
+      // Sign-in afterwards in case session wasn't auto-issued.
+      await supabase.auth.signInWithPassword({ email, password });
     }
-    toast.success(t("auth.success.signup"));
+
+    // Update profile.phone so admin lists are always consistent.
+    if (signedInUserId) {
+      await supabase
+        .from("profiles")
+        .update({ phone: phoneE164 })
+        .eq("user_id", signedInUserId);
+
+      // Fire-and-forget lead capture — never block the redirect on this.
+      upsertCustomerLead({
+        userId: signedInUserId,
+        phone: phoneE164,
+        status: "verified",
+        source: "phone_otp",
+      });
+    }
+
+    setSubmitting(false);
+    toast.success(t("auth.phone.verified"));
     navigate(redirectTo, { replace: true });
   };
 
-  const handleGoogle = async () => {
-    setGoogleLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: `${window.location.origin}${redirectTo}`,
-    });
-    if (result.error) {
-      setGoogleLoading(false);
-      toast.error(t("auth.errors.googleFailed"));
-      return;
+  const handleResend = async () => {
+    if (!phoneE164 || resendCooldown > 0) return;
+    setSubmitting(true);
+    try {
+      const code = await sendOtp(phoneE164);
+      setResendCooldown(30);
+      setOtp("");
+      toast.success(t("auth.phone.codeSentDev", { code }), { duration: 8000 });
+    } catch {
+      toast.error(t("auth.phone.errors.sendFailed"));
+    } finally {
+      setSubmitting(false);
     }
-    if (result.redirected) return;
-    navigate(redirectTo, { replace: true });
   };
 
   return (
@@ -110,6 +165,16 @@ const Auth = () => {
       </header>
 
       <div className="mx-auto flex max-w-md flex-col items-center px-6 pb-20 pt-10">
+        {/* Brand wordmark — geometric Kufic, matches hero */}
+        <div className="mb-6 text-center">
+          <div
+            className="font-wordmark text-5xl font-black text-primary"
+            style={{ WebkitTextFillColor: "hsl(var(--primary-deep, var(--primary)))" }}
+          >
+            تِكِلّه
+          </div>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -118,138 +183,153 @@ const Auth = () => {
         >
           <div className="mb-8 text-center">
             <div className="mx-auto mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-              <Building2 className="h-6 w-6" />
+              {stage === "phone" ? <Phone className="h-6 w-6" /> : <MessageSquareLock className="h-6 w-6" />}
             </div>
-            <h1 className="font-arabic text-3xl font-semibold text-foreground">
-              {redirectTo.includes("vendor") ? t("auth.vendorTitle") : t("auth.customerTitle")}
+            <h1 className="font-arabic text-2xl font-semibold text-foreground sm:text-3xl">
+              {stage === "phone" ? t("auth.phone.title") : t("auth.phone.otpTitle")}
             </h1>
-            <p className="mt-2 text-sm text-foreground/65">{t("auth.subtitle")}</p>
+            <p className="mt-2 text-sm text-foreground/65">
+              {stage === "phone"
+                ? t("auth.phone.subtitle")
+                : t("auth.phone.otpSubtitle", { phone: phoneE164 })}
+            </p>
           </div>
 
           <div className="rounded-3xl border border-border bg-card p-6 shadow-luxury sm:p-8">
-            <Tabs value={tab} onValueChange={(v) => setTab(v as "signin" | "signup")}>
-              <TabsList className="grid w-full grid-cols-2 rounded-full bg-secondary/60">
-                <TabsTrigger value="signin" className="rounded-full">{t("auth.signin")}</TabsTrigger>
-                <TabsTrigger value="signup" className="rounded-full">{t("auth.signup")}</TabsTrigger>
-              </TabsList>
+            <AnimatePresence mode="wait">
+              {stage === "phone" ? (
+                <motion.form
+                  key="phone-form"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.25 }}
+                  onSubmit={handleSendCode}
+                  className="space-y-5"
+                >
+                  <div className="space-y-2">
+                    <Label htmlFor="phone-input">{t("auth.phone.label")}</Label>
+                    <div className="flex items-stretch gap-2">
+                      {/* Saudi country code chip */}
+                      <div
+                        dir="ltr"
+                        className="flex shrink-0 items-center gap-1.5 rounded-md border border-input bg-secondary/50 px-3 text-sm font-medium text-foreground"
+                      >
+                        <span aria-hidden>🇸🇦</span>
+                        <span>+966</span>
+                      </div>
+                      <Input
+                        id="phone-input"
+                        dir="ltr"
+                        inputMode="numeric"
+                        autoComplete="tel-national"
+                        value={localInput}
+                        onChange={(e) => setLocalInput(formatSaudiLocal(e.target.value))}
+                        placeholder="5X XXX XXXX"
+                        className="text-base tracking-wider"
+                      />
+                    </div>
+                    <p className="text-[11px] text-foreground/55">{t("auth.phone.hint")}</p>
+                  </div>
 
-              <TabsContent value="signin" className="mt-6">
-                <form onSubmit={handleSignIn} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="si-email">{t("auth.email")}</Label>
-                    <Input id="si-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                      placeholder="you@example.com" autoComplete="email" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="si-pass">{t("auth.password")}</Label>
-                    <PasswordInput id="si-pass" value={password} onChange={setPassword}
-                      placeholder="••••••••" autoComplete="current-password"
-                      show={showPass} onToggle={() => setShowPass((s) => !s)} t={t} />
-                  </div>
-                  <div className="flex justify-end">
-                    <Link to="/forgot-password" className="text-xs font-medium text-primary hover:underline">
-                      {t("auth.forgotPassword")}
-                    </Link>
-                  </div>
-                  <Button type="submit" disabled={submitting}
-                    className="h-11 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
-                    {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : (
-                      <>{t("auth.signin")} <ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" /></>
+                  <Button
+                    type="submit"
+                    disabled={submitting}
+                    className="h-11 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    {submitting ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <>
+                        {t("auth.phone.sendCode")}
+                        <ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" />
+                      </>
                     )}
                   </Button>
-                </form>
-              </TabsContent>
+                </motion.form>
+              ) : (
+                <motion.div
+                  key="otp-form"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.25 }}
+                  className="space-y-5"
+                >
+                  <div className="flex items-center justify-between">
+                    <Label>{t("auth.phone.codeLabel")}</Label>
+                    <button
+                      type="button"
+                      onClick={() => { setStage("phone"); setOtp(""); }}
+                      className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                    >
+                      <Pencil className="h-3 w-3" />
+                      {t("auth.phone.editPhone")}
+                    </button>
+                  </div>
 
-              <TabsContent value="signup" className="mt-6">
-                <form onSubmit={handleSignUp} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="su-name">{t("auth.name")}</Label>
-                    <Input id="su-name" value={displayName} onChange={(e) => setDisplayName(e.target.value)}
-                      placeholder={t("auth.namePlaceholder")} autoComplete="name" />
+                  <div dir="ltr" className="flex justify-center">
+                    <InputOTP
+                      maxLength={6}
+                      value={otp}
+                      onChange={(v) => {
+                        setOtp(v);
+                        if (v.length === 6) handleVerify(v);
+                      }}
+                    >
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="su-email">{t("auth.email")}</Label>
-                    <Input id="su-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                      placeholder="you@example.com" autoComplete="email" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="su-pass">{t("auth.password")}</Label>
-                    <PasswordInput id="su-pass" value={password} onChange={setPassword}
-                      placeholder={t("auth.passwordPlaceholder")} autoComplete="new-password"
-                      show={showPass} onToggle={() => setShowPass((s) => !s)} t={t} />
-                  </div>
-                  <Button type="submit" disabled={submitting}
-                    className="h-11 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
-                    {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : (
-                      <>{t("auth.createAccount")} <ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" /></>
+
+                  <Button
+                    type="button"
+                    onClick={() => handleVerify()}
+                    disabled={submitting || otp.length !== 6}
+                    className="h-11 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    {submitting ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <>
+                        {t("auth.phone.verify")}
+                        <ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" />
+                      </>
                     )}
                   </Button>
-                </form>
-              </TabsContent>
-            </Tabs>
 
-            <div className="my-6 flex items-center gap-3">
-              <div className="h-px flex-1 bg-border" />
-              <span className="text-[11px] uppercase tracking-wider text-foreground/50">{t("common.or")}</span>
-              <div className="h-px flex-1 bg-border" />
-            </div>
-
-            <Button type="button" variant="outline" onClick={handleGoogle} disabled={googleLoading}
-              className="h-11 w-full rounded-full border-border bg-background hover:bg-secondary/60">
-              {googleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : (
-                <>
-                  <GoogleIcon className="me-2 h-4 w-4" />
-                  {t("auth.continueWithGoogle")}
-                </>
+                  <div className="text-center text-xs text-foreground/65">
+                    {resendCooldown > 0 ? (
+                      <span>{t("auth.phone.resendIn", { seconds: resendCooldown })}</span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleResend}
+                        disabled={submitting}
+                        className="font-medium text-primary hover:underline"
+                      >
+                        {t("auth.phone.resend")}
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
               )}
-            </Button>
+            </AnimatePresence>
+
+            <p className="mt-6 text-center text-[11px] leading-relaxed text-foreground/55">
+              {t("auth.phone.legal")}
+            </p>
           </div>
         </motion.div>
       </div>
     </div>
   );
 };
-
-interface PasswordInputProps {
-  id: string;
-  value: string;
-  onChange: (v: string) => void;
-  placeholder?: string;
-  autoComplete?: string;
-  show: boolean;
-  onToggle: () => void;
-  t: (k: string) => string;
-}
-
-export const PasswordInput = ({ id, value, onChange, placeholder, autoComplete, show, onToggle, t }: PasswordInputProps) => (
-  <div className="relative">
-    <Input
-      id={id}
-      type={show ? "text" : "password"}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      autoComplete={autoComplete}
-      className="pe-10"
-    />
-    <button
-      type="button"
-      onClick={onToggle}
-      aria-label={show ? t("auth.hidePassword") : t("auth.showPassword")}
-      className="absolute end-2 top-1/2 -translate-y-1/2 grid h-7 w-7 place-items-center rounded-md text-foreground/50 transition-colors hover:bg-secondary hover:text-foreground"
-    >
-      {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-    </button>
-  </div>
-);
-
-const GoogleIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A10.99 10.99 0 0 0 12 23z" fill="#34A853"/>
-    <path d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.07H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.83z" fill="#FBBC05"/>
-    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.83C6.71 7.31 9.14 5.38 12 5.38z" fill="#EA4335"/>
-  </svg>
-);
 
 export default Auth;

@@ -250,7 +250,38 @@
       "success": "Password updated. You can now sign in.",
       "invalidLink": "This recovery link is invalid or has expired.",
       "requestNew": "Request a new link"
+    },
+    "phone": {
+      "title": "Sign in with your phone",
+      "subtitle": "Enter your Saudi mobile number — we'll send a 6-digit code.",
+      "label": "Mobile number",
+      "hint": "We'll never share your number. Saudi format only (5XXXXXXXX).",
+      "sendCode": "Send code",
+      "otpTitle": "Enter the verification code",
+      "otpSubtitle": "We sent a 6-digit code to {{phone}}. It expires in 5 minutes.",
+      "codeLabel": "6-digit code",
+      "verify": "Verify and continue",
+      "editPhone": "Change number",
+      "resend": "Resend code",
+      "resendIn": "Resend available in {{seconds}}s",
+      "verified": "Phone verified — welcome!",
+      "codeSentDev": "Demo code: {{code}} (auto-fill or enter manually)",
+      "legal": "By continuing you agree to Tekillah's Terms of Service and Privacy Policy.",
+      "errors": {
+        "invalid": "Please enter a valid Saudi mobile number (e.g. 5X XXX XXXX).",
+        "sendFailed": "Could not send the code. Please try again.",
+        "codeLength": "The code must be 6 digits.",
+        "codeInvalid": "The code is incorrect or expired.",
+        "authFailed": "We couldn't sign you in. Please try again."
+      }
     }
+  },
+  "whatsapp": {
+    "cta": "تواصل مع مستشار التخطيط عبر واتساب",
+    "prefilledMessage": "مرحباً تِكِلّه، لقد انتهيت من التخطيط لمناسبتي وأرغب في مناقشة التفاصيل. رقم خطتي هو: {{planId}}",
+    "successTitle": "Your plan is locked in 🎉",
+    "successDesc": "Our concierge can finalise the smaller details with you on WhatsApp — usually within an hour.",
+    "skipToCheckout": "Continue to secure checkout"
   },
   "vendor": {
     "kicker": "Partner dashboard",
@@ -648,6 +679,33 @@
     "tabReviews": "Reviews",
     "tabModeration": "Pending reports",
     "tabVerification": "Verification queue",
+    "tabLeads": "Recent leads",
+    "leads": {
+      "title": "Recent leads",
+      "subtitle": "Customers who verified their phone — follow up before they cool off.",
+      "filterAll": "All statuses",
+      "empty": "No leads yet",
+      "emptyDesc": "When customers verify their phone they'll appear here.",
+      "created": "Verified",
+      "hasEvent": "Plan started",
+      "hasBooking": "Booking created",
+      "whatsapp": "WhatsApp",
+      "whatsappMessage": "Hi {{phone}}, this is Tekillah following up on your event planning — happy to help.",
+      "statusUpdated": "Lead status updated",
+      "status": {
+        "verified": "Verified",
+        "planned": "Planning",
+        "booked": "Booked",
+        "completed": "Completed",
+        "lost": "Lost"
+      },
+      "source": {
+        "phone_otp": "Phone OTP",
+        "wizard": "Wizard",
+        "whatsapp": "WhatsApp",
+        "manual": "Manual"
+      }
+    },
     "grand": {
       "title": "Grand control overview",
       "subtitle": "Live snapshot of pending docs, flagged content, and system health.",

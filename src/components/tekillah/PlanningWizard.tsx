@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check, ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
+import { Check, ArrowLeft, ArrowRight, Loader2, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { StepDetails } from "./wizard/StepDetails";
@@ -19,6 +19,8 @@ import { WizardVisual } from "./wizard/WizardVisual";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { WhatsAppCTA } from "./WhatsAppCTA";
+import { upsertCustomerLead } from "@/lib/leads";
 
 export const PlanningWizard = () => {
   const { t, i18n } = useTranslation();

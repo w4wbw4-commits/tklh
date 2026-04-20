@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Loader2, ShieldCheck, Check, X } from "lucide-react";
 import { Logo } from "@/components/tekillah/Logo";
 import { supabase } from "@/integrations/supabase/client";
-import { PasswordInput } from "./Auth";
+import { PasswordInput } from "@/components/tekillah/PasswordInput";
 
 const ResetPassword = () => {
   const { t } = useTranslation();
