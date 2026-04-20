@@ -10,7 +10,9 @@
 import type { ServiceKey } from "@/components/tekillah/wizard/types";
 import type { VendorPick } from "@/components/tekillah/wizard/StepVendors";
 
-export const PENDING_PLAN_KEY = "pending_event_plan";
+export const PENDING_PLAN_KEY = "tekillah_draft_plan";
+// Legacy key — migrated on first read so early testers don't lose their draft.
+const LEGACY_PENDING_PLAN_KEY = "pending_event_plan";
 const PENDING_PLAN_VERSION = 1;
 // Snapshots older than 24h are dropped — keeps stale guest data from haunting
 // future sign-ins on shared devices.
@@ -51,7 +53,16 @@ export const savePendingPlan = (plan: PendingPlanInput): void => {
 
 export const loadPendingPlan = (): PendingPlan | null => {
   try {
-    const raw = localStorage.getItem(PENDING_PLAN_KEY);
+    let raw = localStorage.getItem(PENDING_PLAN_KEY);
+    if (!raw) {
+      // One-time migration from the old key name.
+      const legacy = localStorage.getItem(LEGACY_PENDING_PLAN_KEY);
+      if (legacy) {
+        localStorage.setItem(PENDING_PLAN_KEY, legacy);
+        localStorage.removeItem(LEGACY_PENDING_PLAN_KEY);
+        raw = legacy;
+      }
+    }
     if (!raw) return null;
     const parsed = JSON.parse(raw) as PendingPlan;
     if (parsed.version !== PENDING_PLAN_VERSION) {
