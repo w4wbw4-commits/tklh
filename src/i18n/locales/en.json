@@ -265,7 +265,10 @@
       "resend": "Resend code",
       "resendIn": "Resend available in {{seconds}}s",
       "verified": "Phone verified — welcome!",
-      "codeSentDev": "Demo code: {{code}} (auto-fill or enter manually)",
+      "codeSentDev": "Demo code: {{code}}",
+      "codeSentDevDesc": "Auto-fills on mobile, or tap Copy and paste below.",
+      "copyCode": "Copy code",
+      "codeCopied": "Code copied",
       "legal": "By continuing you agree to Tekillah's Terms of Service and Privacy Policy.",
       "errors": {
         "invalid": "Please enter a valid Saudi mobile number (e.g. 5X XXX XXXX).",
