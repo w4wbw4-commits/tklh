@@ -59,9 +59,9 @@ export const Navbar = () => {
               asChild
               className="hidden rounded-full text-xs text-foreground/80 hover:text-primary sm:inline-flex"
             >
-              <Link to="/vendor">
+              <Link to="/partners">
                 <Building2 className="me-1 h-3.5 w-3.5" />
-                {t("nav.partners")}
+                {t("nav.registerVendor")}
               </Link>
             </Button>
             <Button
@@ -73,8 +73,12 @@ export const Navbar = () => {
               <Globe className="me-1 h-3.5 w-3.5" />
               {t("nav.lang")}
             </Button>
-            <Button size="sm" asChild className="hidden rounded-full bg-primary text-primary-foreground hover:bg-primary/90 sm:inline-flex">
-              <a href="#wizard">{t("nav.start")}</a>
+            <Button
+              size="sm"
+              asChild
+              className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+            >
+              <Link to="/auth">{t("nav.login")}</Link>
             </Button>
           </div>
         </div>
