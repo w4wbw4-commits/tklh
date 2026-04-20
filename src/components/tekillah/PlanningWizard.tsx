@@ -67,6 +67,25 @@ export const PlanningWizard = () => {
   const setAllocation = (key: ServiceKey, value: number) =>
     setAllocations((a) => ({ ...a, [key]: value }));
 
+  // Per-service on/off toggle for the Smart Budget. All on by default so the
+  // estimator behaves the same as before until the user opts a service out.
+  const [enabledServices, setEnabledServices] = useState<Record<ServiceKey, boolean>>(() => {
+    const out = {} as Record<ServiceKey, boolean>;
+    allocationCatalog.forEach((it) => { out[it.key] = true; });
+    return out;
+  });
+  const toggleEnabled = (key: ServiceKey) =>
+    setEnabledServices((s) => ({ ...s, [key]: !s[key] }));
+
+  // Live total of enabled allocations — drives smart-matching tier in StepVendors.
+  const liveBudget = useMemo(
+    () => allocationCatalog.reduce(
+      (s, it) => s + (enabledServices[it.key] ? (allocations[it.key] ?? 0) : 0),
+      0,
+    ),
+    [allocations, enabledServices],
+  );
+
   // Step 4 — Vendor picks
   const [picks, setPicks] = useState<Record<string, VendorPick>>({});
   const setPick = (category: ServiceKey, pick: VendorPick | null) => {
