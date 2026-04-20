@@ -21,7 +21,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { WhatsAppCTA } from "./WhatsAppCTA";
 import { upsertCustomerLead } from "@/lib/leads";
-import { loadPendingPlan, savePendingPlan } from "@/lib/pendingPlan";
+import { clearPendingPlan, loadPendingPlan, savePendingPlan } from "@/lib/pendingPlan";
+import { finalisePlan } from "@/lib/finalisePlan";
 
 export const PlanningWizard = () => {
   const { t, i18n } = useTranslation();
@@ -166,56 +167,28 @@ export const PlanningWizard = () => {
     }
 
     setSubmitting(true);
-    const visionNote = [vision, selectedChips.join(" • ")].filter(Boolean).join("\n");
-
-    // 1. Create event
-    const { data: ev, error: evErr } = await supabase.from("events").insert({
-      customer_id: user.id,
-      title: eventType ? t(`eventTypes.${eventType}`) : t("customer.create.defaultTitle"),
-      event_date: date,
-      city: city ? t(`cities.${city}`) : null,
-      guest_count: guests,
-      total_budget: budget,
-      theme: selectedChips[0] || null,
-      notes: visionNote || null,
-    }).select("id").single();
-
-    if (evErr || !ev) {
-      setSubmitting(false);
-      toast.error(t("customer.create.createFailed"));
-      return;
-    }
-
-    // 2. Create bookings (one per vendor pick) — DB triggers will block date + notify vendor
-    const bookingsToInsert = pickList.map((p) => ({
-      customer_id: user.id,
-      vendor_id: p.vendorId,
-      package_id: p.packageId,
-      event_id: ev.id,
-      event_date: date,
-      guest_count: guests,
-      total_price: p.price,
-      status: "pending" as const,
-    }));
-
-    const { data: createdBookings, error: bErr } = await supabase
-      .from("bookings")
-      .insert(bookingsToInsert)
-      .select("id");
-
-    setSubmitting(false);
-
-    if (bErr || !createdBookings) {
+    try {
+      const result = await finalisePlan({
+        userId: user.id,
+        t,
+        plan: {
+          version: 1, savedAt: Date.now(),
+          city, eventType, date, men, women,
+          selected, vision, selectedChips,
+          budgetMode, budget,
+          allocations, enabledServices, picks,
+        },
+      });
+      // Snapshot is fully consumed — clear so we don't re-run on next visit.
+      clearPendingPlan();
+      toast.success(t("wizard.eventCreated"));
+      toast.success(t("wizard.bookingsCreated", { count: result.bookingIds.length }));
+      navigate(`/checkout/${result.bookingIds[0]}`);
+    } catch {
       toast.error(t("wizard.bookingsFailed"));
-      return;
+    } finally {
+      setSubmitting(false);
     }
-
-    toast.success(t("wizard.eventCreated"));
-    toast.success(t("wizard.bookingsCreated", { count: createdBookings.length }));
-
-    // 3. Redirect to first booking checkout
-    const firstBookingId = createdBookings[0].id;
-    navigate(`/checkout/${firstBookingId}`);
   };
 
   const stepLabels = [
