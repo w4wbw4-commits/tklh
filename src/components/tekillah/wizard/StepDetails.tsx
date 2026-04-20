@@ -1,5 +1,10 @@
 import { motion } from "framer-motion";
-import { Input } from "@/components/ui/input";
+import { format, parse, isValid } from "date-fns";
+import { ar as arLocale, enUS } from "date-fns/locale";
+import { CalendarIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -10,6 +15,18 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { useTranslation } from "react-i18next";
+import { cn } from "@/lib/utils";
+
+// The wizard stores `date` as ISO yyyy-MM-dd (stable for DB / serialization)
+// while the UI always presents it as DD/MM/YYYY to avoid month/day confusion.
+const ISO = "yyyy-MM-dd";
+const DISPLAY = "dd/MM/yyyy";
+
+const isoToDate = (iso: string): Date | undefined => {
+  if (!iso) return undefined;
+  const d = parse(iso, ISO, new Date());
+  return isValid(d) ? d : undefined;
+};
 
 const cityKeys = ["riyadh", "jeddah", "dammam", "makkah", "madinah", "khobar"];
 const eventTypeKeys = ["wedding", "engagement", "betrothal", "graduation", "family"];
@@ -26,7 +43,10 @@ export const StepDetails = ({
   city, setCity, eventType, setEventType, date, setDate,
   men, setMen, women, setWomen,
 }: Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isArabic = i18n.language?.startsWith("ar");
+  const locale = isArabic ? arLocale : enUS;
+  const selectedDate = isoToDate(date);
   return (
     <motion.div
       key="step-0"
@@ -58,7 +78,36 @@ export const StepDetails = ({
 
         <div className="space-y-2 sm:col-span-2">
           <Label className="font-arabic text-foreground">{t("wizard.details.date")}</Label>
-          <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="h-12 rounded-xl" />
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                className={cn(
+                  "h-12 w-full justify-start rounded-xl px-4 text-start font-normal tabular-nums",
+                  !selectedDate && "text-muted-foreground",
+                )}
+              >
+                <CalendarIcon className="me-2 h-4 w-4 opacity-70" />
+                <span dir="ltr" className="tabular-nums">
+                  {selectedDate ? format(selectedDate, DISPLAY) : "DD/MM/YYYY"}
+                </span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={(d) => setDate(d ? format(d, ISO) : "")}
+                disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                locale={locale}
+                weekStartsOn={6}
+                initialFocus
+                className={cn("p-3 pointer-events-auto")}
+              />
+            </PopoverContent>
+          </Popover>
+          <p className="text-[11px] text-foreground/55" dir="ltr">DD/MM/YYYY</p>
         </div>
 
         <div className="space-y-3 rounded-2xl bg-secondary/50 p-5">
