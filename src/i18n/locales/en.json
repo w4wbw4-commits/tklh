@@ -679,6 +679,33 @@
     "tabReviews": "Reviews",
     "tabModeration": "Pending reports",
     "tabVerification": "Verification queue",
+    "tabLeads": "Recent leads",
+    "leads": {
+      "title": "Recent leads",
+      "subtitle": "Customers who verified their phone — follow up before they cool off.",
+      "filterAll": "All statuses",
+      "empty": "No leads yet",
+      "emptyDesc": "When customers verify their phone they'll appear here.",
+      "created": "Verified",
+      "hasEvent": "Plan started",
+      "hasBooking": "Booking created",
+      "whatsapp": "WhatsApp",
+      "whatsappMessage": "Hi {{phone}}, this is Tekillah following up on your event planning — happy to help.",
+      "statusUpdated": "Lead status updated",
+      "status": {
+        "verified": "Verified",
+        "planned": "Planning",
+        "booked": "Booked",
+        "completed": "Completed",
+        "lost": "Lost"
+      },
+      "source": {
+        "phone_otp": "Phone OTP",
+        "wizard": "Wizard",
+        "whatsapp": "WhatsApp",
+        "manual": "Manual"
+      }
+    },
     "grand": {
       "title": "Grand control overview",
       "subtitle": "Live snapshot of pending docs, flagged content, and system health.",

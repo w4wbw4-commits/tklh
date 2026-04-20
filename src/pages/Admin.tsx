@@ -22,6 +22,7 @@ import { AdminReviewsPanel } from "@/components/tekillah/admin/AdminReviewsPanel
 import { AdminModerationQueue } from "@/components/tekillah/admin/AdminModerationQueue";
 import { AdminVerificationQueue } from "@/components/tekillah/admin/AdminVerificationQueue";
 import { AdminGrandControl } from "@/components/tekillah/admin/AdminGrandControl";
+import { AdminLeadsPanel } from "@/components/tekillah/admin/AdminLeadsPanel";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 
 interface PaymentRow {
@@ -181,6 +182,9 @@ const Admin = () => {
               <TabsTrigger value="verification" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <ShieldCheck className="h-4 w-4" /> {t("admin.tabVerification")}
               </TabsTrigger>
+              <TabsTrigger value="leads" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <Inbox className="h-4 w-4" /> {t("admin.tabLeads")}
+              </TabsTrigger>
               <TabsTrigger value="payments" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <Receipt className="h-4 w-4" /> {t("admin.tabPayments")}
               </TabsTrigger>
@@ -197,6 +201,10 @@ const Admin = () => {
 
             <TabsContent value="verification" className="mt-6">
               <AdminVerificationQueue />
+            </TabsContent>
+
+            <TabsContent value="leads" className="mt-6">
+              <AdminLeadsPanel />
             </TabsContent>
 
             <TabsContent value="payments" className="mt-6">
