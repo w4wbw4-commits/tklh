@@ -109,7 +109,10 @@
       "from": "From",
       "empty": "No vendors available for this service yet.",
       "noServices": "Pick at least one service in step 2 first.",
-      "pickAtLeastOne": "Please pick at least one vendor before confirming."
+      "pickAtLeastOne": "Please pick at least one vendor before confirming.",
+      "matchesBudget": "Matches your budget",
+      "outsideBudget": "Above your service budget",
+      "filterAllInRange": "Showing vendors that match your tier"
     },
     "details": {
       "title": "Event details",
