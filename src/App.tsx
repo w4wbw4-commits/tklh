@@ -9,6 +9,7 @@ import Auth from "./pages/Auth.tsx";
 import ForgotPassword from "./pages/ForgotPassword.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 import Vendor from "./pages/Vendor.tsx";
+import Partners from "./pages/Partners.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Checkout from "./pages/Checkout.tsx";
 import Success from "./pages/Success.tsx";
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/vendor" element={<Vendor />} />
+            <Route path="/partners" element={<Partners />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/checkout/:bookingId" element={<Checkout />} />
             <Route path="/invoice/:bookingId" element={<Invoice />} />
