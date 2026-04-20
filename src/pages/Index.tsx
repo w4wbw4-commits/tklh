@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/tekillah/Navbar";
 import { Hero } from "@/components/tekillah/Hero";
+import { Story } from "@/components/tekillah/Story";
 import { Features } from "@/components/tekillah/Features";
 import { PlanningWizard } from "@/components/tekillah/PlanningWizard";
 import { DashboardPreview } from "@/components/tekillah/DashboardPreview";
@@ -10,6 +11,7 @@ const Index = () => {
     <main className="min-h-screen bg-background">
       <Navbar />
       <Hero />
+      <Story />
       <Features />
       <PlanningWizard />
       <DashboardPreview />
