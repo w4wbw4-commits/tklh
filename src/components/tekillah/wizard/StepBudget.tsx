@@ -1,10 +1,17 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useMemo } from "react";
-import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
-import { PackageCheck, Calculator, Sparkles, AlertTriangle, TrendingUp, Users } from "lucide-react";
-import { allocationCatalog, realisticMinimum, type BudgetMode, type ServiceKey } from "./types";
+import { Switch } from "@/components/ui/switch";
+import { PackageCheck, Calculator, Sparkles, AlertTriangle, TrendingUp, Users, Gem } from "lucide-react";
+import {
+  allocationCatalog,
+  realisticMinimum,
+  tierForBudget,
+  BUDGET_TIER_THRESHOLDS,
+  type BudgetMode,
+  type ServiceKey,
+} from "./types";
 import { useMarketPrices } from "@/hooks/useMarketPrices";
 import { useTranslation } from "react-i18next";
 import { fmtNumber } from "@/i18n/format";
@@ -17,11 +24,14 @@ interface Props {
   guests: number;
   allocations: Record<ServiceKey, number>;
   setAllocation: (key: ServiceKey, value: number) => void;
+  enabledServices: Record<ServiceKey, boolean>;
+  toggleEnabled: (key: ServiceKey) => void;
 }
 
 export const StepBudget = ({
   budgetMode, setBudgetMode, budget, setBudget,
   guests, allocations, setAllocation,
+  enabledServices, toggleEnabled,
 }: Props) => {
   const { t } = useTranslation();
   const { prices: market } = useMarketPrices();
@@ -33,17 +43,44 @@ export const StepBudget = ({
     return marketAvg ? Math.max(staticMin, Math.round(marketAvg)) : staticMin;
   };
 
+  // Total only counts services the user has enabled.
   const total = useMemo(
-    () => Object.values(allocations).reduce((s, v) => s + v, 0),
-    [allocations]
+    () => allocationCatalog.reduce(
+      (s, it) => s + (enabledServices[it.key] ? (allocations[it.key] ?? 0) : 0),
+      0,
+    ),
+    [allocations, enabledServices],
   );
 
   const globalMinimum = useMemo(
-    () => allocationCatalog.reduce((s, item) => s + effectiveMin(item), 0),
-    [guests, market] // eslint-disable-line react-hooks/exhaustive-deps
+    () => allocationCatalog.reduce(
+      (s, item) => s + (enabledServices[item.key] ? effectiveMin(item) : 0),
+      0,
+    ),
+    [guests, market, enabledServices], // eslint-disable-line react-hooks/exhaustive-deps
   );
   const isBelowMinimum = total < globalMinimum;
   const cur = t("common.currency");
+
+  // Smart matching tier — derived from running total so vendor list updates live.
+  const tier = tierForBudget(total);
+  const tierMeta = {
+    economy: {
+      label: t("wizard.budget.tierEconomy"),
+      desc: t("wizard.budget.tierEconomyDesc", { max: fmtNumber(BUDGET_TIER_THRESHOLDS.economyMax) }),
+    },
+    standard: {
+      label: t("wizard.budget.tierStandard"),
+      desc: t("wizard.budget.tierStandardDesc", {
+        min: fmtNumber(BUDGET_TIER_THRESHOLDS.economyMax),
+        max: fmtNumber(BUDGET_TIER_THRESHOLDS.standardMax),
+      }),
+    },
+    luxury: {
+      label: t("wizard.budget.tierLuxury"),
+      desc: t("wizard.budget.tierLuxuryDesc", { min: fmtNumber(BUDGET_TIER_THRESHOLDS.standardMax) }),
+    },
+  }[tier];
 
   return (
     <motion.div
@@ -123,6 +160,26 @@ export const StepBudget = ({
                 </div>
               </div>
 
+              {/* Smart-matching tier banner — updates live with the running total */}
+              <motion.div
+                key={tier}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35 }}
+                className="mt-5 flex items-start gap-3 rounded-2xl border border-primary/25 bg-primary/5 p-4"
+              >
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground">
+                  <Gem className="h-4 w-4" />
+                </span>
+                <div className="min-w-0">
+                  <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-primary/80">
+                    {t("wizard.budget.tierLabel")}
+                  </div>
+                  <div className="font-arabic text-base font-semibold text-foreground">{tierMeta.label}</div>
+                  <div className="mt-0.5 text-xs leading-relaxed text-foreground/70">{tierMeta.desc}</div>
+                </div>
+              </motion.div>
+
               <AnimatePresence>
                 {isBelowMinimum && (
                   <motion.div
@@ -146,28 +203,53 @@ export const StepBudget = ({
                 </div>
 
                 {allocationCatalog.map((item) => {
+                  const enabled = enabledServices[item.key];
                   const value = allocations[item.key];
                   const min = effectiveMin(item);
-                  const isLow = value < min;
+                  const isLow = enabled && value < min;
                   const pct = Math.min(100, (value / Math.max(min * 2, 1)) * 100);
                   const vendorCount = market[item.key]?.count ?? 0;
                   return (
-                    <div key={item.key} className="rounded-2xl border border-border/70 bg-background p-4 sm:p-5">
+                    <div
+                      key={item.key}
+                      className={`rounded-2xl border bg-background p-4 transition-opacity sm:p-5 ${
+                        enabled ? "border-border/70" : "border-border/40 opacity-60"
+                      }`}
+                    >
                       <div className="flex flex-wrap items-center justify-between gap-3">
-                        <div>
-                          <div className="font-arabic text-base font-semibold text-foreground">{t(`wizard.budget.items.${item.key}`)}</div>
-                          <div className="mt-0.5 flex items-center gap-2 text-xs text-foreground/60">
-                            <span>{t("wizard.budget.minRealistic")} <span className="font-medium text-foreground/80">{fmt(min)} {cur}</span></span>
-                            {vendorCount > 0 && (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
-                                <Users className="h-2.5 w-2.5" /> {t("wizard.budget.vendorAvg", { count: vendorCount })}
-                              </span>
-                            )}
+                        <div className="flex items-center gap-3">
+                          <Switch
+                            checked={enabled}
+                            onCheckedChange={() => toggleEnabled(item.key)}
+                            aria-label={t("wizard.budget.includeService")}
+                          />
+                          <div>
+                            <div className="font-arabic text-base font-semibold text-foreground">
+                              {t(`wizard.budget.items.${item.key}`)}
+                            </div>
+                            <div className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-foreground/60">
+                              {enabled ? (
+                                <>
+                                  <span>
+                                    {t("wizard.budget.minRealistic")}{" "}
+                                    <span className="font-medium text-foreground/80">{fmt(min)} {cur}</span>
+                                  </span>
+                                  {vendorCount > 0 && (
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                                      <Users className="h-2.5 w-2.5" /> {t("wizard.budget.vendorAvg", { count: vendorCount })}
+                                    </span>
+                                  )}
+                                </>
+                              ) : (
+                                <span className="italic">{t("wizard.budget.excludedHint")}</span>
+                              )}
+                            </div>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <Input
                             type="number"
+                            disabled={!enabled}
                             value={value}
                             onChange={(e) => setAllocation(item.key, Math.max(0, Number(e.target.value) || 0))}
                             className={`h-10 w-32 rounded-lg text-end font-medium ${
@@ -181,6 +263,7 @@ export const StepBudget = ({
                       <div className="mt-4">
                         <Slider
                           value={[value]}
+                          disabled={!enabled}
                           onValueChange={(v) => setAllocation(item.key, v[0])}
                           min={0}
                           max={Math.max(min * 3, 50000)}
@@ -189,7 +272,7 @@ export const StepBudget = ({
                         <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary/60">
                           <motion.div
                             initial={false}
-                            animate={{ width: `${pct}%` }}
+                            animate={{ width: `${enabled ? pct : 0}%` }}
                             transition={{ duration: 0.5, ease: "easeOut" }}
                             className={`h-full rounded-full ${isLow ? "bg-destructive/70" : "bg-primary"}`}
                           />
