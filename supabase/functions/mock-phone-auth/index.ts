@@ -51,6 +51,18 @@ Deno.serve(async (req) => {
       });
       if (createError) throw createError;
       user = created.user;
+    } else {
+      // Existing user — make sure email is confirmed and password matches the
+      // deterministic synthetic one (covers users created before email_confirm
+      // was set, or whose password drifted).
+      const needsConfirm = !user.email_confirmed_at;
+      const { data: updated, error: updateError } = await admin.auth.admin.updateUserById(user.id, {
+        password,
+        ...(needsConfirm ? { email_confirm: true } : {}),
+        user_metadata: { ...(user.user_metadata ?? {}), phone, display_name: displayName ?? phone },
+      });
+      if (updateError) throw updateError;
+      user = updated.user ?? user;
     }
 
     if (!user) throw new Error("Unable to prepare mock auth user");
