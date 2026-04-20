@@ -55,6 +55,20 @@ const Auth = () => {
     return () => clearTimeout(id);
   }, [resendCooldown]);
 
+  const showDevCodeToast = (code: string) => {
+    toast.success(t("auth.phone.codeSentDev", { code }), {
+      duration: 12000,
+      description: t("auth.phone.codeSentDevDesc"),
+      action: {
+        label: t("auth.phone.copyCode"),
+        onClick: () => {
+          navigator.clipboard?.writeText(code).catch(() => {});
+          toast.success(t("auth.phone.codeCopied"));
+        },
+      },
+    });
+  };
+
   const handleSendCode = async (e: React.FormEvent) => {
     e.preventDefault();
     const normalized = normalizeSaudiPhone(localInput);
@@ -71,8 +85,7 @@ const Auth = () => {
       setOtp("");
       setOtpError(null);
       setOtpVerified(false);
-      // Dev visibility — production swap will remove this toast.
-      toast.success(t("auth.phone.codeSentDev", { code }), { duration: 8000 });
+      showDevCodeToast(code);
     } catch {
       toast.error(t("auth.phone.errors.sendFailed"));
     } finally {
