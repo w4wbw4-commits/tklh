@@ -124,8 +124,24 @@ export const PlanningWizard = () => {
     if (snap.allocations) setAllocations(snap.allocations);
     if (snap.enabledServices) setEnabledServices(snap.enabledServices);
     if (snap.picks) setPicks(snap.picks);
-    // Land them on the last meaningful step so they don't redo work.
-    if (Object.keys(snap.picks ?? {}).length > 0) setStep(4);
+    // Honour an explicit `?resume=1&step=N` marker from the auth redirect,
+    // otherwise land them on the last meaningful step so they don't redo work.
+    const params = new URLSearchParams(window.location.search);
+    const resume = params.get("resume") === "1";
+    const stepParam = Number(params.get("step"));
+    if (resume && Number.isFinite(stepParam) && stepParam >= 0 && stepParam <= 4) {
+      setStep(stepParam);
+      toast.success(t("wizard.planRestored"));
+      // Scroll the wizard into view so the user sees their restored state.
+      requestAnimationFrame(() => {
+        document.getElementById("wizard")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      // Clean the URL so a refresh doesn't re-toast.
+      const url = new URL(window.location.href);
+      url.searchParams.delete("resume");
+      url.searchParams.delete("step");
+      window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+    } else if (Object.keys(snap.picks ?? {}).length > 0) setStep(4);
     else if (snap.budget) setStep(3);
     else if (snap.selected?.length) setStep(1);
   }, []);
