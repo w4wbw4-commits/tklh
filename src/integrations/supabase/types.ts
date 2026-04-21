@@ -339,6 +339,54 @@ export type Database = {
           },
         ]
       }
+      incident_reports: {
+        Row: {
+          admin_notes: string | null
+          attachments: string[]
+          booking_id: string
+          created_at: string
+          customer_id: string
+          description: string
+          id: string
+          kind: Database["public"]["Enums"]["incident_kind"]
+          resolved_at: string | null
+          resolved_by: string | null
+          status: Database["public"]["Enums"]["incident_status"]
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          attachments?: string[]
+          booking_id: string
+          created_at?: string
+          customer_id: string
+          description: string
+          id?: string
+          kind?: Database["public"]["Enums"]["incident_kind"]
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["incident_status"]
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          attachments?: string[]
+          booking_id?: string
+          created_at?: string
+          customer_id?: string
+          description?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["incident_kind"]
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["incident_status"]
+          updated_at?: string
+          vendor_id?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           body: string | null
@@ -994,6 +1042,14 @@ export type Database = {
         | "cancelled"
       emergency_kind: "delay" | "cancellation" | "no_show" | "other"
       emergency_status: "open" | "in_progress" | "resolved"
+      incident_kind:
+        | "quality"
+        | "no_show"
+        | "late"
+        | "damage"
+        | "safety"
+        | "other"
+      incident_status: "open" | "in_review" | "resolved" | "dismissed"
       lead_status: "verified" | "planned" | "booked" | "completed" | "lost"
       milestone_status: "pending" | "in_progress" | "done"
       notification_type:
@@ -1165,6 +1221,15 @@ export const Constants = {
       ],
       emergency_kind: ["delay", "cancellation", "no_show", "other"],
       emergency_status: ["open", "in_progress", "resolved"],
+      incident_kind: [
+        "quality",
+        "no_show",
+        "late",
+        "damage",
+        "safety",
+        "other",
+      ],
+      incident_status: ["open", "in_review", "resolved", "dismissed"],
       lead_status: ["verified", "planned", "booked", "completed", "lost"],
       milestone_status: ["pending", "in_progress", "done"],
       notification_type: [
