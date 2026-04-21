@@ -17,7 +17,6 @@ export const Navbar = () => {
     { key: "home", href: "#home" },
     { key: "features", href: "#features" },
     { key: "plan", href: "#wizard" },
-    { key: "dashboard", href: "#dashboard" },
   ] as const;
 
   return (
