@@ -1,15 +1,28 @@
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, CalendarIcon } from "lucide-react";
+import { format, parse, isValid } from "date-fns";
+import { ar as arLocale, enUS } from "date-fns/locale";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
+
+const ISO = "yyyy-MM-dd";
+const DISPLAY = "dd/MM/yyyy";
+const isoToDate = (iso: string): Date | undefined => {
+  if (!iso) return undefined;
+  const d = parse(iso, ISO, new Date());
+  return isValid(d) ? d : undefined;
+};
 
 interface Props {
   open: boolean;
