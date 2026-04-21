@@ -1,10 +1,19 @@
 import { Logo } from "./Logo";
-import { Instagram, Twitter, Mail, Building2, ArrowRight } from "lucide-react";
+import { Instagram, Twitter, Mail, Building2, ArrowRight, LogOut } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 export const Footer = () => {
   const { t } = useTranslation();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
+
   return (
     <footer className="border-t border-border bg-gradient-beige">
       <div className="mx-auto max-w-6xl px-6 py-14">
