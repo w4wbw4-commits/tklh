@@ -331,7 +331,12 @@
       "accept": "Accept",
       "reject": "Decline",
       "confirmed": "Booking confirmed",
-      "rejected": "Booking declined"
+      "rejected": "Booking declined",
+      "confirmAttendance": "Confirm attendance",
+      "attendanceConfirmed": "Attendance confirmed",
+      "attendanceLockedHint": "This button unlocks automatically on the event date.",
+      "attendanceSaved": "Attendance confirmed. Thank you!",
+      "attendanceFailed": "Could not confirm attendance — please retry."
     },
     "profile": {
       "editTitle": "Business profile",

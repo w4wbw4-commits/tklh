@@ -331,7 +331,12 @@
       "accept": "قبول",
       "reject": "رفض",
       "confirmed": "تم تأكيد الحجز",
-      "rejected": "تم رفض الحجز"
+      "rejected": "تم رفض الحجز",
+      "confirmAttendance": "تأكيد الحضور",
+      "attendanceConfirmed": "تم تأكيد الحضور",
+      "attendanceLockedHint": "يُفعّل هذا الزر تلقائياً في يوم المناسبة فقط.",
+      "attendanceSaved": "تم تأكيد حضورك. شكراً لاحترافك!",
+      "attendanceFailed": "تعذر تأكيد الحضور — حاول مجدداً."
     },
     "profile": {
       "editTitle": "ملف العمل",
