@@ -59,6 +59,18 @@ export const Footer = () => {
               <li><a href="#" className="hover:text-primary">{t("footer.contact")}</a></li>
               <li><Link to="/terms" className="hover:text-primary">{t("footer.terms")}</Link></li>
               <li><Link to="/privacy" className="hover:text-primary">{t("footer.privacy")}</Link></li>
+              {user && (
+                <li>
+                  <button
+                    type="button"
+                    onClick={handleSignOut}
+                    className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-primary"
+                  >
+                    <LogOut className="h-3.5 w-3.5" />
+                    {t("footer.signOut")}
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
         </div>
