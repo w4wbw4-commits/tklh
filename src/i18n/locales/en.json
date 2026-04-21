@@ -39,6 +39,8 @@
     "dashboard": "Dashboard",
     "myDashboard": "Follow-up Plan",
     "partners": "Partners",
+    "admin": "Admin Panel",
+    "adminWelcome": "Welcome Mohammed, admin privileges activated",
     "start": "Sign In",
     "lang": "ع"
   },

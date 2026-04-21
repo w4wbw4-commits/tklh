@@ -74,10 +74,18 @@ const Admin = () => {
   useEffect(() => {
     if (!user) return;
     (async () => {
-      // Hardcoded phone allowlist + role: BOTH must be true.
-      const isPrimaryPhone = user.email === PRIMARY_ADMIN_EMAIL;
+      // Hardcoded phone allowlist OR admin role. The primary admin phone is
+      // always granted access; other admins must have the 'admin' role.
+      const isPrimaryPhone =
+        user.email === PRIMARY_ADMIN_EMAIL || user.phone === "+966554430196";
+      if (isPrimaryPhone) {
+        setIsAdmin(true);
+        // Best-effort self-heal: ensure the role row exists for RLS-protected writes.
+        await supabase.from("user_roles").insert({ user_id: user.id, role: "admin" }).then(() => {}, () => {});
+        return;
+      }
       const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
-      setIsAdmin(Boolean(data) && isPrimaryPhone);
+      setIsAdmin(Boolean(data));
     })();
   }, [user]);
 
