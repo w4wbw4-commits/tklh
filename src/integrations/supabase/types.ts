@@ -16,6 +16,8 @@ export type Database = {
     Tables: {
       bookings: {
         Row: {
+          attendance_confirmed_at: string | null
+          attendance_confirmed_by: string | null
           created_at: string
           customer_id: string
           event_date: string
@@ -31,6 +33,8 @@ export type Database = {
           vendor_id: string
         }
         Insert: {
+          attendance_confirmed_at?: string | null
+          attendance_confirmed_by?: string | null
           created_at?: string
           customer_id: string
           event_date: string
@@ -46,6 +50,8 @@ export type Database = {
           vendor_id: string
         }
         Update: {
+          attendance_confirmed_at?: string | null
+          attendance_confirmed_by?: string | null
           created_at?: string
           customer_id?: string
           event_date?: string
@@ -192,6 +198,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      emergency_requests: {
+        Row: {
+          booking_id: string
+          created_at: string
+          customer_id: string
+          details: string | null
+          event_id: string | null
+          id: string
+          kind: Database["public"]["Enums"]["emergency_kind"]
+          needs_replacement: boolean
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: Database["public"]["Enums"]["emergency_status"]
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          booking_id: string
+          created_at?: string
+          customer_id: string
+          details?: string | null
+          event_id?: string | null
+          id?: string
+          kind?: Database["public"]["Enums"]["emergency_kind"]
+          needs_replacement?: boolean
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["emergency_status"]
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          booking_id?: string
+          created_at?: string
+          customer_id?: string
+          details?: string | null
+          event_id?: string | null
+          id?: string
+          kind?: Database["public"]["Enums"]["emergency_kind"]
+          needs_replacement?: boolean
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["emergency_status"]
+          updated_at?: string
+          vendor_id?: string
+        }
+        Relationships: []
       }
       events: {
         Row: {
@@ -935,6 +992,8 @@ export type Database = {
         | "rejected"
         | "completed"
         | "cancelled"
+      emergency_kind: "delay" | "cancellation" | "no_show" | "other"
+      emergency_status: "open" | "in_progress" | "resolved"
       lead_status: "verified" | "planned" | "booked" | "completed" | "lost"
       milestone_status: "pending" | "in_progress" | "done"
       notification_type:
@@ -1104,6 +1163,8 @@ export const Constants = {
         "completed",
         "cancelled",
       ],
+      emergency_kind: ["delay", "cancellation", "no_show", "other"],
+      emergency_status: ["open", "in_progress", "resolved"],
       lead_status: ["verified", "planned", "booked", "completed", "lost"],
       milestone_status: ["pending", "in_progress", "done"],
       notification_type: [
