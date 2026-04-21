@@ -217,7 +217,7 @@ const Auth = () => {
             className="font-wordmark text-5xl font-black text-primary"
             style={{ WebkitTextFillColor: "hsl(var(--primary-deep, var(--primary)))" }}
           >
-            تِكِلّه
+            تِكله
           </div>
         </div>
 

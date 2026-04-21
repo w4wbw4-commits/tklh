@@ -13,7 +13,7 @@ export const Logo = ({ className = "" }: { className?: string }) => {
         <Sparkles className="h-4 w-4 text-primary-foreground" strokeWidth={1.5} />
       </div>
       <div className="flex flex-col leading-none">
-        <span className="font-arabic text-xl font-semibold text-foreground">تِكِلّه</span>
+        <span className="font-arabic text-xl font-semibold text-foreground">تِكله</span>
         <span className="text-[10px] tracking-[0.25em] text-muted-foreground">TEKILLAH</span>
       </div>
     </motion.div>
