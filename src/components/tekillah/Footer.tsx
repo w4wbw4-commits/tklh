@@ -32,7 +32,6 @@ export const Footer = () => {
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li><a href="#features" className="hover:text-primary">{t("nav.features")}</a></li>
               <li><a href="#wizard" className="hover:text-primary">{t("footer.wizard")}</a></li>
-              <li><a href="#dashboard" className="hover:text-primary">{t("footer.dashboard")}</a></li>
               <li><Link to="/dashboard" className="hover:text-primary">{t("nav.myDashboard")}</Link></li>
             </ul>
           </div>
