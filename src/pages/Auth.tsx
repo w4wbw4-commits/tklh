@@ -24,6 +24,7 @@ import {
   verifyOtp,
 } from "@/lib/phone";
 import { upsertCustomerLead } from "@/lib/leads";
+import { isPendingPlanReady, loadPendingPlan } from "@/lib/pendingPlan";
 
 type Stage = "phone" | "otp";
 
@@ -31,7 +32,17 @@ const Auth = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const redirectTo = params.get("redirect") || "/dashboard";
+  const explicitRedirect = params.get("redirect");
+
+  // Decide where the user should land after auth:
+  // - explicit `?redirect=` always wins (e.g. came from /dashboard guard)
+  // - else: if a pending guest plan is waiting, go to /dashboard so it
+  //   finalises and forwards to /checkout/:bookingId
+  // - else: go home.
+  const computeRedirect = () => {
+    if (explicitRedirect) return explicitRedirect;
+    return isPendingPlanReady(loadPendingPlan()) ? "/dashboard" : "/";
+  };
 
   const { user, loading: authLoading } = useAuth();
   const [stage, setStage] = useState<Stage>("phone");
@@ -42,11 +53,13 @@ const Auth = () => {
   const [resendCooldown, setResendCooldown] = useState(0);
   const [otpError, setOtpError] = useState<string | null>(null);
   const [otpVerified, setOtpVerified] = useState(false);
+  const [savingPlan, setSavingPlan] = useState(false);
   const verifyInFlightRef = useRef(false);
 
   useEffect(() => {
-    if (!authLoading && user) navigate(redirectTo, { replace: true });
-  }, [user, authLoading, navigate, redirectTo]);
+    if (!authLoading && user) navigate(computeRedirect(), { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, authLoading, navigate]);
 
   // Cooldown ticker for the "Resend" button
   useEffect(() => {
