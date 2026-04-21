@@ -84,20 +84,25 @@ export const EventDayMode = ({ event }: { event: EventRow }) => {
               return (
                 <motion.div key={b.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="flex items-center gap-4 rounded-2xl border border-border bg-card p-4 shadow-card">
-                  <div className="grid h-12 w-12 place-items-center rounded-xl bg-secondary text-primary">
-                    <Icon className="h-5 w-5" strokeWidth={1.6} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-arabic text-sm font-semibold">{b.vendor?.business_name}</div>
-                    <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-secondary">
-                      <motion.div animate={{ width: `${((progress[b.id] ?? 0) / 3) * 100}%` }}
-                        transition={{ duration: 0.6 }} className="h-full bg-primary" />
+                  className="rounded-2xl border border-border bg-card p-4 shadow-card">
+                  <div className="flex items-center gap-4">
+                    <div className="grid h-12 w-12 place-items-center rounded-xl bg-secondary text-primary">
+                      <Icon className="h-5 w-5" strokeWidth={1.6} />
                     </div>
+                    <div className="flex-1">
+                      <div className="font-arabic text-sm font-semibold">{b.vendor?.business_name}</div>
+                      <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-secondary">
+                        <motion.div animate={{ width: `${((progress[b.id] ?? 0) / 3) * 100}%` }}
+                          transition={{ duration: 0.6 }} className="h-full bg-primary" />
+                      </div>
+                    </div>
+                    <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${status.classes}`}>
+                      {status.label}
+                    </span>
                   </div>
-                  <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${status.classes}`}>
-                    {status.label}
-                  </span>
+                  <div className="mt-3 flex justify-end">
+                    <ReportIncidentDialog bookingId={b.id} vendorId={b.vendor_id} />
+                  </div>
                 </motion.div>
               );
             })}
