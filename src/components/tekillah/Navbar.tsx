@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
-import { Globe, Building2, LayoutDashboard } from "lucide-react";
+import { Globe, LayoutDashboard } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export const Navbar = () => {
