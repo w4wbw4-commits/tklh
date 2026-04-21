@@ -1,5 +1,5 @@
 import { Logo } from "./Logo";
-import { Instagram, Twitter, Mail } from "lucide-react";
+import { Instagram, Twitter, Mail, Building2, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -28,25 +28,56 @@ export const Footer = () => {
           </div>
 
           <div>
-            <div className="font-arabic text-sm font-semibold text-foreground">{t("footer.platform")}</div>
+            <div className="font-wordmark text-sm font-semibold text-foreground">{t("footer.platform")}</div>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li><a href="#features" className="hover:text-primary">{t("nav.features")}</a></li>
               <li><a href="#wizard" className="hover:text-primary">{t("footer.wizard")}</a></li>
               <li><a href="#dashboard" className="hover:text-primary">{t("footer.dashboard")}</a></li>
+              <li><Link to="/dashboard" className="hover:text-primary">{t("nav.myDashboard")}</Link></li>
             </ul>
           </div>
 
           <div>
-            <div className="font-arabic text-sm font-semibold text-foreground">{t("footer.company")}</div>
+            <div className="font-wordmark text-sm font-semibold text-foreground">{t("footer.company")}</div>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li><a href="#" className="hover:text-primary">{t("footer.aboutUs")}</a></li>
-              <li><a href="#" className="hover:text-primary">{t("footer.joinVendor")}</a></li>
+              <li>
+                <Link to="/vendor" className="inline-flex items-center gap-1 font-medium text-primary hover:underline">
+                  <Building2 className="h-3.5 w-3.5" />
+                  {t("footer.joinVendor")}
+                  <ArrowRight className="h-3 w-3 rtl:rotate-180" />
+                </Link>
+              </li>
               <li><a href="#" className="hover:text-primary">{t("footer.contact")}</a></li>
               <li><Link to="/terms" className="hover:text-primary">{t("footer.terms")}</Link></li>
               <li><Link to="/privacy" className="hover:text-primary">{t("footer.privacy")}</Link></li>
             </ul>
           </div>
         </div>
+
+        {/* Partner Portal callout — visible on every page via Footer */}
+        <Link
+          to="/vendor"
+          className="mt-10 flex flex-col items-start justify-between gap-3 rounded-2xl border border-primary/25 bg-card/60 p-5 transition-colors hover:border-primary hover:bg-card sm:flex-row sm:items-center"
+        >
+          <div className="flex items-start gap-3">
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+              <Building2 className="h-5 w-5" />
+            </div>
+            <div>
+              <div className="font-wordmark text-sm font-semibold text-foreground">
+                {t("footer.partnerPortalTitle")}
+              </div>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                {t("footer.partnerPortalDesc")}
+              </p>
+            </div>
+          </div>
+          <span className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-medium text-primary-foreground">
+            {t("footer.partnerPortalCta")}
+            <ArrowRight className="h-3.5 w-3.5 rtl:rotate-180" />
+          </span>
+        </Link>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row">
           <span>© {new Date().getFullYear()} Tekillah. {t("footer.rights")}</span>
