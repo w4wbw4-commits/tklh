@@ -32,7 +32,8 @@ interface Props {
 }
 
 export const CreateEventDialog = ({ open, onOpenChange, userId, onCreated }: Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language?.startsWith("ar") ? arLocale : enUS;
   const [title, setTitle] = useState(t("customer.create.defaultTitle"));
   const [eventDate, setEventDate] = useState("");
   const [city, setCity] = useState("");
