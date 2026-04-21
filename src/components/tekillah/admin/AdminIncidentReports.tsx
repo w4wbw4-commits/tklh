@@ -42,8 +42,10 @@ export const AdminIncidentReports = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("incident_reports" as never)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const client = supabase as any;
+    const { data } = await client
+      .from("incident_reports")
       .select(
         "id, customer_id, vendor_id, booking_id, kind, description, attachments, status, admin_notes, created_at, vendor:vendors(business_name, category)",
       )
@@ -80,8 +82,10 @@ export const AdminIncidentReports = () => {
   const updateStatus = async (id: string, status: IncidentStatus) => {
     setBusyId(id);
     const { data: u } = await supabase.auth.getUser();
-    const { error } = await supabase
-      .from("incident_reports" as never)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const client = supabase as any;
+    const { error } = await client
+      .from("incident_reports")
       .update({
         status,
         admin_notes: notes[id] ?? null,

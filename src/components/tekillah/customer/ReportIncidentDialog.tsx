@@ -66,7 +66,9 @@ export const ReportIncidentDialog = ({ bookingId, vendorId }: Props) => {
         if (error) throw error;
         paths.push(path);
       }
-      const { error: insErr } = await supabase.from("incident_reports" as never).insert({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const client = supabase as any;
+      const { error: insErr } = await client.from("incident_reports").insert({
         customer_id: user.id,
         vendor_id: vendorId,
         booking_id: bookingId,
