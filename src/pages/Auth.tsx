@@ -39,8 +39,14 @@ const Auth = () => {
   // - else: if a pending guest plan is waiting, go to /dashboard so it
   //   finalises and forwards to /checkout/:bookingId
   // - else: go home.
-  const computeRedirect = () => {
+  const computeRedirect = (emailHint?: string | null, phoneHint?: string | null) => {
     if (explicitRedirect) return explicitRedirect;
+    // Primary admin allowlist — always route to /admin after login.
+    const email = emailHint ?? user?.email;
+    const phone = phoneHint ?? user?.phone;
+    if (email === "966554430196@phone.tekillah.app" || phone === "+966554430196") {
+      return "/admin";
+    }
     return isPendingPlanReady(loadPendingPlan()) ? "/dashboard" : "/";
   };
 
