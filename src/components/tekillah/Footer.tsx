@@ -1,10 +1,19 @@
 import { Logo } from "./Logo";
-import { Instagram, Twitter, Mail, Building2, ArrowRight } from "lucide-react";
+import { Instagram, Twitter, Mail, Building2, ArrowRight, LogOut } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 export const Footer = () => {
   const { t } = useTranslation();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
+
   return (
     <footer className="border-t border-border bg-gradient-beige">
       <div className="mx-auto max-w-6xl px-6 py-14">
@@ -50,6 +59,18 @@ export const Footer = () => {
               <li><a href="#" className="hover:text-primary">{t("footer.contact")}</a></li>
               <li><Link to="/terms" className="hover:text-primary">{t("footer.terms")}</Link></li>
               <li><Link to="/privacy" className="hover:text-primary">{t("footer.privacy")}</Link></li>
+              {user && (
+                <li>
+                  <button
+                    type="button"
+                    onClick={handleSignOut}
+                    className="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-primary"
+                  >
+                    <LogOut className="h-3.5 w-3.5" />
+                    {t("footer.signOut")}
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
         </div>

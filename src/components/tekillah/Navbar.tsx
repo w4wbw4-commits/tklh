@@ -4,9 +4,11 @@ import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
 import { Globe, LayoutDashboard } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/hooks/useAuth";
 
 export const Navbar = () => {
   const { t, i18n } = useTranslation();
+  const { user } = useAuth();
   const isAr = i18n.language === "ar";
 
   const toggleLang = () => {
@@ -61,9 +63,11 @@ export const Navbar = () => {
               <Globe className="me-1 h-3.5 w-3.5" />
               {t("nav.lang")}
             </Button>
-            <Button size="sm" asChild className="hidden rounded-full bg-primary text-primary-foreground hover:bg-primary/90 sm:inline-flex">
-              <Link to="/auth">{t("nav.start")}</Link>
-            </Button>
+            {!user && (
+              <Button size="sm" asChild className="hidden rounded-full bg-primary text-primary-foreground hover:bg-primary/90 sm:inline-flex">
+                <Link to="/auth">{t("nav.start")}</Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>
