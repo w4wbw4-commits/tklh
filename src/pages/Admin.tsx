@@ -199,6 +199,12 @@ const Admin = () => {
               <TabsTrigger value="verification" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <ShieldCheck className="h-4 w-4" /> {t("admin.tabVerification")}
               </TabsTrigger>
+              <TabsTrigger value="late" className="rounded-xl gap-2 data-[state=active]:bg-destructive data-[state=active]:text-destructive-foreground">
+                <AlertTriangle className="h-4 w-4" /> {t("admin.tabLate")}
+              </TabsTrigger>
+              <TabsTrigger value="incidents" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <AlertOctagon className="h-4 w-4" /> {t("admin.tabIncidents")}
+              </TabsTrigger>
               <TabsTrigger value="leads" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <Inbox className="h-4 w-4" /> {t("admin.tabLeads")}
               </TabsTrigger>
@@ -218,6 +224,14 @@ const Admin = () => {
 
             <TabsContent value="verification" className="mt-6">
               <AdminVerificationQueue />
+            </TabsContent>
+
+            <TabsContent value="late" className="mt-6">
+              <AdminLateAlerts />
+            </TabsContent>
+
+            <TabsContent value="incidents" className="mt-6">
+              <AdminIncidentReports />
             </TabsContent>
 
             <TabsContent value="leads" className="mt-6">
