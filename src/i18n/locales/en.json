@@ -424,6 +424,22 @@
     }
   },
   "customer": {
+    "report": {
+      "openCta": "Report an issue",
+      "title": "File a quality report",
+      "subtitle": "Describe what happened and attach photos. Our team will review it immediately.",
+      "kind": "Report type",
+      "description": "Issue details",
+      "descPlaceholder": "Write a clear description (at least 10 characters)…",
+      "images": "Photos (optional — up to 5)",
+      "uploadHint": "Click to choose photos",
+      "submit": "Submit report",
+      "submitted": "Report received — we'll be in touch.",
+      "errors": {
+        "auth": "You must be signed in.",
+        "descShort": "Description too short (10 characters minimum)."
+      }
+    },
     "kicker": "Customer dashboard",
     "newEvent": "New event",
     "noEventTitle": "Start by creating your event",
@@ -738,6 +754,42 @@
     "tabModeration": "Pending reports",
     "tabVerification": "Verification queue",
     "tabLeads": "Recent leads",
+    "tabLate": "Late alerts",
+    "tabIncidents": "Quality reports",
+    "late": {
+      "title": "Live event monitoring — late alerts",
+      "subtitle": "If a vendor doesn't confirm attendance within {{mins}} min of event start, a red alert appears here.",
+      "alertsCount": "alerts",
+      "empty": "No delays right now — all vendors are on time.",
+      "silentBadge": "Silent alert — customer not notified yet",
+      "callVendor": "Call vendor",
+      "callCustomer": "Call customer"
+    },
+    "incidents": {
+      "title": "Customer quality reports",
+      "subtitle": "Reports filed by customers with photos and descriptions.",
+      "empty": "No open reports.",
+      "updated": "Report updated",
+      "markInReview": "Start review",
+      "dismiss": "Dismiss",
+      "resolve": "Resolve",
+      "notesPlaceholder": "Internal notes for the team…",
+      "adminNote": "Admin note",
+      "kind": {
+        "quality": "Service quality",
+        "no_show": "No show",
+        "late": "Late arrival",
+        "damage": "Damage",
+        "safety": "Safety",
+        "other": "Other"
+      },
+      "status": {
+        "open": "Open",
+        "in_review": "In review",
+        "resolved": "Resolved",
+        "dismissed": "Dismissed"
+      }
+    },
     "leads": {
       "title": "Recent leads",
       "subtitle": "Customers who verified their phone — follow up before they cool off.",
