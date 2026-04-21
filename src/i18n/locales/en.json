@@ -432,9 +432,42 @@
     "tabs": {
       "overview": "Overview",
       "timeline": "Timeline",
+      "bookings": "Vendor tracking",
       "guests": "Guests",
       "payments": "Invoices",
       "day": "Event day"
+    },
+    "bookingsTimeline": {
+      "title": "Vendor tracking",
+      "subtitle": "Follow every service from booking to arrival and report any delay instantly.",
+      "empty": "No bookings to track yet.",
+      "status": {
+        "pending": "Awaiting confirmation",
+        "confirmed": "Confirmed",
+        "arrived": "Vendor arrived",
+        "completed": "Service completed",
+        "rejected": "Vendor declined",
+        "cancelled": "Cancelled"
+      },
+      "arrivedAt": "Arrival confirmed: {{time}}",
+      "reportTrigger": "Delay or cancellation report",
+      "reportTitle": "Emergency report on vendor",
+      "reportDesc": "Send your report to Tekillah support — we coordinate and propose a replacement immediately if needed.",
+      "kindLabel": "Report type",
+      "kind": {
+        "delay": "Late arrival",
+        "cancellation": "Vendor cancelled",
+        "no_show": "Did not show up",
+        "other": "Other"
+      },
+      "detailsLabel": "Additional details (optional)",
+      "detailsPlaceholder": "Briefly describe the situation so support can act fast…",
+      "needReplacement": "I need a replacement vendor (emergency plan)",
+      "submit": "Submit report",
+      "contactSupport": "Contact Tekillah support",
+      "submitted": "Report submitted — support will reach out within minutes.",
+      "submitFailed": "Could not submit the report — please try again.",
+      "alreadyOpen": "You already have an open report on this vendor."
     },
     "create": {
       "title": "New event",
