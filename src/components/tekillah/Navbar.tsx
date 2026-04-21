@@ -45,41 +45,28 @@ export const Navbar = () => {
             <Button
               variant="ghost"
               size="sm"
-              asChild
-              className="hidden rounded-full text-xs text-foreground/80 hover:text-primary sm:inline-flex"
-            >
-              <Link to="/dashboard">
-                <LayoutDashboard className="me-1 h-3.5 w-3.5" />
-                {t("nav.myDashboard")}
-              </Link>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              asChild
-              className="hidden rounded-full text-xs text-foreground/80 hover:text-primary sm:inline-flex"
-            >
-              <Link to="/partners">
-                <Building2 className="me-1 h-3.5 w-3.5" />
-                {t("nav.registerVendor")}
-              </Link>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
               onClick={toggleLang}
               className="rounded-full text-xs"
             >
               <Globe className="me-1 h-3.5 w-3.5" />
               {t("nav.lang")}
             </Button>
-            <Button
-              size="sm"
-              asChild
-              className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
-            >
-              <Link to="/auth">{t("nav.login")}</Link>
-            </Button>
+            <div className="flex flex-col items-stretch gap-0.5">
+              <Button
+                size="sm"
+                asChild
+                className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                <Link to="/auth">{t("nav.login")}</Link>
+              </Button>
+              <Link
+                to="/partners"
+                className="font-arabic inline-flex items-center justify-center gap-1 px-2 text-[10px] text-foreground/60 transition-colors hover:text-primary"
+              >
+                <Building2 className="h-3 w-3" />
+                {t("nav.joinAsVendor", { defaultValue: "انضم كمزود خدمة" })}
+              </Link>
+            </div>
           </div>
         </div>
       </div>
