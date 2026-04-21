@@ -160,7 +160,8 @@ const Auth = () => {
       if (hasPendingPlan) setSavingPlan(true);
 
       toast.success(t("auth.phone.verified"));
-      setTimeout(() => navigate(computeRedirect(), { replace: true }), 250);
+      const dest = computeRedirect(email, phoneE164);
+      setTimeout(() => navigate(dest, { replace: true }), 250);
     } catch {
       setOtpVerified(false);
       setOtpError(t("auth.phone.errors.authFailed"));
