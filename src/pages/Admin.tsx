@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import {
   Loader2, ShieldAlert, Wallet, TrendingUp, Lock, ListChecks,
   CheckCircle2, LogOut, Receipt, Star, Flag, ShieldCheck, Percent, HandCoins, Inbox,
+  AlertTriangle, AlertOctagon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
@@ -23,7 +24,13 @@ import { AdminModerationQueue } from "@/components/tekillah/admin/AdminModeratio
 import { AdminVerificationQueue } from "@/components/tekillah/admin/AdminVerificationQueue";
 import { AdminGrandControl } from "@/components/tekillah/admin/AdminGrandControl";
 import { AdminLeadsPanel } from "@/components/tekillah/admin/AdminLeadsPanel";
+import { AdminLateAlerts } from "@/components/tekillah/admin/AdminLateAlerts";
+import { AdminIncidentReports } from "@/components/tekillah/admin/AdminIncidentReports";
 import { EmptyState } from "@/components/tekillah/EmptyState";
+
+// Primary admin: phone +966554430196 → synthetic email used by phone-OTP login.
+// Combined with the user_roles 'admin' check (auto-granted via DB trigger).
+const PRIMARY_ADMIN_EMAIL = "966554430196@phone.tekillah.app";
 
 interface PaymentRow {
   id: string;
@@ -67,10 +74,20 @@ const Admin = () => {
   useEffect(() => {
     if (!user) return;
     (async () => {
+      // Hardcoded phone allowlist + role: BOTH must be true.
+      const isPrimaryPhone = user.email === PRIMARY_ADMIN_EMAIL;
       const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
-      setIsAdmin(Boolean(data));
+      setIsAdmin(Boolean(data) && isPrimaryPhone);
     })();
   }, [user]);
+
+  // Scoped dark olive theme for /admin only — toggled on mount, removed on unmount.
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+    return () => {
+      document.documentElement.classList.remove("dark");
+    };
+  }, []);
 
   const load = async () => {
     setLoading(true);
