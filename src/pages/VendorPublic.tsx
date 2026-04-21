@@ -25,6 +25,7 @@ const VendorPublic = () => {
   const { t } = useTranslation();
   const [vendor, setVendor] = useState<VendorRow | null>(null);
   const [packages, setPackages] = useState<PackageRow[]>([]);
+  const [rating, setRating] = useState<{ avg: number; count: number }>({ avg: 0, count: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,10 +35,13 @@ const VendorPublic = () => {
       const { data: v } = await supabase.from("vendors").select("*").eq("id", id).maybeSingle();
       setVendor(v as VendorRow | null);
       if (v) {
-        const { data: pkgs } = await supabase.from("packages")
-          .select("*").eq("vendor_id", id).eq("active", true).eq("approval_status", "approved")
-          .order("price", { ascending: true });
+        const [{ data: pkgs }, { data: rs }] = await Promise.all([
+          supabase.from("packages").select("*").eq("vendor_id", id).eq("active", true).eq("approval_status", "approved").order("price", { ascending: true }),
+          supabase.from("vendor_ratings_summary" as never).select("avg_rating, reviews_count").eq("vendor_id", id).maybeSingle(),
+        ]);
         setPackages((pkgs ?? []) as unknown as PackageRow[]);
+        const r = rs as { avg_rating: number | null; reviews_count: number | null } | null;
+        setRating({ avg: Number(r?.avg_rating ?? 0), count: Number(r?.reviews_count ?? 0) });
       }
       setLoading(false);
     })();
@@ -100,7 +104,7 @@ const VendorPublic = () => {
                   <ShieldCheck className="me-1 h-3 w-3" /> موثّق
                 </Badge>
               )}
-              <VendorRatingBadge vendorId={vendor.id} />
+              <VendorRatingBadge avg={rating.avg} count={rating.count} size="md" />
             </div>
             <h1 className="mt-4 font-arabic text-3xl font-semibold text-foreground sm:text-5xl">
               {vendor.business_name}
