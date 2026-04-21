@@ -56,14 +56,9 @@ export const Navbar = () => {
             <Button
               variant="ghost"
               size="sm"
-              asChild
-              className="hidden rounded-full text-xs text-foreground/80 hover:text-primary sm:inline-flex"
+              onClick={toggleLang}
+              className="rounded-full text-xs"
             >
-              <Link to="/vendor">
-                <Building2 className="me-1 h-3.5 w-3.5" />
-                {t("nav.partners")}
-              </Link>
-            </Button>
             <Button
               variant="ghost"
               size="sm"
