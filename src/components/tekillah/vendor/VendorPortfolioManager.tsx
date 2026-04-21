@@ -262,7 +262,7 @@ export const VendorPortfolioManager = ({ vendorId, userId }: Props) => {
           <div className="mb-2 text-xs font-semibold text-foreground/75">الفيديو التعريفي</div>
           {videos.map((v) => (
             <div key={v.id} className="relative overflow-hidden rounded-2xl border border-border bg-background">
-              <video src={v.url} controls playsInline className="aspect-video w-full bg-black object-contain" />
+              <video src={v.url} controls playsInline className="aspect-video w-full bg-foreground object-contain" />
               <button
                 type="button"
                 onClick={() => removeItem(v)}
