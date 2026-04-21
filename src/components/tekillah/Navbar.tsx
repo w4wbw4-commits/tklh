@@ -74,7 +74,7 @@ export const Navbar = () => {
               {t("nav.lang")}
             </Button>
             <Button size="sm" asChild className="hidden rounded-full bg-primary text-primary-foreground hover:bg-primary/90 sm:inline-flex">
-              <a href="#wizard">{t("nav.start")}</a>
+              <Link to="/auth">{t("nav.start")}</Link>
             </Button>
           </div>
         </div>
