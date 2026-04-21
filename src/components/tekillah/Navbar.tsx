@@ -1,15 +1,38 @@
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
-import { Globe, LayoutDashboard } from "lucide-react";
+import { Globe, LayoutDashboard, ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
+
+// Primary admin allowlist — phone +966554430196 (synthetic email used by phone-OTP login).
+const PRIMARY_ADMIN_EMAIL = "966554430196@phone.tekillah.app";
+const PRIMARY_ADMIN_PHONE = "+966554430196";
 
 export const Navbar = () => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const isAr = i18n.language === "ar";
+  const welcomedRef = useRef(false);
+
+  const isPrimaryAdmin =
+    !!user && (user.email === PRIMARY_ADMIN_EMAIL || user.phone === PRIMARY_ADMIN_PHONE);
+
+  // Diagnostic welcome toast — fires once per session for the primary admin.
+  useEffect(() => {
+    if (!isPrimaryAdmin || welcomedRef.current) return;
+    const key = "tekillah:adminWelcomed";
+    if (sessionStorage.getItem(key)) {
+      welcomedRef.current = true;
+      return;
+    }
+    welcomedRef.current = true;
+    sessionStorage.setItem(key, "1");
+    toast.success(t("nav.adminWelcome"), { duration: 6000 });
+  }, [isPrimaryAdmin, t]);
 
   const toggleLang = () => {
     i18n.changeLanguage(isAr ? "en" : "ar");
@@ -43,17 +66,31 @@ export const Navbar = () => {
             ))}
           </nav>
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              asChild
-              className="hidden rounded-full text-xs text-foreground/80 hover:text-primary sm:inline-flex"
-            >
-              <Link to="/dashboard">
-                <LayoutDashboard className="me-1 h-3.5 w-3.5" />
-                {t("nav.myDashboard")}
-              </Link>
-            </Button>
+            {user && (
+              <Button
+                variant="ghost"
+                size="sm"
+                asChild
+                className="hidden rounded-full text-xs text-foreground/80 hover:text-primary sm:inline-flex"
+              >
+                <Link to="/dashboard">
+                  <LayoutDashboard className="me-1 h-3.5 w-3.5" />
+                  {t("nav.myDashboard")}
+                </Link>
+              </Button>
+            )}
+            {isPrimaryAdmin && (
+              <Button
+                size="sm"
+                asChild
+                className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                <Link to="/admin">
+                  <ShieldCheck className="me-1 h-3.5 w-3.5" />
+                  {t("nav.admin")}
+                </Link>
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="sm"
