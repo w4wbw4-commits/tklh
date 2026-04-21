@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { Loader2, Check, X, Clock, CalendarDays, Users, Inbox } from "lucide-react";
+import { Loader2, Check, X, Clock, CalendarDays, Users, Inbox, CheckCircle2 } from "lucide-react";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,8 +17,15 @@ interface BookingRow {
   paid_amount: number;
   guest_count: number | null;
   customer_id: string;
+  attendance_confirmed_at: string | null;
   package: { name: string } | null;
 }
+
+const isToday = (iso: string) => {
+  const d = new Date(iso);
+  const n = new Date();
+  return d.getFullYear() === n.getFullYear() && d.getMonth() === n.getMonth() && d.getDate() === n.getDate();
+};
 
 export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
   const { t } = useTranslation();
@@ -29,7 +36,7 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
   const load = async () => {
     setLoading(true);
     const { data } = await supabase.from("bookings")
-      .select("id, event_date, status, total_price, paid_amount, guest_count, customer_id, package:packages(name)")
+      .select("id, event_date, status, total_price, paid_amount, guest_count, customer_id, attendance_confirmed_at, package:packages(name)")
       .eq("vendor_id", vendorId)
       .order("event_date", { ascending: true });
     setList((data ?? []) as unknown as BookingRow[]);
@@ -51,6 +58,21 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
     setActing(null);
     if (error) { toast.error(error.message); return; }
     toast.success(t(`vendor.bookings.${status === "confirmed" ? "confirmed" : "rejected"}`));
+  };
+
+  const confirmAttendance = async (b: BookingRow) => {
+    if (!isToday(b.event_date)) return;
+    setActing(b.id);
+    const { data: auth } = await supabase.auth.getUser();
+    const { error } = await supabase.from("bookings")
+      .update({
+        attendance_confirmed_at: new Date().toISOString(),
+        attendance_confirmed_by: auth?.user?.id ?? null,
+      })
+      .eq("id", b.id);
+    setActing(null);
+    if (error) { toast.error(t("vendor.bookings.attendanceFailed")); return; }
+    toast.success(t("vendor.bookings.attendanceSaved"));
   };
 
   return (
@@ -100,6 +122,29 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
                     className="rounded-full text-destructive hover:bg-destructive/10">
                     <X className="me-1 h-4 w-4" /> {t("vendor.bookings.reject")}
                   </Button>
+                </div>
+              )}
+              {b.status === "confirmed" && (
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  {b.attendance_confirmed_at ? (
+                    <Badge className="bg-emerald-500/15 text-emerald-700">
+                      <CheckCircle2 className="me-1 h-3 w-3" /> {t("vendor.bookings.attendanceConfirmed")}
+                    </Badge>
+                  ) : (
+                    <>
+                      <Button
+                        size="sm"
+                        onClick={() => confirmAttendance(b)}
+                        disabled={acting === b.id || !isToday(b.event_date)}
+                        className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+                      >
+                        <CheckCircle2 className="me-1 h-4 w-4" /> {t("vendor.bookings.confirmAttendance")}
+                      </Button>
+                      {!isToday(b.event_date) && (
+                        <span className="text-[11px] text-foreground/55">{t("vendor.bookings.attendanceLockedHint")}</span>
+                      )}
+                    </>
+                  )}
                 </div>
               )}
             </motion.div>

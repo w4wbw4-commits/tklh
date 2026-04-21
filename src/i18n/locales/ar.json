@@ -37,7 +37,7 @@
     "features": "المميزات",
     "plan": "خطّط الآن",
     "dashboard": "لوحة التحكم",
-    "myDashboard": "خطّتي",
+    "myDashboard": "متابعة الخطة",
     "partners": "الشركاء",
     "start": "تسجيل الدخول",
     "lang": "EN"
@@ -331,7 +331,12 @@
       "accept": "قبول",
       "reject": "رفض",
       "confirmed": "تم تأكيد الحجز",
-      "rejected": "تم رفض الحجز"
+      "rejected": "تم رفض الحجز",
+      "confirmAttendance": "تأكيد الحضور",
+      "attendanceConfirmed": "تم تأكيد الحضور",
+      "attendanceLockedHint": "يُفعّل هذا الزر تلقائياً في يوم المناسبة فقط.",
+      "attendanceSaved": "تم تأكيد حضورك. شكراً لاحترافك!",
+      "attendanceFailed": "تعذر تأكيد الحضور — حاول مجدداً."
     },
     "profile": {
       "editTitle": "ملف العمل",
@@ -427,9 +432,42 @@
     "tabs": {
       "overview": "نظرة عامة",
       "timeline": "الخط الزمني",
+      "bookings": "متابعة المزوّدين",
       "guests": "الضيوف",
       "payments": "الفواتير",
       "day": "يوم الحفل"
+    },
+    "bookingsTimeline": {
+      "title": "متابعة المزوّدين",
+      "subtitle": "تابع كل خدمة من الحجز حتى الوصول، وابلغ عن أي تأخير لحظياً.",
+      "empty": "لا توجد حجوزات لمتابعتها حتى الآن.",
+      "status": {
+        "pending": "بانتظار التأكيد",
+        "confirmed": "مؤكَّد",
+        "arrived": "وصل المزوّد",
+        "completed": "اكتملت الخدمة",
+        "rejected": "اعتذر المزوّد",
+        "cancelled": "ملغي"
+      },
+      "arrivedAt": "تأكيد الحضور: {{time}}",
+      "reportTrigger": "بلاغ تأخير أو إلغاء",
+      "reportTitle": "بلاغ طارئ على المزوّد",
+      "reportDesc": "أرسل بلاغك لفريق دعم تِكِلّه — نتولّى التواصل ونقترح بديلاً فوراً عند الحاجة.",
+      "kindLabel": "نوع البلاغ",
+      "kind": {
+        "delay": "تأخير في الوصول",
+        "cancellation": "إلغاء من المزوّد",
+        "no_show": "لم يحضر",
+        "other": "أخرى"
+      },
+      "detailsLabel": "تفاصيل إضافية (اختياري)",
+      "detailsPlaceholder": "صف الموقف بإيجاز ليتحرك فريق الدعم بسرعة…",
+      "needReplacement": "أحتاج مزوّداً بديلاً (خطة طوارئ)",
+      "submit": "إرسال البلاغ",
+      "contactSupport": "تواصل مع دعم تِكِلّه",
+      "submitted": "تم إرسال البلاغ — فريق الدعم يتواصل معك خلال دقائق.",
+      "submitFailed": "تعذر إرسال البلاغ — حاول مرة أخرى.",
+      "alreadyOpen": "لديك بلاغ مفتوح على هذا المزوّد."
     },
     "create": {
       "title": "مناسبة جديدة",
