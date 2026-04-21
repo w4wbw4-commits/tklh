@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { Loader2, Check, X, Clock, CalendarDays, Users, Inbox } from "lucide-react";
+import { Loader2, Check, X, Clock, CalendarDays, Users, Inbox, CheckCircle2 } from "lucide-react";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,8 +17,15 @@ interface BookingRow {
   paid_amount: number;
   guest_count: number | null;
   customer_id: string;
+  attendance_confirmed_at: string | null;
   package: { name: string } | null;
 }
+
+const isToday = (iso: string) => {
+  const d = new Date(iso);
+  const n = new Date();
+  return d.getFullYear() === n.getFullYear() && d.getMonth() === n.getMonth() && d.getDate() === n.getDate();
+};
 
 export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
   const { t } = useTranslation();
@@ -29,7 +36,7 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
   const load = async () => {
     setLoading(true);
     const { data } = await supabase.from("bookings")
-      .select("id, event_date, status, total_price, paid_amount, guest_count, customer_id, package:packages(name)")
+      .select("id, event_date, status, total_price, paid_amount, guest_count, customer_id, attendance_confirmed_at, package:packages(name)")
       .eq("vendor_id", vendorId)
       .order("event_date", { ascending: true });
     setList((data ?? []) as unknown as BookingRow[]);
