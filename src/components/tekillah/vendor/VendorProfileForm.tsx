@@ -19,6 +19,7 @@ import { CATEGORY_LABELS, type VendorRow } from "./types";
 import { TermsCheckbox } from "@/components/tekillah/TermsCheckbox";
 import { recordTermsAcceptance } from "@/lib/terms";
 import { useTranslation } from "react-i18next";
+import { VendorPortfolioManager } from "./VendorPortfolioManager";
 
 // IBAN: Saudi format SA + 22 digits, but accept generic 15-34 alphanumeric for flexibility
 const ibanRegex = /^[A-Z]{2}[0-9A-Z]{13,32}$/;
