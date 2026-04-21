@@ -60,6 +60,21 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
     toast.success(t(`vendor.bookings.${status === "confirmed" ? "confirmed" : "rejected"}`));
   };
 
+  const confirmAttendance = async (b: BookingRow) => {
+    if (!isToday(b.event_date)) return;
+    setActing(b.id);
+    const { data: auth } = await supabase.auth.getUser();
+    const { error } = await supabase.from("bookings")
+      .update({
+        attendance_confirmed_at: new Date().toISOString(),
+        attendance_confirmed_by: auth?.user?.id ?? null,
+      })
+      .eq("id", b.id);
+    setActing(null);
+    if (error) { toast.error(t("vendor.bookings.attendanceFailed")); return; }
+    toast.success(t("vendor.bookings.attendanceSaved"));
+  };
+
   return (
     <div className="space-y-4">
       <div>
