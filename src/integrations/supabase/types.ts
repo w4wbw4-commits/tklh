@@ -781,6 +781,42 @@ export type Database = {
           },
         ]
       }
+      vendor_portfolio_items: {
+        Row: {
+          caption: string | null
+          created_at: string
+          duration_seconds: number | null
+          id: string
+          media_type: Database["public"]["Enums"]["portfolio_media_type"]
+          sort_order: number
+          updated_at: string
+          url: string
+          vendor_id: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          media_type?: Database["public"]["Enums"]["portfolio_media_type"]
+          sort_order?: number
+          updated_at?: string
+          url: string
+          vendor_id: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          media_type?: Database["public"]["Enums"]["portfolio_media_type"]
+          sort_order?: number
+          updated_at?: string
+          url?: string
+          vendor_id?: string
+        }
+        Relationships: []
+      }
       vendors: {
         Row: {
           active: boolean
@@ -918,6 +954,7 @@ export type Database = {
         | "mock"
       payment_status: "held" | "released" | "refunded" | "failed"
       payout_status: "requested" | "approved" | "paid" | "rejected"
+      portfolio_media_type: "image" | "video"
       report_reason: "inappropriate" | "spam" | "harassment" | "other"
       report_status: "pending" | "approved" | "removed"
       report_target: "review" | "reply"
@@ -1088,6 +1125,7 @@ export const Constants = {
       ],
       payment_status: ["held", "released", "refunded", "failed"],
       payout_status: ["requested", "approved", "paid", "rejected"],
+      portfolio_media_type: ["image", "video"],
       report_reason: ["inappropriate", "spam", "harassment", "other"],
       report_status: ["pending", "approved", "removed"],
       report_target: ["review", "reply"],

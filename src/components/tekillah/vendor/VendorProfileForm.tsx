@@ -19,6 +19,7 @@ import { CATEGORY_LABELS, type VendorRow } from "./types";
 import { TermsCheckbox } from "@/components/tekillah/TermsCheckbox";
 import { recordTermsAcceptance } from "@/lib/terms";
 import { useTranslation } from "react-i18next";
+import { VendorPortfolioManager } from "./VendorPortfolioManager";
 
 // IBAN: Saudi format SA + 22 digits, but accept generic 15-34 alphanumeric for flexibility
 const ibanRegex = /^[A-Z]{2}[0-9A-Z]{13,32}$/;
@@ -348,31 +349,8 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
         </div>
       </div>
 
-      {/* Portfolio */}
-      <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
-        <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
-          <ImagePlus className="h-4 w-4 text-primary" /> معرض الأعمال
-        </div>
-        <p className="mb-5 text-xs text-foreground/60">صور عالية الجودة من حفلات سابقة. حد أقصى 5MB لكل صورة.</p>
-
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-          {portfolioUrls.map((url) => (
-            <motion.div key={url} layout className="group relative aspect-square overflow-hidden rounded-2xl border border-border">
-              <img src={url} alt="portfolio" className="h-full w-full object-cover" loading="lazy" />
-              <button type="button" onClick={() => removePortfolio(url)}
-                className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full bg-foreground/70 text-background opacity-0 transition-opacity group-hover:opacity-100">
-                <X className="h-3.5 w-3.5" />
-              </button>
-            </motion.div>
-          ))}
-          <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border bg-secondary/30 text-foreground/60 transition-colors hover:border-primary/60 hover:text-primary">
-            {uploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ImagePlus className="h-5 w-5" />}
-            <span className="text-xs">إضافة صورة</span>
-            <input type="file" accept="image/*" className="hidden"
-              onChange={(e) => e.target.files?.[0] && handleUploadPortfolio(e.target.files[0])} />
-          </label>
-        </div>
-      </div>
+      {/* Portfolio (images + video with captions) */}
+      <VendorPortfolioManager vendorId={vendor?.id ?? null} userId={userId} />
 
       {!vendor && (
         <TermsCheckbox checked={acceptedTos} onCheckedChange={setAcceptedTos} id="vendor-tos" />
