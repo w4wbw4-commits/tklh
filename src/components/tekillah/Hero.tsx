@@ -58,7 +58,7 @@ export const Hero = () => {
             }}
           />
 
-          {/* Brand wordmark — تِكِلّه in bold geometric Kufic, blocky and impactful */}
+          {/* Brand wordmark — تِكله in bold geometric Kufic, blocky and impactful */}
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
