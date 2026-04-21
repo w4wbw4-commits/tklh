@@ -280,6 +280,8 @@
       "resend": "Resend code",
       "resendIn": "Resend available in {{seconds}}s",
       "verified": "Phone verified — welcome!",
+      "savingPlan": "Saving your plan…",
+      "savingPlanHint": "Taking you to order confirmation & payment",
       "codeSentDev": "Demo code: {{code}}",
       "codeSentDevDesc": "Auto-fills on mobile, or tap Copy and paste below.",
       "copyCode": "Copy code",

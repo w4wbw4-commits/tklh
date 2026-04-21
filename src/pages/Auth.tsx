@@ -182,7 +182,27 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-soft">
+    <div className="relative min-h-screen bg-gradient-soft">
+      {/* Saving-your-plan overlay — shown when a guest with a pending plan signs in */}
+      <AnimatePresence>
+        {savingPlan && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 grid place-items-center bg-background/80 backdrop-blur-md"
+          >
+            <div className="flex flex-col items-center gap-4 rounded-3xl border border-border bg-card px-10 py-8 shadow-luxury">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p className="font-arabic text-base font-medium text-foreground">
+                {t("auth.phone.savingPlan")}
+              </p>
+              <p className="text-xs text-foreground/60">{t("auth.phone.savingPlanHint")}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
         <Logo />
         <Link to="/" className="text-sm text-foreground/70 hover:text-foreground">
