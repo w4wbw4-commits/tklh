@@ -76,12 +76,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
     }
   }, [vendor]);
 
-  const MAX_PORTFOLIO = 5;
   const handleUploadPortfolio = async (file: File) => {
-    if (portfolioUrls.length >= MAX_PORTFOLIO) {
-      toast.error(`الحد الأقصى ${MAX_PORTFOLIO} صور في معرض الأعمال`);
-      return;
-    }
     if (!file.type.startsWith("image/")) { toast.error("الرجاء رفع صورة فقط"); return; }
     if (file.size > 5 * 1024 * 1024) { toast.error("الحد الأقصى 5 ميجا"); return; }
     setUploading(true);
@@ -355,15 +350,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
 
       {/* Portfolio */}
       <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
-        <div className="mb-2 flex items-center justify-between gap-2 text-sm font-semibold text-foreground">
-          <span className="flex items-center gap-2">
-            <ImagePlus className="h-4 w-4 text-primary" /> معرض الأعمال
-          </span>
-          <Badge variant="secondary" className="text-[10px]">{portfolioUrls.length}/{MAX_PORTFOLIO}</Badge>
+        <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
+          <ImagePlus className="h-4 w-4 text-primary" /> معرض الأعمال
         </div>
-        <p className="mb-5 text-xs text-foreground/60">صور عالية الجودة من حفلات سابقة. حد أقصى 5 صور و 5MB لكل صورة. تظهر مباشرة في صفحة قاعتك العامة للعملاء.</p>
+        <p className="mb-5 text-xs text-foreground/60">صور عالية الجودة من حفلات سابقة. حد أقصى 5MB لكل صورة.</p>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
           {portfolioUrls.map((url) => (
             <motion.div key={url} layout className="group relative aspect-square overflow-hidden rounded-2xl border border-border">
               <img src={url} alt="portfolio" className="h-full w-full object-cover" loading="lazy" />
@@ -373,14 +365,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
               </button>
             </motion.div>
           ))}
-          {portfolioUrls.length < MAX_PORTFOLIO && (
-            <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border bg-secondary/30 text-foreground/60 transition-colors hover:border-primary/60 hover:text-primary">
-              {uploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ImagePlus className="h-5 w-5" />}
-              <span className="text-xs">إضافة صورة</span>
-              <input type="file" accept="image/*" className="hidden"
-                onChange={(e) => e.target.files?.[0] && handleUploadPortfolio(e.target.files[0])} />
-            </label>
-          )}
+          <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border bg-secondary/30 text-foreground/60 transition-colors hover:border-primary/60 hover:text-primary">
+            {uploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ImagePlus className="h-5 w-5" />}
+            <span className="text-xs">إضافة صورة</span>
+            <input type="file" accept="image/*" className="hidden"
+              onChange={(e) => e.target.files?.[0] && handleUploadPortfolio(e.target.files[0])} />
+          </label>
         </div>
       </div>
 

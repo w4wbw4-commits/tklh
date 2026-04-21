@@ -40,67 +40,7 @@
     "myDashboard": "My Dashboard",
     "partners": "Partners",
     "start": "Start",
-    "login": "Sign in",
-    "registerVendor": "Register as a vendor",
-    "joinAsVendor": "Join as a service provider",
     "lang": "ع"
-  },
-  "partners": {
-    "kicker": "Partner portal",
-    "title": "Register as a service provider",
-    "subtitle": "Join the elite vendors on Tekillah and showcase your services to an audience that values luxury and craft.",
-    "categories": {
-      "label": "Service category",
-      "placeholder": "Select a service category",
-      "halls": "Halls & Venues",
-      "catering": "Catering & Hospitality",
-      "photography": "Photography & Videography",
-      "decor": "Decor & Floral Design",
-      "audio": "Sound & Lighting"
-    },
-    "form": {
-      "businessName": "Business name",
-      "businessNamePh": "e.g. Al-Yasmin Hall",
-      "contactName": "Contact person",
-      "contactNamePh": "Full name",
-      "phone": "Mobile number",
-      "phonePh": "+9665XXXXXXXX",
-      "email": "Email",
-      "emailPh": "name@company.com",
-      "city": "City",
-      "cityPh": "Riyadh, Jeddah, Dammam...",
-      "about": "About your services",
-      "aboutPh": "Tell us briefly about your services, packages and what makes you unique...",
-      "submit": "Submit application",
-      "submitting": "Submitting...",
-      "successTitle": "Application received ✨",
-      "successBody": "Our team will reach out within 48 hours to complete the verification process."
-    },
-    "benefits": {
-      "title": "Why partner with Tekillah",
-      "subtitle": "We built an end-to-end platform to help you manage your business and grow with confidence.",
-      "manage": {
-        "title": "Booking management",
-        "desc": "A full dashboard to track customer requests, scheduling and confirmations in one place."
-      },
-      "reach": {
-        "title": "Broader reach",
-        "desc": "Showcase your services to a targeted Saudi audience that values luxury and professionalism."
-      },
-      "reports": {
-        "title": "Financial reports",
-        "desc": "Track earnings, payouts and account activity with full transparency and peace of mind."
-      }
-    },
-    "validation": {
-      "businessName": "Business name is required (2+ characters).",
-      "contactName": "Contact name is required.",
-      "phone": "A valid Saudi mobile number is required (+9665XXXXXXXX).",
-      "email": "A valid email address is required.",
-      "city": "City is required.",
-      "category": "Please choose a service category.",
-      "about": "Write a brief intro (10+ characters, 1000 max)."
-    }
   },
   "hero": {
     "tag": "A luxury Saudi platform for planning your events",
