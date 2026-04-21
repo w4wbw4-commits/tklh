@@ -24,6 +24,7 @@ import {
   verifyOtp,
 } from "@/lib/phone";
 import { upsertCustomerLead } from "@/lib/leads";
+import { isPendingPlanReady, loadPendingPlan } from "@/lib/pendingPlan";
 
 type Stage = "phone" | "otp";
 
@@ -31,7 +32,17 @@ const Auth = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const redirectTo = params.get("redirect") || "/dashboard";
+  const explicitRedirect = params.get("redirect");
+
+  // Decide where the user should land after auth:
+  // - explicit `?redirect=` always wins (e.g. came from /dashboard guard)
+  // - else: if a pending guest plan is waiting, go to /dashboard so it
+  //   finalises and forwards to /checkout/:bookingId
+  // - else: go home.
+  const computeRedirect = () => {
+    if (explicitRedirect) return explicitRedirect;
+    return isPendingPlanReady(loadPendingPlan()) ? "/dashboard" : "/";
+  };
 
   const { user, loading: authLoading } = useAuth();
   const [stage, setStage] = useState<Stage>("phone");
@@ -42,11 +53,13 @@ const Auth = () => {
   const [resendCooldown, setResendCooldown] = useState(0);
   const [otpError, setOtpError] = useState<string | null>(null);
   const [otpVerified, setOtpVerified] = useState(false);
+  const [savingPlan, setSavingPlan] = useState(false);
   const verifyInFlightRef = useRef(false);
 
   useEffect(() => {
-    if (!authLoading && user) navigate(redirectTo, { replace: true });
-  }, [user, authLoading, navigate, redirectTo]);
+    if (!authLoading && user) navigate(computeRedirect(), { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, authLoading, navigate]);
 
   // Cooldown ticker for the "Resend" button
   useEffect(() => {
@@ -137,8 +150,11 @@ const Auth = () => {
         source: "phone_otp",
       });
 
+      const hasPendingPlan = isPendingPlanReady(loadPendingPlan());
+      if (hasPendingPlan) setSavingPlan(true);
+
       toast.success(t("auth.phone.verified"));
-      setTimeout(() => navigate(redirectTo, { replace: true }), 250);
+      setTimeout(() => navigate(computeRedirect(), { replace: true }), 250);
     } catch {
       setOtpVerified(false);
       setOtpError(t("auth.phone.errors.authFailed"));
@@ -166,7 +182,27 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-soft">
+    <div className="relative min-h-screen bg-gradient-soft">
+      {/* Saving-your-plan overlay — shown when a guest with a pending plan signs in */}
+      <AnimatePresence>
+        {savingPlan && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 grid place-items-center bg-background/80 backdrop-blur-md"
+          >
+            <div className="flex flex-col items-center gap-4 rounded-3xl border border-border bg-card px-10 py-8 shadow-luxury">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p className="font-arabic text-base font-medium text-foreground">
+                {t("auth.phone.savingPlan")}
+              </p>
+              <p className="text-xs text-foreground/60">{t("auth.phone.savingPlanHint")}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
         <Logo />
         <Link to="/" className="text-sm text-foreground/70 hover:text-foreground">
