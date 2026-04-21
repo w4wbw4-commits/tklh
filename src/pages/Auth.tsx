@@ -150,8 +150,11 @@ const Auth = () => {
         source: "phone_otp",
       });
 
+      const hasPendingPlan = isPendingPlanReady(loadPendingPlan());
+      if (hasPendingPlan) setSavingPlan(true);
+
       toast.success(t("auth.phone.verified"));
-      setTimeout(() => navigate(redirectTo, { replace: true }), 250);
+      setTimeout(() => navigate(computeRedirect(), { replace: true }), 250);
     } catch {
       setOtpVerified(false);
       setOtpError(t("auth.phone.errors.authFailed"));
