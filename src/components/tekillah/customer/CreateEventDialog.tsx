@@ -89,8 +89,37 @@ export const CreateEventDialog = ({ open, onOpenChange, userId, onCreated }: Pro
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
-              <Label htmlFor="ev-date">{t("customer.create.date")}</Label>
-              <Input id="ev-date" type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} />
+              <Label htmlFor="ev-date" className="font-arabic">{t("customer.create.date")}</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    id="ev-date"
+                    className={cn(
+                      "h-10 w-full justify-start rounded-xl px-3 text-start font-normal tabular-nums",
+                      !isoToDate(eventDate) && "text-muted-foreground",
+                    )}
+                  >
+                    <CalendarIcon className="me-2 h-4 w-4 opacity-70" />
+                    <span dir="ltr" className="tabular-nums">
+                      {isoToDate(eventDate) ? format(isoToDate(eventDate)!, DISPLAY) : "DD/MM/YYYY"}
+                    </span>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={isoToDate(eventDate)}
+                    onSelect={(d) => setEventDate(d ? format(d, ISO) : "")}
+                    disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                    locale={locale}
+                    weekStartsOn={6}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <div className="space-y-2">
               <Label htmlFor="ev-city">{t("customer.create.city")}</Label>
