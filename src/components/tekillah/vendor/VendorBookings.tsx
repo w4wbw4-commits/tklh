@@ -124,6 +124,29 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
                   </Button>
                 </div>
               )}
+              {b.status === "confirmed" && (
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  {b.attendance_confirmed_at ? (
+                    <Badge className="bg-emerald-500/15 text-emerald-700">
+                      <CheckCircle2 className="me-1 h-3 w-3" /> {t("vendor.bookings.attendanceConfirmed")}
+                    </Badge>
+                  ) : (
+                    <>
+                      <Button
+                        size="sm"
+                        onClick={() => confirmAttendance(b)}
+                        disabled={acting === b.id || !isToday(b.event_date)}
+                        className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+                      >
+                        <CheckCircle2 className="me-1 h-4 w-4" /> {t("vendor.bookings.confirmAttendance")}
+                      </Button>
+                      {!isToday(b.event_date) && (
+                        <span className="text-[11px] text-foreground/55">{t("vendor.bookings.attendanceLockedHint")}</span>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
             </motion.div>
           ))}
         </div>
