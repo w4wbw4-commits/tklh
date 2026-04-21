@@ -6,6 +6,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import type { EventRow, BookingWithVendor } from "./types";
 import { useTranslation } from "react-i18next";
+import { ReportIncidentDialog } from "./ReportIncidentDialog";
 
 const categoryIcons: Record<string, typeof Building2> = {
   hall: Building2, catering: UtensilsCrossed, photography: Camera,
