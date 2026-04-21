@@ -59,12 +59,6 @@ export const Navbar = () => {
               onClick={toggleLang}
               className="rounded-full text-xs"
             >
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleLang}
-              className="rounded-full text-xs"
-            >
               <Globe className="me-1 h-3.5 w-3.5" />
               {t("nav.lang")}
             </Button>
