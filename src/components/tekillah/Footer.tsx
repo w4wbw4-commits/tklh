@@ -17,7 +17,7 @@ export const Footer = () => {
   return (
     <footer className="border-t border-border bg-gradient-beige">
       <div className="mx-auto max-w-6xl px-6 py-14">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-5">
           <div className="md:col-span-2">
             <Logo />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
@@ -57,8 +57,6 @@ export const Footer = () => {
                 </Link>
               </li>
               <li><a href="#" className="hover:text-primary">{t("footer.contact")}</a></li>
-              <li><Link to="/terms" className="hover:text-primary">{t("footer.terms")}</Link></li>
-              <li><Link to="/privacy" className="hover:text-primary">{t("footer.privacy")}</Link></li>
               {user && (
                 <li>
                   <button
@@ -71,6 +69,15 @@ export const Footer = () => {
                   </button>
                 </li>
               )}
+            </ul>
+          </div>
+
+          <div>
+            <div className="font-wordmark text-sm font-semibold text-foreground">{t("footer.legal")}</div>
+            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+              <li><Link to="/terms-of-service" className="hover:text-primary">{t("footer.terms")}</Link></li>
+              <li><Link to="/privacy-policy" className="hover:text-primary">{t("footer.privacy")}</Link></li>
+              <li><Link to="/refund-policy" className="hover:text-primary">{t("footer.refund")}</Link></li>
             </ul>
           </div>
         </div>
@@ -102,8 +109,9 @@ export const Footer = () => {
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row">
           <span>© {new Date().getFullYear()} Tekillah. {t("footer.rights")}</span>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <Link to="/terms" className="hover:text-primary">{t("footer.terms")}</Link>
-            <Link to="/privacy" className="hover:text-primary">{t("footer.privacy")}</Link>
+            <Link to="/terms-of-service" className="hover:text-primary">{t("footer.terms")}</Link>
+            <Link to="/privacy-policy" className="hover:text-primary">{t("footer.privacy")}</Link>
+            <Link to="/refund-policy" className="hover:text-primary">{t("footer.refund")}</Link>
             <span className="font-arabic">{t("footer.madeIn")}</span>
           </div>
         </div>
