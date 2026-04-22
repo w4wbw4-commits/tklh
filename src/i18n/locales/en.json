@@ -1,4 +1,20 @@
 {
+  "upcoming": {
+    "kicker": "Coming soon",
+    "badge": "Coming soon",
+    "title": "Upcoming Features for You",
+    "subtitle": "We're crafting new experiences to elevate your events and give you even more flexibility in planning.",
+    "items": {
+      "installments": {
+        "title": "Easy Installment Plans",
+        "desc": "Flexible payment plans for your wedding costs in partnership with certified financing providers."
+      },
+      "invitations": {
+        "title": "Digital Invitations",
+        "desc": "Design your luxury digital wedding invitation and share it with your guests instantly."
+      }
+    }
+  },
   "common": {
     "loading": "Loading…",
     "save": "Save",
