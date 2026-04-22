@@ -263,9 +263,34 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
             <p className="text-xs text-foreground/55">عدد الحفلات التي يمكنك تغطيتها في نفس اليوم.</p>
           </div>
           <div className="space-y-2">
-            <Label>السعر المبدئي (ر.س)</Label>
-            <Input type="number" min={0} step={500} value={startingPrice}
-              onChange={(e) => setStartingPrice(Number(e.target.value))} />
+            <Label htmlFor="starting-price">السعر المبدئي</Label>
+            <div
+              dir="ltr"
+              className="flex h-10 items-center overflow-hidden rounded-md border border-input bg-background transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/30"
+            >
+              <input
+                id="starting-price"
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={String(startingPrice)}
+                onFocus={(e) => e.target.select()}
+                onChange={(e) => {
+                  const cleaned = e.target.value
+                    .replace(/[\u0660-\u0669]/g, (d) => String(d.charCodeAt(0) - 0x0660))
+                    .replace(/[\u06F0-\u06F9]/g, (d) => String(d.charCodeAt(0) - 0x06F0))
+                    .replace(/[^\d]/g, "");
+                  setStartingPrice(cleaned === "" ? 0 : Math.min(10_000_000, parseInt(cleaned, 10)));
+                }}
+                placeholder="0"
+                aria-label="السعر المبدئي بالريال السعودي"
+                className="h-full flex-1 bg-transparent px-3 text-base tabular-nums text-foreground outline-none placeholder:text-muted-foreground md:text-sm"
+              />
+              <span className="select-none border-s border-border bg-secondary/60 px-3 text-sm font-medium tabular-nums text-foreground/70">
+                SAR
+              </span>
+            </div>
+            <p className="text-xs text-foreground/55">يُعرض هذا السعر للعملاء كنقطة بداية لخدماتك.</p>
           </div>
           <div className="space-y-2 sm:col-span-2">
             <Label>نبذة عن العمل</Label>
