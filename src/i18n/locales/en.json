@@ -46,6 +46,7 @@
     "home": "Home",
     "logout": "Sign out",
     "backToHome": "Back to home",
+    "backToTop": "Back to top",
     "main": "Main site"
   },
   "nav": {
@@ -108,6 +109,8 @@
     "madeIn": "Proudly made in Saudi Arabia 🇸🇦",
     "terms": "Terms of Service",
     "privacy": "Privacy Policy",
+    "refund": "Refund & Cancellation Policy",
+    "legal": "Legal",
     "signOut": "Sign Out"
   },
   "wizard": {
@@ -1026,6 +1029,17 @@
       { "title": "5. Your Rights", "body": "You have the right to access, correct, or request deletion of your personal data. You can also request a copy of your data. Contact our support team to exercise these rights." },
       { "title": "6. Retention", "body": "We retain transaction and tax records as required by Saudi tax and accounting laws (typically up to 10 years). Account data is deleted on request, except where retention is legally required." },
       { "title": "7. Cookies & Analytics", "body": "Cookies and analytics are used only to improve performance and detect abuse — never for third-party advertising or behavioural tracking." }
+    ],
+    "refundTitle": "Refund & Cancellation Policy",
+    "refundIntro": "This policy explains how cancellations, refunds and disputes are handled on Tekillah, in line with the Saudi E-commerce Law and the consumer-protection rules of the Ministry of Commerce.",
+    "refundSections": [
+      { "title": "1. Vendor-Specific Terms", "body": "Each vendor (hall, caterer, photographer, etc.) sets their own cancellation window and refund terms. The exact terms applicable to your booking are shown clearly on the vendor's package and on the checkout summary before payment is confirmed." },
+      { "title": "2. Tekillah's Role", "body": "Tekillah acts as a technical intermediary and holds the customer's payment in escrow until the service is delivered. We do not set vendor pricing or vendor cancellation terms, but we enforce them fairly through our escrow and dispute system." },
+      { "title": "3. Customer Cancellations", "body": "If you cancel a confirmed booking, the refundable amount is calculated according to the vendor's published cancellation window (for example, 100% before X days, 50% within Y days, non-refundable inside Z days). Platform fees and payment-processing fees may be deducted." },
+      { "title": "4. Vendor Cancellations & No-Shows", "body": "If a vendor cancels a confirmed booking, fails to show up, or substantially fails to deliver the agreed service, the customer is entitled to a full refund of the amount paid, including platform fees, in line with the Saudi E-commerce Law." },
+      { "title": "5. Quality Reports & Disputes", "body": "If the service was delivered but you believe the quality was significantly below what was promised, you can submit a Quality Report from your booking page within 14 days of the event. Our team reviews evidence from both sides before deciding on a partial or full refund from the held escrow funds." },
+      { "title": "6. Refund Method & Timing", "body": "Approved refunds are returned to the original payment method (Mada, Apple Pay, STC Pay, credit card). Processing typically takes 5–10 business days depending on your bank or wallet provider." },
+      { "title": "7. Contacting Support", "body": "For any cancellation or refund question, contact Tekillah support through your dashboard or via the contact channels listed in the footer. Please include your booking reference and a brief description of the issue." }
     ]
   }
 }
