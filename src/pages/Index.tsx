@@ -4,6 +4,7 @@ import { Story } from "@/components/tekillah/Story";
 import { Features } from "@/components/tekillah/Features";
 import { PlanningWizard } from "@/components/tekillah/PlanningWizard";
 import { DashboardPreview } from "@/components/tekillah/DashboardPreview";
+import { UpcomingFeatures } from "@/components/tekillah/UpcomingFeatures";
 import { Footer } from "@/components/tekillah/Footer";
 
 const Index = () => {
@@ -15,6 +16,7 @@ const Index = () => {
       <Features />
       <PlanningWizard />
       <DashboardPreview />
+      <UpcomingFeatures />
       <Footer />
     </main>
   );
