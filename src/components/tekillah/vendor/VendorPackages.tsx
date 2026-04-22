@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Plus, Trash2, Crown, Star, Sparkles, Clock, CheckCircle2, XCircle } from "lucide-react";
+import { fmtMoney } from "@/i18n/format";
 import { TIER_LABELS, type PackageRow } from "./types";
 
 const TIER_ICONS = { basic: Star, premium: Sparkles, royal: Crown };
@@ -176,7 +177,7 @@ export const VendorPackages = ({ vendorId }: Props) => {
                 )}
                 <div className="mt-3 font-arabic text-lg font-semibold text-foreground">{p.name}</div>
                 <div className="mt-2 font-arabic text-2xl font-semibold text-primary">
-                  {Number(p.price).toLocaleString("ar-SA")} <span className="text-sm font-normal text-foreground/60">ر.س</span>
+                  {fmtMoney(Number(p.price))} <span className="text-sm font-normal text-foreground/60">ر.س</span>
                 </div>
                 {p.description && <p className="mt-3 text-sm text-foreground/70">{p.description}</p>}
                 {p.includes.length > 0 && (
