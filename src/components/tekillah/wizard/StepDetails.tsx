@@ -13,9 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import { NumberStepper } from "@/components/tekillah/NumberStepper";
 
 // The wizard stores `date` as ISO yyyy-MM-dd (stable for DB / serialization)
 // while the UI always presents it as DD/MM/YYYY to avoid month/day confusion.
@@ -111,19 +111,27 @@ export const StepDetails = ({
         </div>
 
         <div className="space-y-3 rounded-2xl bg-secondary/50 p-5">
-          <div className="flex items-center justify-between">
-            <Label className="font-arabic text-foreground">{t("wizard.details.men")}</Label>
-            <span className="font-arabic text-lg font-semibold text-primary">{men}</span>
-          </div>
-          <Slider value={[men]} onValueChange={(v) => setMen(v[0])} max={1000} step={10} />
+          <Label className="font-arabic text-foreground">{t("wizard.details.men")}</Label>
+          <NumberStepper
+            value={men}
+            onChange={setMen}
+            min={0}
+            max={5000}
+            step={10}
+            ariaLabel={t("wizard.details.men")}
+          />
         </div>
 
         <div className="space-y-3 rounded-2xl bg-secondary/50 p-5">
-          <div className="flex items-center justify-between">
-            <Label className="font-arabic text-foreground">{t("wizard.details.women")}</Label>
-            <span className="font-arabic text-lg font-semibold text-primary">{women}</span>
-          </div>
-          <Slider value={[women]} onValueChange={(v) => setWomen(v[0])} max={1000} step={10} />
+          <Label className="font-arabic text-foreground">{t("wizard.details.women")}</Label>
+          <NumberStepper
+            value={women}
+            onChange={setWomen}
+            min={0}
+            max={5000}
+            step={10}
+            ariaLabel={t("wizard.details.women")}
+          />
         </div>
       </div>
     </motion.div>
