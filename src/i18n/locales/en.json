@@ -306,6 +306,32 @@
     "skipToCheckout": "Continue to secure checkout"
   },
   "vendor": {
+    "partnerHero": {
+      "badge": "Partner portal",
+      "title": "Why Partner with Tekillah?",
+      "subtitle": "Join a premium Saudi platform that connects you with the finest clients and gives you the tools to run your business with confidence — in an environment that protects your rights and elevates the value of your services.",
+      "ctaAuthed": "Set up your profile now",
+      "ctaGuest": "Join our elite vendors now",
+      "footnote": "Quick signup · Reviewed within 24 hours · No subscription fees",
+      "benefits": {
+        "reach": {
+          "title": "Targeted Reach",
+          "desc": "Reach serious clients looking for excellence in their events."
+        },
+        "manage": {
+          "title": "Smart Management",
+          "desc": "An intuitive dashboard to manage bookings, portfolios, and reviews in one place."
+        },
+        "trust": {
+          "title": "Trust & Reliability",
+          "desc": "We are the link that protects both your rights and the client's."
+        },
+        "growth": {
+          "title": "Continuous Growth",
+          "desc": "Join a network of elite vendors and grow your market share."
+        }
+      }
+    },
     "kicker": "Partner dashboard",
     "welcomeNamed": "Welcome, {{name}}",
     "welcome": "Welcome to the partner dashboard",
