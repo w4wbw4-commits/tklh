@@ -215,7 +215,7 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
                         {b.attendance_confirmed_at && (
                           <div className="mt-1 text-[11px] text-emerald-700">
                             {t("customer.bookingsTimeline.arrivedAt", {
-                              time: new Date(b.attendance_confirmed_at).toLocaleTimeString(i18n.language === "ar" ? "ar-SA" : "en-US", {
+                              time: new Date(b.attendance_confirmed_at).toLocaleTimeString(i18n.language === "ar" ? "ar-SA-u-nu-latn" : "en-US", {
                                 hour: "2-digit", minute: "2-digit",
                               }),
                             })}

@@ -113,7 +113,8 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "ss01", "cv11";
+    font-feature-settings: "ss01", "cv11", "tnum", "lnum";
+    font-variant-numeric: tabular-nums lining-nums;
   }
 
   h1, h2, h3, h4 {
