@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Target, LayoutDashboard, ShieldCheck, TrendingUp, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 
 interface PartnerHeroProps {
@@ -7,38 +8,26 @@ interface PartnerHeroProps {
   isAuthenticated?: boolean;
 }
 
-const benefits = [
-  {
-    icon: Target,
-    title: "وصول مستهدف",
-    desc: "نصل بخدماتك إلى العملاء الأكثر جدية في البحث عن التميز لمناسباتهم.",
-  },
-  {
-    icon: LayoutDashboard,
-    title: "إدارة ذكية",
-    desc: "لوحة تحكم احترافية تتيح لك إدارة حجوزاتك، معرض أعمالك، وتقييماتك في مكان واحد.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "ثقة وموثوقية",
-    desc: "نحن حلقة الوصل التي تضمن حقك وحق العميل، مما يبني علاقة عمل مستدامة.",
-  },
-  {
-    icon: TrendingUp,
-    title: "نمو مستمر",
-    desc: "انضم لشبكة من نخبة الموردين في السوق السعودي وارفع من حصتك السوقية.",
-  },
-];
-
 export const PartnerHero = ({ onCtaClick, isAuthenticated }: PartnerHeroProps) => {
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language?.startsWith("ar");
+  const dir: "rtl" | "ltr" = isRtl ? "rtl" : "ltr";
+
+  const benefits = [
+    { icon: Target, key: "reach" },
+    { icon: LayoutDashboard, key: "manage" },
+    { icon: ShieldCheck, key: "trust" },
+    { icon: TrendingUp, key: "growth" },
+  ] as const;
+
   return (
     <section
-      dir="rtl"
+      dir={dir}
       className="relative overflow-hidden border-b border-primary/15 bg-gradient-to-br from-secondary/40 via-background to-background"
     >
-      {/* Decorative blurs */}
-      <div className="pointer-events-none absolute -top-24 right-0 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-32 left-0 h-80 w-80 rounded-full bg-secondary/50 blur-3xl" />
+      {/* Decorative blurs — mirror anchors with logical positioning */}
+      <div className="pointer-events-none absolute -top-24 end-0 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-32 start-0 h-80 w-80 rounded-full bg-secondary/50 blur-3xl" />
 
       <div className="relative mx-auto max-w-6xl px-6 py-20 sm:py-28">
         <motion.div
@@ -49,17 +38,16 @@ export const PartnerHero = ({ onCtaClick, isAuthenticated }: PartnerHeroProps) =
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.3em] text-primary backdrop-blur">
             <Sparkles className="h-3.5 w-3.5" strokeWidth={1.6} />
-            بوابة الشركاء
+            {t("vendor.partnerHero.badge")}
           </span>
           <h1
-            className="font-wordmark mt-6 text-balance text-4xl font-bold leading-tight sm:text-5xl md:text-6xl"
+            className="mt-6 text-balance text-4xl font-bold leading-tight sm:text-5xl md:text-6xl"
             style={{ color: "hsl(var(--primary-deep))" }}
           >
-            لماذا تختار الشراكة مع تِكله؟
+            {t("vendor.partnerHero.title")}
           </h1>
-          <p className="font-tagline mt-5 text-base leading-[1.95] text-muted-foreground sm:text-lg">
-            انضم إلى منصة سعودية فاخرة تربطك بأرقى العملاء وتمنحك الأدوات لإدارة عملك باحترافية،
-            في بيئة تحفظ حقك وترفع من قيمة خدماتك.
+          <p className="mt-5 text-base leading-[1.95] text-muted-foreground sm:text-lg">
+            {t("vendor.partnerHero.subtitle")}
           </p>
         </motion.div>
 
@@ -67,25 +55,25 @@ export const PartnerHero = ({ onCtaClick, isAuthenticated }: PartnerHeroProps) =
         <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {benefits.map((b, i) => (
             <motion.div
-              key={b.title}
+              key={b.key}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative overflow-hidden rounded-3xl border border-primary/15 bg-card/80 p-7 text-right shadow-card backdrop-blur transition-all duration-500 hover:-translate-y-1 hover:border-primary/30 hover:shadow-luxury"
+              className="group relative overflow-hidden rounded-3xl border border-primary/15 bg-card/80 p-7 text-start shadow-card backdrop-blur transition-all duration-500 hover:-translate-y-1 hover:border-primary/30 hover:shadow-luxury"
             >
-              <div className="absolute -left-12 -top-12 h-32 w-32 rounded-full bg-secondary/40 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
+              <div className="pointer-events-none absolute -top-12 -end-12 h-32 w-32 rounded-full bg-secondary/40 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
               <div className="relative">
                 <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/20 bg-background">
                   <b.icon className="h-6 w-6 text-primary" strokeWidth={1.4} />
                 </div>
                 <h3
-                  className="font-wordmark text-xl font-bold"
+                  className="text-xl font-bold"
                   style={{ color: "hsl(var(--primary-deep))" }}
                 >
-                  {b.title}
+                  {t(`vendor.partnerHero.benefits.${b.key}.title`)}
                 </h3>
-                <p className="font-tagline mt-3 text-sm leading-[1.95] text-muted-foreground">
-                  {b.desc}
+                <p className="mt-3 text-sm leading-[1.95] text-muted-foreground">
+                  {t(`vendor.partnerHero.benefits.${b.key}.desc`)}
                 </p>
               </div>
             </motion.div>
@@ -102,12 +90,14 @@ export const PartnerHero = ({ onCtaClick, isAuthenticated }: PartnerHeroProps) =
           <Button
             size="lg"
             onClick={onCtaClick}
-            className="font-tagline h-14 rounded-full px-12 text-base shadow-luxury"
+            className="h-14 rounded-full px-12 text-base shadow-luxury"
           >
-            {isAuthenticated ? "ابدأ إعداد ملفك الآن" : "انضم لنخبة المزودين الآن"}
+            {isAuthenticated
+              ? t("vendor.partnerHero.ctaAuthed")
+              : t("vendor.partnerHero.ctaGuest")}
           </Button>
-          <p className="font-tagline text-xs text-muted-foreground">
-            تسجيل سريع · مراجعة خلال 24 ساعة · بدون رسوم اشتراك
+          <p className="text-xs text-muted-foreground">
+            {t("vendor.partnerHero.footnote")}
           </p>
         </motion.div>
       </div>
