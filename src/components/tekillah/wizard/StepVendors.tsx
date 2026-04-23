@@ -126,6 +126,15 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
     return out;
   }, [vendors, selectedServices, allowedPackageTiers, allocations]);
 
+  // Live total of all picked vendor packages — must be declared before any early
+  // returns so React hook ordering stays stable across renders.
+  const liveTotal = useMemo(
+    () => Object.values(picks).reduce((s, p) => s + Number(p?.price ?? 0), 0),
+    [picks],
+  );
+  const pickedCount = Object.keys(picks).length;
+  const missing = selectedServices.filter((c) => !picks[c]);
+
   if (loading) {
     return (
       <motion.div className="grid place-items-center p-16">
@@ -148,13 +157,6 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
     luxury: t("wizard.budget.tierLuxury"),
   }[tier];
 
-  // Live total of all picked vendor packages (English numerals via fmtNumber).
-  const liveTotal = useMemo(
-    () => Object.values(picks).reduce((s, p) => s + Number(p?.price ?? 0), 0),
-    [picks],
-  );
-  const pickedCount = Object.keys(picks).length;
-  const missing = selectedServices.filter((c) => !picks[c]);
 
   const jumpTo = (cat: ServiceKey) => {
     document.getElementById(`vendor-section-${cat}`)?.scrollIntoView({
