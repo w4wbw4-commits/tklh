@@ -410,7 +410,7 @@
       "eventDate": "Event date",
       "guests": "Guests",
       "amount": "Amount",
-      "accept": "Accept",
+      "accept": "Approve",
       "reject": "Decline",
       "confirmed": "Booking confirmed",
       "rejected": "Booking declined",
@@ -418,7 +418,12 @@
       "attendanceConfirmed": "Attendance confirmed",
       "attendanceLockedHint": "This button unlocks automatically on the event date.",
       "attendanceSaved": "Attendance confirmed. Thank you!",
-      "attendanceFailed": "Could not confirm attendance — please retry."
+      "attendanceFailed": "Could not confirm attendance — please retry.",
+      "tabs": {
+        "new": "New requests",
+        "active": "My active",
+        "completed": "Completed"
+      }
     },
     "profile": {
       "editTitle": "Business profile",
