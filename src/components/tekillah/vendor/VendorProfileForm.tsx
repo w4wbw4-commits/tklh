@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import {
-  Loader2, Save, ImagePlus, FileText, X, ShieldCheck, Building2,
+  Loader2, Save, FileText, ShieldCheck, Building2,
   Landmark, MapPin, AlertTriangle, Clock, CheckCircle2, XCircle,
+  CalendarDays, CalendarRange, Wallet, Users, Users2,
 } from "lucide-react";
 import { CATEGORY_LABELS, type VendorRow } from "./types";
 import { TermsCheckbox } from "@/components/tekillah/TermsCheckbox";
@@ -31,7 +32,11 @@ const vendorSchema = z.object({
   city: z.string().trim().max(80).optional(),
   phone: z.string().trim().max(20).optional(),
   daily_capacity: z.number().int().min(1).max(50),
-  starting_price: z.number().min(0).max(10000000),
+  weekday_price: z.number().min(1, "أدخل سعر أيام الأسبوع").max(10000000),
+  weekend_price: z.number().min(1, "أدخل سعر عطلة نهاية الأسبوع").max(10000000),
+  min_deposit: z.number().min(1, "أدخل الحد الأدنى للعربون").max(10000000),
+  men_capacity: z.number().int().min(0).max(100000).optional().nullable(),
+  women_capacity: z.number().int().min(0).max(100000).optional().nullable(),
   iban: z.string().trim().toUpperCase().regex(ibanRegex, "IBAN غير صحيح"),
   google_maps_url: z.string().trim().url().max(500).optional().or(z.literal("")),
 });
@@ -49,7 +54,11 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
   const [dailyCapacity, setDailyCapacity] = useState(1);
-  const [startingPrice, setStartingPrice] = useState(0);
+  const [weekdayPrice, setWeekdayPrice] = useState(0);
+  const [weekendPrice, setWeekendPrice] = useState(0);
+  const [minDeposit, setMinDeposit] = useState(0);
+  const [menCapacity, setMenCapacity] = useState<number | "">("");
+  const [womenCapacity, setWomenCapacity] = useState<number | "">("");
   const [portfolioUrls, setPortfolioUrls] = useState<string[]>([]);
   const [docUrl, setDocUrl] = useState<string | null>(null);
   const [iban, setIban] = useState("");
@@ -60,6 +69,8 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [acceptedTos, setAcceptedTos] = useState(false);
   const { t } = useTranslation();
 
+  const isVenue = category === "hall";
+
   useEffect(() => {
     if (vendor) {
       setBusinessName(vendor.business_name);
@@ -68,7 +79,11 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       setCity(vendor.city ?? "");
       setPhone(vendor.phone ?? "");
       setDailyCapacity(vendor.daily_capacity);
-      setStartingPrice(Number(vendor.starting_price));
+      setWeekdayPrice(Number(vendor.weekday_price ?? vendor.starting_price ?? 0));
+      setWeekendPrice(Number(vendor.weekend_price ?? vendor.starting_price ?? 0));
+      setMinDeposit(Number(vendor.min_deposit ?? 0));
+      setMenCapacity(vendor.men_capacity ?? "");
+      setWomenCapacity(vendor.women_capacity ?? "");
       setPortfolioUrls(vendor.portfolio_urls ?? []);
       setDocUrl(vendor.commercial_register_url);
       setIban(vendor.iban ?? "");
