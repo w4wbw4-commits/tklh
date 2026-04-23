@@ -89,15 +89,71 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
           avg_rating: r.avg,
           reviews_count: r.count,
           completed_bookings: r.done,
+          // Keep ONLY approved + active packages, but DO NOT drop the vendor when
+          // they have none yet — we surface them with a "Price upon request" card
+          // so admin-approved vendors appear instantly in the public listing.
           packages: ((x as unknown as { packages: (VendorOption["packages"][number] & { active: boolean; approval_status: string })[] }).packages ?? [])
             .filter((p) => p.active && p.approval_status === "approved")
             .sort((a, b) => Number(a.price) - Number(b.price)),
         };
-      })
-      .filter((x) => (x.packages?.length ?? 0) > 0) as unknown as VendorOption[];
+      }) as unknown as VendorOption[];
       setVendors(mapped);
       setLoading(false);
     })();
+
+    // Re-fetch instantly when admin approves a vendor or package so newly
+    // approved entries show up without a manual refresh.
+    const ch = supabase
+      .channel("public-vendors-listing")
+      .on("postgres_changes", { event: "*", schema: "public", table: "vendors" }, () => {
+        // Trigger a re-run by updating loading state via the effect's closure.
+        setLoading(true);
+        // Small refetch helper inline (kept simple to avoid restructuring).
+        (async () => {
+          const { data: vv } = await supabase
+            .from("vendors")
+            .select("id, business_name, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, packages(id, name, tier, price, description, active, approval_status)")
+            .eq("active", true)
+            .eq("approval_status", "approved")
+            .in("category", selectedServices.length ? selectedServices : ["hall"]);
+          const mapped2 = (vv ?? []).map((x) => ({
+            ...x,
+            avg_rating: 0,
+            reviews_count: 0,
+            completed_bookings: 0,
+            packages: ((x as unknown as { packages: (VendorOption["packages"][number] & { active: boolean; approval_status: string })[] }).packages ?? [])
+              .filter((p) => p.active && p.approval_status === "approved")
+              .sort((a, b) => Number(a.price) - Number(b.price)),
+          })) as unknown as VendorOption[];
+          setVendors(mapped2);
+          setLoading(false);
+        })();
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "packages" }, () => {
+        // Same lightweight refetch on package approval changes.
+        setLoading(true);
+        (async () => {
+          const { data: vv } = await supabase
+            .from("vendors")
+            .select("id, business_name, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, packages(id, name, tier, price, description, active, approval_status)")
+            .eq("active", true)
+            .eq("approval_status", "approved")
+            .in("category", selectedServices.length ? selectedServices : ["hall"]);
+          const mapped2 = (vv ?? []).map((x) => ({
+            ...x,
+            avg_rating: 0,
+            reviews_count: 0,
+            completed_bookings: 0,
+            packages: ((x as unknown as { packages: (VendorOption["packages"][number] & { active: boolean; approval_status: string })[] }).packages ?? [])
+              .filter((p) => p.active && p.approval_status === "approved")
+              .sort((a, b) => Number(a.price) - Number(b.price)),
+          })) as unknown as VendorOption[];
+          setVendors(mapped2);
+          setLoading(false);
+        })();
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
   }, [selectedServices]);
 
   const grouped = useMemo(() => {
@@ -252,11 +308,23 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                             <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] tabular-nums text-foreground/55" dir="ltr">
                               {v.city && <span className="inline-flex items-center gap-1 font-arabic"><MapPin className="h-3 w-3" />{v.city}</span>}
                               {v.city && <span>•</span>}
-                              <span className="font-arabic">
-                                <span className="text-foreground/55">{t("wizard.vendors.from")}</span>{" "}
-                                <span className="font-semibold text-primary">{fmtNumber(Number(v.starting_price))}</span>{" "}
-                                {t("common.currency")}
-                              </span>
+                              {(() => {
+                                // Fallback chain: starting_price → weekday_price → weekend_price.
+                                // If everything is missing/zero we show "Price upon request" so
+                                // newly-approved vendors without packages still look professional.
+                                const priceFrom = Number(v.starting_price) || Number(v.weekday_price) || Number(v.weekend_price) || 0;
+                                return priceFrom > 0 ? (
+                                  <span className="font-arabic">
+                                    <span className="text-foreground/55">{t("wizard.vendors.from")}</span>{" "}
+                                    <span className="font-semibold text-primary">{fmtNumber(priceFrom)}</span>{" "}
+                                    {t("common.currency")}
+                                  </span>
+                                ) : (
+                                  <span className="font-arabic font-medium text-primary">
+                                    {t("wizard.vendors.priceOnRequest")}
+                                  </span>
+                                );
+                              })()}
                               {cat === "hall" && (Number(v.men_capacity ?? 0) > 0 || Number(v.women_capacity ?? 0) > 0) && (
                                 <>
                                   <span>•</span>
@@ -279,6 +347,24 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                         </div>
 
                         <div className="mt-3 grid grid-cols-1 gap-2">
+                          {v.packages.length === 0 && (
+                            // Vendor approved but hasn't published packages yet — show
+                            // a non-clickable "Price upon request" tile so the listing
+                            // never feels broken right after approval.
+                            <div className="flex items-center justify-between rounded-xl border border-dashed border-primary/30 bg-primary/[0.03] p-3 text-start">
+                              <div className="min-w-0">
+                                <div className="font-arabic text-sm font-medium text-foreground">
+                                  {t("wizard.vendors.priceOnRequest")}
+                                </div>
+                                <div className="text-[11px] text-foreground/55">
+                                  {t("wizard.vendors.priceOnRequestDesc")}
+                                </div>
+                              </div>
+                              <span className="ms-3 inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                                {t("wizard.vendors.contactSoon")}
+                              </span>
+                            </div>
+                          )}
                           {v.packages.map((p) => {
                             const isPicked = pick?.vendorId === v.id && pick?.packageId === p.id;
                             const packageMatches =

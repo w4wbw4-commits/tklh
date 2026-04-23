@@ -155,7 +155,10 @@
       "providersCount": "{{count}} providers selected",
       "missingTitle": "Missing service providers",
       "missingDesc": "Alert: You previously indicated you need ({{service}}), but you haven't added a provider for this service yet.",
-      "allCovered": "Great — every service you chose has a provider."
+      "allCovered": "Great — every service you chose has a provider.",
+      "priceOnRequest": "Price upon request",
+      "priceOnRequestDesc": "Contact the provider for a custom quote tailored to your event.",
+      "contactSoon": "We'll reach out"
     },
     "details": {
       "title": "Event details",
