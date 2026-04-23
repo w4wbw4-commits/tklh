@@ -148,6 +148,15 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
     luxury: t("wizard.budget.tierLuxury"),
   }[tier];
 
+  // ---------------------------------------------------------------------------
+  // Running total + missing-category detection (Tasks 2 & 3).
+  // - runningTotal: sum of every selected package price (English numerals).
+  // - missingCats: services chosen earlier but with no provider pick yet.
+  // ---------------------------------------------------------------------------
+  const pickedList = Object.values(picks);
+  const runningTotal = pickedList.reduce((sum, p) => sum + Number(p.price ?? 0), 0);
+  const missingCats = selectedServices.filter((cat) => !picks[cat]);
+
   return (
     <motion.div
       key="step-vendors"
@@ -165,6 +174,31 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         <Sparkles className="h-3.5 w-3.5" />
         {t("wizard.vendors.filterAllInRange")} · {tierLabel}
       </div>
+
+      {/* Missing-category alert (Task 3) — one row per uncovered service. */}
+      {missingCats.length > 0 && (
+        <Alert className="mt-5 border-destructive/40 bg-destructive/5 text-destructive">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle className="font-arabic text-sm font-semibold">
+            {t("wizard.vendors.missingTitle")}
+          </AlertTitle>
+          <AlertDescription className="mt-1 space-y-1 text-xs">
+            {missingCats.map((cat) => (
+              <div key={cat}>
+                {t("wizard.vendors.missingDesc", { service: t(`wizard.services.${cat}`) })}
+              </div>
+            ))}
+          </AlertDescription>
+        </Alert>
+      )}
+      {missingCats.length === 0 && pickedList.length > 0 && (
+        <Alert className="mt-5 border-primary/30 bg-primary/5 text-primary">
+          <Check className="h-4 w-4" />
+          <AlertDescription className="text-xs">
+            {t("wizard.vendors.allCovered")}
+          </AlertDescription>
+        </Alert>
+      )}
 
       <div className="mt-8 space-y-8">
         {selectedServices.map((cat) => {
@@ -211,7 +245,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                             <div className="mt-1">
                               <VendorRatingBadge avg={v.avg_rating} count={v.reviews_count} />
                             </div>
-                            <div className="mt-1.5 flex items-center gap-2 text-[11px] text-foreground/55">
+                            <div className="mt-1.5 flex items-center gap-2 text-[11px] tabular-nums text-foreground/55">
                               {v.city && <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" />{v.city}</span>}
                               <span>•</span>
                               <span>{t("wizard.vendors.from")} {fmtNumber(Number(v.starting_price))} {t("common.currency")}</span>
@@ -256,14 +290,28 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                                   <div className="text-[11px] text-foreground/55 truncate">{p.description}</div>
                                 </div>
                                 <div className="ms-3 flex flex-col items-end gap-1">
-                                  <span className="font-arabic text-sm font-semibold text-primary">
+                                  <span className="font-arabic text-sm font-semibold tabular-nums text-primary">
                                     {fmtNumber(Number(p.price))} {t("common.currency")}
                                   </span>
-                                  {isPicked && (
-                                    <span className="grid h-5 w-5 place-items-center rounded-full bg-primary text-primary-foreground">
-                                      <Check className="h-3 w-3" />
-                                    </span>
-                                  )}
+                                  <span
+                                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors ${
+                                      isPicked
+                                        ? "bg-primary text-primary-foreground"
+                                        : "bg-primary/10 text-primary"
+                                    }`}
+                                  >
+                                    {isPicked ? (
+                                      <>
+                                        <X className="h-3 w-3" />
+                                        {t("wizard.vendors.remove")}
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Plus className="h-3 w-3" />
+                                        {t("wizard.vendors.addProvider")}
+                                      </>
+                                    )}
+                                  </span>
                                 </div>
                               </button>
                             );
@@ -277,6 +325,22 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
             </section>
           );
         })}
+      </div>
+
+      {/* Sticky running-total bar (Task 2) — always English numerals via fmtNumber. */}
+      <div className="sticky bottom-2 z-10 mt-8 rounded-2xl border border-primary/30 bg-card/95 p-4 shadow-luxury backdrop-blur">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-sm text-foreground/75">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <span className="font-arabic">{t("wizard.vendors.runningTotal")}</span>
+            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium tabular-nums text-primary">
+              {t("wizard.vendors.providersCount", { count: pickedList.length })}
+            </span>
+          </div>
+          <div className="font-arabic text-xl font-semibold tabular-nums text-primary">
+            {fmtNumber(runningTotal)} <span className="text-sm font-medium text-foreground/70">{t("common.currency")}</span>
+          </div>
+        </div>
       </div>
     </motion.div>
   );
