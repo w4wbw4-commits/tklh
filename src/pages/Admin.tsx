@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   Loader2, ShieldAlert, Wallet, TrendingUp, Lock, ListChecks,
   CheckCircle2, LogOut, Receipt, Star, Flag, ShieldCheck, Percent, HandCoins, Inbox,
-  AlertTriangle, AlertOctagon,
+  AlertTriangle, AlertOctagon, Briefcase,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
@@ -27,6 +27,7 @@ import { AdminLeadsPanel } from "@/components/tekillah/admin/AdminLeadsPanel";
 import { AdminLateAlerts } from "@/components/tekillah/admin/AdminLateAlerts";
 import { AdminIncidentReports } from "@/components/tekillah/admin/AdminIncidentReports";
 import { AdminAddVendorDialog } from "@/components/tekillah/admin/AdminAddVendorDialog";
+import { AdminVendorsPanel } from "@/components/tekillah/admin/AdminVendorsPanel";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 
 // Primary admin: phone +966554430196 → synthetic email used by phone-OTP login.
@@ -212,6 +213,9 @@ const Admin = () => {
               <TabsTrigger value="verification" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <ShieldCheck className="h-4 w-4" /> {t("admin.tabVerification")}
               </TabsTrigger>
+              <TabsTrigger value="vendors" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <Briefcase className="h-4 w-4" /> {t("admin.tabVendors")}
+              </TabsTrigger>
               <TabsTrigger value="late" className="rounded-xl gap-2 data-[state=active]:bg-destructive data-[state=active]:text-destructive-foreground">
                 <AlertTriangle className="h-4 w-4" /> {t("admin.tabLate")}
               </TabsTrigger>
@@ -237,6 +241,10 @@ const Admin = () => {
 
             <TabsContent value="verification" className="mt-6">
               <AdminVerificationQueue />
+            </TabsContent>
+
+            <TabsContent value="vendors" className="mt-6">
+              <AdminVendorsPanel />
             </TabsContent>
 
             <TabsContent value="late" className="mt-6">
