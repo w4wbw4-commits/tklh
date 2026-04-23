@@ -89,15 +89,71 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
           avg_rating: r.avg,
           reviews_count: r.count,
           completed_bookings: r.done,
+          // Keep ONLY approved + active packages, but DO NOT drop the vendor when
+          // they have none yet — we surface them with a "Price upon request" card
+          // so admin-approved vendors appear instantly in the public listing.
           packages: ((x as unknown as { packages: (VendorOption["packages"][number] & { active: boolean; approval_status: string })[] }).packages ?? [])
             .filter((p) => p.active && p.approval_status === "approved")
             .sort((a, b) => Number(a.price) - Number(b.price)),
         };
-      })
-      .filter((x) => (x.packages?.length ?? 0) > 0) as unknown as VendorOption[];
+      }) as unknown as VendorOption[];
       setVendors(mapped);
       setLoading(false);
     })();
+
+    // Re-fetch instantly when admin approves a vendor or package so newly
+    // approved entries show up without a manual refresh.
+    const ch = supabase
+      .channel("public-vendors-listing")
+      .on("postgres_changes", { event: "*", schema: "public", table: "vendors" }, () => {
+        // Trigger a re-run by updating loading state via the effect's closure.
+        setLoading(true);
+        // Small refetch helper inline (kept simple to avoid restructuring).
+        (async () => {
+          const { data: vv } = await supabase
+            .from("vendors")
+            .select("id, business_name, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, packages(id, name, tier, price, description, active, approval_status)")
+            .eq("active", true)
+            .eq("approval_status", "approved")
+            .in("category", selectedServices.length ? selectedServices : ["hall"]);
+          const mapped2 = (vv ?? []).map((x) => ({
+            ...x,
+            avg_rating: 0,
+            reviews_count: 0,
+            completed_bookings: 0,
+            packages: ((x as unknown as { packages: (VendorOption["packages"][number] & { active: boolean; approval_status: string })[] }).packages ?? [])
+              .filter((p) => p.active && p.approval_status === "approved")
+              .sort((a, b) => Number(a.price) - Number(b.price)),
+          })) as unknown as VendorOption[];
+          setVendors(mapped2);
+          setLoading(false);
+        })();
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "packages" }, () => {
+        // Same lightweight refetch on package approval changes.
+        setLoading(true);
+        (async () => {
+          const { data: vv } = await supabase
+            .from("vendors")
+            .select("id, business_name, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, packages(id, name, tier, price, description, active, approval_status)")
+            .eq("active", true)
+            .eq("approval_status", "approved")
+            .in("category", selectedServices.length ? selectedServices : ["hall"]);
+          const mapped2 = (vv ?? []).map((x) => ({
+            ...x,
+            avg_rating: 0,
+            reviews_count: 0,
+            completed_bookings: 0,
+            packages: ((x as unknown as { packages: (VendorOption["packages"][number] & { active: boolean; approval_status: string })[] }).packages ?? [])
+              .filter((p) => p.active && p.approval_status === "approved")
+              .sort((a, b) => Number(a.price) - Number(b.price)),
+          })) as unknown as VendorOption[];
+          setVendors(mapped2);
+          setLoading(false);
+        })();
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
   }, [selectedServices]);
 
   const grouped = useMemo(() => {
