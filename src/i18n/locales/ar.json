@@ -410,7 +410,7 @@
       "eventDate": "تاريخ المناسبة",
       "guests": "الضيوف",
       "amount": "المبلغ",
-      "accept": "قبول",
+      "accept": "موافقة",
       "reject": "رفض",
       "confirmed": "تم تأكيد الحجز",
       "rejected": "تم رفض الحجز",
@@ -418,7 +418,12 @@
       "attendanceConfirmed": "تم تأكيد الحضور",
       "attendanceLockedHint": "يُفعّل هذا الزر تلقائياً في يوم المناسبة فقط.",
       "attendanceSaved": "تم تأكيد حضورك. شكراً لاحترافك!",
-      "attendanceFailed": "تعذر تأكيد الحضور — حاول مجدداً."
+      "attendanceFailed": "تعذر تأكيد الحضور — حاول مجدداً.",
+      "tabs": {
+        "new": "طلبات جديدة",
+        "active": "طلباتي الحالية",
+        "completed": "الطلبات المكتملة"
+      }
     },
     "profile": {
       "editTitle": "ملف العمل",
