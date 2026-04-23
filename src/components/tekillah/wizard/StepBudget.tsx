@@ -33,7 +33,7 @@ interface Props {
 export const StepBudget = ({
   budgetMode, setBudgetMode, budget, setBudget,
   guests, allocations, setAllocation,
-  enabledServices, toggleEnabled,
+  enabledServices, toggleEnabled, onSelectPackage,
 }: Props) => {
   const { t } = useTranslation();
   const { prices: market } = useMarketPrices();
