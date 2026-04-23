@@ -183,16 +183,17 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         {t("wizard.vendors.filterAllInRange")} · {tierLabel}
       </div>
 
-      {/* Missing categories warning — only when user has at least one pick or has scrolled enough */}
+      {/* Missing categories warning — surfaces categories the user requested but
+          hasn't picked a vendor for yet. Uses semantic destructive tokens. */}
       {missing.length > 0 && pickedCount > 0 && (
-        <div className="mt-5 rounded-2xl border border-amber-500/40 bg-amber-50/60 p-4 dark:bg-amber-950/20">
+        <div className="mt-5 rounded-2xl border border-destructive/40 bg-destructive/5 p-4">
           <div className="flex items-start gap-2">
-            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
             <div className="min-w-0 flex-1">
-              <div className="font-arabic text-sm font-semibold text-amber-900 dark:text-amber-200">
+              <div className="font-arabic text-sm font-semibold text-destructive">
                 {t("wizard.vendors.missingTitle")}
               </div>
-              <p className="mt-1 text-xs text-amber-800/80 dark:text-amber-200/80">
+              <p className="mt-1 text-xs text-foreground/70">
                 {t("wizard.vendors.missingDesc")}
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
@@ -201,7 +202,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                     key={c}
                     type="button"
                     onClick={() => jumpTo(c)}
-                    className="inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-background px-2.5 py-1 text-xs font-medium text-amber-900 hover:bg-amber-100 dark:text-amber-200"
+                    className="inline-flex items-center gap-1 rounded-full border border-destructive/40 bg-background px-2.5 py-1 text-xs font-medium text-destructive hover:bg-destructive/10"
                   >
                     {t(`wizard.services.${c}`)}
                     <ArrowJump />
