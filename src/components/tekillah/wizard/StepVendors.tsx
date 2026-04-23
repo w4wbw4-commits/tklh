@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Loader2, Check, Building2, UtensilsCrossed, Camera, Music2, Flower2, Car, MapPin, BadgeCheck, Sparkles, Plus, X, AlertTriangle } from "lucide-react";
+import { Loader2, Check, Building2, UtensilsCrossed, Camera, Music2, Flower2, Car, MapPin, BadgeCheck, Sparkles, Plus, X, AlertTriangle, Users, Users2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -20,6 +20,10 @@ export interface VendorOption {
   category: ServiceKey;
   city: string | null;
   starting_price: number;
+  weekday_price: number;
+  weekend_price: number;
+  men_capacity: number | null;
+  women_capacity: number | null;
   verified: boolean;
   avg_rating: number;
   reviews_count: number;
@@ -65,7 +69,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
       const [{ data: v }, { data: ratings }] = await Promise.all([
         supabase
           .from("vendors")
-          .select("id, business_name, category, city, starting_price, verified, packages(id, name, tier, price, description, active, approval_status)")
+          .select("id, business_name, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, packages(id, name, tier, price, description, active, approval_status)")
           .eq("active", true)
           .eq("approval_status", "approved")
           .in("category", selectedServices.length ? selectedServices : ["hall"]),
