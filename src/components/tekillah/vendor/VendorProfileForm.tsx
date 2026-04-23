@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import {
-  Loader2, Save, ImagePlus, FileText, X, ShieldCheck, Building2,
+  Loader2, Save, FileText, ShieldCheck, Building2,
   Landmark, MapPin, AlertTriangle, Clock, CheckCircle2, XCircle,
+  CalendarDays, CalendarRange, Wallet, Users, Users2,
 } from "lucide-react";
 import { CATEGORY_LABELS, type VendorRow } from "./types";
 import { TermsCheckbox } from "@/components/tekillah/TermsCheckbox";
@@ -31,7 +32,11 @@ const vendorSchema = z.object({
   city: z.string().trim().max(80).optional(),
   phone: z.string().trim().max(20).optional(),
   daily_capacity: z.number().int().min(1).max(50),
-  starting_price: z.number().min(0).max(10000000),
+  weekday_price: z.number().min(1, "أدخل سعر أيام الأسبوع").max(10000000),
+  weekend_price: z.number().min(1, "أدخل سعر عطلة نهاية الأسبوع").max(10000000),
+  min_deposit: z.number().min(1, "أدخل الحد الأدنى للعربون").max(10000000),
+  men_capacity: z.number().int().min(0).max(100000).optional().nullable(),
+  women_capacity: z.number().int().min(0).max(100000).optional().nullable(),
   iban: z.string().trim().toUpperCase().regex(ibanRegex, "IBAN غير صحيح"),
   google_maps_url: z.string().trim().url().max(500).optional().or(z.literal("")),
 });
@@ -49,7 +54,11 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
   const [dailyCapacity, setDailyCapacity] = useState(1);
-  const [startingPrice, setStartingPrice] = useState(0);
+  const [weekdayPrice, setWeekdayPrice] = useState(0);
+  const [weekendPrice, setWeekendPrice] = useState(0);
+  const [minDeposit, setMinDeposit] = useState(0);
+  const [menCapacity, setMenCapacity] = useState<number | "">("");
+  const [womenCapacity, setWomenCapacity] = useState<number | "">("");
   const [portfolioUrls, setPortfolioUrls] = useState<string[]>([]);
   const [docUrl, setDocUrl] = useState<string | null>(null);
   const [iban, setIban] = useState("");
@@ -60,6 +69,8 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [acceptedTos, setAcceptedTos] = useState(false);
   const { t } = useTranslation();
 
+  const isVenue = category === "hall";
+
   useEffect(() => {
     if (vendor) {
       setBusinessName(vendor.business_name);
@@ -68,7 +79,11 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       setCity(vendor.city ?? "");
       setPhone(vendor.phone ?? "");
       setDailyCapacity(vendor.daily_capacity);
-      setStartingPrice(Number(vendor.starting_price));
+      setWeekdayPrice(Number(vendor.weekday_price ?? vendor.starting_price ?? 0));
+      setWeekendPrice(Number(vendor.weekend_price ?? vendor.starting_price ?? 0));
+      setMinDeposit(Number(vendor.min_deposit ?? 0));
+      setMenCapacity(vendor.men_capacity ?? "");
+      setWomenCapacity(vendor.women_capacity ?? "");
       setPortfolioUrls(vendor.portfolio_urls ?? []);
       setDocUrl(vendor.commercial_register_url);
       setIban(vendor.iban ?? "");
@@ -131,7 +146,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
     }
     const parsed = vendorSchema.safeParse({
       business_name: businessName, category, bio, city, phone,
-      daily_capacity: Number(dailyCapacity), starting_price: Number(startingPrice),
+      daily_capacity: Number(dailyCapacity),
+      weekday_price: Number(weekdayPrice),
+      weekend_price: Number(weekendPrice),
+      min_deposit: Number(minDeposit),
+      men_capacity: category === "hall" ? (menCapacity === "" ? null : Number(menCapacity)) : null,
+      women_capacity: category === "hall" ? (womenCapacity === "" ? null : Number(womenCapacity)) : null,
       iban: iban.toUpperCase(), google_maps_url: mapsUrl,
     });
     if (!parsed.success) {
@@ -139,6 +159,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       return;
     }
     setSaving(true);
+    const startingPrice = Math.min(Number(weekdayPrice), Number(weekendPrice));
     const payload = {
       user_id: userId,
       business_name: businessName,
@@ -147,7 +168,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       city: city || null,
       phone: phone || null,
       daily_capacity: Number(dailyCapacity),
-      starting_price: Number(startingPrice),
+      starting_price: startingPrice,
+      weekday_price: Number(weekdayPrice),
+      weekend_price: Number(weekendPrice),
+      min_deposit: Number(minDeposit),
+      men_capacity: category === "hall" && menCapacity !== "" ? Number(menCapacity) : null,
+      women_capacity: category === "hall" && womenCapacity !== "" ? Number(womenCapacity) : null,
       portfolio_urls: portfolioUrls,
       commercial_register_url: docUrl,
       iban: iban.toUpperCase(),
@@ -262,36 +288,6 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
               onChange={(e) => setDailyCapacity(Number(e.target.value))} />
             <p className="text-xs text-foreground/55">عدد الحفلات التي يمكنك تغطيتها في نفس اليوم.</p>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="starting-price">السعر المبدئي</Label>
-            <div
-              dir="ltr"
-              className="flex h-10 items-center overflow-hidden rounded-md border border-input bg-background transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/30"
-            >
-              <input
-                id="starting-price"
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                value={String(startingPrice)}
-                onFocus={(e) => e.target.select()}
-                onChange={(e) => {
-                  const cleaned = e.target.value
-                    .replace(/[\u0660-\u0669]/g, (d) => String(d.charCodeAt(0) - 0x0660))
-                    .replace(/[\u06F0-\u06F9]/g, (d) => String(d.charCodeAt(0) - 0x06F0))
-                    .replace(/[^\d]/g, "");
-                  setStartingPrice(cleaned === "" ? 0 : Math.min(10_000_000, parseInt(cleaned, 10)));
-                }}
-                placeholder="0"
-                aria-label="السعر المبدئي بالريال السعودي"
-                className="h-full flex-1 bg-transparent px-3 text-base tabular-nums text-foreground outline-none placeholder:text-muted-foreground md:text-sm"
-              />
-              <span className="select-none border-s border-border bg-secondary/60 px-3 text-sm font-medium tabular-nums text-foreground/70">
-                SAR
-              </span>
-            </div>
-            <p className="text-xs text-foreground/55">يُعرض هذا السعر للعملاء كنقطة بداية لخدماتك.</p>
-          </div>
           <div className="space-y-2 sm:col-span-2">
             <Label>نبذة عن العمل</Label>
             <Textarea value={bio} onChange={(e) => setBio(e.target.value)}
@@ -300,6 +296,66 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           </div>
         </div>
       </div>
+
+      {/* Pricing */}
+      <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
+        <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
+          <Wallet className="h-4 w-4 text-primary" /> {t("vendor.profile.pricingTitle")}
+          <Badge variant="secondary" className="ms-1 text-[10px]">{t("vendor.profile.required") ?? "إلزامي"}</Badge>
+        </div>
+        <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <PriceField
+            id="weekday-price"
+            label={t("vendor.profile.weekdayPrice")}
+            icon={CalendarDays}
+            value={weekdayPrice}
+            onChange={setWeekdayPrice}
+          />
+          <PriceField
+            id="weekend-price"
+            label={t("vendor.profile.weekendPrice")}
+            icon={CalendarRange}
+            value={weekendPrice}
+            onChange={setWeekendPrice}
+          />
+          <div className="sm:col-span-2">
+            <PriceField
+              id="min-deposit"
+              label={t("vendor.profile.minDeposit")}
+              icon={Wallet}
+              value={minDeposit}
+              onChange={setMinDeposit}
+              hint={t("vendor.profile.depositHint")}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Venue capacity — halls only */}
+      {isVenue && (
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
+          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
+            <Users className="h-4 w-4 text-primary" /> {t("vendor.profile.venueCapacityTitle")}
+          </div>
+          <p className="mb-5 text-xs text-foreground/60">{t("vendor.profile.venueCapacityHint")}</p>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <CapacityField
+              id="men-capacity"
+              label={t("vendor.profile.menCapacity")}
+              icon={Users}
+              value={menCapacity}
+              onChange={setMenCapacity}
+            />
+            <CapacityField
+              id="women-capacity"
+              label={t("vendor.profile.womenCapacity")}
+              icon={Users2}
+              value={womenCapacity}
+              onChange={setWomenCapacity}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Banking — IBAN */}
       <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
@@ -400,3 +456,86 @@ const ApprovalBadge = ({ status }: { status: "pending_approval" | "approved" | "
   }
   return <Badge className="gap-1 bg-amber-500/15 text-amber-700 hover:bg-amber-500/20"><Clock className="h-3 w-3" /> قيد المراجعة</Badge>;
 };
+
+// Force English numerals; arabic-indic digits are converted on input.
+const sanitizeDigits = (raw: string) =>
+  raw
+    .replace(/[\u0660-\u0669]/g, (d) => String(d.charCodeAt(0) - 0x0660))
+    .replace(/[\u06F0-\u06F9]/g, (d) => String(d.charCodeAt(0) - 0x06F0))
+    .replace(/[^\d]/g, "");
+
+interface PriceFieldProps {
+  id: string;
+  label: string;
+  value: number;
+  onChange: (n: number) => void;
+  hint?: string;
+  icon?: typeof Wallet;
+}
+const PriceField = ({ id, label, value, onChange, hint, icon: Icon }: PriceFieldProps) => (
+  <div className="space-y-2">
+    <Label htmlFor={id} className="inline-flex items-center gap-1.5">
+      {Icon && <Icon className="h-3.5 w-3.5 text-primary" />} {label}
+    </Label>
+    <div
+      dir="ltr"
+      className="flex h-10 items-center overflow-hidden rounded-md border border-input bg-background transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/30"
+    >
+      <input
+        id={id}
+        type="text"
+        inputMode="decimal"
+        pattern="[0-9]*"
+        value={String(value)}
+        onFocus={(e) => e.target.select()}
+        onChange={(e) => {
+          const cleaned = sanitizeDigits(e.target.value);
+          onChange(cleaned === "" ? 0 : Math.min(10_000_000, parseInt(cleaned, 10)));
+        }}
+        placeholder="0"
+        aria-label={label}
+        className="h-full flex-1 bg-transparent px-3 text-base tabular-nums text-foreground outline-none placeholder:text-muted-foreground md:text-sm"
+      />
+      <span className="select-none border-s border-border bg-secondary/60 px-3 text-sm font-medium tabular-nums text-foreground/70">
+        SAR
+      </span>
+    </div>
+    {hint && <p className="text-xs text-foreground/55">{hint}</p>}
+  </div>
+);
+
+interface CapacityFieldProps {
+  id: string;
+  label: string;
+  value: number | "";
+  onChange: (n: number | "") => void;
+  icon?: typeof Users;
+}
+const CapacityField = ({ id, label, value, onChange, icon: Icon }: CapacityFieldProps) => (
+  <div className="space-y-2">
+    <Label htmlFor={id} className="inline-flex items-center gap-1.5">
+      {Icon && <Icon className="h-3.5 w-3.5 text-primary" />} {label}
+    </Label>
+    <div
+      dir="ltr"
+      className="flex h-10 items-center overflow-hidden rounded-md border border-input bg-background transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/30"
+    >
+      <input
+        id={id}
+        type="text"
+        inputMode="numeric"
+        pattern="[0-9]*"
+        value={value === "" ? "" : String(value)}
+        onFocus={(e) => e.target.select()}
+        onChange={(e) => {
+          const cleaned = sanitizeDigits(e.target.value);
+          onChange(cleaned === "" ? "" : Math.min(100_000, parseInt(cleaned, 10)));
+        }}
+        placeholder="0"
+        aria-label={label}
+        className="h-full flex-1 bg-transparent px-3 text-base tabular-nums text-foreground outline-none placeholder:text-muted-foreground md:text-sm"
+      />
+    </div>
+  </div>
+);
+

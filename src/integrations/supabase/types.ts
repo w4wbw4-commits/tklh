@@ -937,6 +937,8 @@ export type Database = {
           iban: string | null
           iban_certificate_url: string | null
           id: string
+          men_capacity: number | null
+          min_deposit: number
           phone: string | null
           portfolio_urls: string[]
           rejection_reason: string | null
@@ -946,6 +948,9 @@ export type Database = {
           updated_at: string
           user_id: string
           verified: boolean
+          weekday_price: number
+          weekend_price: number
+          women_capacity: number | null
         }
         Insert: {
           active?: boolean
@@ -961,6 +966,8 @@ export type Database = {
           iban?: string | null
           iban_certificate_url?: string | null
           id?: string
+          men_capacity?: number | null
+          min_deposit?: number
           phone?: string | null
           portfolio_urls?: string[]
           rejection_reason?: string | null
@@ -970,6 +977,9 @@ export type Database = {
           updated_at?: string
           user_id: string
           verified?: boolean
+          weekday_price?: number
+          weekend_price?: number
+          women_capacity?: number | null
         }
         Update: {
           active?: boolean
@@ -985,6 +995,8 @@ export type Database = {
           iban?: string | null
           iban_certificate_url?: string | null
           id?: string
+          men_capacity?: number | null
+          min_deposit?: number
           phone?: string | null
           portfolio_urls?: string[]
           rejection_reason?: string | null
@@ -994,6 +1006,9 @@ export type Database = {
           updated_at?: string
           user_id?: string
           verified?: boolean
+          weekday_price?: number
+          weekend_price?: number
+          women_capacity?: number | null
         }
         Relationships: []
       }

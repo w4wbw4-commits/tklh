@@ -30,6 +30,11 @@ export interface VendorRow {
   google_maps_url: string | null;
   daily_capacity: number;
   starting_price: number;
+  weekday_price: number;
+  weekend_price: number;
+  min_deposit: number;
+  men_capacity: number | null;
+  women_capacity: number | null;
   verified: boolean;
   active: boolean;
   approval_status: ApprovalStatus;

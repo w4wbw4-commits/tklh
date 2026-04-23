@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Loader2, Check, Building2, UtensilsCrossed, Camera, Music2, Flower2, Car, MapPin, BadgeCheck, Sparkles, Plus, X, AlertTriangle } from "lucide-react";
+import { Loader2, Check, Building2, UtensilsCrossed, Camera, Music2, Flower2, Car, MapPin, BadgeCheck, Sparkles, Plus, X, AlertTriangle, Users, Users2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -20,6 +20,10 @@ export interface VendorOption {
   category: ServiceKey;
   city: string | null;
   starting_price: number;
+  weekday_price: number;
+  weekend_price: number;
+  men_capacity: number | null;
+  women_capacity: number | null;
   verified: boolean;
   avg_rating: number;
   reviews_count: number;
@@ -65,7 +69,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
       const [{ data: v }, { data: ratings }] = await Promise.all([
         supabase
           .from("vendors")
-          .select("id, business_name, category, city, starting_price, verified, packages(id, name, tier, price, description, active, approval_status)")
+          .select("id, business_name, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, packages(id, name, tier, price, description, active, approval_status)")
           .eq("active", true)
           .eq("approval_status", "approved")
           .in("category", selectedServices.length ? selectedServices : ["hall"]),
@@ -245,10 +249,31 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                             <div className="mt-1">
                               <VendorRatingBadge avg={v.avg_rating} count={v.reviews_count} />
                             </div>
-                            <div className="mt-1.5 flex items-center gap-2 text-[11px] tabular-nums text-foreground/55">
-                              {v.city && <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" />{v.city}</span>}
-                              <span>•</span>
-                              <span>{t("wizard.vendors.from")} {fmtNumber(Number(v.starting_price))} {t("common.currency")}</span>
+                            <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] tabular-nums text-foreground/55" dir="ltr">
+                              {v.city && <span className="inline-flex items-center gap-1 font-arabic"><MapPin className="h-3 w-3" />{v.city}</span>}
+                              {v.city && <span>•</span>}
+                              <span className="font-arabic">
+                                <span className="text-foreground/55">{t("wizard.vendors.from")}</span>{" "}
+                                <span className="font-semibold text-primary">{fmtNumber(Number(v.starting_price))}</span>{" "}
+                                {t("common.currency")}
+                              </span>
+                              {cat === "hall" && (Number(v.men_capacity ?? 0) > 0 || Number(v.women_capacity ?? 0) > 0) && (
+                                <>
+                                  <span>•</span>
+                                  {Number(v.men_capacity ?? 0) > 0 && (
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-primary">
+                                      <Users className="h-3 w-3" />
+                                      <span className="font-semibold">{fmtNumber(Number(v.men_capacity))}</span>
+                                    </span>
+                                  )}
+                                  {Number(v.women_capacity ?? 0) > 0 && (
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-primary">
+                                      <Users2 className="h-3 w-3" />
+                                      <span className="font-semibold">{fmtNumber(Number(v.women_capacity))}</span>
+                                    </span>
+                                  )}
+                                </>
+                              )}
                             </div>
                           </div>
                         </div>
