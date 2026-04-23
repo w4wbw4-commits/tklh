@@ -456,3 +456,86 @@ const ApprovalBadge = ({ status }: { status: "pending_approval" | "approved" | "
   }
   return <Badge className="gap-1 bg-amber-500/15 text-amber-700 hover:bg-amber-500/20"><Clock className="h-3 w-3" /> قيد المراجعة</Badge>;
 };
+
+// Force English numerals; arabic-indic digits are converted on input.
+const sanitizeDigits = (raw: string) =>
+  raw
+    .replace(/[\u0660-\u0669]/g, (d) => String(d.charCodeAt(0) - 0x0660))
+    .replace(/[\u06F0-\u06F9]/g, (d) => String(d.charCodeAt(0) - 0x06F0))
+    .replace(/[^\d]/g, "");
+
+interface PriceFieldProps {
+  id: string;
+  label: string;
+  value: number;
+  onChange: (n: number) => void;
+  hint?: string;
+  icon?: typeof Wallet;
+}
+const PriceField = ({ id, label, value, onChange, hint, icon: Icon }: PriceFieldProps) => (
+  <div className="space-y-2">
+    <Label htmlFor={id} className="inline-flex items-center gap-1.5">
+      {Icon && <Icon className="h-3.5 w-3.5 text-primary" />} {label}
+    </Label>
+    <div
+      dir="ltr"
+      className="flex h-10 items-center overflow-hidden rounded-md border border-input bg-background transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/30"
+    >
+      <input
+        id={id}
+        type="text"
+        inputMode="decimal"
+        pattern="[0-9]*"
+        value={String(value)}
+        onFocus={(e) => e.target.select()}
+        onChange={(e) => {
+          const cleaned = sanitizeDigits(e.target.value);
+          onChange(cleaned === "" ? 0 : Math.min(10_000_000, parseInt(cleaned, 10)));
+        }}
+        placeholder="0"
+        aria-label={label}
+        className="h-full flex-1 bg-transparent px-3 text-base tabular-nums text-foreground outline-none placeholder:text-muted-foreground md:text-sm"
+      />
+      <span className="select-none border-s border-border bg-secondary/60 px-3 text-sm font-medium tabular-nums text-foreground/70">
+        SAR
+      </span>
+    </div>
+    {hint && <p className="text-xs text-foreground/55">{hint}</p>}
+  </div>
+);
+
+interface CapacityFieldProps {
+  id: string;
+  label: string;
+  value: number | "";
+  onChange: (n: number | "") => void;
+  icon?: typeof Users;
+}
+const CapacityField = ({ id, label, value, onChange, icon: Icon }: CapacityFieldProps) => (
+  <div className="space-y-2">
+    <Label htmlFor={id} className="inline-flex items-center gap-1.5">
+      {Icon && <Icon className="h-3.5 w-3.5 text-primary" />} {label}
+    </Label>
+    <div
+      dir="ltr"
+      className="flex h-10 items-center overflow-hidden rounded-md border border-input bg-background transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/30"
+    >
+      <input
+        id={id}
+        type="text"
+        inputMode="numeric"
+        pattern="[0-9]*"
+        value={value === "" ? "" : String(value)}
+        onFocus={(e) => e.target.select()}
+        onChange={(e) => {
+          const cleaned = sanitizeDigits(e.target.value);
+          onChange(cleaned === "" ? "" : Math.min(100_000, parseInt(cleaned, 10)));
+        }}
+        placeholder="0"
+        aria-label={label}
+        className="h-full flex-1 bg-transparent px-3 text-base tabular-nums text-foreground outline-none placeholder:text-muted-foreground md:text-sm"
+      />
+    </div>
+  </div>
+);
+
