@@ -148,6 +148,21 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
     luxury: t("wizard.budget.tierLuxury"),
   }[tier];
 
+  // Live total of all picked vendor packages (English numerals via fmtNumber).
+  const liveTotal = useMemo(
+    () => Object.values(picks).reduce((s, p) => s + Number(p?.price ?? 0), 0),
+    [picks],
+  );
+  const pickedCount = Object.keys(picks).length;
+  const missing = selectedServices.filter((c) => !picks[c]);
+
+  const jumpTo = (cat: ServiceKey) => {
+    document.getElementById(`vendor-section-${cat}`)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
     <motion.div
       key="step-vendors"
@@ -155,7 +170,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 24 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className="p-6 sm:p-10"
+      className="p-6 sm:p-10 pb-32"
     >
       <h3 className="font-arabic text-2xl font-semibold text-foreground">{t("wizard.vendors.title")}</h3>
       <p className="mt-2 text-sm text-foreground/70">{t("wizard.vendors.desc")}</p>
@@ -166,6 +181,36 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         {t("wizard.vendors.filterAllInRange")} · {tierLabel}
       </div>
 
+      {/* Missing categories warning — only when user has at least one pick or has scrolled enough */}
+      {missing.length > 0 && pickedCount > 0 && (
+        <div className="mt-5 rounded-2xl border border-amber-500/40 bg-amber-50/60 p-4 dark:bg-amber-950/20">
+          <div className="flex items-start gap-2">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+            <div className="min-w-0 flex-1">
+              <div className="font-arabic text-sm font-semibold text-amber-900 dark:text-amber-200">
+                {t("wizard.vendors.missingTitle")}
+              </div>
+              <p className="mt-1 text-xs text-amber-800/80 dark:text-amber-200/80">
+                {t("wizard.vendors.missingDesc")}
+              </p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {missing.map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => jumpTo(c)}
+                    className="inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-background px-2.5 py-1 text-xs font-medium text-amber-900 hover:bg-amber-100 dark:text-amber-200"
+                  >
+                    {t(`wizard.services.${c}`)}
+                    <ArrowJump />
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="mt-8 space-y-8">
         {selectedServices.map((cat) => {
           const Icon = ICONS[cat];
@@ -173,7 +218,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
           const pick = picks[cat];
           const cap = allocations[cat] ?? 0;
           return (
-            <section key={cat}>
+            <section key={cat} id={`vendor-section-${cat}`} className="scroll-mt-24">
               <div className="mb-3 flex items-center gap-2">
                 <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary/10 text-primary">
                   <Icon className="h-4 w-4" />
@@ -194,8 +239,9 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                     const vendorMatches = v.packages.some(
                       (p) => allowedPackageTiers.includes(p.tier) || (cap > 0 && Number(p.price) <= cap),
                     );
+                    const vendorPicked = pick?.vendorId === v.id;
                     return (
-                      <div key={v.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
+                      <div key={v.id} className={`rounded-2xl border bg-card p-4 shadow-card transition-colors ${vendorPicked ? "border-primary ring-1 ring-primary/30" : "border-border"}`}>
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0 flex-1">
                             <div className="flex flex-wrap items-center gap-1.5">
@@ -211,7 +257,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                             <div className="mt-1">
                               <VendorRatingBadge avg={v.avg_rating} count={v.reviews_count} />
                             </div>
-                            <div className="mt-1.5 flex items-center gap-2 text-[11px] text-foreground/55">
+                            <div className="mt-1.5 flex items-center gap-2 text-[11px] text-foreground/55 tabular-nums">
                               {v.city && <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" />{v.city}</span>}
                               <span>•</span>
                               <span>{t("wizard.vendors.from")} {fmtNumber(Number(v.starting_price))} {t("common.currency")}</span>
@@ -256,7 +302,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                                   <div className="text-[11px] text-foreground/55 truncate">{p.description}</div>
                                 </div>
                                 <div className="ms-3 flex flex-col items-end gap-1">
-                                  <span className="font-arabic text-sm font-semibold text-primary">
+                                  <span className="font-arabic text-sm font-semibold text-primary tabular-nums">
                                     {fmtNumber(Number(p.price))} {t("common.currency")}
                                   </span>
                                   {isPicked && (
@@ -269,6 +315,42 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                             );
                           })}
                         </div>
+
+                        {/* Quick Add/Remove vendor action — picks the cheapest matching package */}
+                        <div className="mt-3 flex justify-end">
+                          {vendorPicked ? (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setPick(cat, null)}
+                              className="rounded-full"
+                            >
+                              {t("wizard.vendors.removeVendor")}
+                            </Button>
+                          ) : (
+                            <Button
+                              type="button"
+                              size="sm"
+                              onClick={() => {
+                                const preferred = v.packages.find(
+                                  (p) => allowedPackageTiers.includes(p.tier) || (cap > 0 && Number(p.price) <= cap),
+                                ) ?? v.packages[0];
+                                if (!preferred) return;
+                                setPick(cat, {
+                                  vendorId: v.id,
+                                  packageId: preferred.id,
+                                  category: cat,
+                                  price: Number(preferred.price),
+                                });
+                              }}
+                              className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                            >
+                              <Plus className="me-1 h-3.5 w-3.5" />
+                              {t("wizard.vendors.addVendor")}
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     );
                   })}
@@ -278,6 +360,32 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
           );
         })}
       </div>
+
+      {/* Sticky Live Total bar */}
+      {selectedServices.length > 0 && (
+        <div className="pointer-events-none sticky bottom-4 z-10 mt-8 flex justify-center">
+          <div className="pointer-events-auto flex w-full max-w-xl flex-wrap items-center justify-between gap-3 rounded-2xl border border-primary/25 bg-card/95 px-4 py-3 shadow-luxury backdrop-blur">
+            <div className="min-w-0">
+              <div className="text-[11px] uppercase tracking-wider text-foreground/55">
+                {t("wizard.vendors.liveTotal")}
+              </div>
+              <div className="font-arabic text-lg font-semibold text-primary tabular-nums">
+                {fmtNumber(liveTotal)} {t("common.currency")}
+              </div>
+            </div>
+            <div className="text-xs text-foreground/70 tabular-nums">
+              {t("wizard.vendors.selectedCount", { count: pickedCount, total: selectedServices.length })}
+            </div>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };
+
+// Tiny inline arrow used inside the missing-categories chips. Inherits color.
+const ArrowJump = () => (
+  <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12L11 6M11 6H6M11 6V11" />
+  </svg>
+);
