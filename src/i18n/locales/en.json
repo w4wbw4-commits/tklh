@@ -197,8 +197,30 @@
     "budget": {
       "title": "Budget",
       "desc": "Pick your preferred way to manage your budget.",
-      "packagesTitle": "Ready packages",
+      "packagesTitle": "Packages",
       "packagesDesc": "Pick from carefully curated packages with smart pricing.",
+      "includesTitle": "What's included",
+      "pkgClassicIncludes": [
+        "Essential venue styling",
+        "Welcome hospitality for guests",
+        "Professional sound system",
+        "2-hour photography coverage"
+      ],
+      "pkgPremiumIncludes": [
+        "Full venue and entrance styling",
+        "Premium varied catering",
+        "Photography and video coverage",
+        "Fresh floral arrangements",
+        "DJ and lighting setup"
+      ],
+      "pkgRoyalIncludes": [
+        "Royal-grade end-to-end styling",
+        "Luxury open buffet",
+        "Cinematic video and full photography",
+        "Exclusive florals and decor",
+        "Full day-of coordination by a dedicated planner",
+        "Luxury bridal car"
+      ],
       "smartTitle": "Smart cost calculator",
       "smartDesc": "Control each service's budget with realistic limits per guest count.",
       "totalSmart": "Total smart budget",

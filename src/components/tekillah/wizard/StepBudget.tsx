@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { PackageCheck, Calculator, Sparkles, AlertTriangle, TrendingUp, Users, Gem } from "lucide-react";
+import { PackageCheck, Calculator, Sparkles, AlertTriangle, TrendingUp, Users, Gem, Check } from "lucide-react";
 import {
   allocationCatalog,
   realisticMinimum,
@@ -313,27 +313,47 @@ export const StepBudget = ({
           >
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
               {[
-                { name: t("wizard.budget.pkgClassic"), price: 45000, tag: t("wizard.budget.tagEconomic") },
-                { name: t("wizard.budget.pkgPremium"), price: 95000, tag: t("wizard.budget.tagPopular") },
-                { name: t("wizard.budget.pkgRoyal"), price: 180000, tag: t("wizard.budget.tagLuxury") },
-              ].map((p, i) => (
-                <motion.div
-                  key={p.name}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                  className={`rounded-2xl border p-5 ${
-                    i === 1 ? "border-primary bg-primary/5" : "border-border bg-card"
-                  }`}
-                >
-                  <div className="text-xs font-medium uppercase tracking-wider text-primary">{p.tag}</div>
-                  <div className="mt-2 font-arabic text-2xl font-semibold text-foreground">{p.name}</div>
-                  <div className="mt-3 font-arabic text-3xl font-semibold text-foreground">
-                    {fmtNumber(p.price)}
-                    <span className="ms-1 text-sm font-normal text-foreground/60">{cur}</span>
-                  </div>
-                </motion.div>
-              ))}
+                { name: t("wizard.budget.pkgClassic"), price: 45000, tag: t("wizard.budget.tagEconomic"), includesKey: "wizard.budget.pkgClassicIncludes" },
+                { name: t("wizard.budget.pkgPremium"), price: 95000, tag: t("wizard.budget.tagPopular"), includesKey: "wizard.budget.pkgPremiumIncludes" },
+                { name: t("wizard.budget.pkgRoyal"), price: 180000, tag: t("wizard.budget.tagLuxury"), includesKey: "wizard.budget.pkgRoyalIncludes" },
+              ].map((p, i) => {
+                const includes = t(p.includesKey, { returnObjects: true }) as string[];
+                const isFeatured = i === 1;
+                return (
+                  <motion.div
+                    key={p.name}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.08 }}
+                    whileHover={{ y: -4 }}
+                    className={`flex flex-col rounded-2xl border p-5 shadow-sm transition-shadow hover:shadow-luxury ${
+                      isFeatured ? "border-primary bg-primary/5" : "border-border bg-card"
+                    }`}
+                  >
+                    <div className="text-xs font-medium uppercase tracking-wider text-primary tabular-nums">{p.tag}</div>
+                    <div className="mt-2 font-arabic text-2xl font-semibold text-foreground">{p.name}</div>
+                    <div className="mt-3 font-arabic text-3xl font-semibold text-foreground tabular-nums">
+                      {fmtNumber(p.price)}
+                      <span className="ms-1 text-sm font-normal text-foreground/60">{cur}</span>
+                    </div>
+                    <div className="mt-5 border-t border-border/60 pt-4">
+                      <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-foreground/60">
+                        {t("wizard.budget.includesTitle")}
+                      </div>
+                      <ul className="space-y-2">
+                        {Array.isArray(includes) && includes.map((item, idx) => (
+                          <li key={idx} className="flex items-start gap-2 text-sm text-foreground/80">
+                            <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/15 text-primary">
+                              <Check className="h-3 w-3" strokeWidth={3} />
+                            </span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
         )}
