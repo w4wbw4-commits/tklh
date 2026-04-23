@@ -321,7 +321,7 @@ export const StepBudget = ({
               ].map((p, i) => {
                 const includes = t(p.includesKey, { returnObjects: true }) as string[];
                 const isFeatured = i === 1;
-                const isSelected = budget === p.price && budgetMode === "smart";
+                const isSelected = budget === p.price;
                 const handlePick = () => onSelectPackage?.(p.price);
                 return (
                   <motion.div
