@@ -200,6 +200,9 @@
       "packagesTitle": "الباقات",
       "packagesDesc": "اختر من باقات منتقاة بعناية بأسعار مدروسة.",
       "includesTitle": "ماذا تشمل الباقة",
+      "choosePackage": "اختر هذه الباقة",
+      "packageSelected": "تم اختيار الباقة",
+      "packageApplied": "تم تطبيق الباقة — اختر مزوّديك الآن",
       "pkgClassicIncludes": [
         "تنسيق أساسي للقاعة",
         "ضيافة أولية للضيوف",

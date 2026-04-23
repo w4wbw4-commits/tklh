@@ -26,12 +26,14 @@ interface Props {
   setAllocation: (key: ServiceKey, value: number) => void;
   enabledServices: Record<ServiceKey, boolean>;
   toggleEnabled: (key: ServiceKey) => void;
+  /** Called when the user picks a ready-made package card. */
+  onSelectPackage?: (price: number) => void;
 }
 
 export const StepBudget = ({
   budgetMode, setBudgetMode, budget, setBudget,
   guests, allocations, setAllocation,
-  enabledServices, toggleEnabled,
+  enabledServices, toggleEnabled, onSelectPackage,
 }: Props) => {
   const { t } = useTranslation();
   const { prices: market } = useMarketPrices();
@@ -319,6 +321,8 @@ export const StepBudget = ({
               ].map((p, i) => {
                 const includes = t(p.includesKey, { returnObjects: true }) as string[];
                 const isFeatured = i === 1;
+                const isSelected = budget === p.price;
+                const handlePick = () => onSelectPackage?.(p.price);
                 return (
                   <motion.div
                     key={p.name}
@@ -326,10 +330,22 @@ export const StepBudget = ({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.08 }}
                     whileHover={{ y: -4 }}
-                    className={`flex flex-col rounded-2xl border p-5 shadow-sm transition-shadow hover:shadow-luxury ${
-                      isFeatured ? "border-primary bg-primary/5" : "border-border bg-card"
+                    onClick={handlePick}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handlePick(); } }}
+                    aria-pressed={isSelected}
+                    className={`group relative flex cursor-pointer flex-col rounded-2xl border p-5 text-start shadow-sm outline-none transition-all hover:shadow-luxury focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                      isSelected
+                        ? "border-primary bg-primary/10 shadow-luxury ring-2 ring-primary/40"
+                        : isFeatured ? "border-primary bg-primary/5" : "border-border bg-card"
                     }`}
                   >
+                    {isSelected && (
+                      <span className="absolute end-3 top-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-soft">
+                        <Check className="h-4 w-4" strokeWidth={3} />
+                      </span>
+                    )}
                     <div className="text-xs font-medium uppercase tracking-wider text-primary tabular-nums">{p.tag}</div>
                     <div className="mt-2 font-arabic text-2xl font-semibold text-foreground">{p.name}</div>
                     <div className="mt-3 font-arabic text-3xl font-semibold text-foreground tabular-nums">
@@ -351,6 +367,24 @@ export const StepBudget = ({
                         ))}
                       </ul>
                     </div>
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); handlePick(); }}
+                      className={`mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full text-sm font-semibold transition-all ${
+                        isSelected
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-secondary text-primary hover:bg-primary hover:text-primary-foreground"
+                      }`}
+                    >
+                      {isSelected ? (
+                        <>
+                          <Check className="h-4 w-4" strokeWidth={3} />
+                          {t("wizard.budget.packageSelected")}
+                        </>
+                      ) : (
+                        t("wizard.budget.choosePackage")
+                      )}
+                    </button>
                   </motion.div>
                 );
               })}

@@ -200,6 +200,9 @@
       "packagesTitle": "Packages",
       "packagesDesc": "Pick from carefully curated packages with smart pricing.",
       "includesTitle": "What's included",
+      "choosePackage": "Choose this package",
+      "packageSelected": "Package selected",
+      "packageApplied": "Package applied — pick your vendors next",
       "pkgClassicIncludes": [
         "Essential venue styling",
         "Welcome hospitality for guests",
