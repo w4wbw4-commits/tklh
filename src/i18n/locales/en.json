@@ -148,7 +148,14 @@
       "pickAtLeastOne": "Please pick at least one vendor before confirming.",
       "matchesBudget": "Matches your budget",
       "outsideBudget": "Above your service budget",
-      "filterAllInRange": "Showing vendors that match your tier"
+      "filterAllInRange": "Showing vendors that match your tier",
+      "addProvider": "Add provider",
+      "remove": "Remove",
+      "runningTotal": "Selected vendors total",
+      "providersCount": "{{count}} providers selected",
+      "missingTitle": "Missing service providers",
+      "missingDesc": "Alert: You previously indicated you need ({{service}}), but you haven't added a provider for this service yet.",
+      "allCovered": "Great — every service you chose has a provider."
     },
     "details": {
       "title": "Event details",
