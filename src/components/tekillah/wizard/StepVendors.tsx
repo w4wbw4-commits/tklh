@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Loader2, Check, Building2, UtensilsCrossed, Camera, Music2, Flower2, Car, MapPin, BadgeCheck, Sparkles } from "lucide-react";
+import { Loader2, Check, Building2, UtensilsCrossed, Camera, Music2, Flower2, Car, MapPin, BadgeCheck, Sparkles, AlertTriangle, Plus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { tierForBudget, type BudgetTier, type ServiceKey } from "./types";
 import { fmtNumber } from "@/i18n/format";
 import { VendorRatingBadge } from "@/components/tekillah/reviews/VendorRatingBadge";
