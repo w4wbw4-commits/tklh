@@ -26,6 +26,7 @@ import { AdminGrandControl } from "@/components/tekillah/admin/AdminGrandControl
 import { AdminLeadsPanel } from "@/components/tekillah/admin/AdminLeadsPanel";
 import { AdminLateAlerts } from "@/components/tekillah/admin/AdminLateAlerts";
 import { AdminIncidentReports } from "@/components/tekillah/admin/AdminIncidentReports";
+import { AdminAddVendorDialog } from "@/components/tekillah/admin/AdminAddVendorDialog";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 
 // Primary admin: phone +966554430196 → synthetic email used by phone-OTP login.
@@ -181,9 +182,13 @@ const Admin = () => {
       </header>
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-          <h1 className="font-arabic text-3xl font-semibold text-foreground sm:text-4xl">{t("admin.title")}</h1>
-          <p className="mt-2 text-foreground/65">{t("admin.subtitle")}</p>
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+          className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="font-arabic text-3xl font-semibold text-foreground sm:text-4xl">{t("admin.title")}</h1>
+            <p className="mt-2 text-foreground/65">{t("admin.subtitle")}</p>
+          </div>
+          {user && <AdminAddVendorDialog adminUserId={user.id} onCreated={load} />}
         </motion.div>
 
         {/* KPIs — always visible above every tab */}
