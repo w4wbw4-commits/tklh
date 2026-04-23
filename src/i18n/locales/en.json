@@ -929,6 +929,23 @@
       "cr": "CR doc",
       "viewAll": "View all"
     },
+    "addVendor": {
+      "cta": "Add vendor manually",
+      "title": "Add a new service provider",
+      "subtitle": "The vendor will be auto-approved and published instantly.",
+      "businessName": "Business name",
+      "businessNamePh": "e.g. Golden Tower Hall",
+      "category": "Service category",
+      "city": "City",
+      "cityPh": "Riyadh, Jeddah...",
+      "phone": "Contact phone",
+      "bio": "Short bio",
+      "bioPh": "Brief description shown to customers…",
+      "pricingTitle": "Pricing & deposit",
+      "previewStart": "Starting from",
+      "save": "Save & publish",
+      "successToast": "Vendor created and published"
+    },
     "verify": {
       "title": "Vendor verification queue",
       "subtitle": "Review vendor documents and new packages before they go live for customers.",
