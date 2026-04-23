@@ -288,36 +288,6 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
               onChange={(e) => setDailyCapacity(Number(e.target.value))} />
             <p className="text-xs text-foreground/55">عدد الحفلات التي يمكنك تغطيتها في نفس اليوم.</p>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="starting-price">السعر المبدئي</Label>
-            <div
-              dir="ltr"
-              className="flex h-10 items-center overflow-hidden rounded-md border border-input bg-background transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/30"
-            >
-              <input
-                id="starting-price"
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                value={String(startingPrice)}
-                onFocus={(e) => e.target.select()}
-                onChange={(e) => {
-                  const cleaned = e.target.value
-                    .replace(/[\u0660-\u0669]/g, (d) => String(d.charCodeAt(0) - 0x0660))
-                    .replace(/[\u06F0-\u06F9]/g, (d) => String(d.charCodeAt(0) - 0x06F0))
-                    .replace(/[^\d]/g, "");
-                  setStartingPrice(cleaned === "" ? 0 : Math.min(10_000_000, parseInt(cleaned, 10)));
-                }}
-                placeholder="0"
-                aria-label="السعر المبدئي بالريال السعودي"
-                className="h-full flex-1 bg-transparent px-3 text-base tabular-nums text-foreground outline-none placeholder:text-muted-foreground md:text-sm"
-              />
-              <span className="select-none border-s border-border bg-secondary/60 px-3 text-sm font-medium tabular-nums text-foreground/70">
-                SAR
-              </span>
-            </div>
-            <p className="text-xs text-foreground/55">يُعرض هذا السعر للعملاء كنقطة بداية لخدماتك.</p>
-          </div>
           <div className="space-y-2 sm:col-span-2">
             <Label>نبذة عن العمل</Label>
             <Textarea value={bio} onChange={(e) => setBio(e.target.value)}
@@ -326,6 +296,66 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           </div>
         </div>
       </div>
+
+      {/* Pricing */}
+      <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
+        <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
+          <Wallet className="h-4 w-4 text-primary" /> {t("vendor.profile.pricingTitle")}
+          <Badge variant="secondary" className="ms-1 text-[10px]">{t("vendor.profile.required") ?? "إلزامي"}</Badge>
+        </div>
+        <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <PriceField
+            id="weekday-price"
+            label={t("vendor.profile.weekdayPrice")}
+            icon={CalendarDays}
+            value={weekdayPrice}
+            onChange={setWeekdayPrice}
+          />
+          <PriceField
+            id="weekend-price"
+            label={t("vendor.profile.weekendPrice")}
+            icon={CalendarRange}
+            value={weekendPrice}
+            onChange={setWeekendPrice}
+          />
+          <div className="sm:col-span-2">
+            <PriceField
+              id="min-deposit"
+              label={t("vendor.profile.minDeposit")}
+              icon={Wallet}
+              value={minDeposit}
+              onChange={setMinDeposit}
+              hint={t("vendor.profile.depositHint")}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Venue capacity — halls only */}
+      {isVenue && (
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
+          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
+            <Users className="h-4 w-4 text-primary" /> {t("vendor.profile.venueCapacityTitle")}
+          </div>
+          <p className="mb-5 text-xs text-foreground/60">{t("vendor.profile.venueCapacityHint")}</p>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <CapacityField
+              id="men-capacity"
+              label={t("vendor.profile.menCapacity")}
+              icon={Users}
+              value={menCapacity}
+              onChange={setMenCapacity}
+            />
+            <CapacityField
+              id="women-capacity"
+              label={t("vendor.profile.womenCapacity")}
+              icon={Users2}
+              value={womenCapacity}
+              onChange={setWomenCapacity}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Banking — IBAN */}
       <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
