@@ -313,6 +313,20 @@ export const PlanningWizard = () => {
                   guests={guests}
                   allocations={allocations} setAllocation={setAllocation}
                   enabledServices={enabledServices} toggleEnabled={toggleEnabled}
+                  onSelectPackage={(pkgPrice) => {
+                    // Apply package price as budget + redistribute to enabled
+                    // services using the catalog percentages, then advance.
+                    setBudget(pkgPrice);
+                    setBudgetMode("smart");
+                    const next = {} as Record<ServiceKey, number>;
+                    allocationCatalog.forEach((item) => {
+                      const suggested = Math.round((pkgPrice * item.pct) / 100);
+                      next[item.key] = Math.max(suggested, realisticMinimum(item, guests));
+                    });
+                    setAllocations(next);
+                    toast.success(t("wizard.budget.packageApplied"));
+                    setStep(4);
+                  }}
                 />
               )}
               {step === 4 && (
