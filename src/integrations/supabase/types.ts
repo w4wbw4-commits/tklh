@@ -934,6 +934,8 @@ export type Database = {
           created_at: string
           daily_capacity: number
           google_maps_url: string | null
+          hidden: boolean
+          hidden_until: string | null
           iban: string | null
           iban_certificate_url: string | null
           id: string
@@ -963,6 +965,8 @@ export type Database = {
           created_at?: string
           daily_capacity?: number
           google_maps_url?: string | null
+          hidden?: boolean
+          hidden_until?: string | null
           iban?: string | null
           iban_certificate_url?: string | null
           id?: string
@@ -992,6 +996,8 @@ export type Database = {
           created_at?: string
           daily_capacity?: number
           google_maps_url?: string | null
+          hidden?: boolean
+          hidden_until?: string | null
           iban?: string | null
           iban_certificate_url?: string | null
           id?: string
