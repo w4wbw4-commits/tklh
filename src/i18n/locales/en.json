@@ -120,7 +120,7 @@
     "step2": "Choose services",
     "step3": "Describe your vision",
     "step4": "Budget",
-    "step5": "Custom Coordination",
+    "step5": "Vendors",
     "finish": "Finish planning",
     "confirmBooking": "Confirm booking",
     "eventCreated": "Event created successfully",
@@ -139,8 +139,8 @@
       "finalCaption": "Your night deserves to be remembered"
     },
     "vendors": {
-      "title": "Custom Coordination for Your Event",
-      "desc": "Pick the right vendor for each category you requested. We'll reserve the date and notify them instantly.",
+      "title": "Pick your trusted vendors",
+      "desc": "Choose a package from each service. We will reserve the date and notify the vendor.",
       "selected": "Selected",
       "from": "From",
       "empty": "No vendors available for this service yet.",
@@ -148,14 +148,7 @@
       "pickAtLeastOne": "Please pick at least one vendor before confirming.",
       "matchesBudget": "Matches your budget",
       "outsideBudget": "Above your service budget",
-      "filterAllInRange": "Showing vendors that match your tier",
-      "addVendor": "Add Vendor",
-      "removeVendor": "Remove Vendor",
-      "liveTotal": "Live Total",
-      "selectedCount": "{{count}} of {{total}} categories selected",
-      "missingTitle": "Categories without a chosen vendor",
-      "missingDesc": "You previously selected these categories, but haven't picked a vendor yet:",
-      "jumpToCategory": "Jump to category"
+      "filterAllInRange": "Showing vendors that match your tier"
     },
     "details": {
       "title": "Event details",
