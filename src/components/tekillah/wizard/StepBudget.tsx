@@ -26,6 +26,8 @@ interface Props {
   setAllocation: (key: ServiceKey, value: number) => void;
   enabledServices: Record<ServiceKey, boolean>;
   toggleEnabled: (key: ServiceKey) => void;
+  /** Called when the user picks a ready-made package card. */
+  onSelectPackage?: (price: number) => void;
 }
 
 export const StepBudget = ({
