@@ -347,6 +347,24 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                         </div>
 
                         <div className="mt-3 grid grid-cols-1 gap-2">
+                          {v.packages.length === 0 && (
+                            // Vendor approved but hasn't published packages yet — show
+                            // a non-clickable "Price upon request" tile so the listing
+                            // never feels broken right after approval.
+                            <div className="flex items-center justify-between rounded-xl border border-dashed border-primary/30 bg-primary/[0.03] p-3 text-start">
+                              <div className="min-w-0">
+                                <div className="font-arabic text-sm font-medium text-foreground">
+                                  {t("wizard.vendors.priceOnRequest")}
+                                </div>
+                                <div className="text-[11px] text-foreground/55">
+                                  {t("wizard.vendors.priceOnRequestDesc")}
+                                </div>
+                              </div>
+                              <span className="ms-3 inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                                {t("wizard.vendors.contactSoon")}
+                              </span>
+                            </div>
+                          )}
                           {v.packages.map((p) => {
                             const isPicked = pick?.vendorId === v.id && pick?.packageId === p.id;
                             const packageMatches =
