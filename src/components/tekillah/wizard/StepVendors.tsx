@@ -308,11 +308,23 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                             <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] tabular-nums text-foreground/55" dir="ltr">
                               {v.city && <span className="inline-flex items-center gap-1 font-arabic"><MapPin className="h-3 w-3" />{v.city}</span>}
                               {v.city && <span>•</span>}
-                              <span className="font-arabic">
-                                <span className="text-foreground/55">{t("wizard.vendors.from")}</span>{" "}
-                                <span className="font-semibold text-primary">{fmtNumber(Number(v.starting_price))}</span>{" "}
-                                {t("common.currency")}
-                              </span>
+                              {(() => {
+                                // Fallback chain: starting_price → weekday_price → weekend_price.
+                                // If everything is missing/zero we show "Price upon request" so
+                                // newly-approved vendors without packages still look professional.
+                                const priceFrom = Number(v.starting_price) || Number(v.weekday_price) || Number(v.weekend_price) || 0;
+                                return priceFrom > 0 ? (
+                                  <span className="font-arabic">
+                                    <span className="text-foreground/55">{t("wizard.vendors.from")}</span>{" "}
+                                    <span className="font-semibold text-primary">{fmtNumber(priceFrom)}</span>{" "}
+                                    {t("common.currency")}
+                                  </span>
+                                ) : (
+                                  <span className="font-arabic font-medium text-primary">
+                                    {t("wizard.vendors.priceOnRequest")}
+                                  </span>
+                                );
+                              })()}
                               {cat === "hall" && (Number(v.men_capacity ?? 0) > 0 || Number(v.women_capacity ?? 0) > 0) && (
                                 <>
                                   <span>•</span>
