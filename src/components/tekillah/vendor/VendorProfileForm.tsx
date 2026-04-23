@@ -146,7 +146,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
     }
     const parsed = vendorSchema.safeParse({
       business_name: businessName, category, bio, city, phone,
-      daily_capacity: Number(dailyCapacity), starting_price: Number(startingPrice),
+      daily_capacity: Number(dailyCapacity),
+      weekday_price: Number(weekdayPrice),
+      weekend_price: Number(weekendPrice),
+      min_deposit: Number(minDeposit),
+      men_capacity: category === "hall" ? (menCapacity === "" ? null : Number(menCapacity)) : null,
+      women_capacity: category === "hall" ? (womenCapacity === "" ? null : Number(womenCapacity)) : null,
       iban: iban.toUpperCase(), google_maps_url: mapsUrl,
     });
     if (!parsed.success) {
@@ -154,6 +159,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       return;
     }
     setSaving(true);
+    const startingPrice = Math.min(Number(weekdayPrice), Number(weekendPrice));
     const payload = {
       user_id: userId,
       business_name: businessName,
@@ -162,7 +168,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       city: city || null,
       phone: phone || null,
       daily_capacity: Number(dailyCapacity),
-      starting_price: Number(startingPrice),
+      starting_price: startingPrice,
+      weekday_price: Number(weekdayPrice),
+      weekend_price: Number(weekendPrice),
+      min_deposit: Number(minDeposit),
+      men_capacity: category === "hall" && menCapacity !== "" ? Number(menCapacity) : null,
+      women_capacity: category === "hall" && womenCapacity !== "" ? Number(womenCapacity) : null,
       portfolio_urls: portfolioUrls,
       commercial_register_url: docUrl,
       iban: iban.toUpperCase(),
