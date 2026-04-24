@@ -381,22 +381,41 @@ export const PlanningWizard = () => {
                   allocations={allocations} setAllocation={setAllocation}
                   enabledServices={enabledServices} toggleEnabled={toggleEnabled}
                   onSelectPackage={(pkgPrice) => {
-                    // Apply package price as budget + redistribute to enabled
-                    // services using the catalog percentages, then advance.
-                    setBudget(pkgPrice);
-                    setBudgetMode("smart");
-                    const next = {} as Record<ServiceKey, number>;
-                    allocationCatalog.forEach((item) => {
-                      const suggested = Math.round((pkgPrice * item.pct) / 100);
-                      next[item.key] = Math.max(suggested, realisticMinimum(item, guests));
-                    });
-                    setAllocations(next);
-                    toast.success(t("wizard.budget.packageApplied"));
-                    setStep(4);
+                    // Look up the picked package by price (matches the catalog
+                    // rendered in StepBudget). Fast-track flow → skip vendor step.
+                    const pkg = PACKAGE_CATALOG.find((p) => p.price === pkgPrice);
+                    if (pkg) {
+                      setPackageSelection({
+                        key: pkg.key,
+                        name: t(pkg.nameKey),
+                        price: pkg.price,
+                        includesKey: pkg.includesKey,
+                      });
+                      setBudget(pkg.price);
+                      setBudgetMode("packages");
+                      // Clear any previously-selected vendors — fast track
+                      // is curated by Tekillah, not picked manually.
+                      setPicks({});
+                      toast.success(t("wizard.budget.packageApplied"));
+                      setStep(4);
+                    }
                   }}
                 />
               )}
-              {step === 4 && (
+              {step === 4 && isFastTrack && packageSelection && (
+                <StepPackageDetail
+                  selection={packageSelection}
+                  submitting={submitting}
+                  onConfirm={handleFinish}
+                  onChangePackage={() => {
+                    // Drop the package selection and send the user back to the
+                    // budget step where they can repick or switch to smart mode.
+                    setPackageSelection(null);
+                    setStep(3);
+                  }}
+                />
+              )}
+              {step === 4 && !isFastTrack && (
                 <StepVendors
                   selectedServices={selected as ServiceKey[]}
                   picks={picks}
@@ -425,6 +444,9 @@ export const PlanningWizard = () => {
                   {t("common.next")}
                   <NextIcon className="ms-2 h-4 w-4" />
                 </Button>
+              ) : isFastTrack ? (
+                // Fast-track step renders its own Confirm CTA inside the card.
+                <span className="text-xs text-foreground/60">{t("wizard.packageDetail.footerHint")}</span>
               ) : (
                 <Button onClick={handleFinish} disabled={submitting}
                   className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
