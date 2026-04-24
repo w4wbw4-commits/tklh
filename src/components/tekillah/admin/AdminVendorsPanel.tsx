@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Loader2, Eye, EyeOff, CalendarIcon, ShieldCheck, Briefcase } from "lucide-react";
+import { Loader2, Eye, EyeOff, CalendarIcon, ShieldCheck, Briefcase, Pencil } from "lucide-react";
 import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,7 @@ import { fmtNumber } from "@/i18n/format";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { EmptyState } from "@/components/tekillah/EmptyState";
+import { AdminEditVendorDialog } from "./AdminEditVendorDialog";
 
 type Category = "hall" | "catering" | "photography" | "dj" | "decor" | "cars";
 const CATEGORIES: Category[] = ["hall", "catering", "photography", "dj", "decor", "cars"];
@@ -49,6 +50,7 @@ export const AdminVendorsPanel = () => {
   const [vendors, setVendors] = useState<VendorRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCat, setActiveCat] = useState<Category>("hall");
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -177,6 +179,15 @@ export const AdminVendorsPanel = () => {
                       </div>
 
                       <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setEditingId(v.id)}
+                          className="rounded-full"
+                        >
+                          <Pencil className="me-1.5 h-3.5 w-3.5" />
+                          {t("admin.vendors.edit")}
+                        </Button>
                         {hidden ? (
                           <Button
                             size="sm"
@@ -200,6 +211,13 @@ export const AdminVendorsPanel = () => {
           </TabsContent>
         ))}
       </Tabs>
+
+      <AdminEditVendorDialog
+        open={!!editingId}
+        onOpenChange={(o) => { if (!o) setEditingId(null); }}
+        vendorId={editingId}
+        onSaved={load}
+      />
     </section>
   );
 };

@@ -969,7 +969,24 @@
         "3m": "3 months"
       },
       "confirmHide": "Confirm hide",
-      "visibilityUpdated": "Visibility updated"
+      "visibilityUpdated": "Visibility updated",
+      "edit": "Edit service",
+      "editDialogTitle": "Edit service details",
+      "editDialogDesc": "Update name, description, prices and images. Changes go live instantly.",
+      "businessName": "Business name",
+      "bio": "Description",
+      "city": "City",
+      "phone": "Phone",
+      "weekdayPrice": "Weekday price (SAR)",
+      "weekendPrice": "Weekend price (SAR)",
+      "minDeposit": "Minimum deposit (SAR)",
+      "menCapacity": "Men capacity",
+      "womenCapacity": "Women capacity",
+      "portfolioImages": "Portfolio images",
+      "addImage": "Add image",
+      "removeImage": "Remove",
+      "saved": "Changes saved",
+      "saveChanges": "Save changes"
     },
     "late": {
       "title": "Live event monitoring — late alerts",
@@ -1168,7 +1185,13 @@
         "deleted": "Package deleted",
         "tooManyImages": "You can upload up to 12 images",
         "videoExists": "Only one video allowed — remove the existing one first",
-        "fileTooLarge": "File too large (max 25 MB)"
+        "fileTooLarge": "File too large (max 25 MB)",
+        "slots": "Slots (vendors needed)",
+        "slotsHint": "Define which service categories and how many vendors of each (e.g. 1 hall + 1 photographer).",
+        "addSlot": "Add slot",
+        "eligibleVendors": "Eligible vendors for this package",
+        "eligibleVendorsHint": "Pick the vendors the system can auto-assign when this package is booked.",
+        "noVendors": "No approved vendors yet."
       }
     }
   },

@@ -22,14 +22,26 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Loader2, Plus, X, Image as ImageIcon, Video, Trash2, Star } from "lucide-react";
+import { Loader2, Plus, X, Image as ImageIcon, Video, Trash2, Star, Layers, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { fmtNumber } from "@/i18n/format";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
 
 const BUCKET = "platform-package-media";
 const MAX_IMAGES = 12;
 const MAX_FILE_BYTES = 25 * 1024 * 1024;
+
+export type SlotCategory = "hall" | "catering" | "photography" | "dj" | "decor" | "cars";
+export const SLOT_CATEGORIES: SlotCategory[] = ["hall", "catering", "photography", "dj", "decor", "cars"];
+
+export interface PackageSlot {
+  category: SlotCategory;
+  count: number;
+}
 
 export interface PlatformPackageMedia {
   url: string;
@@ -47,6 +59,15 @@ export interface PlatformPackageRow {
   published: boolean;
   sort_order: number;
   created_at: string;
+  slots: PackageSlot[];
+  eligible_vendor_ids: string[];
+}
+
+interface EligibleVendor {
+  id: string;
+  business_name: string;
+  category: SlotCategory;
+  city: string | null;
 }
 
 interface Props {
@@ -71,10 +92,27 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
   const [media, setMedia] = useState<PlatformPackageMedia[]>([]);
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [published, setPublished] = useState(true);
+  const [slots, setSlots] = useState<PackageSlot[]>([]);
+  const [eligibleVendorIds, setEligibleVendorIds] = useState<string[]>([]);
+  const [vendorPool, setVendorPool] = useState<EligibleVendor[]>([]);
 
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [deleting, setDeleting] = useState(false);
+
+  // Load approved vendor pool for eligibility selection
+  useEffect(() => {
+    if (!open) return;
+    (async () => {
+      const { data } = await supabase
+        .from("vendors")
+        .select("id, business_name, category, city")
+        .eq("approval_status", "approved")
+        .eq("active", true)
+        .order("business_name", { ascending: true });
+      setVendorPool((data ?? []) as EligibleVendor[]);
+    })();
+  }, [open]);
 
   // Hydrate / reset whenever the dialog opens with a new package
   useEffect(() => {
@@ -87,6 +125,8 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
     setMedia(pkg?.media ?? []);
     setThumbnail(pkg?.thumbnail_url ?? null);
     setPublished(pkg?.published ?? true);
+    setSlots(pkg?.slots ?? []);
+    setEligibleVendorIds(pkg?.eligible_vendor_ids ?? []);
   }, [open, pkg]);
 
   const addInclude = () => {
@@ -175,6 +215,11 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
     }
 
     setSaving(true);
+    // Normalize slots: drop empty/zero rows
+    const cleanSlots = slots
+      .filter((s) => s.category && s.count > 0)
+      .map((s) => ({ category: s.category, count: Math.max(1, Math.floor(s.count)) }));
+
     const payload = {
       name: name.trim(),
       description: description.trim() || null,
@@ -184,6 +229,8 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
       media: media as unknown as import("@/integrations/supabase/types").Json,
       thumbnail_url: thumbnail ?? media.find((m) => m.type === "image")?.url ?? null,
       published,
+      slots: cleanSlots as unknown as import("@/integrations/supabase/types").Json,
+      eligible_vendor_ids: eligibleVendorIds,
     };
 
     const { error } = isEdit
@@ -369,6 +416,118 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
                         >
                           <Trash2 className="h-3.5 w-3.5" />
                         </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+
+          {/* Slots */}
+          <div className="space-y-2">
+            <Label className="font-arabic flex items-center gap-2">
+              <Layers className="h-4 w-4 text-primary" />
+              {t("admin.packages.form.slots")}
+            </Label>
+            <p className="text-xs text-foreground/60 font-arabic">{t("admin.packages.form.slotsHint")}</p>
+            <div className="space-y-2">
+              {slots.map((s, idx) => (
+                <div key={idx} className="flex items-center gap-2 rounded-xl border border-border bg-background p-2">
+                  <Select
+                    value={s.category}
+                    onValueChange={(v) =>
+                      setSlots((arr) => arr.map((x, i) => (i === idx ? { ...x, category: v as SlotCategory } : x)))
+                    }
+                  >
+                    <SelectTrigger className="flex-1 font-arabic"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {SLOT_CATEGORIES.map((c) => (
+                        <SelectItem key={c} value={c} className="font-arabic">{t(`categories.${c}`)}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Input
+                    type="number"
+                    min={1}
+                    max={20}
+                    value={s.count}
+                    onChange={(e) =>
+                      setSlots((arr) => arr.map((x, i) => (i === idx ? { ...x, count: Number(e.target.value) || 1 } : x)))
+                    }
+                    className="w-20 tabular-nums"
+                    dir="ltr"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSlots((arr) => arr.filter((_, i) => i !== idx))}
+                    className="text-destructive hover:bg-destructive/10"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={() => setSlots((arr) => [...arr, { category: "hall", count: 1 }])}
+                className="rounded-full"
+              >
+                <Plus className="me-1 h-4 w-4" />
+                <span className="font-arabic">{t("admin.packages.form.addSlot")}</span>
+              </Button>
+            </div>
+          </div>
+
+          {/* Eligible vendors */}
+          <div className="space-y-2">
+            <Label className="font-arabic flex items-center gap-2">
+              <Users className="h-4 w-4 text-primary" />
+              {t("admin.packages.form.eligibleVendors")}
+              {eligibleVendorIds.length > 0 && (
+                <Badge variant="secondary" className="tabular-nums">{fmtNumber(eligibleVendorIds.length)}</Badge>
+              )}
+            </Label>
+            <p className="text-xs text-foreground/60 font-arabic">{t("admin.packages.form.eligibleVendorsHint")}</p>
+            {vendorPool.length === 0 ? (
+              <div className="rounded-xl border border-dashed border-border bg-secondary/30 p-4 text-center text-xs text-foreground/55 font-arabic">
+                {t("admin.packages.form.noVendors")}
+              </div>
+            ) : (
+              <div className="max-h-64 overflow-y-auto rounded-xl border border-border bg-background p-2">
+                {SLOT_CATEGORIES.map((cat) => {
+                  const vendorsInCat = vendorPool.filter((v) => v.category === cat);
+                  if (vendorsInCat.length === 0) return null;
+                  return (
+                    <div key={cat} className="mb-2">
+                      <div className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-foreground/55 font-arabic">
+                        {t(`categories.${cat}`)}
+                      </div>
+                      <div className="space-y-1">
+                        {vendorsInCat.map((v) => {
+                          const checked = eligibleVendorIds.includes(v.id);
+                          return (
+                            <label
+                              key={v.id}
+                              className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-secondary/50"
+                            >
+                              <Checkbox
+                                checked={checked}
+                                onCheckedChange={(c) =>
+                                  setEligibleVendorIds((ids) =>
+                                    c ? [...ids, v.id] : ids.filter((x) => x !== v.id),
+                                  )
+                                }
+                              />
+                              <span className="font-arabic text-sm text-foreground">{v.business_name}</span>
+                              {v.city && <span className="text-[11px] text-foreground/50">· {v.city}</span>}
+                            </label>
+                          );
+                        })}
                       </div>
                     </div>
                   );

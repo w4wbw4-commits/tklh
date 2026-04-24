@@ -614,12 +614,14 @@ export type Database = {
           created_at: string
           created_by: string | null
           description: string | null
+          eligible_vendor_ids: string[]
           id: string
           includes: string[]
           media: Json
           name: string
           price: number
           published: boolean
+          slots: Json
           sort_order: number
           thumbnail_url: string | null
           updated_at: string
@@ -628,12 +630,14 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          eligible_vendor_ids?: string[]
           id?: string
           includes?: string[]
           media?: Json
           name: string
           price?: number
           published?: boolean
+          slots?: Json
           sort_order?: number
           thumbnail_url?: string | null
           updated_at?: string
@@ -642,12 +646,14 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          eligible_vendor_ids?: string[]
           id?: string
           includes?: string[]
           media?: Json
           name?: string
           price?: number
           published?: boolean
+          slots?: Json
           sort_order?: number
           thumbnail_url?: string | null
           updated_at?: string
