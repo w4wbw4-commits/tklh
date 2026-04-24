@@ -5,7 +5,7 @@
 // presentation/pricing data (no banking or legal docs).
 // ---------------------------------------------------------------------------
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import {
@@ -15,8 +15,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Loader2, Save, ImagePlus, X } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Loader2, Save, ImagePlus, X, Film, Link2, Trash2, Play } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { fmtNumber } from "@/i18n/format";
 
 interface VendorEditRow {
   id: string;
