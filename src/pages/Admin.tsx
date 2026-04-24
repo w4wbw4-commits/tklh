@@ -163,6 +163,7 @@ const Admin = () => {
   const vatCollected   = payments.reduce((s, p) => s + Number(p.vat_amount ?? 0), 0);     // 15% VAT line item
   const vendorPayouts  = payments.reduce((s, p) => s + Number(p.vendor_net ?? 0), 0);     // net to vendors
   const totalBookings  = bookings.length;
+  const pendingCount   = bookings.filter((b) => b.status === "pending").length;
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -214,6 +215,14 @@ const Admin = () => {
             <TabsList className="rounded-2xl bg-card p-1 shadow-card flex-wrap h-auto">
               <TabsTrigger value="verification" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <ShieldCheck className="h-4 w-4" /> {t("admin.tabVerification")}
+              </TabsTrigger>
+              <TabsTrigger value="pending" className="rounded-xl gap-2 data-[state=active]:bg-amber-500 data-[state=active]:text-white">
+                <Hourglass className="h-4 w-4" /> {t("admin.tabPending")}
+                {pendingCount > 0 && (
+                  <Badge className="bg-amber-500/20 text-amber-700 ms-1 px-1.5 py-0 text-[10px]">
+                    {fmtNumber(pendingCount)}
+                  </Badge>
+                )}
               </TabsTrigger>
               <TabsTrigger value="vendors" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <Briefcase className="h-4 w-4" /> {t("admin.tabVendors")}
