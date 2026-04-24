@@ -141,6 +141,7 @@ export const PlanningWizard = () => {
     if (snap.allocations) setAllocations(snap.allocations);
     if (snap.enabledServices) setEnabledServices(snap.enabledServices);
     if (snap.picks) setPicks(snap.picks);
+    if (snap.packageSelection) setPackageSelection(snap.packageSelection);
     // Honour an explicit `?resume=1&step=N` marker from the auth redirect,
     // otherwise land them on the last meaningful step so they don't redo work.
     const params = new URLSearchParams(window.location.search);
@@ -158,7 +159,8 @@ export const PlanningWizard = () => {
       url.searchParams.delete("resume");
       url.searchParams.delete("step");
       window.history.replaceState({}, "", url.pathname + url.search + url.hash);
-    } else if (Object.keys(snap.picks ?? {}).length > 0) setStep(4);
+    } else if (snap.packageSelection) setStep(4);
+    else if (Object.keys(snap.picks ?? {}).length > 0) setStep(4);
     else if (snap.budget) setStep(3);
     else if (snap.selected?.length) setStep(1);
   }, []);
@@ -171,8 +173,9 @@ export const PlanningWizard = () => {
       selected, vision, selectedChips,
       budgetMode, budget,
       allocations, enabledServices, picks,
+      packageSelection,
     });
-  }, [city, eventType, date, men, women, selected, vision, selectedChips, budgetMode, budget, allocations, enabledServices, picks]);
+  }, [city, eventType, date, men, women, selected, vision, selectedChips, budgetMode, budget, allocations, enabledServices, picks, packageSelection]);
 
   const next = () => setStep((s) => Math.min(s + 1, 4));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
