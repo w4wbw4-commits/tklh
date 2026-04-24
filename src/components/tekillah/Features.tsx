@@ -69,22 +69,6 @@ export const Features = () => {
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-14 flex justify-center"
-        >
-          <Button
-            size="lg"
-            onClick={handleStartPlanning}
-            className="font-arabic h-12 rounded-full px-10 text-base shadow-luxury"
-          >
-            {t("features.cta")}
-          </Button>
-        </motion.div>
       </div>
     </section>
   );
