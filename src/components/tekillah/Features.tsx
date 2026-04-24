@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { Calculator, ShieldCheck, Zap, Gem } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
 
 export const Features = () => {
   const { t } = useTranslation();
@@ -11,11 +10,6 @@ export const Features = () => {
     { icon: Zap, key: "budget" },
     { icon: Gem, key: "live" },
   ] as const;
-
-  const handleStartPlanning = () => {
-    const el = document.getElementById("wizard");
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
 
   return (
     <section id="features" className="relative py-24 sm:py-32" dir="rtl">
