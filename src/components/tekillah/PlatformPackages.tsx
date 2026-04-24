@@ -112,9 +112,12 @@ export const PlatformPackages = () => {
                   </div>
                 )}
                 <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute start-3 top-3 inline-flex items-center gap-1 rounded-full bg-primary/90 px-2.5 py-1 text-[11px] font-semibold text-primary-foreground backdrop-blur">
+                <div
+                  className="absolute start-3 top-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold text-primary-foreground shadow-luxury backdrop-blur"
+                  style={{ background: "var(--gradient-olive)" }}
+                >
                   <Sparkles className="h-3 w-3" />
-                  <span className="font-arabic">{t("platformPackages.sectionKicker")}</span>
+                  <span className="font-arabic tracking-wide">{t("platformPackages.cardBadge")}</span>
                 </div>
               </div>
 
