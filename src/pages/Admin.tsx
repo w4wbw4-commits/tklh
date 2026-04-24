@@ -257,6 +257,10 @@ const Admin = () => {
               <AdminVerificationQueue />
             </TabsContent>
 
+            <TabsContent value="pending" className="mt-6">
+              <AdminPendingBookings />
+            </TabsContent>
+
             <TabsContent value="vendors" className="mt-6">
               <AdminVendorsPanel />
             </TabsContent>
