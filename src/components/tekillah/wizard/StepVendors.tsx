@@ -499,21 +499,28 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                           {/* Package picker / Add provider buttons */}
                           <div className="mt-3 grid grid-cols-1 gap-2">
                             {v.packages.length === 0 && (
-                              // Vendor approved but hasn't published packages yet — keep the
-                              // tile so the listing never feels broken right after approval.
-                              <div className="flex items-center justify-between rounded-xl border border-dashed border-primary/30 bg-primary/[0.03] p-3 text-start">
-                                <div className="min-w-0">
-                                  <div className="font-arabic text-sm font-medium text-foreground">
-                                    {t("wizard.vendors.priceOnRequest")}
-                                  </div>
-                                  <div className="text-[11px] text-foreground/55">
-                                    {t("wizard.vendors.priceOnRequestDesc")}
-                                  </div>
-                                </div>
-                                <span className="ms-3 inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
-                                  {t("wizard.vendors.contactSoon")}
-                                </span>
-                              </div>
+                              // Vendor approved but hasn't published packages yet —
+                              // surface a one-click "Book Now" CTA that picks this
+                              // vendor (using their weekday price as the indicative
+                              // amount, falling back to 0) and advances the wizard.
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const indicativePrice = weekday || weekend || 0;
+                                  const newPick: VendorPick = {
+                                    vendorId: v.id,
+                                    packageId: `custom:${v.id}`,
+                                    category: cat,
+                                    price: indicativePrice,
+                                  };
+                                  setPick(cat, newPick);
+                                  onBookNow?.(newPick);
+                                }}
+                                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-arabic text-sm font-semibold text-primary-foreground shadow-soft transition hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                              >
+                                <Check className="h-4 w-4" />
+                                {t("wizard.vendors.bookNow")}
+                              </button>
                             )}
                             {v.packages.map((p) => {
                               const isPicked = pick?.vendorId === v.id && pick?.packageId === p.id;
