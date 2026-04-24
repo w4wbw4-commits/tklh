@@ -27,6 +27,7 @@ export type Database = {
           notes: string | null
           package_id: string | null
           paid_amount: number
+          platform_package_id: string | null
           status: Database["public"]["Enums"]["booking_status"]
           total_price: number | null
           updated_at: string
@@ -44,6 +45,7 @@ export type Database = {
           notes?: string | null
           package_id?: string | null
           paid_amount?: number
+          platform_package_id?: string | null
           status?: Database["public"]["Enums"]["booking_status"]
           total_price?: number | null
           updated_at?: string
@@ -61,6 +63,7 @@ export type Database = {
           notes?: string | null
           package_id?: string | null
           paid_amount?: number
+          platform_package_id?: string | null
           status?: Database["public"]["Enums"]["booking_status"]
           total_price?: number | null
           updated_at?: string
@@ -79,6 +82,13 @@ export type Database = {
             columns: ["package_id"]
             isOneToOne: false
             referencedRelation: "packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_platform_package_id_fkey"
+            columns: ["platform_package_id"]
+            isOneToOne: false
+            referencedRelation: "platform_packages"
             referencedColumns: ["id"]
           },
           {
@@ -259,6 +269,7 @@ export type Database = {
           guest_count: number | null
           id: string
           notes: string | null
+          platform_package_id: string | null
           theme: string | null
           title: string
           total_budget: number | null
@@ -272,6 +283,7 @@ export type Database = {
           guest_count?: number | null
           id?: string
           notes?: string | null
+          platform_package_id?: string | null
           theme?: string | null
           title?: string
           total_budget?: number | null
@@ -285,12 +297,21 @@ export type Database = {
           guest_count?: number | null
           id?: string
           notes?: string | null
+          platform_package_id?: string | null
           theme?: string | null
           title?: string
           total_budget?: number | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "events_platform_package_id_fkey"
+            columns: ["platform_package_id"]
+            isOneToOne: false
+            referencedRelation: "platform_packages"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       guests: {
         Row: {
