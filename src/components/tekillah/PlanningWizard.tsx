@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check, ArrowLeft, ArrowRight, Loader2, Sparkles } from "lucide-react";
+import { Check, ArrowLeft, ArrowRight, Loader2, Sparkles, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { StepDetails } from "./wizard/StepDetails";
@@ -9,6 +9,7 @@ import { StepServices } from "./wizard/StepServices";
 import { StepVision } from "./wizard/StepVision";
 import { StepBudget } from "./wizard/StepBudget";
 import { StepVendors, type VendorPick } from "./wizard/StepVendors";
+import { StepPackageDetail } from "./wizard/StepPackageDetail";
 import {
   allocationCatalog,
   realisticMinimum,
@@ -21,8 +22,19 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { WhatsAppCTA } from "./WhatsAppCTA";
 import { upsertCustomerLead } from "@/lib/leads";
-import { clearPendingPlan, loadPendingPlan, savePendingPlan } from "@/lib/pendingPlan";
+import { clearPendingPlan, loadPendingPlan, savePendingPlan, type PackageSelection } from "@/lib/pendingPlan";
 import { finalisePlan } from "@/lib/finalisePlan";
+
+// ---------------------------------------------------------------------------
+// Catalog mirroring the cards rendered in StepBudget — kept in sync manually
+// because the prices/translation keys live there. When a card is picked we
+// look up the full record by key to drive the fast-track detail page.
+// ---------------------------------------------------------------------------
+const PACKAGE_CATALOG: Array<Omit<PackageSelection, "name"> & { nameKey: string }> = [
+  { key: "classic", nameKey: "wizard.budget.pkgClassic", price: 45000, includesKey: "wizard.budget.pkgClassicIncludes" },
+  { key: "premium", nameKey: "wizard.budget.pkgPremium", price: 95000, includesKey: "wizard.budget.pkgPremiumIncludes" },
+  { key: "royal",   nameKey: "wizard.budget.pkgRoyal",   price: 180000, includesKey: "wizard.budget.pkgRoyalIncludes" },
+];
 
 export const PlanningWizard = () => {
   const { t, i18n } = useTranslation();
