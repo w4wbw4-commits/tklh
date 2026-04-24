@@ -55,7 +55,8 @@ export interface VendorOption {
 
 export interface VendorPick {
   vendorId: string;
-  packageId: string;
+  /** Null for "Book Now" (no package) — finalisePlan stores it as null. */
+  packageId: string | null;
   category: ServiceKey;
   price: number;
 }
@@ -509,7 +510,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                                   const indicativePrice = weekday || weekend || 0;
                                   const newPick: VendorPick = {
                                     vendorId: v.id,
-                                    packageId: `custom:${v.id}`,
+                                    packageId: null,
                                     category: cat,
                                     price: indicativePrice,
                                   };

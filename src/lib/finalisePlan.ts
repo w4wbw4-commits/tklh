@@ -56,7 +56,8 @@ export const finalisePlan = async ({
   const bookingsToInsert = pickList.map((p) => ({
     customer_id: userId,
     vendor_id: p.vendorId,
-    package_id: p.packageId,
+    // packageId is null for "Book Now" custom-quote flow.
+    package_id: p.packageId ?? null,
     event_id: ev.id,
     event_date: plan.date,
     guest_count: guests,
