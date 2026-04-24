@@ -33,6 +33,13 @@ export const finalisePlan = async ({
   const visionNote = [plan.vision, (plan.selectedChips ?? []).join(" • ")]
     .filter(Boolean).join("\n");
 
+  // Tag the event when this is a fast-track package booking so the admin can
+  // see at a glance which event needs manual vendor assignment.
+  const pkgTag = plan.packageSelection
+    ? `[PACKAGE_BOOKING:${plan.packageSelection.key}:${plan.packageSelection.price}]`
+    : null;
+  const composedNotes = [pkgTag, visionNote].filter(Boolean).join("\n") || null;
+
   const { data: ev, error: evErr } = await supabase.from("events").insert({
     customer_id: userId,
     title: plan.eventType
@@ -41,9 +48,9 @@ export const finalisePlan = async ({
     event_date: plan.date,
     city: plan.city ? t(`cities.${plan.city}`) : null,
     guest_count: guests,
-    total_budget: plan.budget,
-    theme: plan.selectedChips?.[0] || null,
-    notes: visionNote || null,
+    total_budget: plan.packageSelection?.price ?? plan.budget,
+    theme: plan.selectedChips?.[0] || plan.packageSelection?.name || null,
+    notes: composedNotes,
   }).select("id").single();
 
   if (evErr || !ev) throw new Error(evErr?.message ?? "event_insert_failed");

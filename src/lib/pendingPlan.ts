@@ -18,6 +18,18 @@ const PENDING_PLAN_VERSION = 1;
 // future sign-ins on shared devices.
 const MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
+/** Marker stored on a package fast-track booking. */
+export interface PackageSelection {
+  /** Stable key — "classic" | "premium" | "royal". */
+  key: string;
+  /** Localised display name at the time of selection. */
+  name: string;
+  /** Fixed price in SAR. */
+  price: number;
+  /** Translation key whose value is a string[] of inclusions. */
+  includesKey: string;
+}
+
 export interface PendingPlan {
   version: number;
   savedAt: number;
@@ -34,6 +46,8 @@ export interface PendingPlan {
   allocations: Record<ServiceKey, number>;
   enabledServices: Record<ServiceKey, boolean>;
   picks: Record<string, VendorPick>;
+  /** Set when the user picked a ready-made package (fast-track flow). */
+  packageSelection?: PackageSelection | null;
 }
 
 export type PendingPlanInput = Omit<PendingPlan, "version" | "savedAt">;
@@ -88,6 +102,8 @@ export const clearPendingPlan = (): void => {
   }
 };
 
-/** Has at least one pick — meaning the wizard reached the final step. */
+/** Has at least one pick OR a fast-track package selection. */
 export const isPendingPlanReady = (plan: PendingPlan | null): plan is PendingPlan =>
-  !!plan && !!plan.date && Object.keys(plan.picks ?? {}).length > 0;
+  !!plan && !!plan.date && (
+    Object.keys(plan.picks ?? {}).length > 0 || !!plan.packageSelection
+  );
