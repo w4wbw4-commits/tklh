@@ -92,10 +92,27 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
   const [media, setMedia] = useState<PlatformPackageMedia[]>([]);
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [published, setPublished] = useState(true);
+  const [slots, setSlots] = useState<PackageSlot[]>([]);
+  const [eligibleVendorIds, setEligibleVendorIds] = useState<string[]>([]);
+  const [vendorPool, setVendorPool] = useState<EligibleVendor[]>([]);
 
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [deleting, setDeleting] = useState(false);
+
+  // Load approved vendor pool for eligibility selection
+  useEffect(() => {
+    if (!open) return;
+    (async () => {
+      const { data } = await supabase
+        .from("vendors")
+        .select("id, business_name, category, city")
+        .eq("approval_status", "approved")
+        .eq("active", true)
+        .order("business_name", { ascending: true });
+      setVendorPool((data ?? []) as EligibleVendor[]);
+    })();
+  }, [open]);
 
   // Hydrate / reset whenever the dialog opens with a new package
   useEffect(() => {
@@ -108,6 +125,8 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
     setMedia(pkg?.media ?? []);
     setThumbnail(pkg?.thumbnail_url ?? null);
     setPublished(pkg?.published ?? true);
+    setSlots(pkg?.slots ?? []);
+    setEligibleVendorIds(pkg?.eligible_vendor_ids ?? []);
   }, [open, pkg]);
 
   const addInclude = () => {
