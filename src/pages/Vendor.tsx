@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
-import { LogOut, User, Calendar, Package, Bell, Loader2, ListChecks, Star } from "lucide-react";
+import { LogOut, User, Calendar, Package, Bell, Loader2, ListChecks, Star, TrendingUp } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { VendorProfileForm } from "@/components/tekillah/vendor/VendorProfileForm";
@@ -13,6 +13,7 @@ import { VendorPackages } from "@/components/tekillah/vendor/VendorPackages";
 import { VendorBookings } from "@/components/tekillah/vendor/VendorBookings";
 import { VendorNotifications } from "@/components/tekillah/vendor/VendorNotifications";
 import { VendorReviews } from "@/components/tekillah/vendor/VendorReviews";
+import { VendorFinancials } from "@/components/tekillah/vendor/VendorFinancials";
 import { PartnerHero } from "@/components/tekillah/vendor/PartnerHero";
 import type { VendorRow } from "@/components/tekillah/vendor/types";
 import { useTranslation } from "react-i18next";
@@ -111,9 +112,12 @@ const VendorPage = () => {
             </div>
 
             <Tabs value={tab} onValueChange={setTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 rounded-2xl bg-card p-1 shadow-card sm:grid-cols-6">
+              <TabsList className="grid w-full grid-cols-2 rounded-2xl bg-card p-1 shadow-card sm:grid-cols-4 lg:grid-cols-7">
                 <TabsTrigger value="profile" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                   <User className="h-4 w-4" /> {t("vendor.tabs.profile")}
+                </TabsTrigger>
+                <TabsTrigger value="financials" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                  <TrendingUp className="h-4 w-4" /> {t("vendor.tabs.financials")}
                 </TabsTrigger>
                 <TabsTrigger value="bookings" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                   <ListChecks className="h-4 w-4" /> {t("vendor.tabs.bookings")}
@@ -135,6 +139,9 @@ const VendorPage = () => {
               <div className="mt-8">
                 <TabsContent value="profile">
                   <VendorProfileForm userId={user!.id} vendor={vendor} onSaved={setVendor} />
+                </TabsContent>
+                <TabsContent value="financials">
+                  {vendor && <VendorFinancials vendorId={vendor.id} />}
                 </TabsContent>
                 <TabsContent value="bookings">
                   {vendor && <VendorBookings vendorId={vendor.id} />}

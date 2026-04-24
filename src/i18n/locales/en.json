@@ -405,11 +405,37 @@
     "subtitle": "Complete your business profile to start receiving customer requests.",
     "tabs": {
       "profile": "Profile",
+      "financials": "Financials",
       "calendar": "Calendar",
       "packages": "Packages",
       "bookings": "Bookings",
       "reviews": "Reviews",
       "notifications": "Notifications"
+    },
+    "financials": {
+      "title": "Financial performance",
+      "subtitle": "A complete view of your earnings and bookings on Tekillah.",
+      "totalEarned": "Total earnings",
+      "upcomingValue": "Upcoming bookings value",
+      "processed": "Total bookings",
+      "chartTitle": "Earnings — last 6 months",
+      "earnings": "Earnings",
+      "historyTitle": "Booking dates",
+      "upcomingCountSuffix": "upcoming / pending bookings",
+      "empty": "No bookings yet",
+      "emptyDesc": "Once you receive your first booking, its financial details will appear here.",
+      "download": "Download financial report",
+      "noData": "No data to export.",
+      "exportSuccess": "Report downloaded.",
+      "customQuote": "Custom coordination",
+      "export": {
+        "eventDate": "Event date",
+        "customer": "Customer",
+        "service": "Service",
+        "status": "Status",
+        "amount": "Amount",
+        "paid": "Paid"
+      }
     },
     "reviews": {
       "title": "Customer reviews",
