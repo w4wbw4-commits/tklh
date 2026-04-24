@@ -11,8 +11,6 @@ import { StepBudget } from "./wizard/StepBudget";
 import { StepVendors, type VendorPick } from "./wizard/StepVendors";
 import { StepPackageDetail } from "./wizard/StepPackageDetail";
 import {
-  allocationCatalog,
-  realisticMinimum,
   type BudgetMode,
   type ServiceKey,
 } from "./wizard/types";
