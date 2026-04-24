@@ -20,14 +20,22 @@ const MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
 /** Marker stored on a package fast-track booking. */
 export interface PackageSelection {
-  /** Stable key — "classic" | "premium" | "royal". */
+  /** Stable key — curated tier ("classic"|"premium"|"royal") OR platform_packages.id for admin packages. */
   key: string;
   /** Localised display name at the time of selection. */
   name: string;
   /** Fixed price in SAR. */
   price: number;
-  /** Translation key whose value is a string[] of inclusions. */
-  includesKey: string;
+  /** Translation key whose value is a string[] of inclusions (curated tiers only). */
+  includesKey?: string;
+  /** Inline list of inclusions (admin packages). */
+  includes?: string[];
+  /** Discriminator: 'curated' (built-in tiers) vs 'admin' (platform_packages row). */
+  kind?: "curated" | "admin";
+  /** Optional media gallery for admin packages. */
+  media?: { url: string; type: "image" | "video" }[];
+  /** Optional thumbnail for admin packages. */
+  thumbnail?: string | null;
 }
 
 export interface PendingPlan {

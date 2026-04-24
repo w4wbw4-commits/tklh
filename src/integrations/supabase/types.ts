@@ -588,6 +588,51 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_packages: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          includes: string[]
+          media: Json
+          name: string
+          price: number
+          published: boolean
+          sort_order: number
+          thumbnail_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          includes?: string[]
+          media?: Json
+          name: string
+          price?: number
+          published?: boolean
+          sort_order?: number
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          includes?: string[]
+          media?: Json
+          name?: string
+          price?: number
+          published?: boolean
+          sort_order?: number
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       platform_settings: {
         Row: {
           auto_release_days: number
