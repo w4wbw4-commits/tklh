@@ -440,26 +440,6 @@ export const PlanningWizard = () => {
                   guests={guests}
                   allocations={allocations} setAllocation={setAllocation}
                   enabledServices={enabledServices} toggleEnabled={toggleEnabled}
-                  onSelectPackage={(pkgPrice) => {
-                    // Look up the picked package by price (matches the catalog
-                    // rendered in StepBudget). Fast-track flow → skip vendor step.
-                    const pkg = PACKAGE_CATALOG.find((p) => p.price === pkgPrice);
-                    if (pkg) {
-                      setPackageSelection({
-                        key: pkg.key,
-                        name: t(pkg.nameKey),
-                        price: pkg.price,
-                        includesKey: pkg.includesKey,
-                      });
-                      setBudget(pkg.price);
-                      setBudgetMode("packages");
-                      // Clear any previously-selected vendors — fast track
-                      // is curated by Tekillah, not picked manually.
-                      setPicks({});
-                      toast.success(t("wizard.budget.packageApplied"));
-                      setStep(4);
-                    }
-                  }}
                 />
               )}
               {step === 4 && isFastTrack && packageSelection && (

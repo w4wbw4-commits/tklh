@@ -1,9 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { PackageCheck, Calculator, Sparkles, AlertTriangle, TrendingUp, Users, Gem, Check } from "lucide-react";
+import { Sparkles, AlertTriangle, TrendingUp, Users, Gem } from "lucide-react";
 import {
   allocationCatalog,
   realisticMinimum,
@@ -26,18 +26,22 @@ interface Props {
   setAllocation: (key: ServiceKey, value: number) => void;
   enabledServices: Record<ServiceKey, boolean>;
   toggleEnabled: (key: ServiceKey) => void;
-  /** Called when the user picks a ready-made package card. */
-  onSelectPackage?: (price: number) => void;
 }
 
 export const StepBudget = ({
   budgetMode, setBudgetMode, budget, setBudget,
   guests, allocations, setAllocation,
-  enabledServices, toggleEnabled, onSelectPackage,
+  enabledServices, toggleEnabled,
 }: Props) => {
   const { t } = useTranslation();
   const { prices: market } = useMarketPrices();
   const fmt = (n: number) => fmtNumber(Math.round(n));
+
+  // Smart Budget is the only mode — auto-default on mount so the user lands
+  // straight on the planner without seeing a packages/smart toggle.
+  useEffect(() => {
+    if (budgetMode !== "smart") setBudgetMode("smart");
+  }, [budgetMode, setBudgetMode]);
 
   const effectiveMin = (item: typeof allocationCatalog[number]) => {
     const staticMin = realisticMinimum(item, guests);
@@ -96,43 +100,16 @@ export const StepBudget = ({
       <h3 className="font-arabic text-2xl font-semibold text-foreground">{t("wizard.budget.title")}</h3>
       <p className="mt-2 text-sm text-foreground/70">{t("wizard.budget.desc")}</p>
 
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {[
-          { key: "packages" as const, icon: PackageCheck, title: t("wizard.budget.packagesTitle"), desc: t("wizard.budget.packagesDesc") },
-          { key: "smart" as const, icon: Calculator, title: t("wizard.budget.smartTitle"), desc: t("wizard.budget.smartDesc") },
-        ].map((opt) => {
-          const isOn = budgetMode === opt.key;
-          return (
-            <motion.button
-              key={opt.key}
-              whileHover={{ y: -3 }}
-              onClick={() => setBudgetMode(opt.key)}
-              className={`rounded-2xl border p-6 text-start transition-all ${
-                isOn ? "border-primary bg-primary/5 shadow-soft" : "border-border bg-card hover:border-primary/40"
-              }`}
-            >
-              <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl ${
-                isOn ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"
-              }`}>
-                <opt.icon className="h-5 w-5" strokeWidth={1.6} />
-              </div>
-              <div className="font-arabic text-lg font-semibold text-foreground">{opt.title}</div>
-              <div className="mt-1 text-sm text-foreground/65">{opt.desc}</div>
-            </motion.button>
-          );
-        })}
-      </div>
+      {/* Smart Budget is the only planning mode now — keeps the flow focused
+          on personalised "تنسيق خاص" planning. Ready-made packages live on
+          the home page instead and bypass the wizard entirely. */}
 
-      <AnimatePresence mode="wait">
-        {budgetMode === "smart" && (
-          <motion.div
-            key="smart"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.4 }}
-            className="overflow-hidden"
-          >
+      <motion.div
+        key="smart"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
             <div className="mt-8 rounded-3xl border border-border bg-card p-6 shadow-card">
               <div className="flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
                 <div>
@@ -301,97 +278,7 @@ export const StepBudget = ({
                 })}
               </div>
             </div>
-          </motion.div>
-        )}
-
-        {budgetMode === "packages" && (
-          <motion.div
-            key="packages"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.4 }}
-            className="overflow-hidden"
-          >
-            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {[
-                { name: t("wizard.budget.pkgClassic"), price: 45000, tag: t("wizard.budget.tagEconomic"), includesKey: "wizard.budget.pkgClassicIncludes" },
-                { name: t("wizard.budget.pkgPremium"), price: 95000, tag: t("wizard.budget.tagPopular"), includesKey: "wizard.budget.pkgPremiumIncludes" },
-                { name: t("wizard.budget.pkgRoyal"), price: 180000, tag: t("wizard.budget.tagLuxury"), includesKey: "wizard.budget.pkgRoyalIncludes" },
-              ].map((p, i) => {
-                const includes = t(p.includesKey, { returnObjects: true }) as string[];
-                const isFeatured = i === 1;
-                const isSelected = budget === p.price;
-                const handlePick = () => onSelectPackage?.(p.price);
-                return (
-                  <motion.div
-                    key={p.name}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.08 }}
-                    whileHover={{ y: -4 }}
-                    onClick={handlePick}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handlePick(); } }}
-                    aria-pressed={isSelected}
-                    className={`group relative flex cursor-pointer flex-col rounded-2xl border p-5 text-start shadow-sm outline-none transition-all hover:shadow-luxury focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
-                      isSelected
-                        ? "border-primary bg-primary/10 shadow-luxury ring-2 ring-primary/40"
-                        : isFeatured ? "border-primary bg-primary/5" : "border-border bg-card"
-                    }`}
-                  >
-                    {isSelected && (
-                      <span className="absolute end-3 top-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-soft">
-                        <Check className="h-4 w-4" strokeWidth={3} />
-                      </span>
-                    )}
-                    <div className="text-xs font-medium uppercase tracking-wider text-primary tabular-nums">{p.tag}</div>
-                    <div className="mt-2 font-arabic text-2xl font-semibold text-foreground">{p.name}</div>
-                    <div className="mt-3 font-arabic text-3xl font-semibold text-foreground tabular-nums">
-                      {fmtNumber(p.price)}
-                      <span className="ms-1 text-sm font-normal text-foreground/60">{cur}</span>
-                    </div>
-                    <div className="mt-5 border-t border-border/60 pt-4">
-                      <div className="mb-3 text-xs font-semibold uppercase tracking-wider text-foreground/60">
-                        {t("wizard.budget.includesTitle")}
-                      </div>
-                      <ul className="space-y-2">
-                        {Array.isArray(includes) && includes.map((item, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-foreground/80">
-                            <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/15 text-primary">
-                              <Check className="h-3 w-3" strokeWidth={3} />
-                            </span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={(e) => { e.stopPropagation(); handlePick(); }}
-                      className={`mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full text-sm font-semibold transition-all ${
-                        isSelected
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-secondary text-primary hover:bg-primary hover:text-primary-foreground"
-                      }`}
-                    >
-                      {isSelected ? (
-                        <>
-                          <Check className="h-4 w-4" strokeWidth={3} />
-                          {t("wizard.budget.packageSelected")}
-                        </>
-                      ) : (
-                        t("wizard.budget.choosePackage")
-                      )}
-                    </button>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </motion.div>
     </motion.div>
   );
 };
