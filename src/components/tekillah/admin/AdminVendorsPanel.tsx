@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Loader2, Eye, EyeOff, CalendarIcon, ShieldCheck, Briefcase, Pencil } from "lucide-react";
+import { Loader2, Eye, EyeOff, CalendarIcon, ShieldCheck, Briefcase, Pencil, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { fmtNumber } from "@/i18n/format";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
