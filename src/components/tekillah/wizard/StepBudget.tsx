@@ -26,18 +26,22 @@ interface Props {
   setAllocation: (key: ServiceKey, value: number) => void;
   enabledServices: Record<ServiceKey, boolean>;
   toggleEnabled: (key: ServiceKey) => void;
-  /** Called when the user picks a ready-made package card. */
-  onSelectPackage?: (price: number) => void;
 }
 
 export const StepBudget = ({
   budgetMode, setBudgetMode, budget, setBudget,
   guests, allocations, setAllocation,
-  enabledServices, toggleEnabled, onSelectPackage,
+  enabledServices, toggleEnabled,
 }: Props) => {
   const { t } = useTranslation();
   const { prices: market } = useMarketPrices();
   const fmt = (n: number) => fmtNumber(Math.round(n));
+
+  // Smart Budget is the only mode — auto-default on mount so the user lands
+  // straight on the planner without seeing a packages/smart toggle.
+  useEffect(() => {
+    if (budgetMode !== "smart") setBudgetMode("smart");
+  }, [budgetMode, setBudgetMode]);
 
   const effectiveMin = (item: typeof allocationCatalog[number]) => {
     const staticMin = realisticMinimum(item, guests);
