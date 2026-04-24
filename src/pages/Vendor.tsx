@@ -4,12 +4,11 @@ import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
-import { LogOut, User, Calendar, Package, Bell, Loader2, ListChecks, Star, TrendingUp } from "lucide-react";
+import { LogOut, User, Calendar, Bell, Loader2, ListChecks, Star, TrendingUp, Clock, XCircle, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { VendorProfileForm } from "@/components/tekillah/vendor/VendorProfileForm";
 import { VendorCalendar } from "@/components/tekillah/vendor/VendorCalendar";
-import { VendorPackages } from "@/components/tekillah/vendor/VendorPackages";
 import { VendorBookings } from "@/components/tekillah/vendor/VendorBookings";
 import { VendorNotifications } from "@/components/tekillah/vendor/VendorNotifications";
 import { VendorReviews } from "@/components/tekillah/vendor/VendorReviews";
@@ -35,10 +34,18 @@ const VendorPage = () => {
     (async () => {
       setVendorLoading(true);
       const { data } = await supabase.from("vendors").select("*").eq("user_id", user.id).maybeSingle();
-      setVendor(data as VendorRow | null);
+      const v = data as VendorRow | null;
+      setVendor(v);
+      // Default landing tab: approved vendors land on Bookings, others on Profile
+      setTab(v?.approval_status === "approved" ? "bookings" : "profile");
       setVendorLoading(false);
     })();
   }, [user]);
+
+  const handleVendorSaved = (v: VendorRow) => {
+    setVendor(v);
+    if (v.approval_status === "approved") setTab("bookings");
+  };
 
   const handleCtaClick = () => {
     if (!user) {
@@ -49,6 +56,9 @@ const VendorPage = () => {
   };
 
   const isAuthed = !authLoading && !!user;
+  const isApproved = vendor?.approval_status === "approved";
+  const isPending = vendor && vendor.approval_status === "pending_approval";
+  const isRejected = vendor && vendor.approval_status === "rejected";
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -87,8 +97,8 @@ const VendorPage = () => {
         </div>
       </header>
 
-      {/* Partner Landing Hero — visible to ALL visitors */}
-      <PartnerHero onCtaClick={handleCtaClick} isAuthenticated={isAuthed} />
+      {/* Partner Landing Hero — only for visitors who haven't started a profile yet */}
+      {!vendor && <PartnerHero onCtaClick={handleCtaClick} isAuthenticated={isAuthed} />}
 
       {/* Authenticated dashboard */}
       {authLoading || vendorLoading ? (
@@ -107,29 +117,80 @@ const VendorPage = () => {
                 {vendor ? t("vendor.welcomeNamed", { name: vendor.business_name }) : t("vendor.welcome")}
               </h2>
               <p className="mt-2 text-foreground/65">
-                {vendor ? t("vendor.subtitleNamed") : t("vendor.subtitle")}
+                {isApproved
+                  ? t("vendor.subtitleApproved", { defaultValue: "حسابك مفعّل — تابع حجوزاتك القادمة وأدر تقويمك من هنا." })
+                  : isPending
+                    ? t("vendor.subtitlePending", { defaultValue: "ملفك قيد المراجعة. سنخبرك فور صدور القرار." })
+                    : isRejected
+                      ? t("vendor.subtitleRejected", { defaultValue: "تم رفض الطلب — عدّل البيانات وأعد الإرسال." })
+                      : t("vendor.subtitle")}
               </p>
             </div>
 
+            {/* Pending state: prominent "Under Review" view, but keep profile editable */}
+            {isPending && (
+              <div className="mb-6 rounded-3xl border border-amber-500/30 bg-amber-500/10 p-6 shadow-card">
+                <div className="flex items-start gap-4">
+                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-amber-500/20 text-amber-700">
+                    <Clock className="h-6 w-6" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-arabic text-lg font-semibold text-amber-800">
+                      {t("vendor.underReview.title", { defaultValue: "ملفك قيد المراجعة من قِبل الإدارة" })}
+                    </h3>
+                    <p className="mt-1 text-sm text-amber-700/85">
+                      {t("vendor.underReview.body", { defaultValue: "نراجع معلومات قاعتك الآن. ستتمكّن من استقبال الحجوزات فور الموافقة. يمكنك تعديل بياناتك في أي وقت." })}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {isRejected && (
+              <div className="mb-6 rounded-3xl border border-destructive/30 bg-destructive/10 p-6 shadow-card">
+                <div className="flex items-start gap-4">
+                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-destructive/20 text-destructive">
+                    <XCircle className="h-6 w-6" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-arabic text-lg font-semibold text-destructive">
+                      {t("vendor.rejected.title", { defaultValue: "تم رفض الطلب" })}
+                    </h3>
+                    <p className="mt-1 text-sm text-destructive/85">
+                      {vendor?.rejection_reason || t("vendor.rejected.body", { defaultValue: "يرجى مراجعة بياناتك وإعادة الإرسال." })}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {isApproved && (
+              <div className="mb-6 rounded-3xl border border-primary/30 bg-primary/5 p-4 shadow-card">
+                <div className="flex items-center gap-3">
+                  <ShieldCheck className="h-5 w-5 text-primary" />
+                  <p className="text-sm text-foreground/80">
+                    {t("vendor.approved.banner", { defaultValue: "حسابك مفعّل ويظهر للعملاء — راجع طلبات الحجز الجديدة في تبويب الحجوزات." })}
+                  </p>
+                </div>
+              </div>
+            )}
+
             <Tabs value={tab} onValueChange={setTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 rounded-2xl bg-card p-1 shadow-card sm:grid-cols-4 lg:grid-cols-7">
-                <TabsTrigger value="profile" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  <User className="h-4 w-4" /> {t("vendor.tabs.profile")}
-                </TabsTrigger>
-                <TabsTrigger value="financials" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  <TrendingUp className="h-4 w-4" /> {t("vendor.tabs.financials")}
-                </TabsTrigger>
-                <TabsTrigger value="bookings" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <TabsList className="grid w-full grid-cols-2 rounded-2xl bg-card p-1 shadow-card sm:grid-cols-3 lg:grid-cols-6">
+                <TabsTrigger value="bookings" disabled={!isApproved} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                   <ListChecks className="h-4 w-4" /> {t("vendor.tabs.bookings")}
                 </TabsTrigger>
-                <TabsTrigger value="calendar" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <TabsTrigger value="calendar" disabled={!isApproved} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                   <Calendar className="h-4 w-4" /> {t("vendor.tabs.calendar")}
                 </TabsTrigger>
-                <TabsTrigger value="packages" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  <Package className="h-4 w-4" /> {t("vendor.tabs.packages")}
+                <TabsTrigger value="financials" disabled={!isApproved} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                  <TrendingUp className="h-4 w-4" /> {t("vendor.tabs.financials")}
                 </TabsTrigger>
-                <TabsTrigger value="reviews" disabled={!vendor} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <TabsTrigger value="reviews" disabled={!isApproved} className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                   <Star className="h-4 w-4" /> {t("vendor.tabs.reviews")}
+                </TabsTrigger>
+                <TabsTrigger value="profile" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                  <User className="h-4 w-4" /> {t("vendor.tabs.profile")}
                 </TabsTrigger>
                 <TabsTrigger value="notifications" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                   <Bell className="h-4 w-4" /> {t("vendor.tabs.notifications")}
@@ -137,23 +198,20 @@ const VendorPage = () => {
               </TabsList>
 
               <div className="mt-8">
-                <TabsContent value="profile">
-                  <VendorProfileForm userId={user!.id} vendor={vendor} onSaved={setVendor} />
-                </TabsContent>
-                <TabsContent value="financials">
-                  {vendor && <VendorFinancials vendorId={vendor.id} />}
-                </TabsContent>
                 <TabsContent value="bookings">
-                  {vendor && <VendorBookings vendorId={vendor.id} />}
+                  {vendor && isApproved && <VendorBookings vendorId={vendor.id} />}
                 </TabsContent>
                 <TabsContent value="calendar">
-                  {vendor && <VendorCalendar vendorId={vendor.id} />}
+                  {vendor && isApproved && <VendorCalendar vendorId={vendor.id} />}
                 </TabsContent>
-                <TabsContent value="packages">
-                  {vendor && <VendorPackages vendorId={vendor.id} />}
+                <TabsContent value="financials">
+                  {vendor && isApproved && <VendorFinancials vendorId={vendor.id} />}
                 </TabsContent>
                 <TabsContent value="reviews">
-                  {vendor && <VendorReviews vendorId={vendor.id} vendorUserId={user!.id} />}
+                  {vendor && isApproved && <VendorReviews vendorId={vendor.id} vendorUserId={user!.id} />}
+                </TabsContent>
+                <TabsContent value="profile">
+                  <VendorProfileForm userId={user!.id} vendor={vendor} onSaved={handleVendorSaved} />
                 </TabsContent>
                 <TabsContent value="notifications">
                   <VendorNotifications userId={user!.id} />
