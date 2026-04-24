@@ -387,14 +387,22 @@ const Admin = () => {
 };
 
 const Kpi = ({ icon: Icon, label, value, highlight }: { icon: typeof Wallet; label: string; value: string; highlight?: boolean }) => (
-  <div className={`rounded-2xl border p-5 shadow-card ${highlight ? "border-primary/30 bg-primary/5" : "border-border bg-card"}`}>
+  <div className={`rounded-2xl border p-5 shadow-card transition-shadow hover:shadow-soft ${
+    highlight
+      ? "border-primary/40 bg-card ring-1 ring-primary/20"
+      : "border-primary/15 bg-card"
+  }`}>
     <div className="flex items-center gap-3">
-      <div className={`grid h-10 w-10 place-items-center rounded-xl ${highlight ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
+      <div className={`grid h-10 w-10 place-items-center rounded-xl border ${
+        highlight
+          ? "border-primary/30 bg-gradient-olive text-primary-foreground"
+          : "border-primary/20 bg-secondary text-primary-deep"
+      }`}>
         <Icon className="h-5 w-5" />
       </div>
       <div>
-        <div className="text-xs text-foreground/65">{label}</div>
-        <div className="mt-0.5 font-arabic text-lg font-semibold text-foreground">{value}</div>
+        <div className="text-xs font-medium text-foreground/70">{label}</div>
+        <div className="mt-0.5 font-arabic text-xl font-bold tracking-tight text-primary-deep">{value}</div>
       </div>
     </div>
   </div>
