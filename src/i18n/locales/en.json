@@ -158,7 +158,16 @@
       "allCovered": "Great — every service you chose has a provider.",
       "priceOnRequest": "Price upon request",
       "priceOnRequestDesc": "Contact the provider for a custom quote tailored to your event.",
-      "contactSoon": "We'll reach out"
+      "contactSoon": "We'll reach out",
+      "weekdayPrice": "Weekday price",
+      "weekendPrice": "Weekend price",
+      "menCapacity": "Men capacity",
+      "womenCapacity": "Women capacity",
+      "noMedia": "No photos yet",
+      "video": "Video",
+      "prevMedia": "Previous",
+      "nextMedia": "Next",
+      "pickServicesFirstTitle": "Pick services first"
     },
     "details": {
       "title": "Event details",
