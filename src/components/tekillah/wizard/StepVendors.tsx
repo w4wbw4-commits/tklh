@@ -396,6 +396,20 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                         {/* Visual media gallery — images + videos uploaded by vendor */}
                         <VendorMediaCarousel items={v.media} vendorName={v.business_name} />
 
+                        {/* Provider description — placed right under the gallery so the
+                            visuals get textual context. Uses Arabic sans-serif and
+                            wraps gracefully for long copy. */}
+                        {v.bio && v.bio.trim().length > 0 && (
+                          <div className="border-b border-border/60 bg-secondary/30 px-4 py-3">
+                            <div className="text-[10px] uppercase tracking-wide text-foreground/55">
+                              <span className="font-arabic">{t("wizard.vendors.description")}</span>
+                            </div>
+                            <p className="mt-1 whitespace-pre-line break-words font-arabic text-[13px] leading-relaxed text-foreground/80">
+                              {v.bio}
+                            </p>
+                          </div>
+                        )}
+
                         <div className="p-4">
                           <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0 flex-1">
@@ -449,13 +463,9 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                                 </div>
                               </div>
                             )}
-                            {weekday === 0 && weekend === 0 && (
-                              <div className="col-span-2 rounded-xl border border-dashed border-primary/30 bg-primary/[0.03] p-2.5 text-center">
-                                <span className="font-arabic text-xs font-medium text-primary">
-                                  {t("wizard.vendors.priceOnRequest")}
-                                </span>
-                              </div>
-                            )}
+                            {/* Removed: "Price upon request" placeholder per spec —
+                                the "Book Now" button below now serves as the CTA. */}
+
 
                             {/* Hall capacity tiles */}
                             {isHall && (Number(v.men_capacity ?? 0) > 0 || Number(v.women_capacity ?? 0) > 0) && (
