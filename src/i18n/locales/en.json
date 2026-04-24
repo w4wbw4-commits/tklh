@@ -969,7 +969,24 @@
         "3m": "3 months"
       },
       "confirmHide": "Confirm hide",
-      "visibilityUpdated": "Visibility updated"
+      "visibilityUpdated": "Visibility updated",
+      "edit": "Edit service",
+      "editDialogTitle": "Edit service details",
+      "editDialogDesc": "Update name, description, prices and images. Changes go live instantly.",
+      "businessName": "Business name",
+      "bio": "Description",
+      "city": "City",
+      "phone": "Phone",
+      "weekdayPrice": "Weekday price (SAR)",
+      "weekendPrice": "Weekend price (SAR)",
+      "minDeposit": "Minimum deposit (SAR)",
+      "menCapacity": "Men capacity",
+      "womenCapacity": "Women capacity",
+      "portfolioImages": "Portfolio images",
+      "addImage": "Add image",
+      "removeImage": "Remove",
+      "saved": "Changes saved",
+      "saveChanges": "Save changes"
     },
     "late": {
       "title": "Live event monitoring — late alerts",
