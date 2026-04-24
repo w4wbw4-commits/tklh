@@ -62,22 +62,71 @@ export const finalisePlan = async ({
   if (evErr || !ev) throw new Error(evErr?.message ?? "event_insert_failed");
 
   const pickList = Object.values(plan.picks ?? {});
-  if (pickList.length === 0) {
-    return { eventId: ev.id, bookingIds: [] };
+
+  // Fast-track package booking: auto-assign one booking per slot using the
+  // first eligible vendor for each requested category.
+  let bookingsToInsert: Array<{
+    customer_id: string; vendor_id: string; package_id: string | null;
+    platform_package_id: string | null; event_id: string; event_date: string;
+    guest_count: number; total_price: number; status: "pending";
+  }> = [];
+
+  if (plan.packageSelection?.kind === "admin" && pickList.length === 0) {
+    const { data: pkgRow } = await supabase
+      .from("platform_packages")
+      .select("slots, eligible_vendor_ids, price")
+      .eq("id", plan.packageSelection.key)
+      .maybeSingle();
+
+    const slots = ((pkgRow?.slots as unknown as Array<{ category: string; count: number }>) ?? []);
+    const eligibleIds = (pkgRow?.eligible_vendor_ids as string[] | null) ?? [];
+
+    if (slots.length > 0 && eligibleIds.length > 0) {
+      const { data: vendorRows } = await supabase
+        .from("vendors")
+        .select("id, category")
+        .in("id", eligibleIds)
+        .eq("approval_status", "approved")
+        .eq("active", true);
+
+      const used = new Set<string>();
+      const slotPrice = slots.length > 0 ? Number(pkgRow?.price ?? 0) / slots.reduce((s, x) => s + x.count, 0) : 0;
+      for (const slot of slots) {
+        for (let i = 0; i < slot.count; i++) {
+          const candidate = (vendorRows ?? []).find((v) => v.category === slot.category && !used.has(v.id));
+          if (!candidate) continue;
+          used.add(candidate.id);
+          bookingsToInsert.push({
+            customer_id: userId,
+            vendor_id: candidate.id,
+            package_id: null,
+            platform_package_id: platformPackageId,
+            event_id: ev.id,
+            event_date: plan.date,
+            guest_count: guests,
+            total_price: Math.round(slotPrice),
+            status: "pending" as const,
+          });
+        }
+      }
+    }
+  } else {
+    bookingsToInsert = pickList.map((p) => ({
+      customer_id: userId,
+      vendor_id: p.vendorId,
+      package_id: p.packageId ?? null,
+      platform_package_id: platformPackageId,
+      event_id: ev.id,
+      event_date: plan.date,
+      guest_count: guests,
+      total_price: p.price,
+      status: "pending" as const,
+    }));
   }
 
-  const bookingsToInsert = pickList.map((p) => ({
-    customer_id: userId,
-    vendor_id: p.vendorId,
-    // packageId is null for "Book Now" custom-quote flow.
-    package_id: p.packageId ?? null,
-    platform_package_id: platformPackageId,
-    event_id: ev.id,
-    event_date: plan.date,
-    guest_count: guests,
-    total_price: p.price,
-    status: "pending" as const,
-  }));
+  if (bookingsToInsert.length === 0) {
+    return { eventId: ev.id, bookingIds: [] };
+  }
 
   const { data: createdBookings, error: bErr } = await supabase
     .from("bookings")
