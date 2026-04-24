@@ -13,10 +13,12 @@ const Index = () => {
     <main className="min-h-screen bg-background">
       <Navbar />
       <Hero />
+      {/* Primary path: ready packages first to grab attention */}
+      <PlatformPackages />
+      {/* Secondary path: bespoke planning sits directly under the packages */}
+      <PlanningWizard />
       <Story />
       <Features />
-      <PlatformPackages />
-      <PlanningWizard />
       <DashboardPreview />
       <UpcomingFeatures />
       <Footer />
