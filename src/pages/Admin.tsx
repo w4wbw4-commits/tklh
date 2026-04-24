@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   Loader2, ShieldAlert, Wallet, TrendingUp, Lock, ListChecks,
   CheckCircle2, LogOut, Receipt, Star, Flag, ShieldCheck, Percent, HandCoins, Inbox,
-  AlertTriangle, AlertOctagon, Briefcase,
+  AlertTriangle, AlertOctagon, Briefcase, PackageOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
@@ -28,6 +28,7 @@ import { AdminLateAlerts } from "@/components/tekillah/admin/AdminLateAlerts";
 import { AdminIncidentReports } from "@/components/tekillah/admin/AdminIncidentReports";
 import { AdminAddVendorDialog } from "@/components/tekillah/admin/AdminAddVendorDialog";
 import { AdminVendorsPanel } from "@/components/tekillah/admin/AdminVendorsPanel";
+import { AdminPackagesPanel } from "@/components/tekillah/admin/AdminPackagesPanel";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 
 // Primary admin: phone +966554430196 → synthetic email used by phone-OTP login.
@@ -233,6 +234,9 @@ const Admin = () => {
               </TabsTrigger>
               <TabsTrigger value="reviews" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <Star className="h-4 w-4" /> {t("admin.tabReviews")}
+              </TabsTrigger>
+              <TabsTrigger value="packages" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <PackageOpen className="h-4 w-4" /> {t("admin.tabPackages")}
               </TabsTrigger>
               <TabsTrigger value="moderation" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <Flag className="h-4 w-4" /> {t("admin.tabModeration")}
