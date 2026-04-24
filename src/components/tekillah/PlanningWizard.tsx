@@ -113,6 +113,11 @@ export const PlanningWizard = () => {
     });
   };
 
+  // Fast-track package booking — when set, step 4 renders the package detail
+  // page instead of the manual vendor picker. Cleared if the user backs out.
+  const [packageSelection, setPackageSelection] = useState<PackageSelection | null>(null);
+  const isFastTrack = !!packageSelection;
+
   // ---------------------------------------------------------------------------
   // Hydrate from a previously-saved snapshot (e.g. guest finished wizard,
   // signed in, came back). Runs once on mount.
