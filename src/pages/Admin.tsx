@@ -93,13 +93,7 @@ const Admin = () => {
     })();
   }, [user]);
 
-  // Scoped dark olive theme for /admin only — toggled on mount, removed on unmount.
-  useEffect(() => {
-    document.documentElement.classList.add("dark");
-    return () => {
-      document.documentElement.classList.remove("dark");
-    };
-  }, []);
+  // Admin uses the standard light olive theme — no dark-mode toggle.
 
   const load = async () => {
     setLoading(true);
