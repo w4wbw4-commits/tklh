@@ -969,7 +969,24 @@
         "3m": "٣ أشهر"
       },
       "confirmHide": "تأكيد الإخفاء",
-      "visibilityUpdated": "تم تحديث حالة الظهور"
+      "visibilityUpdated": "تم تحديث حالة الظهور",
+      "edit": "تعديل الخدمة",
+      "editDialogTitle": "تعديل بيانات الخدمة",
+      "editDialogDesc": "حدّث الاسم، الوصف، الأسعار، والصور. التغييرات تظهر فوراً للعملاء.",
+      "businessName": "اسم العمل",
+      "bio": "الوصف",
+      "city": "المدينة",
+      "phone": "رقم التواصل",
+      "weekdayPrice": "سعر أيام الأسبوع (ر.س)",
+      "weekendPrice": "سعر عطلة نهاية الأسبوع (ر.س)",
+      "minDeposit": "الحد الأدنى للعربون (ر.س)",
+      "menCapacity": "سعة الرجال",
+      "womenCapacity": "سعة النساء",
+      "portfolioImages": "صور المعرض",
+      "addImage": "إضافة صورة",
+      "removeImage": "إزالة",
+      "saved": "تم حفظ التعديلات",
+      "saveChanges": "حفظ التعديلات"
     },
     "late": {
       "title": "متابعة الطلبات الحية — تنبيهات التأخر",
