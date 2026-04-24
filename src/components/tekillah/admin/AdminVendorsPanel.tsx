@@ -211,6 +211,13 @@ export const AdminVendorsPanel = () => {
           </TabsContent>
         ))}
       </Tabs>
+
+      <AdminEditVendorDialog
+        open={!!editingId}
+        onOpenChange={(o) => { if (!o) setEditingId(null); }}
+        vendorId={editingId}
+        onSaved={load}
+      />
     </section>
   );
 };
