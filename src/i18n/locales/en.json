@@ -280,6 +280,21 @@
       "tierEconomyDesc": "Below {{max}} SAR — we'll surface budget-friendly vendors.",
       "tierStandardDesc": "Between {{min}} and {{max}} SAR — popular mid-range packages.",
       "tierLuxuryDesc": "Above {{min}} SAR — premium and royal-tier vendors."
+    },
+    "packageDetail": {
+      "fastTrack": "Fast Track booking",
+      "fastTrackStep": "Confirm package",
+      "fastTrackBadge": "Fast Track — {{name}} package, vendors curated by Tekillah",
+      "subtitle": "We've curated this package end-to-end. Confirm to reserve and our concierge will assign trusted vendors for every service.",
+      "fixedPrice": "Fixed price",
+      "includesTitle": "What's included",
+      "itemsCountSuffix": "items",
+      "nextStepsTitle": "What happens next",
+      "nextStepsBody": "Once confirmed, our team will assign the best-fit vendors for each service in this package and reach out within 24 hours to align on details.",
+      "changePackage": "Change package",
+      "confirmAndBook": "Confirm & Book",
+      "confirmedToast": "{{name}} package reserved — we'll be in touch shortly!",
+      "footerHint": "Tap Confirm & Book above to reserve"
     }
   },
   "auth": {
