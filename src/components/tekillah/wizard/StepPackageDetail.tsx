@@ -14,14 +14,14 @@
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Check, ChevronLeft, ChevronRight, Loader2, Sparkles, Zap } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Loader2, Play, Sparkles, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { fmtNumber } from "@/i18n/format";
 import type { PackageSelection } from "@/lib/pendingPlan";
 
 // ---------------------------------------------------------------------------
-// Curated gallery — Unsplash CDN, low-res for quick paint, lazy-loaded.
-// We rotate images per tier so each package preview feels distinct.
+// Curated gallery — fallback for built-in tiers that have no media field.
+// Admin packages bring their own `media[]` from the database.
 // ---------------------------------------------------------------------------
 const GALLERY: Record<string, string[]> = {
   classic: [
@@ -47,6 +47,8 @@ const GALLERY: Record<string, string[]> = {
   ],
 };
 
+interface MediaItem { url: string; type: "image" | "video" }
+
 interface Props {
   selection: PackageSelection;
   onConfirm: () => void;
@@ -60,12 +62,25 @@ export const StepPackageDetail = ({ selection, onConfirm, submitting, onChangePa
   const isAr = i18n.language === "ar";
   const cur = t("common.currency");
 
-  const includes = useMemo(() => {
-    const raw = t(selection.includesKey, { returnObjects: true });
-    return Array.isArray(raw) ? (raw as string[]) : [];
-  }, [t, selection.includesKey]);
+  // Inclusions: prefer the inline list (admin packages), fall back to the
+  // i18n catalog for built-in curated tiers.
+  const includes = useMemo<string[]>(() => {
+    if (selection.includes && selection.includes.length > 0) return selection.includes;
+    if (selection.includesKey) {
+      const raw = t(selection.includesKey, { returnObjects: true });
+      return Array.isArray(raw) ? (raw as string[]) : [];
+    }
+    return [];
+  }, [t, selection.includes, selection.includesKey]);
 
-  const gallery = GALLERY[selection.key] ?? GALLERY.classic;
+  // Media gallery: admin packages bring their own image/video list; curated
+  // tiers fall back to the hard-coded Unsplash gallery.
+  const gallery = useMemo<MediaItem[]>(() => {
+    if (selection.media && selection.media.length > 0) return selection.media;
+    const fallback = GALLERY[selection.key] ?? GALLERY.classic;
+    return fallback.map((url) => ({ url, type: "image" as const }));
+  }, [selection.media, selection.key]);
+
   const [active, setActive] = useState(0);
   const next = () => setActive((i) => (i + 1) % gallery.length);
   const prev = () => setActive((i) => (i - 1 + gallery.length) % gallery.length);
