@@ -188,15 +188,16 @@ export const PlanningWizard = () => {
         selected, vision, selectedChips,
         budgetMode, budget,
         allocations, enabledServices, picks,
+        packageSelection,
       });
       toast.success(t("wizard.planSaved"));
       // Encode where to resume after auth:
-      //  - If they reached the final step (have picks) → /dashboard will auto-
-      //    finalise the snapshot and forward to checkout.
+      //  - If they reached the final step (have picks OR a fast-track package)
+      //    → /dashboard will auto-finalise the snapshot.
       //  - Otherwise → return to the homepage wizard section on the exact step
       //    they left, with a `resume=1` marker.
-      const hasPicks = Object.keys(picks).length > 0;
-      const resumeTarget = hasPicks
+      const ready = Object.keys(picks).length > 0 || !!packageSelection;
+      const resumeTarget = ready
         ? "/dashboard"
         : `/?resume=1&step=${step}#wizard`;
       navigate(`/auth?redirect=${encodeURIComponent(resumeTarget)}`);
@@ -205,7 +206,8 @@ export const PlanningWizard = () => {
     if (!date) { toast.error(t("customer.create.futureDate")); setStep(0); return; }
 
     const pickList = Object.values(picks);
-    if (pickList.length === 0) {
+    // Fast-track package booking has no picks but is still a valid finalisation.
+    if (pickList.length === 0 && !packageSelection) {
       toast.error(t("wizard.vendors.pickAtLeastOne"));
       setStep(4);
       return;
@@ -222,13 +224,21 @@ export const PlanningWizard = () => {
           selected, vision, selectedChips,
           budgetMode, budget,
           allocations, enabledServices, picks,
+          packageSelection,
         },
       });
       // Snapshot is fully consumed — clear so we don't re-run on next visit.
       clearPendingPlan();
       toast.success(t("wizard.eventCreated"));
-      toast.success(t("wizard.bookingsCreated", { count: result.bookingIds.length }));
-      navigate(`/checkout/${result.bookingIds[0]}`);
+      if (packageSelection) {
+        // Fast-track: no booking row yet (admin will assign vendors). Land the
+        // customer on their dashboard so they see the package they reserved.
+        toast.success(t("wizard.packageDetail.confirmedToast", { name: packageSelection.name }));
+        navigate("/dashboard");
+      } else {
+        toast.success(t("wizard.bookingsCreated", { count: result.bookingIds.length }));
+        navigate(`/checkout/${result.bookingIds[0]}`);
+      }
     } catch {
       toast.error(t("wizard.bookingsFailed"));
     } finally {
@@ -236,13 +246,21 @@ export const PlanningWizard = () => {
     }
   };
 
-  const stepLabels = [
-    t("wizard.step1"),
-    t("wizard.step2"),
-    t("wizard.step3"),
-    t("wizard.step4"),
-    t("wizard.step5"),
-  ];
+  const stepLabels = isFastTrack
+    ? [
+        t("wizard.step1"),
+        t("wizard.step2"),
+        t("wizard.step3"),
+        t("wizard.step4"),
+        t("wizard.packageDetail.fastTrackStep"),
+      ]
+    : [
+        t("wizard.step1"),
+        t("wizard.step2"),
+        t("wizard.step3"),
+        t("wizard.step4"),
+        t("wizard.step5"),
+      ];
 
   const PrevIcon = isAr ? ArrowRight : ArrowLeft;
   const NextIcon = isAr ? ArrowLeft : ArrowRight;
