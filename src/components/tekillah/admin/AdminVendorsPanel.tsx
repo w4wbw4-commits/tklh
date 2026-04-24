@@ -179,6 +179,15 @@ export const AdminVendorsPanel = () => {
                       </div>
 
                       <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setEditingId(v.id)}
+                          className="rounded-full"
+                        >
+                          <Pencil className="me-1.5 h-3.5 w-3.5" />
+                          {t("admin.vendors.edit")}
+                        </Button>
                         {hidden ? (
                           <Button
                             size="sm"
