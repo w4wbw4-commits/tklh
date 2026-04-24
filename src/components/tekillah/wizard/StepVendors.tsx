@@ -101,7 +101,7 @@ type RawPortfolioItem = {
   sort_order: number | null;
 };
 
-export const StepVendors = ({ selectedServices, picks, setPick, budget, allocations }: Props) => {
+export const StepVendors = ({ selectedServices, picks, setPick, budget, allocations, onBookNow }: Props) => {
   const { t } = useTranslation();
   const [vendors, setVendors] = useState<VendorOption[]>([]);
   const [loading, setLoading] = useState(true);
@@ -127,7 +127,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
       supabase
         .from("vendors")
         .select(
-          "id, business_name, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, portfolio_urls, packages(id, name, tier, price, description, active, approval_status)",
+          "id, business_name, bio, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, portfolio_urls, packages(id, name, tier, price, description, active, approval_status)",
         )
         .eq("active", true)
         .eq("approval_status", "approved")
@@ -168,6 +168,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
       const row = x as unknown as {
         id: string;
         business_name: string;
+        bio: string | null;
         category: ServiceKey;
         city: string | null;
         starting_price: number;
@@ -193,6 +194,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
       return {
         id: row.id,
         business_name: row.business_name,
+        bio: row.bio,
         category: row.category,
         city: row.city,
         starting_price: row.starting_price,
@@ -205,8 +207,8 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         reviews_count: r.count,
         completed_bookings: r.done,
         // Keep ONLY approved + active packages, but DO NOT drop the vendor when
-        // they have none yet — we surface them with a "Price upon request" card
-        // so admin-approved vendors appear instantly in the public listing.
+        // they have none yet — we still surface them so the customer can hit
+        // "Book Now" and request a custom quote.
         packages: (row.packages ?? [])
           .filter((p) => p.active && p.approval_status === "approved")
           .sort((a, b) => Number(a.price) - Number(b.price))
