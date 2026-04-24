@@ -336,6 +336,14 @@ export const PlanningWizard = () => {
                   setPick={setPick}
                   budget={liveBudget || budget}
                   allocations={allocations}
+                  onBookNow={(pick) => {
+                    // One-click "احجز" — register the pick and immediately
+                    // finalise so the customer lands on checkout/auth.
+                    setPicks((p) => ({ ...p, [pick.category]: pick }));
+                    // Defer to the next tick so React commits the new pick
+                    // before finalisePlan reads from the snapshot.
+                    setTimeout(() => handleFinish(), 0);
+                  }}
                 />
               )}
             </AnimatePresence>
