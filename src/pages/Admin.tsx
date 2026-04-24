@@ -160,19 +160,22 @@ const Admin = () => {
   const pendingCount   = bookings.filter((b) => b.status === "pending").length;
 
   return (
-    <div className="min-h-screen bg-gradient-soft">
-      <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-xl">
+    <div className="min-h-screen bg-[hsl(40_18%_88%)]">
+      <header className="sticky top-0 z-30 border-b border-primary-deep/40 bg-gradient-olive shadow-luxury">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 text-primary-foreground">
             <Logo />
-            <Badge className="bg-primary/15 text-primary">{t("admin.kicker")}</Badge>
+            <Badge className="bg-primary-foreground/15 text-primary-foreground border border-primary-foreground/25">
+              {t("admin.kicker")}
+            </Badge>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" asChild className="rounded-full">
+            <Button variant="ghost" size="sm" asChild
+              className="rounded-full text-primary-foreground hover:bg-primary-foreground/15 hover:text-primary-foreground">
               <Link to="/">{t("common.home")}</Link>
             </Button>
             <Button variant="ghost" size="sm" onClick={() => signOut().then(() => navigate("/"))}
-              className="rounded-full text-destructive hover:bg-destructive/10">
+              className="rounded-full text-primary-foreground hover:bg-destructive/30 hover:text-primary-foreground">
               <LogOut className="me-1 h-4 w-4" /> {t("common.logout")}
             </Button>
           </div>
@@ -183,8 +186,8 @@ const Admin = () => {
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
           className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="font-arabic text-3xl font-semibold text-foreground sm:text-4xl">{t("admin.title")}</h1>
-            <p className="mt-2 text-foreground/65">{t("admin.subtitle")}</p>
+            <h1 className="font-arabic text-3xl font-semibold text-primary-deep sm:text-4xl">{t("admin.title")}</h1>
+            <p className="mt-2 text-foreground/75">{t("admin.subtitle")}</p>
           </div>
           {user && <AdminAddVendorDialog adminUserId={user.id} onCreated={load} />}
         </motion.div>
