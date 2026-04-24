@@ -424,6 +424,118 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
             )}
           </div>
 
+
+          {/* Slots */}
+          <div className="space-y-2">
+            <Label className="font-arabic flex items-center gap-2">
+              <Layers className="h-4 w-4 text-primary" />
+              {t("admin.packages.form.slots")}
+            </Label>
+            <p className="text-xs text-foreground/60 font-arabic">{t("admin.packages.form.slotsHint")}</p>
+            <div className="space-y-2">
+              {slots.map((s, idx) => (
+                <div key={idx} className="flex items-center gap-2 rounded-xl border border-border bg-background p-2">
+                  <Select
+                    value={s.category}
+                    onValueChange={(v) =>
+                      setSlots((arr) => arr.map((x, i) => (i === idx ? { ...x, category: v as SlotCategory } : x)))
+                    }
+                  >
+                    <SelectTrigger className="flex-1 font-arabic"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {SLOT_CATEGORIES.map((c) => (
+                        <SelectItem key={c} value={c} className="font-arabic">{t(`categories.${c}`)}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Input
+                    type="number"
+                    min={1}
+                    max={20}
+                    value={s.count}
+                    onChange={(e) =>
+                      setSlots((arr) => arr.map((x, i) => (i === idx ? { ...x, count: Number(e.target.value) || 1 } : x)))
+                    }
+                    className="w-20 tabular-nums"
+                    dir="ltr"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSlots((arr) => arr.filter((_, i) => i !== idx))}
+                    className="text-destructive hover:bg-destructive/10"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={() => setSlots((arr) => [...arr, { category: "hall", count: 1 }])}
+                className="rounded-full"
+              >
+                <Plus className="me-1 h-4 w-4" />
+                <span className="font-arabic">{t("admin.packages.form.addSlot")}</span>
+              </Button>
+            </div>
+          </div>
+
+          {/* Eligible vendors */}
+          <div className="space-y-2">
+            <Label className="font-arabic flex items-center gap-2">
+              <Users className="h-4 w-4 text-primary" />
+              {t("admin.packages.form.eligibleVendors")}
+              {eligibleVendorIds.length > 0 && (
+                <Badge variant="secondary" className="tabular-nums">{fmtNumber(eligibleVendorIds.length)}</Badge>
+              )}
+            </Label>
+            <p className="text-xs text-foreground/60 font-arabic">{t("admin.packages.form.eligibleVendorsHint")}</p>
+            {vendorPool.length === 0 ? (
+              <div className="rounded-xl border border-dashed border-border bg-secondary/30 p-4 text-center text-xs text-foreground/55 font-arabic">
+                {t("admin.packages.form.noVendors")}
+              </div>
+            ) : (
+              <div className="max-h-64 overflow-y-auto rounded-xl border border-border bg-background p-2">
+                {SLOT_CATEGORIES.map((cat) => {
+                  const vendorsInCat = vendorPool.filter((v) => v.category === cat);
+                  if (vendorsInCat.length === 0) return null;
+                  return (
+                    <div key={cat} className="mb-2">
+                      <div className="px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-foreground/55 font-arabic">
+                        {t(`categories.${cat}`)}
+                      </div>
+                      <div className="space-y-1">
+                        {vendorsInCat.map((v) => {
+                          const checked = eligibleVendorIds.includes(v.id);
+                          return (
+                            <label
+                              key={v.id}
+                              className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-secondary/50"
+                            >
+                              <Checkbox
+                                checked={checked}
+                                onCheckedChange={(c) =>
+                                  setEligibleVendorIds((ids) =>
+                                    c ? [...ids, v.id] : ids.filter((x) => x !== v.id),
+                                  )
+                                }
+                              />
+                              <span className="font-arabic text-sm text-foreground">{v.business_name}</span>
+                              {v.city && <span className="text-[11px] text-foreground/50">· {v.city}</span>}
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
           {/* Publish toggle */}
           <div className="flex items-center justify-between rounded-2xl border border-border bg-secondary/40 px-4 py-3">
             <div>
