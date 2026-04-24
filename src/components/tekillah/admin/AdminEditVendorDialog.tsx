@@ -57,7 +57,7 @@ const sanitize = (n: string) => n.replace(/[^a-zA-Z0-9._-]+/g, "-").slice(-60);
 const fmtBytes = (bytes: number) => {
   if (!bytes) return "0 KB";
   const mb = bytes / (1024 * 1024);
-  if (mb >= 1) return `${fmtNumber(Math.round(mb * 10) / 10 as unknown as number)} MB`;
+  if (mb >= 1) return `${fmtNumber(Math.round(mb * 10) / 10)} MB`;
   const kb = Math.round(bytes / 1024);
   return `${fmtNumber(kb)} KB`;
 };
