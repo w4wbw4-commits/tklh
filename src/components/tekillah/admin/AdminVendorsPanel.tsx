@@ -19,6 +19,7 @@ import { fmtNumber } from "@/i18n/format";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { EmptyState } from "@/components/tekillah/EmptyState";
+import { AdminEditVendorDialog } from "./AdminEditVendorDialog";
 
 type Category = "hall" | "catering" | "photography" | "dj" | "decor" | "cars";
 const CATEGORIES: Category[] = ["hall", "catering", "photography", "dj", "decor", "cars"];
@@ -49,6 +50,7 @@ export const AdminVendorsPanel = () => {
   const [vendors, setVendors] = useState<VendorRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCat, setActiveCat] = useState<Category>("hall");
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
