@@ -1222,7 +1222,15 @@
         "eligibleVendors": "Eligible vendors for this package",
         "eligibleVendorsHint": "Pick the vendors the system can auto-assign when this package is booked.",
         "noVendors": "No approved vendors yet."
-      }
+      },
+      "deleteCardBtn": "Delete",
+      "legacyTitle": "Legacy vendor packages",
+      "legacyDesc": "These were created by vendors before package management was centralized. Delete to clean up the system.",
+      "legacyEmpty": "No legacy packages — system is clean.",
+      "legacyDeleteAll": "Delete all legacy packages",
+      "legacyDeleteAllConfirm": "Delete all vendor packages?",
+      "legacyDeleteAllConfirmDesc": "This permanently removes every package created by vendors. This cannot be undone.",
+      "legacyDeleted": "Legacy packages deleted"
     }
   },
   "platformPackages": {
