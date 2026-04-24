@@ -22,14 +22,26 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Loader2, Plus, X, Image as ImageIcon, Video, Trash2, Star } from "lucide-react";
+import { Loader2, Plus, X, Image as ImageIcon, Video, Trash2, Star, Layers, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { fmtNumber } from "@/i18n/format";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
 
 const BUCKET = "platform-package-media";
 const MAX_IMAGES = 12;
 const MAX_FILE_BYTES = 25 * 1024 * 1024;
+
+export type SlotCategory = "hall" | "catering" | "photography" | "dj" | "decor" | "cars";
+export const SLOT_CATEGORIES: SlotCategory[] = ["hall", "catering", "photography", "dj", "decor", "cars"];
+
+export interface PackageSlot {
+  category: SlotCategory;
+  count: number;
+}
 
 export interface PlatformPackageMedia {
   url: string;
@@ -47,6 +59,15 @@ export interface PlatformPackageRow {
   published: boolean;
   sort_order: number;
   created_at: string;
+  slots: PackageSlot[];
+  eligible_vendor_ids: string[];
+}
+
+interface EligibleVendor {
+  id: string;
+  business_name: string;
+  category: SlotCategory;
+  city: string | null;
 }
 
 interface Props {
