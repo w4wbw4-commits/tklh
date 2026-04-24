@@ -96,6 +96,29 @@ export const AdminVendorsPanel = () => {
     await load();
   };
 
+  // Permanently delete a vendor and every record that references them.
+  // Order matters: child rows that admin policies allow us to manage must be
+  // cleared before the parent vendor row, otherwise FK constraints reject the
+  // delete. Any failure is surfaced via toast and aborts the chain.
+  const deleteVendor = async (id: string) => {
+    const tasks: Array<{ label: string; run: () => Promise<{ error: unknown }> }> = [
+      { label: "media",        run: () => supabase.from("vendor_portfolio_items").delete().eq("vendor_id", id) },
+      { label: "availability", run: () => supabase.from("vendor_availability").delete().eq("vendor_id", id) },
+      { label: "packages",     run: () => supabase.from("packages").delete().eq("vendor_id", id) },
+      { label: "bookings",     run: () => supabase.from("bookings").delete().eq("vendor_id", id) },
+      { label: "vendor",       run: () => supabase.from("vendors").delete().eq("id", id) },
+    ];
+    for (const step of tasks) {
+      const { error } = await step.run();
+      if (error) {
+        toast.error(`${step.label}: ${(error as { message?: string })?.message ?? "error"}`);
+        throw error;
+      }
+    }
+    toast.success(t("admin.vendors.deleted"));
+    await load();
+  };
+
   return (
     <section className="rounded-3xl border border-border bg-card p-5 shadow-card sm:p-6">
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
