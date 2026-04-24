@@ -214,7 +214,11 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
       toast.error(t("admin.packages.form.validation.includesRequired")); return;
     }
 
-    setSaving(true);
+    // Normalize slots: drop empty/zero rows
+    const cleanSlots = slots
+      .filter((s) => s.category && s.count > 0)
+      .map((s) => ({ category: s.category, count: Math.max(1, Math.floor(s.count)) }));
+
     const payload = {
       name: name.trim(),
       description: description.trim() || null,
@@ -224,6 +228,8 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
       media: media as unknown as import("@/integrations/supabase/types").Json,
       thumbnail_url: thumbnail ?? media.find((m) => m.type === "image")?.url ?? null,
       published,
+      slots: cleanSlots as unknown as import("@/integrations/supabase/types").Json,
+      eligible_vendor_ids: eligibleVendorIds,
     };
 
     const { error } = isEdit
