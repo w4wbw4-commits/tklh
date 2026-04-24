@@ -93,13 +93,7 @@ const Admin = () => {
     })();
   }, [user]);
 
-  // Scoped dark olive theme for /admin only — toggled on mount, removed on unmount.
-  useEffect(() => {
-    document.documentElement.classList.add("dark");
-    return () => {
-      document.documentElement.classList.remove("dark");
-    };
-  }, []);
+  // Admin uses the standard light olive theme — no dark-mode toggle.
 
   const load = async () => {
     setLoading(true);
@@ -166,19 +160,22 @@ const Admin = () => {
   const pendingCount   = bookings.filter((b) => b.status === "pending").length;
 
   return (
-    <div className="min-h-screen bg-gradient-soft">
-      <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-xl">
+    <div className="min-h-screen bg-[hsl(40_18%_88%)]">
+      <header className="sticky top-0 z-30 border-b border-primary-deep/40 bg-gradient-olive shadow-luxury">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 text-primary-foreground">
             <Logo />
-            <Badge className="bg-primary/15 text-primary">{t("admin.kicker")}</Badge>
+            <Badge className="bg-primary-foreground/15 text-primary-foreground border border-primary-foreground/25">
+              {t("admin.kicker")}
+            </Badge>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" asChild className="rounded-full">
+            <Button variant="ghost" size="sm" asChild
+              className="rounded-full text-primary-foreground hover:bg-primary-foreground/15 hover:text-primary-foreground">
               <Link to="/">{t("common.home")}</Link>
             </Button>
             <Button variant="ghost" size="sm" onClick={() => signOut().then(() => navigate("/"))}
-              className="rounded-full text-destructive hover:bg-destructive/10">
+              className="rounded-full text-primary-foreground hover:bg-destructive/30 hover:text-primary-foreground">
               <LogOut className="me-1 h-4 w-4" /> {t("common.logout")}
             </Button>
           </div>
@@ -189,8 +186,8 @@ const Admin = () => {
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
           className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="font-arabic text-3xl font-semibold text-foreground sm:text-4xl">{t("admin.title")}</h1>
-            <p className="mt-2 text-foreground/65">{t("admin.subtitle")}</p>
+            <h1 className="font-arabic text-3xl font-semibold text-primary-deep sm:text-4xl">{t("admin.title")}</h1>
+            <p className="mt-2 text-foreground/75">{t("admin.subtitle")}</p>
           </div>
           {user && <AdminAddVendorDialog adminUserId={user.id} onCreated={load} />}
         </motion.div>
@@ -212,7 +209,7 @@ const Admin = () => {
 
         <div className="mt-8">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="rounded-2xl bg-card p-1 shadow-card flex-wrap h-auto">
+            <TabsList className="rounded-2xl border border-primary/20 bg-card p-1 shadow-card flex-wrap h-auto">
               <TabsTrigger value="verification" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <ShieldCheck className="h-4 w-4" /> {t("admin.tabVerification")}
               </TabsTrigger>
@@ -390,14 +387,22 @@ const Admin = () => {
 };
 
 const Kpi = ({ icon: Icon, label, value, highlight }: { icon: typeof Wallet; label: string; value: string; highlight?: boolean }) => (
-  <div className={`rounded-2xl border p-5 shadow-card ${highlight ? "border-primary/30 bg-primary/5" : "border-border bg-card"}`}>
+  <div className={`rounded-2xl border p-5 shadow-card transition-shadow hover:shadow-soft ${
+    highlight
+      ? "border-primary/40 bg-card ring-1 ring-primary/20"
+      : "border-primary/15 bg-card"
+  }`}>
     <div className="flex items-center gap-3">
-      <div className={`grid h-10 w-10 place-items-center rounded-xl ${highlight ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
+      <div className={`grid h-10 w-10 place-items-center rounded-xl border ${
+        highlight
+          ? "border-primary/30 bg-gradient-olive text-primary-foreground"
+          : "border-primary/20 bg-secondary text-primary-deep"
+      }`}>
         <Icon className="h-5 w-5" />
       </div>
       <div>
-        <div className="text-xs text-foreground/65">{label}</div>
-        <div className="mt-0.5 font-arabic text-lg font-semibold text-foreground">{value}</div>
+        <div className="text-xs font-medium text-foreground/70">{label}</div>
+        <div className="mt-0.5 font-arabic text-xl font-bold tracking-tight text-primary-deep">{value}</div>
       </div>
     </div>
   </div>
@@ -405,28 +410,28 @@ const Kpi = ({ icon: Icon, label, value, highlight }: { icon: typeof Wallet; lab
 
 const Field = ({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) => (
   <div>
-    <div className="text-[10px] uppercase tracking-wider text-foreground/50">{label}</div>
-    <div className={`font-arabic ${highlight ? "font-semibold text-primary" : "font-medium text-foreground"}`}>{value}</div>
+    <div className="text-[10px] uppercase tracking-wider font-semibold text-foreground/60">{label}</div>
+    <div className={`font-arabic ${highlight ? "font-bold text-primary-deep" : "font-semibold text-foreground"}`}>{value}</div>
   </div>
 );
 
 const Spinner = () => (
-  <div className="grid place-items-center rounded-2xl border border-border bg-card p-12">
+  <div className="grid place-items-center rounded-2xl border border-primary/15 bg-card p-12">
     <Loader2 className="h-5 w-5 animate-spin text-primary" />
   </div>
 );
 
 const statusBadge = (s: string) => {
-  if (s === "held") return "bg-primary/15 text-primary";
-  if (s === "released") return "bg-emerald-500/15 text-emerald-700";
-  if (s === "refunded") return "bg-amber-500/15 text-amber-700";
-  return "bg-destructive/15 text-destructive";
+  if (s === "held") return "bg-gradient-olive text-primary-foreground border border-primary-deep/30";
+  if (s === "released") return "bg-emerald-600 text-white border border-emerald-700/40";
+  if (s === "refunded") return "bg-amber-500 text-white border border-amber-600/40";
+  return "bg-destructive text-destructive-foreground border border-destructive/40";
 };
 const bookingBadge = (s: string) => {
-  if (s === "confirmed") return "bg-primary/15 text-primary";
-  if (s === "pending") return "bg-amber-500/15 text-amber-700";
-  if (s === "completed") return "bg-emerald-500/15 text-emerald-700";
-  return "bg-destructive/15 text-destructive";
+  if (s === "confirmed") return "bg-gradient-olive text-primary-foreground border border-primary-deep/30";
+  if (s === "pending") return "bg-amber-500 text-white border border-amber-600/40";
+  if (s === "completed") return "bg-emerald-600 text-white border border-emerald-700/40";
+  return "bg-destructive text-destructive-foreground border border-destructive/40";
 };
 
 export default Admin;
