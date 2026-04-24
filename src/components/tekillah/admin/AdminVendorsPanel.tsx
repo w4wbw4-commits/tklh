@@ -226,6 +226,10 @@ export const AdminVendorsPanel = () => {
                             onConfirm={(hu) => setVisibility(v.id, { hidden: true, hidden_until: hu })}
                           />
                         )}
+                        <DeleteVendorDialog
+                          vendorName={v.business_name}
+                          onConfirm={() => deleteVendor(v.id)}
+                        />
                       </div>
                     </li>
                   );
