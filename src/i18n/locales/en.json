@@ -167,7 +167,10 @@
       "video": "Video",
       "prevMedia": "Previous",
       "nextMedia": "Next",
-      "pickServicesFirstTitle": "Pick services first"
+      "pickServicesFirstTitle": "Pick services first",
+      "description": "About the provider",
+      "bookNow": "Book Now",
+      "booking": "Booking…"
     },
     "details": {
       "title": "Event details",

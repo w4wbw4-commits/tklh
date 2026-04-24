@@ -37,6 +37,7 @@ const ICONS: Record<ServiceKey, typeof Building2> = {
 export interface VendorOption {
   id: string;
   business_name: string;
+  bio: string | null;
   category: ServiceKey;
   city: string | null;
   starting_price: number;
@@ -54,7 +55,8 @@ export interface VendorOption {
 
 export interface VendorPick {
   vendorId: string;
-  packageId: string;
+  /** Null for "Book Now" (no package) — finalisePlan stores it as null. */
+  packageId: string | null;
   category: ServiceKey;
   price: number;
 }
@@ -67,6 +69,12 @@ interface Props {
   budget: number;
   /** Per-category caps used for "Matches your budget" tagging. */
   allocations: Record<ServiceKey, number>;
+  /**
+   * One-click "احجز" — selects this vendor (using the cheapest available
+   * package, or a synthetic on-request entry) and advances the wizard to
+   * the confirmation/checkout step.
+   */
+  onBookNow?: (pick: VendorPick) => void;
 }
 
 // Matches the package_tier enum on the DB. Indexed by total-budget tier.
@@ -94,7 +102,7 @@ type RawPortfolioItem = {
   sort_order: number | null;
 };
 
-export const StepVendors = ({ selectedServices, picks, setPick, budget, allocations }: Props) => {
+export const StepVendors = ({ selectedServices, picks, setPick, budget, allocations, onBookNow }: Props) => {
   const { t } = useTranslation();
   const [vendors, setVendors] = useState<VendorOption[]>([]);
   const [loading, setLoading] = useState(true);
@@ -120,7 +128,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
       supabase
         .from("vendors")
         .select(
-          "id, business_name, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, portfolio_urls, packages(id, name, tier, price, description, active, approval_status)",
+          "id, business_name, bio, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, portfolio_urls, packages(id, name, tier, price, description, active, approval_status)",
         )
         .eq("active", true)
         .eq("approval_status", "approved")
@@ -161,6 +169,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
       const row = x as unknown as {
         id: string;
         business_name: string;
+        bio: string | null;
         category: ServiceKey;
         city: string | null;
         starting_price: number;
@@ -186,6 +195,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
       return {
         id: row.id,
         business_name: row.business_name,
+        bio: row.bio,
         category: row.category,
         city: row.city,
         starting_price: row.starting_price,
@@ -198,8 +208,8 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         reviews_count: r.count,
         completed_bookings: r.done,
         // Keep ONLY approved + active packages, but DO NOT drop the vendor when
-        // they have none yet — we surface them with a "Price upon request" card
-        // so admin-approved vendors appear instantly in the public listing.
+        // they have none yet — we still surface them so the customer can hit
+        // "Book Now" and request a custom quote.
         packages: (row.packages ?? [])
           .filter((p) => p.active && p.approval_status === "approved")
           .sort((a, b) => Number(a.price) - Number(b.price))
@@ -387,6 +397,20 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                         {/* Visual media gallery — images + videos uploaded by vendor */}
                         <VendorMediaCarousel items={v.media} vendorName={v.business_name} />
 
+                        {/* Provider description — placed right under the gallery so the
+                            visuals get textual context. Uses Arabic sans-serif and
+                            wraps gracefully for long copy. */}
+                        {v.bio && v.bio.trim().length > 0 && (
+                          <div className="border-b border-border/60 bg-secondary/30 px-4 py-3">
+                            <div className="text-[10px] uppercase tracking-wide text-foreground/55">
+                              <span className="font-arabic">{t("wizard.vendors.description")}</span>
+                            </div>
+                            <p className="mt-1 whitespace-pre-line break-words font-arabic text-[13px] leading-relaxed text-foreground/80">
+                              {v.bio}
+                            </p>
+                          </div>
+                        )}
+
                         <div className="p-4">
                           <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0 flex-1">
@@ -440,13 +464,9 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                                 </div>
                               </div>
                             )}
-                            {weekday === 0 && weekend === 0 && (
-                              <div className="col-span-2 rounded-xl border border-dashed border-primary/30 bg-primary/[0.03] p-2.5 text-center">
-                                <span className="font-arabic text-xs font-medium text-primary">
-                                  {t("wizard.vendors.priceOnRequest")}
-                                </span>
-                              </div>
-                            )}
+                            {/* Removed: "Price upon request" placeholder per spec —
+                                the "Book Now" button below now serves as the CTA. */}
+
 
                             {/* Hall capacity tiles */}
                             {isHall && (Number(v.men_capacity ?? 0) > 0 || Number(v.women_capacity ?? 0) > 0) && (
@@ -480,21 +500,28 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                           {/* Package picker / Add provider buttons */}
                           <div className="mt-3 grid grid-cols-1 gap-2">
                             {v.packages.length === 0 && (
-                              // Vendor approved but hasn't published packages yet — keep the
-                              // tile so the listing never feels broken right after approval.
-                              <div className="flex items-center justify-between rounded-xl border border-dashed border-primary/30 bg-primary/[0.03] p-3 text-start">
-                                <div className="min-w-0">
-                                  <div className="font-arabic text-sm font-medium text-foreground">
-                                    {t("wizard.vendors.priceOnRequest")}
-                                  </div>
-                                  <div className="text-[11px] text-foreground/55">
-                                    {t("wizard.vendors.priceOnRequestDesc")}
-                                  </div>
-                                </div>
-                                <span className="ms-3 inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
-                                  {t("wizard.vendors.contactSoon")}
-                                </span>
-                              </div>
+                              // Vendor approved but hasn't published packages yet —
+                              // surface a one-click "Book Now" CTA that picks this
+                              // vendor (using their weekday price as the indicative
+                              // amount, falling back to 0) and advances the wizard.
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const indicativePrice = weekday || weekend || 0;
+                                  const newPick: VendorPick = {
+                                    vendorId: v.id,
+                                    packageId: null,
+                                    category: cat,
+                                    price: indicativePrice,
+                                  };
+                                  setPick(cat, newPick);
+                                  onBookNow?.(newPick);
+                                }}
+                                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-arabic text-sm font-semibold text-primary-foreground shadow-soft transition hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                              >
+                                <Check className="h-4 w-4" />
+                                {t("wizard.vendors.bookNow")}
+                              </button>
                             )}
                             {v.packages.map((p) => {
                               const isPicked = pick?.vendorId === v.id && pick?.packageId === p.id;
