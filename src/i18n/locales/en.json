@@ -1103,7 +1103,13 @@
       "pricingTitle": "Pricing & deposit",
       "previewStart": "Starting from",
       "save": "Save & publish",
-      "successToast": "Vendor created and published"
+      "successToast": "Vendor created and published",
+      "imageTooLarge": "Image must be 5 MB or less",
+      "videoTooLarge": "Video must be 100 MB or less",
+      "videoInvalidUrl": "Invalid URL. Use YouTube, Vimeo or a direct MP4 link.",
+      "videoStaged": "Video staged — it will be linked to the vendor on save.",
+      "uploadingImage": "Uploading image…",
+      "imagesEmpty": "No images yet — add at least one to appear on the public profile."
     },
     "verify": {
       "title": "Vendor verification queue",
