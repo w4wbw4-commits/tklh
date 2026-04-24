@@ -410,28 +410,28 @@ const Kpi = ({ icon: Icon, label, value, highlight }: { icon: typeof Wallet; lab
 
 const Field = ({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) => (
   <div>
-    <div className="text-[10px] uppercase tracking-wider text-foreground/50">{label}</div>
-    <div className={`font-arabic ${highlight ? "font-semibold text-primary" : "font-medium text-foreground"}`}>{value}</div>
+    <div className="text-[10px] uppercase tracking-wider font-semibold text-foreground/60">{label}</div>
+    <div className={`font-arabic ${highlight ? "font-bold text-primary-deep" : "font-semibold text-foreground"}`}>{value}</div>
   </div>
 );
 
 const Spinner = () => (
-  <div className="grid place-items-center rounded-2xl border border-border bg-card p-12">
+  <div className="grid place-items-center rounded-2xl border border-primary/15 bg-card p-12">
     <Loader2 className="h-5 w-5 animate-spin text-primary" />
   </div>
 );
 
 const statusBadge = (s: string) => {
-  if (s === "held") return "bg-primary/15 text-primary";
-  if (s === "released") return "bg-emerald-500/15 text-emerald-700";
-  if (s === "refunded") return "bg-amber-500/15 text-amber-700";
-  return "bg-destructive/15 text-destructive";
+  if (s === "held") return "bg-gradient-olive text-primary-foreground border border-primary-deep/30";
+  if (s === "released") return "bg-emerald-600 text-white border border-emerald-700/40";
+  if (s === "refunded") return "bg-amber-500 text-white border border-amber-600/40";
+  return "bg-destructive text-destructive-foreground border border-destructive/40";
 };
 const bookingBadge = (s: string) => {
-  if (s === "confirmed") return "bg-primary/15 text-primary";
-  if (s === "pending") return "bg-amber-500/15 text-amber-700";
-  if (s === "completed") return "bg-emerald-500/15 text-emerald-700";
-  return "bg-destructive/15 text-destructive";
+  if (s === "confirmed") return "bg-gradient-olive text-primary-foreground border border-primary-deep/30";
+  if (s === "pending") return "bg-amber-500 text-white border border-amber-600/40";
+  if (s === "completed") return "bg-emerald-600 text-white border border-emerald-700/40";
+  return "bg-destructive text-destructive-foreground border border-destructive/40";
 };
 
 export default Admin;
