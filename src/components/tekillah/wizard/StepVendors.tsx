@@ -1,13 +1,33 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Loader2, Check, Building2, UtensilsCrossed, Camera, Music2, Flower2, Car, MapPin, BadgeCheck, Sparkles, Plus, X, AlertTriangle, Users, Users2 } from "lucide-react";
+import {
+  Loader2,
+  Check,
+  Building2,
+  UtensilsCrossed,
+  Camera,
+  Music2,
+  Flower2,
+  Car,
+  MapPin,
+  BadgeCheck,
+  Sparkles,
+  Plus,
+  X,
+  AlertTriangle,
+  Users,
+  Users2,
+  CalendarDays,
+  CalendarRange,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { tierForBudget, type BudgetTier, type ServiceKey } from "./types";
 import { fmtNumber } from "@/i18n/format";
 import { VendorRatingBadge } from "@/components/tekillah/reviews/VendorRatingBadge";
+import { VendorMediaCarousel, type MediaItem } from "./VendorMediaCarousel";
 
 const ICONS: Record<ServiceKey, typeof Building2> = {
   hall: Building2, catering: UtensilsCrossed, photography: Camera,
@@ -29,6 +49,7 @@ export interface VendorOption {
   reviews_count: number;
   completed_bookings: number;
   packages: { id: string; name: string; tier: string; price: number; description: string | null }[];
+  media: MediaItem[];
 }
 
 export interface VendorPick {
@@ -55,6 +76,24 @@ const TIER_TO_PACKAGE_TIERS: Record<BudgetTier, string[]> = {
   luxury: ["premium", "royal"],
 };
 
+type RawPackage = {
+  id: string;
+  name: string;
+  tier: string;
+  price: number;
+  description: string | null;
+  active: boolean;
+  approval_status: string;
+};
+
+type RawPortfolioItem = {
+  vendor_id: string;
+  url: string;
+  media_type: "image" | "video";
+  caption: string | null;
+  sort_order: number | null;
+};
+
 export const StepVendors = ({ selectedServices, picks, setPick, budget, allocations }: Props) => {
   const { t } = useTranslation();
   const [vendors, setVendors] = useState<VendorOption[]>([]);
@@ -63,98 +102,131 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
   const tier = useMemo(() => tierForBudget(budget), [budget]);
   const allowedPackageTiers = TIER_TO_PACKAGE_TIERS[tier];
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const [{ data: v }, { data: ratings }] = await Promise.all([
-        supabase
-          .from("vendors")
-          .select("id, business_name, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, packages(id, name, tier, price, description, active, approval_status)")
-          .eq("active", true)
-          .eq("approval_status", "approved")
-          .in("category", selectedServices.length ? selectedServices : ["hall"]),
-        supabase.from("vendor_ratings_summary" as never).select("vendor_id, avg_rating, reviews_count, completed_bookings"),
-      ]);
-      const ratingMap = new Map<string, { avg: number; count: number; done: number }>();
-      ((ratings ?? []) as { vendor_id: string; avg_rating: number; reviews_count: number; completed_bookings: number }[])
-        .forEach((r) => ratingMap.set(r.vendor_id, {
-          avg: Number(r.avg_rating ?? 0),
-          count: Number(r.reviews_count ?? 0),
-          done: Number(r.completed_bookings ?? 0),
-        }));
-      const mapped = (v ?? []).map((x) => {
-        const r = ratingMap.get(x.id) ?? { avg: 0, count: 0, done: 0 };
-        return {
-          ...x,
-          avg_rating: r.avg,
-          reviews_count: r.count,
-          completed_bookings: r.done,
-          // Keep ONLY approved + active packages, but DO NOT drop the vendor when
-          // they have none yet — we surface them with a "Price upon request" card
-          // so admin-approved vendors appear instantly in the public listing.
-          packages: ((x as unknown as { packages: (VendorOption["packages"][number] & { active: boolean; approval_status: string })[] }).packages ?? [])
-            .filter((p) => p.active && p.approval_status === "approved")
-            .sort((a, b) => Number(a.price) - Number(b.price)),
-        };
-      }) as unknown as VendorOption[];
-      setVendors(mapped);
+  // ---------------------------------------------------------------------------
+  // Data fetcher — pulls vendors, ratings AND portfolio media in parallel.
+  // Memoised so the realtime subscription handlers can call it without
+  // duplicating logic. Strict category filter ensures the public catalog
+  // ONLY surfaces vendors in the user's wizard-selected services.
+  // ---------------------------------------------------------------------------
+  const refetch = useCallback(async () => {
+    if (!selectedServices.length) {
+      setVendors([]);
       setLoading(false);
-    })();
+      return;
+    }
+    setLoading(true);
 
-    // Re-fetch instantly when admin approves a vendor or package so newly
-    // approved entries show up without a manual refresh.
+    const [{ data: v }, { data: ratings }] = await Promise.all([
+      supabase
+        .from("vendors")
+        .select(
+          "id, business_name, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, portfolio_urls, packages(id, name, tier, price, description, active, approval_status)",
+        )
+        .eq("active", true)
+        .eq("approval_status", "approved")
+        .in("category", selectedServices),
+      supabase
+        .from("vendor_ratings_summary" as never)
+        .select("vendor_id, avg_rating, reviews_count, completed_bookings"),
+    ]);
+
+    const vendorIds = (v ?? []).map((row) => (row as { id: string }).id);
+    const { data: portfolio } = vendorIds.length
+      ? await supabase
+          .from("vendor_portfolio_items")
+          .select("vendor_id, url, media_type, caption, sort_order")
+          .in("vendor_id", vendorIds)
+          .order("sort_order", { ascending: true })
+      : { data: [] as RawPortfolioItem[] };
+
+    const ratingMap = new Map<string, { avg: number; count: number; done: number }>();
+    ((ratings ?? []) as { vendor_id: string; avg_rating: number; reviews_count: number; completed_bookings: number }[]).forEach((r) =>
+      ratingMap.set(r.vendor_id, {
+        avg: Number(r.avg_rating ?? 0),
+        count: Number(r.reviews_count ?? 0),
+        done: Number(r.completed_bookings ?? 0),
+      }),
+    );
+
+    // Group portfolio items by vendor — videos first feels too aggressive for a
+    // catalog, so we keep the vendor's intended sort_order.
+    const mediaMap = new Map<string, MediaItem[]>();
+    ((portfolio ?? []) as RawPortfolioItem[]).forEach((p) => {
+      const list = mediaMap.get(p.vendor_id) ?? [];
+      list.push({ url: p.url, type: p.media_type, caption: p.caption });
+      mediaMap.set(p.vendor_id, list);
+    });
+
+    const mapped = (v ?? []).map((x) => {
+      const row = x as unknown as {
+        id: string;
+        business_name: string;
+        category: ServiceKey;
+        city: string | null;
+        starting_price: number;
+        weekday_price: number;
+        weekend_price: number;
+        men_capacity: number | null;
+        women_capacity: number | null;
+        verified: boolean;
+        portfolio_urls: string[] | null;
+        packages: RawPackage[];
+      };
+      const r = ratingMap.get(row.id) ?? { avg: 0, count: 0, done: 0 };
+
+      // Merge structured portfolio items with legacy portfolio_urls so older
+      // vendors still get a gallery. Dedupe on URL to avoid showing the same
+      // image twice when both sources happened to be populated.
+      const structured = mediaMap.get(row.id) ?? [];
+      const seen = new Set(structured.map((m) => m.url));
+      const legacy: MediaItem[] = (row.portfolio_urls ?? [])
+        .filter((u) => u && !seen.has(u))
+        .map((u) => ({ url: u, type: "image" as const, caption: null }));
+
+      return {
+        id: row.id,
+        business_name: row.business_name,
+        category: row.category,
+        city: row.city,
+        starting_price: row.starting_price,
+        weekday_price: row.weekday_price,
+        weekend_price: row.weekend_price,
+        men_capacity: row.men_capacity,
+        women_capacity: row.women_capacity,
+        verified: row.verified,
+        avg_rating: r.avg,
+        reviews_count: r.count,
+        completed_bookings: r.done,
+        // Keep ONLY approved + active packages, but DO NOT drop the vendor when
+        // they have none yet — we surface them with a "Price upon request" card
+        // so admin-approved vendors appear instantly in the public listing.
+        packages: (row.packages ?? [])
+          .filter((p) => p.active && p.approval_status === "approved")
+          .sort((a, b) => Number(a.price) - Number(b.price))
+          .map(({ id, name, tier, price, description }) => ({ id, name, tier, price, description })),
+        media: [...structured, ...legacy],
+      } satisfies VendorOption;
+    });
+
+    setVendors(mapped);
+    setLoading(false);
+  }, [selectedServices]);
+
+  useEffect(() => {
+    refetch();
+
+    // Live updates when admin approves vendors / packages or vendors edit their
+    // portfolios — keeps the public catalog fresh without manual refresh.
     const ch = supabase
       .channel("public-vendors-listing")
-      .on("postgres_changes", { event: "*", schema: "public", table: "vendors" }, () => {
-        // Trigger a re-run by updating loading state via the effect's closure.
-        setLoading(true);
-        // Small refetch helper inline (kept simple to avoid restructuring).
-        (async () => {
-          const { data: vv } = await supabase
-            .from("vendors")
-            .select("id, business_name, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, packages(id, name, tier, price, description, active, approval_status)")
-            .eq("active", true)
-            .eq("approval_status", "approved")
-            .in("category", selectedServices.length ? selectedServices : ["hall"]);
-          const mapped2 = (vv ?? []).map((x) => ({
-            ...x,
-            avg_rating: 0,
-            reviews_count: 0,
-            completed_bookings: 0,
-            packages: ((x as unknown as { packages: (VendorOption["packages"][number] & { active: boolean; approval_status: string })[] }).packages ?? [])
-              .filter((p) => p.active && p.approval_status === "approved")
-              .sort((a, b) => Number(a.price) - Number(b.price)),
-          })) as unknown as VendorOption[];
-          setVendors(mapped2);
-          setLoading(false);
-        })();
-      })
-      .on("postgres_changes", { event: "*", schema: "public", table: "packages" }, () => {
-        // Same lightweight refetch on package approval changes.
-        setLoading(true);
-        (async () => {
-          const { data: vv } = await supabase
-            .from("vendors")
-            .select("id, business_name, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, packages(id, name, tier, price, description, active, approval_status)")
-            .eq("active", true)
-            .eq("approval_status", "approved")
-            .in("category", selectedServices.length ? selectedServices : ["hall"]);
-          const mapped2 = (vv ?? []).map((x) => ({
-            ...x,
-            avg_rating: 0,
-            reviews_count: 0,
-            completed_bookings: 0,
-            packages: ((x as unknown as { packages: (VendorOption["packages"][number] & { active: boolean; approval_status: string })[] }).packages ?? [])
-              .filter((p) => p.active && p.approval_status === "approved")
-              .sort((a, b) => Number(a.price) - Number(b.price)),
-          })) as unknown as VendorOption[];
-          setVendors(mapped2);
-          setLoading(false);
-        })();
-      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "vendors" }, () => refetch())
+      .on("postgres_changes", { event: "*", schema: "public", table: "packages" }, () => refetch())
+      .on("postgres_changes", { event: "*", schema: "public", table: "vendor_portfolio_items" }, () => refetch())
       .subscribe();
-    return () => { supabase.removeChannel(ch); };
-  }, [selectedServices]);
+    return () => {
+      supabase.removeChannel(ch);
+    };
+  }, [refetch]);
 
   const grouped = useMemo(() => {
     const out: Record<string, VendorOption[]> = {};
@@ -178,7 +250,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
           if (a.hasMatch !== b.hasMatch) return a.hasMatch ? -1 : 1;
           // 2) Then by quality score
           const score = (x: VendorOption) =>
-            (x.avg_rating * 20) + (x.completed_bookings * 2) + (x.verified ? 5 : 0);
+            x.avg_rating * 20 + x.completed_bookings * 2 + (x.verified ? 5 : 0);
           return score(b.v) - score(a.v);
         })
         .map((x) => x.v);
@@ -194,10 +266,20 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
     );
   }
 
+  // Strict gate: if the user landed here without picking services in step 2,
+  // send a clear prompt instead of showing an empty page.
   if (!selectedServices.length) {
     return (
-      <motion.div className="p-10 text-center text-foreground/60">
-        {t("wizard.vendors.noServices")}
+      <motion.div className="p-10 text-center">
+        <Alert className="mx-auto max-w-md border-primary/30 bg-primary/5 text-primary">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle className="font-arabic text-sm font-semibold">
+            {t("wizard.vendors.pickServicesFirstTitle")}
+          </AlertTitle>
+          <AlertDescription className="mt-1 text-xs text-foreground/70">
+            {t("wizard.vendors.noServices")}
+          </AlertDescription>
+        </Alert>
       </motion.div>
     );
   }
@@ -209,9 +291,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
   }[tier];
 
   // ---------------------------------------------------------------------------
-  // Running total + missing-category detection (Tasks 2 & 3).
-  // - runningTotal: sum of every selected package price (English numerals).
-  // - missingCats: services chosen earlier but with no provider pick yet.
+  // Running total + missing-category detection.
   // ---------------------------------------------------------------------------
   const pickedList = Object.values(picks);
   const runningTotal = pickedList.reduce((sum, p) => sum + Number(p.price ?? 0), 0);
@@ -235,7 +315,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         {t("wizard.vendors.filterAllInRange")} · {tierLabel}
       </div>
 
-      {/* Missing-category alert (Task 3) — one row per uncovered service. */}
+      {/* Missing-category alert — one row per uncovered service. */}
       {missingCats.length > 0 && (
         <Alert className="mt-5 border-destructive/40 bg-destructive/5 text-destructive">
           <AlertTriangle className="h-4 w-4" />
@@ -260,7 +340,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         </Alert>
       )}
 
-      <div className="mt-8 space-y-8">
+      <div className="mt-8 space-y-10">
         {selectedServices.map((cat) => {
           const Icon = ICONS[cat];
           const list = grouped[cat] ?? [];
@@ -268,13 +348,16 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
           const cap = allocations[cat] ?? 0;
           return (
             <section key={cat}>
-              <div className="mb-3 flex items-center gap-2">
-                <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary/10 text-primary">
+              <div className="mb-4 flex items-center gap-2">
+                <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary/10 text-primary">
                   <Icon className="h-4 w-4" />
                 </span>
                 <h4 className="font-arabic text-base font-semibold text-foreground">
                   {t(`wizard.services.${cat}`)}
                 </h4>
+                <span className="ms-1 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium tabular-nums text-foreground/60">
+                  {fmtNumber(list.length)}
+                </span>
                 {pick && <Badge className="ms-auto bg-primary/15 text-primary">{t("wizard.vendors.selected")}</Badge>}
               </div>
 
@@ -283,150 +366,199 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                   {t("wizard.vendors.empty")}
                 </div>
               ) : (
-                <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {list.map((v) => {
                     const vendorMatches = v.packages.some(
                       (p) => allowedPackageTiers.includes(p.tier) || (cap > 0 && Number(p.price) <= cap),
                     );
+                    const weekday = Number(v.weekday_price) || 0;
+                    const weekend = Number(v.weekend_price) || 0;
+                    const isHall = cat === "hall";
+
                     return (
-                      <div key={v.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="min-w-0 flex-1">
-                            <div className="flex flex-wrap items-center gap-1.5">
-                              <span className="font-arabic text-sm font-semibold text-foreground">{v.business_name}</span>
-                              {v.verified && <BadgeCheck className="h-3.5 w-3.5 text-primary" />}
-                              {vendorMatches && (
-                                <Badge className="ms-1 bg-primary text-primary-foreground hover:bg-primary/90">
-                                  <Sparkles className="me-1 h-3 w-3" />
-                                  {t("wizard.vendors.matchesBudget")}
-                                </Badge>
-                              )}
-                            </div>
-                            <div className="mt-1">
-                              <VendorRatingBadge avg={v.avg_rating} count={v.reviews_count} />
-                            </div>
-                            <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] tabular-nums text-foreground/55" dir="ltr">
-                              {v.city && <span className="inline-flex items-center gap-1 font-arabic"><MapPin className="h-3 w-3" />{v.city}</span>}
-                              {v.city && <span>•</span>}
-                              {(() => {
-                                // Fallback chain: starting_price → weekday_price → weekend_price.
-                                // If everything is missing/zero we show "Price upon request" so
-                                // newly-approved vendors without packages still look professional.
-                                const priceFrom = Number(v.starting_price) || Number(v.weekday_price) || Number(v.weekend_price) || 0;
-                                return priceFrom > 0 ? (
-                                  <span className="font-arabic">
-                                    <span className="text-foreground/55">{t("wizard.vendors.from")}</span>{" "}
-                                    <span className="font-semibold text-primary">{fmtNumber(priceFrom)}</span>{" "}
-                                    {t("common.currency")}
-                                  </span>
-                                ) : (
-                                  <span className="font-arabic font-medium text-primary">
-                                    {t("wizard.vendors.priceOnRequest")}
-                                  </span>
-                                );
-                              })()}
-                              {cat === "hall" && (Number(v.men_capacity ?? 0) > 0 || Number(v.women_capacity ?? 0) > 0) && (
-                                <>
-                                  <span>•</span>
-                                  {Number(v.men_capacity ?? 0) > 0 && (
-                                    <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-primary">
-                                      <Users className="h-3 w-3" />
-                                      <span className="font-semibold">{fmtNumber(Number(v.men_capacity))}</span>
-                                    </span>
-                                  )}
-                                  {Number(v.women_capacity ?? 0) > 0 && (
-                                    <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-primary">
-                                      <Users2 className="h-3 w-3" />
-                                      <span className="font-semibold">{fmtNumber(Number(v.women_capacity))}</span>
-                                    </span>
-                                  )}
-                                </>
+                      <div
+                        key={v.id}
+                        className={`overflow-hidden rounded-2xl border bg-card shadow-card transition-all ${
+                          pick?.vendorId === v.id
+                            ? "border-primary ring-1 ring-primary/30"
+                            : "border-border"
+                        }`}
+                      >
+                        {/* Visual media gallery — images + videos uploaded by vendor */}
+                        <VendorMediaCarousel items={v.media} vendorName={v.business_name} />
+
+                        <div className="p-4">
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="min-w-0 flex-1">
+                              <div className="flex flex-wrap items-center gap-1.5">
+                                <span className="font-arabic text-sm font-semibold text-foreground">
+                                  {v.business_name}
+                                </span>
+                                {v.verified && <BadgeCheck className="h-3.5 w-3.5 text-primary" />}
+                                {vendorMatches && (
+                                  <Badge className="ms-1 bg-primary text-primary-foreground hover:bg-primary/90">
+                                    <Sparkles className="me-1 h-3 w-3" />
+                                    {t("wizard.vendors.matchesBudget")}
+                                  </Badge>
+                                )}
+                              </div>
+                              <div className="mt-1">
+                                <VendorRatingBadge avg={v.avg_rating} count={v.reviews_count} />
+                              </div>
+                              {v.city && (
+                                <div className="mt-1 inline-flex items-center gap-1 font-arabic text-[11px] text-foreground/55">
+                                  <MapPin className="h-3 w-3" />
+                                  {v.city}
+                                </div>
                               )}
                             </div>
                           </div>
-                        </div>
 
-                        <div className="mt-3 grid grid-cols-1 gap-2">
-                          {v.packages.length === 0 && (
-                            // Vendor approved but hasn't published packages yet — show
-                            // a non-clickable "Price upon request" tile so the listing
-                            // never feels broken right after approval.
-                            <div className="flex items-center justify-between rounded-xl border border-dashed border-primary/30 bg-primary/[0.03] p-3 text-start">
-                              <div className="min-w-0">
-                                <div className="font-arabic text-sm font-medium text-foreground">
-                                  {t("wizard.vendors.priceOnRequest")}
+                          {/* Pricing & capacity grid — always Latin digits via fmtNumber */}
+                          <div className="mt-3 grid grid-cols-2 gap-2" dir="ltr">
+                            {weekday > 0 && (
+                              <div className="rounded-xl border border-border bg-background/50 p-2.5">
+                                <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-foreground/55">
+                                  <CalendarDays className="h-3 w-3" />
+                                  <span className="font-arabic">{t("wizard.vendors.weekdayPrice")}</span>
                                 </div>
-                                <div className="text-[11px] text-foreground/55">
-                                  {t("wizard.vendors.priceOnRequestDesc")}
+                                <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-foreground">
+                                  {fmtNumber(weekday)}{" "}
+                                  <span className="text-[11px] font-medium text-foreground/60">{t("common.currency")}</span>
                                 </div>
                               </div>
-                              <span className="ms-3 inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
-                                {t("wizard.vendors.contactSoon")}
-                              </span>
-                            </div>
-                          )}
-                          {v.packages.map((p) => {
-                            const isPicked = pick?.vendorId === v.id && pick?.packageId === p.id;
-                            const packageMatches =
-                              allowedPackageTiers.includes(p.tier) || (cap > 0 && Number(p.price) <= cap);
-                            return (
-                              <button
-                                key={p.id}
-                                type="button"
-                                onClick={() =>
-                                  setPick(
-                                    cat,
-                                    isPicked
-                                      ? null
-                                      : { vendorId: v.id, packageId: p.id, category: cat, price: Number(p.price) }
-                                  )
-                                }
-                                className={`flex items-center justify-between rounded-xl border p-3 text-start transition-all ${
-                                  isPicked
-                                    ? "border-primary bg-primary/5 shadow-soft"
-                                    : packageMatches
-                                      ? "border-primary/30 bg-primary/[0.03] hover:border-primary/60"
-                                      : "border-border bg-background hover:border-primary/40"
-                                }`}
-                              >
-                                <div className="min-w-0">
-                                  <div className="flex items-center gap-1.5">
-                                    <span className="font-arabic text-sm font-medium text-foreground">{p.name}</span>
-                                    {packageMatches && !isPicked && (
-                                      <span className="inline-flex items-center rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-medium text-primary">
-                                        {t("wizard.vendors.matchesBudget")}
-                                      </span>
-                                    )}
+                            )}
+                            {weekend > 0 && (
+                              <div className="rounded-xl border border-primary/25 bg-primary/[0.04] p-2.5">
+                                <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-primary">
+                                  <CalendarRange className="h-3 w-3" />
+                                  <span className="font-arabic">{t("wizard.vendors.weekendPrice")}</span>
+                                </div>
+                                <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-primary">
+                                  {fmtNumber(weekend)}{" "}
+                                  <span className="text-[11px] font-medium text-primary/70">{t("common.currency")}</span>
+                                </div>
+                              </div>
+                            )}
+                            {weekday === 0 && weekend === 0 && (
+                              <div className="col-span-2 rounded-xl border border-dashed border-primary/30 bg-primary/[0.03] p-2.5 text-center">
+                                <span className="font-arabic text-xs font-medium text-primary">
+                                  {t("wizard.vendors.priceOnRequest")}
+                                </span>
+                              </div>
+                            )}
+
+                            {/* Hall capacity tiles */}
+                            {isHall && (Number(v.men_capacity ?? 0) > 0 || Number(v.women_capacity ?? 0) > 0) && (
+                              <>
+                                {Number(v.men_capacity ?? 0) > 0 && (
+                                  <div className="rounded-xl border border-border bg-background/50 p-2.5">
+                                    <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-foreground/55">
+                                      <Users className="h-3 w-3" />
+                                      <span className="font-arabic">{t("wizard.vendors.menCapacity")}</span>
+                                    </div>
+                                    <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-foreground">
+                                      {fmtNumber(Number(v.men_capacity))}
+                                    </div>
                                   </div>
-                                  <div className="text-[11px] text-foreground/55 truncate">{p.description}</div>
+                                )}
+                                {Number(v.women_capacity ?? 0) > 0 && (
+                                  <div className="rounded-xl border border-border bg-background/50 p-2.5">
+                                    <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-foreground/55">
+                                      <Users2 className="h-3 w-3" />
+                                      <span className="font-arabic">{t("wizard.vendors.womenCapacity")}</span>
+                                    </div>
+                                    <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-foreground">
+                                      {fmtNumber(Number(v.women_capacity))}
+                                    </div>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </div>
+
+                          {/* Package picker / Add provider buttons */}
+                          <div className="mt-3 grid grid-cols-1 gap-2">
+                            {v.packages.length === 0 && (
+                              // Vendor approved but hasn't published packages yet — keep the
+                              // tile so the listing never feels broken right after approval.
+                              <div className="flex items-center justify-between rounded-xl border border-dashed border-primary/30 bg-primary/[0.03] p-3 text-start">
+                                <div className="min-w-0">
+                                  <div className="font-arabic text-sm font-medium text-foreground">
+                                    {t("wizard.vendors.priceOnRequest")}
+                                  </div>
+                                  <div className="text-[11px] text-foreground/55">
+                                    {t("wizard.vendors.priceOnRequestDesc")}
+                                  </div>
                                 </div>
-                                <div className="ms-3 flex flex-col items-end gap-1">
-                                  <span className="font-arabic text-sm font-semibold tabular-nums text-primary">
-                                    {fmtNumber(Number(p.price))} {t("common.currency")}
-                                  </span>
-                                  <span
-                                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors ${
+                                <span className="ms-3 inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                                  {t("wizard.vendors.contactSoon")}
+                                </span>
+                              </div>
+                            )}
+                            {v.packages.map((p) => {
+                              const isPicked = pick?.vendorId === v.id && pick?.packageId === p.id;
+                              const packageMatches =
+                                allowedPackageTiers.includes(p.tier) || (cap > 0 && Number(p.price) <= cap);
+                              return (
+                                <button
+                                  key={p.id}
+                                  type="button"
+                                  onClick={() =>
+                                    setPick(
+                                      cat,
                                       isPicked
-                                        ? "bg-primary text-primary-foreground"
-                                        : "bg-primary/10 text-primary"
-                                    }`}
-                                  >
-                                    {isPicked ? (
-                                      <>
-                                        <X className="h-3 w-3" />
-                                        {t("wizard.vendors.remove")}
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Plus className="h-3 w-3" />
-                                        {t("wizard.vendors.addProvider")}
-                                      </>
-                                    )}
-                                  </span>
-                                </div>
-                              </button>
-                            );
-                          })}
+                                        ? null
+                                        : { vendorId: v.id, packageId: p.id, category: cat, price: Number(p.price) },
+                                    )
+                                  }
+                                  className={`flex items-center justify-between rounded-xl border p-3 text-start transition-all ${
+                                    isPicked
+                                      ? "border-primary bg-primary/5 shadow-soft"
+                                      : packageMatches
+                                        ? "border-primary/30 bg-primary/[0.03] hover:border-primary/60"
+                                        : "border-border bg-background hover:border-primary/40"
+                                  }`}
+                                >
+                                  <div className="min-w-0">
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="font-arabic text-sm font-medium text-foreground">{p.name}</span>
+                                      {packageMatches && !isPicked && (
+                                        <span className="inline-flex items-center rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+                                          {t("wizard.vendors.matchesBudget")}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div className="truncate text-[11px] text-foreground/55">{p.description}</div>
+                                  </div>
+                                  <div className="ms-3 flex flex-col items-end gap-1">
+                                    <span className="font-arabic text-sm font-semibold tabular-nums text-primary">
+                                      {fmtNumber(Number(p.price))} {t("common.currency")}
+                                    </span>
+                                    <span
+                                      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors ${
+                                        isPicked
+                                          ? "bg-primary text-primary-foreground"
+                                          : "bg-primary/10 text-primary"
+                                      }`}
+                                    >
+                                      {isPicked ? (
+                                        <>
+                                          <X className="h-3 w-3" />
+                                          {t("wizard.vendors.remove")}
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Plus className="h-3 w-3" />
+                                          {t("wizard.vendors.addProvider")}
+                                        </>
+                                      )}
+                                    </span>
+                                  </div>
+                                </button>
+                              );
+                            })}
+                          </div>
                         </div>
                       </div>
                     );
@@ -438,7 +570,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         })}
       </div>
 
-      {/* Sticky running-total bar (Task 2) — always English numerals via fmtNumber. */}
+      {/* Sticky running-total bar — always English numerals via fmtNumber. */}
       <div className="sticky bottom-2 z-10 mt-8 rounded-2xl border border-primary/30 bg-card/95 p-4 shadow-luxury backdrop-blur">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-sm text-foreground/75">

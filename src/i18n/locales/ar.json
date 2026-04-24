@@ -158,7 +158,16 @@
       "allCovered": "ممتاز — كل خدمة اخترتها لديها مزوّد.",
       "priceOnRequest": "السعر عند الطلب",
       "priceOnRequestDesc": "تواصل مع المزوّد للحصول على عرض سعر مخصّص لمناسبتك.",
-      "contactSoon": "سنتواصل قريباً"
+      "contactSoon": "سنتواصل قريباً",
+      "weekdayPrice": "سعر أيام الأسبوع",
+      "weekendPrice": "سعر نهاية الأسبوع",
+      "menCapacity": "سعة الرجال",
+      "womenCapacity": "سعة النساء",
+      "noMedia": "لا توجد صور بعد",
+      "video": "فيديو",
+      "prevMedia": "السابق",
+      "nextMedia": "التالي",
+      "pickServicesFirstTitle": "اختر خدماتك أولاً"
     },
     "details": {
       "title": "تفاصيل المناسبة",
