@@ -180,16 +180,15 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
       description: description.trim() || null,
       price: numericPrice,
       includes,
-      // JSONB column — supabase-js serialises objects automatically.
-      // Cast to satisfy generated types.
-      media: media as unknown as object,
+      // JSONB column — cast our typed media array to the generated `Json` type.
+      media: media as unknown as import("@/integrations/supabase/types").Json,
       thumbnail_url: thumbnail ?? media.find((m) => m.type === "image")?.url ?? null,
       published,
     };
 
     const { error } = isEdit
       ? await supabase.from("platform_packages").update(payload).eq("id", pkg!.id)
-      : await supabase.from("platform_packages").insert({ ...payload, created_by: adminUserId });
+      : await supabase.from("platform_packages").insert([{ ...payload, created_by: adminUserId }]);
 
     setSaving(false);
     if (error) { toast.error(error.message); return; }
