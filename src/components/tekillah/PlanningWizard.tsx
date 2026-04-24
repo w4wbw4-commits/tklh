@@ -288,38 +288,67 @@ export const PlanningWizard = () => {
           <WizardVisual step={step} variant="header" />
         </div>
 
+        {/* Fast-Track ribbon — visible only when a package is selected so users
+            understand they're skipping vendor selection. */}
+        <AnimatePresence>
+          {isFastTrack && (
+            <motion.div
+              key="fast-track-ribbon"
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="mx-auto mt-8 flex max-w-3xl items-center justify-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-semibold text-primary"
+            >
+              <Zap className="h-3.5 w-3.5" strokeWidth={2.5} />
+              <span className="font-arabic">
+                {t("wizard.packageDetail.fastTrackBadge", { name: packageSelection!.name })}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Progress */}
         <div className="mx-auto mt-10 flex max-w-3xl items-center justify-between gap-2">
-          {stepLabels.map((label, i) => (
-            <div key={i} className="flex flex-1 items-center gap-2">
-              <div className="flex flex-col items-center">
-                <motion.div
-                  animate={{
-                    scale: i === step ? 1.05 : 1,
-                    backgroundColor:
-                      i <= step ? "hsl(var(--primary))" : "hsl(var(--secondary))",
-                  }}
-                  className="grid h-10 w-10 place-items-center rounded-full text-sm font-semibold text-primary-foreground transition-colors"
-                >
-                  {i < step ? <Check className="h-4 w-4" /> : i + 1}
-                </motion.div>
-                <span className="mt-2 hidden whitespace-nowrap text-xs font-medium text-foreground/80 sm:block">
-                  {label}
-                </span>
-              </div>
-              {i < stepLabels.length - 1 && (
-                <div className="relative h-px flex-1 bg-border">
+          {stepLabels.map((label, i) => {
+            const isLast = i === stepLabels.length - 1;
+            const isFastTrackBadge = isFastTrack && isLast;
+            return (
+              <div key={i} className="flex flex-1 items-center gap-2">
+                <div className="flex flex-col items-center">
                   <motion.div
-                    initial={false}
-                    animate={{ scaleX: i < step ? 1 : 0 }}
-                    style={{ originX: isAr ? 1 : 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="absolute inset-0 bg-primary"
-                  />
+                    animate={{
+                      scale: i === step ? 1.05 : 1,
+                      backgroundColor:
+                        i <= step ? "hsl(var(--primary))" : "hsl(var(--secondary))",
+                    }}
+                    className="grid h-10 w-10 place-items-center rounded-full text-sm font-semibold text-primary-foreground transition-colors"
+                  >
+                    {isFastTrackBadge ? (
+                      <Zap className="h-4 w-4" strokeWidth={2.5} />
+                    ) : i < step ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      i + 1
+                    )}
+                  </motion.div>
+                  <span className="mt-2 hidden whitespace-nowrap text-xs font-medium text-foreground/80 sm:block">
+                    {label}
+                  </span>
                 </div>
-              )}
-            </div>
-          ))}
+                {i < stepLabels.length - 1 && (
+                  <div className="relative h-px flex-1 bg-border">
+                    <motion.div
+                      initial={false}
+                      animate={{ scaleX: i < step ? 1 : 0 }}
+                      style={{ originX: isAr ? 1 : 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="absolute inset-0 bg-primary"
+                    />
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Side-by-side visual + form on desktop */}
