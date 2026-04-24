@@ -184,6 +184,18 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
     setPortfolioUrls((prev) => prev.filter((u) => u !== url));
   };
 
+  // Move an image one position left/right within the gallery so the admin can
+  // reorder which photo appears first on the public profile.
+  const moveImage = (index: number, dir: -1 | 1) => {
+    setPortfolioUrls((prev) => {
+      const next = [...prev];
+      const target = index + dir;
+      if (target < 0 || target >= next.length) return prev;
+      [next[index], next[target]] = [next[target], next[index]];
+      return next;
+    });
+  };
+
   // Upload promo video file via XHR so we can show real progress.
   const handleUploadVideo = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
