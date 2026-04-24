@@ -184,6 +184,114 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
     setPortfolioUrls((prev) => prev.filter((u) => u !== url));
   };
 
+  // Upload promo video file via XHR so we can show real progress.
+  const handleUploadVideo = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file || !vendor) return;
+    if (file.size > MAX_VIDEO_BYTES) {
+      toast.error(t("admin.vendors.videoTooLarge"));
+      return;
+    }
+    setVideoSize(file.size);
+    setVideoUploading(true);
+    setVideoProgress(0);
+
+    const duration = await probeVideoDuration(file);
+    const path = `${vendor.user_id}/promo-${Date.now()}-${sanitize(file.name)}`;
+    const { data: sessionData } = await supabase.auth.getSession();
+    const token = sessionData.session?.access_token;
+    const apikey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
+    const baseUrl = import.meta.env.VITE_SUPABASE_URL as string;
+    const uploadUrl = `${baseUrl}/storage/v1/object/vendor-portfolios/${path}`;
+
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhrRef.current = xhr;
+        xhr.open("POST", uploadUrl);
+        xhr.setRequestHeader("Authorization", `Bearer ${token ?? apikey}`);
+        xhr.setRequestHeader("apikey", apikey);
+        xhr.setRequestHeader("x-upsert", "true");
+        xhr.setRequestHeader("Content-Type", file.type || "video/mp4");
+        xhr.upload.onprogress = (ev) => {
+          if (ev.lengthComputable) {
+            setVideoProgress(Math.round((ev.loaded / ev.total) * 100));
+          }
+        };
+        xhr.onload = () => (xhr.status >= 200 && xhr.status < 300 ? resolve() : reject(new Error(xhr.responseText)));
+        xhr.onerror = () => reject(new Error("Upload failed"));
+        xhr.send(file);
+      });
+
+      const { data: pub } = supabase.storage.from("vendor-portfolios").getPublicUrl(path);
+      await persistVideo(pub.publicUrl, duration > 0 ? duration : null);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setVideoUploading(false);
+      xhrRef.current = null;
+    }
+  };
+
+  // Save a video link (YouTube/Vimeo/MP4) without uploading.
+  const handleSaveVideoUrl = async () => {
+    if (!vendor) return;
+    const trimmed = videoUrlInput.trim();
+    if (!isValidVideoUrl(trimmed)) {
+      toast.error(t("admin.vendors.videoInvalidUrl"));
+      return;
+    }
+    await persistVideo(trimmed, null);
+  };
+
+  // Replace any existing promo video for this vendor with the given URL.
+  const persistVideo = async (url: string, duration: number | null) => {
+    if (!vendor) return;
+    // Remove old video rows first so we always keep a single promo video.
+    await supabase
+      .from("vendor_portfolio_items")
+      .delete()
+      .eq("vendor_id", vendor.id)
+      .eq("media_type", "video");
+
+    const { data, error } = await supabase
+      .from("vendor_portfolio_items")
+      .insert({
+        vendor_id: vendor.id,
+        url,
+        media_type: "video",
+        duration_seconds: duration,
+        sort_order: 0,
+      })
+      .select("id, url, duration_seconds, caption")
+      .maybeSingle();
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setVideo(data as VideoItem);
+    setVideoUrlInput("");
+    toast.success(t("admin.vendors.videoSaved"));
+  };
+
+  const handleRemoveVideo = async () => {
+    if (!vendor || !video) return;
+    const { error } = await supabase
+      .from("vendor_portfolio_items")
+      .delete()
+      .eq("id", video.id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setVideo(null);
+    setVideoSize(null);
+    setVideoProgress(0);
+    toast.success(t("admin.vendors.videoRemoved"));
+  };
+
   const handleSave = async () => {
     if (!vendor) return;
     if (!businessName.trim()) { toast.error("Name required"); return; }
