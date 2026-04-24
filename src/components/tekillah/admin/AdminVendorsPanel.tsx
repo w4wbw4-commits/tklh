@@ -388,3 +388,89 @@ const HideDialog = ({ onConfirm }: { onConfirm: (hiddenUntilIso: string | null) 
     </Dialog>
   );
 };
+
+// Confirmation dialog for permanent vendor deletion. Requires the admin to
+// tick a confirmation checkbox before the destructive action is enabled, to
+// avoid accidental clicks. The actual cascade delete lives in the parent.
+const DeleteVendorDialog = ({
+  vendorName,
+  onConfirm,
+}: {
+  vendorName: string;
+  onConfirm: () => Promise<void>;
+}) => {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
+  const [busy, setBusy] = useState(false);
+
+  const reset = () => { setConfirmed(false); setBusy(false); };
+
+  const handleDelete = async () => {
+    setBusy(true);
+    try {
+      await onConfirm();
+      setOpen(false);
+      reset();
+    } catch {
+      // toast already shown by parent
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) reset(); }}>
+      <DialogTrigger asChild>
+        <Button
+          size="sm"
+          variant="outline"
+          className="rounded-full border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
+        >
+          <Trash2 className="me-1.5 h-3.5 w-3.5" />
+          {t("admin.vendors.delete")}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle className="font-arabic text-destructive">
+            {t("admin.vendors.deleteDialogTitle")}
+          </DialogTitle>
+          <DialogDescription className="font-arabic">
+            {t("admin.vendors.deleteDialogDesc")}
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-3 text-sm text-foreground">
+          <span className="font-arabic font-semibold">{vendorName}</span>
+        </div>
+
+        <label className="flex items-start gap-2 rounded-xl border border-border bg-background p-3 cursor-pointer">
+          <Checkbox
+            checked={confirmed}
+            onCheckedChange={(c) => setConfirmed(c === true)}
+            className="mt-0.5"
+          />
+          <span className="font-arabic text-sm text-foreground/80">
+            {t("admin.vendors.deleteConfirmLabel")}
+          </span>
+        </label>
+
+        <DialogFooter>
+          <Button variant="ghost" onClick={() => setOpen(false)} className="rounded-full" disabled={busy}>
+            {t("common.cancel")}
+          </Button>
+          <Button
+            onClick={handleDelete}
+            disabled={!confirmed || busy}
+            variant="destructive"
+            className="rounded-full"
+          >
+            {busy
+              ? <><Loader2 className="me-1.5 h-3.5 w-3.5 animate-spin" />{t("admin.vendors.deleting")}</>
+              : <><Trash2 className="me-1.5 h-3.5 w-3.5" />{t("admin.vendors.deleteConfirm")}</>}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
