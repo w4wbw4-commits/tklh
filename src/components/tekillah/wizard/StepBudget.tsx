@@ -1,9 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { PackageCheck, Calculator, Sparkles, AlertTriangle, TrendingUp, Users, Gem, Check } from "lucide-react";
+import { Sparkles, AlertTriangle, TrendingUp, Users, Gem } from "lucide-react";
 import {
   allocationCatalog,
   realisticMinimum,
@@ -97,9 +97,8 @@ export const StepBudget = ({
       <p className="mt-2 text-sm text-foreground/70">{t("wizard.budget.desc")}</p>
 
       {/* Smart Budget is the only planning mode now — keeps the flow focused
-          on personalised "تنسيق خاص" planning. The packages alternative was
-          removed; ready-made packages live on the home page instead. */}
-      {budgetMode !== "smart" && setBudgetMode("smart")}
+          on personalised "تنسيق خاص" planning. Ready-made packages live on
+          the home page instead and bypass the wizard entirely. */}
 
       <motion.div
         key="smart"
