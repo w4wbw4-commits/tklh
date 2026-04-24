@@ -77,7 +77,7 @@ export const PlatformPackages = () => {
           transition={{ duration: 0.7 }}
           className="text-center"
         >
-          <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
+          <span className="font-arabic text-xs font-semibold uppercase tracking-[0.3em] text-[hsl(82_39%_30%)]">
             {t("platformPackages.sectionKicker")}
           </span>
           <h2 className="mt-4 font-arabic text-balance text-3xl font-semibold text-foreground sm:text-4xl">
