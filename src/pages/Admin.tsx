@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   Loader2, ShieldAlert, Wallet, TrendingUp, Lock, ListChecks,
   CheckCircle2, LogOut, Receipt, Star, Flag, ShieldCheck, Percent, HandCoins, Inbox,
-  AlertTriangle, AlertOctagon, Briefcase, PackageOpen,
+  AlertTriangle, AlertOctagon, Briefcase, PackageOpen, Hourglass,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
@@ -29,6 +29,7 @@ import { AdminIncidentReports } from "@/components/tekillah/admin/AdminIncidentR
 import { AdminAddVendorDialog } from "@/components/tekillah/admin/AdminAddVendorDialog";
 import { AdminVendorsPanel } from "@/components/tekillah/admin/AdminVendorsPanel";
 import { AdminPackagesPanel } from "@/components/tekillah/admin/AdminPackagesPanel";
+import { AdminPendingBookings } from "@/components/tekillah/admin/AdminPendingBookings";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 
 // Primary admin: phone +966554430196 → synthetic email used by phone-OTP login.
