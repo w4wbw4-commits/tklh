@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Loader2, Save, ImagePlus, X, Film, Link2, Trash2, Play } from "lucide-react";
+import { Loader2, Save, ImagePlus, X, Film, Link2, Trash2, Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { fmtNumber } from "@/i18n/format";
 
@@ -182,6 +182,18 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
 
   const removeImage = (url: string) => {
     setPortfolioUrls((prev) => prev.filter((u) => u !== url));
+  };
+
+  // Move an image one position left/right within the gallery so the admin can
+  // reorder which photo appears first on the public profile.
+  const moveImage = (index: number, dir: -1 | 1) => {
+    setPortfolioUrls((prev) => {
+      const next = [...prev];
+      const target = index + dir;
+      if (target < 0 || target >= next.length) return prev;
+      [next[index], next[target]] = [next[target], next[index]];
+      return next;
+    });
   };
 
   // Upload promo video file via XHR so we can show real progress.
@@ -517,21 +529,54 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
                 </span>
               )}
               {portfolioUrls.length > 0 && (
-                <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-                  {portfolioUrls.map((url) => (
-                    <div key={url} className="group relative aspect-square overflow-hidden rounded-xl border border-border bg-secondary">
-                      <img src={url} alt="" className="h-full w-full object-cover" />
-                      <button
-                        type="button"
-                        onClick={() => removeImage(url)}
-                        className="absolute end-1 top-1 grid h-7 w-7 place-items-center rounded-full bg-destructive text-destructive-foreground opacity-0 transition group-hover:opacity-100"
-                        aria-label="remove"
-                      >
-                        <X className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
+                <>
+                  <p className="font-arabic text-xs text-foreground/60">
+                    {t("admin.vendors.reorderHint")}
+                  </p>
+                  <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+                    {portfolioUrls.map((url, idx) => (
+                      <div key={url} className="group relative aspect-square overflow-hidden rounded-xl border border-border bg-secondary">
+                        <img src={url} alt="" className="h-full w-full object-cover" />
+                        {/* Order badge — first image is the public cover */}
+                        <span
+                          className="absolute start-1 top-1 grid h-6 min-w-[1.5rem] place-items-center rounded-full bg-primary px-1.5 text-[10px] font-semibold text-primary-foreground tabular-nums shadow-card"
+                          dir="ltr"
+                        >
+                          {fmtNumber(idx + 1)}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => removeImage(url)}
+                          className="absolute end-1 top-1 grid h-7 w-7 place-items-center rounded-full bg-destructive text-destructive-foreground opacity-0 transition group-hover:opacity-100"
+                          aria-label={t("admin.vendors.removeImage")}
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
+                        {/* Reorder arrows pinned to bottom — visible on hover/touch */}
+                        <div className="absolute inset-x-1 bottom-1 flex items-center justify-between gap-1 opacity-0 transition group-hover:opacity-100 focus-within:opacity-100">
+                          <button
+                            type="button"
+                            onClick={() => moveImage(idx, -1)}
+                            disabled={idx === 0}
+                            className="grid h-7 w-7 place-items-center rounded-full bg-background/90 text-foreground shadow-card transition hover:bg-primary hover:text-primary-foreground disabled:opacity-40 disabled:hover:bg-background/90 disabled:hover:text-foreground"
+                            aria-label={t("admin.vendors.moveLeft")}
+                          >
+                            <ChevronLeft className="h-3.5 w-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => moveImage(idx, 1)}
+                            disabled={idx === portfolioUrls.length - 1}
+                            className="grid h-7 w-7 place-items-center rounded-full bg-background/90 text-foreground shadow-card transition hover:bg-primary hover:text-primary-foreground disabled:opacity-40 disabled:hover:bg-background/90 disabled:hover:text-foreground"
+                            aria-label={t("admin.vendors.moveRight")}
+                          >
+                            <ChevronRight className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           </div>
