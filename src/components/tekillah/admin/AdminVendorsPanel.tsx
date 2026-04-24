@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Loader2, Eye, EyeOff, CalendarIcon, ShieldCheck, Briefcase } from "lucide-react";
+import { Loader2, Eye, EyeOff, CalendarIcon, ShieldCheck, Briefcase, Pencil } from "lucide-react";
 import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
