@@ -361,6 +361,10 @@ const Admin = () => {
               <AdminReviewsPanel />
             </TabsContent>
 
+            <TabsContent value="packages" className="mt-6">
+              <AdminPackagesPanel />
+            </TabsContent>
+
             <TabsContent value="moderation" className="mt-6">
               <AdminModerationQueue />
             </TabsContent>
