@@ -37,6 +37,7 @@ const ICONS: Record<ServiceKey, typeof Building2> = {
 export interface VendorOption {
   id: string;
   business_name: string;
+  bio: string | null;
   category: ServiceKey;
   city: string | null;
   starting_price: number;
@@ -67,6 +68,12 @@ interface Props {
   budget: number;
   /** Per-category caps used for "Matches your budget" tagging. */
   allocations: Record<ServiceKey, number>;
+  /**
+   * One-click "احجز" — selects this vendor (using the cheapest available
+   * package, or a synthetic on-request entry) and advances the wizard to
+   * the confirmation/checkout step.
+   */
+  onBookNow?: (pick: VendorPick) => void;
 }
 
 // Matches the package_tier enum on the DB. Indexed by total-budget tier.
