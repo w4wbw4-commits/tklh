@@ -127,18 +127,31 @@ export const StepPackageDetail = ({ selection, onConfirm, submitting, onChangePa
       {/* Visual gallery */}
       <div className="mt-6 overflow-hidden rounded-3xl border border-border bg-secondary/40 shadow-card">
         <div className="relative aspect-[16/9] w-full bg-secondary">
-          {gallery.map((src, i) => (
-            <motion.img
-              key={src}
-              src={src}
-              alt={`${selection.name} — ${i + 1}`}
-              loading="lazy"
+          {gallery.map((m, i) => (
+            <motion.div
+              key={m.url}
               initial={false}
               animate={{ opacity: i === active ? 1 : 0 }}
               transition={{ duration: 0.5 }}
-              className="absolute inset-0 h-full w-full object-cover"
-              draggable={false}
-            />
+              className="absolute inset-0 h-full w-full"
+            >
+              {m.type === "video" ? (
+                <video
+                  src={m.url}
+                  controls={i === active}
+                  className="h-full w-full object-cover"
+                  preload="metadata"
+                />
+              ) : (
+                <img
+                  src={m.url}
+                  alt={`${selection.name} — ${i + 1}`}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                  draggable={false}
+                />
+              )}
+            </motion.div>
           ))}
 
           {gallery.length > 1 && (
@@ -179,16 +192,22 @@ export const StepPackageDetail = ({ selection, onConfirm, submitting, onChangePa
 
         {/* Thumbnail strip */}
         <div className="hide-scrollbar flex gap-2 overflow-x-auto p-3">
-          {gallery.map((src, i) => (
+          {gallery.map((m, i) => (
             <button
-              key={src}
+              key={m.url}
               type="button"
               onClick={() => setActive(i)}
               className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-lg border transition ${
                 i === active ? "border-primary ring-2 ring-primary/40" : "border-border opacity-80 hover:opacity-100"
               }`}
             >
-              <img src={src} alt="" loading="lazy" className="h-full w-full object-cover" />
+              {m.type === "video" ? (
+                <div className="grid h-full w-full place-items-center bg-black/60">
+                  <Play className="h-4 w-4 text-primary-foreground" />
+                </div>
+              ) : (
+                <img src={m.url} alt="" loading="lazy" className="h-full w-full object-cover" />
+              )}
             </button>
           ))}
         </div>
