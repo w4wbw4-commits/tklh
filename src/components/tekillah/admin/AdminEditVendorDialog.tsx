@@ -374,6 +374,117 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
               </div>
             </div>
 
+            {/* Promo Video — single video per vendor, file upload OR external link */}
+            <div className="space-y-3 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.04] to-transparent p-4">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Film className="h-4 w-4 text-primary" />
+                  <Label className="font-arabic text-base">{t("admin.vendors.promoVideo")}</Label>
+                </div>
+                {video && (
+                  <button
+                    type="button"
+                    onClick={handleRemoveVideo}
+                    className="inline-flex items-center gap-1 rounded-full border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs text-destructive hover:bg-destructive/20"
+                  >
+                    <Trash2 className="h-3 w-3" />
+                    <span className="font-arabic">{t("admin.vendors.removeVideo")}</span>
+                  </button>
+                )}
+              </div>
+
+              <p className="font-arabic text-xs text-foreground/65">{t("admin.vendors.promoVideoHint")}</p>
+
+              {/* Live preview thumbnail */}
+              {video && (
+                <div className="relative overflow-hidden rounded-xl border border-border bg-black">
+                  {/\.(mp4|mov|webm|m4v)(\?|$)/i.test(video.url) || video.url.includes(".supabase.co") ? (
+                    <video
+                      key={video.url}
+                      src={video.url}
+                      controls
+                      preload="metadata"
+                      playsInline
+                      className="aspect-video w-full bg-black object-contain"
+                    />
+                  ) : (
+                    <a
+                      href={video.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group relative grid aspect-video w-full place-items-center bg-gradient-to-br from-primary/10 to-black text-primary"
+                    >
+                      <span className="grid h-12 w-12 place-items-center rounded-full bg-primary/90 text-primary-foreground shadow-luxury transition group-hover:scale-105">
+                        <Play className="h-5 w-5" />
+                      </span>
+                      <span className="absolute bottom-2 start-2 max-w-[80%] truncate rounded-md bg-background/85 px-2 py-1 text-[10px] text-foreground" dir="ltr">
+                        {video.url}
+                      </span>
+                    </a>
+                  )}
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-border bg-card px-3 py-2 text-xs text-foreground/70">
+                    <span className="font-arabic">
+                      {t("admin.vendors.videoDuration")}: <span className="tabular-nums" dir="ltr">{fmtDuration(video.duration_seconds)}</span>
+                    </span>
+                    {videoSize && (
+                      <span className="font-arabic">
+                        {t("admin.vendors.videoSize")}: <span className="tabular-nums" dir="ltr">{fmtBytes(videoSize)}</span>
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Upload progress */}
+              {videoUploading && (
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-xs text-foreground/70">
+                    <span className="inline-flex items-center gap-1.5 font-arabic">
+                      <Loader2 className="h-3 w-3 animate-spin text-primary" />
+                      {t("admin.vendors.uploadingVideo")}
+                    </span>
+                    <span className="tabular-nums" dir="ltr">{fmtNumber(videoProgress)}%</span>
+                  </div>
+                  <Progress value={videoProgress} className="h-2" />
+                </div>
+              )}
+
+              {/* Upload + URL controls */}
+              <div className="grid gap-3 sm:grid-cols-[auto_1fr_auto]">
+                <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-primary/30 bg-primary/10 px-3 py-2 text-xs font-medium text-primary hover:bg-primary/20">
+                  <Film className="h-3.5 w-3.5" />
+                  <span className="font-arabic">{t("admin.vendors.uploadVideo")}</span>
+                  <input
+                    type="file"
+                    accept="video/mp4,video/quicktime,video/webm"
+                    className="hidden"
+                    onChange={handleUploadVideo}
+                    disabled={videoUploading}
+                  />
+                </label>
+                <div className="relative">
+                  <Link2 className="pointer-events-none absolute start-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-foreground/40" />
+                  <Input
+                    value={videoUrlInput}
+                    onChange={(e) => setVideoUrlInput(e.target.value)}
+                    placeholder={t("admin.vendors.videoUrlPlaceholder")}
+                    dir="ltr"
+                    className="ps-8 text-xs"
+                    disabled={videoUploading}
+                  />
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSaveVideoUrl}
+                  disabled={!videoUrlInput.trim() || videoUploading}
+                  className="font-arabic"
+                >
+                  {t("admin.vendors.saveVideoUrl")}
+                </Button>
+              </div>
+            </div>
             {isVenue && (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
