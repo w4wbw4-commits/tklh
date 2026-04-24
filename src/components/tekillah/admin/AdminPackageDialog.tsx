@@ -214,6 +214,7 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
       toast.error(t("admin.packages.form.validation.includesRequired")); return;
     }
 
+    setSaving(true);
     // Normalize slots: drop empty/zero rows
     const cleanSlots = slots
       .filter((s) => s.category && s.count > 0)
