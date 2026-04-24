@@ -115,15 +115,32 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
   const [womenCapacity, setWomenCapacity] = useState<number | "">("");
   const [portfolioUrls, setPortfolioUrls] = useState<string[]>([]);
 
+  // Promo video state
+  const [video, setVideo] = useState<VideoItem | null>(null);
+  const [videoUrlInput, setVideoUrlInput] = useState("");
+  const [videoUploading, setVideoUploading] = useState(false);
+  const [videoProgress, setVideoProgress] = useState(0);
+  const [videoSize, setVideoSize] = useState<number | null>(null);
+  const xhrRef = useRef<XMLHttpRequest | null>(null);
+
   useEffect(() => {
     if (!open || !vendorId) return;
     (async () => {
       setLoading(true);
-      const { data } = await supabase
-        .from("vendors")
-        .select("id, user_id, business_name, category, bio, city, phone, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, portfolio_urls")
-        .eq("id", vendorId)
-        .maybeSingle();
+      const [{ data }, { data: videoRows }] = await Promise.all([
+        supabase
+          .from("vendors")
+          .select("id, user_id, business_name, category, bio, city, phone, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, portfolio_urls")
+          .eq("id", vendorId)
+          .maybeSingle(),
+        supabase
+          .from("vendor_portfolio_items")
+          .select("id, url, duration_seconds, caption")
+          .eq("vendor_id", vendorId)
+          .eq("media_type", "video")
+          .order("created_at", { ascending: false })
+          .limit(1),
+      ]);
       if (data) {
         const v = data as VendorEditRow;
         setVendor(v);
@@ -138,6 +155,11 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         setWomenCapacity(v.women_capacity ?? "");
         setPortfolioUrls(v.portfolio_urls ?? []);
       }
+      const existing = videoRows?.[0];
+      setVideo(existing ? (existing as VideoItem) : null);
+      setVideoUrlInput("");
+      setVideoSize(null);
+      setVideoProgress(0);
       setLoading(false);
     })();
   }, [open, vendorId]);
