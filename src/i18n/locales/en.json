@@ -1168,7 +1168,13 @@
         "deleted": "Package deleted",
         "tooManyImages": "You can upload up to 12 images",
         "videoExists": "Only one video allowed — remove the existing one first",
-        "fileTooLarge": "File too large (max 25 MB)"
+        "fileTooLarge": "File too large (max 25 MB)",
+        "slots": "Slots (vendors needed)",
+        "slotsHint": "Define which service categories and how many vendors of each (e.g. 1 hall + 1 photographer).",
+        "addSlot": "Add slot",
+        "eligibleVendors": "Eligible vendors for this package",
+        "eligibleVendorsHint": "Pick the vendors the system can auto-assign when this package is booked.",
+        "noVendors": "No approved vendors yet."
       }
     }
   },
