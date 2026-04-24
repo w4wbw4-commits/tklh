@@ -165,6 +165,66 @@ export const PlanningWizard = () => {
     else if (snap.selected?.length) setStep(1);
   }, []);
 
+  // ---------------------------------------------------------------------------
+  // Fast-track from URL: when the home-page PlatformPackages section sends the
+  // user here with `?pkg=<id>`, fetch the admin package and jump straight to
+  // the package detail step. Also re-runs on hashchange so in-page navigations
+  // (no full reload) still trigger the lookup.
+  // ---------------------------------------------------------------------------
+  useEffect(() => {
+    const consumePkgParam = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const pkgId = params.get("pkg");
+      if (!pkgId) return;
+
+      // UUID sanity check — keeps malformed query strings from hitting Supabase.
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(pkgId);
+      if (!isUuid) return;
+
+      const { data, error } = await supabase
+        .from("platform_packages")
+        .select("id, name, price, includes, media, thumbnail_url, published")
+        .eq("id", pkgId)
+        .maybeSingle();
+
+      if (error || !data || data.published === false) return;
+
+      const mediaArr = Array.isArray(data.media)
+        ? (data.media as Array<{ url: string; type: "image" | "video" }>)
+        : [];
+
+      setPackageSelection({
+        key: data.id,
+        kind: "admin",
+        name: data.name,
+        price: Number(data.price),
+        includes: Array.isArray(data.includes) ? data.includes : [],
+        media: mediaArr,
+        thumbnail: data.thumbnail_url ?? null,
+      });
+      setBudget(Number(data.price));
+      setBudgetMode("packages");
+      setPicks({}); // Fast-track is curated — no manual vendor picks.
+      setStep(4);
+
+      // Strip the param so refreshes don't re-toast / re-jump.
+      const url = new URL(window.location.href);
+      url.searchParams.delete("pkg");
+      window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+
+      // Smooth-scroll the wizard into view for a polished hand-off from the
+      // landing page card.
+      requestAnimationFrame(() => {
+        document.getElementById("wizard")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    };
+    consumePkgParam();
+    const onHash = () => { consumePkgParam(); };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Persist a snapshot on every meaningful change. Cheap — JSON of <3KB.
   useEffect(() => {
     if (!hydratedRef.current) return;

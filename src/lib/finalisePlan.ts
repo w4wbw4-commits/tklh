@@ -40,6 +40,11 @@ export const finalisePlan = async ({
     : null;
   const composedNotes = [pkgTag, visionNote].filter(Boolean).join("\n") || null;
 
+  // Only forward platform_package_id when the user actually picked an
+  // admin-curated package (kind === "admin"); curated tier keys are not UUIDs.
+  const platformPackageId =
+    plan.packageSelection?.kind === "admin" ? plan.packageSelection.key : null;
+
   const { data: ev, error: evErr } = await supabase.from("events").insert({
     customer_id: userId,
     title: plan.eventType
@@ -51,6 +56,7 @@ export const finalisePlan = async ({
     total_budget: plan.packageSelection?.price ?? plan.budget,
     theme: plan.selectedChips?.[0] || plan.packageSelection?.name || null,
     notes: composedNotes,
+    platform_package_id: platformPackageId,
   }).select("id").single();
 
   if (evErr || !ev) throw new Error(evErr?.message ?? "event_insert_failed");
@@ -65,6 +71,7 @@ export const finalisePlan = async ({
     vendor_id: p.vendorId,
     // packageId is null for "Book Now" custom-quote flow.
     package_id: p.packageId ?? null,
+    platform_package_id: platformPackageId,
     event_id: ev.id,
     event_date: plan.date,
     guest_count: guests,
