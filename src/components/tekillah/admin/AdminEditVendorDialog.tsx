@@ -43,7 +43,58 @@ interface Props {
   onSaved?: () => void;
 }
 
+interface VideoItem {
+  id: string;
+  url: string;
+  duration_seconds: number | null;
+  caption: string | null;
+}
+
+const MAX_VIDEO_BYTES = 100 * 1024 * 1024; // 100 MB
+
 const sanitize = (n: string) => n.replace(/[^a-zA-Z0-9._-]+/g, "-").slice(-60);
+
+const fmtBytes = (bytes: number) => {
+  if (!bytes) return "0 KB";
+  const mb = bytes / (1024 * 1024);
+  if (mb >= 1) return `${fmtNumber(Math.round(mb * 10) / 10 as unknown as number)} MB`;
+  const kb = Math.round(bytes / 1024);
+  return `${fmtNumber(kb)} KB`;
+};
+
+const fmtDuration = (sec: number | null) => {
+  if (!sec || !isFinite(sec)) return "—";
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${fmtNumber(m)}:${String(s).padStart(2, "0")}`;
+};
+
+const probeVideoDuration = (file: File): Promise<number> =>
+  new Promise((resolve) => {
+    try {
+      const v = document.createElement("video");
+      v.preload = "metadata";
+      v.onloadedmetadata = () => resolve(v.duration || 0);
+      v.onerror = () => resolve(0);
+      v.src = URL.createObjectURL(file);
+    } catch {
+      resolve(0);
+    }
+  });
+
+const isValidVideoUrl = (raw: string) => {
+  try {
+    const u = new URL(raw.trim());
+    if (!/^https?:$/.test(u.protocol)) return false;
+    const host = u.hostname.toLowerCase();
+    if (host.includes("youtube.com") || host === "youtu.be" || host.includes("vimeo.com")) return true;
+    if (/\.(mp4|mov|webm|m4v)(\?|$)/i.test(u.pathname)) return true;
+    // Allow general cloud storage URLs (S3, Supabase, etc.)
+    return host.endsWith(".amazonaws.com") || host.endsWith(".supabase.co") || host.endsWith(".cloudfront.net");
+  } catch {
+    return false;
+  }
+};
 
 export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }: Props) => {
   const { t } = useTranslation();
