@@ -193,7 +193,10 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
     }
     setSaving(false);
     if (result.error) { toast.error(result.error.message); return; }
-    toast.success("تم حفظ الملف وأُرسل للمراجعة");
+    toast.success("تم استلام معلوماتك — جاري المراجعة من قِبل الإدارة", {
+      description: "سنخبرك فور صدور القرار. يمكنك متابعة الحالة من هذه الصفحة.",
+      duration: 6000,
+    });
     onSaved(result.data as VendorRow);
   };
 

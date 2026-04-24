@@ -419,10 +419,9 @@
     "subtitleNamed": "Manage your profile, calendar, packages and notifications in one place.",
     "subtitle": "Complete your business profile to start receiving customer requests.",
     "tabs": {
-      "profile": "Profile",
+      "profile": "Venue details",
       "financials": "Financials",
       "calendar": "Calendar",
-      "packages": "Packages",
       "bookings": "Bookings",
       "reviews": "Reviews",
       "notifications": "Notifications"
