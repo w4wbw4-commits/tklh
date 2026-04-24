@@ -96,43 +96,17 @@ export const StepBudget = ({
       <h3 className="font-arabic text-2xl font-semibold text-foreground">{t("wizard.budget.title")}</h3>
       <p className="mt-2 text-sm text-foreground/70">{t("wizard.budget.desc")}</p>
 
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {[
-          { key: "packages" as const, icon: PackageCheck, title: t("wizard.budget.packagesTitle"), desc: t("wizard.budget.packagesDesc") },
-          { key: "smart" as const, icon: Calculator, title: t("wizard.budget.smartTitle"), desc: t("wizard.budget.smartDesc") },
-        ].map((opt) => {
-          const isOn = budgetMode === opt.key;
-          return (
-            <motion.button
-              key={opt.key}
-              whileHover={{ y: -3 }}
-              onClick={() => setBudgetMode(opt.key)}
-              className={`rounded-2xl border p-6 text-start transition-all ${
-                isOn ? "border-primary bg-primary/5 shadow-soft" : "border-border bg-card hover:border-primary/40"
-              }`}
-            >
-              <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl ${
-                isOn ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"
-              }`}>
-                <opt.icon className="h-5 w-5" strokeWidth={1.6} />
-              </div>
-              <div className="font-arabic text-lg font-semibold text-foreground">{opt.title}</div>
-              <div className="mt-1 text-sm text-foreground/65">{opt.desc}</div>
-            </motion.button>
-          );
-        })}
-      </div>
+      {/* Smart Budget is the only planning mode now — keeps the flow focused
+          on personalised "تنسيق خاص" planning. The packages alternative was
+          removed; ready-made packages live on the home page instead. */}
+      {budgetMode !== "smart" && setBudgetMode("smart")}
 
-      <AnimatePresence mode="wait">
-        {budgetMode === "smart" && (
-          <motion.div
-            key="smart"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.4 }}
-            className="overflow-hidden"
-          >
+      <motion.div
+        key="smart"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
             <div className="mt-8 rounded-3xl border border-border bg-card p-6 shadow-card">
               <div className="flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
                 <div>
