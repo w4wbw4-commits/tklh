@@ -167,7 +167,10 @@
       "video": "فيديو",
       "prevMedia": "السابق",
       "nextMedia": "التالي",
-      "pickServicesFirstTitle": "اختر خدماتك أولاً"
+      "pickServicesFirstTitle": "اختر خدماتك أولاً",
+      "description": "نبذة عن المزوّد",
+      "bookNow": "احجز",
+      "booking": "جاري الحجز…"
     },
     "details": {
       "title": "تفاصيل المناسبة",
