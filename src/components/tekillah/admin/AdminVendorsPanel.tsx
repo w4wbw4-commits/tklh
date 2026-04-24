@@ -101,17 +101,17 @@ export const AdminVendorsPanel = () => {
   // cleared before the parent vendor row, otherwise FK constraints reject the
   // delete. Any failure is surfaced via toast and aborts the chain.
   const deleteVendor = async (id: string) => {
-    const tasks: Array<{ label: string; run: () => Promise<{ error: unknown }> }> = [
-      { label: "media",        run: () => supabase.from("vendor_portfolio_items").delete().eq("vendor_id", id) },
-      { label: "availability", run: () => supabase.from("vendor_availability").delete().eq("vendor_id", id) },
-      { label: "packages",     run: () => supabase.from("packages").delete().eq("vendor_id", id) },
-      { label: "bookings",     run: () => supabase.from("bookings").delete().eq("vendor_id", id) },
-      { label: "vendor",       run: () => supabase.from("vendors").delete().eq("id", id) },
+    const steps: Array<[string, () => Promise<{ error: { message?: string } | null }>]> = [
+      ["media",        async () => await supabase.from("vendor_portfolio_items").delete().eq("vendor_id", id)],
+      ["availability", async () => await supabase.from("vendor_availability").delete().eq("vendor_id", id)],
+      ["packages",     async () => await supabase.from("packages").delete().eq("vendor_id", id)],
+      ["bookings",     async () => await supabase.from("bookings").delete().eq("vendor_id", id)],
+      ["vendor",       async () => await supabase.from("vendors").delete().eq("id", id)],
     ];
-    for (const step of tasks) {
-      const { error } = await step.run();
+    for (const [label, run] of steps) {
+      const { error } = await run();
       if (error) {
-        toast.error(`${step.label}: ${(error as { message?: string })?.message ?? "error"}`);
+        toast.error(`${label}: ${error.message ?? "error"}`);
         throw error;
       }
     }
