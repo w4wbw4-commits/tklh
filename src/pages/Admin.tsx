@@ -209,7 +209,7 @@ const Admin = () => {
 
         <div className="mt-8">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="rounded-2xl bg-card p-1 shadow-card flex-wrap h-auto">
+            <TabsList className="rounded-2xl border border-primary/20 bg-card p-1 shadow-card flex-wrap h-auto">
               <TabsTrigger value="verification" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                 <ShieldCheck className="h-4 w-4" /> {t("admin.tabVerification")}
               </TabsTrigger>
