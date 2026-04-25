@@ -114,11 +114,15 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
   // Form state
   const [businessName, setBusinessName] = useState("");
   const [bio, setBio] = useState("");
+  const [bioEn, setBioEn] = useState("");
   const [city, setCity] = useState("");
   const [region, setRegion] = useState("");
+  const [regionEn, setRegionEn] = useState("");
   const [district, setDistrict] = useState("");
+  const [districtEn, setDistrictEn] = useState("");
   const [phone, setPhone] = useState("");
   const [extraServices, setExtraServices] = useState<string[]>([]);
+  const [extraServicesEn, setExtraServicesEn] = useState<string[]>([]);
   const [weekdayPrice, setWeekdayPrice] = useState<number>(0);
   const [weekendPrice, setWeekendPrice] = useState<number>(0);
   const [minDeposit, setMinDeposit] = useState<number>(0);
