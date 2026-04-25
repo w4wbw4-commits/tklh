@@ -31,6 +31,19 @@ export const fmtDateLong = (d: string | number | Date) =>
 export const fmtDateTime = (d: string | number | Date) =>
   fmtDate(d, { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
 
+// Time-only HH:MM formatter — always Latin digits (24h en-GB to keep AR users on Latin numerals).
+export const fmtTime = (
+  d: string | number | Date,
+  options: Intl.DateTimeFormatOptions = { hour: "2-digit", minute: "2-digit" },
+) => {
+  const date = d instanceof Date ? d : new Date(d);
+  return new Intl.DateTimeFormat("en-GB", options).format(date);
+};
+
+// Rating/decimal formatter — fixed fraction digits, always Latin numerals.
+export const fmtRating = (n: number, digits = 1) =>
+  new Intl.NumberFormat("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(n);
+
 const RTF_UNITS: Array<[Intl.RelativeTimeFormatUnit, number]> = [
   ["year", 60 * 60 * 24 * 365],
   ["month", 60 * 60 * 24 * 30],
