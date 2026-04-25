@@ -377,6 +377,14 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
               <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder={t("admin.addVendor.cityPh") ?? ""} />
             </div>
             <div className="space-y-2">
+              <Label className="font-arabic">المنطقة <span className="text-destructive">*</span></Label>
+              <Input value={region} onChange={(e) => setRegion(e.target.value)} placeholder="مثال: منطقة الرياض" required />
+            </div>
+            <div className="space-y-2">
+              <Label className="font-arabic">الحي <span className="text-destructive">*</span></Label>
+              <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="مثال: حي العليا" required />
+            </div>
+            <div className="space-y-2">
               <Label className="font-arabic">{t("admin.addVendor.phone")}</Label>
               <Input value={phone} onChange={(e) => setPhone(e.target.value)} dir="ltr" placeholder="05xxxxxxxx" />
             </div>
