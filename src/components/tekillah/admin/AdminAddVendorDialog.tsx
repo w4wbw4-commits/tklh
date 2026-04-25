@@ -140,9 +140,10 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
   const isVenue = category === "hall";
 
   const reset = () => {
-    setBusinessName(""); setCategory("hall"); setCity(""); setPhone(""); setBio("");
+    setBusinessName(""); setCategory("hall");
+    setCity(""); setRegion(""); setDistrict(""); setPhone(""); setBio("");
     setWeekdayPrice(""); setWeekendPrice(""); setMinDeposit("");
-    setMenCapacity(""); setWomenCapacity("");
+    setMenCapacity(""); setWomenCapacity(""); setExtraServices([]);
     setPortfolioUrls([]); setVideo(null); setVideoUrlInput("");
     setVideoProgress(0); setVideoUploading(false); setImgUploading(false);
   };
