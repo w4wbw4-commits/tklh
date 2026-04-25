@@ -183,9 +183,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       business_name: businessName,
       category,
       bio: bio || null,
+      bio_en: bioEn.trim() || null,
       city: city || null,
       region: region.trim() || null,
+      region_en: regionEn.trim() || null,
       district: district.trim() || null,
+      district_en: districtEn.trim() || null,
       phone: phone || null,
       daily_capacity: Number(dailyCapacity),
       starting_price: startingPrice,
@@ -194,10 +197,10 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       min_deposit: Number(minDeposit),
       men_capacity: category === "hall" && menCapacity !== "" ? Number(menCapacity) : null,
       women_capacity: category === "hall" && womenCapacity !== "" ? Number(womenCapacity) : null,
-      // Manual service tags now apply to ALL categories so each vendor can list
-      // their unique offerings (e.g. catering: "ذبائح، مشروبات"; photography:
-      // "تصوير ليلي، فيديو 4K"). Stored as text[] in vendors.extra_services.
+      // Manual service tags apply to ALL categories. Optional EN list shown to
+      // English-locale customers; falls back to the Arabic list per item.
       extra_services: extraServices,
+      extra_services_en: extraServicesEn,
       portfolio_urls: portfolioUrls,
       commercial_register_url: docUrl,
       iban: iban.toUpperCase(),
