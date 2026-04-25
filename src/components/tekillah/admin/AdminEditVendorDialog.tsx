@@ -338,9 +338,12 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
       .update({
         business_name: businessName.trim(),
         bio: bio.trim() || null,
+        bio_en: bioEn.trim() || null,
         city: city.trim() || null,
         region: region.trim(),
+        region_en: regionEn.trim() || null,
         district: district.trim(),
+        district_en: districtEn.trim() || null,
         phone: phone.trim() || null,
         weekday_price: Number(weekdayPrice) || 0,
         weekend_price: Number(weekendPrice) || 0,
@@ -349,8 +352,9 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         men_capacity: isVenue && menCapacity !== "" ? Number(menCapacity) : null,
         women_capacity: isVenue && womenCapacity !== "" ? Number(womenCapacity) : null,
         portfolio_urls: portfolioUrls,
-        // Manual tags now apply to all categories.
+        // Manual tags now apply to all categories. EN list shown for English locale visitors.
         extra_services: extraServices,
+        extra_services_en: extraServicesEn,
       })
       .eq("id", vendor.id);
     setSaving(false);
