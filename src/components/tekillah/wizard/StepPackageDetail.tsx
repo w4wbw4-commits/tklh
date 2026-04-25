@@ -113,7 +113,7 @@ export const StepPackageDetail = ({ selection, onConfirm, submitting, onChangePa
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h3 className="font-arabic text-2xl font-semibold text-foreground sm:text-3xl">
-            {selection.name}
+            {displayName}
           </h3>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-foreground/70">
             {t("wizard.packageDetail.subtitle")}
@@ -151,7 +151,7 @@ export const StepPackageDetail = ({ selection, onConfirm, submitting, onChangePa
               ) : (
                 <img
                   src={m.url}
-                  alt={`${selection.name} — ${i + 1}`}
+                  alt={`${displayName} — ${i + 1}`}
                   loading="lazy"
                   className="h-full w-full object-cover"
                   draggable={false}
