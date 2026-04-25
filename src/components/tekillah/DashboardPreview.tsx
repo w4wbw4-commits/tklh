@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Switch } from "@/components/ui/switch";
 import {
   CheckCircle2,
@@ -13,30 +14,46 @@ import {
   Radio,
 } from "lucide-react";
 
-const timeline = [
-  { label: "حجز القاعة", status: "done", time: "تم قبل ٦ أشهر" },
-  { label: "تأكيد الضيافة", status: "active", time: "متبقي ٣ أشهر" },
-  { label: "حجز التصوير", status: "todo", time: "خلال شهر" },
-  { label: "تنسيق الزهور", status: "todo", time: "قبل أسبوعين" },
-  { label: "ليلة المناسبة", status: "todo", time: "اليوم الموعود" },
+type StepKey = "venue" | "catering" | "photography" | "florals" | "night";
+type VendorKey = "venue" | "catering" | "photography" | "dj" | "florals";
+type StatusKey = "ready" | "active" | "wait";
+
+const TIMELINE: { key: StepKey; status: "done" | "active" | "todo" }[] = [
+  { key: "venue", status: "done" },
+  { key: "catering", status: "active" },
+  { key: "photography", status: "todo" },
+  { key: "florals", status: "todo" },
+  { key: "night", status: "todo" },
 ];
 
-const vendors = [
-  { icon: Building2, name: "قاعة الماسة", status: "ready", note: "جاهزة • تم التأكيد" },
-  { icon: UtensilsCrossed, name: "ضيافة الذواقة", status: "ready", note: "في الطريق" },
-  { icon: Camera, name: "استوديو نور", status: "active", note: "وصل الموقع" },
-  { icon: Music2, name: "DJ سلطان", status: "wait", note: "خلال ٤٥ دقيقة" },
-  { icon: Flower2, name: "زهور الياسمين", status: "ready", note: "اكتمل التنسيق" },
+const VENDORS: { key: VendorKey; icon: typeof Building2; status: StatusKey }[] = [
+  { key: "venue", icon: Building2, status: "ready" },
+  { key: "catering", icon: UtensilsCrossed, status: "ready" },
+  { key: "photography", icon: Camera, status: "active" },
+  { key: "dj", icon: Music2, status: "wait" },
+  { key: "florals", icon: Flower2, status: "ready" },
 ];
 
-const statusStyles: Record<string, string> = {
+// Semantic-token-driven status pills — keep luxury palette consistent.
+const statusStyles: Record<StatusKey, string> = {
   ready: "bg-primary/10 text-primary border-primary/20",
-  active: "bg-amber-100 text-amber-700 border-amber-200",
-  wait: "bg-secondary text-foreground/60 border-border",
+  active: "bg-secondary text-primary-deep border-primary/25",
+  wait: "bg-muted text-foreground/60 border-border",
 };
 
 export const DashboardPreview = () => {
+  const { t } = useTranslation();
   const [liveMode, setLiveMode] = useState(false);
+
+  const timeline = useMemo(
+    () =>
+      TIMELINE.map((row) => ({
+        ...row,
+        label: t(`dashboardPreview.timeline.${row.key}.label`),
+        time: t(`dashboardPreview.timeline.${row.key}.time`),
+      })),
+    [t],
+  );
 
   return (
     <section id="dashboard" className="py-24 sm:py-32">
@@ -49,13 +66,13 @@ export const DashboardPreview = () => {
           className="mx-auto max-w-2xl text-center"
         >
           <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
-            لوحة التحكم
+            {t("dashboardPreview.kicker")}
           </span>
           <h2 className="mt-4 font-arabic text-balance text-4xl font-semibold sm:text-5xl">
-            تابع كل شيء من مكان واحد
+            {t("dashboardPreview.title")}
           </h2>
           <p className="mt-4 text-muted-foreground sm:text-lg">
-            خط زمني واضح لتقدّم مناسبتك، ووضع مباشر لتنسيق يوم الحدث.
+            {t("dashboardPreview.subtitle")}
           </p>
         </motion.div>
 
@@ -69,9 +86,11 @@ export const DashboardPreview = () => {
           {/* Top bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border bg-gradient-beige px-6 py-5 sm:px-8">
             <div>
-              <div className="font-arabic text-lg font-semibold">مناسبة عبدالله &amp; ريما</div>
-              <div className="mt-1 text-sm text-muted-foreground">
-                الرياض • ٢٠ سبتمبر ٢٠٢٥ • ٤٠٠ مدعو
+              <div className="font-arabic text-lg font-semibold">
+                {t("dashboardPreview.eventTitle")}
+              </div>
+              <div className="mt-1 text-sm text-muted-foreground" dir="ltr">
+                {t("dashboardPreview.eventMeta")}
               </div>
             </div>
             <div className="flex items-center gap-3 rounded-full border border-border bg-card/80 px-4 py-2">
@@ -79,9 +98,11 @@ export const DashboardPreview = () => {
                 <motion.span
                   animate={{ scale: liveMode ? [1, 1.4, 1] : 1, opacity: liveMode ? 1 : 0.4 }}
                   transition={{ repeat: liveMode ? Infinity : 0, duration: 1.5 }}
-                  className={`h-2 w-2 rounded-full ${liveMode ? "bg-red-500" : "bg-muted-foreground"}`}
+                  className={`h-2 w-2 rounded-full ${liveMode ? "bg-destructive" : "bg-muted-foreground"}`}
                 />
-                <span className="font-arabic text-sm font-medium">الوضع المباشر</span>
+                <span className="font-arabic text-sm font-medium">
+                  {t("dashboardPreview.liveMode")}
+                </span>
               </div>
               <Switch checked={liveMode} onCheckedChange={setLiveMode} />
             </div>
@@ -91,29 +112,33 @@ export const DashboardPreview = () => {
             {/* Timeline */}
             <div className="border-b border-border p-6 sm:p-8 lg:border-b-0 lg:border-l">
               <div className="mb-6 flex items-center justify-between">
-                <h3 className="font-arabic text-lg font-semibold">الخط الزمني</h3>
-                <span className="text-xs text-muted-foreground">٣ أشهر متبقية</span>
+                <h3 className="font-arabic text-lg font-semibold">
+                  {t("dashboardPreview.timelineTitle")}
+                </h3>
+                <span className="text-xs text-muted-foreground">
+                  {t("dashboardPreview.timeRemaining")}
+                </span>
               </div>
 
               <div className="relative space-y-5 ps-6">
-                <div className="absolute right-[10px] top-2 bottom-2 w-px bg-border" />
-                {timeline.map((t, i) => {
+                <div className="absolute end-auto start-[10px] top-2 bottom-2 w-px bg-border" />
+                {timeline.map((row, i) => {
                   const Icon =
-                    t.status === "done"
+                    row.status === "done"
                       ? CheckCircle2
-                      : t.status === "active"
+                      : row.status === "active"
                       ? Clock
                       : AlertCircle;
                   const color =
-                    t.status === "done"
+                    row.status === "done"
                       ? "text-primary bg-primary/10"
-                      : t.status === "active"
-                      ? "text-amber-600 bg-amber-100"
-                      : "text-muted-foreground bg-secondary";
+                      : row.status === "active"
+                      ? "text-primary-deep bg-secondary"
+                      : "text-muted-foreground bg-muted";
 
                   return (
                     <motion.div
-                      key={t.label}
+                      key={row.key}
                       initial={{ opacity: 0, x: -8 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
@@ -121,18 +146,18 @@ export const DashboardPreview = () => {
                       className="relative flex items-start gap-4"
                     >
                       <div
-                        className={`absolute -right-6 grid h-5 w-5 place-items-center rounded-full ring-4 ring-card ${color}`}
+                        className={`absolute -start-6 grid h-5 w-5 place-items-center rounded-full ring-4 ring-card ${color}`}
                       >
                         <Icon className="h-3 w-3" />
                       </div>
                       <div className="flex-1 rounded-xl border border-border bg-card p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="font-arabic text-sm font-semibold">{t.label}</div>
-                          <span className="text-xs text-muted-foreground">{t.time}</span>
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="font-arabic text-sm font-semibold">{row.label}</div>
+                          <span className="text-xs text-muted-foreground">{row.time}</span>
                         </div>
-                        {t.status === "active" && (
-                          <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700">
-                            بحاجة لإجراء
+                        {row.status === "active" && (
+                          <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-primary-deep">
+                            {t("dashboardPreview.needsAction")}
                           </div>
                         )}
                       </div>
@@ -146,48 +171,50 @@ export const DashboardPreview = () => {
             <div className="p-6 sm:p-8">
               <div className="mb-6 flex items-center justify-between">
                 <h3 className="font-arabic text-lg font-semibold">
-                  {liveMode ? "حالة المزوّدين الآن" : "المزوّدون المؤكَّدون"}
+                  {liveMode
+                    ? t("dashboardPreview.vendorsLive")
+                    : t("dashboardPreview.vendorsConfirmed")}
                 </h3>
                 {liveMode && (
-                  <div className="flex items-center gap-1 text-xs font-medium text-red-600">
-                    <Radio className="h-3.5 w-3.5" /> مباشر
+                  <div className="flex items-center gap-1 text-xs font-medium text-destructive">
+                    <Radio className="h-3.5 w-3.5" /> {t("dashboardPreview.liveBadge")}
                   </div>
                 )}
               </div>
 
               <div className="space-y-3">
                 <AnimatePresence mode="popLayout">
-                  {vendors.map((v, i) => (
-                    <motion.div
-                      key={v.name}
-                      layout
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className="flex items-center gap-4 rounded-2xl border border-border bg-card p-4"
-                    >
-                      <div className="grid h-11 w-11 place-items-center rounded-xl bg-secondary text-primary">
-                        <v.icon className="h-5 w-5" strokeWidth={1.6} />
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-arabic text-sm font-semibold">{v.name}</div>
-                        <div className="mt-0.5 text-xs text-muted-foreground">
-                          {liveMode ? v.note : "تم التأكيد"}
+                  {VENDORS.map((v, i) => {
+                    const name = t(`dashboardPreview.vendors.${v.key}.name`);
+                    const note = liveMode
+                      ? t(`dashboardPreview.vendors.${v.key}.noteLive`)
+                      : t("dashboardPreview.confirmed");
+                    return (
+                      <motion.div
+                        key={v.key}
+                        layout
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.05 }}
+                        className="flex items-center gap-4 rounded-2xl border border-border bg-card p-4"
+                      >
+                        <div className="grid h-11 w-11 place-items-center rounded-xl bg-secondary text-primary">
+                          <v.icon className="h-5 w-5" strokeWidth={1.6} />
                         </div>
-                      </div>
-                      {liveMode && (
-                        <span
-                          className={`rounded-full border px-2.5 py-1 text-[11px] font-medium ${statusStyles[v.status]}`}
-                        >
-                          {v.status === "ready"
-                            ? "جاهز"
-                            : v.status === "active"
-                            ? "نشط"
-                            : "بانتظار"}
-                        </span>
-                      )}
-                    </motion.div>
-                  ))}
+                        <div className="flex-1">
+                          <div className="font-arabic text-sm font-semibold">{name}</div>
+                          <div className="mt-0.5 text-xs text-muted-foreground">{note}</div>
+                        </div>
+                        {liveMode && (
+                          <span
+                            className={`rounded-full border px-2.5 py-1 text-[11px] font-medium ${statusStyles[v.status]}`}
+                          >
+                            {t(`dashboardPreview.status.${v.status}`)}
+                          </span>
+                        )}
+                      </motion.div>
+                    );
+                  })}
                 </AnimatePresence>
               </div>
             </div>

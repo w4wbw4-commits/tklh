@@ -1,4 +1,38 @@
 {
+  "dashboardPreview": {
+    "kicker": "Dashboard",
+    "title": "Track everything from one place",
+    "subtitle": "A clear timeline for your event progress, plus a live mode for day-of coordination.",
+    "eventTitle": "Abdullah & Reema's celebration",
+    "eventMeta": "Riyadh • Sep 20, 2025 • 400 guests",
+    "liveMode": "Live mode",
+    "liveBadge": "Live",
+    "timelineTitle": "Timeline",
+    "timeRemaining": "3 months remaining",
+    "needsAction": "Needs action",
+    "vendorsLive": "Vendors right now",
+    "vendorsConfirmed": "Confirmed vendors",
+    "confirmed": "Confirmed",
+    "status": {
+      "ready": "Ready",
+      "active": "Active",
+      "wait": "On the way"
+    },
+    "timeline": {
+      "venue": { "label": "Venue booked", "time": "Done 6 months ago" },
+      "catering": { "label": "Catering confirmed", "time": "3 months left" },
+      "photography": { "label": "Photography booked", "time": "Within a month" },
+      "florals": { "label": "Floral styling", "time": "Two weeks before" },
+      "night": { "label": "Event night", "time": "The big day" }
+    },
+    "vendors": {
+      "venue": { "name": "Al-Masa Hall", "noteReady": "Ready • Confirmed", "noteLive": "All set" },
+      "catering": { "name": "Gourmet Catering", "noteReady": "Ready • Confirmed", "noteLive": "On the way" },
+      "photography": { "name": "Studio Noor", "noteReady": "Confirmed", "noteLive": "Arrived on site" },
+      "dj": { "name": "DJ Sultan", "noteReady": "Confirmed", "noteLive": "ETA 45 minutes" },
+      "florals": { "name": "Yasmine Florals", "noteReady": "Confirmed", "noteLive": "Setup complete" }
+    }
+  },
   "upcoming": {
     "kicker": "Coming soon",
     "badge": "Coming soon",

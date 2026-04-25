@@ -351,7 +351,7 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
             />
             {Number(price) > 0 && (
               <p className="font-arabic text-xs text-foreground/60 tabular-nums">
-                {fmtNumber(Number(price))} ر.س
+                {fmtNumber(Number(price))} {t("common.currency")}
               </p>
             )}
           </div>

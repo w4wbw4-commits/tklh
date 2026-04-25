@@ -193,7 +193,7 @@ export const AdminPackagesPanel = () => {
                 <div className="mt-3 flex items-baseline justify-between gap-2">
                   <div className="font-arabic text-xl font-semibold text-foreground tabular-nums">
                     {fmtNumber(Number(p.price))}
-                    <span className="ms-1 text-xs font-normal text-foreground/60">ر.س</span>
+                    <span className="ms-1 text-xs font-normal text-foreground/60">{t("common.currency")}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Button size="sm" variant="ghost" onClick={() => openEdit(p)} className="rounded-full">
@@ -254,7 +254,7 @@ export const AdminPackagesPanel = () => {
                 <div className="min-w-0 flex-1">
                   <div className="truncate font-arabic text-sm font-medium text-foreground">{l.name}</div>
                   <div className="mt-0.5 text-xs text-foreground/55 tabular-nums">
-                    #{l.id.slice(0, 8)} · {fmtNumber(Number(l.price))} ر.س
+                    #{l.id.slice(0, 8)} · {fmtNumber(Number(l.price))} {t("common.currency")}
                   </div>
                 </div>
                 <Button

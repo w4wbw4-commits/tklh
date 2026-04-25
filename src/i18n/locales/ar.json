@@ -1,4 +1,38 @@
 {
+  "dashboardPreview": {
+    "kicker": "لوحة التحكم",
+    "title": "تابع كل شيء من مكان واحد",
+    "subtitle": "خط زمني واضح لتقدّم مناسبتك، ووضع مباشر لتنسيق يوم الحدث.",
+    "eventTitle": "مناسبة عبدالله وريما",
+    "eventMeta": "الرياض • 20 سبتمبر 2025 • 400 مدعو",
+    "liveMode": "الوضع المباشر",
+    "liveBadge": "مباشر",
+    "timelineTitle": "الخط الزمني",
+    "timeRemaining": "3 أشهر متبقية",
+    "needsAction": "بحاجة لإجراء",
+    "vendorsLive": "حالة المزوّدين الآن",
+    "vendorsConfirmed": "المزوّدون المؤكَّدون",
+    "confirmed": "تم التأكيد",
+    "status": {
+      "ready": "جاهز",
+      "active": "نشط",
+      "wait": "بانتظار"
+    },
+    "timeline": {
+      "venue": { "label": "حجز القاعة", "time": "تم قبل 6 أشهر" },
+      "catering": { "label": "تأكيد الضيافة", "time": "متبقي 3 أشهر" },
+      "photography": { "label": "حجز التصوير", "time": "خلال شهر" },
+      "florals": { "label": "تنسيق الزهور", "time": "قبل أسبوعين" },
+      "night": { "label": "ليلة المناسبة", "time": "اليوم الموعود" }
+    },
+    "vendors": {
+      "venue": { "name": "قاعة الماسة", "noteReady": "جاهزة • تم التأكيد", "noteLive": "جاهزة" },
+      "catering": { "name": "ضيافة الذواقة", "noteReady": "تم التأكيد", "noteLive": "في الطريق" },
+      "photography": { "name": "استوديو نور", "noteReady": "تم التأكيد", "noteLive": "وصل الموقع" },
+      "dj": { "name": "DJ سلطان", "noteReady": "تم التأكيد", "noteLive": "خلال 45 دقيقة" },
+      "florals": { "name": "زهور الياسمين", "noteReady": "تم التأكيد", "noteLive": "اكتمل التنسيق" }
+    }
+  },
   "upcoming": {
     "kicker": "قريباً",
     "badge": "قريباً",
