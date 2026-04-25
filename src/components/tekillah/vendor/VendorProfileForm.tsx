@@ -318,12 +318,30 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
             />
           </div>
           <div className="space-y-2">
+            <Label>Region (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+            <Input
+              value={regionEn}
+              onChange={(e) => setRegionEn(e.target.value)}
+              placeholder="e.g. Riyadh Region"
+              dir="ltr"
+            />
+          </div>
+          <div className="space-y-2">
             <Label>الحي <span className="text-destructive">*</span></Label>
             <Input
               value={district}
               onChange={(e) => setDistrict(e.target.value)}
               placeholder="مثال: حي العليا"
               required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>District (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+            <Input
+              value={districtEn}
+              onChange={(e) => setDistrictEn(e.target.value)}
+              placeholder="e.g. Al Olaya"
+              dir="ltr"
             />
           </div>
           <div className="space-y-2">
@@ -341,6 +359,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
             <Textarea value={bio} onChange={(e) => setBio(e.target.value)}
               placeholder="اكتب وصفاً يعرّف العميل بخدماتك ومميزاتك..."
               className="min-h-[120px] font-arabic" />
+          </div>
+          <div className="space-y-2 sm:col-span-2">
+            <Label>Bio (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+            <Textarea value={bioEn} onChange={(e) => setBioEn(e.target.value)}
+              placeholder="Short English description shown to non-Arabic customers."
+              className="min-h-[100px]" dir="ltr" />
           </div>
         </div>
       </div>
