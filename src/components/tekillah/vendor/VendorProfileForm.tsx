@@ -31,6 +31,8 @@ const vendorSchema = z.object({
   category: z.enum(["hall", "catering", "photography", "dj", "decor", "cars"]),
   bio: z.string().trim().max(800).optional(),
   city: z.string().trim().max(80).optional(),
+  region: z.string().trim().min(2, "أدخل اسم المنطقة").max(80),
+  district: z.string().trim().min(2, "أدخل اسم الحي").max(80),
   phone: z.string().trim().max(20).optional(),
   daily_capacity: z.number().int().min(1).max(50),
   weekday_price: z.number().min(1, "أدخل سعر أيام الأسبوع").max(10000000),
