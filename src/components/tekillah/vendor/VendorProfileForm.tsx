@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   Loader2, Save, FileText, ShieldCheck, Building2,
   Landmark, MapPin, AlertTriangle, Clock, CheckCircle2, XCircle,
-  CalendarDays, CalendarRange, Wallet, Users, Users2,
+  CalendarDays, CalendarRange, Wallet, Users, Users2, Sparkles,
 } from "lucide-react";
 import { CATEGORY_LABELS, type VendorRow } from "./types";
 import { ExtraServicesPicker } from "./ExtraServicesPicker";
