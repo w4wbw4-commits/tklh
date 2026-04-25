@@ -137,7 +137,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
       supabase
         .from("vendors")
         .select(
-          "id, business_name, bio, category, city, region, district, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, extra_services, verified, portfolio_urls, packages(id, name, tier, price, description, active, approval_status)",
+          "id, business_name, bio, bio_en, category, city, region, region_en, district, district_en, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, extra_services, extra_services_en, verified, portfolio_urls, packages(id, name, tier, price, description, active, approval_status)",
         )
         .eq("active", true)
         .eq("approval_status", "approved")
