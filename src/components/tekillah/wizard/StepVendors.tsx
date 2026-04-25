@@ -480,33 +480,40 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                               4K video, ذبائح, …). Known keys still get a
                               matching icon; free-text shows the olive-green
                               checkmark badge. */}
-                          {v.extra_services && v.extra_services.length > 0 && (
-                            <div className="mt-3 rounded-xl border border-border/60 bg-secondary/40 p-3">
-                              <div className="mb-2 flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-wide text-foreground/60">
-                                <Check className="h-3 w-3 text-primary" />
-                                <span className="font-arabic">{t("wizard.vendors.whatIncluded")}</span>
+                          {(() => {
+                            // Show EN tags when in EN locale + EN list provided,
+                            // else fall back to AR list. Falls back to known-key
+                            // labels for legacy fixed-keys (lighting, etc.).
+                            const localizedTags = pickLocalizedArray(v.extra_services, v.extra_services_en);
+                            if (!localizedTags.length) return null;
+                            return (
+                              <div className="mt-3 rounded-xl border border-border/60 bg-secondary/40 p-3">
+                                <div className="mb-2 flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-wide text-foreground/60">
+                                  <Check className="h-3 w-3 text-primary" />
+                                  <span className="font-arabic">{t("wizard.vendors.whatIncluded")}</span>
+                                </div>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {localizedTags.map((key) => {
+                                    const Icon = EXTRA_SERVICE_ICONS[key];
+                                    const label = EXTRA_SERVICE_LABELS[key] ?? key;
+                                    return (
+                                      <span
+                                        key={key}
+                                        className="inline-flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 font-arabic text-[11px] font-medium text-primary-foreground shadow-card"
+                                      >
+                                        {Icon ? (
+                                          <Icon className="h-3 w-3 shrink-0" />
+                                        ) : (
+                                          <Check className="h-3 w-3 shrink-0" />
+                                        )}
+                                        <span className="truncate">{label}</span>
+                                      </span>
+                                    );
+                                  })}
+                                </div>
                               </div>
-                              <div className="flex flex-wrap gap-1.5">
-                                {v.extra_services.map((key) => {
-                                  const Icon = EXTRA_SERVICE_ICONS[key];
-                                  const label = EXTRA_SERVICE_LABELS[key] ?? key;
-                                  return (
-                                    <span
-                                      key={key}
-                                      className="inline-flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 font-arabic text-[11px] font-medium text-primary-foreground shadow-card"
-                                    >
-                                      {Icon ? (
-                                        <Icon className="h-3 w-3 shrink-0" />
-                                      ) : (
-                                        <Check className="h-3 w-3 shrink-0" />
-                                      )}
-                                      <span className="truncate">{label}</span>
-                                    </span>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          )}
+                            );
+                          })()}
 
                           {/* Pricing & capacity grid — always Latin digits via fmtNumber */}
                           <div className="mt-3 grid grid-cols-2 gap-2" dir="ltr">
