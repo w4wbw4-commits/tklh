@@ -179,16 +179,20 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         id: string;
         business_name: string;
         bio: string | null;
+        bio_en: string | null;
         category: ServiceKey;
         city: string | null;
         region: string | null;
+        region_en: string | null;
         district: string | null;
+        district_en: string | null;
         starting_price: number;
         weekday_price: number;
         weekend_price: number;
         men_capacity: number | null;
         women_capacity: number | null;
         extra_services: string[] | null;
+        extra_services_en: string[] | null;
         verified: boolean;
         portfolio_urls: string[] | null;
         packages: RawPackage[];
@@ -208,16 +212,20 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         id: row.id,
         business_name: row.business_name,
         bio: row.bio,
+        bio_en: row.bio_en,
         category: row.category,
         city: row.city,
         region: row.region,
+        region_en: row.region_en,
         district: row.district,
+        district_en: row.district_en,
         starting_price: row.starting_price,
         weekday_price: row.weekday_price,
         weekend_price: row.weekend_price,
         men_capacity: row.men_capacity,
         women_capacity: row.women_capacity,
         extra_services: row.extra_services ?? [],
+        extra_services_en: row.extra_services_en ?? [],
         verified: row.verified,
         avg_rating: r.avg,
         reviews_count: r.count,
