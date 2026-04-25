@@ -521,20 +521,29 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
               </div>
             </div>
             {isVenue && (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="space-y-1.5">
-                  <Label className="font-arabic">{t("admin.vendors.menCapacity")}</Label>
-                  <Input type="number" min={0} value={menCapacity}
-                    onChange={(e) => setMenCapacity(e.target.value === "" ? "" : Number(e.target.value))}
-                    className="tabular-nums" dir="ltr" />
+              <>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <Label className="font-arabic">{t("admin.vendors.menCapacity")}</Label>
+                    <Input type="number" min={0} value={menCapacity}
+                      onChange={(e) => setMenCapacity(e.target.value === "" ? "" : Number(e.target.value))}
+                      className="tabular-nums" dir="ltr" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="font-arabic">{t("admin.vendors.womenCapacity")}</Label>
+                    <Input type="number" min={0} value={womenCapacity}
+                      onChange={(e) => setWomenCapacity(e.target.value === "" ? "" : Number(e.target.value))}
+                      className="tabular-nums" dir="ltr" />
+                  </div>
                 </div>
-                <div className="space-y-1.5">
-                  <Label className="font-arabic">{t("admin.vendors.womenCapacity")}</Label>
-                  <Input type="number" min={0} value={womenCapacity}
-                    onChange={(e) => setWomenCapacity(e.target.value === "" ? "" : Number(e.target.value))}
-                    className="tabular-nums" dir="ltr" />
+                <div className="space-y-2 rounded-2xl border border-primary/20 bg-primary/[0.04] p-4">
+                  <Label className="font-arabic text-base">خدمات إضافية</Label>
+                  <p className="font-arabic text-xs text-foreground/65">
+                    حدّد الخدمات المتاحة في القاعة. يستطيع المشرف تعديل الاختيار في أي وقت.
+                  </p>
+                  <ExtraServicesPicker value={extraServices} onChange={setExtraServices} />
                 </div>
-              </div>
+              </>
             )}
 
             <div className="space-y-2">
