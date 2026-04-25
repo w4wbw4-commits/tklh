@@ -444,9 +444,12 @@ export type Database = {
           approval_status: Database["public"]["Enums"]["approval_status"]
           created_at: string
           description: string | null
+          description_en: string | null
           id: string
           includes: string[]
+          includes_en: string[]
           name: string
+          name_en: string | null
           price: number
           rejection_reason: string | null
           reviewed_at: string | null
@@ -460,9 +463,12 @@ export type Database = {
           approval_status?: Database["public"]["Enums"]["approval_status"]
           created_at?: string
           description?: string | null
+          description_en?: string | null
           id?: string
           includes?: string[]
+          includes_en?: string[]
           name: string
+          name_en?: string | null
           price: number
           rejection_reason?: string | null
           reviewed_at?: string | null
@@ -476,9 +482,12 @@ export type Database = {
           approval_status?: Database["public"]["Enums"]["approval_status"]
           created_at?: string
           description?: string | null
+          description_en?: string | null
           id?: string
           includes?: string[]
+          includes_en?: string[]
           name?: string
+          name_en?: string | null
           price?: number
           rejection_reason?: string | null
           reviewed_at?: string | null
@@ -614,11 +623,14 @@ export type Database = {
           created_at: string
           created_by: string | null
           description: string | null
+          description_en: string | null
           eligible_vendor_ids: string[]
           id: string
           includes: string[]
+          includes_en: string[]
           media: Json
           name: string
+          name_en: string | null
           price: number
           published: boolean
           slots: Json
@@ -630,11 +642,14 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          description_en?: string | null
           eligible_vendor_ids?: string[]
           id?: string
           includes?: string[]
+          includes_en?: string[]
           media?: Json
           name: string
+          name_en?: string | null
           price?: number
           published?: boolean
           slots?: Json
@@ -646,11 +661,14 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          description_en?: string | null
           eligible_vendor_ids?: string[]
           id?: string
           includes?: string[]
+          includes_en?: string[]
           media?: Json
           name?: string
+          name_en?: string | null
           price?: number
           published?: boolean
           slots?: Json
@@ -999,6 +1017,7 @@ export type Database = {
           active: boolean
           approval_status: Database["public"]["Enums"]["approval_status"]
           bio: string | null
+          bio_en: string | null
           business_name: string
           category: Database["public"]["Enums"]["vendor_category"]
           city: string | null
@@ -1006,7 +1025,9 @@ export type Database = {
           created_at: string
           daily_capacity: number
           district: string | null
+          district_en: string | null
           extra_services: string[]
+          extra_services_en: string[]
           google_maps_url: string | null
           hidden: boolean
           hidden_until: string | null
@@ -1018,6 +1039,7 @@ export type Database = {
           phone: string | null
           portfolio_urls: string[]
           region: string | null
+          region_en: string | null
           rejection_reason: string | null
           reviewed_at: string | null
           reviewed_by: string | null
@@ -1033,6 +1055,7 @@ export type Database = {
           active?: boolean
           approval_status?: Database["public"]["Enums"]["approval_status"]
           bio?: string | null
+          bio_en?: string | null
           business_name: string
           category: Database["public"]["Enums"]["vendor_category"]
           city?: string | null
@@ -1040,7 +1063,9 @@ export type Database = {
           created_at?: string
           daily_capacity?: number
           district?: string | null
+          district_en?: string | null
           extra_services?: string[]
+          extra_services_en?: string[]
           google_maps_url?: string | null
           hidden?: boolean
           hidden_until?: string | null
@@ -1052,6 +1077,7 @@ export type Database = {
           phone?: string | null
           portfolio_urls?: string[]
           region?: string | null
+          region_en?: string | null
           rejection_reason?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
@@ -1067,6 +1093,7 @@ export type Database = {
           active?: boolean
           approval_status?: Database["public"]["Enums"]["approval_status"]
           bio?: string | null
+          bio_en?: string | null
           business_name?: string
           category?: Database["public"]["Enums"]["vendor_category"]
           city?: string | null
@@ -1074,7 +1101,9 @@ export type Database = {
           created_at?: string
           daily_capacity?: number
           district?: string | null
+          district_en?: string | null
           extra_services?: string[]
+          extra_services_en?: string[]
           google_maps_url?: string | null
           hidden?: boolean
           hidden_until?: string | null
@@ -1086,6 +1115,7 @@ export type Database = {
           phone?: string | null
           portfolio_urls?: string[]
           region?: string | null
+          region_en?: string | null
           rejection_reason?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
