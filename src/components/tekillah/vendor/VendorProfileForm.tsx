@@ -54,9 +54,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [businessName, setBusinessName] = useState("");
   const [category, setCategory] = useState<VendorRow["category"]>("hall");
   const [bio, setBio] = useState("");
+  const [bioEn, setBioEn] = useState("");
   const [city, setCity] = useState("");
   const [region, setRegion] = useState("");
+  const [regionEn, setRegionEn] = useState("");
   const [district, setDistrict] = useState("");
+  const [districtEn, setDistrictEn] = useState("");
   const [phone, setPhone] = useState("");
   const [dailyCapacity, setDailyCapacity] = useState(1);
   const [weekdayPrice, setWeekdayPrice] = useState(0);
@@ -65,6 +68,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [menCapacity, setMenCapacity] = useState<number | "">("");
   const [womenCapacity, setWomenCapacity] = useState<number | "">("");
   const [extraServices, setExtraServices] = useState<string[]>([]);
+  const [extraServicesEn, setExtraServicesEn] = useState<string[]>([]);
   const [portfolioUrls, setPortfolioUrls] = useState<string[]>([]);
   const [docUrl, setDocUrl] = useState<string | null>(null);
   const [iban, setIban] = useState("");
@@ -82,9 +86,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       setBusinessName(vendor.business_name);
       setCategory(vendor.category);
       setBio(vendor.bio ?? "");
+      setBioEn(vendor.bio_en ?? "");
       setCity(vendor.city ?? "");
       setRegion(vendor.region ?? "");
+      setRegionEn(vendor.region_en ?? "");
       setDistrict(vendor.district ?? "");
+      setDistrictEn(vendor.district_en ?? "");
       setPhone(vendor.phone ?? "");
       setDailyCapacity(vendor.daily_capacity);
       setWeekdayPrice(Number(vendor.weekday_price ?? vendor.starting_price ?? 0));
@@ -93,6 +100,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       setMenCapacity(vendor.men_capacity ?? "");
       setWomenCapacity(vendor.women_capacity ?? "");
       setExtraServices(vendor.extra_services ?? []);
+      setExtraServicesEn(vendor.extra_services_en ?? []);
       setPortfolioUrls(vendor.portfolio_urls ?? []);
       setDocUrl(vendor.commercial_register_url);
       setIban(vendor.iban ?? "");
@@ -175,9 +183,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       business_name: businessName,
       category,
       bio: bio || null,
+      bio_en: bioEn.trim() || null,
       city: city || null,
       region: region.trim() || null,
+      region_en: regionEn.trim() || null,
       district: district.trim() || null,
+      district_en: districtEn.trim() || null,
       phone: phone || null,
       daily_capacity: Number(dailyCapacity),
       starting_price: startingPrice,
@@ -186,10 +197,10 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       min_deposit: Number(minDeposit),
       men_capacity: category === "hall" && menCapacity !== "" ? Number(menCapacity) : null,
       women_capacity: category === "hall" && womenCapacity !== "" ? Number(womenCapacity) : null,
-      // Manual service tags now apply to ALL categories so each vendor can list
-      // their unique offerings (e.g. catering: "ذبائح، مشروبات"; photography:
-      // "تصوير ليلي، فيديو 4K"). Stored as text[] in vendors.extra_services.
+      // Manual service tags apply to ALL categories. Optional EN list shown to
+      // English-locale customers; falls back to the Arabic list per item.
       extra_services: extraServices,
+      extra_services_en: extraServicesEn,
       portfolio_urls: portfolioUrls,
       commercial_register_url: docUrl,
       iban: iban.toUpperCase(),
@@ -307,12 +318,30 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
             />
           </div>
           <div className="space-y-2">
+            <Label>Region (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+            <Input
+              value={regionEn}
+              onChange={(e) => setRegionEn(e.target.value)}
+              placeholder="e.g. Riyadh Region"
+              dir="ltr"
+            />
+          </div>
+          <div className="space-y-2">
             <Label>الحي <span className="text-destructive">*</span></Label>
             <Input
               value={district}
               onChange={(e) => setDistrict(e.target.value)}
               placeholder="مثال: حي العليا"
               required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>District (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+            <Input
+              value={districtEn}
+              onChange={(e) => setDistrictEn(e.target.value)}
+              placeholder="e.g. Al Olaya"
+              dir="ltr"
             />
           </div>
           <div className="space-y-2">
@@ -330,6 +359,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
             <Textarea value={bio} onChange={(e) => setBio(e.target.value)}
               placeholder="اكتب وصفاً يعرّف العميل بخدماتك ومميزاتك..."
               className="min-h-[120px] font-arabic" />
+          </div>
+          <div className="space-y-2 sm:col-span-2">
+            <Label>Bio (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+            <Textarea value={bioEn} onChange={(e) => setBioEn(e.target.value)}
+              placeholder="Short English description shown to non-Arabic customers."
+              className="min-h-[100px]" dir="ltr" />
           </div>
         </div>
       </div>
@@ -410,6 +445,15 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           placeholder={isVenue ? "مثال: إضاءة، بوفيه، كوشة" : "مثال: تصوير ليلي، فيديو 4K"}
           hint="اضغط Enter أو الفاصلة لإضافة الخدمة"
         />
+        <div className="mt-4">
+          <div className="mb-1.5 text-xs font-medium text-foreground/70">Extra services (English) — optional</div>
+          <ServiceTagsInput
+            value={extraServicesEn}
+            onChange={setExtraServicesEn}
+            placeholder={isVenue ? "e.g. Lighting, Buffet, Stage" : "e.g. Night photography, 4K video"}
+            hint="Type a service and press Enter to add it as a chip."
+          />
+        </div>
       </div>
 
       {/* Banking — IBAN */}

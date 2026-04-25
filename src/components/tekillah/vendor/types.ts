@@ -21,9 +21,12 @@ export interface VendorRow {
   business_name: string;
   category: "hall" | "catering" | "photography" | "dj" | "decor" | "cars";
   bio: string | null;
+  bio_en: string | null;
   city: string | null;
   region: string | null;
+  region_en: string | null;
   district: string | null;
+  district_en: string | null;
   phone: string | null;
   portfolio_urls: string[];
   commercial_register_url: string | null;
@@ -38,6 +41,7 @@ export interface VendorRow {
   men_capacity: number | null;
   women_capacity: number | null;
   extra_services: string[];
+  extra_services_en: string[];
   verified: boolean;
   active: boolean;
   approval_status: ApprovalStatus;

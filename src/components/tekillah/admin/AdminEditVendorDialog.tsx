@@ -27,9 +27,12 @@ interface VendorEditRow {
   business_name: string;
   category: string;
   bio: string | null;
+  bio_en: string | null;
   city: string | null;
   region: string | null;
+  region_en: string | null;
   district: string | null;
+  district_en: string | null;
   phone: string | null;
   weekday_price: number;
   weekend_price: number;
@@ -38,6 +41,7 @@ interface VendorEditRow {
   women_capacity: number | null;
   portfolio_urls: string[];
   extra_services: string[];
+  extra_services_en: string[];
 }
 
 interface Props {
@@ -110,11 +114,15 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
   // Form state
   const [businessName, setBusinessName] = useState("");
   const [bio, setBio] = useState("");
+  const [bioEn, setBioEn] = useState("");
   const [city, setCity] = useState("");
   const [region, setRegion] = useState("");
+  const [regionEn, setRegionEn] = useState("");
   const [district, setDistrict] = useState("");
+  const [districtEn, setDistrictEn] = useState("");
   const [phone, setPhone] = useState("");
   const [extraServices, setExtraServices] = useState<string[]>([]);
+  const [extraServicesEn, setExtraServicesEn] = useState<string[]>([]);
   const [weekdayPrice, setWeekdayPrice] = useState<number>(0);
   const [weekendPrice, setWeekendPrice] = useState<number>(0);
   const [minDeposit, setMinDeposit] = useState<number>(0);
@@ -137,7 +145,7 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
       const [{ data }, { data: videoRows }] = await Promise.all([
         supabase
           .from("vendors")
-          .select("id, user_id, business_name, category, bio, city, region, district, phone, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, portfolio_urls, extra_services")
+          .select("id, user_id, business_name, category, bio, bio_en, city, region, region_en, district, district_en, phone, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, portfolio_urls, extra_services, extra_services_en")
           .eq("id", vendorId)
           .maybeSingle(),
         supabase
@@ -153,9 +161,12 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         setVendor(v);
         setBusinessName(v.business_name);
         setBio(v.bio ?? "");
+        setBioEn(v.bio_en ?? "");
         setCity(v.city ?? "");
         setRegion(v.region ?? "");
+        setRegionEn(v.region_en ?? "");
         setDistrict(v.district ?? "");
+        setDistrictEn(v.district_en ?? "");
         setPhone(v.phone ?? "");
         setWeekdayPrice(Number(v.weekday_price ?? 0));
         setWeekendPrice(Number(v.weekend_price ?? 0));
@@ -164,6 +175,7 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         setWomenCapacity(v.women_capacity ?? "");
         setPortfolioUrls(v.portfolio_urls ?? []);
         setExtraServices(v.extra_services ?? []);
+        setExtraServicesEn(v.extra_services_en ?? []);
       }
       const existing = videoRows?.[0];
       setVideo(existing ? (existing as VideoItem) : null);
@@ -326,9 +338,12 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
       .update({
         business_name: businessName.trim(),
         bio: bio.trim() || null,
+        bio_en: bioEn.trim() || null,
         city: city.trim() || null,
         region: region.trim(),
+        region_en: regionEn.trim() || null,
         district: district.trim(),
+        district_en: districtEn.trim() || null,
         phone: phone.trim() || null,
         weekday_price: Number(weekdayPrice) || 0,
         weekend_price: Number(weekendPrice) || 0,
@@ -337,8 +352,9 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         men_capacity: isVenue && menCapacity !== "" ? Number(menCapacity) : null,
         women_capacity: isVenue && womenCapacity !== "" ? Number(womenCapacity) : null,
         portfolio_urls: portfolioUrls,
-        // Manual tags now apply to all categories.
+        // Manual tags now apply to all categories. EN list shown for English locale visitors.
         extra_services: extraServices,
+        extra_services_en: extraServicesEn,
       })
       .eq("id", vendor.id);
     setSaving(false);
@@ -376,8 +392,16 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
                 <Input value={region} onChange={(e) => setRegion(e.target.value)} placeholder="مثال: منطقة الرياض" className="font-arabic" required />
               </div>
               <div className="space-y-1.5">
+                <Label className="font-arabic">Region (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+                <Input value={regionEn} onChange={(e) => setRegionEn(e.target.value)} placeholder="e.g. Riyadh Region" dir="ltr" />
+              </div>
+              <div className="space-y-1.5">
                 <Label className="font-arabic">الحي *</Label>
                 <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="مثال: حي العليا" className="font-arabic" required />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="font-arabic">District (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+                <Input value={districtEn} onChange={(e) => setDistrictEn(e.target.value)} placeholder="e.g. Al Olaya" dir="ltr" />
               </div>
               <div className="space-y-1.5">
                 <Label className="font-arabic">{t("admin.vendors.phone")}</Label>
@@ -386,6 +410,10 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
               <div className="space-y-1.5 sm:col-span-2">
                 <Label className="font-arabic">{t("admin.vendors.bio")}</Label>
                 <Textarea value={bio} onChange={(e) => setBio(e.target.value)} className="min-h-[100px] font-arabic" />
+              </div>
+              <div className="space-y-1.5 sm:col-span-2">
+                <Label className="font-arabic">Bio (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+                <Textarea value={bioEn} onChange={(e) => setBioEn(e.target.value)} className="min-h-[100px]" dir="ltr" placeholder="Short English description shown to non-Arabic customers." />
               </div>
             </div>
 
@@ -549,6 +577,15 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
                 onChange={setExtraServices}
                 placeholder={isVenue ? "مثال: إضاءة، بوفيه، كوشة" : "مثال: تصوير ليلي، فيديو 4K"}
               />
+              <div className="pt-2">
+                <div className="mb-1.5 text-xs font-medium text-foreground/70">Extra services (English) — optional</div>
+                <ServiceTagsInput
+                  value={extraServicesEn}
+                  onChange={setExtraServicesEn}
+                  placeholder={isVenue ? "e.g. Lighting, Buffet, Stage" : "e.g. Night photography, 4K video"}
+                  hint="Type a service and press Enter to add it as a chip."
+                />
+              </div>
             </div>
 
             <div className="space-y-2">
