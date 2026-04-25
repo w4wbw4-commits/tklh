@@ -17,7 +17,7 @@ import {
   CalendarDays, CalendarRange, Wallet, Users, Users2, Sparkles,
 } from "lucide-react";
 import { CATEGORY_LABELS, type VendorRow } from "./types";
-import { ExtraServicesPicker } from "./ExtraServicesPicker";
+import { ServiceTagsInput } from "./ServiceTagsInput";
 import { TermsCheckbox } from "@/components/tekillah/TermsCheckbox";
 import { recordTermsAcceptance } from "@/lib/terms";
 import { useTranslation } from "react-i18next";
@@ -186,8 +186,10 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       min_deposit: Number(minDeposit),
       men_capacity: category === "hall" && menCapacity !== "" ? Number(menCapacity) : null,
       women_capacity: category === "hall" && womenCapacity !== "" ? Number(womenCapacity) : null,
-      // Extras only saved for venues; other categories always reset to []
-      extra_services: category === "hall" ? extraServices : [],
+      // Manual service tags now apply to ALL categories so each vendor can list
+      // their unique offerings (e.g. catering: "ذبائح، مشروبات"; photography:
+      // "تصوير ليلي، فيديو 4K"). Stored as text[] in vendors.extra_services.
+      extra_services: extraServices,
       portfolio_urls: portfolioUrls,
       commercial_register_url: docUrl,
       iban: iban.toUpperCase(),
@@ -392,19 +394,23 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
         </div>
       )}
 
-      {/* Extra services — venues only. Hidden for all other categories. */}
-      {isVenue && (
-        <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
-          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
-            <Sparkles className="h-4 w-4 text-primary" /> خدمات إضافية
-            <Badge variant="outline" className="ms-1 text-[10px]">اختياري</Badge>
-          </div>
-          <p className="mb-5 text-xs text-foreground/60">
-            اختر الخدمات التي تقدّمها قاعتك للعملاء. ستظهر للعميل عند تصفّح ملفك.
-          </p>
-          <ExtraServicesPicker value={extraServices} onChange={setExtraServices} />
+      {/* Manual service tags — ALL categories. Each vendor types and removes
+          their own offerings as olive-green chips. */}
+      <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
+        <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
+          <Sparkles className="h-4 w-4 text-primary" /> الخدمات الإضافية
+          <Badge variant="outline" className="ms-1 text-[10px]">اختياري</Badge>
         </div>
-      )}
+        <p className="mb-5 text-xs text-foreground/60">
+          أضف الخدمات التي تقدّمها لعملائك. اكتب الخدمة واضغط Enter لإضافتها كوسم. ستظهر للعميل عند تصفّح ملفك.
+        </p>
+        <ServiceTagsInput
+          value={extraServices}
+          onChange={setExtraServices}
+          placeholder={isVenue ? "مثال: إضاءة، بوفيه، كوشة" : "مثال: تصوير ليلي، فيديو 4K"}
+          hint="اضغط Enter أو الفاصلة لإضافة الخدمة"
+        />
+      </div>
 
       {/* Banking — IBAN */}
       <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">

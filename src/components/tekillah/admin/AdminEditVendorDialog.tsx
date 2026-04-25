@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Loader2, Save, ImagePlus, X, Film, Link2, Trash2, Play, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { ExtraServicesPicker } from "@/components/tekillah/vendor/ExtraServicesPicker";
+import { ServiceTagsInput } from "@/components/tekillah/vendor/ServiceTagsInput";
 import { fmtNumber } from "@/i18n/format";
 
 interface VendorEditRow {
@@ -337,7 +337,8 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         men_capacity: isVenue && menCapacity !== "" ? Number(menCapacity) : null,
         women_capacity: isVenue && womenCapacity !== "" ? Number(womenCapacity) : null,
         portfolio_urls: portfolioUrls,
-        extra_services: isVenue ? extraServices : [],
+        // Manual tags now apply to all categories.
+        extra_services: extraServices,
       })
       .eq("id", vendor.id);
     setSaving(false);
