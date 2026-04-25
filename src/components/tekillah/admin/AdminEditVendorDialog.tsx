@@ -161,9 +161,12 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         setVendor(v);
         setBusinessName(v.business_name);
         setBio(v.bio ?? "");
+        setBioEn(v.bio_en ?? "");
         setCity(v.city ?? "");
         setRegion(v.region ?? "");
+        setRegionEn(v.region_en ?? "");
         setDistrict(v.district ?? "");
+        setDistrictEn(v.district_en ?? "");
         setPhone(v.phone ?? "");
         setWeekdayPrice(Number(v.weekday_price ?? 0));
         setWeekendPrice(Number(v.weekend_price ?? 0));
@@ -172,6 +175,7 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         setWomenCapacity(v.women_capacity ?? "");
         setPortfolioUrls(v.portfolio_urls ?? []);
         setExtraServices(v.extra_services ?? []);
+        setExtraServicesEn(v.extra_services_en ?? []);
       }
       const existing = videoRows?.[0];
       setVideo(existing ? (existing as VideoItem) : null);
