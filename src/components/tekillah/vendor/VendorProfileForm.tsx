@@ -86,9 +86,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       setBusinessName(vendor.business_name);
       setCategory(vendor.category);
       setBio(vendor.bio ?? "");
+      setBioEn(vendor.bio_en ?? "");
       setCity(vendor.city ?? "");
       setRegion(vendor.region ?? "");
+      setRegionEn(vendor.region_en ?? "");
       setDistrict(vendor.district ?? "");
+      setDistrictEn(vendor.district_en ?? "");
       setPhone(vendor.phone ?? "");
       setDailyCapacity(vendor.daily_capacity);
       setWeekdayPrice(Number(vendor.weekday_price ?? vendor.starting_price ?? 0));
@@ -97,6 +100,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       setMenCapacity(vendor.men_capacity ?? "");
       setWomenCapacity(vendor.women_capacity ?? "");
       setExtraServices(vendor.extra_services ?? []);
+      setExtraServicesEn(vendor.extra_services_en ?? []);
       setPortfolioUrls(vendor.portfolio_urls ?? []);
       setDocUrl(vendor.commercial_register_url);
       setIban(vendor.iban ?? "");
