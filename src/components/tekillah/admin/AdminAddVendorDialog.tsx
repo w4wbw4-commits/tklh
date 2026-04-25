@@ -287,9 +287,12 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
       business_name: businessName,
       category,
       bio: bio || null,
+      bio_en: bioEn.trim() || null,
       city: city || null,
       region: region.trim() || null,
+      region_en: regionEn.trim() || null,
       district: district.trim() || null,
+      district_en: districtEn.trim() || null,
       phone: phone || null,
       daily_capacity: 1,
       starting_price: startingPrice,
@@ -300,6 +303,7 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
       women_capacity: isVenue && womenCapacity !== "" ? Number(womenCapacity) : null,
       // Manual tags apply to ALL categories now (not just halls).
       extra_services: extraServices,
+      extra_services_en: extraServicesEn,
       portfolio_urls: portfolioUrls,
       // Admin bypass: instantly approved, active and visible publicly
       approval_status: "approved" as const,
