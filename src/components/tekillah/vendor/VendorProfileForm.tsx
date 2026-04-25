@@ -445,6 +445,15 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           placeholder={isVenue ? "مثال: إضاءة، بوفيه، كوشة" : "مثال: تصوير ليلي، فيديو 4K"}
           hint="اضغط Enter أو الفاصلة لإضافة الخدمة"
         />
+        <div className="mt-4">
+          <div className="mb-1.5 text-xs font-medium text-foreground/70">Extra services (English) — optional</div>
+          <ServiceTagsInput
+            value={extraServicesEn}
+            onChange={setExtraServicesEn}
+            placeholder={isVenue ? "e.g. Lighting, Buffet, Stage" : "e.g. Night photography, 4K video"}
+            hint="Type a service and press Enter to add it as a chip."
+          />
+        </div>
       </div>
 
       {/* Banking — IBAN */}
