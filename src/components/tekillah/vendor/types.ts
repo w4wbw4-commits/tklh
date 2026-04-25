@@ -41,6 +41,7 @@ export interface VendorRow {
   men_capacity: number | null;
   women_capacity: number | null;
   extra_services: string[];
+  extra_services_en: string[];
   verified: boolean;
   active: boolean;
   approval_status: ApprovalStatus;
