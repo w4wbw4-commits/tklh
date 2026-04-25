@@ -391,8 +391,16 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
               <Input value={region} onChange={(e) => setRegion(e.target.value)} placeholder="مثال: منطقة الرياض" required />
             </div>
             <div className="space-y-2">
+              <Label className="font-arabic">Region (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+              <Input value={regionEn} onChange={(e) => setRegionEn(e.target.value)} placeholder="e.g. Riyadh Region" dir="ltr" />
+            </div>
+            <div className="space-y-2">
               <Label className="font-arabic">الحي <span className="text-destructive">*</span></Label>
               <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="مثال: حي العليا" required />
+            </div>
+            <div className="space-y-2">
+              <Label className="font-arabic">District (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+              <Input value={districtEn} onChange={(e) => setDistrictEn(e.target.value)} placeholder="e.g. Al Olaya" dir="ltr" />
             </div>
             <div className="space-y-2">
               <Label className="font-arabic">{t("admin.addVendor.phone")}</Label>
@@ -403,6 +411,12 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
               <Textarea value={bio} onChange={(e) => setBio(e.target.value)}
                 className="min-h-[80px] font-arabic"
                 placeholder={t("admin.addVendor.bioPh") ?? ""} />
+            </div>
+            <div className="space-y-2 sm:col-span-2">
+              <Label className="font-arabic">Bio (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+              <Textarea value={bioEn} onChange={(e) => setBioEn(e.target.value)}
+                className="min-h-[80px]" dir="ltr"
+                placeholder="Short English description shown to non-Arabic customers." />
             </div>
           </div>
 
