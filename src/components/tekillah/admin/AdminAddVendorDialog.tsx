@@ -424,6 +424,16 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
             </div>
           )}
 
+          {/* Extra services — venues only */}
+          {isVenue && (
+            <div className="rounded-2xl border border-border bg-background/40 p-4">
+              <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+                <Sparkles className="h-4 w-4 text-primary" /> خدمات إضافية
+              </div>
+              <ExtraServicesPicker value={extraServices} onChange={setExtraServices} />
+            </div>
+          )}
+
           {/* Promo Video — luxury black/gold card */}
           <div className="space-y-3 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.04] to-transparent p-4">
             <div className="flex items-center justify-between gap-2">
