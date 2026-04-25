@@ -14,9 +14,10 @@ import { Badge } from "@/components/ui/badge";
 import {
   Loader2, Save, FileText, ShieldCheck, Building2,
   Landmark, MapPin, AlertTriangle, Clock, CheckCircle2, XCircle,
-  CalendarDays, CalendarRange, Wallet, Users, Users2,
+  CalendarDays, CalendarRange, Wallet, Users, Users2, Sparkles,
 } from "lucide-react";
 import { CATEGORY_LABELS, type VendorRow } from "./types";
+import { ExtraServicesPicker } from "./ExtraServicesPicker";
 import { TermsCheckbox } from "@/components/tekillah/TermsCheckbox";
 import { recordTermsAcceptance } from "@/lib/terms";
 import { useTranslation } from "react-i18next";
@@ -30,6 +31,8 @@ const vendorSchema = z.object({
   category: z.enum(["hall", "catering", "photography", "dj", "decor", "cars"]),
   bio: z.string().trim().max(800).optional(),
   city: z.string().trim().max(80).optional(),
+  region: z.string().trim().min(2, "أدخل اسم المنطقة").max(80),
+  district: z.string().trim().min(2, "أدخل اسم الحي").max(80),
   phone: z.string().trim().max(20).optional(),
   daily_capacity: z.number().int().min(1).max(50),
   weekday_price: z.number().min(1, "أدخل سعر أيام الأسبوع").max(10000000),
@@ -52,6 +55,8 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [category, setCategory] = useState<VendorRow["category"]>("hall");
   const [bio, setBio] = useState("");
   const [city, setCity] = useState("");
+  const [region, setRegion] = useState("");
+  const [district, setDistrict] = useState("");
   const [phone, setPhone] = useState("");
   const [dailyCapacity, setDailyCapacity] = useState(1);
   const [weekdayPrice, setWeekdayPrice] = useState(0);
@@ -59,6 +64,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [minDeposit, setMinDeposit] = useState(0);
   const [menCapacity, setMenCapacity] = useState<number | "">("");
   const [womenCapacity, setWomenCapacity] = useState<number | "">("");
+  const [extraServices, setExtraServices] = useState<string[]>([]);
   const [portfolioUrls, setPortfolioUrls] = useState<string[]>([]);
   const [docUrl, setDocUrl] = useState<string | null>(null);
   const [iban, setIban] = useState("");
@@ -77,6 +83,8 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       setCategory(vendor.category);
       setBio(vendor.bio ?? "");
       setCity(vendor.city ?? "");
+      setRegion(vendor.region ?? "");
+      setDistrict(vendor.district ?? "");
       setPhone(vendor.phone ?? "");
       setDailyCapacity(vendor.daily_capacity);
       setWeekdayPrice(Number(vendor.weekday_price ?? vendor.starting_price ?? 0));
@@ -84,6 +92,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       setMinDeposit(Number(vendor.min_deposit ?? 0));
       setMenCapacity(vendor.men_capacity ?? "");
       setWomenCapacity(vendor.women_capacity ?? "");
+      setExtraServices(vendor.extra_services ?? []);
       setPortfolioUrls(vendor.portfolio_urls ?? []);
       setDocUrl(vendor.commercial_register_url);
       setIban(vendor.iban ?? "");
@@ -145,7 +154,8 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       return;
     }
     const parsed = vendorSchema.safeParse({
-      business_name: businessName, category, bio, city, phone,
+      business_name: businessName, category, bio, city,
+      region: region.trim(), district: district.trim(), phone,
       daily_capacity: Number(dailyCapacity),
       weekday_price: Number(weekdayPrice),
       weekend_price: Number(weekendPrice),
@@ -166,6 +176,8 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       category,
       bio: bio || null,
       city: city || null,
+      region: region.trim() || null,
+      district: district.trim() || null,
       phone: phone || null,
       daily_capacity: Number(dailyCapacity),
       starting_price: startingPrice,
@@ -174,6 +186,8 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       min_deposit: Number(minDeposit),
       men_capacity: category === "hall" && menCapacity !== "" ? Number(menCapacity) : null,
       women_capacity: category === "hall" && womenCapacity !== "" ? Number(womenCapacity) : null,
+      // Extras only saved for venues; other categories always reset to []
+      extra_services: category === "hall" ? extraServices : [],
       portfolio_urls: portfolioUrls,
       commercial_register_url: docUrl,
       iban: iban.toUpperCase(),
@@ -282,6 +296,24 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
             <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="الرياض، جدة..." />
           </div>
           <div className="space-y-2">
+            <Label>المنطقة <span className="text-destructive">*</span></Label>
+            <Input
+              value={region}
+              onChange={(e) => setRegion(e.target.value)}
+              placeholder="مثال: منطقة الرياض"
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>الحي <span className="text-destructive">*</span></Label>
+            <Input
+              value={district}
+              onChange={(e) => setDistrict(e.target.value)}
+              placeholder="مثال: حي العليا"
+              required
+            />
+          </div>
+          <div className="space-y-2">
             <Label>رقم التواصل</Label>
             <Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="05xxxxxxxx" dir="ltr" />
           </div>
@@ -357,6 +389,20 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
               onChange={setWomenCapacity}
             />
           </div>
+        </div>
+      )}
+
+      {/* Extra services — venues only. Hidden for all other categories. */}
+      {isVenue && (
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
+          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
+            <Sparkles className="h-4 w-4 text-primary" /> خدمات إضافية
+            <Badge variant="outline" className="ms-1 text-[10px]">اختياري</Badge>
+          </div>
+          <p className="mb-5 text-xs text-foreground/60">
+            اختر الخدمات التي تقدّمها قاعتك للعملاء. ستظهر للعميل عند تصفّح ملفك.
+          </p>
+          <ExtraServicesPicker value={extraServices} onChange={setExtraServices} />
         </div>
       )}
 

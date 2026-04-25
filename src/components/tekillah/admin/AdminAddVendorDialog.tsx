@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import {
   Loader2, Plus, Save, Users, Users2, CalendarDays, CalendarRange, Wallet,
-  ImagePlus, X, Film, Link2, Trash2, Play,
+  ImagePlus, X, Film, Link2, Trash2, Play, Sparkles,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { CATEGORY_LABELS, type VendorRow } from "@/components/tekillah/vendor/types";
+import { ExtraServicesPicker } from "@/components/tekillah/vendor/ExtraServicesPicker";
 import { fmtNumber } from "@/i18n/format";
 
 // Convert Arabic-Indic digits → Western digits, strip non-digits
@@ -83,6 +84,8 @@ const schema = z.object({
   business_name: z.string().trim().min(2).max(120),
   category: z.enum(["hall", "catering", "photography", "dj", "decor", "cars"]),
   city: z.string().trim().max(80).optional(),
+  region: z.string().trim().min(2, "أدخل اسم المنطقة").max(80),
+  district: z.string().trim().min(2, "أدخل اسم الحي").max(80),
   phone: z.string().trim().max(20).optional(),
   bio: z.string().trim().max(800).optional(),
   weekday_price: z.number().min(1),
@@ -114,6 +117,8 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
   const [businessName, setBusinessName] = useState("");
   const [category, setCategory] = useState<VendorRow["category"]>("hall");
   const [city, setCity] = useState("");
+  const [region, setRegion] = useState("");
+  const [district, setDistrict] = useState("");
   const [phone, setPhone] = useState("");
   const [bio, setBio] = useState("");
   const [weekdayPrice, setWeekdayPrice] = useState<number | "">("");
@@ -121,6 +126,7 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
   const [minDeposit, setMinDeposit] = useState<number | "">("");
   const [menCapacity, setMenCapacity] = useState<number | "">("");
   const [womenCapacity, setWomenCapacity] = useState<number | "">("");
+  const [extraServices, setExtraServices] = useState<string[]>([]);
 
   // Media state — staged before vendor insert, persisted on save.
   const [portfolioUrls, setPortfolioUrls] = useState<string[]>([]);
@@ -134,9 +140,10 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
   const isVenue = category === "hall";
 
   const reset = () => {
-    setBusinessName(""); setCategory("hall"); setCity(""); setPhone(""); setBio("");
+    setBusinessName(""); setCategory("hall");
+    setCity(""); setRegion(""); setDistrict(""); setPhone(""); setBio("");
     setWeekdayPrice(""); setWeekendPrice(""); setMinDeposit("");
-    setMenCapacity(""); setWomenCapacity("");
+    setMenCapacity(""); setWomenCapacity(""); setExtraServices([]);
     setPortfolioUrls([]); setVideo(null); setVideoUrlInput("");
     setVideoProgress(0); setVideoUploading(false); setImgUploading(false);
   };
@@ -253,6 +260,8 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
       business_name: businessName,
       category,
       city,
+      region: region.trim(),
+      district: district.trim(),
       phone,
       bio,
       weekday_price: Number(weekdayPrice),
@@ -274,6 +283,8 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
       category,
       bio: bio || null,
       city: city || null,
+      region: region.trim() || null,
+      district: district.trim() || null,
       phone: phone || null,
       daily_capacity: 1,
       starting_price: startingPrice,
@@ -282,6 +293,7 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
       min_deposit: Number(minDeposit),
       men_capacity: isVenue && menCapacity !== "" ? Number(menCapacity) : null,
       women_capacity: isVenue && womenCapacity !== "" ? Number(womenCapacity) : null,
+      extra_services: isVenue ? extraServices : [],
       portfolio_urls: portfolioUrls,
       // Admin bypass: instantly approved, active and visible publicly
       approval_status: "approved" as const,
@@ -365,6 +377,14 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
               <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder={t("admin.addVendor.cityPh") ?? ""} />
             </div>
             <div className="space-y-2">
+              <Label className="font-arabic">المنطقة <span className="text-destructive">*</span></Label>
+              <Input value={region} onChange={(e) => setRegion(e.target.value)} placeholder="مثال: منطقة الرياض" required />
+            </div>
+            <div className="space-y-2">
+              <Label className="font-arabic">الحي <span className="text-destructive">*</span></Label>
+              <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="مثال: حي العليا" required />
+            </div>
+            <div className="space-y-2">
               <Label className="font-arabic">{t("admin.addVendor.phone")}</Label>
               <Input value={phone} onChange={(e) => setPhone(e.target.value)} dir="ltr" placeholder="05xxxxxxxx" />
             </div>
@@ -401,6 +421,16 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
                 <NumField label={t("vendor.profile.menCapacity")} icon={Users} value={menCapacity} onChange={setMenCapacity} />
                 <NumField label={t("vendor.profile.womenCapacity")} icon={Users2} value={womenCapacity} onChange={setWomenCapacity} />
               </div>
+            </div>
+          )}
+
+          {/* Extra services — venues only */}
+          {isVenue && (
+            <div className="rounded-2xl border border-border bg-background/40 p-4">
+              <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+                <Sparkles className="h-4 w-4 text-primary" /> خدمات إضافية
+              </div>
+              <ExtraServicesPicker value={extraServices} onChange={setExtraServices} />
             </div>
           )}
 

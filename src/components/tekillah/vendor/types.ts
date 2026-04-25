@@ -22,6 +22,8 @@ export interface VendorRow {
   category: "hall" | "catering" | "photography" | "dj" | "decor" | "cars";
   bio: string | null;
   city: string | null;
+  region: string | null;
+  district: string | null;
   phone: string | null;
   portfolio_urls: string[];
   commercial_register_url: string | null;
@@ -35,11 +37,34 @@ export interface VendorRow {
   min_deposit: number;
   men_capacity: number | null;
   women_capacity: number | null;
+  extra_services: string[];
   verified: boolean;
   active: boolean;
   approval_status: ApprovalStatus;
   rejection_reason: string | null;
 }
+
+/**
+ * Optional add-ons offered by venues ("قاعة" only). Stored as text[] in
+ * `vendors.extra_services` so admins and vendors can edit the same list.
+ * NOTE: per product spec, AC ("تكييف") is intentionally excluded.
+ */
+export const VENUE_EXTRA_SERVICES = [
+  { key: "lighting", label: "إضاءة" },
+  { key: "buffet", label: "بوفيه" },
+  { key: "sound", label: "صوتيات" },
+  { key: "catering_meat", label: "ذبائح" },
+  { key: "kosha", label: "كوشة" },
+  { key: "coordinator", label: "منسق" },
+  { key: "wifi", label: "واي فاي" },
+  { key: "parking", label: "مواقف" },
+] as const;
+
+export type VenueExtraServiceKey = (typeof VENUE_EXTRA_SERVICES)[number]["key"];
+
+export const EXTRA_SERVICE_LABELS: Record<string, string> = Object.fromEntries(
+  VENUE_EXTRA_SERVICES.map((s) => [s.key, s.label]),
+);
 
 export interface PackageRow {
   id: string;
