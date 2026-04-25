@@ -118,15 +118,19 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
   const [category, setCategory] = useState<VendorRow["category"]>("hall");
   const [city, setCity] = useState("");
   const [region, setRegion] = useState("");
+  const [regionEn, setRegionEn] = useState("");
   const [district, setDistrict] = useState("");
+  const [districtEn, setDistrictEn] = useState("");
   const [phone, setPhone] = useState("");
   const [bio, setBio] = useState("");
+  const [bioEn, setBioEn] = useState("");
   const [weekdayPrice, setWeekdayPrice] = useState<number | "">("");
   const [weekendPrice, setWeekendPrice] = useState<number | "">("");
   const [minDeposit, setMinDeposit] = useState<number | "">("");
   const [menCapacity, setMenCapacity] = useState<number | "">("");
   const [womenCapacity, setWomenCapacity] = useState<number | "">("");
   const [extraServices, setExtraServices] = useState<string[]>([]);
+  const [extraServicesEn, setExtraServicesEn] = useState<string[]>([]);
 
   // Media state — staged before vendor insert, persisted on save.
   const [portfolioUrls, setPortfolioUrls] = useState<string[]>([]);
