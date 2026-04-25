@@ -296,6 +296,24 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
             <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="الرياض، جدة..." />
           </div>
           <div className="space-y-2">
+            <Label>المنطقة <span className="text-destructive">*</span></Label>
+            <Input
+              value={region}
+              onChange={(e) => setRegion(e.target.value)}
+              placeholder="مثال: منطقة الرياض"
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>الحي <span className="text-destructive">*</span></Label>
+            <Input
+              value={district}
+              onChange={(e) => setDistrict(e.target.value)}
+              placeholder="مثال: حي العليا"
+              required
+            />
+          </div>
+          <div className="space-y-2">
             <Label>رقم التواصل</Label>
             <Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="05xxxxxxxx" dir="ltr" />
           </div>
