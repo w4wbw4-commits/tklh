@@ -440,9 +440,11 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                                 <VendorRatingBadge avg={v.avg_rating} count={v.reviews_count} />
                               </div>
                               {(v.city || v.region || v.district) && (
-                                <div className="mt-1 inline-flex items-center gap-1 font-arabic text-[11px] text-foreground/55">
-                                  <MapPin className="h-3 w-3" />
-                                  {[v.region, v.district, v.city].filter(Boolean).join(" — ")}
+                                <div className="mt-1 inline-flex items-center gap-1 font-arabic text-[11px] text-foreground/60">
+                                  <MapPin className="h-3 w-3 text-primary/70" />
+                                  <span>
+                                    {[v.city, v.district, v.region].filter(Boolean).join("، ")}
+                                  </span>
                                 </div>
                               )}
                             </div>
