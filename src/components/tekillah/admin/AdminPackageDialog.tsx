@@ -61,6 +61,11 @@ export interface PlatformPackageRow {
   created_at: string;
   slots: PackageSlot[];
   eligible_vendor_ids: string[];
+  // Optional English equivalents — admins can fill these in to surface the
+  // package in English UI. Empty values fall back to Arabic.
+  name_en?: string | null;
+  description_en?: string | null;
+  includes_en?: string[];
 }
 
 interface EligibleVendor {
