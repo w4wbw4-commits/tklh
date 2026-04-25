@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Loader2, Save, ImagePlus, X, Film, Link2, Trash2, Play, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { ExtraServicesPicker } from "@/components/tekillah/vendor/ExtraServicesPicker";
+import { ServiceTagsInput } from "@/components/tekillah/vendor/ServiceTagsInput";
 import { fmtNumber } from "@/i18n/format";
 
 interface VendorEditRow {
@@ -337,7 +337,8 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         men_capacity: isVenue && menCapacity !== "" ? Number(menCapacity) : null,
         women_capacity: isVenue && womenCapacity !== "" ? Number(womenCapacity) : null,
         portfolio_urls: portfolioUrls,
-        extra_services: isVenue ? extraServices : [],
+        // Manual tags now apply to all categories.
+        extra_services: extraServices,
       })
       .eq("id", vendor.id);
     setSaving(false);
@@ -521,30 +522,34 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
               </div>
             </div>
             {isVenue && (
-              <>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div className="space-y-1.5">
-                    <Label className="font-arabic">{t("admin.vendors.menCapacity")}</Label>
-                    <Input type="number" min={0} value={menCapacity}
-                      onChange={(e) => setMenCapacity(e.target.value === "" ? "" : Number(e.target.value))}
-                      className="tabular-nums" dir="ltr" />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label className="font-arabic">{t("admin.vendors.womenCapacity")}</Label>
-                    <Input type="number" min={0} value={womenCapacity}
-                      onChange={(e) => setWomenCapacity(e.target.value === "" ? "" : Number(e.target.value))}
-                      className="tabular-nums" dir="ltr" />
-                  </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="space-y-1.5">
+                  <Label className="font-arabic">{t("admin.vendors.menCapacity")}</Label>
+                  <Input type="number" min={0} value={menCapacity}
+                    onChange={(e) => setMenCapacity(e.target.value === "" ? "" : Number(e.target.value))}
+                    className="tabular-nums" dir="ltr" />
                 </div>
-                <div className="space-y-2 rounded-2xl border border-primary/20 bg-primary/[0.04] p-4">
-                  <Label className="font-arabic text-base">خدمات إضافية</Label>
-                  <p className="font-arabic text-xs text-foreground/65">
-                    حدّد الخدمات المتاحة في القاعة. يستطيع المشرف تعديل الاختيار في أي وقت.
-                  </p>
-                  <ExtraServicesPicker value={extraServices} onChange={setExtraServices} />
+                <div className="space-y-1.5">
+                  <Label className="font-arabic">{t("admin.vendors.womenCapacity")}</Label>
+                  <Input type="number" min={0} value={womenCapacity}
+                    onChange={(e) => setWomenCapacity(e.target.value === "" ? "" : Number(e.target.value))}
+                    className="tabular-nums" dir="ltr" />
                 </div>
-              </>
+              </div>
             )}
+
+            {/* Manual service tags — ALL vendor categories. */}
+            <div className="space-y-2 rounded-2xl border border-primary/20 bg-primary/[0.04] p-4">
+              <Label className="font-arabic text-base">الخدمات الإضافية</Label>
+              <p className="font-arabic text-xs text-foreground/65">
+                اكتب الخدمة واضغط Enter لإضافتها كوسم. يستطيع المشرف تعديلها في أي وقت.
+              </p>
+              <ServiceTagsInput
+                value={extraServices}
+                onChange={setExtraServices}
+                placeholder={isVenue ? "مثال: إضاءة، بوفيه، كوشة" : "مثال: تصوير ليلي، فيديو 4K"}
+              />
+            </div>
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">

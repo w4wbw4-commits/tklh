@@ -19,7 +19,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { CATEGORY_LABELS, type VendorRow } from "@/components/tekillah/vendor/types";
-import { ExtraServicesPicker } from "@/components/tekillah/vendor/ExtraServicesPicker";
+import { ServiceTagsInput } from "@/components/tekillah/vendor/ServiceTagsInput";
 import { fmtNumber } from "@/i18n/format";
 
 // Convert Arabic-Indic digits → Western digits, strip non-digits
@@ -293,7 +293,8 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
       min_deposit: Number(minDeposit),
       men_capacity: isVenue && menCapacity !== "" ? Number(menCapacity) : null,
       women_capacity: isVenue && womenCapacity !== "" ? Number(womenCapacity) : null,
-      extra_services: isVenue ? extraServices : [],
+      // Manual tags apply to ALL categories now (not just halls).
+      extra_services: extraServices,
       portfolio_urls: portfolioUrls,
       // Admin bypass: instantly approved, active and visible publicly
       approval_status: "approved" as const,
@@ -424,15 +425,18 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
             </div>
           )}
 
-          {/* Extra services — venues only */}
-          {isVenue && (
-            <div className="rounded-2xl border border-border bg-background/40 p-4">
-              <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
-                <Sparkles className="h-4 w-4 text-primary" /> خدمات إضافية
-              </div>
-              <ExtraServicesPicker value={extraServices} onChange={setExtraServices} />
+          {/* Manual service tags — ALL vendor categories. */}
+          <div className="rounded-2xl border border-border bg-background/40 p-4">
+            <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+              <Sparkles className="h-4 w-4 text-primary" /> الخدمات الإضافية
             </div>
-          )}
+            <ServiceTagsInput
+              value={extraServices}
+              onChange={setExtraServices}
+              placeholder={isVenue ? "مثال: إضاءة، بوفيه، كوشة" : "مثال: تصوير ليلي، فيديو 4K"}
+              hint="اكتب الخدمة واضغط Enter لإضافتها كوسم"
+            />
+          </div>
 
           {/* Promo Video — luxury black/gold card */}
           <div className="space-y-3 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.04] to-transparent p-4">

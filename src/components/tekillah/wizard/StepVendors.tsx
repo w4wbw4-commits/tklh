@@ -450,25 +450,32 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                             </div>
                           </div>
 
-                          {/* Features & Services — venue-only. Each extra renders as
-                              an icon-badge on a soft off-white panel with an
-                              olive-green checkmark, matching the luxury theme. */}
-                          {isHall && v.extra_services && v.extra_services.length > 0 && (
+                          {/* Features & Services — shown for ALL categories.
+                              Vendors can now type free-text tags (lighting,
+                              4K video, ذبائح, …). Known keys still get a
+                              matching icon; free-text shows the olive-green
+                              checkmark badge. */}
+                          {v.extra_services && v.extra_services.length > 0 && (
                             <div className="mt-3 rounded-xl border border-border/60 bg-secondary/40 p-3">
                               <div className="mb-2 flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-wide text-foreground/60">
                                 <Check className="h-3 w-3 text-primary" />
                                 <span className="font-arabic">{t("wizard.vendors.whatIncluded")}</span>
                               </div>
-                              <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
+                              <div className="flex flex-wrap gap-1.5">
                                 {v.extra_services.map((key) => {
                                   const Icon = EXTRA_SERVICE_ICONS[key];
+                                  const label = EXTRA_SERVICE_LABELS[key] ?? key;
                                   return (
                                     <span
                                       key={key}
-                                      className="inline-flex items-center gap-1.5 rounded-lg border border-primary/20 bg-background px-2 py-1 font-arabic text-[11px] font-medium text-foreground/80"
+                                      className="inline-flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 font-arabic text-[11px] font-medium text-primary-foreground shadow-card"
                                     >
-                                      {Icon && <Icon className="h-3.5 w-3.5 shrink-0 text-primary" />}
-                                      <span className="truncate">{EXTRA_SERVICE_LABELS[key] ?? key}</span>
+                                      {Icon ? (
+                                        <Icon className="h-3 w-3 shrink-0" />
+                                      ) : (
+                                        <Check className="h-3 w-3 shrink-0" />
+                                      )}
+                                      <span className="truncate">{label}</span>
                                     </span>
                                   );
                                 })}
