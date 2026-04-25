@@ -28,6 +28,8 @@ interface VendorEditRow {
   category: string;
   bio: string | null;
   city: string | null;
+  region: string | null;
+  district: string | null;
   phone: string | null;
   weekday_price: number;
   weekend_price: number;
@@ -35,6 +37,7 @@ interface VendorEditRow {
   men_capacity: number | null;
   women_capacity: number | null;
   portfolio_urls: string[];
+  extra_services: string[];
 }
 
 interface Props {
@@ -108,7 +111,10 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
   const [businessName, setBusinessName] = useState("");
   const [bio, setBio] = useState("");
   const [city, setCity] = useState("");
+  const [region, setRegion] = useState("");
+  const [district, setDistrict] = useState("");
   const [phone, setPhone] = useState("");
+  const [extraServices, setExtraServices] = useState<string[]>([]);
   const [weekdayPrice, setWeekdayPrice] = useState<number>(0);
   const [weekendPrice, setWeekendPrice] = useState<number>(0);
   const [minDeposit, setMinDeposit] = useState<number>(0);
@@ -131,7 +137,7 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
       const [{ data }, { data: videoRows }] = await Promise.all([
         supabase
           .from("vendors")
-          .select("id, user_id, business_name, category, bio, city, phone, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, portfolio_urls")
+          .select("id, user_id, business_name, category, bio, city, region, district, phone, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, portfolio_urls, extra_services")
           .eq("id", vendorId)
           .maybeSingle(),
         supabase
@@ -148,6 +154,8 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         setBusinessName(v.business_name);
         setBio(v.bio ?? "");
         setCity(v.city ?? "");
+        setRegion(v.region ?? "");
+        setDistrict(v.district ?? "");
         setPhone(v.phone ?? "");
         setWeekdayPrice(Number(v.weekday_price ?? 0));
         setWeekendPrice(Number(v.weekend_price ?? 0));
@@ -155,6 +163,7 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         setMenCapacity(v.men_capacity ?? "");
         setWomenCapacity(v.women_capacity ?? "");
         setPortfolioUrls(v.portfolio_urls ?? []);
+        setExtraServices(v.extra_services ?? []);
       }
       const existing = videoRows?.[0];
       setVideo(existing ? (existing as VideoItem) : null);
@@ -310,12 +319,16 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
     if (!businessName.trim()) { toast.error("Name required"); return; }
     setSaving(true);
     const startingPrice = Math.min(Number(weekdayPrice), Number(weekendPrice));
+    if (!region.trim() || region.trim().length < 2) { toast.error("أدخل اسم المنطقة"); setSaving(false); return; }
+    if (!district.trim() || district.trim().length < 2) { toast.error("أدخل اسم الحي"); setSaving(false); return; }
     const { error } = await supabase
       .from("vendors")
       .update({
         business_name: businessName.trim(),
         bio: bio.trim() || null,
         city: city.trim() || null,
+        region: region.trim(),
+        district: district.trim(),
         phone: phone.trim() || null,
         weekday_price: Number(weekdayPrice) || 0,
         weekend_price: Number(weekendPrice) || 0,
@@ -324,6 +337,7 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         men_capacity: isVenue && menCapacity !== "" ? Number(menCapacity) : null,
         women_capacity: isVenue && womenCapacity !== "" ? Number(womenCapacity) : null,
         portfolio_urls: portfolioUrls,
+        extra_services: isVenue ? extraServices : [],
       })
       .eq("id", vendor.id);
     setSaving(false);
