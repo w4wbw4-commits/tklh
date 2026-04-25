@@ -28,6 +28,8 @@ interface VendorEditRow {
   category: string;
   bio: string | null;
   city: string | null;
+  region: string | null;
+  district: string | null;
   phone: string | null;
   weekday_price: number;
   weekend_price: number;
@@ -35,6 +37,7 @@ interface VendorEditRow {
   men_capacity: number | null;
   women_capacity: number | null;
   portfolio_urls: string[];
+  extra_services: string[];
 }
 
 interface Props {
@@ -108,7 +111,10 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
   const [businessName, setBusinessName] = useState("");
   const [bio, setBio] = useState("");
   const [city, setCity] = useState("");
+  const [region, setRegion] = useState("");
+  const [district, setDistrict] = useState("");
   const [phone, setPhone] = useState("");
+  const [extraServices, setExtraServices] = useState<string[]>([]);
   const [weekdayPrice, setWeekdayPrice] = useState<number>(0);
   const [weekendPrice, setWeekendPrice] = useState<number>(0);
   const [minDeposit, setMinDeposit] = useState<number>(0);
@@ -131,7 +137,7 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
       const [{ data }, { data: videoRows }] = await Promise.all([
         supabase
           .from("vendors")
-          .select("id, user_id, business_name, category, bio, city, phone, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, portfolio_urls")
+          .select("id, user_id, business_name, category, bio, city, region, district, phone, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, portfolio_urls, extra_services")
           .eq("id", vendorId)
           .maybeSingle(),
         supabase
@@ -148,6 +154,8 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         setBusinessName(v.business_name);
         setBio(v.bio ?? "");
         setCity(v.city ?? "");
+        setRegion(v.region ?? "");
+        setDistrict(v.district ?? "");
         setPhone(v.phone ?? "");
         setWeekdayPrice(Number(v.weekday_price ?? 0));
         setWeekendPrice(Number(v.weekend_price ?? 0));
@@ -155,6 +163,7 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         setMenCapacity(v.men_capacity ?? "");
         setWomenCapacity(v.women_capacity ?? "");
         setPortfolioUrls(v.portfolio_urls ?? []);
+        setExtraServices(v.extra_services ?? []);
       }
       const existing = videoRows?.[0];
       setVideo(existing ? (existing as VideoItem) : null);
@@ -310,12 +319,16 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
     if (!businessName.trim()) { toast.error("Name required"); return; }
     setSaving(true);
     const startingPrice = Math.min(Number(weekdayPrice), Number(weekendPrice));
+    if (!region.trim() || region.trim().length < 2) { toast.error("أدخل اسم المنطقة"); setSaving(false); return; }
+    if (!district.trim() || district.trim().length < 2) { toast.error("أدخل اسم الحي"); setSaving(false); return; }
     const { error } = await supabase
       .from("vendors")
       .update({
         business_name: businessName.trim(),
         bio: bio.trim() || null,
         city: city.trim() || null,
+        region: region.trim(),
+        district: district.trim(),
         phone: phone.trim() || null,
         weekday_price: Number(weekdayPrice) || 0,
         weekend_price: Number(weekendPrice) || 0,
@@ -324,6 +337,7 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         men_capacity: isVenue && menCapacity !== "" ? Number(menCapacity) : null,
         women_capacity: isVenue && womenCapacity !== "" ? Number(womenCapacity) : null,
         portfolio_urls: portfolioUrls,
+        extra_services: isVenue ? extraServices : [],
       })
       .eq("id", vendor.id);
     setSaving(false);
@@ -355,6 +369,14 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
               <div className="space-y-1.5">
                 <Label className="font-arabic">{t("admin.vendors.city")}</Label>
                 <Input value={city} onChange={(e) => setCity(e.target.value)} className="font-arabic" />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="font-arabic">المنطقة *</Label>
+                <Input value={region} onChange={(e) => setRegion(e.target.value)} placeholder="مثال: منطقة الرياض" className="font-arabic" required />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="font-arabic">الحي *</Label>
+                <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="مثال: حي العليا" className="font-arabic" required />
               </div>
               <div className="space-y-1.5">
                 <Label className="font-arabic">{t("admin.vendors.phone")}</Label>
@@ -499,20 +521,29 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
               </div>
             </div>
             {isVenue && (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="space-y-1.5">
-                  <Label className="font-arabic">{t("admin.vendors.menCapacity")}</Label>
-                  <Input type="number" min={0} value={menCapacity}
-                    onChange={(e) => setMenCapacity(e.target.value === "" ? "" : Number(e.target.value))}
-                    className="tabular-nums" dir="ltr" />
+              <>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <Label className="font-arabic">{t("admin.vendors.menCapacity")}</Label>
+                    <Input type="number" min={0} value={menCapacity}
+                      onChange={(e) => setMenCapacity(e.target.value === "" ? "" : Number(e.target.value))}
+                      className="tabular-nums" dir="ltr" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="font-arabic">{t("admin.vendors.womenCapacity")}</Label>
+                    <Input type="number" min={0} value={womenCapacity}
+                      onChange={(e) => setWomenCapacity(e.target.value === "" ? "" : Number(e.target.value))}
+                      className="tabular-nums" dir="ltr" />
+                  </div>
                 </div>
-                <div className="space-y-1.5">
-                  <Label className="font-arabic">{t("admin.vendors.womenCapacity")}</Label>
-                  <Input type="number" min={0} value={womenCapacity}
-                    onChange={(e) => setWomenCapacity(e.target.value === "" ? "" : Number(e.target.value))}
-                    className="tabular-nums" dir="ltr" />
+                <div className="space-y-2 rounded-2xl border border-primary/20 bg-primary/[0.04] p-4">
+                  <Label className="font-arabic text-base">خدمات إضافية</Label>
+                  <p className="font-arabic text-xs text-foreground/65">
+                    حدّد الخدمات المتاحة في القاعة. يستطيع المشرف تعديل الاختيار في أي وقت.
+                  </p>
+                  <ExtraServicesPicker value={extraServices} onChange={setExtraServices} />
                 </div>
-              </div>
+              </>
             )}
 
             <div className="space-y-2">
