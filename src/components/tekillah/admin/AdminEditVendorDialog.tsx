@@ -27,9 +27,12 @@ interface VendorEditRow {
   business_name: string;
   category: string;
   bio: string | null;
+  bio_en: string | null;
   city: string | null;
   region: string | null;
+  region_en: string | null;
   district: string | null;
+  district_en: string | null;
   phone: string | null;
   weekday_price: number;
   weekend_price: number;
@@ -38,6 +41,7 @@ interface VendorEditRow {
   women_capacity: number | null;
   portfolio_urls: string[];
   extra_services: string[];
+  extra_services_en: string[];
 }
 
 interface Props {
