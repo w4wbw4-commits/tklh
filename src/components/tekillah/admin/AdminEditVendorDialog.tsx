@@ -371,6 +371,14 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
                 <Input value={city} onChange={(e) => setCity(e.target.value)} className="font-arabic" />
               </div>
               <div className="space-y-1.5">
+                <Label className="font-arabic">المنطقة *</Label>
+                <Input value={region} onChange={(e) => setRegion(e.target.value)} placeholder="مثال: منطقة الرياض" className="font-arabic" required />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="font-arabic">الحي *</Label>
+                <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="مثال: حي العليا" className="font-arabic" required />
+              </div>
+              <div className="space-y-1.5">
                 <Label className="font-arabic">{t("admin.vendors.phone")}</Label>
                 <Input value={phone} onChange={(e) => setPhone(e.target.value)} dir="ltr" className="tabular-nums" />
               </div>
