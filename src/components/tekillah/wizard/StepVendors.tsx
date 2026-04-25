@@ -40,11 +40,14 @@ export interface VendorOption {
   bio: string | null;
   category: ServiceKey;
   city: string | null;
+  region: string | null;
+  district: string | null;
   starting_price: number;
   weekday_price: number;
   weekend_price: number;
   men_capacity: number | null;
   women_capacity: number | null;
+  extra_services: string[];
   verified: boolean;
   avg_rating: number;
   reviews_count: number;
@@ -128,7 +131,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
       supabase
         .from("vendors")
         .select(
-          "id, business_name, bio, category, city, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, verified, portfolio_urls, packages(id, name, tier, price, description, active, approval_status)",
+          "id, business_name, bio, category, city, region, district, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, extra_services, verified, portfolio_urls, packages(id, name, tier, price, description, active, approval_status)",
         )
         .eq("active", true)
         .eq("approval_status", "approved")
@@ -172,11 +175,14 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         bio: string | null;
         category: ServiceKey;
         city: string | null;
+        region: string | null;
+        district: string | null;
         starting_price: number;
         weekday_price: number;
         weekend_price: number;
         men_capacity: number | null;
         women_capacity: number | null;
+        extra_services: string[] | null;
         verified: boolean;
         portfolio_urls: string[] | null;
         packages: RawPackage[];
@@ -198,11 +204,14 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         bio: row.bio,
         category: row.category,
         city: row.city,
+        region: row.region,
+        district: row.district,
         starting_price: row.starting_price,
         weekday_price: row.weekday_price,
         weekend_price: row.weekend_price,
         men_capacity: row.men_capacity,
         women_capacity: row.women_capacity,
+        extra_services: row.extra_services ?? [],
         verified: row.verified,
         avg_rating: r.avg,
         reviews_count: r.count,
