@@ -17,6 +17,7 @@ import {
   CalendarDays, CalendarRange, Wallet, Users, Users2,
 } from "lucide-react";
 import { CATEGORY_LABELS, type VendorRow } from "./types";
+import { ExtraServicesPicker } from "./ExtraServicesPicker";
 import { TermsCheckbox } from "@/components/tekillah/TermsCheckbox";
 import { recordTermsAcceptance } from "@/lib/terms";
 import { useTranslation } from "react-i18next";
