@@ -21,7 +21,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
 import { EmptyState } from "@/components/tekillah/EmptyState";
-import { fmtDate, fmtNumber } from "@/i18n/format";
+import { fmtDate, fmtNumber, toLatinDigits } from "@/i18n/format";
 import { toast } from "sonner";
 
 interface PendingVendorRow {

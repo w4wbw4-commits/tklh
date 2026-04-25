@@ -243,9 +243,9 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
                           asChild
                           className="rounded-full text-foreground/70"
                         >
-                          <a href={`tel:${b.vendor.phone}`}>
+                          <a href={`tel:${toLatinDigits(b.vendor.phone)}`}>
                             <Phone className="me-1 h-4 w-4" />
-                            {b.vendor.phone}
+                            {toLatinDigits(b.vendor.phone)}
                           </a>
                         </Button>
                       )}

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { fmtDate } from "@/i18n/format";
+import { fmtDate, toLatinDigits } from "@/i18n/format";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 import { buildWhatsappLink } from "@/lib/whatsapp";
 import { toast } from "sonner";
