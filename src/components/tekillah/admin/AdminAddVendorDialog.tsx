@@ -19,6 +19,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { CATEGORY_LABELS, type VendorRow } from "@/components/tekillah/vendor/types";
+import { ExtraServicesPicker } from "@/components/tekillah/vendor/ExtraServicesPicker";
 import { fmtNumber } from "@/i18n/format";
 
 // Convert Arabic-Indic digits → Western digits, strip non-digits
