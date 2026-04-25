@@ -84,6 +84,8 @@ const schema = z.object({
   business_name: z.string().trim().min(2).max(120),
   category: z.enum(["hall", "catering", "photography", "dj", "decor", "cars"]),
   city: z.string().trim().max(80).optional(),
+  region: z.string().trim().min(2, "أدخل اسم المنطقة").max(80),
+  district: z.string().trim().min(2, "أدخل اسم الحي").max(80),
   phone: z.string().trim().max(20).optional(),
   bio: z.string().trim().max(800).optional(),
   weekday_price: z.number().min(1),
