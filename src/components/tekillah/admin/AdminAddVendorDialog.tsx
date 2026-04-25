@@ -118,15 +118,19 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
   const [category, setCategory] = useState<VendorRow["category"]>("hall");
   const [city, setCity] = useState("");
   const [region, setRegion] = useState("");
+  const [regionEn, setRegionEn] = useState("");
   const [district, setDistrict] = useState("");
+  const [districtEn, setDistrictEn] = useState("");
   const [phone, setPhone] = useState("");
   const [bio, setBio] = useState("");
+  const [bioEn, setBioEn] = useState("");
   const [weekdayPrice, setWeekdayPrice] = useState<number | "">("");
   const [weekendPrice, setWeekendPrice] = useState<number | "">("");
   const [minDeposit, setMinDeposit] = useState<number | "">("");
   const [menCapacity, setMenCapacity] = useState<number | "">("");
   const [womenCapacity, setWomenCapacity] = useState<number | "">("");
   const [extraServices, setExtraServices] = useState<string[]>([]);
+  const [extraServicesEn, setExtraServicesEn] = useState<string[]>([]);
 
   // Media state — staged before vendor insert, persisted on save.
   const [portfolioUrls, setPortfolioUrls] = useState<string[]>([]);
@@ -141,9 +145,10 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
 
   const reset = () => {
     setBusinessName(""); setCategory("hall");
-    setCity(""); setRegion(""); setDistrict(""); setPhone(""); setBio("");
+    setCity(""); setRegion(""); setRegionEn(""); setDistrict(""); setDistrictEn("");
+    setPhone(""); setBio(""); setBioEn("");
     setWeekdayPrice(""); setWeekendPrice(""); setMinDeposit("");
-    setMenCapacity(""); setWomenCapacity(""); setExtraServices([]);
+    setMenCapacity(""); setWomenCapacity(""); setExtraServices([]); setExtraServicesEn([]);
     setPortfolioUrls([]); setVideo(null); setVideoUrlInput("");
     setVideoProgress(0); setVideoUploading(false); setImgUploading(false);
   };
@@ -282,9 +287,12 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
       business_name: businessName,
       category,
       bio: bio || null,
+      bio_en: bioEn.trim() || null,
       city: city || null,
       region: region.trim() || null,
+      region_en: regionEn.trim() || null,
       district: district.trim() || null,
+      district_en: districtEn.trim() || null,
       phone: phone || null,
       daily_capacity: 1,
       starting_price: startingPrice,
@@ -295,6 +303,7 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
       women_capacity: isVenue && womenCapacity !== "" ? Number(womenCapacity) : null,
       // Manual tags apply to ALL categories now (not just halls).
       extra_services: extraServices,
+      extra_services_en: extraServicesEn,
       portfolio_urls: portfolioUrls,
       // Admin bypass: instantly approved, active and visible publicly
       approval_status: "approved" as const,
@@ -382,8 +391,16 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
               <Input value={region} onChange={(e) => setRegion(e.target.value)} placeholder="مثال: منطقة الرياض" required />
             </div>
             <div className="space-y-2">
+              <Label className="font-arabic">Region (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+              <Input value={regionEn} onChange={(e) => setRegionEn(e.target.value)} placeholder="e.g. Riyadh Region" dir="ltr" />
+            </div>
+            <div className="space-y-2">
               <Label className="font-arabic">الحي <span className="text-destructive">*</span></Label>
               <Input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="مثال: حي العليا" required />
+            </div>
+            <div className="space-y-2">
+              <Label className="font-arabic">District (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+              <Input value={districtEn} onChange={(e) => setDistrictEn(e.target.value)} placeholder="e.g. Al Olaya" dir="ltr" />
             </div>
             <div className="space-y-2">
               <Label className="font-arabic">{t("admin.addVendor.phone")}</Label>
@@ -394,6 +411,12 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
               <Textarea value={bio} onChange={(e) => setBio(e.target.value)}
                 className="min-h-[80px] font-arabic"
                 placeholder={t("admin.addVendor.bioPh") ?? ""} />
+            </div>
+            <div className="space-y-2 sm:col-span-2">
+              <Label className="font-arabic">Bio (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
+              <Textarea value={bioEn} onChange={(e) => setBioEn(e.target.value)}
+                className="min-h-[80px]" dir="ltr"
+                placeholder="Short English description shown to non-Arabic customers." />
             </div>
           </div>
 
@@ -425,9 +448,10 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
             </div>
           )}
 
-          {/* Manual service tags — ALL vendor categories. */}
-          <div className="rounded-2xl border border-border bg-background/40 p-4">
-            <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+          {/* Manual service tags — ALL vendor categories. EN list is optional and shown
+              when the customer is browsing in English. */}
+          <div className="space-y-4 rounded-2xl border border-border bg-background/40 p-4">
+            <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
               <Sparkles className="h-4 w-4 text-primary" /> الخدمات الإضافية
             </div>
             <ServiceTagsInput
@@ -436,6 +460,15 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
               placeholder={isVenue ? "مثال: إضاءة، بوفيه، كوشة" : "مثال: تصوير ليلي، فيديو 4K"}
               hint="اكتب الخدمة واضغط Enter لإضافتها كوسم"
             />
+            <div>
+              <div className="mb-1.5 text-xs font-medium text-foreground/70">Extra services (English) — optional</div>
+              <ServiceTagsInput
+                value={extraServicesEn}
+                onChange={setExtraServicesEn}
+                placeholder={isVenue ? "e.g. Lighting, Buffet, Stage" : "e.g. Night photography, 4K video"}
+                hint="Type a service and press Enter to add it as a chip."
+              />
+            </div>
           </div>
 
           {/* Promo Video — luxury black/gold card */}

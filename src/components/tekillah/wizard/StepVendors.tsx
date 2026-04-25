@@ -25,7 +25,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { tierForBudget, type BudgetTier, type ServiceKey } from "./types";
-import { fmtNumber } from "@/i18n/format";
+import { fmtNumber, toLatinDigits } from "@/i18n/format";
+import { pickLocalized, pickLocalizedArray } from "@/i18n/localized";
 import { VendorRatingBadge } from "@/components/tekillah/reviews/VendorRatingBadge";
 import { VendorMediaCarousel, type MediaItem } from "./VendorMediaCarousel";
 import { EXTRA_SERVICE_LABELS, EXTRA_SERVICE_ICONS } from "@/components/tekillah/vendor/types";
@@ -39,16 +40,20 @@ export interface VendorOption {
   id: string;
   business_name: string;
   bio: string | null;
+  bio_en: string | null;
   category: ServiceKey;
   city: string | null;
   region: string | null;
+  region_en: string | null;
   district: string | null;
+  district_en: string | null;
   starting_price: number;
   weekday_price: number;
   weekend_price: number;
   men_capacity: number | null;
   women_capacity: number | null;
   extra_services: string[];
+  extra_services_en: string[];
   verified: boolean;
   avg_rating: number;
   reviews_count: number;
@@ -132,7 +137,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
       supabase
         .from("vendors")
         .select(
-          "id, business_name, bio, category, city, region, district, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, extra_services, verified, portfolio_urls, packages(id, name, tier, price, description, active, approval_status)",
+          "id, business_name, bio, bio_en, category, city, region, region_en, district, district_en, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, extra_services, extra_services_en, verified, portfolio_urls, packages(id, name, tier, price, description, active, approval_status)",
         )
         .eq("active", true)
         .eq("approval_status", "approved")
@@ -174,16 +179,20 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         id: string;
         business_name: string;
         bio: string | null;
+        bio_en: string | null;
         category: ServiceKey;
         city: string | null;
         region: string | null;
+        region_en: string | null;
         district: string | null;
+        district_en: string | null;
         starting_price: number;
         weekday_price: number;
         weekend_price: number;
         men_capacity: number | null;
         women_capacity: number | null;
         extra_services: string[] | null;
+        extra_services_en: string[] | null;
         verified: boolean;
         portfolio_urls: string[] | null;
         packages: RawPackage[];
@@ -203,16 +212,20 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         id: row.id,
         business_name: row.business_name,
         bio: row.bio,
+        bio_en: row.bio_en,
         category: row.category,
         city: row.city,
         region: row.region,
+        region_en: row.region_en,
         district: row.district,
+        district_en: row.district_en,
         starting_price: row.starting_price,
         weekday_price: row.weekday_price,
         weekend_price: row.weekend_price,
         men_capacity: row.men_capacity,
         women_capacity: row.women_capacity,
         extra_services: row.extra_services ?? [],
+        extra_services_en: row.extra_services_en ?? [],
         verified: row.verified,
         avg_rating: r.avg,
         reviews_count: r.count,
@@ -410,16 +423,20 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                         {/* Provider description — placed right under the gallery so the
                             visuals get textual context. Uses Arabic sans-serif and
                             wraps gracefully for long copy. */}
-                        {v.bio && v.bio.trim().length > 0 && (
-                          <div className="border-b border-border/60 bg-secondary/30 px-4 py-3">
-                            <div className="text-[10px] uppercase tracking-wide text-foreground/55">
-                              <span className="font-arabic">{t("wizard.vendors.description")}</span>
+                        {(() => {
+                          const localizedBio = pickLocalized(v.bio, v.bio_en);
+                          if (!localizedBio) return null;
+                          return (
+                            <div className="border-b border-border/60 bg-secondary/30 px-4 py-3">
+                              <div className="text-[10px] uppercase tracking-wide text-foreground/55">
+                                <span className="font-arabic">{t("wizard.vendors.description")}</span>
+                              </div>
+                              <p className="mt-1 whitespace-pre-line break-words font-arabic text-[13px] leading-relaxed text-foreground/80">
+                                {localizedBio}
+                              </p>
                             </div>
-                            <p className="mt-1 whitespace-pre-line break-words font-arabic text-[13px] leading-relaxed text-foreground/80">
-                              {v.bio}
-                            </p>
-                          </div>
-                        )}
+                          );
+                        })()}
 
                         <div className="p-4">
                           <div className="flex items-start justify-between gap-2">
@@ -439,14 +456,22 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                               <div className="mt-1">
                                 <VendorRatingBadge avg={v.avg_rating} count={v.reviews_count} />
                               </div>
-                              {(v.city || v.region || v.district) && (
-                                <div className="mt-1 inline-flex items-center gap-1 font-arabic text-[11px] text-foreground/60">
-                                  <MapPin className="h-3 w-3 text-primary/70" />
-                                  <span>
-                                    {[v.city, v.district, v.region].filter(Boolean).join("، ")}
-                                  </span>
-                                </div>
-                              )}
+                              {(() => {
+                                // Localised City / District / Region — wrapped in toLatinDigits
+                                // so any digits in admin-entered text render as 1/2/3.
+                                const locParts = [
+                                  toLatinDigits(v.city ?? ""),
+                                  pickLocalized(v.district, v.district_en),
+                                  pickLocalized(v.region, v.region_en),
+                                ].filter(Boolean);
+                                if (!locParts.length) return null;
+                                return (
+                                  <div className="mt-1 inline-flex items-center gap-1 font-arabic text-[11px] text-foreground/60">
+                                    <MapPin className="h-3 w-3 text-primary/70" />
+                                    <span>{locParts.join("، ")}</span>
+                                  </div>
+                                );
+                              })()}
                             </div>
                           </div>
 
@@ -455,33 +480,40 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                               4K video, ذبائح, …). Known keys still get a
                               matching icon; free-text shows the olive-green
                               checkmark badge. */}
-                          {v.extra_services && v.extra_services.length > 0 && (
-                            <div className="mt-3 rounded-xl border border-border/60 bg-secondary/40 p-3">
-                              <div className="mb-2 flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-wide text-foreground/60">
-                                <Check className="h-3 w-3 text-primary" />
-                                <span className="font-arabic">{t("wizard.vendors.whatIncluded")}</span>
+                          {(() => {
+                            // Show EN tags when in EN locale + EN list provided,
+                            // else fall back to AR list. Falls back to known-key
+                            // labels for legacy fixed-keys (lighting, etc.).
+                            const localizedTags = pickLocalizedArray(v.extra_services, v.extra_services_en);
+                            if (!localizedTags.length) return null;
+                            return (
+                              <div className="mt-3 rounded-xl border border-border/60 bg-secondary/40 p-3">
+                                <div className="mb-2 flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-wide text-foreground/60">
+                                  <Check className="h-3 w-3 text-primary" />
+                                  <span className="font-arabic">{t("wizard.vendors.whatIncluded")}</span>
+                                </div>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {localizedTags.map((key) => {
+                                    const Icon = EXTRA_SERVICE_ICONS[key];
+                                    const label = EXTRA_SERVICE_LABELS[key] ?? key;
+                                    return (
+                                      <span
+                                        key={key}
+                                        className="inline-flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 font-arabic text-[11px] font-medium text-primary-foreground shadow-card"
+                                      >
+                                        {Icon ? (
+                                          <Icon className="h-3 w-3 shrink-0" />
+                                        ) : (
+                                          <Check className="h-3 w-3 shrink-0" />
+                                        )}
+                                        <span className="truncate">{label}</span>
+                                      </span>
+                                    );
+                                  })}
+                                </div>
                               </div>
-                              <div className="flex flex-wrap gap-1.5">
-                                {v.extra_services.map((key) => {
-                                  const Icon = EXTRA_SERVICE_ICONS[key];
-                                  const label = EXTRA_SERVICE_LABELS[key] ?? key;
-                                  return (
-                                    <span
-                                      key={key}
-                                      className="inline-flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 font-arabic text-[11px] font-medium text-primary-foreground shadow-card"
-                                    >
-                                      {Icon ? (
-                                        <Icon className="h-3 w-3 shrink-0" />
-                                      ) : (
-                                        <Check className="h-3 w-3 shrink-0" />
-                                      )}
-                                      <span className="truncate">{label}</span>
-                                    </span>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          )}
+                            );
+                          })()}
 
                           {/* Pricing & capacity grid — always Latin digits via fmtNumber */}
                           <div className="mt-3 grid grid-cols-2 gap-2" dir="ltr">
