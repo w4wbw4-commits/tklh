@@ -54,9 +54,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [businessName, setBusinessName] = useState("");
   const [category, setCategory] = useState<VendorRow["category"]>("hall");
   const [bio, setBio] = useState("");
+  const [bioEn, setBioEn] = useState("");
   const [city, setCity] = useState("");
   const [region, setRegion] = useState("");
+  const [regionEn, setRegionEn] = useState("");
   const [district, setDistrict] = useState("");
+  const [districtEn, setDistrictEn] = useState("");
   const [phone, setPhone] = useState("");
   const [dailyCapacity, setDailyCapacity] = useState(1);
   const [weekdayPrice, setWeekdayPrice] = useState(0);
@@ -65,6 +68,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [menCapacity, setMenCapacity] = useState<number | "">("");
   const [womenCapacity, setWomenCapacity] = useState<number | "">("");
   const [extraServices, setExtraServices] = useState<string[]>([]);
+  const [extraServicesEn, setExtraServicesEn] = useState<string[]>([]);
   const [portfolioUrls, setPortfolioUrls] = useState<string[]>([]);
   const [docUrl, setDocUrl] = useState<string | null>(null);
   const [iban, setIban] = useState("");
