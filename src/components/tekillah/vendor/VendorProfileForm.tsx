@@ -154,7 +154,8 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       return;
     }
     const parsed = vendorSchema.safeParse({
-      business_name: businessName, category, bio, city, phone,
+      business_name: businessName, category, bio, city,
+      region: region.trim(), district: district.trim(), phone,
       daily_capacity: Number(dailyCapacity),
       weekday_price: Number(weekdayPrice),
       weekend_price: Number(weekendPrice),
@@ -175,6 +176,8 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       category,
       bio: bio || null,
       city: city || null,
+      region: region.trim() || null,
+      district: district.trim() || null,
       phone: phone || null,
       daily_capacity: Number(dailyCapacity),
       starting_price: startingPrice,
@@ -183,6 +186,8 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       min_deposit: Number(minDeposit),
       men_capacity: category === "hall" && menCapacity !== "" ? Number(menCapacity) : null,
       women_capacity: category === "hall" && womenCapacity !== "" ? Number(womenCapacity) : null,
+      // Extras only saved for venues; other categories always reset to []
+      extra_services: category === "hall" ? extraServices : [],
       portfolio_urls: portfolioUrls,
       commercial_register_url: docUrl,
       iban: iban.toUpperCase(),
