@@ -1005,6 +1005,8 @@ export type Database = {
           commercial_register_url: string | null
           created_at: string
           daily_capacity: number
+          district: string | null
+          extra_services: string[]
           google_maps_url: string | null
           hidden: boolean
           hidden_until: string | null
@@ -1015,6 +1017,7 @@ export type Database = {
           min_deposit: number
           phone: string | null
           portfolio_urls: string[]
+          region: string | null
           rejection_reason: string | null
           reviewed_at: string | null
           reviewed_by: string | null
@@ -1036,6 +1039,8 @@ export type Database = {
           commercial_register_url?: string | null
           created_at?: string
           daily_capacity?: number
+          district?: string | null
+          extra_services?: string[]
           google_maps_url?: string | null
           hidden?: boolean
           hidden_until?: string | null
@@ -1046,6 +1051,7 @@ export type Database = {
           min_deposit?: number
           phone?: string | null
           portfolio_urls?: string[]
+          region?: string | null
           rejection_reason?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
@@ -1067,6 +1073,8 @@ export type Database = {
           commercial_register_url?: string | null
           created_at?: string
           daily_capacity?: number
+          district?: string | null
+          extra_services?: string[]
           google_maps_url?: string | null
           hidden?: boolean
           hidden_until?: string | null
@@ -1077,6 +1085,7 @@ export type Database = {
           min_deposit?: number
           phone?: string | null
           portfolio_urls?: string[]
+          region?: string | null
           rejection_reason?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
