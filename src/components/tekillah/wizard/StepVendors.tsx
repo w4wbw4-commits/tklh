@@ -423,16 +423,20 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                         {/* Provider description — placed right under the gallery so the
                             visuals get textual context. Uses Arabic sans-serif and
                             wraps gracefully for long copy. */}
-                        {v.bio && v.bio.trim().length > 0 && (
-                          <div className="border-b border-border/60 bg-secondary/30 px-4 py-3">
-                            <div className="text-[10px] uppercase tracking-wide text-foreground/55">
-                              <span className="font-arabic">{t("wizard.vendors.description")}</span>
+                        {(() => {
+                          const localizedBio = pickLocalized(v.bio, v.bio_en);
+                          if (!localizedBio) return null;
+                          return (
+                            <div className="border-b border-border/60 bg-secondary/30 px-4 py-3">
+                              <div className="text-[10px] uppercase tracking-wide text-foreground/55">
+                                <span className="font-arabic">{t("wizard.vendors.description")}</span>
+                              </div>
+                              <p className="mt-1 whitespace-pre-line break-words font-arabic text-[13px] leading-relaxed text-foreground/80">
+                                {localizedBio}
+                              </p>
                             </div>
-                            <p className="mt-1 whitespace-pre-line break-words font-arabic text-[13px] leading-relaxed text-foreground/80">
-                              {v.bio}
-                            </p>
-                          </div>
-                        )}
+                          );
+                        })()}
 
                         <div className="p-4">
                           <div className="flex items-start justify-between gap-2">
@@ -452,14 +456,22 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                               <div className="mt-1">
                                 <VendorRatingBadge avg={v.avg_rating} count={v.reviews_count} />
                               </div>
-                              {(v.city || v.region || v.district) && (
-                                <div className="mt-1 inline-flex items-center gap-1 font-arabic text-[11px] text-foreground/60">
-                                  <MapPin className="h-3 w-3 text-primary/70" />
-                                  <span>
-                                    {[v.city, v.district, v.region].filter(Boolean).join("، ")}
-                                  </span>
-                                </div>
-                              )}
+                              {(() => {
+                                // Localised City / District / Region — wrapped in toLatinDigits
+                                // so any digits in admin-entered text render as 1/2/3.
+                                const locParts = [
+                                  toLatinDigits(v.city ?? ""),
+                                  pickLocalized(v.district, v.district_en),
+                                  pickLocalized(v.region, v.region_en),
+                                ].filter(Boolean);
+                                if (!locParts.length) return null;
+                                return (
+                                  <div className="mt-1 inline-flex items-center gap-1 font-arabic text-[11px] text-foreground/60">
+                                    <MapPin className="h-3 w-3 text-primary/70" />
+                                    <span>{locParts.join("، ")}</span>
+                                  </div>
+                                );
+                              })()}
                             </div>
                           </div>
 
