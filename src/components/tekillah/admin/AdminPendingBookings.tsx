@@ -373,7 +373,7 @@ const DetailsBody = ({
               {t("admin.pending.customerPhone")}
             </div>
             <div className="font-arabic font-medium text-foreground" dir="ltr">
-              {group.customer_phone ?? "—"}
+              {group.customer_phone ? toLatinDigits(group.customer_phone) : "—"}
             </div>
           </div>
         </div>

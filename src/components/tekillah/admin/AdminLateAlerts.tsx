@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { fmtDate } from "@/i18n/format";
+import { fmtDate, toLatinDigits } from "@/i18n/format";
 
 // Late-attendance threshold (minutes after the event date "starts")
 const LATE_THRESHOLD_MIN = 15;
@@ -151,7 +151,7 @@ export const AdminLateAlerts = () => {
                     size="sm"
                     className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
                   >
-                    <a href={`tel:${b.vendor.phone}`}>
+                    <a href={`tel:${toLatinDigits(b.vendor.phone)}`}>
                       <Phone className="me-1 h-4 w-4" /> {t("admin.late.callVendor")}
                     </a>
                   </Button>
@@ -163,7 +163,7 @@ export const AdminLateAlerts = () => {
                     variant="outline"
                     className="rounded-full border-primary/40 text-primary hover:bg-primary/10"
                   >
-                    <a href={`tel:${b.customer_phone}`}>
+                    <a href={`tel:${toLatinDigits(b.customer_phone)}`}>
                       <Phone className="me-1 h-4 w-4" /> {t("admin.late.callCustomer")}
                     </a>
                   </Button>

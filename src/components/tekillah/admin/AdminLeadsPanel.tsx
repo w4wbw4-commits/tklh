@@ -129,7 +129,7 @@ export const AdminLeadsPanel = () => {
                       <PhoneIcon className="h-4 w-4" />
                     </span>
                     <div dir="ltr" className="font-arabic text-base font-semibold text-foreground">
-                      {lead.phone}
+                      {toLatinDigits(lead.phone)}
                     </div>
                     {lead.display_name && lead.display_name !== lead.phone && (
                       <span className="text-sm text-foreground/65">· {lead.display_name}</span>
