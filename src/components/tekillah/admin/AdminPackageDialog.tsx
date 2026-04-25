@@ -90,10 +90,14 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
   const isEdit = !!pkg;
 
   const [name, setName] = useState("");
+  const [nameEn, setNameEn] = useState("");
   const [description, setDescription] = useState("");
+  const [descriptionEn, setDescriptionEn] = useState("");
   const [price, setPrice] = useState<string>("");
   const [includes, setIncludes] = useState<string[]>([]);
+  const [includesEn, setIncludesEn] = useState<string[]>([]);
   const [includeDraft, setIncludeDraft] = useState("");
+  const [includeDraftEn, setIncludeDraftEn] = useState("");
   const [media, setMedia] = useState<PlatformPackageMedia[]>([]);
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [published, setPublished] = useState(true);
@@ -123,10 +127,14 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
   useEffect(() => {
     if (!open) return;
     setName(pkg?.name ?? "");
+    setNameEn(pkg?.name_en ?? "");
     setDescription(pkg?.description ?? "");
+    setDescriptionEn(pkg?.description_en ?? "");
     setPrice(pkg?.price ? String(pkg.price) : "");
     setIncludes(pkg?.includes ?? []);
+    setIncludesEn(pkg?.includes_en ?? []);
     setIncludeDraft("");
+    setIncludeDraftEn("");
     setMedia(pkg?.media ?? []);
     setThumbnail(pkg?.thumbnail_url ?? null);
     setPublished(pkg?.published ?? true);
@@ -142,6 +150,15 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
   };
   const removeInclude = (i: number) =>
     setIncludes((arr) => arr.filter((_, idx) => idx !== i));
+
+  const addIncludeEn = () => {
+    const v = includeDraftEn.trim();
+    if (!v) return;
+    setIncludesEn((arr) => [...arr, v]);
+    setIncludeDraftEn("");
+  };
+  const removeIncludeEn = (i: number) =>
+    setIncludesEn((arr) => arr.filter((_, idx) => idx !== i));
 
   const uploadFile = async (file: File, kind: "image" | "video") => {
     if (file.size > MAX_FILE_BYTES) {
