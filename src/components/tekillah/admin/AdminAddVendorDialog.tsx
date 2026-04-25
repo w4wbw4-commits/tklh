@@ -448,9 +448,10 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
             </div>
           )}
 
-          {/* Manual service tags — ALL vendor categories. */}
-          <div className="rounded-2xl border border-border bg-background/40 p-4">
-            <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+          {/* Manual service tags — ALL vendor categories. EN list is optional and shown
+              when the customer is browsing in English. */}
+          <div className="space-y-4 rounded-2xl border border-border bg-background/40 p-4">
+            <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
               <Sparkles className="h-4 w-4 text-primary" /> الخدمات الإضافية
             </div>
             <ServiceTagsInput
@@ -459,6 +460,15 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
               placeholder={isVenue ? "مثال: إضاءة، بوفيه، كوشة" : "مثال: تصوير ليلي، فيديو 4K"}
               hint="اكتب الخدمة واضغط Enter لإضافتها كوسم"
             />
+            <div>
+              <div className="mb-1.5 text-xs font-medium text-foreground/70">Extra services (English) — optional</div>
+              <ServiceTagsInput
+                value={extraServicesEn}
+                onChange={setExtraServicesEn}
+                placeholder={isVenue ? "e.g. Lighting, Buffet, Stage" : "e.g. Night photography, 4K video"}
+                hint="Type a service and press Enter to add it as a chip."
+              />
+            </div>
           </div>
 
           {/* Promo Video — luxury black/gold card */}
