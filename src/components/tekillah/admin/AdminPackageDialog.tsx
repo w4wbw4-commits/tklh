@@ -61,6 +61,11 @@ export interface PlatformPackageRow {
   created_at: string;
   slots: PackageSlot[];
   eligible_vendor_ids: string[];
+  // Optional English equivalents — admins can fill these in to surface the
+  // package in English UI. Empty values fall back to Arabic.
+  name_en?: string | null;
+  description_en?: string | null;
+  includes_en?: string[];
 }
 
 interface EligibleVendor {
@@ -85,10 +90,14 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
   const isEdit = !!pkg;
 
   const [name, setName] = useState("");
+  const [nameEn, setNameEn] = useState("");
   const [description, setDescription] = useState("");
+  const [descriptionEn, setDescriptionEn] = useState("");
   const [price, setPrice] = useState<string>("");
   const [includes, setIncludes] = useState<string[]>([]);
+  const [includesEn, setIncludesEn] = useState<string[]>([]);
   const [includeDraft, setIncludeDraft] = useState("");
+  const [includeDraftEn, setIncludeDraftEn] = useState("");
   const [media, setMedia] = useState<PlatformPackageMedia[]>([]);
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [published, setPublished] = useState(true);
@@ -118,10 +127,14 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
   useEffect(() => {
     if (!open) return;
     setName(pkg?.name ?? "");
+    setNameEn(pkg?.name_en ?? "");
     setDescription(pkg?.description ?? "");
+    setDescriptionEn(pkg?.description_en ?? "");
     setPrice(pkg?.price ? String(pkg.price) : "");
     setIncludes(pkg?.includes ?? []);
+    setIncludesEn(pkg?.includes_en ?? []);
     setIncludeDraft("");
+    setIncludeDraftEn("");
     setMedia(pkg?.media ?? []);
     setThumbnail(pkg?.thumbnail_url ?? null);
     setPublished(pkg?.published ?? true);
@@ -137,6 +150,15 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
   };
   const removeInclude = (i: number) =>
     setIncludes((arr) => arr.filter((_, idx) => idx !== i));
+
+  const addIncludeEn = () => {
+    const v = includeDraftEn.trim();
+    if (!v) return;
+    setIncludesEn((arr) => [...arr, v]);
+    setIncludeDraftEn("");
+  };
+  const removeIncludeEn = (i: number) =>
+    setIncludesEn((arr) => arr.filter((_, idx) => idx !== i));
 
   const uploadFile = async (file: File, kind: "image" | "video") => {
     if (file.size > MAX_FILE_BYTES) {
@@ -222,9 +244,12 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
 
     const payload = {
       name: name.trim(),
+      name_en: nameEn.trim() || null,
       description: description.trim() || null,
+      description_en: descriptionEn.trim() || null,
       price: numericPrice,
       includes,
+      includes_en: includesEn,
       // JSONB column — cast our typed media array to the generated `Json` type.
       media: media as unknown as import("@/integrations/supabase/types").Json,
       thumbnail_url: thumbnail ?? media.find((m) => m.type === "image")?.url ?? null,
@@ -270,7 +295,7 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
         </DialogHeader>
 
         <div className="space-y-5 py-2">
-          {/* Name */}
+          {/* Name (AR + optional EN) */}
           <div className="space-y-1.5">
             <Label className="font-arabic">{t("admin.packages.form.name")}</Label>
             <Input
@@ -280,9 +305,17 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
               className="font-arabic"
               maxLength={120}
             />
+            <Input
+              value={nameEn}
+              onChange={(e) => setNameEn(e.target.value)}
+              placeholder={t("admin.packages.form.nameEnPh", { defaultValue: "Package name (English — optional)" })}
+              className=""
+              dir="ltr"
+              maxLength={120}
+            />
           </div>
 
-          {/* Description */}
+          {/* Description (AR + optional EN) */}
           <div className="space-y-1.5">
             <Label className="font-arabic">{t("admin.packages.form.description")}</Label>
             <Textarea
@@ -290,6 +323,14 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
               onChange={(e) => setDescription(e.target.value)}
               placeholder={t("admin.packages.form.descriptionPh")}
               className="min-h-[100px] font-arabic"
+              maxLength={1000}
+            />
+            <Textarea
+              value={descriptionEn}
+              onChange={(e) => setDescriptionEn(e.target.value)}
+              placeholder={t("admin.packages.form.descriptionEnPh", { defaultValue: "Short description (English — optional)" })}
+              className="min-h-[80px]"
+              dir="ltr"
               maxLength={1000}
             />
           </div>
@@ -315,7 +356,7 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
             )}
           </div>
 
-          {/* Includes */}
+          {/* Includes (AR + optional EN parallel list) */}
           <div className="space-y-1.5">
             <Label className="font-arabic">{t("admin.packages.form.includes")}</Label>
             <div className="flex gap-2">
@@ -350,6 +391,43 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
                 ))}
               </div>
             )}
+
+            {/* Optional English inclusions — parallel array. Index N maps to AR index N. */}
+            <div className="mt-3 rounded-xl border border-dashed border-border/70 bg-secondary/30 p-3">
+              <p className="mb-2 text-[11px] font-medium text-foreground/60">
+                {t("admin.packages.form.includesEnHint", { defaultValue: "English inclusions (optional, shown when site is set to English)" })}
+              </p>
+              <div className="flex gap-2" dir="ltr">
+                <Input
+                  value={includeDraftEn}
+                  onChange={(e) => setIncludeDraftEn(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") { e.preventDefault(); addIncludeEn(); }
+                  }}
+                  placeholder="e.g. Premium catering for 50 guests"
+                />
+                <Button type="button" onClick={addIncludeEn} variant="secondary" size="sm" className="rounded-full">
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+              {includesEn.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-2" dir="ltr">
+                  {includesEn.map((inc, i) => (
+                    <Badge key={i} variant="secondary" className="gap-1.5 pe-1">
+                      {inc}
+                      <button
+                        type="button"
+                        onClick={() => removeIncludeEn(i)}
+                        className="grid h-5 w-5 place-items-center rounded-full hover:bg-destructive/20"
+                        aria-label="remove"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Media */}

@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { Check, ChevronLeft, ChevronRight, Loader2, Play, Sparkles, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { fmtNumber } from "@/i18n/format";
+import { pickLocalized, pickLocalizedArray } from "@/i18n/localized";
 import type { PackageSelection } from "@/lib/pendingPlan";
 
 // ---------------------------------------------------------------------------
@@ -62,16 +63,21 @@ export const StepPackageDetail = ({ selection, onConfirm, submitting, onChangePa
   const isAr = i18n.language === "ar";
   const cur = t("common.currency");
 
-  // Inclusions: prefer the inline list (admin packages), fall back to the
-  // i18n catalog for built-in curated tiers.
+  // Bilingual display name + description (admin packages may carry *_en).
+  const displayName = pickLocalized(selection.name, selection.name_en);
+
+  // Inclusions: prefer the inline list (admin packages) with EN fallback,
+  // otherwise pull from the i18n catalog for built-in curated tiers.
   const includes = useMemo<string[]>(() => {
-    if (selection.includes && selection.includes.length > 0) return selection.includes;
+    if (selection.includes && selection.includes.length > 0) {
+      return pickLocalizedArray(selection.includes, selection.includes_en);
+    }
     if (selection.includesKey) {
       const raw = t(selection.includesKey, { returnObjects: true });
       return Array.isArray(raw) ? (raw as string[]) : [];
     }
     return [];
-  }, [t, selection.includes, selection.includesKey]);
+  }, [t, selection.includes, selection.includes_en, selection.includesKey]);
 
   // Media gallery: admin packages bring their own image/video list; curated
   // tiers fall back to the hard-coded Unsplash gallery.
@@ -107,7 +113,7 @@ export const StepPackageDetail = ({ selection, onConfirm, submitting, onChangePa
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h3 className="font-arabic text-2xl font-semibold text-foreground sm:text-3xl">
-            {selection.name}
+            {displayName}
           </h3>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-foreground/70">
             {t("wizard.packageDetail.subtitle")}
@@ -145,7 +151,7 @@ export const StepPackageDetail = ({ selection, onConfirm, submitting, onChangePa
               ) : (
                 <img
                   src={m.url}
-                  alt={`${selection.name} — ${i + 1}`}
+                  alt={`${displayName} — ${i + 1}`}
                   loading="lazy"
                   className="h-full w-full object-cover"
                   draggable={false}

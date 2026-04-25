@@ -22,14 +22,22 @@ const MAX_AGE_MS = 24 * 60 * 60 * 1000;
 export interface PackageSelection {
   /** Stable key — curated tier ("classic"|"premium"|"royal") OR platform_packages.id for admin packages. */
   key: string;
-  /** Localised display name at the time of selection. */
+  /** Display name at the time of selection (Arabic — source of truth). */
   name: string;
+  /** Optional English display name (admin packages only). */
+  name_en?: string | null;
   /** Fixed price in SAR. */
   price: number;
   /** Translation key whose value is a string[] of inclusions (curated tiers only). */
   includesKey?: string;
-  /** Inline list of inclusions (admin packages). */
+  /** Inline list of inclusions (admin packages, Arabic source). */
   includes?: string[];
+  /** Optional English inclusions (admin packages). */
+  includes_en?: string[];
+  /** Optional Arabic description (admin packages). */
+  description?: string | null;
+  /** Optional English description (admin packages). */
+  description_en?: string | null;
   /** Discriminator: 'curated' (built-in tiers) vs 'admin' (platform_packages row). */
   kind?: "curated" | "admin";
   /** Optional media gallery for admin packages. */

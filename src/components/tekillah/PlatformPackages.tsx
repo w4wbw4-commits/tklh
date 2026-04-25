@@ -19,6 +19,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { fmtNumber } from "@/i18n/format";
+import { pickLocalized, pickLocalizedArray } from "@/i18n/localized";
 import type { PlatformPackageRow } from "./admin/AdminPackageDialog";
 
 export const PlatformPackages = () => {
@@ -89,20 +90,23 @@ export const PlatformPackages = () => {
         </motion.div>
 
         <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((p, idx) => (
-            <motion.article
-              key={p.id}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.06 }}
-              className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition hover:shadow-luxury"
-            >
+          {items.map((p, idx) => {
+            const displayName = pickLocalized(p.name, p.name_en);
+            const displayDesc = pickLocalized(p.description, p.description_en);
+            return (
+              <motion.article
+                key={p.id}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.06 }}
+                className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition hover:shadow-luxury"
+              >
               <div className="relative aspect-[16/10] w-full bg-secondary">
                 {p.thumbnail_url ? (
                   <img
                     src={p.thumbnail_url}
-                    alt={p.name}
+                    alt={displayName}
                     loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                   />
@@ -122,10 +126,10 @@ export const PlatformPackages = () => {
               </div>
 
               <div className="flex flex-1 flex-col p-5">
-                <h3 className="font-arabic text-xl font-semibold text-foreground">{p.name}</h3>
-                {p.description && (
+                <h3 className="font-arabic text-xl font-semibold text-foreground">{displayName}</h3>
+                {displayDesc && (
                   <p className="mt-1.5 text-sm text-foreground/70 font-arabic line-clamp-2">
-                    {p.description}
+                    {displayDesc}
                   </p>
                 )}
 
@@ -136,7 +140,7 @@ export const PlatformPackages = () => {
                     </div>
                     <div className="font-arabic text-2xl font-semibold text-foreground tabular-nums">
                       {fmtNumber(Number(p.price))}
-                      <span className="ms-1 text-sm font-normal text-foreground/60">ر.س</span>
+                      <span className="ms-1 text-sm font-normal text-foreground/60">{t("common.currency")}</span>
                     </div>
                   </div>
                 </div>
@@ -159,20 +163,25 @@ export const PlatformPackages = () => {
                   </Button>
                 </div>
               </div>
-            </motion.article>
-          ))}
+              </motion.article>
+            );
+          })}
         </div>
       </div>
 
       {/* Detail dialog */}
       <Dialog open={!!active} onOpenChange={(v) => !v && setActive(null)}>
         <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
-          {active && (
+          {active && (() => {
+            const aName = pickLocalized(active.name, active.name_en);
+            const aDesc = pickLocalized(active.description, active.description_en);
+            const aIncludes = pickLocalizedArray(active.includes, active.includes_en);
+            return (
             <>
               <DialogHeader>
-                <DialogTitle className="font-arabic text-2xl">{active.name}</DialogTitle>
-                {active.description && (
-                  <DialogDescription className="font-arabic">{active.description}</DialogDescription>
+                <DialogTitle className="font-arabic text-2xl">{aName}</DialogTitle>
+                {aDesc && (
+                  <DialogDescription className="font-arabic">{aDesc}</DialogDescription>
                 )}
               </DialogHeader>
 
@@ -189,7 +198,7 @@ export const PlatformPackages = () => {
                     ) : (
                       <img
                         src={active.media[activeMediaIdx]?.url ?? active.thumbnail_url ?? ""}
-                        alt={active.name}
+                        alt={aName}
                         className="h-full w-full object-cover"
                       />
                     )}
@@ -220,14 +229,14 @@ export const PlatformPackages = () => {
               )}
 
               {/* Includes */}
-              {active.includes.length > 0 && (
+              {aIncludes.length > 0 && (
                 <div className="mt-4 rounded-2xl border border-border bg-card p-4">
                   <div className="text-sm font-semibold text-foreground font-arabic flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-primary" />
                     {t("platformPackages.includesTitle")}
                   </div>
                   <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-                    {active.includes.map((inc, i) => (
+                    {aIncludes.map((inc, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm text-foreground/85">
                         <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/15 text-primary">
                           <Check className="h-3 w-3" strokeWidth={3} />
@@ -242,7 +251,7 @@ export const PlatformPackages = () => {
               <div className="mt-4 flex items-center justify-between gap-3 border-t border-border pt-4">
                 <div className="font-arabic text-2xl font-semibold text-foreground tabular-nums">
                   {fmtNumber(Number(active.price))}
-                  <span className="ms-1 text-sm font-normal text-foreground/60">ر.س</span>
+                  <span className="ms-1 text-sm font-normal text-foreground/60">{t("common.currency")}</span>
                 </div>
                 <Button
                   onClick={() => bookPackage(active.id)}
@@ -253,7 +262,8 @@ export const PlatformPackages = () => {
                 </Button>
               </div>
             </>
-          )}
+            );
+          })()}
         </DialogContent>
       </Dialog>
     </section>
