@@ -145,9 +145,10 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
 
   const reset = () => {
     setBusinessName(""); setCategory("hall");
-    setCity(""); setRegion(""); setDistrict(""); setPhone(""); setBio("");
+    setCity(""); setRegion(""); setRegionEn(""); setDistrict(""); setDistrictEn("");
+    setPhone(""); setBio(""); setBioEn("");
     setWeekdayPrice(""); setWeekendPrice(""); setMinDeposit("");
-    setMenCapacity(""); setWomenCapacity(""); setExtraServices([]);
+    setMenCapacity(""); setWomenCapacity(""); setExtraServices([]); setExtraServicesEn([]);
     setPortfolioUrls([]); setVideo(null); setVideoUrlInput("");
     setVideoProgress(0); setVideoUploading(false); setImgUploading(false);
   };
