@@ -145,7 +145,7 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
       const [{ data }, { data: videoRows }] = await Promise.all([
         supabase
           .from("vendors")
-          .select("id, user_id, business_name, category, bio, city, region, district, phone, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, portfolio_urls, extra_services")
+          .select("id, user_id, business_name, category, bio, bio_en, city, region, region_en, district, district_en, phone, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, portfolio_urls, extra_services, extra_services_en")
           .eq("id", vendorId)
           .maybeSingle(),
         supabase
