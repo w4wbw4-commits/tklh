@@ -392,6 +392,20 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
         </div>
       )}
 
+      {/* Extra services — venues only. Hidden for all other categories. */}
+      {isVenue && (
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
+          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
+            <Sparkles className="h-4 w-4 text-primary" /> خدمات إضافية
+            <Badge variant="outline" className="ms-1 text-[10px]">اختياري</Badge>
+          </div>
+          <p className="mb-5 text-xs text-foreground/60">
+            اختر الخدمات التي تقدّمها قاعتك للعملاء. ستظهر للعميل عند تصفّح ملفك.
+          </p>
+          <ExtraServicesPicker value={extraServices} onChange={setExtraServices} />
+        </div>
+      )}
+
       {/* Banking — IBAN */}
       <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
         <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
