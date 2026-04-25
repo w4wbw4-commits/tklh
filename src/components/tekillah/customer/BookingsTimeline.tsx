@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
-import { fmtDate } from "@/i18n/format";
+import { fmtDate, fmtTime, toLatinDigits } from "@/i18n/format";
 import type { EventRow } from "./types";
 import { Link } from "react-router-dom";
 
@@ -215,9 +215,7 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
                         {b.attendance_confirmed_at && (
                           <div className="mt-1 text-[11px] text-emerald-700">
                             {t("customer.bookingsTimeline.arrivedAt", {
-                              time: new Date(b.attendance_confirmed_at).toLocaleTimeString(i18n.language === "ar" ? "ar-SA-u-nu-latn" : "en-US", {
-                                hour: "2-digit", minute: "2-digit",
-                              }),
+                              time: fmtTime(b.attendance_confirmed_at),
                             })}
                           </div>
                         )}
@@ -245,9 +243,9 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
                           asChild
                           className="rounded-full text-foreground/70"
                         >
-                          <a href={`tel:${b.vendor.phone}`}>
+                          <a href={`tel:${toLatinDigits(b.vendor.phone)}`}>
                             <Phone className="me-1 h-4 w-4" />
-                            {b.vendor.phone}
+                            {toLatinDigits(b.vendor.phone)}
                           </a>
                         </Button>
                       )}

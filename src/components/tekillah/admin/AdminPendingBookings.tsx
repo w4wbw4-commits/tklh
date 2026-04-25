@@ -21,7 +21,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
 import { EmptyState } from "@/components/tekillah/EmptyState";
-import { fmtDate, fmtNumber } from "@/i18n/format";
+import { fmtDate, fmtNumber, toLatinDigits } from "@/i18n/format";
 import { toast } from "sonner";
 
 interface PendingVendorRow {
@@ -373,7 +373,7 @@ const DetailsBody = ({
               {t("admin.pending.customerPhone")}
             </div>
             <div className="font-arabic font-medium text-foreground" dir="ltr">
-              {group.customer_phone ?? "—"}
+              {group.customer_phone ? toLatinDigits(group.customer_phone) : "—"}
             </div>
           </div>
         </div>

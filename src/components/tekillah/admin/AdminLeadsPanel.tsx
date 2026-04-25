@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { fmtDate } from "@/i18n/format";
+import { fmtDate, toLatinDigits } from "@/i18n/format";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 import { buildWhatsappLink } from "@/lib/whatsapp";
 import { toast } from "sonner";
@@ -129,7 +129,7 @@ export const AdminLeadsPanel = () => {
                       <PhoneIcon className="h-4 w-4" />
                     </span>
                     <div dir="ltr" className="font-arabic text-base font-semibold text-foreground">
-                      {lead.phone}
+                      {toLatinDigits(lead.phone)}
                     </div>
                     {lead.display_name && lead.display_name !== lead.phone && (
                       <span className="text-sm text-foreground/65">· {lead.display_name}</span>

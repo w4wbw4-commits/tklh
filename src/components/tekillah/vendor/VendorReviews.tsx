@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Loader2, Star, MessageSquareText, TrendingUp } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { ReviewsList } from "@/components/tekillah/reviews/ReviewsList";
+import { fmtRating, fmtNumber } from "@/i18n/format";
 
 interface Summary {
   avg_rating: number;
@@ -51,23 +52,23 @@ export const VendorReviews = ({ vendorId, vendorUserId }: { vendorId: string; ve
         <SummaryCard
           icon={Star}
           label={t("vendor.reviews.avgRating")}
-          value={summary?.reviews_count ? summary.avg_rating.toFixed(1) : "—"}
+          value={summary?.reviews_count ? fmtRating(summary.avg_rating) : "—"}
           highlight
         />
         <SummaryCard
           icon={MessageSquareText}
           label={t("vendor.reviews.totalReviews")}
-          value={String(summary?.reviews_count ?? 0)}
+          value={fmtNumber(summary?.reviews_count ?? 0)}
         />
         <SummaryCard
           icon={TrendingUp}
           label={t("reviews.fields.communication")}
-          value={summary?.reviews_count ? Number(summary.avg_communication).toFixed(1) : "—"}
+          value={summary?.reviews_count ? fmtRating(Number(summary.avg_communication)) : "—"}
         />
         <SummaryCard
           icon={TrendingUp}
           label={t("reviews.fields.quality")}
-          value={summary?.reviews_count ? Number(summary.avg_quality).toFixed(1) : "—"}
+          value={summary?.reviews_count ? fmtRating(Number(summary.avg_quality)) : "—"}
         />
       </div>
 

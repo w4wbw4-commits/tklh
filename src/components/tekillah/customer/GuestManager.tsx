@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { EventRow, GuestRow, RsvpStatus } from "./types";
 import { InvitationDialog } from "./InvitationDialog";
 import { useTranslation } from "react-i18next";
-import { fmtNumber } from "@/i18n/format";
+import { fmtNumber, toLatinDigits } from "@/i18n/format";
 
 export const GuestManager = ({ event }: { event: EventRow }) => {
   const { t } = useTranslation();
@@ -136,7 +136,7 @@ export const GuestManager = ({ event }: { event: EventRow }) => {
                   <div className="flex-1 min-w-0">
                     <div className="font-arabic text-sm font-semibold truncate">{g.name}</div>
                     <div className="text-xs text-foreground/60">
-                      {g.phone || t("customer.guests.noPhone")} • {t("customer.guests.seatLabel", { count: g.seats ?? 1 })}
+                      {g.phone ? toLatinDigits(g.phone) : t("customer.guests.noPhone")} • {t("customer.guests.seatLabel", { count: g.seats ?? 1 })}
                     </div>
                   </div>
                   <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium ${rsvpClasses[g.rsvp_status]}`}>
