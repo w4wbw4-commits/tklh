@@ -16,8 +16,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Loader2, Save, ImagePlus, X, Film, Link2, Trash2, Play, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, Save, ImagePlus, X, Film, Link2, Trash2, Play, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { ExtraServicesPicker } from "@/components/tekillah/vendor/ExtraServicesPicker";
 import { fmtNumber } from "@/i18n/format";
 
 interface VendorEditRow {
