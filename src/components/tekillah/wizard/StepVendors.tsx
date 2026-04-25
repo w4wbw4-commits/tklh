@@ -28,7 +28,7 @@ import { tierForBudget, type BudgetTier, type ServiceKey } from "./types";
 import { fmtNumber } from "@/i18n/format";
 import { VendorRatingBadge } from "@/components/tekillah/reviews/VendorRatingBadge";
 import { VendorMediaCarousel, type MediaItem } from "./VendorMediaCarousel";
-import { EXTRA_SERVICE_LABELS } from "@/components/tekillah/vendor/types";
+import { EXTRA_SERVICE_LABELS, EXTRA_SERVICE_ICONS } from "@/components/tekillah/vendor/types";
 
 const ICONS: Record<ServiceKey, typeof Building2> = {
   hall: Building2, catering: UtensilsCrossed, photography: Camera,
