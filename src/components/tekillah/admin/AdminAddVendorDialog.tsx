@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import {
   Loader2, Plus, Save, Users, Users2, CalendarDays, CalendarRange, Wallet,
-  ImagePlus, X, Film, Link2, Trash2, Play,
+  ImagePlus, X, Film, Link2, Trash2, Play, Sparkles,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
