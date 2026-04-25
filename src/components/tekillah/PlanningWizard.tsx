@@ -183,7 +183,7 @@ export const PlanningWizard = () => {
 
       const { data, error } = await supabase
         .from("platform_packages")
-        .select("id, name, price, includes, media, thumbnail_url, published")
+        .select("id, name, name_en, description, description_en, price, includes, includes_en, media, thumbnail_url, published")
         .eq("id", pkgId)
         .maybeSingle();
 
@@ -197,8 +197,12 @@ export const PlanningWizard = () => {
         key: data.id,
         kind: "admin",
         name: data.name,
+        name_en: data.name_en ?? null,
+        description: data.description ?? null,
+        description_en: data.description_en ?? null,
         price: Number(data.price),
         includes: Array.isArray(data.includes) ? data.includes : [],
+        includes_en: Array.isArray(data.includes_en) ? data.includes_en : [],
         media: mediaArr,
         thumbnail: data.thumbnail_url ?? null,
       });
