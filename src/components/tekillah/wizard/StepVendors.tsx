@@ -28,6 +28,7 @@ import { tierForBudget, type BudgetTier, type ServiceKey } from "./types";
 import { fmtNumber } from "@/i18n/format";
 import { VendorRatingBadge } from "@/components/tekillah/reviews/VendorRatingBadge";
 import { VendorMediaCarousel, type MediaItem } from "./VendorMediaCarousel";
+import { EXTRA_SERVICE_LABELS } from "@/components/tekillah/vendor/types";
 
 const ICONS: Record<ServiceKey, typeof Building2> = {
   hall: Building2, catering: UtensilsCrossed, photography: Camera,
@@ -438,14 +439,28 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                               <div className="mt-1">
                                 <VendorRatingBadge avg={v.avg_rating} count={v.reviews_count} />
                               </div>
-                              {v.city && (
+                              {(v.city || v.region || v.district) && (
                                 <div className="mt-1 inline-flex items-center gap-1 font-arabic text-[11px] text-foreground/55">
                                   <MapPin className="h-3 w-3" />
-                                  {v.city}
+                                  {[v.region, v.district, v.city].filter(Boolean).join(" — ")}
                                 </div>
                               )}
                             </div>
                           </div>
+
+                          {/* Venue extras — chips, hall-only */}
+                          {isHall && v.extra_services && v.extra_services.length > 0 && (
+                            <div className="mt-3 flex flex-wrap gap-1.5">
+                              {v.extra_services.map((key) => (
+                                <span
+                                  key={key}
+                                  className="inline-flex items-center rounded-full border border-primary/25 bg-primary/[0.06] px-2 py-0.5 font-arabic text-[10px] font-medium text-primary"
+                                >
+                                  {EXTRA_SERVICE_LABELS[key] ?? key}
+                                </span>
+                              ))}
+                            </div>
+                          )}
 
                           {/* Pricing & capacity grid — always Latin digits via fmtNumber */}
                           <div className="mt-3 grid grid-cols-2 gap-2" dir="ltr">
