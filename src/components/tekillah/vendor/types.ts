@@ -48,22 +48,41 @@ export interface VendorRow {
  * Optional add-ons offered by venues ("قاعة" only). Stored as text[] in
  * `vendors.extra_services` so admins and vendors can edit the same list.
  * NOTE: per product spec, AC ("تكييف") is intentionally excluded.
+ *
+ * Each entry also carries a Lucide icon name so the customer-facing UI can
+ * render small icon-badges (matches Task 1 of the customer UI spec).
  */
+import {
+  Lightbulb,
+  Utensils,
+  Speaker,
+  Beef,
+  Crown,
+  UserCog,
+  Wifi,
+  ParkingSquare,
+  type LucideIcon,
+} from "lucide-react";
+
 export const VENUE_EXTRA_SERVICES = [
-  { key: "lighting", label: "إضاءة" },
-  { key: "buffet", label: "بوفيه" },
-  { key: "sound", label: "صوتيات" },
-  { key: "catering_meat", label: "ذبائح" },
-  { key: "kosha", label: "كوشة" },
-  { key: "coordinator", label: "منسق" },
-  { key: "wifi", label: "واي فاي" },
-  { key: "parking", label: "مواقف" },
+  { key: "lighting", label: "إضاءة", icon: Lightbulb },
+  { key: "buffet", label: "بوفيه", icon: Utensils },
+  { key: "sound", label: "صوتيات", icon: Speaker },
+  { key: "catering_meat", label: "ذبائح", icon: Beef },
+  { key: "kosha", label: "كوشة", icon: Crown },
+  { key: "coordinator", label: "منسق", icon: UserCog },
+  { key: "wifi", label: "واي فاي", icon: Wifi },
+  { key: "parking", label: "مواقف", icon: ParkingSquare },
 ] as const;
 
 export type VenueExtraServiceKey = (typeof VENUE_EXTRA_SERVICES)[number]["key"];
 
 export const EXTRA_SERVICE_LABELS: Record<string, string> = Object.fromEntries(
   VENUE_EXTRA_SERVICES.map((s) => [s.key, s.label]),
+);
+
+export const EXTRA_SERVICE_ICONS: Record<string, LucideIcon> = Object.fromEntries(
+  VENUE_EXTRA_SERVICES.map((s) => [s.key, s.icon as LucideIcon]),
 );
 
 export interface PackageRow {
