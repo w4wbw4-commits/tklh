@@ -107,7 +107,7 @@ export const Footer = () => {
         </Link>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row">
-          <span>© {new Date().getFullYear()} Tekillah. {t("footer.rights")}</span>
+          <span>© {new Date().getFullYear()} TIKLH. {t("footer.rights")}</span>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <Link to="/terms-of-service" className="hover:text-primary">{t("footer.terms")}</Link>
             <Link to="/privacy-policy" className="hover:text-primary">{t("footer.privacy")}</Link>

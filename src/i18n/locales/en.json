@@ -97,7 +97,7 @@
   },
   "hero": {
     "tag": "A luxury Saudi platform for planning your events",
-    "titleA": "Tekillah",
+    "titleA": "TIKLH",
     "titleB": "Where moments are crafted, and memories endure",
     "desc": "From the venue to the photography, decor and transport — we plan, book and coordinate every detail of your event. Trust, reliability, peace of mind.",
     "cta": "Custom planning",
@@ -112,32 +112,32 @@
   },
   "story": {
     "kicker": "Our story",
-    "title": "About Tekillah",
-    "body": "Behind every great celebration lie countless details and difficult choices. Tekillah began from our belief that moments of joy should never be spoiled by the burden of planning. The name draws from the Arabic concept of trust and reliance — to be the partner you lean on to orchestrate your most beautiful nights.",
-    "secondary": "Tekillah is the first luxury Saudi platform that merges the intelligence of planning with the art of execution. We give you peace of mind so you can savour every second, while we paint the full picture behind the scenes.",
+    "title": "About TIKLH",
+    "body": "Behind every great celebration lie countless details and difficult choices. TIKLH began from our belief that moments of joy should never be spoiled by the burden of planning. The name draws from the Arabic concept of trust and reliance — to be the partner you lean on to orchestrate your most beautiful nights.",
+    "secondary": "TIKLH is the first luxury Saudi platform that merges the intelligence of planning with the art of execution. We give you peace of mind so you can savour every second, while we paint the full picture behind the scenes.",
     "imgAlt": "Soft-focus luxury fabric with delicate gold detail"
   },
   "features": {
     "kicker": "Why us",
-    "title": "Why Tekillah?",
-    "subtitle": "Four reasons that make Tekillah your first choice for orchestrating events with confidence and peace of mind.",
+    "title": "Why TIKLH?",
+    "subtitle": "Four reasons that make TIKLH your first choice for orchestrating events with confidence and peace of mind.",
     "smart": { "title": "Smart planning", "desc": "A precise financial system that calculates your event costs based on real services and current market rates." },
     "booking": { "title": "Vetted vendors", "desc": "We only work with the elite. Halls, photographers and planners hand-picked to guarantee the quality of your event." },
     "budget": { "title": "Lightning-fast booking", "desc": "Say goodbye to endless calls — compare prices, browse photos and book every service in a few minutes." },
-    "live": { "title": "A luxury experience", "desc": "We crafted Tekillah to deliver an experience worthy of your special day, from the website to the event itself." },
+    "live": { "title": "A luxury experience", "desc": "We crafted TIKLH to deliver an experience worthy of your special day, from the website to the event itself." },
     "cta": "Custom planning"
   },
   "footer": {
-    "about": "Tekillah is a luxury Saudi platform for planning and booking events. Trust, reliability, peace of mind — from first idea to last guest.",
+    "about": "TIKLH is a luxury Saudi platform for planning and booking events. Trust, reliability, peace of mind — from first idea to last guest.",
     "platform": "Platform",
     "company": "Company",
     "wizard": "Planning wizard",
     "dashboard": "Dashboard",
-    "aboutUs": "About Tekillah",
+    "aboutUs": "About TIKLH",
     "joinVendor": "Join as a vendor",
     "contact": "Contact us",
     "partnerPortalTitle": "Partner Portal",
-    "partnerPortalDesc": "Are you a venue, photographer, or event planner? Join Tekillah's curated vendor network and start receiving bookings.",
+    "partnerPortalDesc": "Are you a venue, photographer, or event planner? Join TIKLH's curated vendor network and start receiving bookings.",
     "partnerPortalCta": "Enter Partner Portal",
     "rights": "All rights reserved.",
     "madeIn": "Proudly made in Saudi Arabia 🇸🇦",
@@ -319,7 +319,7 @@
     "packageDetail": {
       "fastTrack": "Fast Track booking",
       "fastTrackStep": "Confirm package",
-      "fastTrackBadge": "Fast Track — {{name}} package, vendors curated by Tekillah",
+      "fastTrackBadge": "Fast Track — {{name}} package, vendors curated by TIKLH",
       "subtitle": "We've curated this package end-to-end. Confirm to reserve and our concierge will assign trusted vendors for every service.",
       "fixedPrice": "Fixed price",
       "includesTitle": "What's included",
@@ -334,7 +334,7 @@
   },
   "auth": {
     "vendorTitle": "Partner sign in",
-    "customerTitle": "Your Tekillah account",
+    "customerTitle": "Your TIKLH account",
     "subtitle": "Sign in to access your dashboard and events",
     "signin": "Sign in",
     "signup": "New account",
@@ -404,7 +404,7 @@
       "codeSentDevDesc": "Auto-fills on mobile, or tap Copy and paste below.",
       "copyCode": "Copy code",
       "codeCopied": "Code copied",
-      "legal": "By continuing you agree to Tekillah's Terms of Service and Privacy Policy.",
+      "legal": "By continuing you agree to TIKLH's Terms of Service and Privacy Policy.",
       "errors": {
         "invalid": "Please enter a valid Saudi mobile number (e.g. 5X XXX XXXX).",
         "sendFailed": "Could not send the code. Please try again.",
@@ -424,7 +424,7 @@
   "vendor": {
     "partnerHero": {
       "badge": "Partner portal",
-      "title": "Why Partner with Tekillah?",
+      "title": "Why Partner with TIKLH?",
       "subtitle": "Join a premium Saudi platform that connects you with the finest clients and gives you the tools to run your business with confidence — in an environment that protects your rights and elevates the value of your services.",
       "ctaAuthed": "Set up your profile now",
       "ctaGuest": "Join our elite vendors now",
@@ -463,7 +463,7 @@
     },
     "financials": {
       "title": "Financial performance",
-      "subtitle": "A complete view of your earnings and bookings on Tekillah.",
+      "subtitle": "A complete view of your earnings and bookings on TIKLH.",
       "totalEarned": "Total earnings",
       "upcomingValue": "Upcoming bookings value",
       "processed": "Total bookings",
@@ -655,7 +655,7 @@
       "arrivedAt": "Arrival confirmed: {{time}}",
       "reportTrigger": "Delay or cancellation report",
       "reportTitle": "Emergency report on vendor",
-      "reportDesc": "Send your report to Tekillah support — we coordinate and propose a replacement immediately if needed.",
+      "reportDesc": "Send your report to TIKLH support — we coordinate and propose a replacement immediately if needed.",
       "kindLabel": "Report type",
       "kind": {
         "delay": "Late arrival",
@@ -667,7 +667,7 @@
       "detailsPlaceholder": "Briefly describe the situation so support can act fast…",
       "needReplacement": "I need a replacement vendor (emergency plan)",
       "submit": "Submit report",
-      "contactSupport": "Contact Tekillah support",
+      "contactSupport": "Contact TIKLH support",
       "submitted": "Report submitted — support will reach out within minutes.",
       "submitFailed": "Could not submit the report — please try again.",
       "alreadyOpen": "You already have an open report on this vendor."
@@ -797,7 +797,7 @@
       "live": "Live",
       "vendorStatus": "Vendor status now",
       "noConfirmed": "No confirmed bookings to track on event day.",
-      "coordinator": "Tekillah field coordinator",
+      "coordinator": "TIKLH field coordinator",
       "coordinatorDesc": "Call now for instant support",
       "emergency": "Emergency",
       "emergencyDesc": "Urgent cases only",
@@ -840,7 +840,7 @@
   "checkout": {
     "kicker": "Checkout",
     "title": "Pay securely to confirm your booking",
-    "subtitle": "Your data and payments are protected by Tekillah's escrow system.",
+    "subtitle": "Your data and payments are protected by TIKLH's escrow system.",
     "activeMethods": "Available payment methods",
     "installments": "Installment services",
     "installmentsDesc": "We're enabling installment plans soon via certified partners.",
@@ -896,7 +896,7 @@
     "print": "Print",
     "downloadPdf": "Download PDF",
     "escrowProtected": "Escrow protected",
-    "thanks": "Thank you for trusting Tekillah with your night."
+    "thanks": "Thank you for trusting TIKLH with your night."
   },
   "admin": {
     "kicker": "Admin",
@@ -1091,7 +1091,7 @@
       "hasEvent": "Plan started",
       "hasBooking": "Booking created",
       "whatsapp": "WhatsApp",
-      "whatsappMessage": "Hi {{phone}}, this is Tekillah following up on your event planning — happy to help.",
+      "whatsappMessage": "Hi {{phone}}, this is TIKLH following up on your event planning — happy to help.",
       "statusUpdated": "Lead status updated",
       "status": {
         "verified": "Verified",
@@ -1202,7 +1202,7 @@
     "tabPackages": "Packages",
     "packages": {
       "title": "Package Management",
-      "subtitle": "Curate ready-made packages customers can book directly. Tekillah handles vendor assignment after booking.",
+      "subtitle": "Curate ready-made packages customers can book directly. TIKLH handles vendor assignment after booking.",
       "createBtn": "Create new package",
       "editBtn": "Edit package",
       "publishedBadge": "Published",
@@ -1269,8 +1269,8 @@
     }
   },
   "platformPackages": {
-    "sectionKicker": "Tekillah packages",
-    "cardBadge": "Tekillah packages",
+    "sectionKicker": "TIKLH packages",
+    "cardBadge": "TIKLH packages",
     "sectionTitle": "Packages curated with care for you",
     "sectionSubtitle": "Hand-picked bundles. One click to book — we handle the rest.",
     "from": "From",
@@ -1287,7 +1287,7 @@
     "topRated": "Top Rated",
     "new": "New",
     "empty": "Be the first to review this vendor.",
-    "emptyDesc": "Share your honest experience to help other Tekillah customers choose with confidence.",
+    "emptyDesc": "Share your honest experience to help other TIKLH customers choose with confidence.",
     "anonymous": "Anonymous customer",
     "deleteBtn": "Delete",
     "dialog": {
@@ -1358,17 +1358,17 @@
     "agreePrefix": "I have read and agree to the",
     "mustAccept": "You must accept the Terms of Service & Privacy Policy to continue.",
     "lastUpdated": "Last updated: {{date}}",
-    "tosIntro": "Please read these Terms carefully before using Tekillah. They govern your access to and use of our platform, including all bookings, payments, and content.",
+    "tosIntro": "Please read these Terms carefully before using TIKLH. They govern your access to and use of our platform, including all bookings, payments, and content.",
     "tosSections": [
-      { "title": "1. About Tekillah", "body": "Tekillah is a Saudi-based marketplace that connects customers with verified event vendors — wedding halls, catering, photography, decor, transportation and more. We facilitate discovery, booking, secure payment, and post-event reviews." },
-      { "title": "2. Bookings & Escrow", "body": "Bookings are confirmed once the customer pays through our secure escrow system. Funds are held by Tekillah until the service is delivered, and are then released to the vendor net of platform fees and applicable VAT (15%). Escrow protects both parties from non-delivery and disputes." },
-      { "title": "3. Vendor Verification", "body": "Vendors must provide accurate business information, a valid IBAN certificate, and a Commercial Register or Freelance Work Document. All submissions are reviewed by Tekillah's compliance team before going live. Vendors that misrepresent their business may be permanently suspended." },
-      { "title": "4. Customer Conduct & Content", "body": "Customers and vendors agree to behave professionally. Reviews, replies, and any user-generated content must comply with our content guidelines. Tekillah reserves the right to remove content or suspend accounts that violate these standards." },
+      { "title": "1. About TIKLH", "body": "TIKLH is a Saudi-based marketplace that connects customers with verified event vendors — wedding halls, catering, photography, decor, transportation and more. We facilitate discovery, booking, secure payment, and post-event reviews." },
+      { "title": "2. Bookings & Escrow", "body": "Bookings are confirmed once the customer pays through our secure escrow system. Funds are held by TIKLH until the service is delivered, and are then released to the vendor net of platform fees and applicable VAT (15%). Escrow protects both parties from non-delivery and disputes." },
+      { "title": "3. Vendor Verification", "body": "Vendors must provide accurate business information, a valid IBAN certificate, and a Commercial Register or Freelance Work Document. All submissions are reviewed by TIKLH's compliance team before going live. Vendors that misrepresent their business may be permanently suspended." },
+      { "title": "4. Customer Conduct & Content", "body": "Customers and vendors agree to behave professionally. Reviews, replies, and any user-generated content must comply with our content guidelines. TIKLH reserves the right to remove content or suspend accounts that violate these standards." },
       { "title": "5. Refunds & Disputes", "body": "Refunds and disputes are handled in line with the escrow rules and Saudi consumer-protection law. If a vendor cancels a confirmed booking, the customer is eligible for a full refund. For other cases, contact our support team within 14 days of the event." },
-      { "title": "6. Fees & VAT", "body": "Tekillah charges a transparent platform fee on each booking, and applies VAT at the statutory rate (currently 15%). All fees are shown clearly at checkout before payment is confirmed." },
-      { "title": "7. Updates to These Terms", "body": "These Terms may be updated from time to time. We'll notify users of material changes by email or in-app notification. Continued use of Tekillah after an update constitutes acceptance of the new Terms." }
+      { "title": "6. Fees & VAT", "body": "TIKLH charges a transparent platform fee on each booking, and applies VAT at the statutory rate (currently 15%). All fees are shown clearly at checkout before payment is confirmed." },
+      { "title": "7. Updates to These Terms", "body": "These Terms may be updated from time to time. We'll notify users of material changes by email or in-app notification. Continued use of TIKLH after an update constitutes acceptance of the new Terms." }
     ],
-    "privacyIntro": "This Privacy Policy explains how Tekillah collects, uses, and safeguards your data in line with Saudi PDPL and international best practice.",
+    "privacyIntro": "This Privacy Policy explains how TIKLH collects, uses, and safeguards your data in line with Saudi PDPL and international best practice.",
     "privacySections": [
       { "title": "1. Data We Collect", "body": "We collect only what we need to operate the platform: account info (name, email, phone), booking history, payment metadata (we never store full card numbers), and vendor onboarding documents." },
       { "title": "2. How We Use Your Data", "body": "We use your data to operate the marketplace, process payments, send transactional notifications (booking, payment, review activity), enforce platform safety, and comply with Saudi tax and accounting laws." },
@@ -1379,15 +1379,15 @@
       { "title": "7. Cookies & Analytics", "body": "Cookies and analytics are used only to improve performance and detect abuse — never for third-party advertising or behavioural tracking." }
     ],
     "refundTitle": "Refund & Cancellation Policy",
-    "refundIntro": "This policy explains how cancellations, refunds and disputes are handled on Tekillah, in line with the Saudi E-commerce Law and the consumer-protection rules of the Ministry of Commerce.",
+    "refundIntro": "This policy explains how cancellations, refunds and disputes are handled on TIKLH, in line with the Saudi E-commerce Law and the consumer-protection rules of the Ministry of Commerce.",
     "refundSections": [
       { "title": "1. Vendor-Specific Terms", "body": "Each vendor (hall, caterer, photographer, etc.) sets their own cancellation window and refund terms. The exact terms applicable to your booking are shown clearly on the vendor's package and on the checkout summary before payment is confirmed." },
-      { "title": "2. Tekillah's Role", "body": "Tekillah acts as a technical intermediary and holds the customer's payment in escrow until the service is delivered. We do not set vendor pricing or vendor cancellation terms, but we enforce them fairly through our escrow and dispute system." },
+      { "title": "2. TIKLH's Role", "body": "TIKLH acts as a technical intermediary and holds the customer's payment in escrow until the service is delivered. We do not set vendor pricing or vendor cancellation terms, but we enforce them fairly through our escrow and dispute system." },
       { "title": "3. Customer Cancellations", "body": "If you cancel a confirmed booking, the refundable amount is calculated according to the vendor's published cancellation window (for example, 100% before X days, 50% within Y days, non-refundable inside Z days). Platform fees and payment-processing fees may be deducted." },
       { "title": "4. Vendor Cancellations & No-Shows", "body": "If a vendor cancels a confirmed booking, fails to show up, or substantially fails to deliver the agreed service, the customer is entitled to a full refund of the amount paid, including platform fees, in line with the Saudi E-commerce Law." },
       { "title": "5. Quality Reports & Disputes", "body": "If the service was delivered but you believe the quality was significantly below what was promised, you can submit a Quality Report from your booking page within 14 days of the event. Our team reviews evidence from both sides before deciding on a partial or full refund from the held escrow funds." },
       { "title": "6. Refund Method & Timing", "body": "Approved refunds are returned to the original payment method (Mada, Apple Pay, STC Pay, credit card). Processing typically takes 5–10 business days depending on your bank or wallet provider." },
-      { "title": "7. Contacting Support", "body": "For any cancellation or refund question, contact Tekillah support through your dashboard or via the contact channels listed in the footer. Please include your booking reference and a brief description of the issue." }
+      { "title": "7. Contacting Support", "body": "For any cancellation or refund question, contact TIKLH support through your dashboard or via the contact channels listed in the footer. Please include your booking reference and a brief description of the issue." }
     ]
   }
 }
