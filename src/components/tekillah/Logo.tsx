@@ -14,7 +14,7 @@ export const Logo = ({ className = "" }: { className?: string }) => {
       </div>
       <div className="flex flex-col leading-none">
         <span className="font-arabic text-xl font-semibold text-foreground">تِكله</span>
-        <span className="text-[10px] tracking-[0.25em] text-muted-foreground">TEKILLAH</span>
+        <span className="text-[10px] tracking-[0.25em] text-muted-foreground">TIKLH</span>
       </div>
     </motion.div>
   );

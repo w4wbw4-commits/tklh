@@ -100,7 +100,7 @@ export const InvitationDialog = ({ open, onOpenChange, event }: Props) => {
                     {event.city && <div className="text-xs text-primary-foreground/75">{event.city}</div>}
                     <div className="h-px w-16 bg-primary-foreground/40" />
                   </div>
-                  <div className="text-[10px] uppercase tracking-[0.3em] text-primary-foreground/65">تِكله • Tekillah</div>
+                  <div className="text-[10px] uppercase tracking-[0.3em] text-primary-foreground/65">تِكله • TIKLH</div>
                 </div>
               </div>
 
