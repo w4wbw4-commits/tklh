@@ -24,7 +24,7 @@ export const LegalPage = ({ icon: Icon, title, intro, sections }: LegalPageProps
   const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
-    document.title = `${title} · TIKLH`;
+    document.title = `${title} · TKLH`;
   }, [title]);
 
   useEffect(() => {

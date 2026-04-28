@@ -149,7 +149,7 @@ const Invoice = () => {
           {/* Brand band */}
           <div className="flex flex-wrap items-center justify-between gap-4 bg-primary p-6 text-primary-foreground sm:p-8">
             <div>
-              <div className="font-arabic text-2xl font-bold">TIKLH · تِكله</div>
+              <div className="font-arabic text-2xl font-bold">TKLH · تِكله</div>
               <div className="mt-1 text-xs opacity-80">{t("invoice.tagline")}</div>
             </div>
             <div className="text-end">
