@@ -13,7 +13,7 @@ const Terms = () => {
   const PrevIcon = isAr ? ArrowRight : ArrowLeft;
 
   useEffect(() => {
-    document.title = `${t("terms.tosTitle")} · TIKLH`;
+    document.title = `${t("terms.tosTitle")} · TKLH`;
   }, [t]);
 
   const sections = (t("terms.tosSections", { returnObjects: true }) as TosSection[]) || [];

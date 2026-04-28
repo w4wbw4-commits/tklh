@@ -13,7 +13,7 @@ const Privacy = () => {
   const PrevIcon = isAr ? ArrowRight : ArrowLeft;
 
   useEffect(() => {
-    document.title = `${t("terms.privacyTitle")} · TIKLH`;
+    document.title = `${t("terms.privacyTitle")} · TKLH`;
   }, [t]);
 
   const sections = (t("terms.privacySections", { returnObjects: true }) as PrivacySection[]) || [];
