@@ -497,22 +497,35 @@ export const PlanningWizard = () => {
             </AnimatePresence>
             </div>
 
-            <div className="mt-auto flex items-center justify-between border-t border-border bg-secondary/30 px-6 py-4 sm:px-10">
-              <Button variant="ghost" onClick={prev} disabled={step === 0} className="rounded-full text-foreground">
+            <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border bg-secondary/30 px-4 py-4 sm:px-10">
+              <Button
+                variant="ghost"
+                onClick={prev}
+                disabled={step === 0}
+                size="sm"
+                className="rounded-full text-foreground sm:size-default"
+              >
                 <PrevIcon className="me-2 h-4 w-4" />
                 {t("common.previous")}
               </Button>
               {step < 4 ? (
-                <Button onClick={next} className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
+                <Button
+                  onClick={next}
+                  size="sm"
+                  className="rounded-full bg-primary px-5 text-primary-foreground shadow-[0_6px_18px_-8px_hsl(var(--gold)/0.5)] hover:bg-primary/90 sm:size-default sm:px-6"
+                >
                   {t("common.next")}
                   <NextIcon className="ms-2 h-4 w-4" />
                 </Button>
               ) : isFastTrack ? (
-                // Fast-track step renders its own Confirm CTA inside the card.
                 <span className="text-xs text-foreground/60">{t("wizard.packageDetail.footerHint")}</span>
               ) : (
-                <Button onClick={handleFinish} disabled={submitting}
-                  className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
+                <Button
+                  onClick={handleFinish}
+                  disabled={submitting}
+                  size="sm"
+                  className="rounded-full bg-primary px-5 text-primary-foreground shadow-[0_6px_18px_-8px_hsl(var(--gold)/0.5)] hover:bg-primary/90 sm:size-default sm:px-6"
+                >
                   {submitting ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : <Check className="me-2 h-4 w-4" />}
                   {t("wizard.confirmBooking")}
                 </Button>
