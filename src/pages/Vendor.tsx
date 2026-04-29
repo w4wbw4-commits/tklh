@@ -132,7 +132,7 @@ const VendorPage = () => {
           vendor={welcomeVendor}
           onEnter={() => {
             setWelcomeOpen(false);
-            navigate("/partner/overview");
+            navigate("/partner");
           }}
         />
         <main ref={dashboardRef} className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
