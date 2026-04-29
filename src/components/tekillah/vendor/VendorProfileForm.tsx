@@ -391,28 +391,31 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           <Badge variant="secondary" className="ms-1 text-[10px]">{t("vendor.profile.required") ?? "إلزامي"}</Badge>
         </div>
         <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <PriceField
+          <SmartPriceField
             id="weekday-price"
             label={t("vendor.profile.weekdayPrice")}
             icon={CalendarDays}
             value={weekdayPrice}
             onChange={setWeekdayPrice}
+            presets={PRICE_PRESETS[category]?.weekday}
           />
-          <PriceField
+          <SmartPriceField
             id="weekend-price"
             label={t("vendor.profile.weekendPrice")}
             icon={CalendarRange}
             value={weekendPrice}
             onChange={setWeekendPrice}
+            presets={PRICE_PRESETS[category]?.weekend}
           />
           <div className="sm:col-span-2">
-            <PriceField
+            <SmartPriceField
               id="min-deposit"
               label={t("vendor.profile.minDeposit")}
               icon={Wallet}
               value={minDeposit}
               onChange={setMinDeposit}
               hint={t("vendor.profile.depositHint")}
+              presets={PRICE_PRESETS[category]?.deposit}
             />
           </div>
         </div>
