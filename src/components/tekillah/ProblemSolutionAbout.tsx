@@ -8,7 +8,7 @@
 import { motion } from "framer-motion";
 import {
   ShieldCheck, Zap, Heart, Sparkles, Clock, BadgePercent, Users,
-  Calculator, Filter, CalendarCheck, Gem,
+  Calculator, Filter, CalendarCheck, Gem, Timer, ListChecks, CheckCircle2,
 } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { Link } from "react-router-dom";
