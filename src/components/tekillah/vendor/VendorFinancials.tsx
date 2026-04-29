@@ -63,7 +63,7 @@ export const VendorFinancials = ({ vendorId }: { vendorId: string }) => {
     const ids = Array.from(new Set(rows.map((b) => b.customer_id)));
     if (ids.length) {
       const { data: ps } = await supabase
-        .from("profiles")
+        .from("public_profiles" as any)
         .select("user_id, display_name")
         .in("user_id", ids);
       const map: Record<string, string> = {};
