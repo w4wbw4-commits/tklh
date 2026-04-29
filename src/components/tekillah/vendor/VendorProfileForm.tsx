@@ -462,6 +462,15 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           onChange={setExtraServices}
           placeholder={isVenue ? "مثال: إضاءة، بوفيه، كوشة" : "مثال: تصوير ليلي، فيديو 4K"}
           hint="اضغط Enter أو الفاصلة لإضافة الخدمة"
+          suggestions={(POPULAR_SERVICES[category] ?? []).map((s) => ({
+            value: s.ar,
+            secondary: s.en,
+          }))}
+          onSuggestionSecondary={(en) =>
+            setExtraServicesEn((prev) =>
+              prev.some((t) => t.toLowerCase() === en.toLowerCase()) ? prev : [...prev, en],
+            )
+          }
         />
         <div className="mt-4">
           <div className="mb-1.5 text-xs font-medium text-foreground/70">Extra services (English) — optional</div>
