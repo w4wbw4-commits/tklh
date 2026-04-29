@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check, ArrowLeft, ArrowRight, Loader2, Sparkles, Zap } from "lucide-react";
+import { Check, ArrowLeft, ArrowRight, Loader2, Sparkles, Zap, MapPin, Layers, Palette, Wallet, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { StepDetails } from "./wizard/StepDetails";
@@ -371,48 +371,65 @@ export const PlanningWizard = () => {
           )}
         </AnimatePresence>
 
-        {/* Progress */}
-        <div className="mx-auto mt-10 flex max-w-3xl items-center justify-between gap-2">
-          {stepLabels.map((label, i) => {
-            const isLast = i === stepLabels.length - 1;
-            const isFastTrackBadge = isFastTrack && isLast;
-            return (
-              <div key={i} className="flex flex-1 items-center gap-2">
-                <div className="flex flex-col items-center">
-                  <motion.div
-                    animate={{
-                      scale: i === step ? 1.05 : 1,
-                      backgroundColor:
-                        i <= step ? "hsl(var(--primary))" : "hsl(var(--secondary))",
-                    }}
-                    className="grid h-10 w-10 place-items-center rounded-full text-sm font-semibold text-primary-foreground transition-colors"
-                  >
-                    {isFastTrackBadge ? (
-                      <Zap className="h-4 w-4" strokeWidth={2.5} />
-                    ) : i < step ? (
-                      <Check className="h-4 w-4" />
-                    ) : (
-                      i + 1
-                    )}
-                  </motion.div>
-                  <span className="mt-2 hidden whitespace-nowrap text-xs font-medium text-foreground/80 sm:block">
-                    {label}
-                  </span>
-                </div>
-                {i < stepLabels.length - 1 && (
-                  <div className="relative h-px flex-1 bg-border">
+        {/* Progress — refined creative stepper with step icons + soft track */}
+        <div className="mx-auto mt-10 w-full max-w-3xl overflow-x-auto px-1 pb-2 sm:overflow-visible sm:pb-0">
+          <div className="flex min-w-[460px] items-center justify-between gap-1.5 sm:min-w-0 sm:gap-2">
+            {stepLabels.map((label, i) => {
+              const isLast = i === stepLabels.length - 1;
+              const isFastTrackBadge = isFastTrack && isLast;
+              const isActive = i === step;
+              const isComplete = i < step;
+              const StepIcon = [MapPin, Layers, Palette, Wallet, Users][i] ?? Users;
+              return (
+                <div key={i} className="flex flex-1 items-center gap-1.5 sm:gap-2">
+                  <div className="flex flex-col items-center">
                     <motion.div
-                      initial={false}
-                      animate={{ scaleX: i < step ? 1 : 0 }}
-                      style={{ originX: isAr ? 1 : 0 }}
-                      transition={{ duration: 0.5 }}
-                      className="absolute inset-0 bg-primary"
-                    />
+                      animate={{
+                        scale: isActive ? 1.08 : 1,
+                        boxShadow: isActive
+                          ? "0 8px 24px -10px hsl(var(--gold) / 0.55)"
+                          : "0 0px 0px 0 transparent",
+                      }}
+                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                      className={`relative grid h-11 w-11 place-items-center rounded-full text-sm font-semibold transition-colors ${
+                        isComplete
+                          ? "bg-primary text-primary-foreground"
+                          : isActive
+                          ? "bg-primary text-primary-foreground ring-2 ring-gold/60 ring-offset-2 ring-offset-background"
+                          : "bg-secondary text-foreground/60"
+                      }`}
+                    >
+                      {isFastTrackBadge ? (
+                        <Zap className="h-4 w-4" strokeWidth={2.5} />
+                      ) : isComplete ? (
+                        <Check className="h-4 w-4" />
+                      ) : (
+                        <StepIcon className="h-[18px] w-[18px]" strokeWidth={1.8} />
+                      )}
+                    </motion.div>
+                    <span
+                      className={`mt-2 hidden whitespace-nowrap text-[11px] font-medium transition-colors sm:block ${
+                        isActive ? "text-primary" : "text-foreground/55"
+                      }`}
+                    >
+                      {label}
+                    </span>
                   </div>
-                )}
-              </div>
-            );
-          })}
+                  {i < stepLabels.length - 1 && (
+                    <div className="relative h-[3px] flex-1 overflow-hidden rounded-full bg-secondary/70">
+                      <motion.div
+                        initial={false}
+                        animate={{ scaleX: i < step ? 1 : 0 }}
+                        style={{ originX: isAr ? 1 : 0 }}
+                        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                        className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-primary to-gold"
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Side-by-side visual + form on desktop */}
@@ -420,6 +437,7 @@ export const PlanningWizard = () => {
           <WizardVisual step={step} variant="side" />
 
           <div className="flex min-w-0 flex-col">
+            <div className="relative flex-1 overflow-hidden">
             <AnimatePresence mode="wait">
               {step === 0 && (
                 <StepDetails
@@ -477,23 +495,37 @@ export const PlanningWizard = () => {
                 />
               )}
             </AnimatePresence>
+            </div>
 
-            <div className="mt-auto flex items-center justify-between border-t border-border bg-secondary/30 px-6 py-4 sm:px-10">
-              <Button variant="ghost" onClick={prev} disabled={step === 0} className="rounded-full text-foreground">
+            <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border bg-secondary/30 px-4 py-4 sm:px-10">
+              <Button
+                variant="ghost"
+                onClick={prev}
+                disabled={step === 0}
+                size="sm"
+                className="rounded-full text-foreground sm:size-default"
+              >
                 <PrevIcon className="me-2 h-4 w-4" />
                 {t("common.previous")}
               </Button>
               {step < 4 ? (
-                <Button onClick={next} className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
+                <Button
+                  onClick={next}
+                  size="sm"
+                  className="rounded-full bg-primary px-5 text-primary-foreground shadow-[0_6px_18px_-8px_hsl(var(--gold)/0.5)] hover:bg-primary/90 sm:size-default sm:px-6"
+                >
                   {t("common.next")}
                   <NextIcon className="ms-2 h-4 w-4" />
                 </Button>
               ) : isFastTrack ? (
-                // Fast-track step renders its own Confirm CTA inside the card.
                 <span className="text-xs text-foreground/60">{t("wizard.packageDetail.footerHint")}</span>
               ) : (
-                <Button onClick={handleFinish} disabled={submitting}
-                  className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
+                <Button
+                  onClick={handleFinish}
+                  disabled={submitting}
+                  size="sm"
+                  className="rounded-full bg-primary px-5 text-primary-foreground shadow-[0_6px_18px_-8px_hsl(var(--gold)/0.5)] hover:bg-primary/90 sm:size-default sm:px-6"
+                >
                   {submitting ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : <Check className="me-2 h-4 w-4" />}
                   {t("wizard.confirmBooking")}
                 </Button>
