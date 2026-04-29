@@ -48,7 +48,7 @@ export const Navbar = () => {
 
   const navItems = [
     { key: "home", href: "#home" },
-    { key: "features", href: "#features" },
+    { key: "about", href: "#about", labelOverride: isAr ? "تعرّف على تِكله" : "About TKLH" },
     { key: "plan", href: "#wizard" },
   ] as const;
 
@@ -82,7 +82,7 @@ export const Navbar = () => {
                 href={item.href}
                 className="relative rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition-all hover:text-primary-deep after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:bg-gold after:transition-all hover:after:w-1/2"
               >
-                {t(`nav.${item.key}`)}
+                {("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`)}
               </a>
             ))}
           </nav>

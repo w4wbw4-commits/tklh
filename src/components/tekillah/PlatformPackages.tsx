@@ -126,22 +126,27 @@ export const PlatformPackages = () => {
               </div>
 
               <div className="flex flex-1 flex-col p-5">
-                <h3 className="font-arabic text-xl font-semibold text-foreground">{displayName}</h3>
+                <div className="flex items-start justify-between gap-3">
+                  <h3 className="font-arabic text-xl font-bold text-foreground">{displayName}</h3>
+                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold/40 bg-gold/10 text-gold">
+                    <Sparkles className="h-4 w-4" strokeWidth={2} />
+                  </span>
+                </div>
                 {displayDesc && (
                   <p className="mt-1.5 text-sm text-foreground/70 font-arabic line-clamp-2">
                     {displayDesc}
                   </p>
                 )}
 
-                <div className="mt-4 flex items-end justify-between gap-2">
-                  <div>
-                    <div className="text-[10px] font-medium uppercase tracking-[0.18em] text-foreground/55">
-                      {t("platformPackages.from")}
-                    </div>
-                    <div className="font-arabic text-2xl font-semibold text-foreground tabular-nums">
+                <div className="mt-5 rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/5 to-transparent p-4">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/55">
+                    {t("platformPackages.from")}
+                  </div>
+                  <div className="mt-1 flex items-baseline gap-1.5 font-arabic tabular-nums">
+                    <span className="text-4xl font-black leading-none text-primary-deep">
                       {fmtNumber(Number(p.price))}
-                      <span className="ms-1 text-sm font-normal text-foreground/60">{t("common.currency")}</span>
-                    </div>
+                    </span>
+                    <span className="text-base font-bold text-gold">{t("common.currency")}</span>
                   </div>
                 </div>
 

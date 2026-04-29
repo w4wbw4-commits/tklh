@@ -145,7 +145,7 @@ export const Hero = () => {
             asChild
             className="h-14 rounded-full border border-primary/25 bg-background/40 px-8 text-base text-primary-deep backdrop-blur-md hover:bg-secondary/60"
           >
-            <a href="#features">{t("hero.secondary")}</a>
+            <a href="#about">{t("hero.secondary")}</a>
           </Button>
         </motion.div>
 
