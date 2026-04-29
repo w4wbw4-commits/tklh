@@ -13,9 +13,9 @@ export const Logo = ({ className = "" }: { className?: string }) => {
         <Sparkles className="h-4 w-4 text-gold" strokeWidth={1.8} fill="currentColor" />
       </div>
       <div className="flex items-baseline gap-1.5 leading-none">
-        <span className="font-wordmark text-xl font-black text-gold-gradient">TKLH</span>
-        <span className="text-gold/50">—</span>
-        <span className="font-wordmark text-lg font-bold text-gold-gradient">تِكله</span>
+        <span className="font-wordmark text-xl font-black text-primary-deep">TKLH</span>
+        <span className="text-gold/70">/</span>
+        <span className="font-wordmark text-lg font-bold text-primary-deep">تِكله</span>
       </div>
     </motion.div>
   );
