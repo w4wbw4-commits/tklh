@@ -9,6 +9,7 @@ import { UpcomingFeatures } from "@/components/tekillah/UpcomingFeatures";
 import { Mission } from "@/components/tekillah/Mission";
 import { Footer } from "@/components/tekillah/Footer";
 import { ProblemSolutionAbout } from "@/components/tekillah/ProblemSolutionAbout";
+import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
 import { SEO } from "@/components/SEO";
 
 const Index = () => {
