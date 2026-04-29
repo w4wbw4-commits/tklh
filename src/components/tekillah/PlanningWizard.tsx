@@ -244,6 +244,23 @@ export const PlanningWizard = () => {
   const next = () => setStep((s) => Math.min(s + 1, 4));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
+  // Per-step validation — keeps "Next" disabled until required fields are filled.
+  const canProceed = useMemo(() => {
+    if (step === 0) return !!city && !!eventType && !!date && (men + women) > 0;
+    if (step === 1) return selected.length > 0;
+    if (step === 2) return vision.trim().length > 0 || selectedChips.length > 0;
+    if (step === 3) return budget > 0;
+    return true;
+  }, [step, city, eventType, date, men, women, selected, vision, selectedChips, budget]);
+
+  const nextHint = useMemo(() => {
+    if (canProceed) return "";
+    if (step === 0) return t("wizard.details.fillRequired", { defaultValue: "أكمل بيانات الحفل أولاً" });
+    if (step === 1) return t("wizard.services.pickAtLeastOne", { defaultValue: "اختر خدمة واحدة على الأقل" });
+    if (step === 2) return t("wizard.vision.fillRequired", { defaultValue: "اكتب رؤيتك أو اختر طابع" });
+    return "";
+  }, [canProceed, step, t]);
+
   const handleFinish = async () => {
     if (!user) {
       // Persist the latest snapshot so the dashboard can finalise after sign-in.
