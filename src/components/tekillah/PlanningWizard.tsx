@@ -244,6 +244,23 @@ export const PlanningWizard = () => {
   const next = () => setStep((s) => Math.min(s + 1, 4));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
+  // Per-step validation — keeps "Next" disabled until required fields are filled.
+  const canProceed = useMemo(() => {
+    if (step === 0) return !!city && !!eventType && !!date && (men + women) > 0;
+    if (step === 1) return selected.length > 0;
+    if (step === 2) return vision.trim().length > 0 || selectedChips.length > 0;
+    if (step === 3) return budget > 0;
+    return true;
+  }, [step, city, eventType, date, men, women, selected, vision, selectedChips, budget]);
+
+  const nextHint = useMemo(() => {
+    if (canProceed) return "";
+    if (step === 0) return t("wizard.details.fillRequired", { defaultValue: "أكمل بيانات الحفل أولاً" });
+    if (step === 1) return t("wizard.services.pickAtLeastOne", { defaultValue: "اختر خدمة واحدة على الأقل" });
+    if (step === 2) return t("wizard.vision.fillRequired", { defaultValue: "اكتب رؤيتك أو اختر طابع" });
+    return "";
+  }, [canProceed, step, t]);
+
   const handleFinish = async () => {
     if (!user) {
       // Persist the latest snapshot so the dashboard can finalise after sign-in.
@@ -509,14 +526,20 @@ export const PlanningWizard = () => {
                 {t("common.previous")}
               </Button>
               {step < 4 ? (
-                <Button
-                  onClick={next}
-                  size="sm"
-                  className="rounded-full bg-primary px-5 text-primary-foreground shadow-[0_6px_18px_-8px_hsl(var(--gold)/0.5)] hover:bg-primary/90 sm:size-default sm:px-6"
-                >
-                  {t("common.next")}
-                  <NextIcon className="ms-2 h-4 w-4" />
-                </Button>
+                <div className="flex flex-col items-end gap-1">
+                  <Button
+                    onClick={next}
+                    size="sm"
+                    disabled={!canProceed}
+                    className="rounded-full bg-primary px-5 text-primary-foreground shadow-[0_6px_18px_-8px_hsl(var(--gold)/0.5)] hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50 sm:size-default sm:px-6"
+                  >
+                    {t("common.next")}
+                    <NextIcon className="ms-2 h-4 w-4" />
+                  </Button>
+                  {nextHint && (
+                    <span className="text-[11px] font-medium text-foreground/60">{nextHint}</span>
+                  )}
+                </div>
               ) : isFastTrack ? (
                 <span className="text-xs text-foreground/60">{t("wizard.packageDetail.footerHint")}</span>
               ) : (
