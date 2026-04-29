@@ -6,6 +6,7 @@ import { PlatformPackages } from "@/components/tekillah/PlatformPackages";
 import { PlanningWizard } from "@/components/tekillah/PlanningWizard";
 import { DashboardPreview } from "@/components/tekillah/DashboardPreview";
 import { UpcomingFeatures } from "@/components/tekillah/UpcomingFeatures";
+import { Mission } from "@/components/tekillah/Mission";
 import { Footer } from "@/components/tekillah/Footer";
 import { SEO } from "@/components/SEO";
 
@@ -27,6 +28,7 @@ const Index = () => {
       <Features />
       <DashboardPreview />
       <UpcomingFeatures />
+      <Mission />
       <Footer />
     </main>
   );
