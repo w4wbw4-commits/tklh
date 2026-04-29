@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
@@ -17,6 +17,14 @@ export const Navbar = () => {
   const { user } = useAuth();
   const isAr = i18n.language === "ar";
   const welcomedRef = useRef(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 16);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const isPrimaryAdmin =
     !!user && (user.email === PRIMARY_ADMIN_EMAIL || user.phone === PRIMARY_ADMIN_PHONE);
@@ -51,15 +59,28 @@ export const Navbar = () => {
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="fixed top-0 left-0 right-0 z-50"
     >
-      <div className="mx-auto mt-4 max-w-6xl px-4">
-        <div className="glass flex items-center justify-between rounded-full border border-border/60 px-4 py-2.5 shadow-soft">
+      <div className={`mx-auto px-4 transition-all duration-500 ${scrolled ? "mt-2 max-w-6xl" : "mt-4 max-w-6xl"}`}>
+        <div
+          className={`flex items-center justify-between rounded-full px-4 py-2.5 transition-all duration-500 ${
+            scrolled
+              ? "border border-gold/30 shadow-[0_8px_30px_-12px_hsl(var(--green)/0.3)]"
+              : "border border-gold/20 shadow-soft"
+          }`}
+          style={{
+            background: scrolled
+              ? "hsl(var(--background) / 0.78)"
+              : "hsl(var(--background) / 0.6)",
+            backdropFilter: scrolled ? "blur(20px) saturate(1.4)" : "blur(14px) saturate(1.2)",
+            WebkitBackdropFilter: scrolled ? "blur(20px) saturate(1.4)" : "blur(14px) saturate(1.2)",
+          }}
+        >
           <Logo />
           <nav className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="rounded-full px-4 py-2 text-sm text-foreground/75 transition-colors hover:bg-secondary hover:text-foreground"
+                className="relative rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition-all hover:text-primary-deep after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:bg-gold after:transition-all hover:after:w-1/2"
               >
                 {t(`nav.${item.key}`)}
               </a>
@@ -79,16 +100,17 @@ export const Navbar = () => {
                 </Link>
               </Button>
             )}
-            {/* Partner portal entry — visible to everyone so partners can always log in */}
+            {/* Partner portal — Najdi Gold CTA: gold bg, green text/icon, hover pulse */}
             <Button
-              variant="outline"
               size="sm"
               asChild
-              className="hidden rounded-full border-primary/30 text-xs text-primary hover:bg-primary hover:text-primary-foreground sm:inline-flex"
+              className="hidden rounded-full border border-gold/60 bg-gold text-primary-deep shadow-[0_4px_14px_-4px_hsl(var(--gold)/0.5)] transition-all hover:bg-gold hover:scale-[1.03] hover:gold-pulse sm:inline-flex"
             >
               <Link to={user ? "/partner" : "/auth?redirect=/partner&role=vendor"}>
-                <Building2 className="me-1 h-3.5 w-3.5" />
-                {t("nav.partnerPortal", { defaultValue: isAr ? "بوابة الشركاء" : "Partner Portal" })}
+                <Building2 className="me-1 h-3.5 w-3.5 text-primary-deep" />
+                <span className="text-xs font-bold text-primary-deep">
+                  {t("nav.partnerPortal", { defaultValue: isAr ? "دخول الشركاء" : "Partner Portal" })}
+                </span>
               </Link>
             </Button>
             {isPrimaryAdmin && (
@@ -107,13 +129,17 @@ export const Navbar = () => {
               variant="ghost"
               size="sm"
               onClick={toggleLang}
-              className="rounded-full text-xs"
+              className="rounded-full text-xs text-foreground/80 hover:text-gold"
             >
               <Globe className="me-1 h-3.5 w-3.5" />
               {t("nav.lang")}
             </Button>
             {!user && (
-              <Button size="sm" asChild className="hidden rounded-full bg-primary text-primary-foreground hover:bg-primary/90 sm:inline-flex">
+              <Button
+                size="sm"
+                asChild
+                className="hidden rounded-full border-2 border-gold bg-primary-deep text-gold hover:bg-primary hover:text-gold sm:inline-flex"
+              >
                 <Link to="/auth">{t("nav.start")}</Link>
               </Button>
             )}
