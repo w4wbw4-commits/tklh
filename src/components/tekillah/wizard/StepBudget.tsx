@@ -248,14 +248,6 @@ export const StepBudget = ({
                           max={Math.max(min * 3, 50000)}
                           step={500}
                         />
-                        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary/60">
-                          <motion.div
-                            initial={false}
-                            animate={{ width: `${enabled ? pct : 0}%` }}
-                            transition={{ duration: 0.5, ease: "easeOut" }}
-                            className={`h-full rounded-full ${isLow ? "bg-destructive/70" : "bg-primary"}`}
-                          />
-                        </div>
                       </div>
 
                       <AnimatePresence>
