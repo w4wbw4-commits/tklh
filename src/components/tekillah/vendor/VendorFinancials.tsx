@@ -63,11 +63,11 @@ export const VendorFinancials = ({ vendorId }: { vendorId: string }) => {
     const ids = Array.from(new Set(rows.map((b) => b.customer_id)));
     if (ids.length) {
       const { data: ps } = await supabase
-        .from("profiles")
+        .from("public_profiles" as any)
         .select("user_id, display_name")
         .in("user_id", ids);
       const map: Record<string, string> = {};
-      ((ps ?? []) as CustomerProfile[]).forEach((p) => {
+      ((ps ?? []) as unknown as CustomerProfile[]).forEach((p) => {
         if (p.user_id) map[p.user_id] = p.display_name ?? "—";
       });
       setProfiles(map);

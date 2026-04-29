@@ -70,9 +70,9 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
     const ids = Array.from(new Set(list.map((r) => r.customer_id)));
     if (ids.length) {
       const { data: profs } = await supabase
-        .from("profiles").select("user_id, display_name").in("user_id", ids);
+        .from("public_profiles" as any).select("user_id, display_name").in("user_id", ids);
       const map: Record<string, string> = {};
-      (profs ?? []).forEach((p) => { map[p.user_id] = p.display_name ?? "—"; });
+      ((profs ?? []) as unknown as Array<{ user_id: string; display_name: string | null }>).forEach((p) => { map[p.user_id] = p.display_name ?? "—"; });
       setProfiles(map);
     }
 

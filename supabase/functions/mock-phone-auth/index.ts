@@ -12,6 +12,29 @@ interface MockPhoneAuthPayload {
   displayName?: string;
 }
 
+// Hard-block any attempt to provision/overwrite the primary admin account
+// or any address outside our synthetic phone-auth domain.
+const ADMIN_EMAIL = "966554430196@phone.tekillah.app";
+const ALLOWED_EMAIL_DOMAIN = "@phone.tekillah.app";
+
+// Naive in-memory rate limit per phone (resets when isolate restarts).
+// Best-effort defense against bulk account provisioning.
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const attempts = new Map<string, { count: number; resetAt: number }>();
+
+const checkRateLimit = (phone: string): boolean => {
+  const now = Date.now();
+  const entry = attempts.get(phone);
+  if (!entry || entry.resetAt < now) {
+    attempts.set(phone, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return true;
+  }
+  if (entry.count >= RATE_LIMIT_MAX) return false;
+  entry.count += 1;
+  return true;
+};
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -33,6 +56,42 @@ Deno.serve(async (req) => {
       });
     }
 
+    // ---- Hardening guards ---------------------------------------------------
+    // 1. Validate phone shape (Saudi E.164)
+    if (!/^\+9665\d{8}$/.test(phone)) {
+      return new Response(JSON.stringify({ error: "Invalid phone format" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // 2. Email must belong to our synthetic domain and match the supplied phone
+    const lowerEmail = email.toLowerCase();
+    const expectedEmail = `${phone.replace(/\D+/g, "")}${ALLOWED_EMAIL_DOMAIN}`;
+    if (!lowerEmail.endsWith(ALLOWED_EMAIL_DOMAIN) || lowerEmail !== expectedEmail) {
+      return new Response(JSON.stringify({ error: "Email does not match phone" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // 3. Never allow this endpoint to touch the primary admin account.
+    if (lowerEmail === ADMIN_EMAIL.toLowerCase()) {
+      return new Response(JSON.stringify({ error: "Forbidden" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // 4. Rate-limit per phone to slow bulk provisioning.
+    if (!checkRateLimit(phone)) {
+      return new Response(JSON.stringify({ error: "Too many attempts, try later" }), {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    // ------------------------------------------------------------------------
+
     const admin = createClient(supabaseUrl, serviceRoleKey, {
       auth: { persistSession: false, autoRefreshToken: false },
     });
@@ -40,7 +99,7 @@ Deno.serve(async (req) => {
     const { data: usersData, error: listError } = await admin.auth.admin.listUsers();
     if (listError) throw listError;
 
-    let user = usersData.users.find((entry) => entry.email?.toLowerCase() === email.toLowerCase()) ?? null;
+    let user = usersData.users.find((entry) => entry.email?.toLowerCase() === lowerEmail) ?? null;
 
     if (!user) {
       const { data: created, error: createError } = await admin.auth.admin.createUser({
