@@ -21,6 +21,17 @@ import TermsOfService from "./pages/TermsOfService.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import RefundPolicy from "./pages/RefundPolicy.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import PartnerOverview from "./pages/vendor/PartnerOverview.tsx";
+import PartnerBookings from "./pages/vendor/PartnerBookings.tsx";
+import PartnerCalendarPage from "./pages/vendor/PartnerCalendarPage.tsx";
+import PartnerInvoicesPage from "./pages/vendor/PartnerInvoicesPage.tsx";
+import PartnerSalesPage from "./pages/vendor/PartnerSalesPage.tsx";
+import PartnerAnalyticsPage from "./pages/vendor/PartnerAnalyticsPage.tsx";
+import PartnerPricingPage from "./pages/vendor/PartnerPricingPage.tsx";
+import PartnerChecklistsPage from "./pages/vendor/PartnerChecklistsPage.tsx";
+import PartnerReviewsPage from "./pages/vendor/PartnerReviewsPage.tsx";
+import PartnerNotificationsPage from "./pages/vendor/PartnerNotificationsPage.tsx";
+import PartnerProfilePage from "./pages/vendor/PartnerProfilePage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +59,17 @@ const App = () => (
               <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/refund-policy" element={<RefundPolicy />} />
+              <Route path="/partner" element={<PartnerOverview />} />
+              <Route path="/partner/bookings" element={<PartnerBookings />} />
+              <Route path="/partner/calendar" element={<PartnerCalendarPage />} />
+              <Route path="/partner/invoices" element={<PartnerInvoicesPage />} />
+              <Route path="/partner/sales" element={<PartnerSalesPage />} />
+              <Route path="/partner/analytics" element={<PartnerAnalyticsPage />} />
+              <Route path="/partner/pricing" element={<PartnerPricingPage />} />
+              <Route path="/partner/checklists" element={<PartnerChecklistsPage />} />
+              <Route path="/partner/reviews" element={<PartnerReviewsPage />} />
+              <Route path="/partner/notifications" element={<PartnerNotificationsPage />} />
+              <Route path="/partner/profile" element={<PartnerProfilePage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

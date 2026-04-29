@@ -29,17 +29,17 @@ interface NavItem {
 }
 
 const partnerNav: NavItem[] = [
-  { to: "/vendor", labelKey: "portal.nav.overview", fallback: "النظرة العامة", Icon: LayoutDashboard },
-  { to: "/vendor/bookings", labelKey: "portal.nav.bookings", fallback: "الحجوزات", Icon: ListChecks },
-  { to: "/vendor/calendar", labelKey: "portal.nav.calendar", fallback: "التقويم", Icon: Calendar },
-  { to: "/vendor/invoices", labelKey: "portal.nav.invoices", fallback: "الفواتير", Icon: Receipt },
-  { to: "/vendor/sales", labelKey: "portal.nav.sales", fallback: "المبيعات", Icon: FileSpreadsheet },
-  { to: "/vendor/analytics", labelKey: "portal.nav.analytics", fallback: "التحليلات", Icon: BarChart3 },
-  { to: "/vendor/pricing", labelKey: "portal.nav.pricing", fallback: "إدارة التسعير", Icon: Tag },
-  { to: "/vendor/checklists", labelKey: "portal.nav.checklists", fallback: "قوائم المهام", Icon: ListChecks },
-  { to: "/vendor/reviews", labelKey: "portal.nav.reviews", fallback: "التقييمات", Icon: Star },
-  { to: "/vendor/notifications", labelKey: "portal.nav.notifications", fallback: "الإشعارات", Icon: Bell },
-  { to: "/vendor/profile", labelKey: "portal.nav.profile", fallback: "بيانات قاعتي", Icon: Building2 },
+  { to: "/partner", labelKey: "portal.nav.overview", fallback: "النظرة العامة", Icon: LayoutDashboard },
+  { to: "/partner/bookings", labelKey: "portal.nav.bookings", fallback: "الحجوزات", Icon: ListChecks },
+  { to: "/partner/calendar", labelKey: "portal.nav.calendar", fallback: "التقويم", Icon: Calendar },
+  { to: "/partner/invoices", labelKey: "portal.nav.invoices", fallback: "الفواتير", Icon: Receipt },
+  { to: "/partner/sales", labelKey: "portal.nav.sales", fallback: "المبيعات", Icon: FileSpreadsheet },
+  { to: "/partner/analytics", labelKey: "portal.nav.analytics", fallback: "التحليلات", Icon: BarChart3 },
+  { to: "/partner/pricing", labelKey: "portal.nav.pricing", fallback: "إدارة التسعير", Icon: Tag },
+  { to: "/partner/checklists", labelKey: "portal.nav.checklists", fallback: "قوائم المهام", Icon: ListChecks },
+  { to: "/partner/reviews", labelKey: "portal.nav.reviews", fallback: "التقييمات", Icon: Star },
+  { to: "/partner/notifications", labelKey: "portal.nav.notifications", fallback: "الإشعارات", Icon: Bell },
+  { to: "/partner/profile", labelKey: "portal.nav.profile", fallback: "بيانات قاعتي", Icon: Building2 },
 ];
 
 export const PortalLayout = ({ children }: { children: ReactNode }) => {
