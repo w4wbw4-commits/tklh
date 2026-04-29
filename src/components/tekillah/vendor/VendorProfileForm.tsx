@@ -18,6 +18,12 @@ import {
 } from "lucide-react";
 import { CATEGORY_LABELS, type VendorRow } from "./types";
 import { ServiceTagsInput } from "./ServiceTagsInput";
+import { SmartCombobox, type SmartOption } from "./SmartCombobox";
+import { SmartPriceField } from "./SmartPriceField";
+import {
+  SAUDI_REGIONS, SAUDI_CITIES, SAUDI_DISTRICTS,
+  POPULAR_SERVICES, PRICE_PRESETS, cityToRegion,
+} from "./saudiPlaces";
 import { TermsCheckbox } from "@/components/tekillah/TermsCheckbox";
 import { recordTermsAcceptance } from "@/lib/terms";
 import { useTranslation } from "react-i18next";
@@ -306,42 +312,51 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           </div>
           <div className="space-y-2">
             <Label>المدينة</Label>
-            <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="الرياض، جدة..." />
-          </div>
-          <div className="space-y-2">
-            <Label>المنطقة <span className="text-destructive">*</span></Label>
-            <Input
-              value={region}
-              onChange={(e) => setRegion(e.target.value)}
-              placeholder="مثال: منطقة الرياض"
-              required
+            <SmartCombobox
+              value={city}
+              onChange={(v) => {
+                setCity(v);
+                // Auto-fill region from known city → region map.
+                const reg = cityToRegion[v];
+                if (reg && !region) {
+                  setRegion(reg);
+                  const regOpt = SAUDI_REGIONS.find((r) => r.ar === reg);
+                  if (regOpt && !regionEn) setRegionEn(regOpt.en);
+                }
+              }}
+              options={SAUDI_CITIES.map<SmartOption>((c) => ({
+                value: c.ar, label: c.ar, secondary: c.en,
+              }))}
+              placeholder="اختر المدينة أو اكتبها"
+              searchPlaceholder="ابحث عن مدينتك…"
             />
           </div>
           <div className="space-y-2">
-            <Label>Region (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
-            <Input
-              value={regionEn}
-              onChange={(e) => setRegionEn(e.target.value)}
-              placeholder="e.g. Riyadh Region"
-              dir="ltr"
+            <Label>المنطقة <span className="text-destructive">*</span></Label>
+            <SmartCombobox
+              value={region}
+              onChange={setRegion}
+              secondaryValue={regionEn}
+              onSecondaryChange={setRegionEn}
+              options={SAUDI_REGIONS.map<SmartOption>((r) => ({
+                value: r.ar, label: r.ar, secondary: r.en,
+              }))}
+              placeholder="اختر المنطقة"
+              searchPlaceholder="ابحث عن المنطقة…"
             />
           </div>
           <div className="space-y-2">
             <Label>الحي <span className="text-destructive">*</span></Label>
-            <Input
+            <SmartCombobox
               value={district}
-              onChange={(e) => setDistrict(e.target.value)}
-              placeholder="مثال: حي العليا"
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label>District (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
-            <Input
-              value={districtEn}
-              onChange={(e) => setDistrictEn(e.target.value)}
-              placeholder="e.g. Al Olaya"
-              dir="ltr"
+              onChange={setDistrict}
+              secondaryValue={districtEn}
+              onSecondaryChange={setDistrictEn}
+              options={(SAUDI_DISTRICTS[city] ?? []).map<SmartOption>((d) => ({
+                value: d.ar, label: d.ar, secondary: d.en,
+              }))}
+              placeholder={city ? "اختر الحي أو اكتبه" : "اختر مدينتك أولاً أو اكتب الحي"}
+              searchPlaceholder="ابحث عن الحي…"
             />
           </div>
           <div className="space-y-2">
@@ -376,28 +391,31 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           <Badge variant="secondary" className="ms-1 text-[10px]">{t("vendor.profile.required") ?? "إلزامي"}</Badge>
         </div>
         <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <PriceField
+          <SmartPriceField
             id="weekday-price"
             label={t("vendor.profile.weekdayPrice")}
             icon={CalendarDays}
             value={weekdayPrice}
             onChange={setWeekdayPrice}
+            presets={PRICE_PRESETS[category]?.weekday}
           />
-          <PriceField
+          <SmartPriceField
             id="weekend-price"
             label={t("vendor.profile.weekendPrice")}
             icon={CalendarRange}
             value={weekendPrice}
             onChange={setWeekendPrice}
+            presets={PRICE_PRESETS[category]?.weekend}
           />
           <div className="sm:col-span-2">
-            <PriceField
+            <SmartPriceField
               id="min-deposit"
               label={t("vendor.profile.minDeposit")}
               icon={Wallet}
               value={minDeposit}
               onChange={setMinDeposit}
               hint={t("vendor.profile.depositHint")}
+              presets={PRICE_PRESETS[category]?.deposit}
             />
           </div>
         </div>
@@ -444,6 +462,15 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           onChange={setExtraServices}
           placeholder={isVenue ? "مثال: إضاءة، بوفيه، كوشة" : "مثال: تصوير ليلي، فيديو 4K"}
           hint="اضغط Enter أو الفاصلة لإضافة الخدمة"
+          suggestions={(POPULAR_SERVICES[category] ?? []).map((s) => ({
+            value: s.ar,
+            secondary: s.en,
+          }))}
+          onSuggestionSecondary={(en) =>
+            setExtraServicesEn((prev) =>
+              prev.some((t) => t.toLowerCase() === en.toLowerCase()) ? prev : [...prev, en],
+            )
+          }
         />
         <div className="mt-4">
           <div className="mb-1.5 text-xs font-medium text-foreground/70">Extra services (English) — optional</div>
