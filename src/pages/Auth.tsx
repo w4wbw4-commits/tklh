@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/input-otp";
 import { ArrowRight, CheckCircle2, Loader2, Phone, MessageSquareLock, Pencil } from "lucide-react";
 import { Logo } from "@/components/tekillah/Logo";
+import { SEO } from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -190,7 +191,12 @@ const Auth = () => {
 
   return (
     <div className="relative min-h-screen bg-gradient-soft">
-      {/* Saving-your-plan overlay — shown when a guest with a pending plan signs in */}
+      <SEO
+        title="تسجيل الدخول | TKLH"
+        description="سجّل الدخول إلى منصة تِكله TKLH عبر رقم جوالك السعودي لإدارة مناسبتك وحجوزاتك."
+        canonical="/auth"
+        noindex
+      />
       <AnimatePresence>
         {savingPlan && (
           <motion.div

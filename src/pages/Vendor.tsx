@@ -16,6 +16,7 @@ import { VendorFinancials } from "@/components/tekillah/vendor/VendorFinancials"
 import { PartnerHero } from "@/components/tekillah/vendor/PartnerHero";
 import type { VendorRow } from "@/components/tekillah/vendor/types";
 import { useTranslation } from "react-i18next";
+import { SEO } from "@/components/SEO";
 
 const VendorPage = () => {
   const navigate = useNavigate();
@@ -62,7 +63,11 @@ const VendorPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-soft">
-      {/* Header */}
+      <SEO
+        title="بوابة الشركاء | TKLH Partner Portal"
+        description="انضم إلى شبكة شركاء تِكله TKLH وقدّم خدماتك في تخطيط وحجز المناسبات لعملاء في كافة المملكة العربية السعودية."
+        canonical="/vendor"
+      />
       <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
           <div className="flex items-center gap-4">
