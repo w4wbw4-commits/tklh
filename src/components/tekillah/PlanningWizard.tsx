@@ -241,8 +241,30 @@ export const PlanningWizard = () => {
     });
   }, [city, eventType, date, men, women, selected, vision, selectedChips, budgetMode, budget, allocations, enabledServices, picks, packageSelection]);
 
-  const next = () => setStep((s) => Math.min(s + 1, 4));
-  const prev = () => setStep((s) => Math.max(s - 1, 0));
+  // Anchor the form area on step change so the user keeps reading from the
+  // top of the current step — but only scroll if the form is out of viewport.
+  // Critically: we use `scrollTo` with `behavior: auto` to bypass the global
+  // smooth-scroll which causes the page to "jump" up/down on next/prev.
+  const formAnchorRef = useRef<HTMLDivElement>(null);
+  const scrollFormIntoView = () => {
+    const el = formAnchorRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    // If the anchor is already comfortably in view, do nothing.
+    const fullyVisible = rect.top >= 80 && rect.top < window.innerHeight * 0.6;
+    if (fullyVisible) return;
+    const target = window.scrollY + rect.top - 100;
+    window.scrollTo({ top: target, behavior: "smooth" });
+  };
+
+  const next = () => {
+    setStep((s) => Math.min(s + 1, 4));
+    requestAnimationFrame(scrollFormIntoView);
+  };
+  const prev = () => {
+    setStep((s) => Math.max(s - 1, 0));
+    requestAnimationFrame(scrollFormIntoView);
+  };
 
   // Per-step validation — keeps "Next" disabled until required fields are filled.
   const canProceed = useMemo(() => {
