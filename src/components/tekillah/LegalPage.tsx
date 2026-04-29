@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft, ArrowRight, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
+import { SEO } from "@/components/SEO";
 
 interface LegalSection {
   title: string;
@@ -37,6 +38,7 @@ export const LegalPage = ({ icon: Icon, title, intro, sections }: LegalPageProps
 
   return (
     <div className="min-h-screen bg-gradient-soft" dir={isAr ? "rtl" : "ltr"}>
+      <SEO title={`${title} | TKLH`} description={intro?.slice(0, 155) || title} />
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <Logo />
