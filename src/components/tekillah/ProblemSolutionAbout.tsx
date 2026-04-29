@@ -1,211 +1,45 @@
 // ---------------------------------------------------------------------------
-// ProblemSolutionAbout — three storytelling sections used on the home page
-// to clarify the value proposition: pain points → solution pillars → about.
+// ProblemSolutionAbout — two cohesive luxury sections on the home page:
+//   1) AboutSection — "تِكله.. اسم على مسمّى" storytelling + trust factors
+//   2) ValueSection — "ليلتك عرسك.. وش تبي أكثر؟" four glassy benefit cards
 // All visuals use design-system semantic tokens (no hex / hardcoded colors).
 // ---------------------------------------------------------------------------
 
 import { motion } from "framer-motion";
 import {
-  Clock, Timer, Tag, BadgeDollarSign, Shuffle, Layers, FileText, ShieldCheck,
-  Quote, ArrowLeft, Package, SlidersHorizontal, Store, Sparkles, Zap, Heart,
+  ShieldCheck, Zap, Heart, Sparkles, Clock, BadgePercent, Users,
+  Calculator, Filter, CalendarCheck, Gem,
 } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { Link } from "react-router-dom";
+import { AnimatedCounter } from "./AnimatedCounter";
+import { ArabicPattern } from "./ArabicPattern";
 
-// ---------- Section 1: Problem & Solution -----------------------------------
-const PROBLEM_PAIRS = [
+// ============================================================================
+// Section A — About + Trust Factors (merges image_5 storytelling + image_6 numbers)
+// ============================================================================
+const TRUST_FACTORS = [
   {
-    before: { icon: Clock, title: "وقت يضيع" },
-    after: { icon: Timer, title: "٥ دقائق وخلصت", desc: "اختر، احجز، وادفع من جوالك." },
+    icon: Clock,
+    value: 10,
+    suffix: " دقائق",
+    arabicDigits: true,
+    label: "متوسط وقت التخطيط مع تِكله",
   },
   {
-    before: { icon: Tag, title: "أسعار ما تبين" },
-    after: { icon: BadgeDollarSign, title: "أسعار شفافة", desc: "قائمة واضحة وتقدر تقارن." },
+    icon: BadgePercent,
+    value: 100,
+    suffix: "٪",
+    arabicDigits: true,
+    label: "أسعار شفافة بدون مفاجآت",
   },
   {
-    before: { icon: Shuffle, title: "تنسيق متفرق" },
-    after: { icon: Layers, title: "كل شي في مكان واحد", desc: "قاعة، تصوير، كوش، ضيافة." },
+    icon: Users,
+    value: 50,
+    suffix: "+",
+    arabicDigits: true,
+    label: "مزوّد خدمة موثّق في الرياض",
   },
-  {
-    before: { icon: FileText, title: "كل شي ورقي" },
-    after: { icon: ShieldCheck, title: "عقود وضمانات رقمية", desc: "حجوزات وفواتير موثّقة." },
-  },
-] as const;
-
-const ProblemSection = () => (
-  <section id="problem" className="bg-background px-6 py-24 sm:px-8 sm:py-28">
-    <div className="mx-auto max-w-6xl">
-      <Reveal>
-        <div className="text-center">
-          <span className="inline-flex items-center rounded-full border border-border bg-secondary px-4 py-1.5 text-sm font-bold text-foreground">
-            المشكلة والحل
-          </span>
-          <h2 className="mt-5 font-arabic text-4xl font-black leading-tight text-foreground md:text-6xl">
-            من <span className="text-problem">الحوسة</span>… إلى{" "}
-            <span className="text-green">الراحة</span>
-          </h2>
-        </div>
-      </Reveal>
-
-      <div className="mt-12 grid gap-5 md:grid-cols-2">
-        {PROBLEM_PAIRS.map((pair, i) => {
-          const Before = pair.before.icon;
-          const After = pair.after.icon;
-          return (
-            <Reveal key={i} delay={i * 0.08}>
-              <motion.div
-                whileHover={{ y: -4 }}
-                transition={{ type: "spring", stiffness: 220, damping: 18 }}
-                className="group relative overflow-hidden rounded-2xl border border-green/20 bg-gradient-to-br from-cream to-green-light/40 p-6 shadow-card"
-              >
-                <div className="grid grid-cols-[1fr,auto,1fr] items-center gap-3 sm:gap-5">
-                  {/* Before — pain */}
-                  <div className="opacity-70">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-problem/80">
-                      قبل
-                    </span>
-                    <div className="mt-2 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-problem/10 text-problem">
-                      <Before className="h-5 w-5" strokeWidth={1.8} />
-                    </div>
-                    <div className="mt-2 font-arabic text-sm font-semibold text-foreground/70 line-through">
-                      {pair.before.title}
-                    </div>
-                  </div>
-
-                  {/* Arrow */}
-                  <ArrowLeft
-                    className="h-6 w-6 shrink-0 text-green transition-transform group-hover:-translate-x-1"
-                    strokeWidth={2.2}
-                  />
-
-                  {/* After — solution */}
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-green">
-                      مع تِكله
-                    </span>
-                    <div className="mt-2 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-green text-cream shadow-deep">
-                      <After className="h-5 w-5" strokeWidth={1.8} />
-                    </div>
-                    <div className="mt-2 font-arabic text-base font-black text-foreground">
-                      {pair.after.title}
-                    </div>
-                    <div className="mt-1 text-xs leading-relaxed text-foreground/65">
-                      {pair.after.desc}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </Reveal>
-          );
-        })}
-      </div>
-
-      {/* Quote banner */}
-      <Reveal delay={0.2}>
-        <div className="relative mt-12 overflow-hidden rounded-3xl bg-green p-8 text-cream shadow-deep sm:p-10">
-          <div className="absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-green-mid/40 blur-3xl" />
-          <Quote className="absolute right-6 top-6 h-12 w-12 text-gold/40" strokeWidth={1.5} />
-          <div className="relative">
-            <p className="font-arabic text-xl font-bold leading-relaxed sm:text-2xl">
-              أكثر من{" "}
-              <span className="font-black text-gold-soft">90%</span> من العرسان قالوا إن{" "}
-              <span className="font-black text-gold-soft">الوقت وغموض الأسعار</span> أكبر عقبة في
-              تجهيز الزواج.
-            </p>
-            <p className="mt-4 text-sm text-cream/70">
-              — من مقابلات ميدانية مع 20+ عريس وعروس في الرياض
-            </p>
-          </div>
-        </div>
-      </Reveal>
-    </div>
-  </section>
-);
-
-// ---------- Section 2: Solution pillars -------------------------------------
-const SOLUTION_FEATURES = [
-  {
-    icon: Package,
-    title: "باقات جاهزة",
-    desc: "اقتصادية، متوسطة، فاخرة — سعر شامل وثابت تعرف فيه تكلفتك من أول لحظة.",
-  },
-  {
-    icon: SlidersHorizontal,
-    title: "خيارات مرنة",
-    desc: "تبي تفصّل بنفسك؟ اختر كل خدمة لحالها من قاعدة بيانات مزودين موثقة.",
-  },
-  {
-    icon: Store,
-    title: "ماركت بليس متكامل",
-    desc: "قاعات، تصوير، كوش، ضيافة، منسقين، عبايات — كل شي في مكان واحد.",
-  },
-  {
-    icon: Sparkles,
-    title: "توصيات بالذكاء الاصطناعي",
-    desc: "نقترح لك الباقة المناسبة حسب ميزانيتك وذوقك — قريباً.",
-  },
-] as const;
-
-const SolutionSection = () => (
-  <section id="solution" className="bg-surface/60 px-6 py-24 sm:px-8 sm:py-28">
-    <div className="mx-auto max-w-6xl">
-      <Reveal>
-        <div className="text-center">
-          <span className="inline-flex items-center rounded-full border border-border bg-secondary px-4 py-1.5 text-sm font-bold text-foreground">
-            الحل
-          </span>
-          <h2 className="mt-5 font-arabic text-4xl font-black leading-tight text-foreground md:text-6xl">
-            تِكله — <span className="text-green">منصة ليلة عمرك</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-foreground/70 sm:text-xl">
-            من اختيار القاعة إلى تفاصيل ليلة عمرك اللي تحلم فيها — بضغطة زر وأسعار واضحة.
-          </p>
-        </div>
-      </Reveal>
-
-      <div className="mt-12 grid gap-5 md:grid-cols-2">
-        {SOLUTION_FEATURES.map((f, i) => {
-          const Icon = f.icon;
-          return (
-            <Reveal key={i} delay={i * 0.08}>
-              <motion.div
-                whileHover={{ y: -6, scale: 1.01 }}
-                transition={{ type: "spring", stiffness: 220, damping: 18 }}
-                className="group relative overflow-hidden rounded-2xl border border-border bg-surface p-8 shadow-card transition-colors hover:border-green hover:shadow-card-hover"
-              >
-                {/* Glow blob */}
-                <div className="pointer-events-none absolute -left-16 -top-16 h-48 w-48 rounded-full bg-green/10 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
-                {/* Sheen */}
-                <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-cream/40 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-
-                <div className="relative">
-                  <motion.div
-                    whileHover={{ rotate: -6, scale: 1.1 }}
-                    transition={{ type: "spring", stiffness: 240, damping: 14 }}
-                    className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-gold-soft to-gold/40 text-green"
-                  >
-                    <Icon className="h-6 w-6" strokeWidth={1.8} />
-                  </motion.div>
-                  <h3 className="mt-5 font-arabic text-2xl font-black text-foreground">
-                    {f.title}
-                  </h3>
-                  <p className="mt-2 leading-relaxed text-foreground/70">{f.desc}</p>
-                  <div className="mt-6 h-1 w-12 rounded-full bg-gradient-to-l from-green to-gold transition-all duration-500 group-hover:w-24" />
-                </div>
-              </motion.div>
-            </Reveal>
-          );
-        })}
-      </div>
-    </div>
-  </section>
-);
-
-// ---------- Section 3: About تِكله -------------------------------------------
-const STATS = [
-  { value: "10 دقائق", label: "متوسط وقت التخطيط مع تِكله" },
-  { value: "100%", label: "أسعار شفافة بدون مفاجآت" },
-  { value: "+50", label: "مزود خدمة موثّق في الرياض" },
 ] as const;
 
 const VALUES = [
@@ -215,77 +49,116 @@ const VALUES = [
 ] as const;
 
 const AboutSection = () => (
-  <section id="about" className="relative overflow-hidden bg-hero-warm px-6 py-24 sm:px-8 sm:py-28">
-    <div className="mx-auto max-w-6xl">
-      <div className="grid items-center gap-10 md:grid-cols-12 md:gap-12">
+  <section
+    id="about"
+    className="relative overflow-hidden bg-hero-warm px-6 py-24 sm:px-8 sm:py-28"
+  >
+    {/* Subtle Najdi pattern overlay */}
+    <ArabicPattern opacity={0.04} />
+
+    <div className="relative mx-auto max-w-6xl">
+      <div className="grid items-center gap-10 md:grid-cols-12 md:gap-14">
         {/* Right column (RTL) — text */}
         <Reveal className="md:col-span-7">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-cream/70 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
+            <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
               <Sparkles className="h-4 w-4 text-gold" strokeWidth={2} />
               تعرّف على تِكله
             </span>
-            <h2 className="mt-5 font-arabic text-5xl font-black leading-[1.1] text-foreground md:text-7xl">
-              زواجك كله{" "}
-              <span className="bg-gradient-green bg-clip-text text-transparent">بضغطة زر</span>
+
+            <h2 className="mt-6 font-arabic text-5xl font-black leading-[1.1] text-green md:text-7xl">
+              تِكله..{" "}
+              <span className="bg-gradient-to-l from-green to-green-mid bg-clip-text text-transparent">
+                اسم على مسمّى
+              </span>
             </h2>
-            <p className="mt-6 text-xl font-medium leading-relaxed text-foreground/80">
-              تِكله أول منصة سعودية تجمع لك كل تفاصيل ليلة عمرك في مكان واحد. من القاعة، للتصوير،
-              للكوش، للضيافة — كل شي بسعر واضح وضمان أكيد. شِلنا عنك التعب وعطيناك الخيارات اللي
-              تليق فيك.
+
+            {/* Hairline divider */}
+            <div className="mt-7 mb-7 flex items-center gap-3">
+              <span className="h-px w-16 bg-gold/60" />
+              <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+            </div>
+
+            <p className="mt-2 font-arabic text-xl font-medium leading-[2] text-foreground/85 sm:text-2xl">
+              شِلنا عنك همّ التخطيط والبحث والحوسة. تِكله تكفل لك كل شي:
+              من القاعة، للتصوير، للكوش، للضيافة — كل شي بسعر واضح وضمان أكيد.
+              أنت بس عِش اللحظة.. و«تِكله» تكفل لك الباقي.
             </p>
-            <p className="mt-4 leading-relaxed text-foreground/65">
-              نؤمن إن ليلة عمرك ما تستاهل التعب والحوسة — تستاهل تجربة سلسة، شفافة، وذكية تخليك
-              تركّز على اللحظة بس.
+
+            <p className="mt-5 font-arabic leading-[2] text-foreground/65 sm:text-lg">
+              اخترنا اسم «تِكله» من «الاتكال» و«الثقة»؛ لأنّنا نؤمن إن لحظة الفرح
+              ما تستاهل صداع التخطيط. منصّة سعودية تجمع بين ذكاء التخطيط وفنّ
+              التنفيذ — تختار ميزانيتك، نقترح لك الأنسب، وتلقى أفضل المزوّدين.
             </p>
 
             {/* Values chips */}
-            <div className="mt-7 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-3">
               {VALUES.map((v, i) => {
                 const Icon = v.icon;
                 return (
-                  <span
+                  <motion.span
                     key={i}
-                    className="inline-flex items-center gap-2 rounded-full border border-green/20 bg-cream/70 px-4 py-2 text-sm font-bold text-foreground backdrop-blur"
+                    whileHover={{ y: -2 }}
+                    className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-cream/80 px-4 py-2 text-sm font-bold text-foreground backdrop-blur transition-colors hover:border-gold hover:bg-cream"
                   >
-                    <Icon className="h-4 w-4 text-green" strokeWidth={2} />
+                    <Icon className="h-4 w-4 text-gold" strokeWidth={2} />
                     {v.label}
-                  </span>
+                  </motion.span>
                 );
               })}
             </div>
 
-            {/* CTAs */}
-            <div className="mt-8 flex flex-wrap gap-3">
+            {/* CTAs — Deep Green / Gold scheme */}
+            <div className="mt-9 flex flex-wrap gap-3">
               <Link
                 to="/#wizard"
-                className="inline-flex items-center justify-center rounded-full bg-green px-8 py-4 font-arabic text-base font-bold text-cream shadow-deep transition-transform hover:-translate-y-0.5"
+                className="group inline-flex items-center justify-center gap-2 rounded-full border-2 border-gold bg-green px-8 py-4 font-arabic text-base font-bold text-gold shadow-deep transition-all hover:-translate-y-0.5 hover:bg-green-mid hover:shadow-[0_25px_70px_-20px_hsl(var(--gold)/0.55)]"
               >
+                <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
                 ابدأ التخطيط الحين
               </Link>
               <a
-                href="#"
-                className="inline-flex items-center justify-center rounded-full border border-border bg-cream/70 px-8 py-4 font-arabic text-base font-bold text-foreground backdrop-blur transition-colors hover:bg-cream"
+                href="#value"
+                className="inline-flex items-center justify-center rounded-full border border-green/30 bg-cream/70 px-8 py-4 font-arabic text-base font-bold text-green backdrop-blur transition-colors hover:bg-cream"
               >
-                حمّل التطبيق
+                ليش تِكله؟
               </a>
             </div>
           </div>
         </Reveal>
 
-        {/* Left column — stats card */}
+        {/* Left column — Trust Factors stack (image_6 redesigned) */}
         <Reveal delay={0.15} className="md:col-span-5">
-          <div className="rounded-3xl border border-border bg-surface/85 p-8 shadow-deep backdrop-blur">
-            <div className="space-y-6">
-              {STATS.map((s, i) => (
-                <div key={i}>
-                  <div className="bg-gradient-green bg-clip-text font-arabic text-5xl font-black text-transparent">
-                    {s.value}
+          <div className="relative rounded-[2rem] border border-gold/25 bg-cream/85 p-8 shadow-deep backdrop-blur-md">
+            {/* Soft gold corner glow */}
+            <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold/20 blur-3xl" />
+
+            <div className="relative space-y-7">
+              {TRUST_FACTORS.map((f, i) => {
+                const Icon = f.icon;
+                return (
+                  <div key={i}>
+                    <div className="flex items-baseline justify-between gap-4">
+                      <div className="font-arabic text-5xl font-black leading-none text-green">
+                        <AnimatedCounter
+                          value={f.value}
+                          suffix={f.suffix}
+                          arabicDigits={f.arabicDigits}
+                        />
+                      </div>
+                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gold/30 bg-gold/10 text-gold">
+                        <Icon className="h-4 w-4" strokeWidth={2} />
+                      </span>
+                    </div>
+                    <div className="mt-2 font-arabic text-sm leading-relaxed text-foreground/65">
+                      {f.label}
+                    </div>
+                    {i < TRUST_FACTORS.length - 1 && (
+                      <div className="mt-6 h-px bg-gradient-to-l from-transparent via-gold/30 to-transparent" />
+                    )}
                   </div>
-                  <div className="mt-2 text-sm text-foreground/65">{s.label}</div>
-                  {i < STATS.length - 1 && <div className="mt-6 h-px bg-border" />}
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </Reveal>
@@ -294,11 +167,114 @@ const AboutSection = () => (
   </section>
 );
 
+// ============================================================================
+// Section B — Value Proposition (image_7 reimagined)
+//   Title: "ليلتك عرسك.. وش تبي أكثر؟"
+//   4 glassy cards with Najdi-gold hover glow
+// ============================================================================
+const VALUE_CARDS = [
+  {
+    icon: Calculator,
+    title: "خطّط بذكاء",
+    desc: "خطّط بمزاج رايق. حاسبة ذكية تعطيك ميزانيتك بالريال، بدون مفاجآت ولا أرقام مخفية.",
+  },
+  {
+    icon: Filter,
+    title: "مزوّدون نخبة",
+    desc: "مزوّدون.. كلهم «نخبة». ما نتعامل إلا مع الأفضل، ونضمن لك جودة تليق بك.",
+  },
+  {
+    icon: CalendarCheck,
+    title: "احجز في دقائق",
+    desc: "احجز وأنت مرتاح. خلّص كل أمورك في دقائق، وودّع حوسة الاتصالات الطويلة.",
+  },
+  {
+    icon: Gem,
+    title: "تجربة فاخرة",
+    desc: "زواجك، برِستيج فاخر. تفاصيل مصمّمة بذوق سعودي أصيل، تليق بك وضيوفك.",
+  },
+] as const;
+
+const ValueSection = () => (
+  <section
+    id="value"
+    className="relative overflow-hidden bg-background px-6 py-24 sm:px-8 sm:py-28"
+  >
+    {/* Pattern divider above */}
+    <ArabicPattern opacity={0.035} />
+
+    <div className="relative mx-auto max-w-6xl">
+      <Reveal>
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/70 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
+            <Sparkles className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
+            ليش تِكله؟
+          </span>
+          <h2 className="mt-6 font-arabic text-4xl font-black leading-[1.15] text-green md:text-6xl">
+            ليلتك عرسك..{" "}
+            <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
+              وش تبي أكثر؟
+            </span>
+          </h2>
+          <p className="mx-auto mt-5 max-w-2xl font-arabic text-lg leading-relaxed text-foreground/65 sm:text-xl">
+            أربع أسباب تخلّيك تختار تِكله بدون تردد — سهولة، شفافية، ضمان،
+            وذوق سعودي أصيل.
+          </p>
+        </div>
+      </Reveal>
+
+      <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {VALUE_CARDS.map((card, i) => {
+          const Icon = card.icon;
+          return (
+            <Reveal key={i} delay={i * 0.08}>
+              <motion.div
+                whileHover={{ y: -8 }}
+                transition={{ type: "spring", stiffness: 220, damping: 18 }}
+                className="group relative h-full overflow-hidden rounded-3xl border border-gold/15 bg-cream/60 p-7 shadow-card backdrop-blur-md transition-all duration-500 hover:border-gold/50 hover:bg-cream/80 hover:shadow-[0_30px_60px_-25px_hsl(var(--gold)/0.4)]"
+                style={{
+                  WebkitBackdropFilter: "blur(12px) saturate(1.1)",
+                  backdropFilter: "blur(12px) saturate(1.1)",
+                }}
+              >
+                {/* Najdi gold glow on hover */}
+                <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-gold/0 opacity-0 blur-3xl transition-all duration-700 group-hover:bg-gold/30 group-hover:opacity-100" />
+
+                {/* Gold sheen sweep */}
+                <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold/15 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+
+                <div className="relative">
+                  <motion.div
+                    whileHover={{ rotate: -6, scale: 1.08 }}
+                    transition={{ type: "spring", stiffness: 240, damping: 14 }}
+                    className="inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/30 bg-gradient-to-br from-gold/15 to-gold/5 text-gold shadow-soft"
+                  >
+                    <Icon className="h-6 w-6" strokeWidth={1.8} />
+                  </motion.div>
+
+                  <h3 className="mt-5 font-arabic text-2xl font-black text-green">
+                    {card.title}
+                  </h3>
+                  <p className="mt-3 font-arabic text-sm leading-[1.95] text-foreground/70">
+                    {card.desc}
+                  </p>
+
+                  {/* Animated underline */}
+                  <div className="mt-6 h-0.5 w-10 rounded-full bg-gradient-to-l from-green to-gold transition-all duration-500 group-hover:w-20" />
+                </div>
+              </motion.div>
+            </Reveal>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+);
+
 // ---------- Public composite -------------------------------------------------
 export const ProblemSolutionAbout = () => (
   <>
-    <ProblemSection />
-    <SolutionSection />
     <AboutSection />
+    <ValueSection />
   </>
 );
