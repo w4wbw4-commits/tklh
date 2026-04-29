@@ -14,6 +14,7 @@ import { VendorNotifications } from "@/components/tekillah/vendor/VendorNotifica
 import { VendorReviews } from "@/components/tekillah/vendor/VendorReviews";
 import { VendorFinancials } from "@/components/tekillah/vendor/VendorFinancials";
 import { PartnerHero } from "@/components/tekillah/vendor/PartnerHero";
+import { PartnerDashboardPreview } from "@/components/tekillah/vendor/PartnerDashboardPreview";
 import type { VendorRow } from "@/components/tekillah/vendor/types";
 import { useTranslation } from "react-i18next";
 import { SEO } from "@/components/SEO";
@@ -103,7 +104,12 @@ const VendorPage = () => {
       </header>
 
       {/* Partner Landing Hero — only for visitors who haven't started a profile yet */}
-      {!vendor && <PartnerHero onCtaClick={handleCtaClick} isAuthenticated={isAuthed} />}
+      {!vendor && (
+        <>
+          <PartnerHero onCtaClick={handleCtaClick} isAuthenticated={isAuthed} />
+          <PartnerDashboardPreview />
+        </>
+      )}
 
       {/* Authenticated dashboard */}
       {authLoading || vendorLoading ? (
