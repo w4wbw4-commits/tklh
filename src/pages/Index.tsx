@@ -20,6 +20,7 @@ const Index = () => {
         description="منصة سعودية فاخرة لتخطيط المناسبات وحجز القاعات والضيافة والتصوير في الرياض وجدة والدمام. باقات جاهزة أو خطّط مناسبتك بنفسك."
         canonical="/"
       />
+      <ScrollProgress />
       <Navbar />
       <Hero />
       {/* Storytelling: pain → solution → about */}
