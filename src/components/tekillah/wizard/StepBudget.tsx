@@ -239,7 +239,7 @@ export const StepBudget = ({
                         </div>
                       </div>
 
-                      <div className="mt-4">
+                      <div className="mt-4 px-2.5">
                         <Slider
                           value={[value]}
                           disabled={!enabled}
