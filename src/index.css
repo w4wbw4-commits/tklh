@@ -23,9 +23,9 @@
     --green-mid: 102 38% 30%;
     --green-light: 92 40% 85%;
 
-    /* Gold — signature accent */
-    --gold: 38 55% 52%;
-    --gold-soft: 40 60% 78%;
+    /* Gold — signature accent (softened, muted champagne) */
+    --gold: 38 38% 58%;
+    --gold-soft: 40 42% 82%;
 
     /* Problem / warm terracotta */
     --problem: 14 65% 48%;
