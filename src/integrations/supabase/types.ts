@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      booking_checklists: {
+        Row: {
+          booking_id: string
+          category: Database["public"]["Enums"]["checklist_category"]
+          created_at: string
+          done: boolean
+          id: string
+          sort_order: number
+          title: string
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          booking_id: string
+          category?: Database["public"]["Enums"]["checklist_category"]
+          created_at?: string
+          done?: boolean
+          id?: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          booking_id?: string
+          category?: Database["public"]["Enums"]["checklist_category"]
+          created_at?: string
+          done?: boolean
+          id?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+          vendor_id?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           attendance_confirmed_at: string | null
@@ -976,6 +1012,63 @@ export type Database = {
           },
         ]
       }
+      vendor_invoices: {
+        Row: {
+          booking_id: string | null
+          created_at: string
+          customer_name: string | null
+          customer_phone: string | null
+          customer_vat_number: string | null
+          id: string
+          invoice_number: string
+          issue_date: string
+          notes: string | null
+          source: string
+          status: string
+          subtotal: number
+          total: number
+          updated_at: string
+          vat_amount: number
+          vendor_id: string
+        }
+        Insert: {
+          booking_id?: string | null
+          created_at?: string
+          customer_name?: string | null
+          customer_phone?: string | null
+          customer_vat_number?: string | null
+          id?: string
+          invoice_number: string
+          issue_date?: string
+          notes?: string | null
+          source?: string
+          status?: string
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          vat_amount?: number
+          vendor_id: string
+        }
+        Update: {
+          booking_id?: string | null
+          created_at?: string
+          customer_name?: string | null
+          customer_phone?: string | null
+          customer_vat_number?: string | null
+          id?: string
+          invoice_number?: string
+          issue_date?: string
+          notes?: string | null
+          source?: string
+          status?: string
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          vat_amount?: number
+          vendor_id?: string
+        }
+        Relationships: []
+      }
       vendor_portfolio_items: {
         Row: {
           caption: string | null
@@ -1008,6 +1101,45 @@ export type Database = {
           sort_order?: number
           updated_at?: string
           url?: string
+          vendor_id?: string
+        }
+        Relationships: []
+      }
+      vendor_pricing_rules: {
+        Row: {
+          active: boolean
+          adjustment_percent: number
+          created_at: string
+          end_date: string | null
+          id: string
+          label: string | null
+          rule_type: Database["public"]["Enums"]["pricing_rule_type"]
+          start_date: string | null
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          active?: boolean
+          adjustment_percent?: number
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          label?: string | null
+          rule_type: Database["public"]["Enums"]["pricing_rule_type"]
+          start_date?: string | null
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          active?: boolean
+          adjustment_percent?: number
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          label?: string | null
+          rule_type?: Database["public"]["Enums"]["pricing_rule_type"]
+          start_date?: string | null
+          updated_at?: string
           vendor_id?: string
         }
         Relationships: []
@@ -1175,6 +1307,7 @@ export type Database = {
           vendor_net: number
         }[]
       }
+      generate_vendor_invoice_number: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1193,6 +1326,12 @@ export type Database = {
         | "rejected"
         | "completed"
         | "cancelled"
+      checklist_category:
+        | "catering"
+        | "decoration"
+        | "staff"
+        | "logistics"
+        | "other"
       emergency_kind: "delay" | "cancellation" | "no_show" | "other"
       emergency_status: "open" | "in_progress" | "resolved"
       incident_kind:
@@ -1223,6 +1362,7 @@ export type Database = {
       payment_status: "held" | "released" | "refunded" | "failed"
       payout_status: "requested" | "approved" | "paid" | "rejected"
       portfolio_media_type: "image" | "video"
+      pricing_rule_type: "weekend" | "weekday" | "seasonal"
       report_reason: "inappropriate" | "spam" | "harassment" | "other"
       report_status: "pending" | "approved" | "removed"
       report_target: "review" | "reply"
@@ -1372,6 +1512,13 @@ export const Constants = {
         "completed",
         "cancelled",
       ],
+      checklist_category: [
+        "catering",
+        "decoration",
+        "staff",
+        "logistics",
+        "other",
+      ],
       emergency_kind: ["delay", "cancellation", "no_show", "other"],
       emergency_status: ["open", "in_progress", "resolved"],
       incident_kind: [
@@ -1405,6 +1552,7 @@ export const Constants = {
       payment_status: ["held", "released", "refunded", "failed"],
       payout_status: ["requested", "approved", "paid", "rejected"],
       portfolio_media_type: ["image", "video"],
+      pricing_rule_type: ["weekend", "weekday", "seasonal"],
       report_reason: ["inappropriate", "spam", "harassment", "other"],
       report_status: ["pending", "approved", "removed"],
       report_target: ["review", "reply"],
