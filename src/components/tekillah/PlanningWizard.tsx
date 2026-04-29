@@ -437,6 +437,7 @@ export const PlanningWizard = () => {
           <WizardVisual step={step} variant="side" />
 
           <div className="flex min-w-0 flex-col">
+            <div className="relative flex-1 overflow-hidden">
             <AnimatePresence mode="wait">
               {step === 0 && (
                 <StepDetails
