@@ -90,22 +90,50 @@ const VendorPage = () => {
               <Link to="/">{t("common.main")}</Link>
             </Button>
             {isAuthed ? (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => signOut().then(() => navigate("/"))}
-                className="rounded-full text-destructive hover:bg-destructive/10"
-              >
-                <LogOut className="me-1 h-4 w-4" /> {t("common.logout")}
-              </Button>
+              <>
+                {/* Switch account: sign out and re-enter the partner login flow */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={async () => {
+                    await signOut();
+                    navigate("/auth?redirect=/vendor&role=vendor");
+                  }}
+                  className="rounded-full"
+                >
+                  {t("vendor.switchAccount", { defaultValue: "دخول بحساب آخر" })}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => signOut().then(() => navigate("/"))}
+                  className="rounded-full text-destructive hover:bg-destructive/10"
+                >
+                  <LogOut className="me-1 h-4 w-4" /> {t("common.logout")}
+                </Button>
+              </>
             ) : (
-              <Button
-                size="sm"
-                asChild
-                className="rounded-full"
-              >
-                <Link to="/auth?redirect=/vendor&role=vendor">{t("nav.start")}</Link>
-              </Button>
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  asChild
+                  className="rounded-full"
+                >
+                  <Link to="/auth?redirect=/vendor&role=vendor">
+                    {t("vendor.signIn", { defaultValue: "تسجيل دخول الشركاء" })}
+                  </Link>
+                </Button>
+                <Button
+                  size="sm"
+                  asChild
+                  className="rounded-full"
+                >
+                  <Link to="/auth?redirect=/vendor&role=vendor">
+                    {t("vendor.signUp", { defaultValue: "سجّل كشريك" })}
+                  </Link>
+                </Button>
+              </>
             )}
           </div>
         </div>
