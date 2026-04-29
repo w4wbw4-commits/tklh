@@ -18,6 +18,12 @@ import {
 } from "lucide-react";
 import { CATEGORY_LABELS, type VendorRow } from "./types";
 import { ServiceTagsInput } from "./ServiceTagsInput";
+import { SmartCombobox, type SmartOption } from "./SmartCombobox";
+import { SmartPriceField } from "./SmartPriceField";
+import {
+  SAUDI_REGIONS, SAUDI_CITIES, SAUDI_DISTRICTS,
+  POPULAR_SERVICES, PRICE_PRESETS, cityToRegion,
+} from "./saudiPlaces";
 import { TermsCheckbox } from "@/components/tekillah/TermsCheckbox";
 import { recordTermsAcceptance } from "@/lib/terms";
 import { useTranslation } from "react-i18next";
