@@ -67,7 +67,7 @@ export const VendorFinancials = ({ vendorId }: { vendorId: string }) => {
         .select("user_id, display_name")
         .in("user_id", ids);
       const map: Record<string, string> = {};
-      ((ps ?? []) as CustomerProfile[]).forEach((p) => {
+      ((ps ?? []) as unknown as CustomerProfile[]).forEach((p) => {
         if (p.user_id) map[p.user_id] = p.display_name ?? "—";
       });
       setProfiles(map);
