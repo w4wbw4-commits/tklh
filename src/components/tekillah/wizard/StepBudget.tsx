@@ -132,10 +132,12 @@ export const StepBudget = ({
                     <span>{t("wizard.budget.reference")}</span>
                     <span className="font-medium text-foreground">{fmt(budget)} {cur}</span>
                   </div>
-                  <Slider
-                    value={[budget]} onValueChange={(v) => setBudget(v[0])}
-                    min={20000} max={500000} step={5000} className="mt-3"
-                  />
+                  <div className="mt-3 px-2.5">
+                    <Slider
+                      value={[budget]} onValueChange={(v) => setBudget(v[0])}
+                      min={20000} max={500000} step={5000}
+                    />
+                  </div>
                 </div>
               </div>
 
