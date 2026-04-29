@@ -8,6 +8,7 @@ import { DashboardPreview } from "@/components/tekillah/DashboardPreview";
 import { UpcomingFeatures } from "@/components/tekillah/UpcomingFeatures";
 import { Mission } from "@/components/tekillah/Mission";
 import { Footer } from "@/components/tekillah/Footer";
+import { ProblemSolutionAbout } from "@/components/tekillah/ProblemSolutionAbout";
 import { SEO } from "@/components/SEO";
 
 const Index = () => {
@@ -20,6 +21,8 @@ const Index = () => {
       />
       <Navbar />
       <Hero />
+      {/* Storytelling: pain → solution → about */}
+      <ProblemSolutionAbout />
       {/* Primary path: ready packages first to grab attention */}
       <PlatformPackages />
       {/* Secondary path: bespoke planning sits directly under the packages */}
