@@ -1,100 +1,120 @@
-@import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Tekillah Design System — Luxury Saudi Event Platform
-   Palette: Deep Olive Green / Off-white / Soft Beige
-   All colors MUST be HSL.
+/* TKLH — تِكله Design System
+   Brand Overhaul: Warm cream + deep olive + gold accents.
+   Inspired by Ahad Laila brand kit. All colors HSL.
 */
 
 @layer base {
   :root {
-    /* Brand surfaces */
-    --background: 60 14% 96%;        /* #F5F5F0 luxury off-white */
-    --foreground: 80 30% 10%;        /* deep olive ink — high contrast body */
+    /* Brand surfaces — warm cream / beige */
+    --background: 44 22% 92%;           /* #ece9e0 luxury cream */
+    --surface: 42 28% 95%;              /* #f5f1ea */
+    --cream: 40 40% 97%;                /* #faf7f1 */
+    --foreground: 100 38% 10%;          /* #15240e deep olive ink */
+    --text-muted: 95 14% 45%;           /* #6b7a5e */
 
-    --card: 0 0% 100%;
-    --card-foreground: 80 30% 10%;
+    /* Greens — deeper, richer */
+    --green: 100 45% 18%;
+    --green-mid: 102 38% 30%;
+    --green-light: 92 40% 85%;
 
-    --popover: 60 14% 98%;
-    --popover-foreground: 80 30% 10%;
+    /* Gold — signature accent */
+    --gold: 38 55% 52%;
+    --gold-soft: 40 60% 78%;
 
-    /* Primary — Deep Olive Green #556B2F (slightly deepened for AA contrast) */
-    --primary: 82 42% 26%;
-    --primary-foreground: 60 14% 97%;
-    --primary-glow: 82 35% 45%;
-    --primary-deep: 82 45% 18%;       /* heading ink */
+    /* Problem / warm terracotta */
+    --problem: 14 65% 48%;
+    --problem-soft: 18 70% 88%;
 
-    /* Secondary — Soft Beige #E8DCCB */
-    --secondary: 35 36% 85%;
-    --secondary-foreground: 82 45% 16%;
+    /* Cards & popovers */
+    --card: 45 26% 94%;
+    --card-foreground: 95 35% 13%;
+    --popover: 44 38% 97%;
+    --popover-foreground: 95 35% 13%;
 
-    --muted: 40 22% 92%;
-    --muted-foreground: 80 18% 28%;   /* darker for readability */
+    /* Primary — deep olive */
+    --primary: 100 41% 21%;
+    --primary-foreground: 44 38% 97%;
+    --primary-glow: 102 38% 38%;
+    --primary-deep: 100 45% 14%;
 
-    --accent: 35 36% 85%;
-    --accent-foreground: 80 25% 18%;
+    /* Secondary — soft sage */
+    --secondary: 92 38% 83%;
+    --secondary-foreground: 100 41% 21%;
 
-    --destructive: 0 65% 48%;
-    --destructive-foreground: 60 14% 96%;
+    --muted: 45 26% 94%;
+    --muted-foreground: 95 16% 40%;
+
+    --accent: 102 36% 32%;
+    --accent-foreground: 44 38% 97%;
+
+    --destructive: 0 75% 45%;
+    --destructive-foreground: 44 38% 97%;
     --success: 140 41% 32%;
-    --success-foreground: 60 14% 96%;
+    --success-foreground: 44 38% 97%;
 
-    --border: 35 25% 82%;
-    --input: 35 25% 82%;
-    --ring: 82 39% 30%;
+    --border: 42 18% 80%;
+    --input: 44 17% 81%;
+    --ring: 100 41% 21%;
 
     --radius: 1rem;
 
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(82 39% 30% / 0.85), hsl(82 45% 18% / 0.7));
-    --gradient-soft: linear-gradient(180deg, hsl(60 14% 96%), hsl(35 36% 92%));
-    --gradient-olive: linear-gradient(135deg, hsl(82 39% 30%), hsl(82 35% 22%));
-    --gradient-beige: linear-gradient(135deg, hsl(35 36% 88%), hsl(40 22% 94%));
+    /* Gradients — warm + olive blend */
+    --gradient-hero: radial-gradient(ellipse at top right, hsl(var(--gold-soft) / 0.35), transparent 55%), radial-gradient(ellipse at bottom left, hsl(var(--green-light) / 0.5), transparent 55%);
+    --gradient-soft: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--surface)) 100%);
+    --gradient-olive: linear-gradient(135deg, hsl(var(--green)) 0%, hsl(var(--green-mid)) 100%);
+    --gradient-beige: linear-gradient(135deg, hsl(var(--surface)) 0%, hsl(var(--cream)) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-soft)) 100%);
 
     /* Shadows */
-    --shadow-luxury: 0 20px 60px -20px hsl(82 39% 30% / 0.25);
-    --shadow-soft: 0 8px 30px -10px hsl(80 25% 18% / 0.12);
-    --shadow-card: 0 2px 16px -4px hsl(80 25% 18% / 0.08);
+    --shadow-luxury: 0 20px 60px -20px hsl(var(--green) / 0.35);
+    --shadow-soft: 0 8px 30px -10px hsl(var(--green) / 0.18);
+    --shadow-card: 0 4px 20px -8px hsl(var(--green) / 0.12);
+    --shadow-card-hover: 0 12px 40px -12px hsl(var(--green) / 0.25);
 
     /* Motion */
     --ease-luxury: cubic-bezier(0.22, 1, 0.36, 1);
+    --transition-smooth: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 
-    /* Sidebar (kept for shadcn) */
-    --sidebar-background: 60 14% 96%;
-    --sidebar-foreground: 80 18% 14%;
-    --sidebar-primary: 82 39% 30%;
-    --sidebar-primary-foreground: 60 14% 96%;
-    --sidebar-accent: 35 36% 85%;
-    --sidebar-accent-foreground: 80 25% 18%;
-    --sidebar-border: 35 25% 82%;
-    --sidebar-ring: 82 39% 30%;
+    /* Sidebar */
+    --sidebar-background: 44 22% 92%;
+    --sidebar-foreground: 100 38% 14%;
+    --sidebar-primary: 100 41% 21%;
+    --sidebar-primary-foreground: 44 38% 97%;
+    --sidebar-accent: 92 38% 83%;
+    --sidebar-accent-foreground: 100 41% 21%;
+    --sidebar-border: 42 18% 80%;
+    --sidebar-ring: 100 41% 21%;
   }
 
   .dark {
-    --background: 80 20% 8%;
-    --foreground: 60 14% 96%;
-    --card: 80 18% 12%;
-    --card-foreground: 60 14% 96%;
-    --popover: 80 18% 12%;
-    --popover-foreground: 60 14% 96%;
-    --primary: 82 35% 55%;
-    --primary-foreground: 80 20% 8%;
-    --secondary: 80 15% 18%;
-    --secondary-foreground: 60 14% 96%;
-    --muted: 80 15% 18%;
-    --muted-foreground: 60 8% 65%;
-    --accent: 80 15% 22%;
-    --accent-foreground: 60 14% 96%;
+    --background: 100 20% 8%;
+    --foreground: 44 22% 92%;
+    --surface: 100 18% 11%;
+    --cream: 100 18% 14%;
+    --card: 100 18% 12%;
+    --card-foreground: 44 22% 92%;
+    --popover: 100 18% 12%;
+    --popover-foreground: 44 22% 92%;
+    --primary: 102 38% 55%;
+    --primary-foreground: 100 20% 8%;
+    --primary-deep: 100 45% 30%;
+    --secondary: 100 15% 18%;
+    --secondary-foreground: 44 22% 92%;
+    --muted: 100 15% 18%;
+    --muted-foreground: 44 8% 65%;
+    --accent: 100 15% 22%;
+    --accent-foreground: 44 22% 92%;
     --destructive: 0 60% 45%;
-    --destructive-foreground: 60 14% 96%;
-    --success: 140 38% 52%;
-    --success-foreground: 80 20% 8%;
-    --border: 80 15% 22%;
-    --input: 80 15% 22%;
-    --ring: 82 35% 55%;
+    --destructive-foreground: 44 22% 92%;
+    --border: 100 15% 22%;
+    --input: 100 15% 22%;
+    --ring: 102 38% 55%;
   }
 }
 
@@ -104,22 +124,65 @@
   }
 
   html {
-    font-family: 'Readex Pro', 'IBM Plex Sans Arabic', 'Inter', system-ui, sans-serif;
+    font-family: 'Tajawal', system-ui, sans-serif;
+    scroll-behavior: smooth;
   }
 
   html[dir="ltr"] {
-    font-family: 'Readex Pro', 'Inter', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+    font-family: 'Tajawal', system-ui, sans-serif;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "ss01", "cv11", "tnum", "lnum";
-    font-variant-numeric: tabular-nums lining-nums;
+    font-feature-settings: "kern";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
-  h1, h2, h3, h4 {
+  /* Arabic typography: prevent diacritic clipping */
+  h1, h2, h3, h4, h5, h6 {
     @apply tracking-tight;
-    font-weight: 600;
+    line-height: 1.45;
+    padding-bottom: 0.08em;
+    font-weight: 700;
+  }
+  p, span, div, a, button, li {
+    line-height: 1.7;
+  }
+
+  ::selection {
+    background: hsl(var(--green) / 0.2);
+    color: hsl(var(--green));
+  }
+}
+
+@layer components {
+  .section-pad {
+    @apply py-20 md:py-28 px-5 md:px-8;
+  }
+  .container-tk {
+    @apply max-w-6xl mx-auto;
+  }
+  .label-badge {
+    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary text-secondary-foreground text-sm font-bold border border-border;
+  }
+  .card-tk {
+    @apply bg-surface border border-border rounded-2xl p-6 md:p-8 transition-all duration-500 hover:-translate-y-1;
+    box-shadow: var(--shadow-card);
+  }
+  .card-tk:hover {
+    border-color: hsl(var(--green));
+    box-shadow: var(--shadow-card-hover);
+  }
+  .icon-chip {
+    @apply inline-flex items-center justify-center w-14 h-14 rounded-2xl;
+    background-color: hsl(var(--green-light));
+    color: hsl(var(--green));
+  }
+  .icon-chip-gold {
+    @apply inline-flex items-center justify-center w-14 h-14 rounded-2xl;
+    color: hsl(var(--green));
+    background: linear-gradient(135deg, hsl(var(--gold-soft)), hsl(var(--gold) / 0.4));
   }
 }
 
@@ -128,45 +191,64 @@
     text-wrap: balance;
   }
   .glass {
-    background: hsl(60 14% 98% / 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: hsl(var(--cream) / 0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid hsl(var(--border) / 0.7);
   }
-  .shadow-luxury {
-    box-shadow: var(--shadow-luxury);
+  .glass-warm {
+    background: linear-gradient(135deg, hsl(var(--surface) / 0.85), hsl(var(--cream) / 0.7));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 4px 20px -8px hsl(var(--green) / 0.08);
   }
-  .shadow-soft {
-    box-shadow: var(--shadow-soft);
-  }
-  .shadow-card {
-    box-shadow: var(--shadow-card);
-  }
+  .bg-hero-warm { background-image: var(--gradient-hero); }
+  .text-gold { color: hsl(var(--gold)); }
+  .bg-gold { background-color: hsl(var(--gold)); }
+  .bg-gold-soft { background-color: hsl(var(--gold-soft)); }
+  .border-gold { border-color: hsl(var(--gold)); }
+
+  .shadow-luxury { box-shadow: var(--shadow-luxury); }
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+  .shadow-card { box-shadow: var(--shadow-card); }
   .text-shadow-hero {
-    text-shadow: 0 2px 18px hsl(60 14% 98% / 0.55), 0 1px 2px hsl(82 45% 18% / 0.18);
+    text-shadow: 0 2px 18px hsl(var(--cream) / 0.85), 0 1px 2px hsl(var(--green) / 0.18);
   }
   .text-shadow-soft {
-    text-shadow: 0 1px 10px hsl(60 14% 98% / 0.7);
+    text-shadow: 0 1px 10px hsl(var(--cream) / 0.7);
   }
+
   .font-display {
-    /* Clean modern sans for headings */
-    font-family: 'Readex Pro', 'IBM Plex Sans Arabic', 'Inter', system-ui, sans-serif;
+    font-family: 'Tajawal', system-ui, sans-serif;
     font-feature-settings: "kern", "liga", "calt";
-    letter-spacing: 0.01em;
+    letter-spacing: 0.005em;
   }
   .font-wordmark {
-    /* Brand wordmark — modern, clean Arabic sans for maximum legibility */
-    font-family: 'Readex Pro', 'IBM Plex Sans Arabic', 'Inter', system-ui, sans-serif;
+    font-family: 'Tajawal', system-ui, sans-serif;
     font-feature-settings: "kern", "liga", "calt";
-    font-weight: 700;
-    letter-spacing: 0;
-    -webkit-text-fill-color: currentColor;
+    font-weight: 900;
+    letter-spacing: -0.01em;
     color: inherit;
+    -webkit-text-fill-color: currentColor;
   }
   .font-tagline {
-    /* Clean complement — lighter weight than the wordmark */
-    font-family: 'Readex Pro', 'IBM Plex Sans Arabic', 'Inter', system-ui, sans-serif;
+    font-family: 'Tajawal', system-ui, sans-serif;
     font-weight: 500;
     font-feature-settings: "kern", "liga";
-    letter-spacing: 0.01em;
+    letter-spacing: 0.005em;
   }
+
+  @keyframes floaty {
+    0%,100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  .floaty { animation: floaty 6s ease-in-out infinite; }
+  .floaty-slow { animation: floaty 9s ease-in-out infinite; }
+
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--green) / 0), 0 12px 40px -12px hsl(var(--green) / 0.25); }
+    50% { box-shadow: 0 0 28px 4px hsl(var(--green) / 0.18), 0 12px 40px -12px hsl(var(--green) / 0.35); }
+  }
+  .glow-pulse { animation: glow-pulse 3.4s ease-in-out infinite; }
 }
