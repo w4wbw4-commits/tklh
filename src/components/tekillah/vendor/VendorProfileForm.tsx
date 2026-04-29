@@ -312,42 +312,51 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           </div>
           <div className="space-y-2">
             <Label>المدينة</Label>
-            <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="الرياض، جدة..." />
-          </div>
-          <div className="space-y-2">
-            <Label>المنطقة <span className="text-destructive">*</span></Label>
-            <Input
-              value={region}
-              onChange={(e) => setRegion(e.target.value)}
-              placeholder="مثال: منطقة الرياض"
-              required
+            <SmartCombobox
+              value={city}
+              onChange={(v) => {
+                setCity(v);
+                // Auto-fill region from known city → region map.
+                const reg = cityToRegion[v];
+                if (reg && !region) {
+                  setRegion(reg);
+                  const regOpt = SAUDI_REGIONS.find((r) => r.ar === reg);
+                  if (regOpt && !regionEn) setRegionEn(regOpt.en);
+                }
+              }}
+              options={SAUDI_CITIES.map<SmartOption>((c) => ({
+                value: c.ar, label: c.ar, secondary: c.en,
+              }))}
+              placeholder="اختر المدينة أو اكتبها"
+              searchPlaceholder="ابحث عن مدينتك…"
             />
           </div>
           <div className="space-y-2">
-            <Label>Region (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
-            <Input
-              value={regionEn}
-              onChange={(e) => setRegionEn(e.target.value)}
-              placeholder="e.g. Riyadh Region"
-              dir="ltr"
+            <Label>المنطقة <span className="text-destructive">*</span></Label>
+            <SmartCombobox
+              value={region}
+              onChange={setRegion}
+              secondaryValue={regionEn}
+              onSecondaryChange={setRegionEn}
+              options={SAUDI_REGIONS.map<SmartOption>((r) => ({
+                value: r.ar, label: r.ar, secondary: r.en,
+              }))}
+              placeholder="اختر المنطقة"
+              searchPlaceholder="ابحث عن المنطقة…"
             />
           </div>
           <div className="space-y-2">
             <Label>الحي <span className="text-destructive">*</span></Label>
-            <Input
+            <SmartCombobox
               value={district}
-              onChange={(e) => setDistrict(e.target.value)}
-              placeholder="مثال: حي العليا"
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label>District (English) <span className="text-foreground/50 text-xs">— optional</span></Label>
-            <Input
-              value={districtEn}
-              onChange={(e) => setDistrictEn(e.target.value)}
-              placeholder="e.g. Al Olaya"
-              dir="ltr"
+              onChange={setDistrict}
+              secondaryValue={districtEn}
+              onSecondaryChange={setDistrictEn}
+              options={(SAUDI_DISTRICTS[city] ?? []).map<SmartOption>((d) => ({
+                value: d.ar, label: d.ar, secondary: d.en,
+              }))}
+              placeholder={city ? "اختر الحي أو اكتبه" : "اختر مدينتك أولاً أو اكتب الحي"}
+              searchPlaceholder="ابحث عن الحي…"
             />
           </div>
           <div className="space-y-2">
