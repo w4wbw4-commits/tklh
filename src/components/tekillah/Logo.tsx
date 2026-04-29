@@ -9,13 +9,13 @@ export const Logo = ({ className = "" }: { className?: string }) => {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`flex items-center gap-2.5 ${className}`}
     >
-      <div className="relative grid h-9 w-9 place-items-center rounded-full bg-gradient-olive shadow-soft ring-1 ring-gold/40">
-        <Sparkles className="h-4 w-4 text-primary-foreground" strokeWidth={1.5} />
+      <div className="relative grid h-9 w-9 place-items-center rounded-full bg-gradient-olive shadow-soft ring-2 ring-gold/60">
+        <Sparkles className="h-4 w-4 text-gold" strokeWidth={1.8} fill="currentColor" />
       </div>
       <div className="flex items-baseline gap-1.5 leading-none">
-        <span className="font-wordmark text-xl font-black text-primary-deep">TKLH</span>
-        <span className="text-foreground/40">—</span>
-        <span className="font-wordmark text-lg font-bold text-foreground">تِكله</span>
+        <span className="font-wordmark text-xl font-black text-gold-gradient">TKLH</span>
+        <span className="text-gold/50">—</span>
+        <span className="font-wordmark text-lg font-bold text-gold-gradient">تِكله</span>
       </div>
     </motion.div>
   );

@@ -184,6 +184,25 @@
     color: hsl(var(--green));
     background: linear-gradient(135deg, hsl(var(--gold-soft)), hsl(var(--gold) / 0.4));
   }
+  /* Najdi Gold — premium card outline with gradient gold border */
+  .card-najdi {
+    @apply relative rounded-2xl bg-surface p-6 md:p-8 transition-all duration-500 hover:-translate-y-1;
+    box-shadow: var(--shadow-card);
+    border: 1px solid hsl(var(--gold) / 0.35);
+    background-image:
+      linear-gradient(hsl(var(--surface)), hsl(var(--surface))),
+      linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-soft)) 50%, hsl(var(--gold)) 100%);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+  }
+  .card-najdi:hover {
+    box-shadow: 0 16px 50px -16px hsl(var(--gold) / 0.35), var(--shadow-card-hover);
+  }
+  /* Premium hairline gold divider */
+  .divider-gold {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.6), transparent);
+  }
 }
 
 @layer utilities {
@@ -251,4 +270,48 @@
     50% { box-shadow: 0 0 28px 4px hsl(var(--green) / 0.18), 0 12px 40px -12px hsl(var(--green) / 0.35); }
   }
   .glow-pulse { animation: glow-pulse 3.4s ease-in-out infinite; }
+
+  /* Najdi geometric pattern — subtle background overlay */
+  .bg-najdi-pattern {
+    background-image:
+      radial-gradient(circle at 20% 30%, hsl(var(--gold) / 0.08) 0, transparent 1.5px),
+      radial-gradient(circle at 80% 70%, hsl(var(--gold) / 0.08) 0, transparent 1.5px),
+      linear-gradient(45deg, transparent 48%, hsl(var(--gold) / 0.04) 49%, hsl(var(--gold) / 0.04) 51%, transparent 52%),
+      linear-gradient(-45deg, transparent 48%, hsl(var(--gold) / 0.04) 49%, hsl(var(--gold) / 0.04) 51%, transparent 52%);
+    background-size: 60px 60px, 60px 60px, 24px 24px, 24px 24px;
+  }
+  .bg-najdi-pattern-dark {
+    background-image:
+      radial-gradient(circle at 20% 30%, hsl(var(--gold) / 0.18) 0, transparent 1.5px),
+      radial-gradient(circle at 80% 70%, hsl(var(--gold) / 0.18) 0, transparent 1.5px),
+      linear-gradient(45deg, transparent 48%, hsl(var(--gold) / 0.10) 49%, hsl(var(--gold) / 0.10) 51%, transparent 52%);
+    background-size: 80px 80px, 80px 80px, 28px 28px;
+  }
+
+  /* Gold gradient text — for premium headings */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, hsl(38 70% 48%) 0%, hsl(42 80% 62%) 50%, hsl(38 70% 48%) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Gold pulse — for the partner CTA */
+  @keyframes gold-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--gold) / 0.5), 0 6px 20px -6px hsl(var(--gold) / 0.4); }
+    50% { box-shadow: 0 0 0 10px hsl(var(--gold) / 0), 0 10px 30px -8px hsl(var(--gold) / 0.55); }
+  }
+  .hover\:gold-pulse:hover { animation: gold-pulse 1.6s ease-in-out infinite; }
+
+  /* Gold shimmer — for premium dividers / accents */
+  @keyframes gold-shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .gold-shimmer {
+    background: linear-gradient(90deg, hsl(var(--gold) / 0.2) 0%, hsl(var(--gold)) 50%, hsl(var(--gold) / 0.2) 100%);
+    background-size: 200% 100%;
+    animation: gold-shimmer 3.5s linear infinite;
+  }
 }
