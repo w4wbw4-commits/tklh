@@ -81,9 +81,44 @@ export const ServiceTagsInput = ({
     }
   };
 
+  const addSuggestion = (s: SuggestionItem) => {
+    const exists = value.some((t) => t.toLowerCase() === s.value.toLowerCase());
+    if (exists) return;
+    if (value.length >= maxTags) return;
+    onChange([...value, s.value]);
+    if (s.secondary && onSuggestionSecondary) onSuggestionSecondary(s.secondary);
+  };
+
+  const availableSuggestions = (suggestions ?? []).filter(
+    (s) => !value.some((t) => t.toLowerCase() === s.value.toLowerCase()),
+  );
+
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
+      {availableSuggestions.length > 0 && (
+        <div className="rounded-xl border border-dashed border-primary/25 bg-primary/[0.03] p-3">
+          <div className="mb-2 inline-flex items-center gap-1.5 text-[11px] font-medium text-primary">
+            <Sparkles className="h-3 w-3" />
+            <span className="font-arabic">خدمات شائعة — اضغط لإضافتها</span>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {availableSuggestions.map((s) => (
+              <button
+                key={s.value}
+                type="button"
+                onClick={() => addSuggestion(s)}
+                disabled={disabled || value.length >= maxTags}
+                className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-background px-2.5 py-1 font-arabic text-[11px] text-foreground/80 transition hover:border-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-50"
+              >
+                <Plus className="h-3 w-3" />
+                {s.value}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       <div
+
         className={cn(
           "flex flex-wrap items-center gap-1.5 rounded-xl border border-input bg-background p-2 transition focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/30",
           disabled && "cursor-not-allowed opacity-60",
