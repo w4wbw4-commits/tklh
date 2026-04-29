@@ -271,6 +271,27 @@
   }
   .glow-pulse { animation: glow-pulse 3.4s ease-in-out infinite; }
 
+  /* shake-soft — subtle stress wobble for problem cards */
+  @keyframes shake-soft {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px) rotate(-0.3deg); }
+    75% { transform: translateX(2px) rotate(0.3deg); }
+  }
+  .shake-soft { animation: shake-soft 4s ease-in-out infinite; }
+
+  /* dash-flow — animated dashed SVG strokes for flow diagrams */
+  @keyframes dash-flow {
+    to { stroke-dashoffset: -32; }
+  }
+  .dash-flow { stroke-dasharray: 8 6; animation: dash-flow 1.4s linear infinite; }
+
+  /* fade-in-slow — gentle ambient entrance */
+  @keyframes fade-in-slow {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .fade-in-slow { animation: fade-in-slow 1.6s ease-out both; }
+
   /* Najdi geometric pattern — subtle background overlay */
   .bg-najdi-pattern {
     background-image:
