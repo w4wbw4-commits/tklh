@@ -29,8 +29,6 @@ const Index = () => {
       <PlatformPackages />
       {/* Secondary path: bespoke planning sits directly under the packages */}
       <PlanningWizard />
-      <Story />
-      <Features />
       <DashboardPreview />
       <UpcomingFeatures />
       <Mission />
