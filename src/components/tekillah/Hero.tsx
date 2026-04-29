@@ -4,6 +4,7 @@ import { ArrowLeft, Sparkles, Star } from "lucide-react";
 import heroImage from "@/assets/hero-tekillah-celebration.jpg";
 import { useTranslation } from "react-i18next";
 import { AnimatedCounter } from "./AnimatedCounter";
+import { ArabicPattern } from "./ArabicPattern";
 
 export const Hero = () => {
   const { t } = useTranslation();
