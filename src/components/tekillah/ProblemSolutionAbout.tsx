@@ -271,10 +271,132 @@ const ValueSection = () => (
   </section>
 );
 
+// ============================================================================
+// Section C — Speed Comparison ("الطريق التقليدي" vs "تِكله")
+//   Visual contrast: dark slow 6-week path vs glowing 10-minute golden line.
+// ============================================================================
+const SpeedSection = () => (
+  <section
+    id="speed"
+    aria-label="مقارنة الوقت بين الطريقة التقليدية وتِكله"
+    className="relative overflow-hidden bg-hero-warm px-6 py-20 sm:px-8 sm:py-24"
+  >
+    <ArabicPattern opacity={0.035} />
+
+    <div className="relative mx-auto max-w-5xl">
+      <Reveal>
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
+            <Timer className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
+            الفرق اللي بيغيّر مزاجك
+          </span>
+          <h2 className="mt-6 font-arabic text-4xl font-black leading-[1.15] text-green md:text-5xl">
+            من ٦ أسابيع حوسة..{" "}
+            <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
+              لـ ١٠ دقائق وأنت مخلّص
+            </span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl font-arabic text-base leading-relaxed text-foreground/65 sm:text-lg">
+            بدّل التخطيط الطويل الممل بتجربة سعودية ذكية، سريعة، وواضحة.
+          </p>
+        </div>
+      </Reveal>
+
+      <div className="mt-12 grid gap-5 md:grid-cols-2">
+        {/* Legacy — dark, heavy, slow */}
+        <Reveal>
+          <div className="relative h-full overflow-hidden rounded-3xl border border-foreground/10 bg-foreground/[0.05] p-7 shadow-card">
+            <div className="absolute inset-0 bg-gradient-to-br from-foreground/[0.06] to-transparent" />
+            <div className="relative">
+              <div className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-background/40 px-3 py-1 text-xs font-bold text-foreground/60">
+                <ListChecks className="h-3.5 w-3.5" />
+                الطريقة التقليدية
+              </div>
+              <div className="mt-5 font-arabic text-5xl font-black text-foreground/70 sm:text-6xl">
+                ٦ أسابيع
+              </div>
+              <p className="mt-2 font-arabic text-sm text-foreground/55">
+                من البحث، الاتصالات، والمتابعة
+              </p>
+
+              {/* Slow dashed bar */}
+              <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-foreground/10">
+                <div
+                  className="h-full w-full rounded-full"
+                  style={{
+                    background:
+                      "repeating-linear-gradient(90deg, hsl(var(--foreground) / 0.25) 0 10px, transparent 10px 18px)",
+                  }}
+                />
+              </div>
+
+              <ul className="mt-6 space-y-2.5 font-arabic text-sm text-foreground/65">
+                <li>• مكالمات وتفاوض مع كل مزوّد</li>
+                <li>• مقارنات يدوية وأسعار متغيّرة</li>
+                <li>• ضياع وقت ومجهود بدون ضمان</li>
+              </ul>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Tikkilah — golden, fast, glowing */}
+        <Reveal delay={0.12}>
+          <div className="group relative h-full overflow-hidden rounded-3xl border-2 border-gold/50 bg-cream p-7 shadow-deep">
+            {/* Gold halo */}
+            <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-gold/30 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-green/15 blur-3xl" />
+
+            <div className="relative">
+              <div className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/15 px-3 py-1 text-xs font-bold text-green">
+                <Zap className="h-3.5 w-3.5 text-gold" strokeWidth={2.5} />
+                مع تِكله
+              </div>
+              <div className="mt-5 flex items-baseline gap-2">
+                <span className="font-arabic text-5xl font-black leading-none text-green sm:text-6xl">
+                  <AnimatedCounter value={10} arabicDigits />
+                </span>
+                <span className="font-arabic text-2xl font-bold text-gold">دقائق</span>
+              </div>
+              <p className="mt-2 font-arabic text-sm font-bold text-green/80">
+                وأنت مخلّص — حجز مكتمل بضمان
+              </p>
+
+              {/* Fast glowing bar */}
+              <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-green/10">
+                <motion.div
+                  initial={{ width: "0%" }}
+                  whileInView={{ width: "100%" }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                  className="h-full rounded-full bg-gradient-to-l from-green via-gold to-gold shadow-[0_0_18px_hsl(var(--gold)/0.6)]"
+                />
+              </div>
+
+              <ul className="mt-6 space-y-2.5 font-arabic text-sm text-foreground/80">
+                {[
+                  "اختر ميزانيتك وعدد ضيوفك",
+                  "اقتراحات ذكية ومزوّدون مفلترين",
+                  "احجز كل شيء بضغطة، بسعر واضح",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-gold" strokeWidth={2.5} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </div>
+  </section>
+);
+
 // ---------- Public composite -------------------------------------------------
 export const ProblemSolutionAbout = () => (
   <>
     <AboutSection />
+    <SpeedSection />
     <ValueSection />
   </>
 );
