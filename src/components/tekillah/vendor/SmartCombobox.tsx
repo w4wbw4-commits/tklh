@@ -78,67 +78,79 @@ export const SmartCombobox = ({
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={(v) => { setOpen(v); if (!v) setQuery(""); }}>
       <PopoverTrigger asChild>
         <Button
+          type="button"
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="h-10 w-full justify-between font-normal"
+          className="h-11 w-full justify-between border-input bg-background font-normal text-foreground hover:bg-background hover:text-foreground hover:border-primary/60 focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30"
         >
           <span className={cn("truncate", !value && "text-muted-foreground")}>
             {value || placeholder}
           </span>
-          <ChevronsUpDown className="ms-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="ms-2 h-4 w-4 shrink-0 text-foreground/50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
-        <div className="flex items-center gap-2 border-b border-border bg-secondary/30 px-3 py-2">
-          <Search className="h-4 w-4 text-muted-foreground" />
+      <PopoverContent
+        className="z-[60] w-[--radix-popover-trigger-width] overflow-hidden rounded-xl border border-border bg-popover p-0 shadow-lg"
+        align="start"
+        sideOffset={6}
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
+        <div className="flex items-center gap-2 border-b border-border bg-background px-3 py-2">
+          <Search className="h-4 w-4 text-muted-foreground shrink-0" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={searchPlaceholder}
-            className="h-8 border-0 bg-transparent p-0 text-sm shadow-none focus-visible:ring-0"
+            className="h-8 border-0 bg-transparent p-0 text-sm text-foreground placeholder:text-muted-foreground shadow-none focus-visible:ring-0"
             autoFocus
           />
         </div>
-        <ScrollArea className="max-h-64">
+        <ScrollArea className="max-h-64 overflow-y-auto" onWheel={(e) => e.stopPropagation()}>
           <div className="p-1">
             {filtered.length === 0 && !allowCustom && (
               <div className="px-3 py-6 text-center text-xs text-muted-foreground">
                 {emptyText}
               </div>
             )}
-            {filtered.map((opt) => (
-              <button
-                key={opt.value}
-                type="button"
-                onClick={() => handlePick(opt)}
-                className="flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-2 text-start text-sm transition-colors hover:bg-secondary/60"
-              >
-                <span className="flex flex-col">
-                  <span className="font-arabic text-foreground">{opt.label}</span>
-                  {opt.secondary && (
-                    <span className="text-[11px] text-muted-foreground" dir="ltr">
-                      {opt.secondary}
-                    </span>
+            {filtered.map((opt) => {
+              const selected = value === opt.value;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => handlePick(opt)}
+                  className={cn(
+                    "flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-2 text-start text-sm transition-colors",
+                    selected
+                      ? "bg-gold/15 text-foreground"
+                      : "text-foreground hover:bg-secondary/70 hover:text-foreground",
                   )}
-                </span>
-                {value === opt.value && (
-                  <Check className="h-4 w-4 text-primary" />
-                )}
-              </button>
-            ))}
+                >
+                  <span className="flex flex-col">
+                    <span className="font-arabic text-foreground">{opt.label}</span>
+                    {opt.secondary && (
+                      <span className="text-[11px] text-muted-foreground" dir="ltr">
+                        {opt.secondary}
+                      </span>
+                    )}
+                  </span>
+                  {selected && <Check className="h-4 w-4 text-primary shrink-0" />}
+                </button>
+              );
+            })}
             {allowCustom && query.trim() && !exactMatch && (
               <button
                 type="button"
                 onClick={handleAddCustom}
-                className="mt-1 flex w-full items-center gap-2 rounded-md border border-dashed border-primary/40 bg-primary/5 px-2.5 py-2 text-start text-sm text-primary transition-colors hover:bg-primary/10"
+                className="mt-1 flex w-full items-center gap-2 rounded-md border border-dashed border-gold/50 bg-gold/10 px-2.5 py-2 text-start text-sm text-foreground transition-colors hover:bg-gold/20"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4 text-gold" />
                 <span className="font-arabic">
-                  استخدم «{query.trim()}»
+                  استخدم «<span className="font-semibold">{query.trim()}</span>»
                 </span>
               </button>
             )}
