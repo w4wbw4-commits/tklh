@@ -21,6 +21,11 @@ const Privacy = () => {
 
   return (
     <div className="min-h-screen bg-gradient-soft">
+      <SEO
+        title={`${t("terms.privacyTitle")} | TKLH`}
+        description={t("terms.privacyIntro", { defaultValue: "سياسة الخصوصية وحماية البيانات في منصة تِكله TKLH." }) as string}
+        canonical="/privacy"
+      />
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <Logo />
