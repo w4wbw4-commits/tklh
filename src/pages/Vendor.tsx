@@ -15,6 +15,7 @@ import { VendorReviews } from "@/components/tekillah/vendor/VendorReviews";
 import { VendorFinancials } from "@/components/tekillah/vendor/VendorFinancials";
 import { PartnerHero } from "@/components/tekillah/vendor/PartnerHero";
 import { PartnerDashboardPreview } from "@/components/tekillah/vendor/PartnerDashboardPreview";
+import { WelcomeDialog } from "@/components/tekillah/vendor/WelcomeDialog";
 import type { VendorRow } from "@/components/tekillah/vendor/types";
 import { useTranslation } from "react-i18next";
 import { SEO } from "@/components/SEO";
@@ -26,6 +27,8 @@ const VendorPage = () => {
   const [vendor, setVendor] = useState<VendorRow | null>(null);
   const [vendorLoading, setVendorLoading] = useState(false);
   const [tab, setTab] = useState("profile");
+  const [welcomeOpen, setWelcomeOpen] = useState(false);
+  const [welcomeVendor, setWelcomeVendor] = useState<VendorRow | null>(null);
   const dashboardRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -45,8 +48,13 @@ const VendorPage = () => {
   }, [user]);
 
   const handleVendorSaved = (v: VendorRow) => {
+    const isFirstSave = !vendor;
     setVendor(v);
     if (v.approval_status === "approved") setTab("bookings");
+    if (isFirstSave) {
+      setWelcomeVendor(v);
+      setWelcomeOpen(true);
+    }
   };
 
   const handleCtaClick = () => {
@@ -117,6 +125,16 @@ const VendorPage = () => {
           <Loader2 className="h-6 w-6 animate-spin text-primary" />
         </div>
       ) : isAuthed ? (
+        <>
+        <WelcomeDialog
+          open={welcomeOpen}
+          onOpenChange={setWelcomeOpen}
+          vendor={welcomeVendor}
+          onEnter={() => {
+            setWelcomeOpen(false);
+            navigate("/partner/overview");
+          }}
+        />
         <main ref={dashboardRef} className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -231,6 +249,7 @@ const VendorPage = () => {
             </Tabs>
           </motion.div>
         </main>
+        </>
       ) : null}
     </div>
   );
