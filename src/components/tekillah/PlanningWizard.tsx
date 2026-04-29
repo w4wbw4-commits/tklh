@@ -495,6 +495,7 @@ export const PlanningWizard = () => {
                 />
               )}
             </AnimatePresence>
+            </div>
 
             <div className="mt-auto flex items-center justify-between border-t border-border bg-secondary/30 px-6 py-4 sm:px-10">
               <Button variant="ghost" onClick={prev} disabled={step === 0} className="rounded-full text-foreground">
