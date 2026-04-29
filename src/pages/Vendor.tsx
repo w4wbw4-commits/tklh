@@ -77,21 +77,28 @@ const VendorPage = () => {
         description="انضم إلى شبكة شركاء تِكله TKLH وقدّم خدماتك في تخطيط وحجز المناسبات لعملاء في كافة المملكة العربية السعودية."
         canonical="/vendor"
       />
-      <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-xl">
+      <header
+        className="sticky top-0 z-30 border-b border-gold/20"
+        style={{
+          background: "hsl(var(--background) / 0.78)",
+          backdropFilter: "blur(20px) saturate(1.4)",
+          WebkitBackdropFilter: "blur(20px) saturate(1.4)",
+          boxShadow: "0 8px 30px -12px hsl(var(--green) / 0.15)",
+        }}
+      >
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
           <div className="flex items-center gap-4">
             <Logo />
-            <span className="hidden text-xs uppercase tracking-[0.2em] text-primary sm:inline">
+            <span className="hidden text-xs uppercase tracking-[0.2em] text-gold sm:inline">
               {t("vendor.kicker")}
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" asChild className="rounded-full">
+            <Button variant="ghost" size="sm" asChild className="rounded-full text-foreground/80 hover:text-gold">
               <Link to="/">{t("common.main")}</Link>
             </Button>
             {isAuthed ? (
               <>
-                {/* Switch account: sign out and re-enter the partner login flow */}
                 <Button
                   variant="outline"
                   size="sm"
@@ -99,7 +106,7 @@ const VendorPage = () => {
                     await signOut();
                     navigate("/auth?redirect=/vendor&role=vendor");
                   }}
-                  className="rounded-full"
+                  className="rounded-full border-gold/50 text-primary-deep hover:bg-gold/10 hover:text-primary-deep"
                 >
                   {t("vendor.switchAccount", { defaultValue: "دخول بحساب آخر" })}
                 </Button>
@@ -115,22 +122,21 @@ const VendorPage = () => {
             ) : (
               <>
                 <Button
-                  variant="outline"
                   size="sm"
                   asChild
-                  className="rounded-full"
+                  className="rounded-full border border-gold/60 bg-gold text-primary-deep shadow-[0_4px_14px_-4px_hsl(var(--gold)/0.45)] transition-all hover:bg-gold hover:scale-[1.03] hover:gold-pulse"
                 >
                   <Link to="/auth?redirect=/vendor&role=vendor">
-                    {t("vendor.signIn", { defaultValue: "تسجيل دخول الشركاء" })}
+                    {t("vendor.signIn", { defaultValue: "دخول الشركاء" })}
                   </Link>
                 </Button>
                 <Button
                   size="sm"
                   asChild
-                  className="rounded-full"
+                  className="rounded-full border-2 border-gold bg-primary-deep text-gold hover:bg-primary hover:text-gold"
                 >
                   <Link to="/auth?redirect=/vendor&role=vendor">
-                    {t("vendor.signUp", { defaultValue: "سجّل كشريك" })}
+                    {t("vendor.signUp", { defaultValue: "انضم للقائمة المبكرة" })}
                   </Link>
                 </Button>
               </>
