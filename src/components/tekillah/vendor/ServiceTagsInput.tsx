@@ -9,9 +9,15 @@
 // ---------------------------------------------------------------------------
 
 import { useState, type KeyboardEvent } from "react";
-import { Plus, X } from "lucide-react";
+import { Plus, Sparkles, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+
+interface SuggestionItem {
+  value: string;
+  /** Optional secondary value (e.g. English) auto-added in parallel. */
+  secondary?: string;
+}
 
 interface Props {
   value: string[];
@@ -24,6 +30,11 @@ interface Props {
   maxTags?: number;
   /** Per-tag character cap. */
   maxLength?: number;
+  /** Popular preset suggestions shown as one-tap chips above the input. */
+  suggestions?: SuggestionItem[];
+  /** Callback fired when a suggestion's secondary value should be mirrored
+   *  (e.g. into an EN list). When omitted, only the primary list is updated. */
+  onSuggestionSecondary?: (secondary: string) => void;
 }
 
 const DEFAULT_MAX_TAGS = 30;
@@ -37,6 +48,8 @@ export const ServiceTagsInput = ({
   hint,
   maxTags = DEFAULT_MAX_TAGS,
   maxLength = DEFAULT_MAX_LEN,
+  suggestions,
+  onSuggestionSecondary,
 }: Props) => {
   const [draft, setDraft] = useState("");
 
