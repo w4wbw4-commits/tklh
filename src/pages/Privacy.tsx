@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft, ArrowRight, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
+import { SEO } from "@/components/SEO";
 
 interface PrivacySection { title: string; body: string; }
 
