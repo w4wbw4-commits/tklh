@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
-import { Globe, LayoutDashboard, ShieldCheck } from "lucide-react";
+import { Globe, LayoutDashboard, ShieldCheck, Building2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -79,6 +79,18 @@ export const Navbar = () => {
                 </Link>
               </Button>
             )}
+            {/* Partner portal entry — visible to everyone so partners can always log in */}
+            <Button
+              variant="outline"
+              size="sm"
+              asChild
+              className="hidden rounded-full border-primary/30 text-xs text-primary hover:bg-primary hover:text-primary-foreground sm:inline-flex"
+            >
+              <Link to={user ? "/partner" : "/auth?redirect=/partner&role=vendor"}>
+                <Building2 className="me-1 h-3.5 w-3.5" />
+                {t("nav.partnerPortal", { defaultValue: isAr ? "بوابة الشركاء" : "Partner Portal" })}
+              </Link>
+            </Button>
             {isPrimaryAdmin && (
               <Button
                 size="sm"
