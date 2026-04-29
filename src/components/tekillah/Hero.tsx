@@ -67,13 +67,16 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="font-wordmark text-gold-gradient text-balance text-center text-[88px] font-bold leading-[1.3] sm:text-[124px] md:text-[156px] lg:text-[188px]"
+            className="font-wordmark text-balance text-center text-[88px] font-bold leading-[1.3] text-primary-deep sm:text-[124px] md:text-[156px] lg:text-[188px]"
             lang="ar"
             dir="rtl"
             style={{
+              color: "hsl(var(--primary-deep))",
+              WebkitTextFillColor: "hsl(var(--primary-deep))",
               fontWeight: 700,
               letterSpacing: "0",
-              filter: "drop-shadow(0 2px 18px hsl(60 14% 98% / 0.7)) drop-shadow(0 0 12px hsl(var(--gold) / 0.25))",
+              textShadow:
+                "0 2px 30px hsl(60 14% 98% / 0.95), 0 1px 4px hsl(60 14% 98% / 0.8), 0 0 18px hsl(var(--gold) / 0.18)",
             }}
           >
             {t("hero.titleA")}
