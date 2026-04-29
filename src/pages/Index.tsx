@@ -28,6 +28,7 @@ const Index = () => {
       <Features />
       <DashboardPreview />
       <UpcomingFeatures />
+      <Mission />
       <Footer />
     </main>
   );
