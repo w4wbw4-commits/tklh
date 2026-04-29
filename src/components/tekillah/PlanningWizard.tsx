@@ -526,14 +526,20 @@ export const PlanningWizard = () => {
                 {t("common.previous")}
               </Button>
               {step < 4 ? (
-                <Button
-                  onClick={next}
-                  size="sm"
-                  className="rounded-full bg-primary px-5 text-primary-foreground shadow-[0_6px_18px_-8px_hsl(var(--gold)/0.5)] hover:bg-primary/90 sm:size-default sm:px-6"
-                >
-                  {t("common.next")}
-                  <NextIcon className="ms-2 h-4 w-4" />
-                </Button>
+                <div className="flex flex-col items-end gap-1">
+                  <Button
+                    onClick={next}
+                    size="sm"
+                    disabled={!canProceed}
+                    className="rounded-full bg-primary px-5 text-primary-foreground shadow-[0_6px_18px_-8px_hsl(var(--gold)/0.5)] hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50 sm:size-default sm:px-6"
+                  >
+                    {t("common.next")}
+                    <NextIcon className="ms-2 h-4 w-4" />
+                  </Button>
+                  {nextHint && (
+                    <span className="text-[11px] font-medium text-foreground/60">{nextHint}</span>
+                  )}
+                </div>
               ) : isFastTrack ? (
                 <span className="text-xs text-foreground/60">{t("wizard.packageDetail.footerHint")}</span>
               ) : (
