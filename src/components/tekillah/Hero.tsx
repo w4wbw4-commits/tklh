@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft, Sparkles, Star } from "lucide-react";
 import heroImage from "@/assets/hero-tekillah-celebration.jpg";
 import { useTranslation } from "react-i18next";
 import { AnimatedCounter } from "./AnimatedCounter";
@@ -26,6 +26,8 @@ export const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/10 to-background/95" />
         {/* Centre olive vignette for depth + edge focus */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_55%,_hsl(var(--primary-deep)/0.22)_100%)]" />
+        {/* Subtle Najdi gold pattern overlay */}
+        <div className="absolute inset-0 bg-najdi-pattern opacity-40 mix-blend-overlay" />
         {/* Smooth fade-out into next section */}
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       </div>
@@ -36,12 +38,13 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-10 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/80 px-5 py-2 shadow-soft backdrop-blur-md"
+          className="mb-10 inline-flex items-center gap-2 rounded-full border border-gold/50 bg-background/80 px-5 py-2 shadow-soft backdrop-blur-md"
         >
-          <Sparkles className="h-3.5 w-3.5 text-primary" strokeWidth={1.5} />
+          <Star className="h-3.5 w-3.5 text-gold" strokeWidth={1.5} fill="currentColor" />
           <span className="text-xs font-medium tracking-[0.18em] text-primary-deep">
             {t("hero.tag")}
           </span>
+          <Sparkles className="h-3 w-3 text-gold" strokeWidth={1.5} />
         </motion.div>
 
         {/* Glass scrim — soft off-white blur, low opacity, feathered edges */}
@@ -64,17 +67,13 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="font-wordmark text-balance text-center text-[88px] font-bold leading-[1.3] text-primary-deep sm:text-[124px] md:text-[156px] lg:text-[188px]"
+            className="font-wordmark text-gold-gradient text-balance text-center text-[88px] font-bold leading-[1.3] sm:text-[124px] md:text-[156px] lg:text-[188px]"
             lang="ar"
             dir="rtl"
             style={{
-              color: "hsl(var(--primary-deep))",
-              WebkitTextFillColor: "hsl(var(--primary-deep))",
               fontWeight: 700,
               letterSpacing: "0",
-              // Stronger single-tone halo for legibility on the clearer background
-              textShadow:
-                "0 2px 30px hsl(60 14% 98% / 0.95), 0 1px 4px hsl(60 14% 98% / 0.8), 0 0 14px hsl(60 14% 98% / 0.6)",
+              filter: "drop-shadow(0 2px 18px hsl(60 14% 98% / 0.7)) drop-shadow(0 0 12px hsl(var(--gold) / 0.25))",
             }}
           >
             {t("hero.titleA")}
@@ -87,9 +86,9 @@ export const Hero = () => {
             transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="mt-8 mb-7 flex items-center gap-3"
           >
-            <span className="h-px w-12 bg-primary/50" />
-            <span className="h-1.5 w-1.5 rounded-full bg-primary/70" />
-            <span className="h-px w-12 bg-primary/50" />
+            <span className="h-px w-16 bg-gradient-to-r from-transparent to-gold/70" />
+            <Star className="h-3 w-3 text-gold" fill="currentColor" />
+            <span className="h-px w-16 bg-gradient-to-l from-transparent to-gold/70" />
           </motion.div>
 
           {/* Tagline — Amiri serif, balanced spacing under the wordmark */}
@@ -127,11 +126,11 @@ export const Hero = () => {
           <Button
             size="lg"
             asChild
-            className="group h-14 rounded-full bg-primary px-10 text-base font-medium text-primary-foreground shadow-luxury transition-all hover:bg-primary-deep hover:shadow-[0_25px_70px_-20px_hsl(var(--primary)/0.45)]"
+            className="group h-14 rounded-full border-2 border-gold bg-primary-deep px-10 text-base font-bold text-gold shadow-luxury transition-all hover:bg-primary hover:text-gold hover:shadow-[0_25px_70px_-20px_hsl(var(--gold)/0.55)] hover:scale-[1.02]"
           >
             <a href="#wizard">
               {t("hero.cta")}
-              <ArrowLeft className="ms-2 h-4 w-4 transition-transform group-hover:-translate-x-1 rtl:rotate-0 ltr:rotate-180" />
+              <ArrowLeft className="ms-2 h-4 w-4 text-gold transition-transform group-hover:-translate-x-1 rtl:rotate-0 ltr:rotate-180" />
             </a>
           </Button>
           <Button
