@@ -7,10 +7,16 @@ import { PlanningWizard } from "@/components/tekillah/PlanningWizard";
 import { DashboardPreview } from "@/components/tekillah/DashboardPreview";
 import { UpcomingFeatures } from "@/components/tekillah/UpcomingFeatures";
 import { Footer } from "@/components/tekillah/Footer";
+import { SEO } from "@/components/SEO";
 
 const Index = () => {
   return (
     <main className="min-h-screen bg-background">
+      <SEO
+        title="تِكله | TKLH — منصة تخطيط وحجز المناسبات في السعودية"
+        description="منصة سعودية فاخرة لتخطيط المناسبات وحجز القاعات والضيافة والتصوير في الرياض وجدة والدمام. باقات جاهزة أو خطّط مناسبتك بنفسك."
+        canonical="/"
+      />
       <Navbar />
       <Hero />
       {/* Primary path: ready packages first to grab attention */}
