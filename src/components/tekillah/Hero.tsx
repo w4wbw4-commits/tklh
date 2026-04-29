@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import heroImage from "@/assets/hero-tekillah-celebration.jpg";
 import { useTranslation } from "react-i18next";
+import { AnimatedCounter } from "./AnimatedCounter";
 
 export const Hero = () => {
   const { t } = useTranslation();
@@ -151,16 +152,28 @@ export const Hero = () => {
           className="mt-20 grid w-full max-w-3xl grid-cols-3 gap-3 sm:gap-6"
         >
           {[
-            { value: t("hero.stat1Value"), label: t("hero.stat1Label") },
-            { value: t("hero.stat2Value"), label: t("hero.stat2Label") },
-            { value: t("hero.stat3Value"), label: t("hero.stat3Label") },
+            { value: 250, suffix: t("hero.stat1Suffix", { defaultValue: "+" }), label: t("hero.stat1Label"), decimal: false },
+            { value: 1200, suffix: t("hero.stat2Suffix", { defaultValue: "+" }), label: t("hero.stat2Label"), decimal: false },
+            { value: 49, suffix: t("hero.stat3Suffix", { defaultValue: "★" }), label: t("hero.stat3Label"), decimal: true },
           ].map((s, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-primary/15 bg-background/65 px-3 py-4 backdrop-blur-md shadow-card"
+              className="group rounded-2xl border border-primary/15 bg-background/65 px-3 py-4 backdrop-blur-md shadow-card transition-all duration-500 hover:-translate-y-1 hover:border-gold/40 hover:shadow-card-hover"
             >
-              <div className="font-display text-2xl font-semibold text-primary-deep sm:text-3xl">
-                {s.value}
+              <div className="font-display text-2xl font-bold text-primary-deep sm:text-3xl">
+                {s.decimal ? (
+                  <>
+                    <AnimatedCounter value={4} duration={1400} />
+                    <span>.</span>
+                    <AnimatedCounter value={9} duration={1700} />
+                    <span className="ms-1 text-gold">{s.suffix}</span>
+                  </>
+                ) : (
+                  <>
+                    <AnimatedCounter value={s.value} />
+                    <span className="text-gold">{s.suffix}</span>
+                  </>
+                )}
               </div>
               <div className="mt-1 text-[11px] tracking-wide text-foreground/60 sm:text-xs">
                 {s.label}

@@ -8,17 +8,32 @@ export default {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
+      screens: { "2xl": "1400px" },
     },
     extend: {
+      fontFamily: {
+        sans: ['Tajawal', 'system-ui', 'sans-serif'],
+        arabic: ['Tajawal', 'system-ui', 'sans-serif'],
+        display: ['Tajawal', 'system-ui', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        surface: "hsl(var(--surface))",
+        cream: "hsl(var(--cream))",
+        "text-muted": "hsl(var(--text-muted))",
+        green: {
+          DEFAULT: "hsl(var(--green))",
+          mid: "hsl(var(--green-mid))",
+          light: "hsl(var(--green-light))",
+        },
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          soft: "hsl(var(--gold-soft))",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -64,20 +79,24 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 4px)",
-        sm: "calc(var(--radius) - 8px)",
-      },
-      fontFamily: {
-        arabic: ['"IBM Plex Sans Arabic"', '"Tajawal"', "system-ui", "sans-serif"],
-        sans: ['"Inter"', '"IBM Plex Sans Arabic"', "system-ui", "sans-serif"],
-      },
       backgroundImage: {
         "gradient-hero": "var(--gradient-hero)",
         "gradient-soft": "var(--gradient-soft)",
         "gradient-olive": "var(--gradient-olive)",
         "gradient-beige": "var(--gradient-beige)",
+        "gradient-gold": "var(--gradient-gold)",
+        "gradient-green": "var(--gradient-olive)",
+        "gradient-warm": "var(--gradient-beige)",
+      },
+      boxShadow: {
+        card: "var(--shadow-card)",
+        "card-hover": "var(--shadow-card-hover)",
+        deep: "var(--shadow-luxury)",
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 4px)",
+        sm: "calc(var(--radius) - 8px)",
       },
       keyframes: {
         "accordion-down": {
@@ -100,6 +119,10 @@ export default {
           "0%": { opacity: "0", transform: "scale(0.96)" },
           "100%": { opacity: "1", transform: "scale(1)" },
         },
+        float: {
+          "0%,100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-8px)" },
+        },
         shimmer: {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
@@ -111,6 +134,7 @@ export default {
         "fade-in": "fade-in 0.6s var(--ease-luxury) both",
         "fade-up": "fade-up 0.8s var(--ease-luxury) both",
         "scale-in": "scale-in 0.5s var(--ease-luxury) both",
+        float: "float 6s ease-in-out infinite",
         shimmer: "shimmer 2.5s linear infinite",
       },
     },
