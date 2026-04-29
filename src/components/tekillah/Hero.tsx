@@ -28,9 +28,9 @@ export const Hero = () => {
         {/* Centre olive vignette for depth + edge focus */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_55%,_hsl(var(--primary-deep)/0.22)_100%)]" />
         {/* Subtle Najdi gold pattern overlay */}
-        <div className="absolute inset-0 bg-najdi-pattern opacity-40 mix-blend-overlay" />
-        {/* Cultural anchor — repeating Arabic geometric tile at 6% */}
-        <ArabicPattern opacity={0.06} />
+        <div className="absolute inset-0 bg-najdi-pattern opacity-25 mix-blend-overlay" />
+        {/* Cultural anchor — repeating Arabic geometric tile, very subtle */}
+        <ArabicPattern opacity={0.04} />
         {/* Smooth fade-out into next section */}
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       </div>
