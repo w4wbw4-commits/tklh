@@ -472,7 +472,7 @@ export const PlanningWizard = () => {
         </div>
 
         {/* Side-by-side visual + form on desktop */}
-        <div className="mt-10 grid gap-0 overflow-hidden rounded-3xl border border-border bg-card shadow-luxury lg:grid-cols-[minmax(0,360px),1fr]">
+        <div ref={formAnchorRef} className="mt-10 grid gap-0 overflow-hidden rounded-3xl border border-border bg-card shadow-luxury lg:grid-cols-[minmax(0,360px),1fr]">
           <WizardVisual step={step} variant="side" />
 
           <div className="flex min-w-0 flex-col">
