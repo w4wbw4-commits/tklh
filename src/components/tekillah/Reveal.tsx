@@ -1,9 +1,10 @@
 // ---------------------------------------------------------------------------
 // Reveal — scroll-triggered fade-up wrapper using the brand luxury easing.
 // Wrap any section block to get the signature TKLH entrance animation.
+// Honours prefers-reduced-motion: skips the transform/opacity ramp entirely.
 // ---------------------------------------------------------------------------
 
-import { motion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
 
 interface Props {
@@ -25,6 +26,9 @@ const buildVariants = (y: number, delay: number): Variants => ({
 });
 
 export const Reveal = ({ children, delay = 0, y = 30, className = "" }: Props) => {
+  const reduce = useReducedMotion();
+  // Reduced-motion users get instant content without the slide.
+  if (reduce) return <div className={className}>{children}</div>;
   return (
     <motion.div
       initial="hidden"
