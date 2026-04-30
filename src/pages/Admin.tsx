@@ -294,23 +294,23 @@ const Admin = () => {
 };
 
 const Kpi = ({ icon: Icon, label, value, highlight }: { icon: typeof Wallet; label: string; value: string; highlight?: boolean }) => (
-  <div className={`rounded-2xl border p-5 shadow-card transition-shadow hover:shadow-soft ${
+  <div className={`group relative overflow-hidden rounded-2xl border p-4 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-card-hover ${
     highlight
-      ? "border-primary/40 bg-card ring-1 ring-primary/20"
-      : "border-primary/15 bg-card"
+      ? "border-primary/30 bg-gradient-to-br from-card to-secondary/40 ring-1 ring-primary/15"
+      : "border-border bg-card"
   }`}>
-    <div className="flex items-center gap-3">
-      <div className={`grid h-10 w-10 place-items-center rounded-xl border ${
+    <div className="flex items-center justify-between gap-2">
+      <div className="text-[11px] font-semibold leading-tight text-foreground/65 line-clamp-2">{label}</div>
+      <div className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ${
         highlight
-          ? "border-primary/30 bg-gradient-olive text-primary-foreground"
-          : "border-primary/20 bg-secondary text-primary-deep"
+          ? "bg-gradient-olive text-primary-foreground"
+          : "bg-secondary/70 text-primary-deep"
       }`}>
-        <Icon className="h-5 w-5" />
+        <Icon className="h-4 w-4" />
       </div>
-      <div>
-        <div className="text-xs font-medium text-foreground/70">{label}</div>
-        <div className="mt-0.5 font-arabic text-xl font-bold tracking-tight text-primary-deep">{value}</div>
-      </div>
+    </div>
+    <div className="mt-3 font-arabic text-2xl font-black leading-none tracking-tight text-primary-deep whitespace-nowrap">
+      {value}
     </div>
   </div>
 );
