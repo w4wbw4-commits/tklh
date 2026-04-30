@@ -309,7 +309,7 @@ const Kpi = ({ icon: Icon, label, value, highlight }: { icon: typeof Wallet; lab
         <Icon className="h-4 w-4" />
       </div>
     </div>
-    <div className="mt-3 font-arabic text-2xl font-black leading-none tracking-tight text-primary-deep whitespace-nowrap">
+    <div className="mt-3 font-arabic text-xl font-black leading-none tracking-tight text-primary-deep tabular-nums whitespace-nowrap sm:text-2xl">
       {value}
     </div>
   </div>
