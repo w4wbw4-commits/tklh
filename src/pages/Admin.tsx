@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
   Loader2, ShieldAlert, Wallet, TrendingUp, Lock, ListChecks,
-  CheckCircle2, LogOut, Receipt, Star, Flag, ShieldCheck, Percent, HandCoins, Inbox,
-  AlertTriangle, AlertOctagon, Briefcase, PackageOpen, Hourglass, Building2, Sparkles,
+  CheckCircle2, Receipt, Percent, HandCoins, Inbox,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
 import { fmtNumber, fmtDate } from "@/i18n/format";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import {
@@ -30,6 +26,7 @@ import { AdminAddVendorDialog } from "@/components/tekillah/admin/AdminAddVendor
 import { AdminVendorsPanel } from "@/components/tekillah/admin/AdminVendorsPanel";
 import { AdminPackagesPanel } from "@/components/tekillah/admin/AdminPackagesPanel";
 import { AdminPendingBookings } from "@/components/tekillah/admin/AdminPendingBookings";
+import { AdminLayout } from "@/components/tekillah/admin/AdminLayout";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 
 // Primary admin phones (allowlist) → synthetic emails used by phone-OTP login.
