@@ -65,7 +65,7 @@ export const WizardSceneDetails = ({ className, style }: Props) => {
       style={style}
       fill="none"
       aria-hidden
-      preserveAspectRatio="xMidYMid slice"
+      preserveAspectRatio="xMidYMid meet"
     >
       <SceneDefs id="s1" />
       {/* warm ambient glow */}
@@ -177,7 +177,7 @@ export const WizardSceneServices = ({ className, style }: Props) => {
   const { ref, animate } = useDraw();
   return (
     <svg ref={ref} viewBox="0 0 600 600" className={className} style={style}
-      fill="none" aria-hidden preserveAspectRatio="xMidYMid slice">
+      fill="none" aria-hidden preserveAspectRatio="xMidYMid meet">
       <SceneDefs id="s2" />
       <circle cx="300" cy="300" r="240" fill="url(#s2-bloom)" />
 
@@ -296,7 +296,7 @@ export const WizardSceneVision = ({ className, style }: Props) => {
   ];
   return (
     <svg ref={ref} viewBox="0 0 600 600" className={className} style={style}
-      fill="none" aria-hidden preserveAspectRatio="xMidYMid slice">
+      fill="none" aria-hidden preserveAspectRatio="xMidYMid meet">
       <SceneDefs id="s3" />
       <circle cx="300" cy="300" r="230" fill="url(#s3-bloom)" />
 
@@ -381,7 +381,7 @@ export const WizardSceneBudget = ({ className, style }: Props) => {
   const { ref, animate } = useDraw();
   return (
     <svg ref={ref} viewBox="0 0 600 600" className={className} style={style}
-      fill="none" aria-hidden preserveAspectRatio="xMidYMid slice">
+      fill="none" aria-hidden preserveAspectRatio="xMidYMid meet">
       <SceneDefs id="s4" />
       <circle cx="300" cy="300" r="230" fill="url(#s4-bloom)" />
 
@@ -483,7 +483,7 @@ export const WizardSceneVendors = ({ className, style }: Props) => {
   ];
   return (
     <svg ref={ref} viewBox="0 0 600 600" className={className} style={style}
-      fill="none" aria-hidden preserveAspectRatio="xMidYMid slice">
+      fill="none" aria-hidden preserveAspectRatio="xMidYMid meet">
       <SceneDefs id="s5" />
       <circle cx="300" cy="300" r="230" fill="url(#s5-bloom)" />
 
@@ -569,7 +569,7 @@ export const WizardSceneFinal = ({ className, style }: Props) => {
   const { ref, animate } = useDraw();
   return (
     <svg ref={ref} viewBox="0 0 600 600" className={className} style={style}
-      fill="none" aria-hidden preserveAspectRatio="xMidYMid slice">
+      fill="none" aria-hidden preserveAspectRatio="xMidYMid meet">
       <SceneDefs id="sf" />
       <circle cx="300" cy="300" r="240" fill="url(#sf-bloom)" />
 
