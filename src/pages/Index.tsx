@@ -23,10 +23,10 @@ const Index = () => {
       <ScrollProgress />
       <Navbar />
       <Hero />
-      {/* Expanded brand promise — beyond weddings */}
-      <OccasionsSection />
-      {/* Storytelling: about → speed → value */}
+      {/* Story flow: who we are + why we're better (merged) */}
       <ProblemSolutionAbout />
+      {/* Versatility strip — more than weddings */}
+      <OccasionsSection />
       {/* Primary path: ready packages */}
       <PlatformPackages />
       {/* Secondary path: bespoke planning wizard */}

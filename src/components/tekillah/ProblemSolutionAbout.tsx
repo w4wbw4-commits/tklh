@@ -1,7 +1,9 @@
 // ---------------------------------------------------------------------------
-// ProblemSolutionAbout — two cohesive luxury sections on the home page:
-//   1) AboutSection — "تِكله.. اسم على مسمّى" storytelling + trust factors
-//   2) ValueSection — "ليلتك عرسك.. وش تبي أكثر؟" four glassy benefit cards
+// ProblemSolutionAbout — Unified storytelling flow:
+//   1) AboutValueSection — merged "تِكله.. اسم على مسمّى" + 4 value tiles
+//      with an inline 3-stat strip (10 دقائق / 100% / 50+) replacing the
+//      bulky white card.
+//   2) SpeedSection — 6 weeks vs 10 minutes comparison (kept, tighter rhythm).
 // All visuals use design-system semantic tokens (no hex / hardcoded colors).
 // ---------------------------------------------------------------------------
 
@@ -15,50 +17,39 @@ import { Link } from "react-router-dom";
 import { AnimatedCounter } from "./AnimatedCounter";
 import { ArabicPattern } from "./ArabicPattern";
 
-// ============================================================================
-// Section A — About + Trust Factors (merges image_5 storytelling + image_6 numbers)
-// ============================================================================
-const TRUST_FACTORS = [
-  {
-    icon: Clock,
-    value: 10,
-    suffix: " دقائق",
-    arabicDigits: true,
-    label: "متوسط وقت التخطيط مع تِكله",
-  },
-  {
-    icon: BadgePercent,
-    value: 100,
-    suffix: "٪",
-    arabicDigits: true,
-    label: "أسعار شفافة بدون مفاجآت",
-  },
-  {
-    icon: Users,
-    value: 50,
-    suffix: "+",
-    arabicDigits: true,
-    label: "مزوّد خدمة موثّق في الرياض",
-  },
+// ---------- Data ------------------------------------------------------------
+const TRUST_STATS = [
+  { icon: Clock,       value: 10,  suffix: " دقائق", label: "وقت التخطيط" },
+  { icon: BadgePercent, value: 100, suffix: "٪",     label: "شفافية كاملة" },
+  { icon: Users,       value: 50,  suffix: "+",      label: "مزوّد موثّق" },
 ] as const;
 
-const VALUES = [
+const VALUE_TILES = [
+  { icon: Calculator,    title: "خطّط بذكاء",            desc: "حاسبة ذكية تعطيك ميزانيتك بالريال، بدون مفاجآت." },
+  { icon: Filter,        title: "مزوّدون نخبة",          desc: "ما نتعامل إلا مع الأفضل، وبجودة تليق فيك." },
+  { icon: CalendarCheck, title: "احجز بلمح البصر",       desc: "خلّص أمورك بدقائق، وودّع حوسة الاتصالات." },
+  { icon: Gem,           title: "خدماتك على كيفك",       desc: "اختر اللي يناسبك بأسعار واضحة وضمان أكيد." },
+] as const;
+
+const VALUE_CHIPS = [
   { icon: ShieldCheck, label: "شفافية كاملة" },
-  { icon: Zap, label: "سرعة وسهولة" },
-  { icon: Heart, label: "تجربة سعودية أصيلة" },
+  { icon: Zap,         label: "سرعة وسهولة" },
+  { icon: Heart,       label: "تجربة سعودية أصيلة" },
 ] as const;
 
-const AboutSection = () => (
+// ============================================================================
+// Section A — Unified About + Value
+// ============================================================================
+const AboutValueSection = () => (
   <section
     id="about"
-    className="relative overflow-hidden bg-hero-warm px-6 py-24 sm:px-8 sm:py-28"
+    className="relative overflow-hidden bg-hero-warm px-6 py-20 sm:px-8 sm:py-24"
   >
-    {/* Subtle Najdi pattern overlay */}
     <ArabicPattern opacity={0.04} />
 
     <div className="relative mx-auto max-w-6xl">
-      <div className="grid items-center gap-10 md:grid-cols-12 md:gap-14">
-        {/* Right column (RTL) — text */}
+      <div className="grid items-start gap-10 md:grid-cols-12 md:gap-14">
+        {/* Right column (RTL) — story text + chips + CTAs + inline stats */}
         <Reveal className="md:col-span-7">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
@@ -66,60 +57,79 @@ const AboutSection = () => (
               تعرّف على تِكله
             </span>
 
-            <h2 className="mt-6 font-arabic text-5xl font-black leading-[1.1] text-green md:text-7xl">
+            <h2 className="mt-6 font-arabic text-5xl font-black leading-[1.1] text-green md:text-6xl lg:text-7xl">
               تِكله..{" "}
-              <span className="bg-gradient-to-l from-green to-green-mid bg-clip-text text-transparent">
+              <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
                 اسم على مسمّى
               </span>
             </h2>
 
-            {/* Hairline divider */}
-            <div className="mt-7 mb-7 flex items-center gap-3">
+            <div className="mt-6 mb-6 flex items-center gap-3">
               <span className="h-px w-16 bg-gold/60" />
               <span className="h-1.5 w-1.5 rounded-full bg-gold" />
             </div>
 
-            <p className="mt-2 font-arabic text-xl font-medium leading-[2] text-foreground/85 sm:text-2xl">
+            <p className="font-arabic text-xl font-medium leading-[1.95] text-foreground/85 sm:text-2xl">
               شِلنا عنك همّ التخطيط والبحث والحوسة. تِكله تكفل لك كل شي:
               من القاعة، للتصوير، للكوش، للضيافة — كل شي بسعر واضح وضمان أكيد.
-              أنت بس عِش اللحظة.. و«تِكله» تكفل لك الباقي.
             </p>
 
-            <p className="mt-5 font-arabic leading-[2] text-foreground/65 sm:text-lg">
-              اخترنا اسم «تِكله» من «الاتكال» و«الثقة»؛ لأنّنا نؤمن إن لحظة الفرح
-              ما تستاهل صداع التخطيط. منصّة سعودية تجمع بين ذكاء التخطيط وفنّ
-              التنفيذ — تختار ميزانيتك، نقترح لك الأنسب، وتلقى أفضل المزوّدين.
+            <p className="mt-4 font-arabic leading-[1.95] text-foreground/65 sm:text-lg">
+              اخترنا اسم «تِكله» من «الاتكال» و«الثقة» — لأن لحظة الفرح ما
+              تستاهل صداع التخطيط. اختار ميزانيتك، نقترح لك الأنسب، وتلقى أفضل
+              المزوّدين بضغطة واحدة.
             </p>
 
-            {/* Values chips */}
-            <div className="mt-8 flex flex-wrap gap-3">
-              {VALUES.map((v, i) => {
+            {/* Inline minimalist stat strip — replaces the bulky white card */}
+            <div className="mt-7 grid grid-cols-3 gap-3 sm:gap-5">
+              {TRUST_STATS.map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <div
+                    key={i}
+                    className="group relative rounded-2xl border border-gold/25 bg-cream/70 p-4 text-center backdrop-blur transition-all duration-500 hover:border-gold/55 hover:-translate-y-0.5"
+                  >
+                    <Icon className="mx-auto h-4 w-4 text-gold" strokeWidth={2} />
+                    <div className="mt-2 font-arabic text-2xl font-black leading-none text-green sm:text-3xl">
+                      <AnimatedCounter value={s.value} suffix={s.suffix} arabicDigits />
+                    </div>
+                    <div className="mt-1.5 font-arabic text-[11px] leading-tight text-foreground/65 sm:text-xs">
+                      {s.label}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Value chips */}
+            <div className="mt-7 flex flex-wrap gap-2.5">
+              {VALUE_CHIPS.map((v, i) => {
                 const Icon = v.icon;
                 return (
                   <motion.span
                     key={i}
                     whileHover={{ y: -2 }}
-                    className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-cream/80 px-4 py-2 text-sm font-bold text-foreground backdrop-blur transition-colors hover:border-gold hover:bg-cream"
+                    className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-cream/80 px-3.5 py-1.5 text-xs font-bold text-foreground backdrop-blur transition-colors hover:border-gold hover:bg-cream sm:text-sm"
                   >
-                    <Icon className="h-4 w-4 text-gold" strokeWidth={2} />
+                    <Icon className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
                     {v.label}
                   </motion.span>
                 );
               })}
             </div>
 
-            {/* CTAs — Deep Green / Gold scheme */}
-            <div className="mt-9 flex flex-wrap gap-3">
+            {/* CTAs */}
+            <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 to="/#wizard"
-                className="group inline-flex items-center justify-center gap-2 rounded-full border-2 border-gold bg-green px-8 py-4 font-arabic text-base font-bold text-gold shadow-deep transition-all hover:-translate-y-0.5 hover:bg-green-mid hover:shadow-[0_25px_70px_-20px_hsl(var(--gold)/0.55)]"
+                className="group inline-flex items-center justify-center gap-2 rounded-full border-2 border-gold bg-green px-7 py-3.5 font-arabic text-sm font-bold text-gold shadow-deep transition-all hover:-translate-y-0.5 hover:bg-green-mid hover:shadow-[0_25px_70px_-20px_hsl(var(--gold)/0.55)] sm:text-base"
               >
                 <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
                 ابدأ التخطيط الحين
               </Link>
               <a
-                href="#value"
-                className="inline-flex items-center justify-center rounded-full border border-green/30 bg-cream/70 px-8 py-4 font-arabic text-base font-bold text-green backdrop-blur transition-colors hover:bg-cream"
+                href="#speed"
+                className="inline-flex items-center justify-center rounded-full border border-green/30 bg-cream/70 px-7 py-3.5 font-arabic text-sm font-bold text-green backdrop-blur transition-colors hover:bg-cream sm:text-base"
               >
                 ليش تِكله؟
               </a>
@@ -127,39 +137,37 @@ const AboutSection = () => (
           </div>
         </Reveal>
 
-        {/* Left column — Trust Factors stack (image_6 redesigned) */}
+        {/* Left column — 4 slim vertical value tiles (replaces glassy cards section) */}
         <Reveal delay={0.15} className="md:col-span-5">
-          <div className="relative rounded-[2rem] border border-gold/25 bg-cream/85 p-8 shadow-deep backdrop-blur-md">
-            {/* Soft gold corner glow */}
-            <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold/20 blur-3xl" />
+          <div className="grid gap-3">
+            {VALUE_TILES.map((tile, i) => {
+              const Icon = tile.icon;
+              return (
+                <motion.div
+                  key={i}
+                  whileHover={{ x: -4 }}
+                  transition={{ type: "spring", stiffness: 240, damping: 18 }}
+                  className="group relative flex items-start gap-4 overflow-hidden rounded-2xl border border-gold/20 bg-cream/65 p-4 shadow-card backdrop-blur-md transition-all duration-500 hover:border-gold/55 hover:bg-cream/85 hover:shadow-[0_18px_40px_-18px_hsl(var(--gold)/0.4)] sm:p-5"
+                >
+                  {/* Gold sheen sweep */}
+                  <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold/15 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
 
-            <div className="relative space-y-7">
-              {TRUST_FACTORS.map((f, i) => {
-                const Icon = f.icon;
-                return (
-                  <div key={i}>
-                    <div className="flex items-baseline justify-between gap-4">
-                      <div className="font-arabic text-5xl font-black leading-none text-green">
-                        <AnimatedCounter
-                          value={f.value}
-                          suffix={f.suffix}
-                          arabicDigits={f.arabicDigits}
-                        />
-                      </div>
-                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gold/30 bg-gold/10 text-gold">
-                        <Icon className="h-4 w-4" strokeWidth={2} />
-                      </span>
-                    </div>
-                    <div className="mt-2 font-arabic text-sm leading-relaxed text-foreground/65">
-                      {f.label}
-                    </div>
-                    {i < TRUST_FACTORS.length - 1 && (
-                      <div className="mt-6 h-px bg-gradient-to-l from-transparent via-gold/30 to-transparent" />
-                    )}
+                  <span className="relative inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-gold/30 bg-gradient-to-br from-gold/15 to-gold/5 text-gold">
+                    <Icon className="h-5 w-5" strokeWidth={1.8} />
+                  </span>
+
+                  <div className="relative min-w-0 flex-1">
+                    <h3 className="font-arabic text-base font-black text-green sm:text-lg">
+                      {tile.title}
+                    </h3>
+                    <p className="mt-1 font-arabic text-xs leading-[1.7] text-foreground/65 sm:text-sm">
+                      {tile.desc}
+                    </p>
+                    <div className="mt-2.5 h-0.5 w-8 rounded-full bg-gradient-to-l from-green to-gold transition-all duration-500 group-hover:w-16" />
                   </div>
-                );
-              })}
-            </div>
+                </motion.div>
+              );
+            })}
           </div>
         </Reveal>
       </div>
@@ -168,118 +176,13 @@ const AboutSection = () => (
 );
 
 // ============================================================================
-// Section B — Value Proposition (image_7 reimagined)
-//   Title: "ليلتك عرسك.. وش تبي أكثر؟"
-//   4 glassy cards with Najdi-gold hover glow
-// ============================================================================
-const VALUE_CARDS = [
-  {
-    icon: Calculator,
-    title: "خطّط بذكاء",
-    desc: "خطّط بمزاج رايق. حاسبة ذكية تعطيك ميزانيتك بالريال، بدون مفاجآت ولا أرقام مخفية.",
-  },
-  {
-    icon: Filter,
-    title: "مزوّدون نخبة",
-    desc: "مزوّدون.. كلهم «نخبة». ما نتعامل إلا مع الأفضل، ونضمن لك جودة تليق بك.",
-  },
-  {
-    icon: CalendarCheck,
-    title: "احجز زواجك بلمح البصر",
-    desc: "خلّص كل أمورك في دقائق معدودة، وودّع حوسة الاتصالات والمواعيد الطويلة.",
-  },
-  {
-    icon: Gem,
-    title: "خدماتك على كيفك",
-    desc: "اختر خدماتك على كيفك، بأسعار واضحة وضمان يخليك تعيش ليلة عمرك وأنت مرتاح.",
-  },
-] as const;
-
-const ValueSection = () => (
-  <section
-    id="value"
-    className="relative overflow-hidden bg-background px-6 py-24 sm:px-8 sm:py-28"
-  >
-    {/* Pattern divider above */}
-    <ArabicPattern opacity={0.035} />
-
-    <div className="relative mx-auto max-w-6xl">
-      <Reveal>
-        <div className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/70 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
-            <Sparkles className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
-            ليش تِكله؟
-          </span>
-          <h2 className="mt-6 font-arabic text-4xl font-black leading-[1.15] text-green md:text-6xl">
-            ليلتك عرسك..{" "}
-            <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
-              وش تبي أكثر؟
-            </span>
-          </h2>
-          <p className="mx-auto mt-5 max-w-2xl font-arabic text-lg leading-relaxed text-foreground/65 sm:text-xl">
-            أربع أسباب تخلّيك تختار تِكله بدون تردد — سهولة، شفافية، ضمان،
-            وذوق سعودي أصيل.
-          </p>
-        </div>
-      </Reveal>
-
-      <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {VALUE_CARDS.map((card, i) => {
-          const Icon = card.icon;
-          return (
-            <Reveal key={i} delay={i * 0.08}>
-              <motion.div
-                whileHover={{ y: -8 }}
-                transition={{ type: "spring", stiffness: 220, damping: 18 }}
-                className="group relative h-full overflow-hidden rounded-3xl border border-gold/15 bg-cream/60 p-7 shadow-card backdrop-blur-md transition-all duration-500 hover:border-gold/50 hover:bg-cream/80 hover:shadow-[0_30px_60px_-25px_hsl(var(--gold)/0.4)]"
-                style={{
-                  WebkitBackdropFilter: "blur(12px) saturate(1.1)",
-                  backdropFilter: "blur(12px) saturate(1.1)",
-                }}
-              >
-                {/* Najdi gold glow on hover */}
-                <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-gold/0 opacity-0 blur-3xl transition-all duration-700 group-hover:bg-gold/30 group-hover:opacity-100" />
-
-                {/* Gold sheen sweep */}
-                <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold/15 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-
-                <div className="relative">
-                  <motion.div
-                    whileHover={{ rotate: -6, scale: 1.08 }}
-                    transition={{ type: "spring", stiffness: 240, damping: 14 }}
-                    className="inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/30 bg-gradient-to-br from-gold/15 to-gold/5 text-gold shadow-soft"
-                  >
-                    <Icon className="h-6 w-6" strokeWidth={1.8} />
-                  </motion.div>
-
-                  <h3 className="mt-5 font-arabic text-2xl font-black text-green">
-                    {card.title}
-                  </h3>
-                  <p className="mt-3 font-arabic text-sm leading-[1.95] text-foreground/70">
-                    {card.desc}
-                  </p>
-
-                  {/* Animated underline */}
-                  <div className="mt-6 h-0.5 w-10 rounded-full bg-gradient-to-l from-green to-gold transition-all duration-500 group-hover:w-20" />
-                </div>
-              </motion.div>
-            </Reveal>
-          );
-        })}
-      </div>
-    </div>
-  </section>
-);
-
-// ============================================================================
-// Section C — Speed Comparison ("الطريق التقليدي" vs "تِكله")
-//   Visual contrast: dark slow 6-week path vs glowing 10-minute golden line.
+// Section B — Speed Comparison (kept, tighter spacing)
 // ============================================================================
 const SpeedSection = () => (
   <section
     id="speed"
     aria-label="مقارنة الوقت بين الطريقة التقليدية وتِكله"
-    className="relative overflow-hidden bg-hero-warm px-6 py-20 sm:px-8 sm:py-24"
+    className="relative overflow-hidden bg-background px-6 py-16 sm:px-8 sm:py-20"
   >
     <ArabicPattern opacity={0.035} />
 
@@ -290,20 +193,17 @@ const SpeedSection = () => (
             <Timer className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
             الفرق اللي بيغيّر مزاجك
           </span>
-          <h2 className="mt-6 font-arabic text-4xl font-black leading-[1.15] text-green md:text-5xl">
+          <h2 className="mt-5 font-arabic text-4xl font-black leading-[1.15] text-green md:text-5xl">
             من ٦ أسابيع حوسة..{" "}
             <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
               لـ ١٠ دقائق وأنت مخلّص
             </span>
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl font-arabic text-base leading-relaxed text-foreground/65 sm:text-lg">
-            بدّل التخطيط الطويل الممل بتجربة سعودية ذكية، سريعة، وواضحة.
-          </p>
         </div>
       </Reveal>
 
-      <div className="mt-12 grid gap-5 md:grid-cols-2">
-        {/* Legacy — dark, heavy, slow */}
+      <div className="mt-10 grid gap-5 md:grid-cols-2">
+        {/* Legacy */}
         <Reveal>
           <div className="relative h-full overflow-hidden rounded-3xl border border-foreground/10 bg-foreground/[0.05] p-7 shadow-card">
             <div className="absolute inset-0 bg-gradient-to-br from-foreground/[0.06] to-transparent" />
@@ -318,8 +218,6 @@ const SpeedSection = () => (
               <p className="mt-2 font-arabic text-sm text-foreground/55">
                 من البحث، الاتصالات، والمتابعة
               </p>
-
-              {/* Slow dashed bar */}
               <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-foreground/10">
                 <div
                   className="h-full w-full rounded-full"
@@ -329,7 +227,6 @@ const SpeedSection = () => (
                   }}
                 />
               </div>
-
               <ul className="mt-6 space-y-2.5 font-arabic text-sm text-foreground/65">
                 <li>• مكالمات وتفاوض مع كل مزوّد</li>
                 <li>• مقارنات يدوية وأسعار متغيّرة</li>
@@ -339,13 +236,11 @@ const SpeedSection = () => (
           </div>
         </Reveal>
 
-        {/* Tikkilah — golden, fast, glowing */}
+        {/* Tikkilah */}
         <Reveal delay={0.12}>
           <div className="group relative h-full overflow-hidden rounded-3xl border-2 border-gold/50 bg-cream p-7 shadow-deep">
-            {/* Gold halo */}
             <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-gold/30 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-green/15 blur-3xl" />
-
             <div className="relative">
               <div className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/15 px-3 py-1 text-xs font-bold text-green">
                 <Zap className="h-3.5 w-3.5 text-gold" strokeWidth={2.5} />
@@ -360,8 +255,6 @@ const SpeedSection = () => (
               <p className="mt-2 font-arabic text-sm font-bold text-green/80">
                 وأنت مخلّص — حجز مكتمل بضمان
               </p>
-
-              {/* Fast glowing bar */}
               <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-green/10">
                 <motion.div
                   initial={{ width: "0%" }}
@@ -371,7 +264,6 @@ const SpeedSection = () => (
                   className="h-full rounded-full bg-gradient-to-l from-green via-gold to-gold shadow-[0_0_18px_hsl(var(--gold)/0.6)]"
                 />
               </div>
-
               <ul className="mt-6 space-y-2.5 font-arabic text-sm text-foreground/80">
                 {[
                   "اختر ميزانيتك وعدد ضيوفك",
@@ -395,8 +287,7 @@ const SpeedSection = () => (
 // ---------- Public composite -------------------------------------------------
 export const ProblemSolutionAbout = () => (
   <>
-    <AboutSection />
+    <AboutValueSection />
     <SpeedSection />
-    <ValueSection />
   </>
 );
