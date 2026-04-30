@@ -383,8 +383,61 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         </Alert>
       )}
 
-      <div className="mt-8 space-y-10">
-        {selectedServices.map((cat) => {
+      {/* === Service tab strip — horizontal, scrollable on small screens.
+          Replaces the previous tall stacked layout: each category becomes a
+          compact pill the user clicks/swipes between, drastically shrinking
+          the page height. The currently-selected vendor for a category gets
+          a small ✓ badge so progress is visible at a glance. === */}
+      {selectedServices.length > 1 && (
+        <div className="mt-6 -mx-1 overflow-x-auto pb-1">
+          <div role="tablist" aria-label={t("wizard.vendors.title")} className="flex min-w-max items-center gap-2 px-1">
+            {selectedServices.map((cat) => {
+              const TabIcon = ICONS[cat];
+              const isActive = cat === activeCat;
+              const isPicked = !!picks[cat];
+              const count = grouped[cat]?.length ?? 0;
+              return (
+                <button
+                  key={cat}
+                  role="tab"
+                  aria-selected={isActive}
+                  type="button"
+                  onClick={() => setActiveCat(cat)}
+                  className={`group inline-flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-2 font-arabic text-sm transition-all ${
+                    isActive
+                      ? "border-primary bg-primary text-primary-foreground shadow-soft"
+                      : isPicked
+                      ? "border-primary/40 bg-primary/5 text-primary hover:border-primary/70"
+                      : "border-border bg-card text-foreground/75 hover:border-primary/40 hover:text-foreground"
+                  }`}
+                >
+                  <TabIcon className="h-3.5 w-3.5" />
+                  <span className="font-semibold">{t(`wizard.services.${cat}`)}</span>
+                  <span
+                    className={`tabular-nums rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
+                      isActive
+                        ? "bg-primary-foreground/20 text-primary-foreground"
+                        : "bg-foreground/10 text-foreground/60"
+                    }`}
+                  >
+                    {fmtNumber(count)}
+                  </span>
+                  {isPicked && (
+                    <Check
+                      className={`h-3.5 w-3.5 ${
+                        isActive ? "text-primary-foreground" : "text-primary"
+                      }`}
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      <div className="mt-6">
+        {selectedServices.filter((c) => c === activeCat).map((cat) => {
           const Icon = ICONS[cat];
           const list = grouped[cat] ?? [];
           const pick = picks[cat];
@@ -397,6 +450,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                 </span>
                 <h4 className="font-arabic text-base font-semibold text-foreground">
                   {t(`wizard.services.${cat}`)}
+                </h4>
                 </h4>
                 <span className="ms-1 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium tabular-nums text-foreground/60">
                   {fmtNumber(list.length)}
