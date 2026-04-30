@@ -63,7 +63,7 @@ interface BookingRow {
 const Admin = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { user, loading: authLoading, signOut } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [payments, setPayments] = useState<PaymentRow[]>([]);
   const [bookings, setBookings] = useState<BookingRow[]>([]);
