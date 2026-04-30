@@ -242,12 +242,12 @@
   }
 
   html {
-    font-family: 'Tajawal', system-ui, sans-serif;
+    font-family: 'SaudiRiyal', 'Tajawal', system-ui, sans-serif;
     scroll-behavior: smooth;
   }
 
   html[dir="ltr"] {
-    font-family: 'Tajawal', system-ui, sans-serif;
+    font-family: 'SaudiRiyal', 'Tajawal', system-ui, sans-serif;
   }
 
   body {
