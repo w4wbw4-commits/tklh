@@ -115,6 +115,16 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
   const { t } = useTranslation();
   const [vendors, setVendors] = useState<VendorOption[]>([]);
   const [loading, setLoading] = useState(true);
+  // Active tab — defaults to the first selected service. Synced when the
+  // service list changes (e.g. user goes back and toggles services).
+  const [activeCat, setActiveCat] = useState<ServiceKey | null>(null);
+  useEffect(() => {
+    if (!selectedServices.length) {
+      setActiveCat(null);
+      return;
+    }
+    setActiveCat((prev) => (prev && selectedServices.includes(prev) ? prev : selectedServices[0]));
+  }, [selectedServices]);
 
   const tier = useMemo(() => tierForBudget(budget), [budget]);
   const allowedPackageTiers = TIER_TO_PACKAGE_TIERS[tier];
