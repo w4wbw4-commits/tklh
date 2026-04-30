@@ -88,7 +88,11 @@ export const Navbar = () => {
               </a>
             ))}
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Hamburger — opens the slide-over with all site sections.
+                Visible on every breakpoint so phone users get the same fast
+                navigation as desktop. */}
+            <SiteMenuSheet isPrimaryAdmin={isPrimaryAdmin} />
             {user && (
               <Button
                 variant="ghost"
@@ -131,11 +135,15 @@ export const Navbar = () => {
               variant="ghost"
               size="sm"
               onClick={toggleLang}
-              className="rounded-full text-xs text-foreground/80 hover:text-gold"
+              className="hidden rounded-full text-xs text-foreground/80 hover:text-gold sm:inline-flex"
             >
               <Globe className="me-1 h-3.5 w-3.5" />
               {t("nav.lang")}
             </Button>
+            {/* Light / Dark toggle — relative wrapper to anchor the absolute Moon icon */}
+            <div className="relative inline-flex">
+              <ThemeToggle />
+            </div>
             {!user && (
               <Button
                 size="sm"
