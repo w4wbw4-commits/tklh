@@ -67,26 +67,6 @@ export const StepBudget = ({
   const isBelowMinimum = total < globalMinimum;
   const cur = t("common.currency");
 
-  // Smart matching tier — derived from running total so vendor list updates live.
-  const tier = tierForBudget(total);
-  const tierMeta = {
-    economy: {
-      label: t("wizard.budget.tierEconomy"),
-      desc: t("wizard.budget.tierEconomyDesc", { max: fmtNumber(BUDGET_TIER_THRESHOLDS.economyMax) }),
-    },
-    standard: {
-      label: t("wizard.budget.tierStandard"),
-      desc: t("wizard.budget.tierStandardDesc", {
-        min: fmtNumber(BUDGET_TIER_THRESHOLDS.economyMax),
-        max: fmtNumber(BUDGET_TIER_THRESHOLDS.standardMax),
-      }),
-    },
-    luxury: {
-      label: t("wizard.budget.tierLuxury"),
-      desc: t("wizard.budget.tierLuxuryDesc", { min: fmtNumber(BUDGET_TIER_THRESHOLDS.standardMax) }),
-    },
-  }[tier];
-
   return (
     <motion.div
       key="step-budget"
@@ -98,10 +78,6 @@ export const StepBudget = ({
     >
       <h3 className="font-arabic text-2xl font-semibold text-foreground">{t("wizard.budget.title")}</h3>
       <p className="mt-2 text-sm text-foreground/70">{t("wizard.budget.desc")}</p>
-
-      {/* Smart Budget is the only planning mode now — keeps the flow focused
-          on personalised "تنسيق خاص" planning. Ready-made packages live on
-          the home page instead and bypass the wizard entirely. */}
 
       <motion.div
         key="smart"
@@ -140,41 +116,20 @@ export const StepBudget = ({
                 </div>
               </div>
 
-              {/* Smart-matching tier banner — updates live with the running total */}
-              <motion.div
-                key={tier}
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35 }}
-                className="mt-5 flex items-start gap-3 rounded-2xl border border-primary/25 bg-primary/5 p-4"
-              >
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground">
-                  <Gem className="h-4 w-4" />
-                </span>
-                <div className="min-w-0">
-                  <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-primary/80">
-                    {t("wizard.budget.tierLabel")}
-                  </div>
-                  <div className="font-arabic text-base font-semibold text-foreground">{tierMeta.label}</div>
-                  <div className="mt-0.5 text-xs leading-relaxed text-foreground/70">{tierMeta.desc}</div>
-                </div>
-              </motion.div>
-
-              <AnimatePresence>
-                {isBelowMinimum && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="mt-5 flex items-start gap-3 rounded-2xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive"
-                  >
-                    <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
-                    <div className="font-arabic leading-relaxed">
-                      {t("wizard.budget.warning", { min: fmt(globalMinimum) })}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {/* === Budget Health Indicator ===
+                  Real-time consultative gauge — replaces the old static tier
+                  banner + raw warning. Auto-updates as the user toggles
+                  services or drags allocation sliders below. */}
+              <div className="mt-5">
+                <BudgetHealthIndicator
+                  total={total}
+                  minimum={globalMinimum}
+                  guests={guests}
+                  enabledServices={enabledServices}
+                  allocations={allocations}
+                  effectiveMin={effectiveMin}
+                />
+              </div>
 
               <div className="mt-6 space-y-5">
                 <div className="mb-1 flex items-center gap-2 text-sm font-medium text-foreground">
