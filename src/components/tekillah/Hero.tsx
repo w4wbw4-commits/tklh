@@ -47,31 +47,33 @@ export const Hero = () => {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
 
-      {/* Single tied-back drape — slim accent on the left edge */}
+      {/* === Side framing — kept slim so center stays open === */}
+      {/* Left: tied-back classical drape */}
       <SketchCurtain
-        className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-[64px] opacity-80 md:block lg:w-[78px]"
+        className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-[60px] opacity-75 md:block lg:w-[74px]"
       />
 
-      {/* Soft eucalyptus branch arching down from top-right */}
+      {/* Top-right: soft eucalyptus arching down */}
       <SketchEucalyptus
-        className="pointer-events-none absolute top-4 right-0 hidden h-[170px] w-[320px] opacity-70 md:block"
+        className="pointer-events-none absolute top-6 right-2 hidden h-[150px] w-[280px] opacity-65 md:block"
         style={{ transform: "scaleX(-1)" }}
       />
 
-      {/* Long wedding banquet table on the right edge — candelabra, candles, florals */}
-      <SketchSideTable
-        className="pointer-events-none absolute -bottom-6 right-0 hidden h-[440px] w-auto opacity-85 lg:block xl:h-[500px]"
+      {/* Top-left: mirrored eucalyptus, lighter — balances the drape */}
+      <SketchEucalyptus
+        className="pointer-events-none absolute top-6 left-[80px] hidden h-[130px] w-[240px] opacity-45 lg:block"
       />
 
-      {/* Lotus pads + reeds tucked at the very bottom-right corner */}
-      <SketchLotus
-        className="pointer-events-none absolute bottom-0 right-0 hidden h-[140px] w-[180px] opacity-65 md:block"
-      />
-
-      {/* Banquet table — pushed below the fold, only peeks under stats */}
-      <div className="pointer-events-none absolute inset-x-0 -bottom-10 mx-auto hidden justify-center md:flex">
-        <SketchBanquet className="h-[180px] w-auto max-w-[70vw] opacity-35" />
+      {/* === Hero centerpiece: long wedding banquet table with glowing candelabra === */}
+      {/* Sits centered below the fold, anchoring the whole scene. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden justify-center md:flex">
+        <SketchSideTable className="h-[360px] w-auto max-w-[88vw] opacity-90 lg:h-[440px] xl:h-[500px]" />
       </div>
+
+      {/* Bottom-left corner: lotus pads */}
+      <SketchLotus
+        className="pointer-events-none absolute bottom-2 left-2 hidden h-[120px] w-[160px] opacity-55 md:block"
+      />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-32 pb-20 text-center">
         {/* Tag chip */}
