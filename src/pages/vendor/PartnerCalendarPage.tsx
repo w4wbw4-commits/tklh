@@ -5,18 +5,21 @@ import { VendorCalendar } from "@/components/tekillah/vendor/VendorCalendar";
 
 const PartnerCalendarPage = () => {
   const { vendor, loading } = usePartnerVendor();
-  const isApproved = vendor?.approval_status === "approved";
   return (
     <PortalLayout>
-      <PortalHeader title="تقويم الحجوزات" subtitle="عرض وإدارة الأيام المحجوزة والمتاحة" />
+      <PortalHeader
+        title="تقويم الحجوزات"
+        subtitle="إدارة الأيام المحجوزة والمحتملة والمتاحة — اضغط أي يوم لإضافة حدث"
+        badge="تفاعلي"
+      />
       <StatusBanner vendor={vendor} />
       {loading ? (
         <div className="grid place-items-center py-24 text-muted-foreground">جارٍ التحميل…</div>
-      ) : vendor && isApproved ? (
+      ) : vendor ? (
         <VendorCalendar vendorId={vendor.id} />
       ) : (
         <div className="rounded-2xl border border-border bg-card p-8 text-center text-muted-foreground">
-          التقويم متاح بعد اعتماد ملفك من الإدارة.
+          أكمل بياناتك أولاً من «بيانات قاعتي» للبدء بإدارة التقويم.
         </div>
       )}
     </PortalLayout>
@@ -24,3 +27,4 @@ const PartnerCalendarPage = () => {
 };
 
 export default PartnerCalendarPage;
+
