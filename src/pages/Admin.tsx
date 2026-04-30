@@ -7,7 +7,7 @@ import {
   AlertTriangle, AlertOctagon, Briefcase, PackageOpen, Hourglass, Building2, Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/tekillah/Logo";
+
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
