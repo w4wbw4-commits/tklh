@@ -54,19 +54,20 @@ export const Hero = () => {
           <Sparkles className="h-3 w-3 text-gold" strokeWidth={1.5} />
         </motion.div>
 
-        {/* Floating headline — no card, just text with deep shadow */}
+        {/* Brand wordmark — تِكله as the signature logo */}
         <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 24, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="font-wordmark text-balance text-center text-5xl font-black leading-[1.15] text-cream sm:text-6xl md:text-7xl lg:text-8xl"
+          className="font-wordmark text-balance text-center text-[110px] font-black leading-[1.05] text-cream sm:text-[150px] md:text-[180px] lg:text-[210px]"
           lang="ar"
           dir="rtl"
           style={{
             color: "hsl(var(--cream))",
             WebkitTextFillColor: "hsl(var(--cream))",
+            letterSpacing: "-0.01em",
             textShadow:
-              "0 4px 30px hsl(var(--primary-deep) / 0.85), 0 2px 10px hsl(var(--primary-deep) / 0.7)",
+              "0 6px 40px hsl(var(--primary-deep) / 0.9), 0 2px 12px hsl(var(--primary-deep) / 0.8), 0 0 30px hsl(var(--gold) / 0.18)",
           }}
         >
           {t("hero.titleA")}
@@ -77,22 +78,25 @@ export const Hero = () => {
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{ opacity: 1, scaleX: 1 }}
           transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-8 mb-7 flex items-center gap-3"
+          className="mt-6 mb-6 flex items-center gap-3"
         >
           <span className="h-px w-20 bg-gradient-to-r from-transparent to-gold" />
           <Star className="h-3 w-3 text-gold" fill="currentColor" />
           <span className="h-px w-20 bg-gradient-to-l from-transparent to-gold" />
         </motion.div>
 
-        {/* Sub-headline */}
+        {/* Sub-headline — leading tagline under the logo */}
         <motion.p
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="font-tagline max-w-2xl text-balance text-center text-lg font-medium leading-[1.9] text-gold-soft sm:text-xl md:text-2xl"
+          className="font-tagline max-w-3xl text-balance text-center text-2xl font-bold leading-[1.6] text-gold-soft sm:text-3xl md:text-4xl"
+          lang="ar"
+          dir="rtl"
           style={{
+            wordSpacing: "0.08em",
             textShadow:
-              "0 2px 16px hsl(var(--primary-deep) / 0.85), 0 1px 4px hsl(var(--primary-deep) / 0.7)",
+              "0 2px 18px hsl(var(--primary-deep) / 0.9), 0 1px 4px hsl(var(--primary-deep) / 0.8)",
           }}
         >
           {t("hero.titleB")}
