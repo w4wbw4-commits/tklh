@@ -16,7 +16,7 @@ export const Hero = () => {
   const { t } = useTranslation();
   return (
     <section id="home" className="relative min-h-screen w-full overflow-hidden bg-background">
-      {/* Background: blurred celebration scene + deep olive overlay */}
+      {/* Background: softly blurred celebration scene + lighter cream overlay for an airy feel */}
       <div className="absolute inset-0">
         <img
           src={heroImage}
@@ -27,15 +27,31 @@ export const Hero = () => {
           fetchPriority="high"
           decoding="async"
           className="h-full w-full scale-[1.05] object-cover"
-          style={{ filter: "blur(10px) saturate(1.1)" }}
+          style={{ filter: "blur(18px) saturate(1.05) brightness(1.05)" }}
         />
-        {/* Deep green overlay at ~50% so foreground text pops */}
+        {/* Soft cream wash so the scene reads as ambience, not subject */}
         <div
           className="absolute inset-0"
-          style={{ backgroundColor: "hsl(var(--primary-deep) / 0.55)" }}
+          style={{
+            background:
+              "linear-gradient(180deg, hsl(var(--cream) / 0.55) 0%, hsl(var(--cream) / 0.35) 45%, hsl(var(--primary-deep) / 0.25) 100%)",
+          }}
+        />
+        {/* Decorative floral sketch — corner accent, not a full background */}
+        <img
+          src={floralSketch}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-10 -left-10 hidden w-[42%] max-w-[560px] opacity-[0.28] mix-blend-multiply md:block rtl:left-auto rtl:-right-10"
+        />
+        <img
+          src={floralSketch}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-16 -right-16 hidden w-[38%] max-w-[480px] -scale-x-100 rotate-180 opacity-[0.22] mix-blend-multiply md:block rtl:right-auto rtl:-left-16 rtl:scale-x-100"
         />
         {/* Subtle gold grain for warmth */}
-        <div className="absolute inset-0 bg-najdi-pattern-dark opacity-30 mix-blend-overlay" />
+        <div className="absolute inset-0 bg-najdi-pattern-dark opacity-[0.12] mix-blend-overlay" />
         {/* Smooth fade-out into next section */}
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       </div>
