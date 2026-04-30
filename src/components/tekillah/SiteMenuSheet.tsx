@@ -119,7 +119,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
           variant="ghost"
           size="sm"
           aria-label={t("nav.openMenu", { defaultValue: isAr ? "فتح القائمة" : "Open menu" })}
-          className="rounded-full text-foreground/80 hover:text-gold"
+          className="rounded-full border border-gold/30 bg-cream/40 text-foreground hover:border-gold hover:bg-gold/15 hover:text-gold dark:border-gold/40 dark:bg-card/60"
         >
           <Menu className="h-5 w-5" />
         </Button>
