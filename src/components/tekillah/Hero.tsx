@@ -54,20 +54,24 @@ export const Hero = () => {
           <Sparkles className="h-3 w-3 text-gold" strokeWidth={1.5} />
         </motion.div>
 
-        {/* Brand wordmark — تِكله as the signature logo */}
+        {/* Brand wordmark — تِكله as the signature gold logo */}
         <motion.h1
-          initial={{ opacity: 0, y: 24, scale: 0.96 }}
+          initial={{ opacity: 0, y: 24, scale: 0.94 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="font-wordmark text-balance text-center text-[110px] font-black leading-[1.05] text-cream sm:text-[150px] md:text-[180px] lg:text-[210px]"
+          className="font-wordmark text-balance text-center text-[140px] font-black leading-[1] sm:text-[200px] md:text-[260px] lg:text-[320px]"
           lang="ar"
           dir="rtl"
           style={{
-            color: "hsl(var(--cream))",
-            WebkitTextFillColor: "hsl(var(--cream))",
-            letterSpacing: "-0.01em",
-            textShadow:
-              "0 6px 40px hsl(var(--primary-deep) / 0.9), 0 2px 12px hsl(var(--primary-deep) / 0.8), 0 0 30px hsl(var(--gold) / 0.18)",
+            background:
+              "linear-gradient(180deg, hsl(40 75% 78%) 0%, hsl(38 65% 58%) 45%, hsl(36 55% 42%) 100%)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            color: "transparent",
+            letterSpacing: "-0.02em",
+            filter:
+              "drop-shadow(0 8px 30px hsl(var(--primary-deep) / 0.85)) drop-shadow(0 2px 12px hsl(var(--gold) / 0.35))",
           }}
         >
           {t("hero.titleA")}
