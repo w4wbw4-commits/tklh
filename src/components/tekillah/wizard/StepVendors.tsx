@@ -451,7 +451,6 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                 <h4 className="font-arabic text-base font-semibold text-foreground">
                   {t(`wizard.services.${cat}`)}
                 </h4>
-                </h4>
                 <span className="ms-1 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium tabular-nums text-foreground/60">
                   {fmtNumber(list.length)}
                 </span>
