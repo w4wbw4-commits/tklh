@@ -69,13 +69,6 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
     user
       ? { type: "route", href: "/dashboard", icon: LayoutDashboard, labelKey: "nav.myDashboard", fallback: { ar: "لوحتي", en: "My Dashboard" } }
       : { type: "route", href: "/auth", icon: LogIn, labelKey: "nav.start", fallback: { ar: "ابدأ الآن", en: "Get started" } },
-    {
-      type: "route",
-      href: user ? "/partner" : "/auth?redirect=/partner&role=vendor",
-      icon: Building2,
-      labelKey: "nav.partnerPortal",
-      fallback: { ar: "دخول الشركاء", en: "Partner Portal" },
-    },
     ...(isPrimaryAdmin
       ? [{ type: "route" as const, href: "/admin", icon: ShieldCheck, labelKey: "nav.admin", fallback: { ar: "الإدارة", en: "Admin" } }]
       : []),
