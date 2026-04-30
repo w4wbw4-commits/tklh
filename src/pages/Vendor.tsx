@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
-import { LogOut, User, Calendar, Bell, Loader2, ListChecks, Star, TrendingUp, Clock, XCircle, ShieldCheck } from "lucide-react";
+import { LogOut, User, Calendar, Bell, Loader2, ListChecks, Star, TrendingUp, Clock, XCircle, ShieldCheck, LayoutDashboard, Home } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { VendorProfileForm } from "@/components/tekillah/vendor/VendorProfileForm";
