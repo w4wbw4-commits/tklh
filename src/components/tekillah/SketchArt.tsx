@@ -987,3 +987,233 @@ export const SketchIconSparkle = ({ className, style, ariaHidden = true }: Sketc
     </svg>
   );
 };
+
+// ---------------------------------------------------------------------------
+// SketchLongBanquet — Long wedding banquet table inspired by classical setups.
+// Side-on perspective: wooden table with floor-length runner, rounded cane-back
+// chairs lining both sides, three tall candelabras with glowing candles, lush
+// floral runner, and lotus pads scattered at the base. Designed as a soft,
+// edge-aligned illustration that fades into the cream background.
+// ---------------------------------------------------------------------------
+export const SketchLongBanquet = ({ className, style, ariaHidden = true }: SketchProps) => {
+  const { ref, animate } = useDraw();
+  // 6 chairs along the back row, 6 along the front row
+  const backChairs = [70, 130, 190, 250, 310, 370];
+  const frontChairs = [60, 120, 180, 240, 300, 360, 420];
+  const candelabras = [120, 220, 320]; // x positions on the table
+  return (
+    <svg
+      ref={ref}
+      viewBox="0 0 480 600"
+      preserveAspectRatio="xMidYMid meet"
+      fill="none"
+      className={className}
+      style={style}
+      aria-hidden={ariaHidden}
+    >
+      <defs>
+        <radialGradient id="banquet-flame-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor={gold} stopOpacity="0.65" />
+          <stop offset="40%" stopColor={gold} stopOpacity="0.22" />
+          <stop offset="100%" stopColor={gold} stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="banquet-fade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="hsl(var(--cream))" stopOpacity="0" />
+          <stop offset="18%" stopColor="hsl(var(--cream))" stopOpacity="1" />
+          <stop offset="82%" stopColor="hsl(var(--cream))" stopOpacity="1" />
+          <stop offset="100%" stopColor="hsl(var(--cream))" stopOpacity="0" />
+        </linearGradient>
+        <mask id="banquet-mask">
+          <rect width="480" height="600" fill="url(#banquet-fade)" />
+        </mask>
+      </defs>
+
+      <g mask="url(#banquet-mask)">
+        {/* ===== Back row chairs (smaller, behind the table) ===== */}
+        {backChairs.map((x, i) => (
+          <g key={`bc-${x}`}>
+            {/* Round cane back */}
+            <motion.ellipse cx={x} cy="290" rx="14" ry="18"
+              stroke={brown} strokeWidth="0.9" fill={gold} fillOpacity={0.05}
+              variants={drawVariants} initial="hidden" animate={animate} custom={0.1 + i * 0.04} />
+            {/* Cane crosshatch */}
+            <motion.path d={`M${x - 10} 285 q10 -8 20 0 M${x - 10} 295 q10 -8 20 0`}
+              stroke={brown} strokeWidth="0.4" fill="none" opacity={0.45}
+              variants={drawVariants} initial="hidden" animate={animate} custom={0.2 + i * 0.04} />
+            {/* Seat peeking */}
+            <motion.path d={`M${x - 12} 312 q12 -2 24 0`}
+              stroke={brown} strokeWidth="0.8" fill="none" strokeLinecap="round"
+              variants={drawVariants} initial="hidden" animate={animate} custom={0.3 + i * 0.04} />
+          </g>
+        ))}
+
+        {/* ===== The long wooden table (side-on, slight perspective) ===== */}
+        {/* Table top */}
+        <motion.path
+          d="M30 320 L450 320 L440 340 L40 340 Z"
+          stroke={brown} strokeWidth="1.2" fill={gold} fillOpacity={0.1} strokeLinejoin="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={0.5} />
+        {/* Wood grain on top */}
+        <motion.path d="M60 330 L420 330 M80 335 L410 335"
+          stroke={brown} strokeWidth="0.4" fill="none" opacity={0.35}
+          variants={drawVariants} initial="hidden" animate={animate} custom={0.7} />
+        {/* Floor-length runner (white linen draping off the front) */}
+        <motion.path
+          d="M180 340 Q175 380 168 420 Q172 460 175 500 L210 500 Q215 460 218 420 Q220 380 218 340 Z"
+          stroke={brown} strokeWidth="0.7" fill={gold} fillOpacity={0.06} strokeLinejoin="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={0.9} />
+        {/* Runner soft pleats */}
+        <motion.path d="M188 345 Q186 420 184 495 M198 345 L198 495 M208 345 Q210 420 212 495"
+          stroke={olive} strokeWidth="0.35" fill="none" opacity={0.5}
+          variants={drawVariants} initial="hidden" animate={animate} custom={1.0} />
+        {/* Trestle legs (visible between chairs) */}
+        <motion.path d="M90 340 L95 430 L70 430 M390 340 L385 430 L410 430 M240 340 L240 430 M250 340 L260 380 L240 380"
+          stroke={brown} strokeWidth="1" fill="none" strokeLinecap="round" strokeLinejoin="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={1.1} />
+
+        {/* ===== Floral garland along the table ===== */}
+        <motion.path
+          d="M50 318 Q120 308 200 314 Q280 308 360 314 Q420 308 460 318"
+          stroke={olive} strokeWidth="0.7" fill="none" strokeLinecap="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={1.2} />
+        {/* Eucalyptus leaves draped along the table edge */}
+        {Array.from({ length: 18 }).map((_, i) => {
+          const x = 55 + i * 23;
+          const y = 318 + (i % 2 === 0 ? -3 : 3);
+          const r = (i % 2 === 0 ? -1 : 1) * (35 + (i % 3) * 12);
+          return (
+            <motion.path key={`el-${i}`}
+              d={`M${x} ${y} q-3 -7 0 -14 q3 7 0 14 z`}
+              stroke={olive} strokeWidth="0.55" fill={olive} fillOpacity={0.1} strokeLinejoin="round"
+              transform={`rotate(${r} ${x} ${y - 7})`}
+              variants={drawVariants} initial="hidden" animate={animate} custom={1.3 + i * 0.025} />
+          );
+        })}
+        {/* White roses (gold-tinted circles) every ~60px */}
+        {[80, 140, 200, 260, 320, 380, 430].map((x, i) => (
+          <motion.circle key={`rose-${x}`} cx={x} cy="316" r="3.2"
+            stroke={brown} strokeWidth="0.55" fill={gold} fillOpacity={0.18}
+            variants={drawVariants} initial="hidden" animate={animate} custom={1.5 + i * 0.06} />
+        ))}
+
+        {/* ===== Three tall candelabras with glowing candles ===== */}
+        {candelabras.map((cx, ci) => {
+          // Each candelabra: 3 tall taper candles of varying heights
+          const tapers = [
+            { dx: -10, h: 70 },
+            { dx: 0, h: 90 },
+            { dx: 10, h: 70 },
+          ];
+          return (
+            <g key={`cd-${cx}`}>
+              {/* Holder base on the table */}
+              <motion.path d={`M${cx - 14} 318 L${cx + 14} 318 M${cx - 11} 318 L${cx - 11} 312 Q${cx} 308 ${cx + 11} 312 L${cx + 11} 318`}
+                stroke={brown} strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"
+                variants={drawVariants} initial="hidden" animate={animate} custom={1.7 + ci * 0.1} />
+              {tapers.map((t, ti) => {
+                const tx = cx + t.dx;
+                const topY = 312 - t.h;
+                return (
+                  <g key={`tp-${ci}-${ti}`}>
+                    {/* Candle */}
+                    <motion.path d={`M${tx} 312 L${tx} ${topY}`}
+                      stroke={olive} strokeWidth="1.1" strokeLinecap="round"
+                      variants={drawVariants} initial="hidden" animate={animate} custom={1.9 + ci * 0.1 + ti * 0.05} />
+                    {/* Wick */}
+                    <motion.path d={`M${tx} ${topY} L${tx} ${topY - 5}`}
+                      stroke={brown} strokeWidth="0.7" strokeLinecap="round"
+                      variants={drawVariants} initial="hidden" animate={animate} custom={2.05 + ci * 0.1 + ti * 0.05} />
+                    {/* Glowing halo */}
+                    <motion.circle cx={tx} cy={topY - 3} r="9" fill="url(#banquet-flame-halo)"
+                      initial={{ opacity: 0, scale: 0.7 }}
+                      animate={{
+                        opacity: animate === "visible" ? [0.35, 0.8, 0.5, 0.85, 0.45] : 0,
+                        scale: animate === "visible" ? [0.85, 1.15, 0.95, 1.2, 0.9] : 0.7,
+                      }}
+                      transition={{ delay: 2.0 + ci * 0.15 + ti * 0.1, duration: 2.4, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+                      style={{ transformOrigin: `${tx}px ${topY - 3}px` }}
+                    />
+                    {/* Flame */}
+                    <motion.path
+                      d={`M${tx} ${topY + 2} q-3 -4 0 -10 q3 6 0 10 z`}
+                      fill={gold} stroke={gold} strokeWidth="0.5"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{
+                        opacity: animate === "visible" ? [0.7, 1, 0.85, 1] : 0,
+                        scale: animate === "visible" ? [0.85, 1.15, 0.9, 1.1, 0.9] : 0.8,
+                      }}
+                      transition={{ delay: 2.0 + ci * 0.15 + ti * 0.1, duration: 1.4, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+                      style={{ transformOrigin: `${tx}px ${topY}px` }}
+                    />
+                  </g>
+                );
+              })}
+            </g>
+          );
+        })}
+
+        {/* ===== Front row chairs (taller, in front of the table) ===== */}
+        {frontChairs.map((x, i) => (
+          <g key={`fc-${x}`}>
+            {/* Round cane back */}
+            <motion.ellipse cx={x} cy="370" rx="16" ry="22"
+              stroke={brown} strokeWidth="1" fill={gold} fillOpacity={0.07}
+              variants={drawVariants} initial="hidden" animate={animate} custom={2.2 + i * 0.05} />
+            {/* Cane weave lines */}
+            <motion.path d={`M${x - 12} 362 q12 -8 24 0 M${x - 12} 372 q12 -8 24 0 M${x - 12} 382 q12 -8 24 0`}
+              stroke={brown} strokeWidth="0.4" fill="none" opacity={0.45}
+              variants={drawVariants} initial="hidden" animate={animate} custom={2.3 + i * 0.05} />
+            {/* Cushion / seat */}
+            <motion.path d={`M${x - 14} 398 q14 -3 28 0 q1 6 -2 10 q-12 2 -24 0 q-3 -4 -2 -10 z`}
+              stroke={brown} strokeWidth="0.9" fill={gold} fillOpacity={0.1} strokeLinejoin="round"
+              variants={drawVariants} initial="hidden" animate={animate} custom={2.4 + i * 0.05} />
+            {/* Front legs */}
+            <motion.path d={`M${x - 11} 410 L${x - 12} 440 M${x + 11} 410 L${x + 12} 440`}
+              stroke={brown} strokeWidth="0.8" strokeLinecap="round"
+              variants={drawVariants} initial="hidden" animate={animate} custom={2.5 + i * 0.05} />
+            {/* Crossbar */}
+            <motion.path d={`M${x - 12} 425 L${x + 12} 425`}
+              stroke={brown} strokeWidth="0.5" strokeLinecap="round" opacity={0.6}
+              variants={drawVariants} initial="hidden" animate={animate} custom={2.55 + i * 0.05} />
+          </g>
+        ))}
+
+        {/* ===== Lotus pads & reeds along the floor ===== */}
+        {/* Pad cluster — left */}
+        <motion.path
+          d="M30 470 Q18 455 38 442 Q70 435 96 452 Q108 470 90 484 Q58 494 30 470 Z"
+          stroke={olive} strokeWidth="0.9" fill={olive} fillOpacity={0.1} strokeLinejoin="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={3.0} />
+        <motion.path d="M62 460 L62 478 M70 458 L82 472 M54 458 L46 472"
+          stroke={olive} strokeWidth="0.4" strokeLinecap="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={3.1} />
+        {/* Pad cluster — right */}
+        <motion.path
+          d="M380 480 Q368 462 388 450 Q420 444 446 462 Q458 480 440 494 Q408 504 380 480 Z"
+          stroke={olive} strokeWidth="0.9" fill={olive} fillOpacity={0.08} strokeLinejoin="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={3.2} />
+        <motion.path d="M412 470 L412 488 M420 468 L432 482 M404 468 L396 482"
+          stroke={olive} strokeWidth="0.4" strokeLinecap="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={3.3} />
+        {/* Center pad cluster */}
+        <motion.path
+          d="M210 502 Q198 488 218 478 Q250 472 274 488 Q284 502 268 514 Q238 522 210 502 Z"
+          stroke={olive} strokeWidth="0.9" fill={olive} fillOpacity={0.07} strokeLinejoin="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={3.4} />
+        <motion.path d="M242 492 L242 510 M250 490 L262 502 M234 490 L226 502"
+          stroke={olive} strokeWidth="0.4" strokeLinecap="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={3.45} />
+        {/* Reeds rising between pads */}
+        <motion.path d="M105 490 Q108 460 102 425 M118 492 Q120 470 114 440 M375 488 Q378 458 372 425 M362 490 Q364 470 358 442"
+          stroke={olive} strokeWidth="0.5" fill="none" strokeLinecap="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={3.5} />
+        {/* Lotus bud */}
+        <motion.path d="M148 478 q-5 -10 0 -20 q5 10 0 20 z M148 478 q-3 -8 0 -18 q3 8 0 18"
+          stroke={olive} strokeWidth="0.6" fill={gold} fillOpacity={0.12} strokeLinejoin="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={3.6} />
+        <motion.circle cx="148" cy="460" r="1.5" fill={gold}
+          initial={{ opacity: 0 }} animate={{ opacity: animate === "visible" ? 1 : 0 }} transition={{ delay: 4.0 }} />
+      </g>
+    </svg>
+  );
+};
