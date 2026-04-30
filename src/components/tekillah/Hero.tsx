@@ -10,6 +10,7 @@ import {
   SketchEucalyptus,
   SketchLotus,
 } from "./SketchArt";
+import heroBanquetLeft from "@/assets/hero-banquet-left.jpeg";
 
 // ---------------------------------------------------------------------------
 // Hero — Off-white sketch experience.
