@@ -276,8 +276,26 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
     const out: Record<string, VendorOption[]> = {};
     selectedServices.forEach((cat) => {
       const cap = allocations[cat] ?? 0;
-      out[cat] = vendors
-        .filter((v) => v.category === cat)
+      // Hall recommendation engine — when the user has a hall allocation,
+      // narrow the venues to those whose typical price (weekday/weekend) sits
+      // within ±10% of their budget. Falls back to the full list when the
+      // window is too tight to avoid showing zero results.
+      const hallWindow = cat === "hall" && cap > 0
+        ? { lo: cap * 0.9, hi: cap * 1.1 }
+        : null;
+      const inWindow = (v: VendorOption) => {
+        if (!hallWindow) return true;
+        const wk = Number(v.weekday_price) || 0;
+        const we = Number(v.weekend_price) || 0;
+        const start = Number(v.starting_price) || 0;
+        const ref = wk || we || start;
+        if (!ref) return true; // unknown price → don't filter out
+        return ref >= hallWindow.lo && ref <= hallWindow.hi;
+      };
+      const baseList = vendors.filter((v) => v.category === cat);
+      const filtered = hallWindow ? baseList.filter(inWindow) : baseList;
+      const sourceList = filtered.length > 0 ? filtered : baseList;
+      out[cat] = sourceList
         // Smart tier matching: prefer vendors with at least one package within the
         // allowed tier band OR within the user's per-category allocation. We still
         // show others (sorted to the back) so the list is never empty.
