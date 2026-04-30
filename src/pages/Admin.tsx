@@ -165,15 +165,29 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-[hsl(40_18%_88%)]">
-      <header className="sticky top-0 z-30 border-b border-primary-deep/40 bg-gradient-olive shadow-luxury">
+      <header className="sticky top-0 z-30 border-b-2 border-gold/40 bg-gradient-olive shadow-luxury">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3 text-primary-foreground">
-            <Logo />
-            <Badge className="bg-primary-foreground/15 text-primary-foreground border border-primary-foreground/25">
-              {t("admin.kicker")}
-            </Badge>
+          <div className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3">
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-primary-foreground/95 ring-2 ring-gold/60 text-xl font-black text-primary-deep">
+                ت
+              </span>
+              <div className="leading-tight">
+                <div className="font-arabic text-lg font-black text-primary-foreground">تِكله</div>
+                <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-gold">
+                  <ShieldCheck className="h-3 w-3" /> {t("admin.kicker")}
+                </div>
+              </div>
+            </Link>
           </div>
           <div className="flex items-center gap-2">
+            <Button variant="ghost" size="sm" asChild
+              className="rounded-full text-primary-foreground hover:bg-gold/20 hover:text-gold">
+              <Link to="/partner">
+                <Building2 className="me-1 h-4 w-4" />
+                {t("portal.partnerPortal", { defaultValue: "بوابة الشريك" })}
+              </Link>
+            </Button>
             <Button variant="ghost" size="sm" asChild
               className="rounded-full text-primary-foreground hover:bg-primary-foreground/15 hover:text-primary-foreground">
               <Link to="/">{t("common.home")}</Link>
@@ -190,6 +204,10 @@ const Admin = () => {
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
           className="flex flex-wrap items-end justify-between gap-4">
           <div>
+            <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-black text-primary-deep">
+              <Sparkles className="h-3 w-3" />
+              {t("admin.kicker")}
+            </span>
             <h1 className="font-arabic text-3xl font-semibold text-primary-deep sm:text-4xl">{t("admin.title")}</h1>
             <p className="mt-2 text-foreground/75">{t("admin.subtitle")}</p>
           </div>
