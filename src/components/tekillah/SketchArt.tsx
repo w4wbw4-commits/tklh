@@ -689,13 +689,29 @@ export const SketchSideTable = ({ className, style, ariaHidden = true }: SketchP
           <motion.path d={`M${c.x} ${285 - c.h} L${c.x} ${285 - c.h - 5}`}
             stroke={brown} strokeWidth="0.8" strokeLinecap="round"
             variants={drawVariants} initial="hidden" animate={animate} custom={0.7 + i * 0.05} />
+          {/* glowing halo behind taper flame */}
+          <motion.circle
+            cx={c.x} cy={285 - c.h - 2} r="11"
+            fill="url(#flame-halo)"
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{
+              opacity: animate === "visible" ? [0.35, 0.8, 0.5, 0.85, 0.45] : 0,
+              scale: animate === "visible" ? [0.85, 1.15, 0.95, 1.2, 0.9] : 0.7,
+            }}
+            transition={{ delay: 1.4 + i * 0.12, duration: 2.2, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+            style={{ transformOrigin: `${c.x}px ${285 - c.h - 2}px` }}
+          />
           {/* flame */}
           <motion.path
             d={`M${c.x} ${285 - c.h + 3} q-3 -4 0 -10 q3 6 0 10 z`}
             fill={gold} stroke={gold} strokeWidth="0.5"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: animate === "visible" ? [0, 1, 0.85, 1] : 0 }}
-            transition={{ delay: 1.4 + i * 0.12, duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{
+              opacity: animate === "visible" ? [0.7, 1, 0.85, 1] : 0,
+              scale: animate === "visible" ? [0.85, 1.15, 0.9, 1.1, 0.9] : 0.8,
+            }}
+            transition={{ delay: 1.4 + i * 0.12, duration: 1.3, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+            style={{ transformOrigin: `${c.x}px ${285 - c.h + 1}px` }}
           />
         </g>
       ))}
