@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Sparkles, Star } from "lucide-react";
 import heroImage from "@/assets/hero-tekillah-celebration.jpg";
+import floralSketch from "@/assets/floral-sketch.png";
 import { useTranslation } from "react-i18next";
 import { AnimatedCounter } from "./AnimatedCounter";
 
