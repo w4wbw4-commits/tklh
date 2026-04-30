@@ -551,3 +551,116 @@ export const SketchDivider = ({ className }: { className?: string }) => (
     <span className="h-px w-24 bg-gradient-to-l from-transparent via-gold/70 to-gold" />
   </div>
 );
+
+// --- Side wedding table (round, with vase + tall candles) ------------------
+export const SketchSideTable = ({ className, style, ariaHidden = true }: SketchProps) => {
+  const { ref, animate } = useDraw();
+  return (
+    <svg ref={ref} viewBox="0 0 220 320" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
+      {[
+        { x: 60, h: 110 }, { x: 80, h: 140 }, { x: 100, h: 120 },
+        { x: 150, h: 130 }, { x: 168, h: 105 },
+      ].map((c, i) => (
+        <g key={c.x}>
+          <motion.path d={`M${c.x} 200 L${c.x} ${200 - c.h}`}
+            stroke={olive} strokeWidth="0.9" strokeLinecap="round"
+            variants={drawVariants} initial="hidden" animate={animate} custom={0.2 + i * 0.05} />
+          <motion.path d={`M${c.x} ${200 - c.h} q-2.5 -4 0 -8 q2.5 4 0 8 z`}
+            fill={gold} stroke={gold} strokeWidth="0.4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: animate === "visible" ? [0, 1, 0.85, 1] : 0 }}
+            transition={{ delay: 1.4 + i * 0.1, duration: 1.6, repeat: Infinity, repeatType: "reverse" }} />
+        </g>
+      ))}
+      <motion.path
+        d="M115 200 Q108 180 114 165 Q126 158 138 165 Q146 180 138 200 Z"
+        stroke={brown} strokeWidth="1" fill={brown} fillOpacity={0.1} strokeLinejoin="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.5} />
+      <motion.path d="M126 165 Q120 130 110 110 M126 165 Q132 135 142 118 M126 165 Q126 140 126 100"
+        stroke={olive} strokeWidth="0.9" strokeLinecap="round" fill="none"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.8} />
+      {[
+        { x: 110, y: 110, r: -30 }, { x: 142, y: 118, r: 30 },
+        { x: 126, y: 100, r: 0 }, { x: 116, y: 130, r: -20 }, { x: 136, y: 130, r: 20 },
+      ].map((l, i) => (
+        <motion.path key={i}
+          d={`M${l.x} ${l.y} q-5 -7 0 -14 q5 7 0 14 z`}
+          stroke={olive} strokeWidth="0.7" fill={olive} fillOpacity={0.1} strokeLinejoin="round"
+          transform={`rotate(${l.r} ${l.x} ${l.y - 7})`}
+          variants={drawVariants} initial="hidden" animate={animate} custom={1.0 + i * 0.05} />
+      ))}
+      <motion.ellipse cx="110" cy="210" rx="100" ry="14"
+        stroke={brown} strokeWidth="1.1" fill={gold} fillOpacity={0.07}
+        variants={drawVariants} initial="hidden" animate={animate} custom={1.4} />
+      <motion.path
+        d="M18 212 Q22 250 30 280 Q60 295 110 290 Q160 295 190 280 Q198 250 202 212"
+        stroke={brown} strokeWidth="0.9" fill={gold} fillOpacity={0.04} strokeLinejoin="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={1.5} />
+      {[60, 90, 120, 150].map((x, i) => (
+        <motion.path key={x}
+          d={`M${x} 218 Q${x + 2} 250 ${x + 4} 286`}
+          stroke={olive} strokeWidth="0.4" fill="none" opacity={0.5}
+          variants={drawVariants} initial="hidden" animate={animate} custom={1.6 + i * 0.04} />
+      ))}
+    </svg>
+  );
+};
+
+// --- Eucalyptus / leafy branch (slim soft accent) --------------------------
+export const SketchEucalyptus = ({ className, style, ariaHidden = true }: SketchProps) => {
+  const { ref, animate } = useDraw();
+  const leaves = Array.from({ length: 9 }, (_, i) => {
+    const t = i / 8;
+    const x = 30 + t * 240;
+    const y = 30 + Math.sin(t * Math.PI) * 70 + t * 20;
+    const side = i % 2 === 0 ? -1 : 1;
+    return { x, y, side, rot: side * (35 + (i % 3) * 10) };
+  });
+  return (
+    <svg ref={ref} viewBox="0 0 300 180" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
+      <motion.path d="M10 40 Q90 90 180 100 Q240 105 290 130"
+        stroke={brown} strokeWidth="0.9" fill="none" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0} />
+      {leaves.map((l, i) => {
+        const lx = l.x + l.side * 6;
+        const ly = l.y + l.side * 6;
+        return (
+          <motion.path key={i}
+            d={`M${lx} ${ly} q-6 -10 0 -20 q6 10 0 20 z`}
+            stroke={olive} strokeWidth="0.7" fill={olive} fillOpacity={0.08} strokeLinejoin="round"
+            transform={`rotate(${l.rot} ${lx} ${ly - 10})`}
+            variants={drawVariants} initial="hidden" animate={animate} custom={0.3 + i * 0.07} />
+        );
+      })}
+    </svg>
+  );
+};
+
+// --- Lotus pad cluster (small bottom-corner accent) ------------------------
+export const SketchLotus = ({ className, style, ariaHidden = true }: SketchProps) => {
+  const { ref, animate } = useDraw();
+  return (
+    <svg ref={ref} viewBox="0 0 200 160" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
+      <motion.path
+        d="M30 110 Q20 90 40 78 Q70 70 96 86 Q108 102 92 118 Q60 130 30 110 Z"
+        stroke={olive} strokeWidth="0.9" fill={olive} fillOpacity={0.08} strokeLinejoin="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0} />
+      <motion.path d="M62 96 L62 116 M70 92 L82 110 M54 92 L46 110"
+        stroke={olive} strokeWidth="0.5" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.4} />
+      <motion.path
+        d="M120 130 Q108 110 130 100 Q160 96 180 116 Q186 132 168 142 Q140 148 120 130 Z"
+        stroke={olive} strokeWidth="0.9" fill={olive} fillOpacity={0.06} strokeLinejoin="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.3} />
+      <motion.path
+        d="M100 80 q-8 -10 -2 -22 q8 6 6 18 M100 80 q8 -10 2 -22 q-8 6 -6 18 M100 80 q-3 -8 0 -22 q3 14 0 22"
+        stroke={olive} strokeWidth="0.8" fill="none" strokeLinejoin="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.6} />
+      <motion.circle cx="100" cy="78" r="2" fill={gold}
+        initial={{ opacity: 0 }} animate={{ opacity: animate === "visible" ? 1 : 0 }} transition={{ delay: 1.2 }} />
+      <motion.path d="M155 150 Q158 110 152 70 M170 150 Q172 120 168 88 M140 150 Q142 120 138 90"
+        stroke={olive} strokeWidth="0.6" fill="none" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.8} />
+    </svg>
+  );
+};
