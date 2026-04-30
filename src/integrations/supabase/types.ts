@@ -141,6 +141,13 @@ export type Database = {
             referencedRelation: "vendors"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "bookings_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       content_reports: {
@@ -545,6 +552,13 @@ export type Database = {
             columns: ["vendor_id"]
             isOneToOne: false
             referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "packages_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors_public"
             referencedColumns: ["id"]
           },
         ]
@@ -1010,6 +1024,13 @@ export type Database = {
             referencedRelation: "vendors"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "vendor_availability_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       vendor_invoices: {
@@ -1296,8 +1317,138 @@ export type Database = {
         }
         Relationships: []
       }
+      vendors_public: {
+        Row: {
+          active: boolean | null
+          approval_status: Database["public"]["Enums"]["approval_status"] | null
+          bio: string | null
+          bio_en: string | null
+          business_name: string | null
+          category: Database["public"]["Enums"]["vendor_category"] | null
+          city: string | null
+          created_at: string | null
+          daily_capacity: number | null
+          district: string | null
+          district_en: string | null
+          extra_services: string[] | null
+          extra_services_en: string[] | null
+          google_maps_url: string | null
+          hidden: boolean | null
+          hidden_until: string | null
+          id: string | null
+          men_capacity: number | null
+          min_deposit: number | null
+          portfolio_urls: string[] | null
+          region: string | null
+          region_en: string | null
+          starting_price: number | null
+          updated_at: string | null
+          user_id: string | null
+          verified: boolean | null
+          weekday_price: number | null
+          weekend_price: number | null
+          women_capacity: number | null
+        }
+        Insert: {
+          active?: boolean | null
+          approval_status?:
+            | Database["public"]["Enums"]["approval_status"]
+            | null
+          bio?: string | null
+          bio_en?: string | null
+          business_name?: string | null
+          category?: Database["public"]["Enums"]["vendor_category"] | null
+          city?: string | null
+          created_at?: string | null
+          daily_capacity?: number | null
+          district?: string | null
+          district_en?: string | null
+          extra_services?: string[] | null
+          extra_services_en?: string[] | null
+          google_maps_url?: string | null
+          hidden?: boolean | null
+          hidden_until?: string | null
+          id?: string | null
+          men_capacity?: number | null
+          min_deposit?: number | null
+          portfolio_urls?: string[] | null
+          region?: string | null
+          region_en?: string | null
+          starting_price?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          verified?: boolean | null
+          weekday_price?: number | null
+          weekend_price?: number | null
+          women_capacity?: number | null
+        }
+        Update: {
+          active?: boolean | null
+          approval_status?:
+            | Database["public"]["Enums"]["approval_status"]
+            | null
+          bio?: string | null
+          bio_en?: string | null
+          business_name?: string | null
+          category?: Database["public"]["Enums"]["vendor_category"] | null
+          city?: string | null
+          created_at?: string | null
+          daily_capacity?: number | null
+          district?: string | null
+          district_en?: string | null
+          extra_services?: string[] | null
+          extra_services_en?: string[] | null
+          google_maps_url?: string | null
+          hidden?: boolean | null
+          hidden_until?: string | null
+          id?: string | null
+          men_capacity?: number | null
+          min_deposit?: number | null
+          portfolio_urls?: string[] | null
+          region?: string | null
+          region_en?: string | null
+          starting_price?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          verified?: boolean | null
+          weekday_price?: number | null
+          weekend_price?: number | null
+          women_capacity?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
+      admin_list_pending_vendor_docs: {
+        Args: never
+        Returns: {
+          business_name: string
+          commercial_register_url: string
+          iban_certificate_url: string
+          id: string
+        }[]
+      }
+      admin_list_pending_vendor_verifications: {
+        Args: never
+        Returns: {
+          approval_status: Database["public"]["Enums"]["approval_status"]
+          bio: string
+          business_name: string
+          category: string
+          city: string
+          commercial_register_url: string
+          created_at: string
+          daily_capacity: number
+          google_maps_url: string
+          iban: string
+          iban_certificate_url: string
+          id: string
+          phone: string
+          portfolio_urls: string[]
+          rejection_reason: string
+          starting_price: number
+        }[]
+      }
       compute_payment_split: {
         Args: { _amount: number }
         Returns: {
@@ -1308,6 +1459,17 @@ export type Database = {
         }[]
       }
       generate_vendor_invoice_number: { Args: never; Returns: string }
+      get_vendor_private: {
+        Args: { _vendor_id: string }
+        Returns: {
+          commercial_register_url: string
+          iban: string
+          iban_certificate_url: string
+          id: string
+          phone: string
+          user_id: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
