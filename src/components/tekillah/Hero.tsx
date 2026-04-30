@@ -118,13 +118,13 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="font-tagline max-w-3xl text-balance text-center text-2xl font-bold leading-[1.6] text-gold-soft sm:text-3xl md:text-4xl"
+          className="font-tagline max-w-3xl text-balance text-center text-xl font-bold leading-[1.6] sm:text-2xl md:text-3xl"
           lang="ar"
           dir="rtl"
           style={{
+            color: "hsl(var(--primary-deep))",
             wordSpacing: "0.08em",
-            textShadow:
-              "0 2px 18px hsl(var(--primary-deep) / 0.9), 0 1px 4px hsl(var(--primary-deep) / 0.8)",
+            textShadow: "0 1px 8px hsl(0 0% 100% / 0.6)",
           }}
         >
           {t("hero.titleB")}
@@ -135,8 +135,11 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 max-w-xl text-balance text-sm leading-relaxed text-cream/80 sm:text-base"
-          style={{ textShadow: "0 1px 10px hsl(var(--primary-deep) / 0.8)" }}
+          className="mt-5 max-w-xl text-balance text-sm leading-relaxed sm:text-base"
+          style={{
+            color: "hsl(var(--primary-deep) / 0.85)",
+            textShadow: "0 1px 6px hsl(0 0% 100% / 0.5)",
+          }}
         >
           {t("hero.desc")}
         </motion.p>
