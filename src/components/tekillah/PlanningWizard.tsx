@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check, ArrowLeft, ArrowRight, Loader2, Sparkles, Zap, MapPin, Layers, Palette, Wallet, Users } from "lucide-react";
+import { Check, ArrowLeft, ArrowRight, Loader2, Sparkles, Zap } from "lucide-react";
+import {
+  SketchIconInvitation,
+  SketchIconServices,
+  SketchIconPalette,
+  SketchIconCoin,
+  SketchIconHandshake,
+} from "./wizard/WizardSketches";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { StepDetails } from "./wizard/StepDetails";
