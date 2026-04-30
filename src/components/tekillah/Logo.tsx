@@ -27,13 +27,10 @@ export const Logo = ({ className = "" }: { className?: string }) => {
         </span>
         <span className="text-gold/70">/</span>
         <span
-          className="font-wordmark text-lg font-black"
+          className="font-wordmark text-lg font-black text-primary-deep"
           style={{
-            background: "linear-gradient(180deg, hsl(40 75% 70%) 0%, hsl(38 65% 52%) 60%, hsl(36 55% 38%) 100%)",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            color: "transparent",
+            color: "hsl(var(--primary-deep))",
+            WebkitTextFillColor: "hsl(var(--primary-deep))",
           }}
         >
           تِكله
