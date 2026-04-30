@@ -89,16 +89,12 @@ export const Navbar = () => {
             ))}
           </nav>
           <div className="flex items-center gap-1.5 sm:gap-2">
-            {/* Hamburger — opens the slide-over with all site sections.
-                Visible on every breakpoint so phone users get the same fast
-                navigation as desktop. */}
-            <SiteMenuSheet isPrimaryAdmin={isPrimaryAdmin} />
             {user && (
               <Button
                 variant="ghost"
                 size="sm"
                 asChild
-                className="hidden rounded-full text-xs text-foreground/80 hover:text-primary sm:inline-flex"
+                className="hidden rounded-full text-xs text-foreground hover:bg-primary/10 hover:text-primary sm:inline-flex"
               >
                 <Link to="/dashboard">
                   <LayoutDashboard className="me-1 h-3.5 w-3.5" />
@@ -106,15 +102,15 @@ export const Navbar = () => {
                 </Link>
               </Button>
             )}
-            {/* Partner portal — Najdi Gold CTA: gold bg, green text/icon, hover pulse */}
+            {/* Partner portal — Najdi Gold CTA */}
             <Button
               size="sm"
               asChild
-              className="hidden rounded-full border border-gold/60 bg-gold text-primary-deep shadow-[0_4px_14px_-4px_hsl(var(--gold)/0.5)] transition-all hover:bg-gold hover:scale-[1.03] hover:gold-pulse sm:inline-flex"
+              className="hidden rounded-full border border-gold/60 bg-gold text-primary-deep shadow-[0_4px_14px_-4px_hsl(var(--gold)/0.5)] transition-all hover:bg-gold hover:scale-[1.03] hover:gold-pulse sm:inline-flex dark:text-background"
             >
               <Link to={user ? "/partner" : "/auth?redirect=/partner&role=vendor"}>
-                <Building2 className="me-1 h-3.5 w-3.5 text-primary-deep" />
-                <span className="text-xs font-bold text-primary-deep">
+                <Building2 className="me-1 h-3.5 w-3.5 text-primary-deep dark:text-background" />
+                <span className="text-xs font-bold text-primary-deep dark:text-background">
                   {t("nav.partnerPortal", { defaultValue: isAr ? "دخول الشركاء" : "Partner Portal" })}
                 </span>
               </Link>
@@ -135,24 +131,28 @@ export const Navbar = () => {
               variant="ghost"
               size="sm"
               onClick={toggleLang}
-              className="hidden rounded-full text-xs text-foreground/80 hover:text-gold sm:inline-flex"
+              className="hidden rounded-full text-xs font-semibold text-foreground hover:bg-gold/15 hover:text-gold sm:inline-flex"
             >
               <Globe className="me-1 h-3.5 w-3.5" />
               {t("nav.lang")}
             </Button>
-            {/* Light / Dark toggle — relative wrapper to anchor the absolute Moon icon */}
+            {/* Light / Dark toggle */}
             <div className="relative inline-flex">
-              <ThemeToggle />
+              <ThemeToggle className="text-foreground hover:bg-gold/15 hover:text-gold" />
             </div>
             {!user && (
               <Button
                 size="sm"
                 asChild
-                className="hidden rounded-full border-2 border-gold bg-primary-deep text-gold hover:bg-primary hover:text-gold sm:inline-flex"
+                className="hidden rounded-full border-2 border-gold bg-primary-deep text-gold hover:bg-primary hover:text-gold sm:inline-flex dark:bg-background dark:text-gold"
               >
                 <Link to="/auth">{t("nav.start")}</Link>
               </Button>
             )}
+            {/* Hamburger pinned at the very END of the cluster — in RTL this
+                renders at the far-right (start edge), which is where the user
+                expects the primary menu in Arabic. Visible on every breakpoint. */}
+            <SiteMenuSheet isPrimaryAdmin={isPrimaryAdmin} />
           </div>
         </div>
       </div>
