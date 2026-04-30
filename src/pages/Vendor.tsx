@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
-import { LogOut, User, Calendar, Bell, Loader2, ListChecks, Star, TrendingUp, Clock, XCircle, ShieldCheck } from "lucide-react";
+import { LogOut, User, Calendar, Bell, Loader2, ListChecks, Star, TrendingUp, Clock, XCircle, ShieldCheck, LayoutDashboard, Home } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { VendorProfileForm } from "@/components/tekillah/vendor/VendorProfileForm";
@@ -96,17 +96,55 @@ const VendorPage = () => {
           boxShadow: "0 8px 30px -12px hsl(var(--green) / 0.15)",
         }}
       >
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <div className="flex items-center gap-4">
             <Logo />
             <span className="hidden text-xs uppercase tracking-[0.2em] text-gold sm:inline">
               {t("vendor.kicker")}
             </span>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" asChild className="rounded-full text-foreground/80 hover:text-gold">
-              <Link to="/">{t("common.main")}</Link>
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            {/* Always-visible: back to public site */}
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="rounded-full text-foreground/75 hover:text-gold"
+            >
+              <Link to="/" aria-label={t("common.main")}>
+                <Home className="me-1.5 h-4 w-4" />
+                <span className="hidden sm:inline">{t("common.main")}</span>
+              </Link>
             </Button>
+
+            {/* Partner Dashboard entry — context-aware:
+                - signed-in vendor → straight to /partner
+                - signed-in but no profile yet → scroll to profile form below
+                - guest → auth flow then back to /vendor to complete profile */}
+            <Button
+              size="sm"
+              onClick={() => {
+                if (!isAuthed) {
+                  navigate("/auth?redirect=/vendor&role=vendor");
+                  return;
+                }
+                if (vendor) {
+                  navigate("/partner");
+                  return;
+                }
+                setTab("profile");
+                dashboardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              className="rounded-full border border-gold/50 bg-primary-deep text-gold shadow-[0_4px_14px_-4px_hsl(var(--green)/0.45)] transition-all hover:scale-[1.03] hover:bg-primary-deep"
+            >
+              <LayoutDashboard className="me-1.5 h-4 w-4" />
+              {isAuthed && vendor
+                ? t("vendor.partnerDashboard", { defaultValue: "واجهة الشريك" })
+                : isAuthed
+                  ? t("vendor.completeProfile", { defaultValue: "أكمل بياناتك" })
+                  : t("vendor.partnerDashboard", { defaultValue: "واجهة الشريك" })}
+            </Button>
+
             {isAuthed ? (
               <>
                 <Button
@@ -116,7 +154,7 @@ const VendorPage = () => {
                     await signOut();
                     navigate("/auth?redirect=/vendor&role=vendor");
                   }}
-                  className="rounded-full border-gold/50 text-primary-deep hover:bg-gold/10 hover:text-primary-deep"
+                  className="hidden rounded-full border-gold/50 text-primary-deep hover:bg-gold/10 hover:text-primary-deep md:inline-flex"
                 >
                   {t("vendor.switchAccount", { defaultValue: "دخول بحساب آخر" })}
                 </Button>
@@ -125,15 +163,18 @@ const VendorPage = () => {
                   size="sm"
                   onClick={() => signOut().then(() => navigate("/"))}
                   className="rounded-full text-destructive hover:bg-destructive/10"
+                  aria-label={t("common.logout")}
                 >
-                  <LogOut className="me-1 h-4 w-4" /> {t("common.logout")}
+                  <LogOut className="h-4 w-4 sm:me-1" />
+                  <span className="hidden sm:inline">{t("common.logout")}</span>
                 </Button>
               </>
             ) : (
               <Button
                 size="sm"
                 asChild
-                className="rounded-full border border-gold/60 bg-gold text-primary-deep shadow-[0_4px_14px_-4px_hsl(var(--gold)/0.45)] transition-all hover:bg-gold hover:scale-[1.03]"
+                variant="outline"
+                className="rounded-full border-gold/60 text-primary-deep hover:bg-gold/10"
               >
                 <Link to="/auth?redirect=/partner&role=vendor">
                   {t("vendor.signIn", { defaultValue: "دخول الشركاء" })}
