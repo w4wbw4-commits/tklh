@@ -4,10 +4,11 @@ import { ArrowLeft, Sparkles, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AnimatedCounter } from "./AnimatedCounter";
 import {
-  SketchArch,
-  SketchPalm,
-  SketchFloral,
   SketchDivider,
+  SketchGinkgo,
+  SketchCandelabra,
+  SketchBranch,
+  SketchBanquet,
 } from "./SketchArt";
 
 // ---------------------------------------------------------------------------
