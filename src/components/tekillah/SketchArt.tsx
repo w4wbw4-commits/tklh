@@ -326,7 +326,7 @@ export const SketchBranch = ({ className, style, ariaHidden = true }: SketchProp
   return (
     <svg ref={ref} viewBox="0 0 320 180" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
       <motion.path d="M10 30 Q80 50 150 60 Q230 70 310 110"
-        stroke={olive} strokeWidth="1.3" strokeLinecap="round"
+        stroke={brown} strokeWidth="1.5" strokeLinecap="round"
         variants={drawVariants} initial="hidden" animate={animate} custom={0} />
       {leaves.map((l, i) => (
         <motion.path key={i}
