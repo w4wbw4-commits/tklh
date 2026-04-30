@@ -12,7 +12,6 @@ import { AuthProvider } from "@/hooks/useAuth";
 // libraries (recharts ~221KB, xlsx ~184KB, jspdf ~165KB) only download when
 // the user actually navigates to a partner/admin page.
 import Index from "./pages/Index.tsx";
-import { PartnerFloatingCTA } from "./components/tekillah/PartnerFloatingCTA";
 import { RoleSwitcher } from "./components/tekillah/RoleSwitcher";
 
 const Auth = lazy(() => import("./pages/Auth.tsx"));
@@ -92,7 +91,6 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
-              <PartnerFloatingCTA />
               <RoleSwitcher />
             </AuthProvider>
           </BrowserRouter>
