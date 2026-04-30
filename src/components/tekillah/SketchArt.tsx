@@ -1142,27 +1142,46 @@ export const SketchLongBanquet = ({ className, style, ariaHidden = true }: Sketc
                     <motion.path d={`M${tx} ${topY} L${tx} ${topY - 5}`}
                       stroke={brown} strokeWidth="0.7" strokeLinecap="round"
                       variants={drawVariants} initial="hidden" animate={animate} custom={2.05 + ci * 0.1 + ti * 0.05} />
-                    {/* Glowing halo */}
-                    <motion.circle cx={tx} cy={topY - 3} r="9" fill="url(#banquet-flame-halo)"
+                    {/* Outer warm bloom — wide, blurred, very soft */}
+                    <motion.circle cx={tx} cy={topY - 4} r="22" fill="url(#banquet-flame-bloom)"
+                      filter="url(#banquet-soft-blur)"
+                      initial={{ opacity: 0, scale: 0.6 }}
+                      animate={{
+                        opacity: animate === "visible" ? [0.35, 0.55, 0.4, 0.6, 0.4] : 0,
+                        scale: animate === "visible" ? [0.95, 1.1, 1.0, 1.15, 0.95] : 0.6,
+                      }}
+                      transition={{ delay: 2.0 + ci * 0.15 + ti * 0.1, duration: 3.2, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+                      style={{ transformOrigin: `${tx}px ${topY - 4}px`, mixBlendMode: "screen" }}
+                    />
+                    {/* Inner halo — tight golden glow */}
+                    <motion.circle cx={tx} cy={topY - 3} r="11" fill="url(#banquet-flame-halo)"
                       initial={{ opacity: 0, scale: 0.7 }}
                       animate={{
-                        opacity: animate === "visible" ? [0.35, 0.8, 0.5, 0.85, 0.45] : 0,
-                        scale: animate === "visible" ? [0.85, 1.15, 0.95, 1.2, 0.9] : 0.7,
+                        opacity: animate === "visible" ? [0.55, 0.9, 0.65, 0.95, 0.6] : 0,
+                        scale: animate === "visible" ? [0.9, 1.15, 0.98, 1.2, 0.92] : 0.7,
                       }}
                       transition={{ delay: 2.0 + ci * 0.15 + ti * 0.1, duration: 2.4, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
                       style={{ transformOrigin: `${tx}px ${topY - 3}px` }}
                     />
-                    {/* Flame */}
+                    {/* Flame body — soft teardrop with gradient fill */}
                     <motion.path
-                      d={`M${tx} ${topY + 2} q-3 -4 0 -10 q3 6 0 10 z`}
-                      fill={gold} stroke={gold} strokeWidth="0.5"
+                      d={`M${tx} ${topY + 2} q-3.2 -5 -1.5 -10 q1.5 -3 1.5 -6 q0 3 1.5 6 q1.7 5 -1.5 10 z`}
+                      fill="url(#banquet-flame-body)" stroke="none"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{
-                        opacity: animate === "visible" ? [0.7, 1, 0.85, 1] : 0,
-                        scale: animate === "visible" ? [0.85, 1.15, 0.9, 1.1, 0.9] : 0.8,
+                        opacity: animate === "visible" ? [0.85, 1, 0.9, 1] : 0,
+                        scale: animate === "visible" ? [0.9, 1.08, 0.95, 1.1, 0.92] : 0.8,
+                        skewX: animate === "visible" ? [0, 2, -1, 1.5, 0] : 0,
                       }}
-                      transition={{ delay: 2.0 + ci * 0.15 + ti * 0.1, duration: 1.4, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
-                      style={{ transformOrigin: `${tx}px ${topY}px` }}
+                      transition={{ delay: 2.0 + ci * 0.15 + ti * 0.1, duration: 1.6, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+                      style={{ transformOrigin: `${tx}px ${topY + 2}px` }}
+                    />
+                    {/* Flame hot core — bright tiny center */}
+                    <motion.ellipse cx={tx} cy={topY - 2} rx="1.1" ry="2.4"
+                      fill="#fffbe8"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: animate === "visible" ? [0.7, 1, 0.8, 1, 0.75] : 0 }}
+                      transition={{ delay: 2.1 + ci * 0.15 + ti * 0.1, duration: 1.2, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
                     />
                   </g>
                 );
