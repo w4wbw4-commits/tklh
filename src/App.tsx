@@ -3,10 +3,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "next-themes";
+import { MotionConfig } from "framer-motion";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
+import { useIsMobile } from "@/hooks/use-mobile";
 // Eagerly load Index — it's the landing route, blocking it on a chunk fetch
 // would tank the initial paint. Everything else is code-split below so heavy
 // libraries (recharts ~221KB, xlsx ~184KB, jspdf ~165KB) only download when
