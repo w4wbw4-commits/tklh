@@ -573,6 +573,16 @@ export const SketchSideTable = ({ className, style, ariaHidden = true }: SketchP
   ];
   return (
     <svg ref={ref} viewBox="0 0 400 420" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
+      <defs>
+        <radialGradient id="flame-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor={gold} stopOpacity="0.65" />
+          <stop offset="40%" stopColor={gold} stopOpacity="0.25" />
+          <stop offset="100%" stopColor={gold} stopOpacity="0" />
+        </radialGradient>
+        <filter id="flame-blur" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2" />
+        </filter>
+      </defs>
       {/* ===== Candelabra ===== */}
       {/* Base */}
       <motion.path d="M180 290 L220 290 M186 290 L186 282 Q200 277 214 282 L214 290"
