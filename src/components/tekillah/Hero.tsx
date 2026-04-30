@@ -5,8 +5,6 @@ import { useTranslation } from "react-i18next";
 import { AnimatedCounter } from "./AnimatedCounter";
 import {
   SketchDivider,
-  SketchBranch,
-  SketchBanquet,
   SketchCurtain,
   SketchSideTable,
   SketchEucalyptus,
