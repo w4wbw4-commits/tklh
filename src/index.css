@@ -96,28 +96,70 @@
   }
 
   .dark {
-    --background: 100 20% 8%;
-    --foreground: 44 22% 92%;
-    --surface: 100 18% 11%;
-    --cream: 100 18% 14%;
-    --card: 100 18% 12%;
-    --card-foreground: 44 22% 92%;
-    --popover: 100 18% 12%;
-    --popover-foreground: 44 22% 92%;
-    --primary: 102 38% 55%;
-    --primary-foreground: 100 20% 8%;
-    --primary-deep: 100 45% 30%;
-    --secondary: 100 15% 18%;
-    --secondary-foreground: 44 22% 92%;
-    --muted: 100 15% 18%;
-    --muted-foreground: 44 8% 65%;
-    --accent: 100 15% 22%;
-    --accent-foreground: 44 22% 92%;
-    --destructive: 0 60% 45%;
-    --destructive-foreground: 44 22% 92%;
-    --border: 100 15% 22%;
-    --input: 100 15% 22%;
-    --ring: 102 38% 55%;
+    /* === Dark palette — refined for clarity & eye-comfort ===
+       Strategy: deep olive-charcoal background (NOT pure black) so warm tones
+       still feel like the brand. Light cream foreground + bright gold give
+       AAA contrast. `--primary-deep` is intentionally LIGHT here — every
+       hand-drawn sketch uses it as the ink color, so it must read as a
+       luminous line on a dark canvas (the inverse of light mode). */
+    --background: 100 18% 9%;            /* #131a12 deep olive charcoal */
+    --foreground: 42 32% 94%;            /* warm cream ink */
+    --surface: 100 16% 12%;
+    --cream: 100 14% 15%;                /* "cream" is now a slightly raised olive */
+    --text-muted: 95 10% 72%;
+
+    --card: 100 16% 13%;
+    --card-foreground: 42 32% 94%;
+    --popover: 100 16% 13%;
+    --popover-foreground: 42 32% 94%;
+
+    /* Greens — brighten so they remain readable on the dark canvas */
+    --green: 100 32% 70%;
+    --green-mid: 100 28% 55%;
+    --green-light: 100 22% 30%;
+
+    /* Gold — slightly more saturated for nighttime warmth */
+    --gold: 40 62% 68%;
+    --gold-soft: 40 38% 38%;
+
+    /* Brown — boosted so sketch accents stay visible */
+    --brown: 30 38% 72%;
+    --brown-soft: 30 28% 58%;
+
+    /* Primary — soft luminous olive for buttons; foreground is the dark bg */
+    --primary: 100 38% 62%;
+    --primary-foreground: 100 22% 8%;
+    /* IMPORTANT: --primary-deep is the SKETCH INK color used everywhere.
+       In dark mode it must be LIGHT to draw clearly on the olive canvas. */
+    --primary-deep: 42 38% 90%;
+    --primary-glow: 100 36% 55%;
+
+    --secondary: 100 14% 18%;
+    --secondary-foreground: 42 32% 94%;
+    --muted: 100 12% 17%;
+    --muted-foreground: 42 16% 75%;
+    --accent: 100 18% 24%;
+    --accent-foreground: 42 32% 94%;
+
+    --destructive: 0 70% 60%;
+    --destructive-foreground: 42 32% 94%;
+    --success: 140 45% 55%;
+    --success-foreground: 100 22% 8%;
+
+    /* Borders slightly brighter than card to give clean separation */
+    --border: 100 14% 24%;
+    --input: 100 14% 24%;
+    --ring: 40 62% 68%;
+
+    /* Sidebar tokens mirror the main palette */
+    --sidebar-background: 100 18% 9%;
+    --sidebar-foreground: 42 32% 94%;
+    --sidebar-primary: 40 62% 68%;
+    --sidebar-primary-foreground: 100 22% 8%;
+    --sidebar-accent: 100 14% 18%;
+    --sidebar-accent-foreground: 42 32% 94%;
+    --sidebar-border: 100 14% 24%;
+    --sidebar-ring: 40 62% 68%;
   }
 }
 
