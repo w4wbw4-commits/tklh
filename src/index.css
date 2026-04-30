@@ -93,6 +93,11 @@
     --sidebar-accent-foreground: 100 41% 21%;
     --sidebar-border: 42 18% 80%;
     --sidebar-ring: 100 41% 21%;
+
+    /* Health indicator tokens — Deep Emerald (#043927) for positive states.
+       Used by the BudgetHealthIndicator and any future "good signal" UI. */
+    --health-emerald: 158 89% 9%;        /* #043927 */
+    --health-emerald-light: 158 55% 45%; /* readable on dark mode */
   }
 
   .dark {
