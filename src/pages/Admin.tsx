@@ -160,248 +160,136 @@ const Admin = () => {
   const totalBookings  = bookings.length;
   const pendingCount   = bookings.filter((b) => b.status === "pending").length;
 
-  return (
-    <div className="min-h-screen bg-[hsl(40_18%_88%)]">
-      <header className="sticky top-0 z-30 border-b-2 border-gold/40 bg-gradient-olive shadow-luxury">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-3">
-            <Link to="/" className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-primary-foreground/95 ring-2 ring-gold/60 text-xl font-black text-primary-deep">
-                ت
-              </span>
-              <div className="leading-tight">
-                <div className="font-arabic text-lg font-black text-primary-foreground">تِكله</div>
-                <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-gold">
-                  <ShieldCheck className="h-3 w-3" /> {t("admin.kicker")}
+  const renderSection = () => {
+    switch (activeTab) {
+      case "verification": return <AdminVerificationQueue />;
+      case "pending":      return <AdminPendingBookings />;
+      case "vendors":      return <AdminVendorsPanel />;
+      case "late":         return <AdminLateAlerts />;
+      case "incidents":    return <AdminIncidentReports />;
+      case "leads":        return <AdminLeadsPanel />;
+      case "reviews":      return <AdminReviewsPanel />;
+      case "packages":     return <AdminPackagesPanel />;
+      case "moderation":   return <AdminModerationQueue />;
+      case "payments":
+        if (loading) return <Spinner />;
+        if (payments.length === 0)
+          return <EmptyState icon={Receipt} title={t("admin.noPayments")} description={t("admin.noPaymentsDesc")} />;
+        return (
+          <div className="space-y-3">
+            {payments.map((p) => (
+              <div key={p.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <div className="font-arabic text-sm font-semibold text-foreground">
+                      #{p.id.slice(0, 8).toUpperCase()}
+                    </div>
+                    <div className="text-[11px] text-foreground/55">{fmtDate(p.created_at)}</div>
+                  </div>
+                  <Badge className={statusBadge(p.status)}>{t(`admin.payStatus.${p.status}`)}</Badge>
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
+                  <Field label={t("admin.amount")} value={`${fmtNumber(Number(p.amount))} ${t("common.currency")}`} />
+                  <Field label={t("admin.vat")} value={`${fmtNumber(Number(p.vat_amount))} ${t("common.currency")}`} />
+                  <Field label={t("admin.fee")} value={`${fmtNumber(Number(p.platform_fee))} ${t("common.currency")}`} />
+                  <Field label={t("admin.vendorNet")} value={`${fmtNumber(Number(p.vendor_net))} ${t("common.currency")}`} highlight />
+                </div>
+                {p.status === "held" && (
+                  <div className="mt-3 flex justify-end">
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button size="sm" disabled={releasingId === p.id}
+                          className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
+                          {releasingId === p.id ? <Loader2 className="me-1 h-4 w-4 animate-spin" /> : <CheckCircle2 className="me-1 h-4 w-4" />}
+                          {t("admin.releasePayment")}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{t("admin.releaseConfirmTitle")}</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {t("admin.releaseConfirmDesc")}
+                            <span className="mt-3 block rounded-lg bg-secondary p-3 font-arabic font-semibold text-foreground">
+                              {fmtNumber(Number(p.vendor_net))} {t("common.currency")}
+                            </span>
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel className="rounded-full">{t("common.cancel")}</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => releasePayment(p.id)}
+                            className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
+                            {t("admin.releaseConfirmCta")}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        );
+      case "bookings":
+        if (loading) return <Spinner />;
+        if (bookings.length === 0)
+          return <EmptyState icon={Inbox} title={t("admin.noBookings")} description={t("admin.noBookingsDesc")} />;
+        return (
+          <div className="space-y-3">
+            {bookings.map((b) => (
+              <div key={b.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <div className="font-arabic text-sm font-semibold text-foreground">
+                      {b.vendor?.business_name ?? "—"}
+                    </div>
+                    <div className="text-[11px] text-foreground/55">
+                      {b.vendor?.category ? t(`categories.${b.vendor.category}`) : ""} · #{b.id.slice(0, 8).toUpperCase()}
+                    </div>
+                  </div>
+                  <Badge className={bookingBadge(b.status)}>
+                    {t(`customer.bookingStatus.${b.status}`)}
+                  </Badge>
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
+                  <Field label={t("admin.eventDate")} value={fmtDate(b.event_date)} />
+                  <Field label={t("admin.totalPrice")} value={`${fmtNumber(Number(b.total_price ?? 0))} ${t("common.currency")}`} />
+                  <Field label={t("admin.paid")} value={`${fmtNumber(Number(b.paid_amount))} ${t("common.currency")}`} />
                 </div>
               </div>
-            </Link>
+            ))}
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" asChild
-              className="rounded-full text-primary-foreground hover:bg-gold/20 hover:text-gold">
-              <Link to="/partner">
-                <Building2 className="me-1 h-4 w-4" />
-                {t("portal.partnerPortal", { defaultValue: "بوابة الشريك" })}
-              </Link>
-            </Button>
-            <Button variant="ghost" size="sm" asChild
-              className="rounded-full text-primary-foreground hover:bg-primary-foreground/15 hover:text-primary-foreground">
-              <Link to="/">{t("common.home")}</Link>
-            </Button>
-            <Button variant="ghost" size="sm" onClick={() => signOut().then(() => navigate("/"))}
-              className="rounded-full text-primary-foreground hover:bg-destructive/30 hover:text-primary-foreground">
-              <LogOut className="me-1 h-4 w-4" /> {t("common.logout")}
-            </Button>
-          </div>
-        </div>
-      </header>
+        );
+      default: return null;
+    }
+  };
 
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-          className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-black text-primary-deep">
-              <Sparkles className="h-3 w-3" />
-              {t("admin.kicker")}
-            </span>
-            <h1 className="font-arabic text-3xl font-semibold text-primary-deep sm:text-4xl">{t("admin.title")}</h1>
-            <p className="mt-2 text-foreground/75">{t("admin.subtitle")}</p>
-          </div>
-          {user && <AdminAddVendorDialog adminUserId={user.id} onCreated={load} />}
-        </motion.div>
+  return (
+    <AdminLayout
+      active={activeTab}
+      onChange={setActiveTab}
+      badges={{ pending: pendingCount }}
+      headerAction={user && <AdminAddVendorDialog adminUserId={user.id} onCreated={load} />}
+    >
+      {/* KPIs */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <Kpi icon={TrendingUp} label={t("admin.totalRevenue")} value={`${fmtNumber(totalRevenue)} ${t("common.currency")}`} highlight />
+        <Kpi icon={Percent}    label={t("admin.platformProfit")} value={`${fmtNumber(platformProfit)} ${t("common.currency")}`} />
+        <Kpi icon={Receipt}    label={t("admin.vatCollected")} value={`${fmtNumber(vatCollected)} ${t("common.currency")}`} />
+        <Kpi icon={HandCoins}  label={t("admin.vendorPayouts")} value={`${fmtNumber(vendorPayouts)} ${t("common.currency")}`} />
+        <Kpi icon={Lock}       label={t("admin.heldFunds")} value={`${fmtNumber(heldFunds)} ${t("common.currency")}`} />
+        <Kpi icon={ListChecks} label={t("admin.totalBookings")} value={fmtNumber(totalBookings)} />
+      </div>
 
-        {/* KPIs — always visible above every tab */}
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          <Kpi icon={TrendingUp} label={t("admin.totalRevenue")} value={`${fmtNumber(totalRevenue)} ${t("common.currency")}`} highlight />
-          <Kpi icon={Percent}    label={t("admin.platformProfit")} value={`${fmtNumber(platformProfit)} ${t("common.currency")}`} />
-          <Kpi icon={Receipt}    label={t("admin.vatCollected")} value={`${fmtNumber(vatCollected)} ${t("common.currency")}`} />
-          <Kpi icon={HandCoins}  label={t("admin.vendorPayouts")} value={`${fmtNumber(vendorPayouts)} ${t("common.currency")}`} />
-          <Kpi icon={Lock}       label={t("admin.heldFunds")} value={`${fmtNumber(heldFunds)} ${t("common.currency")}`} />
-          <Kpi icon={ListChecks} label={t("admin.totalBookings")} value={fmtNumber(totalBookings)} />
-        </div>
+      {/* Grand control summary */}
+      <div className="mt-5">
+        <AdminGrandControl onJump={setActiveTab} />
+      </div>
 
-        {/* Grand Control summary — always visible above every tab */}
-        <div className="mt-4">
-          <AdminGrandControl onJump={setActiveTab} />
-        </div>
-
-        <div className="mt-8">
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="rounded-2xl border border-primary/20 bg-card p-1 shadow-card flex-wrap h-auto">
-              <TabsTrigger value="verification" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <ShieldCheck className="h-4 w-4" /> {t("admin.tabVerification")}
-              </TabsTrigger>
-              <TabsTrigger value="pending" className="rounded-xl gap-2 data-[state=active]:bg-amber-500 data-[state=active]:text-white">
-                <Hourglass className="h-4 w-4" /> {t("admin.tabPending")}
-                {pendingCount > 0 && (
-                  <Badge className="bg-amber-500/20 text-amber-700 ms-1 px-1.5 py-0 text-[10px]">
-                    {fmtNumber(pendingCount)}
-                  </Badge>
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="vendors" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <Briefcase className="h-4 w-4" /> {t("admin.tabVendors")}
-              </TabsTrigger>
-              <TabsTrigger value="late" className="rounded-xl gap-2 data-[state=active]:bg-destructive data-[state=active]:text-destructive-foreground">
-                <AlertTriangle className="h-4 w-4" /> {t("admin.tabLate")}
-              </TabsTrigger>
-              <TabsTrigger value="incidents" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <AlertOctagon className="h-4 w-4" /> {t("admin.tabIncidents")}
-              </TabsTrigger>
-              <TabsTrigger value="leads" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <Inbox className="h-4 w-4" /> {t("admin.tabLeads")}
-              </TabsTrigger>
-              <TabsTrigger value="payments" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <Receipt className="h-4 w-4" /> {t("admin.tabPayments")}
-              </TabsTrigger>
-              <TabsTrigger value="bookings" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <ListChecks className="h-4 w-4" /> {t("admin.tabBookings")}
-              </TabsTrigger>
-              <TabsTrigger value="reviews" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <Star className="h-4 w-4" /> {t("admin.tabReviews")}
-              </TabsTrigger>
-              <TabsTrigger value="packages" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <PackageOpen className="h-4 w-4" /> {t("admin.tabPackages")}
-              </TabsTrigger>
-              <TabsTrigger value="moderation" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <Flag className="h-4 w-4" /> {t("admin.tabModeration")}
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="verification" className="mt-6">
-              <AdminVerificationQueue />
-            </TabsContent>
-
-            <TabsContent value="pending" className="mt-6">
-              <AdminPendingBookings />
-            </TabsContent>
-
-            <TabsContent value="vendors" className="mt-6">
-              <AdminVendorsPanel />
-            </TabsContent>
-
-            <TabsContent value="late" className="mt-6">
-              <AdminLateAlerts />
-            </TabsContent>
-
-            <TabsContent value="incidents" className="mt-6">
-              <AdminIncidentReports />
-            </TabsContent>
-
-            <TabsContent value="leads" className="mt-6">
-              <AdminLeadsPanel />
-            </TabsContent>
-
-            <TabsContent value="payments" className="mt-6">
-              {loading ? (
-                <Spinner />
-              ) : payments.length === 0 ? (
-                <EmptyState icon={Receipt} title={t("admin.noPayments")} description={t("admin.noPaymentsDesc")} />
-              ) : (
-                <div className="space-y-3">
-                  {payments.map((p) => (
-                    <div key={p.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
-                      <div className="flex flex-wrap items-start justify-between gap-3">
-                        <div>
-                          <div className="font-arabic text-sm font-semibold text-foreground">
-                            #{p.id.slice(0, 8).toUpperCase()}
-                          </div>
-                          <div className="text-[11px] text-foreground/55">{fmtDate(p.created_at)}</div>
-                        </div>
-                        <Badge className={statusBadge(p.status)}>{t(`admin.payStatus.${p.status}`)}</Badge>
-                      </div>
-                      <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
-                        <Field label={t("admin.amount")} value={`${fmtNumber(Number(p.amount))} ${t("common.currency")}`} />
-                        <Field label={t("admin.vat")} value={`${fmtNumber(Number(p.vat_amount))} ${t("common.currency")}`} />
-                        <Field label={t("admin.fee")} value={`${fmtNumber(Number(p.platform_fee))} ${t("common.currency")}`} />
-                        <Field label={t("admin.vendorNet")} value={`${fmtNumber(Number(p.vendor_net))} ${t("common.currency")}`} highlight />
-                      </div>
-                      {p.status === "held" && (
-                        <div className="mt-3 flex justify-end">
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button size="sm" disabled={releasingId === p.id}
-                                className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
-                                {releasingId === p.id ? <Loader2 className="me-1 h-4 w-4 animate-spin" /> : <CheckCircle2 className="me-1 h-4 w-4" />}
-                                {t("admin.releasePayment")}
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>{t("admin.releaseConfirmTitle")}</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  {t("admin.releaseConfirmDesc")}
-                                  <span className="mt-3 block rounded-lg bg-secondary p-3 font-arabic font-semibold text-foreground">
-                                    {fmtNumber(Number(p.vendor_net))} {t("common.currency")}
-                                  </span>
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel className="rounded-full">{t("common.cancel")}</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => releasePayment(p.id)}
-                                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
-                                  {t("admin.releaseConfirmCta")}
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="bookings" className="mt-6">
-              {loading ? (
-                <Spinner />
-              ) : bookings.length === 0 ? (
-                <EmptyState icon={Inbox} title={t("admin.noBookings")} description={t("admin.noBookingsDesc")} />
-              ) : (
-                <div className="space-y-3">
-                  {bookings.map((b) => (
-                    <div key={b.id} className="rounded-2xl border border-border bg-card p-4 shadow-card">
-                      <div className="flex flex-wrap items-start justify-between gap-3">
-                        <div>
-                          <div className="font-arabic text-sm font-semibold text-foreground">
-                            {b.vendor?.business_name ?? "—"}
-                          </div>
-                          <div className="text-[11px] text-foreground/55">
-                            {b.vendor?.category ? t(`categories.${b.vendor.category}`) : ""} · #{b.id.slice(0, 8).toUpperCase()}
-                          </div>
-                        </div>
-                        <Badge className={bookingBadge(b.status)}>
-                          {t(`customer.bookingStatus.${b.status}`)}
-                        </Badge>
-                      </div>
-                      <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
-                        <Field label={t("admin.eventDate")} value={fmtDate(b.event_date)} />
-                        <Field label={t("admin.totalPrice")} value={`${fmtNumber(Number(b.total_price ?? 0))} ${t("common.currency")}`} />
-                        <Field label={t("admin.paid")} value={`${fmtNumber(Number(b.paid_amount))} ${t("common.currency")}`} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="reviews" className="mt-6">
-              <AdminReviewsPanel />
-            </TabsContent>
-
-            <TabsContent value="packages" className="mt-6">
-              <AdminPackagesPanel />
-            </TabsContent>
-
-            <TabsContent value="moderation" className="mt-6">
-              <AdminModerationQueue />
-            </TabsContent>
-          </Tabs>
-        </div>
-      </main>
-    </div>
+      {/* Active section */}
+      <section className="mt-6">
+        {renderSection()}
+      </section>
+    </AdminLayout>
   );
 };
 
