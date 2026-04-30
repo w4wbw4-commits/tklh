@@ -9,7 +9,7 @@ import {
   SketchCandelabra,
   SketchBranch,
   SketchBanquet,
-  SketchKilim,
+  SketchCurtain,
 } from "./SketchArt";
 
 // ---------------------------------------------------------------------------
@@ -48,43 +48,19 @@ export const Hero = () => {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
 
-      {/* Kilim curtains framing the hero — narrow strips on both edges, fading top/bottom */}
-      <SketchKilim
-        className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-[64px] opacity-80 md:block lg:w-[78px]"
-      />
-      <SketchKilim
-        className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[64px] -scale-x-100 opacity-80 md:block lg:w-[78px]"
+      {/* Single classical drape — left edge only, soft and unobtrusive */}
+      <SketchCurtain
+        className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-[110px] opacity-75 md:block lg:w-[140px]"
       />
 
-      {/* Top corner ginkgo fans — pushed inside of the kilim curtain */}
+      {/* A single ginkgo fan opposite the curtain (top-right) for balance */}
       <SketchGinkgo
-        className="pointer-events-none absolute -top-8 left-[60px] hidden h-[230px] w-auto opacity-80 md:block lg:left-[78px]"
-      />
-      <SketchGinkgo
-        className="pointer-events-none absolute -top-8 right-[60px] hidden h-[230px] w-auto -scale-x-100 opacity-80 md:block lg:right-[78px]"
+        className="pointer-events-none absolute -top-6 right-4 hidden h-[200px] w-auto opacity-70 md:block"
       />
 
-      {/* Top center leafy branch */}
-      <SketchBranch
-        className="pointer-events-none absolute top-2 left-1/2 -translate-x-1/2 hidden h-[150px] w-[420px] opacity-70 lg:block"
-      />
-
-      {/* Bottom corner ginkgo fans (mirrored) — also offset from the kilim */}
-      <SketchGinkgo
-        className="pointer-events-none absolute -bottom-12 left-[60px] hidden h-[260px] w-auto opacity-70 md:block lg:left-[78px]"
-        style={{ transform: "rotate(180deg)" }}
-      />
-      <SketchGinkgo
-        className="pointer-events-none absolute -bottom-12 right-[60px] hidden h-[260px] w-auto opacity-70 md:block lg:right-[78px]"
-        style={{ transform: "rotate(180deg) scaleX(-1)" }}
-      />
-
-      {/* Candelabras — small, hugging the bottom edges (inside the curtain) */}
+      {/* One candelabra on the right side, near the bottom — counterweight to the drape */}
       <SketchCandelabra
-        className="pointer-events-none absolute -bottom-2 left-[70px] hidden h-[160px] w-auto opacity-75 lg:block lg:left-[88px]"
-      />
-      <SketchCandelabra
-        className="pointer-events-none absolute -bottom-2 right-[70px] hidden h-[160px] w-auto -scale-x-100 opacity-75 lg:block lg:right-[88px]"
+        className="pointer-events-none absolute -bottom-2 right-6 hidden h-[150px] w-auto -scale-x-100 opacity-70 lg:block"
       />
 
       {/* Banquet table — pushed below the fold, only peeks under stats */}

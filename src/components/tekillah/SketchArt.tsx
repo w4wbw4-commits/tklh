@@ -393,15 +393,18 @@ export const SketchBanquet = ({ className, style, ariaHidden = true }: SketchPro
   );
 };
 
-// --- Kilim curtain (vertical tribal pattern, evokes Najdi/Sadu rug) --------
-export const SketchKilim = ({ className, style, ariaHidden = true }: SketchProps) => {
+// --- Classical curtain drape with kilim motif (vertical, side accent) ------
+export const SketchCurtain = ({ className, style, ariaHidden = true }: SketchProps) => {
   const { ref, animate } = useDraw();
-  // 8 motif tiles stacked vertically, each ~120 tall, width 100.
-  const tiles = Array.from({ length: 9 }, (_, i) => i);
+  // Pleats: vertical curved lines giving fabric-fold feel.
+  // viewBox is tall + narrow; drape hangs from top, gathered at bottom by a tieback.
+  const pleats = [22, 34, 46, 58, 70, 82, 94, 106, 118];
+  // Kilim diamonds spaced down the curtain
+  const motifs = Array.from({ length: 7 }, (_, i) => 90 + i * 130);
   return (
     <svg
       ref={ref}
-      viewBox="0 0 100 1080"
+      viewBox="0 0 140 1080"
       preserveAspectRatio="xMidYMid slice"
       fill="none"
       className={className}
@@ -409,92 +412,113 @@ export const SketchKilim = ({ className, style, ariaHidden = true }: SketchProps
       aria-hidden={ariaHidden}
     >
       <defs>
-        <pattern id="kilim-weave" width="6" height="6" patternUnits="userSpaceOnUse">
-          <path d="M0 3 L6 3" stroke={brownSoft} strokeWidth="0.4" opacity="0.4" />
-        </pattern>
-        <linearGradient id="kilim-fade" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="hsl(var(--cream))" stopOpacity="0" />
-          <stop offset="8%" stopColor="hsl(var(--cream))" stopOpacity="1" />
-          <stop offset="92%" stopColor="hsl(var(--cream))" stopOpacity="1" />
+        <linearGradient id="curtain-fade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="hsl(var(--cream))" stopOpacity="1" />
+          <stop offset="78%" stopColor="hsl(var(--cream))" stopOpacity="1" />
           <stop offset="100%" stopColor="hsl(var(--cream))" stopOpacity="0" />
         </linearGradient>
-        <mask id="kilim-mask">
-          <rect width="100" height="1080" fill="url(#kilim-fade)" />
+        <mask id="curtain-mask">
+          <rect width="140" height="1080" fill="url(#curtain-fade)" />
         </mask>
       </defs>
 
-      <g mask="url(#kilim-mask)">
-        {/* Outer hairline borders */}
-        <motion.line x1="2" y1="0" x2="2" y2="1080" stroke={brown} strokeWidth="0.6"
+      <g mask="url(#curtain-mask)">
+        {/* Curtain rod */}
+        <motion.path d="M2 14 L138 14"
+          stroke={brown} strokeWidth="1.4" strokeLinecap="round"
           variants={drawVariants} initial="hidden" animate={animate} custom={0} />
-        <motion.line x1="98" y1="0" x2="98" y2="1080" stroke={brown} strokeWidth="0.6"
-          variants={drawVariants} initial="hidden" animate={animate} custom={0} />
-        {/* Inner border */}
-        <motion.line x1="14" y1="0" x2="14" y2="1080" stroke={olive} strokeWidth="0.5"
-          variants={drawVariants} initial="hidden" animate={animate} custom={0.2} />
-        <motion.line x1="86" y1="0" x2="86" y2="1080" stroke={olive} strokeWidth="0.5"
-          variants={drawVariants} initial="hidden" animate={animate} custom={0.2} />
+        <motion.circle cx="6" cy="14" r="3.5" stroke={gold} strokeWidth="1" fill={gold} fillOpacity={0.2}
+          initial={{ opacity: 0 }} animate={{ opacity: animate === "visible" ? 1 : 0 }} transition={{ delay: 0.2 }} />
+        <motion.circle cx="134" cy="14" r="3.5" stroke={gold} strokeWidth="1" fill={gold} fillOpacity={0.2}
+          initial={{ opacity: 0 }} animate={{ opacity: animate === "visible" ? 1 : 0 }} transition={{ delay: 0.2 }} />
 
-        {/* subtle weave wash */}
-        <rect x="14" y="0" width="72" height="1080" fill="url(#kilim-weave)" />
+        {/* Curtain rings */}
+        {[14, 30, 46, 62, 78, 94, 110, 126].map((x, i) => (
+          <motion.circle key={x} cx={x} cy="20" r="3" stroke={brown} strokeWidth="0.8" fill="none"
+            variants={drawVariants} initial="hidden" animate={animate} custom={0.1 + i * 0.04} />
+        ))}
 
-        {/* Zigzag side bands */}
+        {/* Top scalloped header */}
         <motion.path
-          d={`M6 0 ${Array.from({ length: 60 }, (_, i) => `L${i % 2 === 0 ? 10 : 4} ${i * 18 + 9}`).join(" ")}`}
-          stroke={olive} strokeWidth="0.7" fill="none" strokeLinejoin="round"
-          variants={drawVariants} initial="hidden" animate={animate} custom={0.4} />
+          d={`M2 28 ${[14, 30, 46, 62, 78, 94, 110, 126].map((x) => `Q${x} 40 ${x + 8} 28`).join(" ")} L138 28`}
+          stroke={olive} strokeWidth="0.9" fill="none" strokeLinejoin="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={0.3} />
+
+        {/* Outer drape outline (slight inward curve at the bottom, gathered) */}
         <motion.path
-          d={`M94 0 ${Array.from({ length: 60 }, (_, i) => `L${i % 2 === 0 ? 90 : 96} ${i * 18 + 9}`).join(" ")}`}
-          stroke={olive} strokeWidth="0.7" fill="none" strokeLinejoin="round"
+          d="M4 28 Q2 540 22 980 Q70 1020 138 980 Q140 540 136 28"
+          stroke={brown} strokeWidth="1" fill={gold} fillOpacity={0.04} strokeLinejoin="round"
           variants={drawVariants} initial="hidden" animate={animate} custom={0.4} />
 
-        {/* Repeating diamond+hook motif tiles */}
-        {tiles.map((t) => {
-          const cy = 60 + t * 120;
-          // alternate accent color: gold on every 3rd tile, otherwise brown/olive
-          const accent = t % 3 === 0 ? gold : t % 2 === 0 ? brown : olive;
+        {/* Vertical pleat lines — soft curved folds */}
+        {pleats.map((x, i) => (
+          <motion.path key={x}
+            d={`M${x} 30 Q${x - 2 + (i % 2) * 4} 540 ${x + (i % 2 === 0 ? 6 : -4)} 980`}
+            stroke={olive} strokeWidth="0.55" fill="none" strokeLinecap="round" opacity={0.55}
+            variants={drawVariants} initial="hidden" animate={animate} custom={0.5 + i * 0.04} />
+        ))}
+
+        {/* Inner narrow border lines that follow the drape */}
+        <motion.path d="M14 30 Q12 540 30 970"
+          stroke={olive} strokeWidth="0.5" fill="none"
+          variants={drawVariants} initial="hidden" animate={animate} custom={0.6} />
+        <motion.path d="M126 30 Q128 540 110 970"
+          stroke={olive} strokeWidth="0.5" fill="none"
+          variants={drawVariants} initial="hidden" animate={animate} custom={0.6} />
+
+        {/* Kilim diamond motifs running down the drape's center */}
+        {motifs.map((cy, i) => {
+          const accent = i % 3 === 0 ? gold : i % 2 === 0 ? brown : olive;
+          // slight horizontal drift so the motifs feel painted on fabric, not stamped
+          const cx = 70 + (i % 2 === 0 ? -3 : 3);
           return (
-            <g key={t}>
-              {/* central diamond outline */}
+            <g key={cy}>
               <motion.path
-                d={`M50 ${cy - 38} L78 ${cy} L50 ${cy + 38} L22 ${cy} Z`}
-                stroke={accent} strokeWidth="0.9" fill={accent} fillOpacity={0.08}
+                d={`M${cx} ${cy - 26} L${cx + 22} ${cy} L${cx} ${cy + 26} L${cx - 22} ${cy} Z`}
+                stroke={accent} strokeWidth="0.8" fill={accent} fillOpacity={0.1}
                 strokeLinejoin="round"
-                variants={drawVariants} initial="hidden" animate={animate} custom={0.6 + t * 0.05} />
-              {/* inner diamond */}
+                variants={drawVariants} initial="hidden" animate={animate} custom={0.7 + i * 0.06} />
               <motion.path
-                d={`M50 ${cy - 22} L66 ${cy} L50 ${cy + 22} L34 ${cy} Z`}
-                stroke={olive} strokeWidth="0.7" fill="none"
-                variants={drawVariants} initial="hidden" animate={animate} custom={0.7 + t * 0.05} />
-              {/* small center cross */}
+                d={`M${cx} ${cy - 14} L${cx + 12} ${cy} L${cx} ${cy + 14} L${cx - 12} ${cy} Z`}
+                stroke={olive} strokeWidth="0.55" fill="none"
+                variants={drawVariants} initial="hidden" animate={animate} custom={0.8 + i * 0.06} />
               <motion.path
-                d={`M46 ${cy} L54 ${cy} M50 ${cy - 4} L50 ${cy + 4}`}
-                stroke={gold} strokeWidth="0.8" strokeLinecap="round"
-                variants={drawVariants} initial="hidden" animate={animate} custom={0.9 + t * 0.05} />
-              {/* hooks on the diamond points */}
+                d={`M${cx - 4} ${cy} L${cx + 4} ${cy} M${cx} ${cy - 4} L${cx} ${cy + 4}`}
+                stroke={gold} strokeWidth="0.7" strokeLinecap="round"
+                variants={drawVariants} initial="hidden" animate={animate} custom={0.9 + i * 0.06} />
+              {/* small hooks on horizontal points */}
               <motion.path
-                d={`M22 ${cy} l-4 -3 M22 ${cy} l-4 3 M78 ${cy} l4 -3 M78 ${cy} l4 3`}
-                stroke={brown} strokeWidth="0.7" strokeLinecap="round"
-                variants={drawVariants} initial="hidden" animate={animate} custom={1.0 + t * 0.05} />
-              {/* divider stitch between tiles */}
-              <motion.path
-                d={`M16 ${cy + 58} L84 ${cy + 58}`}
-                stroke={brownSoft} strokeWidth="0.5" strokeDasharray="2 3"
-                variants={drawVariants} initial="hidden" animate={animate} custom={1.2 + t * 0.05} />
+                d={`M${cx - 22} ${cy} l-4 -3 M${cx - 22} ${cy} l-4 3 M${cx + 22} ${cy} l4 -3 M${cx + 22} ${cy} l4 3`}
+                stroke={brown} strokeWidth="0.6" strokeLinecap="round"
+                variants={drawVariants} initial="hidden" animate={animate} custom={1.0 + i * 0.06} />
             </g>
           );
         })}
 
-        {/* Top fringe */}
+        {/* Tieback (rope + tassel) about 2/3 down */}
         <motion.path
-          d={`M14 4 ${Array.from({ length: 18 }, (_, i) => `M${14 + i * 4} 0 L${14 + i * 4} 8`).join(" ")}`}
-          stroke={brown} strokeWidth="0.6" strokeLinecap="round"
+          d="M-2 720 Q70 760 142 720"
+          stroke={gold} strokeWidth="1.2" fill="none" strokeLinecap="round"
           variants={drawVariants} initial="hidden" animate={animate} custom={1.4} />
-        {/* Bottom fringe */}
         <motion.path
-          d={Array.from({ length: 18 }, (_, i) => `M${14 + i * 4} 1072 L${14 + i * 4} 1080`).join(" ")}
-          stroke={brown} strokeWidth="0.6" strokeLinecap="round"
-          variants={drawVariants} initial="hidden" animate={animate} custom={1.4} />
+          d="M70 760 L70 790 M64 760 L64 790 M76 760 L76 790"
+          stroke={gold} strokeWidth="0.8" strokeLinecap="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={1.5} />
+        <motion.circle cx="70" cy="757" r="3" fill={gold}
+          initial={{ opacity: 0 }} animate={{ opacity: animate === "visible" ? 1 : 0 }} transition={{ delay: 1.5 }} />
+
+        {/* Bottom hem — wavy fabric edge */}
+        <motion.path
+          d="M22 980 Q40 994 58 982 Q76 996 94 982 Q112 996 130 980"
+          stroke={brown} strokeWidth="0.9" fill="none" strokeLinecap="round" strokeLinejoin="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={1.6} />
+        {/* Fringe at the bottom */}
+        {Array.from({ length: 14 }, (_, i) => 24 + i * 8).map((x, i) => (
+          <motion.path key={x}
+            d={`M${x} 988 L${x + (i % 2 === 0 ? 0 : 1)} 1004`}
+            stroke={brown} strokeWidth="0.55" strokeLinecap="round"
+            variants={drawVariants} initial="hidden" animate={animate} custom={1.7 + i * 0.02} />
+        ))}
       </g>
     </svg>
   );
