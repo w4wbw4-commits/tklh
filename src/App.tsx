@@ -91,6 +91,7 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
+              <PartnerFloatingCTA />
             </AuthProvider>
           </BrowserRouter>
         </TooltipProvider>
