@@ -76,25 +76,25 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 24, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="relative inline-flex items-center justify-center rounded-[2.5rem] border border-cream/40 px-8 py-4 sm:rounded-[3.5rem] sm:px-14 sm:py-6"
+          className="relative inline-flex items-center justify-center rounded-[2rem] border border-cream/50 px-7 py-3 sm:rounded-[2.75rem] sm:px-12 sm:py-5"
           style={{
             background:
-              "linear-gradient(135deg, hsl(0 0% 100% / 0.32) 0%, hsl(0 0% 100% / 0.18) 100%)",
-            backdropFilter: "blur(22px) saturate(1.15)",
-            WebkitBackdropFilter: "blur(22px) saturate(1.15)",
+              "linear-gradient(135deg, hsl(0 0% 100% / 0.45) 0%, hsl(0 0% 100% / 0.22) 100%)",
+            backdropFilter: "blur(18px) saturate(1.1)",
+            WebkitBackdropFilter: "blur(18px) saturate(1.1)",
             boxShadow:
-              "0 30px 80px -25px hsl(var(--primary-deep) / 0.55), inset 0 1px 0 hsl(0 0% 100% / 0.35)",
+              "0 22px 60px -25px hsl(var(--primary-deep) / 0.4), inset 0 1px 0 hsl(0 0% 100% / 0.4)",
           }}
         >
           <h1
-            className="font-wordmark text-balance text-center text-[140px] font-black leading-[1] sm:text-[200px] md:text-[260px] lg:text-[320px]"
+            className="font-wordmark text-balance text-center text-[80px] font-black leading-[1] sm:text-[110px] md:text-[140px] lg:text-[170px]"
             lang="ar"
             dir="rtl"
             style={{
               color: "hsl(var(--primary-deep))",
               WebkitTextFillColor: "hsl(var(--primary-deep))",
               letterSpacing: "-0.02em",
-              textShadow: "0 2px 12px hsl(0 0% 100% / 0.35)",
+              textShadow: "0 2px 10px hsl(0 0% 100% / 0.4)",
             }}
           >
             {t("hero.titleA")}
