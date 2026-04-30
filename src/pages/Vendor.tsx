@@ -38,7 +38,13 @@ const VendorPage = () => {
     }
     (async () => {
       setVendorLoading(true);
-      const { data } = await supabase.from("vendors").select("*").eq("user_id", user.id).maybeSingle();
+      // Sensitive PII columns (iban, phone, *_url) are revoked from authenticated;
+      // we only need existence + status here, so a narrow projection is enough.
+      const { data } = await supabase
+        .from("vendors")
+        .select("id, user_id, business_name, approval_status, active")
+        .eq("user_id", user.id)
+        .maybeSingle();
       const v = data as VendorRow | null;
       setVendor(v);
       setVendorLoading(false);
