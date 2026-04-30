@@ -393,6 +393,71 @@ export const SketchBanquet = ({ className, style, ariaHidden = true }: SketchPro
   );
 };
 
+// --- Theatre curtain (side drape) -------------------------------------------
+// Soft olive curtain with gold tieback + tassel. Mirror via -scale-x-100.
+export const SketchCurtain = ({ className, style, ariaHidden = true }: SketchProps) => {
+  const { ref, animate } = useDraw();
+  // Vertical pleats — curving inward at the tieback (~y=380).
+  const pleats = [20, 50, 80, 110, 140, 170];
+  return (
+    <svg ref={ref} viewBox="0 0 200 1000" preserveAspectRatio="none" fill="none"
+      className={className} style={style} aria-hidden={ariaHidden}>
+      <defs>
+        <linearGradient id="curtainFill" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="hsl(var(--primary-deep))" stopOpacity="0.55" />
+          <stop offset="55%" stopColor="hsl(var(--primary-deep))" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="hsl(var(--primary-deep))" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="valanceFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="hsl(var(--primary-deep))" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="hsl(var(--primary-deep))" stopOpacity="0.15" />
+        </linearGradient>
+      </defs>
+
+      {/* Drape body — curves inward at tieback then flares out */}
+      <motion.path
+        d="M0 0 L200 0 L200 380 Q120 410 200 470 L200 1000 L0 1000 Z"
+        fill="url(#curtainFill)"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: animate === "visible" ? 1 : 0 }}
+        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+      />
+
+      {/* Pleat lines */}
+      {pleats.map((x, i) => (
+        <motion.path key={x}
+          d={`M${x} 0 Q${x - 4} 200 ${Math.max(x - 30, 0)} 380 Q${x - 10} 430 ${x} 600 L${x} 1000`}
+          stroke={olive} strokeOpacity={0.35} strokeWidth="1" strokeLinecap="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={0.2 + i * 0.08} />
+      ))}
+
+      {/* Valance — scalloped top */}
+      <motion.path
+        d="M0 0 L200 0 L200 60 Q175 90 150 60 Q125 90 100 60 Q75 90 50 60 Q25 90 0 60 Z"
+        fill="url(#valanceFill)" stroke={olive} strokeOpacity={0.45} strokeWidth="1"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0} />
+
+      {/* Tieback rope (gold) */}
+      <motion.path
+        d="M180 380 Q120 395 175 470"
+        stroke={gold} strokeWidth="2.2" strokeLinecap="round" fill="none"
+        variants={drawVariants} initial="hidden" animate={animate} custom={1} />
+      {/* Rope highlight */}
+      <motion.path
+        d="M178 384 Q124 398 172 466"
+        stroke="hsl(var(--gold-soft))" strokeWidth="0.9" strokeLinecap="round" fill="none"
+        variants={drawVariants} initial="hidden" animate={animate} custom={1.1} />
+
+      {/* Tassel */}
+      <motion.path d="M122 408 L122 440 M126 410 L126 442 M130 410 L130 440"
+        stroke={gold} strokeWidth="1.2" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={1.4} />
+      <motion.circle cx="126" cy="404" r="4" fill={gold}
+        initial={{ opacity: 0 }} animate={{ opacity: animate === "visible" ? 1 : 0 }} transition={{ delay: 1.6 }} />
+    </svg>
+  );
+};
+
 // --- Hairline divider with star (gold) --------------------------------------
 export const SketchDivider = ({ className }: { className?: string }) => (
   <div className={`flex items-center justify-center gap-3 ${className ?? ""}`}>
