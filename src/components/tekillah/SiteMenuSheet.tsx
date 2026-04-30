@@ -15,7 +15,6 @@ import {
   Info,
   Sparkles,
   LayoutDashboard,
-  Building2,
   ShieldCheck,
   LogIn,
   Globe,
