@@ -77,7 +77,7 @@ export const AdminGrandControl = ({ onJump }: { onJump?: (tab: string) => void }
       pendingDocs: (pending ?? []).length,
       flaggedContent: flaggedList.length,
     });
-    setPendingVendors((pending ?? []) as PendingVendor[]);
+    setPendingVendors(((pending ?? []) as PendingVendor[]).slice(0, 5));
     setFlagged(flaggedList);
     setLoading(false);
   };
