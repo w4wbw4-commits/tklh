@@ -47,136 +47,104 @@ const AboutValueSection = () => (
   >
     <ArabicPattern opacity={0.04} />
 
-    <div className="relative mx-auto max-w-6xl">
-      <div className="grid items-start gap-10 md:grid-cols-12 md:gap-14">
-        {/* Right column (RTL) — story text + chips + CTAs + inline stats */}
-        <Reveal className="md:col-span-7">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
-              <Sparkles className="h-4 w-4 text-gold" strokeWidth={2} />
-              تعرّف على تِكله
+    <div className="relative mx-auto max-w-4xl">
+      <Reveal>
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
+            <Sparkles className="h-4 w-4 text-gold" strokeWidth={2} />
+            تعرّف على تِكله
+          </span>
+
+          <h2 className="mt-6 font-arabic text-5xl font-black leading-[1.1] text-green md:text-6xl lg:text-7xl">
+            تِكله..{" "}
+            <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
+              اسم على مسمّى
             </span>
+          </h2>
 
-            <h2 className="mt-6 font-arabic text-5xl font-black leading-[1.1] text-green md:text-6xl lg:text-7xl">
-              تِكله..{" "}
-              <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
-                اسم على مسمّى
-              </span>
-            </h2>
-
-            <div className="mt-6 mb-6 flex items-center gap-3">
-              <span className="h-px w-16 bg-gold/60" />
-              <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-            </div>
-
-            <p className="font-arabic text-xl font-medium leading-[1.95] text-foreground/85 sm:text-2xl">
-              شِلنا عنك همّ التخطيط والبحث والحوسة. تِكله تكفل لك كل شي:
-              من القاعة، للتصوير، للكوش، للضيافة — كل شي بسعر واضح وضمان أكيد.
-            </p>
-
-            <p className="mt-4 font-arabic leading-[1.95] text-foreground/65 sm:text-lg">
-              اخترنا اسم «تِكله» من «الاتكال» و«الثقة» — لأن لحظة الفرح ما
-              تستاهل صداع التخطيط. اختار ميزانيتك، نقترح لك الأنسب، وتلقى أفضل
-              المزوّدين بضغطة واحدة.
-            </p>
-
-            {/* Inline minimalist stat strip — replaces the bulky white card */}
-            <div className="mt-7 grid grid-cols-3 gap-3 sm:gap-5">
-              {TRUST_STATS.map((s, i) => {
-                const Icon = s.icon;
-                return (
-                  <div
-                    key={i}
-                    className="group relative rounded-2xl border border-gold/25 bg-cream/70 p-4 text-center backdrop-blur transition-all duration-500 hover:border-gold/55 hover:-translate-y-0.5"
-                  >
-                    <Icon className="mx-auto h-4 w-4 text-gold" strokeWidth={2} />
-                    <div className="mt-2 font-arabic text-2xl font-black leading-none text-green sm:text-3xl">
-                      <AnimatedCounter value={s.value} suffix={s.suffix} arabicDigits />
-                    </div>
-                    <div className="mt-1.5 font-arabic text-[11px] leading-tight text-foreground/65 sm:text-xs">
-                      {s.label}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Value chips */}
-            <div className="mt-7 flex flex-wrap gap-2.5">
-              {VALUE_CHIPS.map((v, i) => {
-                const Icon = v.icon;
-                return (
-                  <motion.span
-                    key={i}
-                    whileHover={{ y: -2 }}
-                    className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-cream/80 px-3.5 py-1.5 text-xs font-bold text-foreground backdrop-blur transition-colors hover:border-gold hover:bg-cream sm:text-sm"
-                  >
-                    <Icon className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
-                    {v.label}
-                  </motion.span>
-                );
-              })}
-            </div>
-
-            {/* CTAs */}
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                to="/#wizard"
-                className="group inline-flex items-center justify-center gap-2 rounded-full border-2 border-gold bg-green px-7 py-3.5 font-arabic text-sm font-bold text-gold shadow-deep transition-all hover:-translate-y-0.5 hover:bg-green-mid hover:shadow-[0_25px_70px_-20px_hsl(var(--gold)/0.55)] sm:text-base"
-              >
-                <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
-                ابدأ التخطيط الحين
-              </Link>
-              <a
-                href="#speed"
-                className="inline-flex items-center justify-center rounded-full border border-green/30 bg-cream/70 px-7 py-3.5 font-arabic text-sm font-bold text-green backdrop-blur transition-colors hover:bg-cream sm:text-base"
-              >
-                ليش تِكله؟
-              </a>
-            </div>
+          <div className="mx-auto mt-6 mb-6 flex items-center justify-center gap-3">
+            <span className="h-px w-16 bg-gold/60" />
+            <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+            <span className="h-px w-16 bg-gold/60" />
           </div>
-        </Reveal>
 
-        {/* Left column — 4 slim vertical value tiles (replaces glassy cards section) */}
-        <Reveal delay={0.15} className="md:col-span-5">
-          <div className="grid gap-3">
-            {VALUE_TILES.map((tile, i) => {
-              const Icon = tile.icon;
+          <p className="mx-auto max-w-3xl font-arabic text-xl font-medium leading-[1.95] text-foreground/85 sm:text-2xl">
+            شِلنا عنك همّ التخطيط والبحث والحوسة. تِكله تكفل لك كل شي:
+            من القاعة، للتصوير، للكوش، للضيافة — كل شي بسعر واضح وضمان أكيد.
+          </p>
+
+          <p className="mx-auto mt-4 max-w-2xl font-arabic leading-[1.95] text-foreground/65 sm:text-lg">
+            اخترنا اسم «تِكله» من «الاتكال» و«الثقة» — لأن لحظة الفرح ما
+            تستاهل صداع التخطيط.
+          </p>
+        </div>
+      </Reveal>
+
+      {/* Inline minimalist stat strip */}
+      <Reveal delay={0.12}>
+        <div className="mx-auto mt-10 grid max-w-3xl grid-cols-3 gap-3 sm:gap-5">
+          {TRUST_STATS.map((s, i) => {
+            const Icon = s.icon;
+            return (
+              <div
+                key={i}
+                className="group relative rounded-2xl border border-gold/25 bg-cream/70 p-4 text-center backdrop-blur transition-all duration-500 hover:border-gold/55 hover:-translate-y-0.5"
+              >
+                <Icon className="mx-auto h-4 w-4 text-gold" strokeWidth={2} />
+                <div className="mt-2 font-arabic text-2xl font-black leading-none text-green sm:text-3xl">
+                  <AnimatedCounter value={s.value} suffix={s.suffix} arabicDigits />
+                </div>
+                <div className="mt-1.5 font-arabic text-[11px] leading-tight text-foreground/65 sm:text-xs">
+                  {s.label}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Reveal>
+
+      {/* Chips + CTAs */}
+      <Reveal delay={0.18}>
+        <div className="mt-8 flex flex-col items-center gap-5">
+          <div className="flex flex-wrap justify-center gap-2.5">
+            {VALUE_CHIPS.map((v, i) => {
+              const Icon = v.icon;
               return (
-                <motion.div
+                <motion.span
                   key={i}
-                  whileHover={{ x: -4 }}
-                  transition={{ type: "spring", stiffness: 240, damping: 18 }}
-                  className="group relative flex items-start gap-4 overflow-hidden rounded-2xl border border-gold/20 bg-cream/65 p-4 shadow-card backdrop-blur-md transition-all duration-500 hover:border-gold/55 hover:bg-cream/85 hover:shadow-[0_18px_40px_-18px_hsl(var(--gold)/0.4)] sm:p-5"
+                  whileHover={{ y: -2 }}
+                  className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-cream/80 px-3.5 py-1.5 text-xs font-bold text-foreground backdrop-blur transition-colors hover:border-gold hover:bg-cream sm:text-sm"
                 >
-                  {/* Gold sheen sweep */}
-                  <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold/15 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-
-                  <span className="relative inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-gold/30 bg-gradient-to-br from-gold/15 to-gold/5 text-gold">
-                    <Icon className="h-5 w-5" strokeWidth={1.8} />
-                  </span>
-
-                  <div className="relative min-w-0 flex-1">
-                    <h3 className="font-arabic text-base font-black text-green sm:text-lg">
-                      {tile.title}
-                    </h3>
-                    <p className="mt-1 font-arabic text-xs leading-[1.7] text-foreground/65 sm:text-sm">
-                      {tile.desc}
-                    </p>
-                    <div className="mt-2.5 h-0.5 w-8 rounded-full bg-gradient-to-l from-green to-gold transition-all duration-500 group-hover:w-16" />
-                  </div>
-                </motion.div>
+                  <Icon className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
+                  {v.label}
+                </motion.span>
               );
             })}
           </div>
-        </Reveal>
-      </div>
+
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              to="/#wizard"
+              className="group inline-flex items-center justify-center gap-2 rounded-full border-2 border-gold bg-green px-7 py-3.5 font-arabic text-sm font-bold text-gold shadow-deep transition-all hover:-translate-y-0.5 hover:bg-green-mid hover:shadow-[0_25px_70px_-20px_hsl(var(--gold)/0.55)] sm:text-base"
+            >
+              <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
+              ابدأ التخطيط الحين
+            </Link>
+            <a
+              href="#speed"
+              className="inline-flex items-center justify-center rounded-full border border-green/30 bg-cream/70 px-7 py-3.5 font-arabic text-sm font-bold text-green backdrop-blur transition-colors hover:bg-cream sm:text-base"
+            >
+              ليش تِكله؟
+            </a>
+          </div>
+        </div>
+      </Reveal>
     </div>
   </section>
 );
 
 // ============================================================================
-// Section B — Speed Comparison (kept, tighter spacing)
+// Section B — Speed Comparison + 4 Value Tiles below (creative cascade)
 // ============================================================================
 const SpeedSection = () => (
   <section
@@ -280,6 +248,65 @@ const SpeedSection = () => (
           </div>
         </Reveal>
       </div>
+
+      {/* ── Cascade connector: hairline + label that ties the comparison
+          to the supporting "ليش تِكله أسرع" tiles below. */}
+      <Reveal delay={0.2}>
+        <div className="relative mx-auto mt-14 flex flex-col items-center">
+          <span className="h-12 w-px bg-gradient-to-b from-transparent via-gold/40 to-gold" />
+          <span className="mt-3 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream px-4 py-1.5 text-xs font-bold text-green shadow-soft sm:text-sm">
+            <Sparkles className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
+            وش وراء الـ١٠ دقائق؟
+          </span>
+        </div>
+      </Reveal>
+
+      {/* ── 4 creative value tiles in a 2x2 grid below the comparison ── */}
+      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+        {VALUE_TILES.map((tile, i) => {
+          const Icon = tile.icon;
+          // Stagger entry from alternating sides for a "cascade" rhythm.
+          const fromRight = i % 2 === 0;
+          return (
+            <Reveal key={i} delay={0.05 + i * 0.08}>
+              <motion.div
+                initial={{ opacity: 0, x: fromRight ? 24 : -24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
+                whileHover={{ y: -6 }}
+                className="group relative flex items-start gap-4 overflow-hidden rounded-2xl border border-gold/20 bg-cream/70 p-5 shadow-card backdrop-blur-md transition-all duration-500 hover:border-gold/55 hover:bg-cream hover:shadow-[0_22px_50px_-20px_hsl(var(--gold)/0.45)]"
+              >
+                {/* Number badge — adds creative ranking */}
+                <span className="absolute left-4 top-4 font-wordmark text-xs font-black text-gold/60">
+                  ٠{i + 1}
+                </span>
+
+                {/* Gold sheen sweep */}
+                <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold/15 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+
+                <motion.span
+                  whileHover={{ rotate: -6, scale: 1.08 }}
+                  transition={{ type: "spring", stiffness: 240, damping: 14 }}
+                  className="relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-gold/35 bg-gradient-to-br from-gold/20 to-gold/5 text-gold shadow-soft"
+                >
+                  <Icon className="h-5 w-5" strokeWidth={1.8} />
+                </motion.span>
+
+                <div className="relative min-w-0 flex-1">
+                  <h3 className="font-arabic text-lg font-black text-green sm:text-xl">
+                    {tile.title}
+                  </h3>
+                  <p className="mt-1.5 font-arabic text-sm leading-[1.8] text-foreground/70">
+                    {tile.desc}
+                  </p>
+                  <div className="mt-3 h-0.5 w-10 rounded-full bg-gradient-to-l from-green to-gold transition-all duration-500 group-hover:w-20" />
+                </div>
+              </motion.div>
+            </Reveal>
+          );
+        })}
+      </div>
     </div>
   </section>
 );
@@ -291,3 +318,4 @@ export const ProblemSolutionAbout = () => (
     <SpeedSection />
   </>
 );
+
