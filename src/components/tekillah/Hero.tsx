@@ -54,28 +54,35 @@ export const Hero = () => {
           <Sparkles className="h-3 w-3 text-gold" strokeWidth={1.5} />
         </motion.div>
 
-        {/* Brand wordmark — تِكله as the signature gold logo */}
-        <motion.h1
-          initial={{ opacity: 0, y: 24, scale: 0.94 }}
+        {/* Brand wordmark — تِكله in deep olive green inside a frosted glass plate */}
+        <motion.div
+          initial={{ opacity: 0, y: 24, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="font-wordmark text-balance text-center text-[140px] font-black leading-[1] sm:text-[200px] md:text-[260px] lg:text-[320px]"
-          lang="ar"
-          dir="rtl"
+          className="relative inline-flex items-center justify-center rounded-[2.5rem] border border-cream/40 px-8 py-4 sm:rounded-[3.5rem] sm:px-14 sm:py-6"
           style={{
             background:
-              "linear-gradient(180deg, hsl(40 75% 78%) 0%, hsl(38 65% 58%) 45%, hsl(36 55% 42%) 100%)",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            color: "transparent",
-            letterSpacing: "-0.02em",
-            filter:
-              "drop-shadow(0 8px 30px hsl(var(--primary-deep) / 0.85)) drop-shadow(0 2px 12px hsl(var(--gold) / 0.35))",
+              "linear-gradient(135deg, hsl(0 0% 100% / 0.32) 0%, hsl(0 0% 100% / 0.18) 100%)",
+            backdropFilter: "blur(22px) saturate(1.15)",
+            WebkitBackdropFilter: "blur(22px) saturate(1.15)",
+            boxShadow:
+              "0 30px 80px -25px hsl(var(--primary-deep) / 0.55), inset 0 1px 0 hsl(0 0% 100% / 0.35)",
           }}
         >
-          {t("hero.titleA")}
-        </motion.h1>
+          <h1
+            className="font-wordmark text-balance text-center text-[140px] font-black leading-[1] sm:text-[200px] md:text-[260px] lg:text-[320px]"
+            lang="ar"
+            dir="rtl"
+            style={{
+              color: "hsl(var(--primary-deep))",
+              WebkitTextFillColor: "hsl(var(--primary-deep))",
+              letterSpacing: "-0.02em",
+              textShadow: "0 2px 12px hsl(0 0% 100% / 0.35)",
+            }}
+          >
+            {t("hero.titleA")}
+          </h1>
+        </motion.div>
 
         {/* Hairline gold divider */}
         <motion.div
