@@ -47,10 +47,8 @@ export const Hero = () => {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
 
-      {/* === Sketch banquet illustration on the RIGHT (mirrored from reference) ===
-          A soft hand-drawn long table with chairs, glowing candelabras and lotus
-          pads underneath. Width-capped + edge-anchored so it never overlaps the
-          centered text column. Top/bottom mask fades it into the cream wash. */}
+      {/* === Sketch banquet illustration on the RIGHT (desktop/tablet wide) ===
+          Width-capped + edge-anchored so it never overlaps the centered text. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-y-0 right-0 hidden w-[32vw] max-w-[380px] items-end justify-end overflow-hidden lg:flex xl:w-[34vw] xl:max-w-[440px]"
@@ -67,20 +65,45 @@ export const Hero = () => {
         />
       </div>
 
+      {/* === MOBILE banquet sketch ===
+          Most users land on phones, so we anchor a wide, low-opacity sketch at
+          the bottom of the hero — masked into the cream wash so it never
+          competes with the wordmark. Hidden on lg+ where the side variant
+          already runs. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 flex h-[44vh] max-h-[360px] items-end justify-center overflow-hidden lg:hidden"
+      >
+        <SketchLongBanquet
+          className="h-full w-[140%] max-w-none opacity-70 sm:w-[120%]"
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(to top, hsl(0 0% 0% / 1) 35%, hsl(0 0% 0% / 0.6) 65%, hsl(0 0% 0% / 0) 100%)",
+            maskImage:
+              "linear-gradient(to top, hsl(0 0% 0% / 1) 35%, hsl(0 0% 0% / 0.6) 65%, hsl(0 0% 0% / 0) 100%)",
+          }}
+        />
+      </div>
+
       {/* === Side framing — slim, edge-only, never crosses content === */}
-      {/* Top-left: soft eucalyptus arching down — balances the banquet on the right */}
+      {/* Top-left: soft eucalyptus arching down */}
       <SketchEucalyptus
-        className="pointer-events-none absolute top-4 left-0 hidden h-[120px] w-[230px] opacity-55 md:block lg:h-[140px] lg:w-[260px]"
+        className="pointer-events-none absolute top-3 left-0 h-[80px] w-[150px] opacity-50 sm:h-[110px] sm:w-[210px] md:h-[140px] md:w-[260px]"
       />
 
-      {/* Bottom-left: lotus pads */}
+      {/* Top-right: small lotus accent on mobile to balance the eucalyptus */}
       <SketchLotus
-        className="pointer-events-none absolute bottom-3 left-3 hidden h-[100px] w-[140px] opacity-50 md:block"
+        className="pointer-events-none absolute top-4 right-2 h-[70px] w-[100px] opacity-45 md:hidden"
       />
 
-      {/* Slim drape on the left edge */}
+      {/* Bottom-left: lotus pads on tablet+ (mobile already has a banquet) */}
+      <SketchLotus
+        className="pointer-events-none absolute bottom-3 left-3 hidden h-[100px] w-[140px] opacity-50 md:block lg:block"
+      />
+
+      {/* Slim drape on the left edge — visible from mobile up */}
       <SketchCurtain
-        className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-[44px] opacity-55 md:block lg:w-[56px]"
+        className="pointer-events-none absolute inset-y-0 left-0 h-full w-[28px] opacity-45 sm:w-[40px] md:w-[44px] lg:w-[56px]"
       />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-32 pb-20 text-center">
