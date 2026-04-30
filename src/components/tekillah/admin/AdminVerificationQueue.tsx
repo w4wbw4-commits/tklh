@@ -43,10 +43,10 @@ export const AdminVerificationQueue = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data: v } = await supabase.from("vendors")
-      .select("id, business_name, category, city, phone, bio, iban, iban_certificate_url, commercial_register_url, google_maps_url, portfolio_urls, starting_price, daily_capacity, approval_status, rejection_reason, created_at")
-      .eq("approval_status", "pending_approval")
-      .order("created_at", { ascending: false });
+    // Sensitive PII columns (iban, phone, *_url) are revoked from the
+    // authenticated role at the column level. Admins read them via the
+    // SECURITY DEFINER RPC, which checks `has_role(..., 'admin')` server-side.
+    const { data: v } = await supabase.rpc("admin_list_pending_vendor_verifications");
     setVendors((v ?? []) as VendorPending[]);
     setLoading(false);
   };
