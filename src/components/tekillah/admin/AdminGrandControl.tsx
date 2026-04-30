@@ -54,12 +54,9 @@ export const AdminGrandControl = ({ onJump }: { onJump?: (tab: string) => void }
       supabase.from("user_roles").select("*", { count: "exact", head: true }).eq("role", "customer"),
       supabase.from("user_roles").select("*", { count: "exact", head: true }).eq("role", "vendor"),
       supabase.from("bookings").select("*", { count: "exact", head: true }).in("status", ["pending", "confirmed"]),
-      supabase
-        .from("vendors")
-        .select("id, business_name, iban_certificate_url, commercial_register_url")
-        .eq("approval_status", "pending_approval")
-        .order("created_at", { ascending: false })
-        .limit(5),
+      // Sensitive certificate URLs are revoked from `authenticated`; fetch
+      // via the admin-only SECURITY DEFINER RPC.
+      supabase.rpc("admin_list_pending_vendor_docs"),
       supabase.from("reviews").select("id, comment").eq("flagged", true).limit(10),
       supabase.from("review_replies").select("id, body").eq("flagged", true).limit(10),
     ]);
