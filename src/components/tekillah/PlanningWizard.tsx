@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check, ArrowLeft, ArrowRight, Loader2, Sparkles, Zap, MapPin, Layers, Palette, Wallet, Users } from "lucide-react";
+import { Check, ArrowLeft, ArrowRight, Loader2, Sparkles, Zap } from "lucide-react";
+import {
+  SketchIconInvitation,
+  SketchIconServices,
+  SketchIconPalette,
+  SketchIconCoin,
+  SketchIconHandshake,
+} from "./wizard/WizardSketches";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { StepDetails } from "./wizard/StepDetails";
@@ -418,7 +425,7 @@ export const PlanningWizard = () => {
               const isFastTrackBadge = isFastTrack && isLast;
               const isActive = i === step;
               const isComplete = i < step;
-              const StepIcon = [MapPin, Layers, Palette, Wallet, Users][i] ?? Users;
+              const StepIcon = [SketchIconInvitation, SketchIconServices, SketchIconPalette, SketchIconCoin, SketchIconHandshake][i] ?? SketchIconHandshake;
               return (
                 <div key={i} className="flex flex-1 items-center gap-1.5 sm:gap-2">
                   <div className="flex flex-col items-center">
@@ -443,7 +450,7 @@ export const PlanningWizard = () => {
                       ) : isComplete ? (
                         <Check className="h-4 w-4" />
                       ) : (
-                        <StepIcon className="h-[18px] w-[18px]" strokeWidth={1.8} />
+                        <StepIcon className="h-5 w-5" />
                       )}
                     </motion.div>
                     <span
