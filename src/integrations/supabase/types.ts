@@ -1419,6 +1419,36 @@ export type Database = {
       }
     }
     Functions: {
+      admin_list_pending_vendor_docs: {
+        Args: never
+        Returns: {
+          business_name: string
+          commercial_register_url: string
+          iban_certificate_url: string
+          id: string
+        }[]
+      }
+      admin_list_pending_vendor_verifications: {
+        Args: never
+        Returns: {
+          approval_status: Database["public"]["Enums"]["approval_status"]
+          bio: string
+          business_name: string
+          category: string
+          city: string
+          commercial_register_url: string
+          created_at: string
+          daily_capacity: number
+          google_maps_url: string
+          iban: string
+          iban_certificate_url: string
+          id: string
+          phone: string
+          portfolio_urls: string[]
+          rejection_reason: string
+          starting_price: number
+        }[]
+      }
       compute_payment_split: {
         Args: { _amount: number }
         Returns: {
