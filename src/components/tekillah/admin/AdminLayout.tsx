@@ -78,32 +78,28 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
           </div>
         </Link>
 
-        <nav className="flex-1 space-y-1 overflow-y-auto pe-1">
+        <nav className="flex-1 space-y-0.5 overflow-y-auto pe-1">
           {adminNav.map(({ key, labelKey, fallback, Icon, tone }) => {
             const isActive = active === key;
             const count = badges[key] ?? 0;
-            const toneRing =
-              tone === "danger"
-                ? "ring-1 ring-destructive/40"
-                : tone === "warning"
-                  ? "ring-1 ring-amber-400/50"
-                  : "";
+            const dotColor =
+              tone === "danger" ? "bg-destructive" : tone === "warning" ? "bg-gold" : "bg-primary-foreground/30";
             return (
               <button
                 key={key}
                 type="button"
                 onClick={() => onChange(key)}
-                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all ${
+                className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all ${
                   isActive
                     ? "bg-primary-foreground text-primary shadow-sm"
-                    : `text-primary-foreground/80 hover:bg-primary-foreground/10 ${toneRing}`
+                    : "text-primary-foreground/75 hover:bg-primary-foreground/10 hover:text-primary-foreground"
                 }`}
               >
-                <Icon className="h-4 w-4 shrink-0" />
+                <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-primary" : "text-gold/80 group-hover:text-gold"}`} />
                 <span className="flex-1 text-start">{t(labelKey, { defaultValue: fallback })}</span>
-                {count > 0 && (
+                {count > 0 ? (
                   <Badge
-                    className={`px-1.5 py-0 text-[10px] ${
+                    className={`min-w-[20px] justify-center px-1.5 py-0 text-[10px] ${
                       isActive
                         ? "bg-primary text-primary-foreground"
                         : tone === "danger"
@@ -113,7 +109,9 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
                   >
                     {count}
                   </Badge>
-                )}
+                ) : tone && !isActive ? (
+                  <span className={`h-1.5 w-1.5 rounded-full ${dotColor}`} aria-hidden />
+                ) : null}
               </button>
             );
           })}
