@@ -120,26 +120,15 @@ const VendorPage = () => {
                 </Button>
               </>
             ) : (
-              <>
-                <Button
-                  size="sm"
-                  asChild
-                  className="rounded-full border border-gold/60 bg-gold text-primary-deep shadow-[0_4px_14px_-4px_hsl(var(--gold)/0.45)] transition-all hover:bg-gold hover:scale-[1.03] hover:gold-pulse"
-                >
-                  <Link to="/auth?redirect=/vendor&role=vendor">
-                    {t("vendor.signIn", { defaultValue: "دخول الشركاء" })}
-                  </Link>
-                </Button>
-                <Button
-                  size="sm"
-                  asChild
-                  className="rounded-full border-2 border-gold bg-primary-deep text-gold hover:bg-primary hover:text-gold"
-                >
-                  <Link to="/auth?redirect=/vendor&role=vendor">
-                    {t("vendor.signUp", { defaultValue: "انضم للقائمة المبكرة" })}
-                  </Link>
-                </Button>
-              </>
+              <Button
+                size="sm"
+                asChild
+                className="rounded-full border border-gold/60 bg-gold text-primary-deep shadow-[0_4px_14px_-4px_hsl(var(--gold)/0.45)] transition-all hover:bg-gold hover:scale-[1.03]"
+              >
+                <Link to="/auth?redirect=/vendor&role=vendor">
+                  {t("vendor.signIn", { defaultValue: "دخول الشركاء" })}
+                </Link>
+              </Button>
             )}
           </div>
         </div>
