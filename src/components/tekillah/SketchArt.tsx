@@ -33,6 +33,8 @@ const useDraw = () => {
 
 const olive = "hsl(var(--primary-deep))";
 const gold = "hsl(var(--gold))";
+const brown = "hsl(var(--brown))";
+const brownSoft = "hsl(var(--brown-soft))";
 
 // --- Wedding arch (hero centerpiece) ----------------------------------------
 export const SketchArch = ({ className, style, ariaHidden = true }: SketchProps) => {
