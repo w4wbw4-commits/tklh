@@ -552,56 +552,158 @@ export const SketchDivider = ({ className }: { className?: string }) => (
   </div>
 );
 
-// --- Side wedding table (round, with vase + tall candles) ------------------
+// --- Wedding banquet side table (long, draped, candelabra + lush florals) --
+// Inspired by formal wedding setups: long rectangular table with floor-length
+// linen, a large 5-arm candelabra centerpiece, soft eucalyptus + flowers,
+// and tall taper candles flanking it.
 export const SketchSideTable = ({ className, style, ariaHidden = true }: SketchProps) => {
   const { ref, animate } = useDraw();
+  // 5-arm candelabra arm endpoints (relative to center x=200)
+  const arms = [
+    { x: 130, y: 150 }, // far left
+    { x: 165, y: 130 }, // mid left
+    { x: 200, y: 110 }, // center (tallest)
+    { x: 235, y: 130 }, // mid right
+    { x: 270, y: 150 }, // far right
+  ];
+  // Side taper candles
+  const tapers = [
+    { x: 80, h: 90 }, { x: 105, h: 120 },
+    { x: 295, h: 120 }, { x: 320, h: 90 },
+  ];
   return (
-    <svg ref={ref} viewBox="0 0 220 320" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
-      {[
-        { x: 60, h: 110 }, { x: 80, h: 140 }, { x: 100, h: 120 },
-        { x: 150, h: 130 }, { x: 168, h: 105 },
-      ].map((c, i) => (
-        <g key={c.x}>
-          <motion.path d={`M${c.x} 200 L${c.x} ${200 - c.h}`}
-            stroke={olive} strokeWidth="0.9" strokeLinecap="round"
-            variants={drawVariants} initial="hidden" animate={animate} custom={0.2 + i * 0.05} />
-          <motion.path d={`M${c.x} ${200 - c.h} q-2.5 -4 0 -8 q2.5 4 0 8 z`}
-            fill={gold} stroke={gold} strokeWidth="0.4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: animate === "visible" ? [0, 1, 0.85, 1] : 0 }}
-            transition={{ delay: 1.4 + i * 0.1, duration: 1.6, repeat: Infinity, repeatType: "reverse" }} />
+    <svg ref={ref} viewBox="0 0 400 420" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
+      {/* ===== Candelabra ===== */}
+      {/* Base */}
+      <motion.path d="M180 290 L220 290 M186 290 L186 282 Q200 277 214 282 L214 290"
+        stroke={brown} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0} />
+      {/* Stem with knobs */}
+      <motion.path d="M200 282 L200 175 M194 260 q6 -4 12 0 M194 230 q6 -4 12 0 M192 200 q8 -4 16 0"
+        stroke={brown} strokeWidth="1.5" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.3} />
+      {/* Curved arms reaching out to each cup */}
+      <motion.path
+        d="M200 175 Q165 165 130 150 M200 175 Q183 160 165 130 M200 175 L200 110 M200 175 Q217 160 235 130 M200 175 Q235 165 270 150"
+        stroke={brown} strokeWidth="1.4" fill="none" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.7} />
+      {/* Cups (gold) + tall candles + flames */}
+      {arms.map((a, i) => (
+        <g key={i}>
+          {/* cup */}
+          <motion.path d={`M${a.x - 6} ${a.y} q6 -4 12 0`}
+            stroke={gold} strokeWidth="1.4" strokeLinecap="round"
+            variants={drawVariants} initial="hidden" animate={animate} custom={1.0 + i * 0.05} />
+          {/* candle */}
+          <motion.path d={`M${a.x} ${a.y} L${a.x} ${a.y - 50}`}
+            stroke={olive} strokeWidth="1.2" strokeLinecap="round"
+            variants={drawVariants} initial="hidden" animate={animate} custom={1.15 + i * 0.05} />
+          {/* wick */}
+          <motion.path d={`M${a.x} ${a.y - 50} L${a.x} ${a.y - 56}`}
+            stroke={brown} strokeWidth="0.9" strokeLinecap="round"
+            variants={drawVariants} initial="hidden" animate={animate} custom={1.3 + i * 0.05} />
+          {/* flame */}
+          <motion.path
+            d={`M${a.x} ${a.y - 48} q-4 -5 0 -12 q4 7 0 12 z`}
+            fill={gold} stroke={gold} strokeWidth="0.6"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{
+              opacity: animate === "visible" ? [0, 1, 0.85, 1] : 0,
+              scale: animate === "visible" ? [0.8, 1.05, 0.95, 1] : 0.8,
+            }}
+            transition={{ delay: 1.6 + i * 0.1, duration: 1.6, repeat: Infinity, repeatType: "reverse" }}
+            style={{ transformOrigin: `${a.x}px ${a.y - 52}px` }}
+          />
         </g>
       ))}
+
+      {/* ===== Floral garland at base of candelabra ===== */}
+      {/* Lush spray of leaves & flowers spilling left + right across the table */}
       <motion.path
-        d="M115 200 Q108 180 114 165 Q126 158 138 165 Q146 180 138 200 Z"
-        stroke={brown} strokeWidth="1" fill={brown} fillOpacity={0.1} strokeLinejoin="round"
-        variants={drawVariants} initial="hidden" animate={animate} custom={0.5} />
-      <motion.path d="M126 165 Q120 130 110 110 M126 165 Q132 135 142 118 M126 165 Q126 140 126 100"
-        stroke={olive} strokeWidth="0.9" strokeLinecap="round" fill="none"
-        variants={drawVariants} initial="hidden" animate={animate} custom={0.8} />
+        d="M120 285 Q160 275 200 282 Q240 275 280 285"
+        stroke={olive} strokeWidth="1" fill="none" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.6} />
+      {/* Eucalyptus leaves spreading outward */}
       {[
-        { x: 110, y: 110, r: -30 }, { x: 142, y: 118, r: 30 },
-        { x: 126, y: 100, r: 0 }, { x: 116, y: 130, r: -20 }, { x: 136, y: 130, r: 20 },
+        { x: 110, y: 282, r: -40 }, { x: 130, y: 278, r: -25 },
+        { x: 150, y: 276, r: -10 }, { x: 175, y: 274, r: 5 },
+        { x: 225, y: 274, r: -5 }, { x: 250, y: 276, r: 10 },
+        { x: 270, y: 278, r: 25 }, { x: 290, y: 282, r: 40 },
+        { x: 140, y: 290, r: -50 }, { x: 260, y: 290, r: 50 },
       ].map((l, i) => (
-        <motion.path key={i}
-          d={`M${l.x} ${l.y} q-5 -7 0 -14 q5 7 0 14 z`}
+        <motion.path key={`gl-${i}`}
+          d={`M${l.x} ${l.y} q-5 -10 0 -20 q5 10 0 20 z`}
           stroke={olive} strokeWidth="0.7" fill={olive} fillOpacity={0.1} strokeLinejoin="round"
-          transform={`rotate(${l.r} ${l.x} ${l.y - 7})`}
-          variants={drawVariants} initial="hidden" animate={animate} custom={1.0 + i * 0.05} />
+          transform={`rotate(${l.r} ${l.x} ${l.y - 10})`}
+          variants={drawVariants} initial="hidden" animate={animate} custom={0.9 + i * 0.04} />
       ))}
-      <motion.ellipse cx="110" cy="210" rx="100" ry="14"
-        stroke={brown} strokeWidth="1.1" fill={gold} fillOpacity={0.07}
-        variants={drawVariants} initial="hidden" animate={animate} custom={1.4} />
+      {/* Roses (gold + brown) along the garland */}
+      {[
+        { x: 155, y: 282 }, { x: 200, y: 280 }, { x: 245, y: 282 },
+      ].map((p, i) => (
+        <g key={`rose-${i}`}>
+          <motion.circle cx={p.x} cy={p.y} r="4.5"
+            stroke={brown} strokeWidth="0.7" fill={gold} fillOpacity={0.18}
+            variants={drawVariants} initial="hidden" animate={animate} custom={1.3 + i * 0.1} />
+          <motion.path d={`M${p.x - 2} ${p.y} q2 -3 4 0 q-2 3 -4 0 z`}
+            stroke={brown} strokeWidth="0.5" fill="none"
+            variants={drawVariants} initial="hidden" animate={animate} custom={1.45 + i * 0.1} />
+        </g>
+      ))}
+
+      {/* ===== Side taper candles ===== */}
+      {tapers.map((c, i) => (
+        <g key={`tp-${i}`}>
+          {/* holder */}
+          <motion.path d={`M${c.x - 5} 290 L${c.x + 5} 290 M${c.x - 4} 290 L${c.x - 4} 285 Q${c.x} 282 ${c.x + 4} 285 L${c.x + 4} 290`}
+            stroke={brown} strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"
+            variants={drawVariants} initial="hidden" animate={animate} custom={0.4 + i * 0.05} />
+          {/* candle */}
+          <motion.path d={`M${c.x} 285 L${c.x} ${285 - c.h}`}
+            stroke={olive} strokeWidth="1.1" strokeLinecap="round"
+            variants={drawVariants} initial="hidden" animate={animate} custom={0.55 + i * 0.05} />
+          {/* wick */}
+          <motion.path d={`M${c.x} ${285 - c.h} L${c.x} ${285 - c.h - 5}`}
+            stroke={brown} strokeWidth="0.8" strokeLinecap="round"
+            variants={drawVariants} initial="hidden" animate={animate} custom={0.7 + i * 0.05} />
+          {/* flame */}
+          <motion.path
+            d={`M${c.x} ${285 - c.h + 3} q-3 -4 0 -10 q3 6 0 10 z`}
+            fill={gold} stroke={gold} strokeWidth="0.5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: animate === "visible" ? [0, 1, 0.85, 1] : 0 }}
+            transition={{ delay: 1.4 + i * 0.12, duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
+          />
+        </g>
+      ))}
+
+      {/* ===== Long rectangular wedding table ===== */}
+      {/* Table top — perspective rectangle */}
       <motion.path
-        d="M18 212 Q22 250 30 280 Q60 295 110 290 Q160 295 190 280 Q198 250 202 212"
-        stroke={brown} strokeWidth="0.9" fill={gold} fillOpacity={0.04} strokeLinejoin="round"
-        variants={drawVariants} initial="hidden" animate={animate} custom={1.5} />
-      {[60, 90, 120, 150].map((x, i) => (
-        <motion.path key={x}
-          d={`M${x} 218 Q${x + 2} 250 ${x + 4} 286`}
-          stroke={olive} strokeWidth="0.4" fill="none" opacity={0.5}
-          variants={drawVariants} initial="hidden" animate={animate} custom={1.6 + i * 0.04} />
+        d="M30 295 L370 295 L355 315 L45 315 Z"
+        stroke={brown} strokeWidth="1.3" fill={gold} fillOpacity={0.08} strokeLinejoin="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={1.6} />
+      {/* Gold runner on the table top */}
+      <motion.path d="M75 305 L325 305"
+        stroke={gold} strokeWidth="0.8" strokeLinecap="round" strokeDasharray="3 5"
+        variants={drawVariants} initial="hidden" animate={animate} custom={1.8} />
+      {/* Floor-length linen drape */}
+      <motion.path
+        d="M45 315 Q35 360 30 410 L370 410 Q365 360 355 315"
+        stroke={brown} strokeWidth="1" fill={gold} fillOpacity={0.05} strokeLinejoin="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={1.9} />
+      {/* Soft drape pleats falling down */}
+      {[60, 100, 140, 180, 220, 260, 300, 340].map((x, i) => (
+        <motion.path key={`pl-${x}`}
+          d={`M${x} 318 Q${x + (x < 200 ? -2 : 2)} 365 ${x + (x < 200 ? -4 : 4)} 408`}
+          stroke={olive} strokeWidth="0.4" fill="none" opacity={0.45}
+          variants={drawVariants} initial="hidden" animate={animate} custom={2.0 + i * 0.04} />
       ))}
+      {/* Soft swag along the front of the linen */}
+      <motion.path
+        d="M45 320 Q120 345 200 332 Q280 345 355 320"
+        stroke={gold} strokeWidth="0.7" fill="none" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={2.2} />
     </svg>
   );
 };
