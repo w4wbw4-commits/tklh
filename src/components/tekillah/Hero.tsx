@@ -53,18 +53,16 @@ export const Hero = () => {
           centered text column. Top/bottom mask fades it into the cream wash. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-y-0 right-0 hidden w-[28vw] max-w-[340px] items-end justify-end overflow-hidden lg:flex xl:w-[30vw] xl:max-w-[400px]"
+        className="pointer-events-none absolute inset-y-0 right-0 hidden w-[32vw] max-w-[380px] items-end justify-end overflow-hidden lg:flex xl:w-[34vw] xl:max-w-[440px]"
       >
         <SketchLongBanquet
-          className="h-[78%] w-full opacity-70"
+          className="h-[82%] w-full opacity-80"
           style={{
-            // Mirror so the table runs from the right edge inward
             transform: "scaleX(-1)",
-            // Soft fade on the inner side toward the text
             WebkitMaskImage:
-              "linear-gradient(to right, hsl(0 0% 0% / 0) 0%, hsl(0 0% 0% / 0.45) 18%, hsl(0 0% 0% / 0.95) 55%, hsl(0 0% 0% / 1) 100%)",
+              "linear-gradient(to right, hsl(0 0% 0% / 0) 0%, hsl(0 0% 0% / 0.25) 14%, hsl(0 0% 0% / 0.7) 38%, hsl(0 0% 0% / 0.95) 65%, hsl(0 0% 0% / 1) 100%)",
             maskImage:
-              "linear-gradient(to right, hsl(0 0% 0% / 0) 0%, hsl(0 0% 0% / 0.45) 18%, hsl(0 0% 0% / 0.95) 55%, hsl(0 0% 0% / 1) 100%)",
+              "linear-gradient(to right, hsl(0 0% 0% / 0) 0%, hsl(0 0% 0% / 0.25) 14%, hsl(0 0% 0% / 0.7) 38%, hsl(0 0% 0% / 0.95) 65%, hsl(0 0% 0% / 1) 100%)",
           }}
         />
       </div>
