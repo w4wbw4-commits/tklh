@@ -64,7 +64,6 @@ export const StepBudget = ({
     ),
     [guests, market, enabledServices], // eslint-disable-line react-hooks/exhaustive-deps
   );
-  const isBelowMinimum = total < globalMinimum;
   const cur = t("common.currency");
 
   return (
