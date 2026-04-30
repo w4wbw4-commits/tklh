@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   Loader2, ShieldAlert, Wallet, TrendingUp, Lock, ListChecks,
   CheckCircle2, LogOut, Receipt, Star, Flag, ShieldCheck, Percent, HandCoins, Inbox,
-  AlertTriangle, AlertOctagon, Briefcase, PackageOpen, Hourglass,
+  AlertTriangle, AlertOctagon, Briefcase, PackageOpen, Hourglass, Building2, Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
