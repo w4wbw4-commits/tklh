@@ -52,54 +52,64 @@ const RouteFallback = () => (
   <div className="min-h-screen bg-background" aria-hidden />
 );
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <HelmetProvider>
-      <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} storageKey="tekillah-theme">
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AuthProvider>
-              <Suspense fallback={<RouteFallback />}>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/auth" element={<Auth />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/reset-password" element={<ResetPassword />} />
-                  <Route path="/vendor" element={<Vendor />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/checkout/:bookingId" element={<Checkout />} />
-                  <Route path="/invoice/:bookingId" element={<Invoice />} />
-                  <Route path="/success" element={<Success />} />
-                  <Route path="/admin" element={<Admin />} />
-                  <Route path="/terms" element={<Terms />} />
-                  <Route path="/privacy" element={<Privacy />} />
-                  <Route path="/terms-of-service" element={<TermsOfService />} />
-                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                  <Route path="/refund-policy" element={<RefundPolicy />} />
-                  <Route path="/partner" element={<PartnerOverview />} />
-                  <Route path="/partner/bookings" element={<PartnerBookings />} />
-                  <Route path="/partner/calendar" element={<PartnerCalendarPage />} />
-                  <Route path="/partner/invoices" element={<PartnerInvoicesPage />} />
-                  <Route path="/partner/sales" element={<PartnerSalesPage />} />
-                  <Route path="/partner/analytics" element={<PartnerAnalyticsPage />} />
-                  <Route path="/partner/pricing" element={<PartnerPricingPage />} />
-                  <Route path="/partner/checklists" element={<PartnerChecklistsPage />} />
-                  <Route path="/partner/reviews" element={<PartnerReviewsPage />} />
-                  <Route path="/partner/notifications" element={<PartnerNotificationsPage />} />
-                  <Route path="/partner/profile" element={<PartnerProfilePage />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-              <RoleSwitcher />
-            </AuthProvider>
-          </BrowserRouter>
-        </TooltipProvider>
-      </ThemeProvider>
-    </HelmetProvider>
-  </QueryClientProvider>
-);
+const AppRoutes = () => {
+  const isMobile = useIsMobile();
+  // On mobile (or when the user prefers reduced motion), tell framer-motion to
+  // skip animations and jump to final state. This kills infinite loops in our
+  // illustrated sketches that otherwise burn CPU continuously on phones.
+  return (
+    <MotionConfig reducedMotion={isMobile ? "always" : "user"}>
+      <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} storageKey="tekillah-theme">
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <AuthProvider>
+                  <Suspense fallback={<RouteFallback />}>
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/auth" element={<Auth />} />
+                      <Route path="/forgot-password" element={<ForgotPassword />} />
+                      <Route path="/reset-password" element={<ResetPassword />} />
+                      <Route path="/vendor" element={<Vendor />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/checkout/:bookingId" element={<Checkout />} />
+                      <Route path="/invoice/:bookingId" element={<Invoice />} />
+                      <Route path="/success" element={<Success />} />
+                      <Route path="/admin" element={<Admin />} />
+                      <Route path="/terms" element={<Terms />} />
+                      <Route path="/privacy" element={<Privacy />} />
+                      <Route path="/terms-of-service" element={<TermsOfService />} />
+                      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                      <Route path="/refund-policy" element={<RefundPolicy />} />
+                      <Route path="/partner" element={<PartnerOverview />} />
+                      <Route path="/partner/bookings" element={<PartnerBookings />} />
+                      <Route path="/partner/calendar" element={<PartnerCalendarPage />} />
+                      <Route path="/partner/invoices" element={<PartnerInvoicesPage />} />
+                      <Route path="/partner/sales" element={<PartnerSalesPage />} />
+                      <Route path="/partner/analytics" element={<PartnerAnalyticsPage />} />
+                      <Route path="/partner/pricing" element={<PartnerPricingPage />} />
+                      <Route path="/partner/checklists" element={<PartnerChecklistsPage />} />
+                      <Route path="/partner/reviews" element={<PartnerReviewsPage />} />
+                      <Route path="/partner/notifications" element={<PartnerNotificationsPage />} />
+                      <Route path="/partner/profile" element={<PartnerProfilePage />} />
+                      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </Suspense>
+                  <RoleSwitcher />
+                </AuthProvider>
+              </BrowserRouter>
+            </TooltipProvider>
+          </ThemeProvider>
+        </HelmetProvider>
+      </QueryClientProvider>
+    </MotionConfig>
+  );
+};
+
+const App = () => <AppRoutes />;
 
 export default App;
