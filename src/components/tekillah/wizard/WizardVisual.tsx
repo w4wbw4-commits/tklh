@@ -61,7 +61,7 @@ export const WizardVisual = ({ step, variant = "side" }: Props) => {
       {/* Edge vignette for depth */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-primary-deep/10" />
 
-      {/* === Sketch scene (cross-fades on step change) — fills the panel === */}
+      {/* === Sketch scene (cross-fades on step change) — fits any container === */}
       <AnimatePresence mode="wait">
         <motion.div
           key={v.captionKey}
@@ -71,16 +71,19 @@ export const WizardVisual = ({ step, variant = "side" }: Props) => {
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           className={
             isHeader
-              ? "absolute inset-0 flex items-center justify-center px-2 pb-14 pt-2 sm:pb-16"
-              : "absolute inset-0 flex items-center justify-center px-4 pb-24 pt-6"
+              ? "absolute inset-0 flex items-center justify-center pb-12"
+              : "absolute inset-0 flex items-center justify-center pb-20"
           }
         >
-          <Scene className="h-full w-full" />
+          {/* The SVG uses preserveAspectRatio="meet" so it always fits inside
+              its box without cropping. We give it max width/height so it can
+              scale up freely on large panels and shrink cleanly on mobile. */}
+          <Scene className="h-full w-full max-h-full max-w-full" />
         </motion.div>
       </AnimatePresence>
 
       {/* Bottom soft caption strip — keeps hand-drawn feel without an image overlay */}
-      <div className={`pointer-events-none absolute inset-x-0 bottom-0 ${isHeader ? "h-16" : "h-24"} bg-gradient-to-t from-cream via-cream/90 to-transparent`} />
+      <div className={`pointer-events-none absolute inset-x-0 bottom-0 ${isHeader ? "h-14" : "h-20"} bg-gradient-to-t from-cream via-cream/90 to-transparent`} />
 
       <AnimatePresence mode="wait">
         <motion.div
