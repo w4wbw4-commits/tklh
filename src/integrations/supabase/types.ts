@@ -1429,6 +1429,17 @@ export type Database = {
         }[]
       }
       generate_vendor_invoice_number: { Args: never; Returns: string }
+      get_vendor_private: {
+        Args: { _vendor_id: string }
+        Returns: {
+          commercial_register_url: string
+          iban: string
+          iban_certificate_url: string
+          id: string
+          phone: string
+          user_id: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
