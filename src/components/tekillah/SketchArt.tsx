@@ -33,6 +33,8 @@ const useDraw = () => {
 
 const olive = "hsl(var(--primary-deep))";
 const gold = "hsl(var(--gold))";
+const brown = "hsl(var(--brown))";
+const brownSoft = "hsl(var(--brown-soft))";
 
 // --- Wedding arch (hero centerpiece) ----------------------------------------
 export const SketchArch = ({ className, style, ariaHidden = true }: SketchProps) => {
@@ -237,24 +239,24 @@ export const SketchGinkgo = ({ className, style, ariaHidden = true }: SketchProp
   });
   return (
     <svg ref={ref} viewBox="0 0 220 240" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
-      {/* Stem */}
+      {/* Stem (brown) */}
       <motion.path d="M110 235 Q108 218 110 200"
-        stroke={olive} strokeWidth="1.4" strokeLinecap="round"
+        stroke={brown} strokeWidth="1.6" strokeLinecap="round"
         variants={drawVariants} initial="hidden" animate={animate} custom={0} />
-      {/* Outer fan outline */}
+      {/* Outer fan outline — olive ink with soft gold wash */}
       <motion.path
         d="M30 110 Q40 50 110 30 Q180 50 190 110 Q170 130 110 134 Q50 130 30 110 Z"
         stroke={olive} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"
-        fill={olive} fillOpacity={0.04}
+        fill={gold} fillOpacity={0.08}
         variants={drawVariants} initial="hidden" animate={animate} custom={0.4} />
-      {/* Ribs */}
+      {/* Ribs — alternating olive / brown for depth */}
       {ribs.map((r) => (
         <motion.path key={r.i} d={r.d}
-          stroke={olive} strokeWidth="0.8" strokeLinecap="round"
+          stroke={r.i % 3 === 0 ? brownSoft : olive} strokeWidth="0.8" strokeLinecap="round"
           variants={drawVariants} initial="hidden" animate={animate} custom={0.8 + r.i * 0.05} />
       ))}
-      {/* Notch */}
-      <motion.path d="M100 50 Q110 60 120 50" stroke={olive} strokeWidth="1" strokeLinecap="round"
+      {/* Notch (brown) */}
+      <motion.path d="M100 50 Q110 60 120 50" stroke={brown} strokeWidth="1" strokeLinecap="round"
         variants={drawVariants} initial="hidden" animate={animate} custom={1.6} />
     </svg>
   );
@@ -265,29 +267,29 @@ export const SketchCandelabra = ({ className, style, ariaHidden = true }: Sketch
   const { ref, animate } = useDraw();
   return (
     <svg ref={ref} viewBox="0 0 220 280" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
-      {/* Base */}
+      {/* Base — antique brown */}
       <motion.path d="M70 270 L150 270 M85 270 L85 260 Q110 254 135 260 L135 270"
-        stroke={olive} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"
+        stroke={brown} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
         variants={drawVariants} initial="hidden" animate={animate} custom={0} />
-      {/* Stem with knobs */}
+      {/* Stem with knobs — brown */}
       <motion.path d="M110 260 L110 130 M104 230 q6 -4 12 0 M104 200 q6 -4 12 0 M100 170 q10 -6 20 0"
-        stroke={olive} strokeWidth="1.3" strokeLinecap="round"
+        stroke={brown} strokeWidth="1.4" strokeLinecap="round"
         variants={drawVariants} initial="hidden" animate={animate} custom={0.4} />
-      {/* Cross arms (curved) */}
+      {/* Cross arms — brown */}
       <motion.path d="M110 140 Q70 120 50 90 M110 140 Q150 120 170 90 M110 140 L110 90"
-        stroke={olive} strokeWidth="1.3" strokeLinecap="round"
+        stroke={brown} strokeWidth="1.4" strokeLinecap="round"
         variants={drawVariants} initial="hidden" animate={animate} custom={0.9} />
-      {/* Cups */}
+      {/* Cups — gold accent */}
       <motion.path d="M44 90 q6 -4 12 0 M104 90 q6 -4 12 0 M164 90 q6 -4 12 0"
-        stroke={olive} strokeWidth="1.2" strokeLinecap="round"
+        stroke={gold} strokeWidth="1.4" strokeLinecap="round"
         variants={drawVariants} initial="hidden" animate={animate} custom={1.2} />
-      {/* Candles */}
+      {/* Candles — soft cream/olive */}
       <motion.path d="M50 90 L50 50 M110 90 L110 40 M170 90 L170 50"
         stroke={olive} strokeWidth="1.1" strokeLinecap="round"
         variants={drawVariants} initial="hidden" animate={animate} custom={1.4} />
-      {/* Wicks */}
+      {/* Wicks — brown */}
       <motion.path d="M50 50 L50 44 M110 40 L110 34 M170 50 L170 44"
-        stroke={olive} strokeWidth="0.9" strokeLinecap="round"
+        stroke={brown} strokeWidth="0.9" strokeLinecap="round"
         variants={drawVariants} initial="hidden" animate={animate} custom={1.7} />
       {/* Flames (gold) */}
       {[
@@ -324,7 +326,7 @@ export const SketchBranch = ({ className, style, ariaHidden = true }: SketchProp
   return (
     <svg ref={ref} viewBox="0 0 320 180" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
       <motion.path d="M10 30 Q80 50 150 60 Q230 70 310 110"
-        stroke={olive} strokeWidth="1.3" strokeLinecap="round"
+        stroke={brown} strokeWidth="1.5" strokeLinecap="round"
         variants={drawVariants} initial="hidden" animate={animate} custom={0} />
       {leaves.map((l, i) => (
         <motion.path key={i}
@@ -344,10 +346,10 @@ export const SketchBanquet = ({ className, style, ariaHidden = true }: SketchPro
   const chairXs = [60, 110, 160, 210, 260, 310, 360, 410];
   return (
     <svg ref={ref} viewBox="0 0 480 220" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
-      {/* Table top */}
+      {/* Table top — wood brown with subtle gold wash */}
       <motion.path d="M40 130 L440 130 L420 160 L60 160 Z"
-        stroke={olive} strokeWidth="1.4" strokeLinejoin="round"
-        fill={olive} fillOpacity={0.03}
+        stroke={brown} strokeWidth="1.5" strokeLinejoin="round"
+        fill={gold} fillOpacity={0.08}
         variants={drawVariants} initial="hidden" animate={animate} custom={0} />
       {/* Runner */}
       <motion.path d="M70 145 L410 145"
