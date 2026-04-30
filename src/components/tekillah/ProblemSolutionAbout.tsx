@@ -25,10 +25,10 @@ const TRUST_STATS = [
 ] as const;
 
 const VALUE_TILES = [
-  { icon: Calculator,    title: "خطّط بذكاء",            desc: "حاسبة ذكية تعطيك ميزانيتك بالريال، بدون مفاجآت." },
-  { icon: Filter,        title: "مزوّدون نخبة",          desc: "ما نتعامل إلا مع الأفضل، وبجودة تليق فيك." },
-  { icon: CalendarCheck, title: "احجز بلمح البصر",       desc: "خلّص أمورك بدقائق، وودّع حوسة الاتصالات." },
-  { icon: Gem,           title: "خدماتك على كيفك",       desc: "اختر اللي يناسبك بأسعار واضحة وضمان أكيد." },
+  { icon: Calculator,    title: "خطّط بذكاء",        desc: "حاسبة ذكية تعطيك ميزانيتك بالريال، بدون مفاجآت ولا أرقام مخفية." },
+  { icon: Filter,        title: "مزوّدين ثقة",        desc: "اخترنا لكم أفضل المزوّدين في السعودية — موثّقين، مجرّبين، وما يخيبون." },
+  { icon: CalendarCheck, title: "احجز بلمح البصر",   desc: "خلّص أمورك بدقائق معدودة، وودّع حوسة الاتصالات والمواعيد الطويلة." },
+  { icon: Gem,           title: "شبيك لبيك",          desc: "الخدمات اللي تبيها بين يديك، وبالسعر اللي يناسبك — كل شي على كيفك." },
 ] as const;
 
 const VALUE_CHIPS = [
@@ -80,28 +80,7 @@ const AboutValueSection = () => (
         </div>
       </Reveal>
 
-      {/* Inline minimalist stat strip */}
-      <Reveal delay={0.12}>
-        <div className="mx-auto mt-10 grid max-w-3xl grid-cols-3 gap-3 sm:gap-5">
-          {TRUST_STATS.map((s, i) => {
-            const Icon = s.icon;
-            return (
-              <div
-                key={i}
-                className="group relative rounded-2xl border border-gold/25 bg-cream/70 p-4 text-center backdrop-blur transition-all duration-500 hover:border-gold/55 hover:-translate-y-0.5"
-              >
-                <Icon className="mx-auto h-4 w-4 text-gold" strokeWidth={2} />
-                <div className="mt-2 font-arabic text-2xl font-black leading-none text-green sm:text-3xl">
-                  <AnimatedCounter value={s.value} suffix={s.suffix} arabicDigits />
-                </div>
-                <div className="mt-1.5 font-arabic text-[11px] leading-tight text-foreground/65 sm:text-xs">
-                  {s.label}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </Reveal>
+      {/* (Trust stats strip removed — duplicated below in the Speed section) */}
 
       {/* Chips + CTAs */}
       <Reveal delay={0.18}>
