@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
+import { ThemeProvider } from "next-themes";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -38,6 +39,9 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <HelmetProvider>
+      {/* next-themes: persists user choice in localStorage and toggles `dark` class on <html>.
+          `defaultTheme=light` keeps the brand cream look as the first impression. */}
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} storageKey="tekillah-theme">
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -76,6 +80,7 @@ const App = () => (
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
+      </ThemeProvider>
     </HelmetProvider>
   </QueryClientProvider>
 );

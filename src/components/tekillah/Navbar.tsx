@@ -7,6 +7,8 @@ import { Globe, LayoutDashboard, ShieldCheck, Building2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { SiteMenuSheet } from "./SiteMenuSheet";
+import { ThemeToggle } from "./ThemeToggle";
 
 // Primary admin allowlist — phone +966554430196 (synthetic email used by phone-OTP login).
 const PRIMARY_ADMIN_EMAIL = "966554430196@phone.tekillah.app";
@@ -86,7 +88,11 @@ export const Navbar = () => {
               </a>
             ))}
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Hamburger — opens the slide-over with all site sections.
+                Visible on every breakpoint so phone users get the same fast
+                navigation as desktop. */}
+            <SiteMenuSheet isPrimaryAdmin={isPrimaryAdmin} />
             {user && (
               <Button
                 variant="ghost"
@@ -129,11 +135,15 @@ export const Navbar = () => {
               variant="ghost"
               size="sm"
               onClick={toggleLang}
-              className="rounded-full text-xs text-foreground/80 hover:text-gold"
+              className="hidden rounded-full text-xs text-foreground/80 hover:text-gold sm:inline-flex"
             >
               <Globe className="me-1 h-3.5 w-3.5" />
               {t("nav.lang")}
             </Button>
+            {/* Light / Dark toggle — relative wrapper to anchor the absolute Moon icon */}
+            <div className="relative inline-flex">
+              <ThemeToggle />
+            </div>
             {!user && (
               <Button
                 size="sm"
