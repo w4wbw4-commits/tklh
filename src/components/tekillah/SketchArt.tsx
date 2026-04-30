@@ -346,10 +346,10 @@ export const SketchBanquet = ({ className, style, ariaHidden = true }: SketchPro
   const chairXs = [60, 110, 160, 210, 260, 310, 360, 410];
   return (
     <svg ref={ref} viewBox="0 0 480 220" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
-      {/* Table top */}
+      {/* Table top — wood brown with subtle gold wash */}
       <motion.path d="M40 130 L440 130 L420 160 L60 160 Z"
-        stroke={olive} strokeWidth="1.4" strokeLinejoin="round"
-        fill={olive} fillOpacity={0.03}
+        stroke={brown} strokeWidth="1.5" strokeLinejoin="round"
+        fill={gold} fillOpacity={0.08}
         variants={drawVariants} initial="hidden" animate={animate} custom={0} />
       {/* Runner */}
       <motion.path d="M70 145 L410 145"
