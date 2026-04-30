@@ -70,17 +70,17 @@ export const Hero = () => {
         style={{ transform: "rotate(180deg) scaleX(-1)" }}
       />
 
-      {/* Candelabras at bottom */}
+      {/* Candelabras — small, hugging the bottom edges so they don't overlap content */}
       <SketchCandelabra
-        className="pointer-events-none absolute bottom-0 left-[18%] hidden h-[260px] w-auto opacity-85 md:block"
+        className="pointer-events-none absolute -bottom-2 left-2 hidden h-[170px] w-auto opacity-75 lg:block"
       />
       <SketchCandelabra
-        className="pointer-events-none absolute bottom-0 right-[18%] hidden h-[260px] w-auto -scale-x-100 opacity-85 md:block"
+        className="pointer-events-none absolute -bottom-2 right-2 hidden h-[170px] w-auto -scale-x-100 opacity-75 lg:block"
       />
 
-      {/* Banquet table behind wordmark, soft */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-[12%] mx-auto flex justify-center">
-        <SketchBanquet className="h-[280px] w-auto max-w-[88vw] opacity-55" />
+      {/* Banquet table — pushed below the fold, only peeks under stats */}
+      <div className="pointer-events-none absolute inset-x-0 -bottom-10 mx-auto hidden justify-center md:flex">
+        <SketchBanquet className="h-[180px] w-auto max-w-[70vw] opacity-35" />
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-32 pb-20 text-center">
