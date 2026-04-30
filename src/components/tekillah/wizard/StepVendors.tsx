@@ -384,355 +384,347 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
         </Alert>
       )}
 
-      {/* === Service tab strip — horizontal, scrollable on small screens.
-          Replaces the previous tall stacked layout: each category becomes a
-          compact pill the user clicks/swipes between, drastically shrinking
-          the page height. The currently-selected vendor for a category gets
-          a small ✓ badge so progress is visible at a glance. === */}
-      {selectedServices.length > 1 && (
-        <div className="mt-6 -mx-1 overflow-x-auto pb-1">
-          <div role="tablist" aria-label={t("wizard.vendors.title")} className="flex min-w-max items-center gap-2 px-1">
-            {selectedServices.map((cat) => {
-              const TabIcon = ICONS[cat];
-              const isActive = cat === activeCat;
-              const isPicked = !!picks[cat];
-              const count = grouped[cat]?.length ?? 0;
-              return (
-                <button
-                  key={cat}
-                  role="tab"
-                  aria-selected={isActive}
-                  type="button"
-                  onClick={() => setActiveCat(cat)}
-                  className={`group inline-flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-2 font-arabic text-sm transition-all ${
-                    isActive
-                      ? "border-primary bg-primary text-primary-foreground shadow-soft"
-                      : isPicked
-                      ? "border-primary/40 bg-primary/5 text-primary hover:border-primary/70"
-                      : "border-border bg-card text-foreground/75 hover:border-primary/40 hover:text-foreground"
-                  }`}
-                >
-                  <TabIcon className="h-3.5 w-3.5" />
-                  <span className="font-semibold">{t(`wizard.services.${cat}`)}</span>
-                  <span
-                    className={`tabular-nums rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
-                      isActive
-                        ? "bg-primary-foreground/20 text-primary-foreground"
-                        : "bg-foreground/10 text-foreground/60"
-                    }`}
-                  >
-                    {fmtNumber(count)}
-                  </span>
-                  {isPicked && (
-                    <Check
-                      className={`h-3.5 w-3.5 ${
-                        isActive ? "text-primary-foreground" : "text-primary"
-                      }`}
-                    />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      <div className="mt-6">
-        {selectedServices.filter((c) => c === activeCat).map((cat) => {
+      {/* === Stacked accordion — each service is a full-width row stacked
+          vertically. Only one expands at a time, so the page footprint stays
+          stable regardless of how many services are selected. After the user
+          picks a vendor for a category, we auto-advance to the next missing
+          category — making the flow feel like a guided checklist. === */}
+      <div className="mt-6 space-y-3">
+        {selectedServices.map((cat) => {
           const Icon = ICONS[cat];
           const list = grouped[cat] ?? [];
           const pick = picks[cat];
           const cap = allocations[cat] ?? 0;
+          const isOpen = cat === activeCat;
+          const isPicked = !!pick;
+          const isHall = cat === "hall";
+
+          // Wraps parent setPick so picking a vendor auto-opens the next
+          // uncovered category. We compute "next" lazily each click to respect
+          // the most recent state of `picks`.
+          const handlePick = (next: VendorPick | null) => {
+            setPick(cat, next);
+            if (next) {
+              const remaining = selectedServices.find(
+                (c) => c !== cat && !picks[c],
+              );
+              if (remaining) setActiveCat(remaining);
+            }
+          };
+
           return (
-            <section key={cat}>
-              <div className="mb-4 flex items-center gap-2">
-                <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary/10 text-primary">
+            <section
+              key={cat}
+              className={`overflow-hidden rounded-2xl border bg-card transition-all ${
+                isOpen
+                  ? "border-primary/40 shadow-soft"
+                  : isPicked
+                  ? "border-primary/25"
+                  : "border-border"
+              }`}
+            >
+              {/* Row header — click to toggle */}
+              <button
+                type="button"
+                onClick={() => setActiveCat(isOpen ? null : cat)}
+                aria-expanded={isOpen}
+                className="flex w-full items-center gap-3 px-4 py-3 text-start transition-colors hover:bg-secondary/40"
+              >
+                <span
+                  className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg transition-colors ${
+                    isOpen || isPicked ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary"
+                  }`}
+                >
                   <Icon className="h-4 w-4" />
                 </span>
-                <h4 className="font-arabic text-base font-semibold text-foreground">
-                  {t(`wizard.services.${cat}`)}
-                </h4>
-                <span className="ms-1 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium tabular-nums text-foreground/60">
-                  {fmtNumber(list.length)}
-                </span>
-                {pick && <Badge className="ms-auto bg-primary/15 text-primary">{t("wizard.vendors.selected")}</Badge>}
-              </div>
-
-              {list.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-border bg-card p-6 text-center text-sm text-foreground/55">
-                  {t("wizard.vendors.empty")}
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-arabic text-sm font-semibold text-foreground">
+                      {t(`wizard.services.${cat}`)}
+                    </span>
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium tabular-nums text-foreground/60">
+                      {fmtNumber(list.length)}
+                    </span>
+                    {isPicked && (
+                      <Badge className="bg-primary/15 text-primary hover:bg-primary/20">
+                        <Check className="me-1 h-3 w-3" />
+                        {t("wizard.vendors.selected")}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {list.map((v) => {
-                    const vendorMatches = v.packages.some(
-                      (p) => allowedPackageTiers.includes(p.tier) || (cap > 0 && Number(p.price) <= cap),
-                    );
-                    const weekday = Number(v.weekday_price) || 0;
-                    const weekend = Number(v.weekend_price) || 0;
-                    const isHall = cat === "hall";
+                <ChevronDown
+                  className={`h-4 w-4 shrink-0 text-foreground/50 transition-transform ${
+                    isOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
 
-                    return (
-                      <div
-                        key={v.id}
-                        className={`overflow-hidden rounded-2xl border bg-card shadow-card transition-all ${
-                          pick?.vendorId === v.id
-                            ? "border-primary ring-1 ring-primary/30"
-                            : "border-border"
-                        }`}
-                      >
-                        {/* Visual media gallery — images + videos uploaded by vendor */}
-                        <VendorMediaCarousel items={v.media} vendorName={v.business_name} />
+              {/* Collapsible body */}
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    key="body"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="border-t border-border/60 p-4">
+                      {list.length === 0 ? (
+                        <div className="rounded-2xl border border-dashed border-border bg-background/50 p-6 text-center text-sm text-foreground/55">
+                          {t("wizard.vendors.empty")}
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                          {list.map((v) => {
+                            const vendorMatches = v.packages.some(
+                              (p) => allowedPackageTiers.includes(p.tier) || (cap > 0 && Number(p.price) <= cap),
+                            );
+                            const weekday = Number(v.weekday_price) || 0;
+                            const weekend = Number(v.weekend_price) || 0;
 
-                        {/* Provider description — placed right under the gallery so the
-                            visuals get textual context. Uses Arabic sans-serif and
-                            wraps gracefully for long copy. */}
-                        {(() => {
-                          const localizedBio = pickLocalized(v.bio, v.bio_en);
-                          if (!localizedBio) return null;
-                          return (
-                            <div className="border-b border-border/60 bg-secondary/30 px-4 py-3">
-                              <div className="text-[10px] uppercase tracking-wide text-foreground/55">
-                                <span className="font-arabic">{t("wizard.vendors.description")}</span>
-                              </div>
-                              <p className="mt-1 whitespace-pre-line break-words font-arabic text-[13px] leading-relaxed text-foreground/80">
-                                {localizedBio}
-                              </p>
-                            </div>
-                          );
-                        })()}
-
-                        <div className="p-4">
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="min-w-0 flex-1">
-                              <div className="flex flex-wrap items-center gap-1.5">
-                                <span className="font-arabic text-sm font-semibold text-foreground">
-                                  {v.business_name}
-                                </span>
-                                {v.verified && <BadgeCheck className="h-3.5 w-3.5 text-primary" />}
-                                {vendorMatches && (
-                                  <Badge className="ms-1 bg-primary text-primary-foreground hover:bg-primary/90">
-                                    <Sparkles className="me-1 h-3 w-3" />
-                                    {t("wizard.vendors.matchesBudget")}
-                                  </Badge>
-                                )}
-                              </div>
-                              <div className="mt-1">
-                                <VendorRatingBadge avg={v.avg_rating} count={v.reviews_count} />
-                              </div>
-                              {(() => {
-                                // Localised City / District / Region — wrapped in toLatinDigits
-                                // so any digits in admin-entered text render as 1/2/3.
-                                const locParts = [
-                                  toLatinDigits(v.city ?? ""),
-                                  pickLocalized(v.district, v.district_en),
-                                  pickLocalized(v.region, v.region_en),
-                                ].filter(Boolean);
-                                if (!locParts.length) return null;
-                                return (
-                                  <div className="mt-1 inline-flex items-center gap-1 font-arabic text-[11px] text-foreground/60">
-                                    <MapPin className="h-3 w-3 text-primary/70" />
-                                    <span>{locParts.join("، ")}</span>
-                                  </div>
-                                );
-                              })()}
-                            </div>
-                          </div>
-
-                          {/* Features & Services — shown for ALL categories.
-                              Vendors can now type free-text tags (lighting,
-                              4K video, ذبائح, …). Known keys still get a
-                              matching icon; free-text shows the olive-green
-                              checkmark badge. */}
-                          {(() => {
-                            // Show EN tags when in EN locale + EN list provided,
-                            // else fall back to AR list. Falls back to known-key
-                            // labels for legacy fixed-keys (lighting, etc.).
-                            const localizedTags = pickLocalizedArray(v.extra_services, v.extra_services_en);
-                            if (!localizedTags.length) return null;
                             return (
-                              <div className="mt-3 rounded-xl border border-border/60 bg-secondary/40 p-3">
-                                <div className="mb-2 flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-wide text-foreground/60">
-                                  <Check className="h-3 w-3 text-primary" />
-                                  <span className="font-arabic">{t("wizard.vendors.whatIncluded")}</span>
-                                </div>
-                                <div className="flex flex-wrap gap-1.5">
-                                  {localizedTags.map((key) => {
-                                    const Icon = EXTRA_SERVICE_ICONS[key];
-                                    const label = EXTRA_SERVICE_LABELS[key] ?? key;
-                                    return (
-                                      <span
-                                        key={key}
-                                        className="inline-flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 font-arabic text-[11px] font-medium text-primary-foreground shadow-card"
-                                      >
-                                        {Icon ? (
-                                          <Icon className="h-3 w-3 shrink-0" />
-                                        ) : (
-                                          <Check className="h-3 w-3 shrink-0" />
+                              <div
+                                key={v.id}
+                                className={`overflow-hidden rounded-2xl border bg-card shadow-card transition-all ${
+                                  pick?.vendorId === v.id
+                                    ? "border-primary ring-1 ring-primary/30"
+                                    : "border-border"
+                                }`}
+                              >
+                                <VendorMediaCarousel items={v.media} vendorName={v.business_name} />
+
+                                {(() => {
+                                  const localizedBio = pickLocalized(v.bio, v.bio_en);
+                                  if (!localizedBio) return null;
+                                  return (
+                                    <div className="border-b border-border/60 bg-secondary/30 px-4 py-3">
+                                      <div className="text-[10px] uppercase tracking-wide text-foreground/55">
+                                        <span className="font-arabic">{t("wizard.vendors.description")}</span>
+                                      </div>
+                                      <p className="mt-1 whitespace-pre-line break-words font-arabic text-[13px] leading-relaxed text-foreground/80">
+                                        {localizedBio}
+                                      </p>
+                                    </div>
+                                  );
+                                })()}
+
+                                <div className="p-4">
+                                  <div className="flex items-start justify-between gap-2">
+                                    <div className="min-w-0 flex-1">
+                                      <div className="flex flex-wrap items-center gap-1.5">
+                                        <span className="font-arabic text-sm font-semibold text-foreground">
+                                          {v.business_name}
+                                        </span>
+                                        {v.verified && <BadgeCheck className="h-3.5 w-3.5 text-primary" />}
+                                        {vendorMatches && (
+                                          <Badge className="ms-1 bg-primary text-primary-foreground hover:bg-primary/90">
+                                            <Sparkles className="me-1 h-3 w-3" />
+                                            {t("wizard.vendors.matchesBudget")}
+                                          </Badge>
                                         )}
-                                        <span className="truncate">{label}</span>
-                                      </span>
+                                      </div>
+                                      <div className="mt-1">
+                                        <VendorRatingBadge avg={v.avg_rating} count={v.reviews_count} />
+                                      </div>
+                                      {(() => {
+                                        const locParts = [
+                                          toLatinDigits(v.city ?? ""),
+                                          pickLocalized(v.district, v.district_en),
+                                          pickLocalized(v.region, v.region_en),
+                                        ].filter(Boolean);
+                                        if (!locParts.length) return null;
+                                        return (
+                                          <div className="mt-1 inline-flex items-center gap-1 font-arabic text-[11px] text-foreground/60">
+                                            <MapPin className="h-3 w-3 text-primary/70" />
+                                            <span>{locParts.join("، ")}</span>
+                                          </div>
+                                        );
+                                      })()}
+                                    </div>
+                                  </div>
+
+                                  {(() => {
+                                    const localizedTags = pickLocalizedArray(v.extra_services, v.extra_services_en);
+                                    if (!localizedTags.length) return null;
+                                    return (
+                                      <div className="mt-3 rounded-xl border border-border/60 bg-secondary/40 p-3">
+                                        <div className="mb-2 flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-wide text-foreground/60">
+                                          <Check className="h-3 w-3 text-primary" />
+                                          <span className="font-arabic">{t("wizard.vendors.whatIncluded")}</span>
+                                        </div>
+                                        <div className="flex flex-wrap gap-1.5">
+                                          {localizedTags.map((key) => {
+                                            const TagIcon = EXTRA_SERVICE_ICONS[key];
+                                            const label = EXTRA_SERVICE_LABELS[key] ?? key;
+                                            return (
+                                              <span
+                                                key={key}
+                                                className="inline-flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 font-arabic text-[11px] font-medium text-primary-foreground shadow-card"
+                                              >
+                                                {TagIcon ? (
+                                                  <TagIcon className="h-3 w-3 shrink-0" />
+                                                ) : (
+                                                  <Check className="h-3 w-3 shrink-0" />
+                                                )}
+                                                <span className="truncate">{label}</span>
+                                              </span>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
                                     );
-                                  })}
+                                  })()}
+
+                                  <div className="mt-3 grid grid-cols-2 gap-2" dir="ltr">
+                                    {weekday > 0 && (
+                                      <div className="rounded-xl border border-border bg-background/50 p-2.5">
+                                        <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-foreground/55">
+                                          <CalendarDays className="h-3 w-3" />
+                                          <span className="font-arabic">{t("wizard.vendors.weekdayPrice")}</span>
+                                        </div>
+                                        <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-foreground">
+                                          {fmtNumber(weekday)}{" "}
+                                          <span className="text-[11px] font-medium text-foreground/60">{t("common.currency")}</span>
+                                        </div>
+                                      </div>
+                                    )}
+                                    {weekend > 0 && (
+                                      <div className="rounded-xl border border-primary/25 bg-primary/[0.04] p-2.5">
+                                        <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-primary">
+                                          <CalendarRange className="h-3 w-3" />
+                                          <span className="font-arabic">{t("wizard.vendors.weekendPrice")}</span>
+                                        </div>
+                                        <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-primary">
+                                          {fmtNumber(weekend)}{" "}
+                                          <span className="text-[11px] font-medium text-primary/70">{t("common.currency")}</span>
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {isHall && (Number(v.men_capacity ?? 0) > 0 || Number(v.women_capacity ?? 0) > 0) && (
+                                      <>
+                                        {Number(v.men_capacity ?? 0) > 0 && (
+                                          <div className="rounded-xl border border-border bg-background/50 p-2.5">
+                                            <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-foreground/55">
+                                              <Users className="h-3 w-3" />
+                                              <span className="font-arabic">{t("wizard.vendors.menCapacity")}</span>
+                                            </div>
+                                            <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-foreground">
+                                              {fmtNumber(Number(v.men_capacity))}
+                                            </div>
+                                          </div>
+                                        )}
+                                        {Number(v.women_capacity ?? 0) > 0 && (
+                                          <div className="rounded-xl border border-border bg-background/50 p-2.5">
+                                            <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-foreground/55">
+                                              <Users2 className="h-3 w-3" />
+                                              <span className="font-arabic">{t("wizard.vendors.womenCapacity")}</span>
+                                            </div>
+                                            <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-foreground">
+                                              {fmtNumber(Number(v.women_capacity))}
+                                            </div>
+                                          </div>
+                                        )}
+                                      </>
+                                    )}
+                                  </div>
+
+                                  <div className="mt-3 grid grid-cols-1 gap-2">
+                                    {v.packages.length === 0 && (
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          const indicativePrice = weekday || weekend || 0;
+                                          const newPick: VendorPick = {
+                                            vendorId: v.id,
+                                            packageId: null,
+                                            category: cat,
+                                            price: indicativePrice,
+                                          };
+                                          handlePick(newPick);
+                                          onBookNow?.(newPick);
+                                        }}
+                                        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-arabic text-sm font-semibold text-primary-foreground shadow-soft transition hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                      >
+                                        <Check className="h-4 w-4" />
+                                        {t("wizard.vendors.bookNow")}
+                                      </button>
+                                    )}
+                                    {v.packages.map((p) => {
+                                      const isPickedPkg = pick?.vendorId === v.id && pick?.packageId === p.id;
+                                      const packageMatches =
+                                        allowedPackageTiers.includes(p.tier) || (cap > 0 && Number(p.price) <= cap);
+                                      return (
+                                        <button
+                                          key={p.id}
+                                          type="button"
+                                          onClick={() =>
+                                            handlePick(
+                                              isPickedPkg
+                                                ? null
+                                                : { vendorId: v.id, packageId: p.id, category: cat, price: Number(p.price) },
+                                            )
+                                          }
+                                          className={`flex items-center justify-between rounded-xl border p-3 text-start transition-all ${
+                                            isPickedPkg
+                                              ? "border-primary bg-primary/5 shadow-soft"
+                                              : packageMatches
+                                                ? "border-primary/30 bg-primary/[0.03] hover:border-primary/60"
+                                                : "border-border bg-background hover:border-primary/40"
+                                          }`}
+                                        >
+                                          <div className="min-w-0">
+                                            <div className="flex items-center gap-1.5">
+                                              <span className="font-arabic text-sm font-medium text-foreground">{p.name}</span>
+                                              {packageMatches && !isPickedPkg && (
+                                                <span className="inline-flex items-center rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+                                                  {t("wizard.vendors.matchesBudget")}
+                                                </span>
+                                              )}
+                                            </div>
+                                            <div className="truncate text-[11px] text-foreground/55">{p.description}</div>
+                                          </div>
+                                          <div className="ms-3 flex flex-col items-end gap-1">
+                                            <span className="font-arabic text-sm font-semibold tabular-nums text-primary">
+                                              {fmtNumber(Number(p.price))} {t("common.currency")}
+                                            </span>
+                                            <span
+                                              className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors ${
+                                                isPickedPkg
+                                                  ? "bg-primary text-primary-foreground"
+                                                  : "bg-primary/10 text-primary"
+                                              }`}
+                                            >
+                                              {isPickedPkg ? (
+                                                <>
+                                                  <X className="h-3 w-3" />
+                                                  {t("wizard.vendors.remove")}
+                                                </>
+                                              ) : (
+                                                <>
+                                                  <Plus className="h-3 w-3" />
+                                                  {t("wizard.vendors.addProvider")}
+                                                </>
+                                              )}
+                                            </span>
+                                          </div>
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
                                 </div>
                               </div>
                             );
-                          })()}
-
-                          {/* Pricing & capacity grid — always Latin digits via fmtNumber */}
-                          <div className="mt-3 grid grid-cols-2 gap-2" dir="ltr">
-                            {weekday > 0 && (
-                              <div className="rounded-xl border border-border bg-background/50 p-2.5">
-                                <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-foreground/55">
-                                  <CalendarDays className="h-3 w-3" />
-                                  <span className="font-arabic">{t("wizard.vendors.weekdayPrice")}</span>
-                                </div>
-                                <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-foreground">
-                                  {fmtNumber(weekday)}{" "}
-                                  <span className="text-[11px] font-medium text-foreground/60">{t("common.currency")}</span>
-                                </div>
-                              </div>
-                            )}
-                            {weekend > 0 && (
-                              <div className="rounded-xl border border-primary/25 bg-primary/[0.04] p-2.5">
-                                <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-primary">
-                                  <CalendarRange className="h-3 w-3" />
-                                  <span className="font-arabic">{t("wizard.vendors.weekendPrice")}</span>
-                                </div>
-                                <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-primary">
-                                  {fmtNumber(weekend)}{" "}
-                                  <span className="text-[11px] font-medium text-primary/70">{t("common.currency")}</span>
-                                </div>
-                              </div>
-                            )}
-                            {/* Removed: "Price upon request" placeholder per spec —
-                                the "Book Now" button below now serves as the CTA. */}
-
-
-                            {/* Hall capacity tiles */}
-                            {isHall && (Number(v.men_capacity ?? 0) > 0 || Number(v.women_capacity ?? 0) > 0) && (
-                              <>
-                                {Number(v.men_capacity ?? 0) > 0 && (
-                                  <div className="rounded-xl border border-border bg-background/50 p-2.5">
-                                    <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-foreground/55">
-                                      <Users className="h-3 w-3" />
-                                      <span className="font-arabic">{t("wizard.vendors.menCapacity")}</span>
-                                    </div>
-                                    <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-foreground">
-                                      {fmtNumber(Number(v.men_capacity))}
-                                    </div>
-                                  </div>
-                                )}
-                                {Number(v.women_capacity ?? 0) > 0 && (
-                                  <div className="rounded-xl border border-border bg-background/50 p-2.5">
-                                    <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-foreground/55">
-                                      <Users2 className="h-3 w-3" />
-                                      <span className="font-arabic">{t("wizard.vendors.womenCapacity")}</span>
-                                    </div>
-                                    <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-foreground">
-                                      {fmtNumber(Number(v.women_capacity))}
-                                    </div>
-                                  </div>
-                                )}
-                              </>
-                            )}
-                          </div>
-
-                          {/* Package picker / Add provider buttons */}
-                          <div className="mt-3 grid grid-cols-1 gap-2">
-                            {v.packages.length === 0 && (
-                              // Vendor approved but hasn't published packages yet —
-                              // surface a one-click "Book Now" CTA that picks this
-                              // vendor (using their weekday price as the indicative
-                              // amount, falling back to 0) and advances the wizard.
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  const indicativePrice = weekday || weekend || 0;
-                                  const newPick: VendorPick = {
-                                    vendorId: v.id,
-                                    packageId: null,
-                                    category: cat,
-                                    price: indicativePrice,
-                                  };
-                                  setPick(cat, newPick);
-                                  onBookNow?.(newPick);
-                                }}
-                                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-arabic text-sm font-semibold text-primary-foreground shadow-soft transition hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                              >
-                                <Check className="h-4 w-4" />
-                                {t("wizard.vendors.bookNow")}
-                              </button>
-                            )}
-                            {v.packages.map((p) => {
-                              const isPicked = pick?.vendorId === v.id && pick?.packageId === p.id;
-                              const packageMatches =
-                                allowedPackageTiers.includes(p.tier) || (cap > 0 && Number(p.price) <= cap);
-                              return (
-                                <button
-                                  key={p.id}
-                                  type="button"
-                                  onClick={() =>
-                                    setPick(
-                                      cat,
-                                      isPicked
-                                        ? null
-                                        : { vendorId: v.id, packageId: p.id, category: cat, price: Number(p.price) },
-                                    )
-                                  }
-                                  className={`flex items-center justify-between rounded-xl border p-3 text-start transition-all ${
-                                    isPicked
-                                      ? "border-primary bg-primary/5 shadow-soft"
-                                      : packageMatches
-                                        ? "border-primary/30 bg-primary/[0.03] hover:border-primary/60"
-                                        : "border-border bg-background hover:border-primary/40"
-                                  }`}
-                                >
-                                  <div className="min-w-0">
-                                    <div className="flex items-center gap-1.5">
-                                      <span className="font-arabic text-sm font-medium text-foreground">{p.name}</span>
-                                      {packageMatches && !isPicked && (
-                                        <span className="inline-flex items-center rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-medium text-primary">
-                                          {t("wizard.vendors.matchesBudget")}
-                                        </span>
-                                      )}
-                                    </div>
-                                    <div className="truncate text-[11px] text-foreground/55">{p.description}</div>
-                                  </div>
-                                  <div className="ms-3 flex flex-col items-end gap-1">
-                                    <span className="font-arabic text-sm font-semibold tabular-nums text-primary">
-                                      {fmtNumber(Number(p.price))} {t("common.currency")}
-                                    </span>
-                                    <span
-                                      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors ${
-                                        isPicked
-                                          ? "bg-primary text-primary-foreground"
-                                          : "bg-primary/10 text-primary"
-                                      }`}
-                                    >
-                                      {isPicked ? (
-                                        <>
-                                          <X className="h-3 w-3" />
-                                          {t("wizard.vendors.remove")}
-                                        </>
-                                      ) : (
-                                        <>
-                                          <Plus className="h-3 w-3" />
-                                          {t("wizard.vendors.addProvider")}
-                                        </>
-                                      )}
-                                    </span>
-                                  </div>
-                                </button>
-                              );
-                            })}
-                          </div>
+                          })}
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </section>
           );
         })}
