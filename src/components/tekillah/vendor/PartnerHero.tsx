@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Target, LayoutDashboard, ShieldCheck, TrendingUp, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Target, LayoutDashboard, ShieldCheck, TrendingUp, Sparkles, LogIn, UserPlus, Crown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 
