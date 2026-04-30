@@ -37,7 +37,7 @@ const PartnerProfilePage = () => {
         vendor={welcomeVendor}
         onEnter={() => {
           setWelcomeOpen(false);
-          navigate("/vendor");
+          navigate("/partner");
         }}
       />
     </PortalLayout>
