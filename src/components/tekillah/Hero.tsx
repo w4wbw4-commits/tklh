@@ -48,9 +48,9 @@ export const Hero = () => {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
 
-      {/* Single classical drape — left edge only, soft and unobtrusive */}
+      {/* Single tied-back drape — slim accent on the left edge */}
       <SketchCurtain
-        className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-[110px] opacity-75 md:block lg:w-[140px]"
+        className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-[64px] opacity-80 md:block lg:w-[78px]"
       />
 
       {/* A single ginkgo fan opposite the curtain (top-right) for balance */}
