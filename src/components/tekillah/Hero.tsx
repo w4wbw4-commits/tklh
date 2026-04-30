@@ -9,6 +9,7 @@ import {
   SketchCandelabra,
   SketchBranch,
   SketchBanquet,
+  SketchKilim,
 } from "./SketchArt";
 
 // ---------------------------------------------------------------------------
@@ -46,6 +47,14 @@ export const Hero = () => {
         {/* Bottom fade into next section */}
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
+
+      {/* Kilim curtains framing the hero — narrow strips on both edges, fading top/bottom */}
+      <SketchKilim
+        className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-[64px] opacity-80 md:block lg:w-[78px]"
+      />
+      <SketchKilim
+        className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[64px] -scale-x-100 opacity-80 md:block lg:w-[78px]"
+      />
 
       {/* Top corner ginkgo fans (inspired by reference frame) */}
       <SketchGinkgo
