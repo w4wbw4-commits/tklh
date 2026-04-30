@@ -39,14 +39,14 @@ export const OccasionsSection = () => (
             تِكله معك في كل مناسبة
           </span>
           <h2 className="mt-6 font-arabic text-4xl font-black leading-[1.15] text-green md:text-6xl">
-            لكل مناسباتك..{" "}
+            تِكله لك في{" "}
             <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
-              تحتاج ناس تِكله
+              كل مناسباتك
             </span>
           </h2>
           <p className="mx-auto mt-5 max-w-2xl font-arabic text-lg leading-relaxed text-foreground/65 sm:text-xl">
-            من ليلة العمر، لأحلى لمّة عيلة، لأكبر فعالية شركتك — تِكله تجمع لك
-            كل شي في مكان واحد، بضمان وذوق سعودي ما يخيب.
+            لكل مناسباتك.. تحتاج دايم ناس تِكله عليهم! من ليلة العمر، لأحلى
+            لمّة، لأكبر فعالية شركتك — كل شي بضمان وذوق سعودي ما يخيب.
           </p>
         </div>
       </Reveal>
