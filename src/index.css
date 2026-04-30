@@ -161,6 +161,64 @@
     --sidebar-border: 100 14% 24%;
     --sidebar-ring: 40 62% 68%;
   }
+
+  /* === Dark-mode legibility booster ===========================================
+     The site uses many `text-foreground/55..70` and `text-primary-deep/60..80`
+     utilities for hierarchy. On the warm cream background these read fine, but
+     on the dark olive canvas anything below ~75% opacity disappears.
+     Instead of editing 270+ utility classes one-by-one, we lift the floor here:
+     any low-opacity foreground/primary-deep/cream text in dark mode is bumped
+     up to a readable opacity. Borders and dividers get a slight boost too so
+     cards/sections separate cleanly. This is a contrast-only override — it
+     doesn't change the hue, just the alpha channel. */
+  .dark .text-foreground\/40,
+  .dark .text-foreground\/45,
+  .dark .text-foreground\/50,
+  .dark .text-foreground\/55 { color: hsl(var(--foreground) / 0.78) !important; }
+  .dark .text-foreground\/60,
+  .dark .text-foreground\/65 { color: hsl(var(--foreground) / 0.82) !important; }
+  .dark .text-foreground\/70,
+  .dark .text-foreground\/75 { color: hsl(var(--foreground) / 0.88) !important; }
+  .dark .text-foreground\/80,
+  .dark .text-foreground\/85 { color: hsl(var(--foreground) / 0.93) !important; }
+
+  .dark .text-primary-deep\/40,
+  .dark .text-primary-deep\/50,
+  .dark .text-primary-deep\/55,
+  .dark .text-primary-deep\/60 { color: hsl(var(--primary-deep) / 0.82) !important; }
+  .dark .text-primary-deep\/65,
+  .dark .text-primary-deep\/70,
+  .dark .text-primary-deep\/75 { color: hsl(var(--primary-deep) / 0.9) !important; }
+  .dark .text-primary-deep\/80,
+  .dark .text-primary-deep\/85 { color: hsl(var(--primary-deep) / 0.95) !important; }
+
+  /* Body text helpers used throughout legal/marketing copy */
+  .dark .text-muted-foreground { color: hsl(var(--foreground) / 0.78) !important; }
+
+  /* Hairline borders are too dim on dark canvas — bring them into view */
+  .dark .border-foreground\/10,
+  .dark .border-foreground\/15,
+  .dark .border-foreground\/20 { border-color: hsl(var(--foreground) / 0.22) !important; }
+  .dark .border-primary-deep\/15,
+  .dark .border-primary-deep\/20,
+  .dark .border-primary-deep\/25 { border-color: hsl(var(--primary-deep) / 0.32) !important; }
+  .dark .border-primary\/15,
+  .dark .border-primary\/20,
+  .dark .border-primary\/25 { border-color: hsl(var(--primary) / 0.45) !important; }
+
+  /* The cream pills used in the navbar / chips become invisible on dark — lift
+     them onto the surface tone with a clear gold edge so they keep their
+     "label" affordance. */
+  .dark .bg-cream\/40,
+  .dark .bg-cream\/50,
+  .dark .bg-cream\/60,
+  .dark .bg-cream\/70,
+  .dark .bg-cream\/80 { background-color: hsl(var(--card) / 0.85) !important; }
+
+  /* Soft primary tints used for active/hover states need a touch more body */
+  .dark .bg-primary\/5 { background-color: hsl(var(--primary) / 0.12) !important; }
+  .dark .bg-primary\/10 { background-color: hsl(var(--primary) / 0.18) !important; }
+  .dark .bg-primary-deep\/5 { background-color: hsl(var(--primary-deep) / 0.1) !important; }
 }
 
 @layer base {
