@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Sparkles, Star } from "lucide-react";
 import heroImage from "@/assets/hero-tekillah-celebration.jpg";
+import floralSketch from "@/assets/floral-sketch.png";
 import { useTranslation } from "react-i18next";
 import { AnimatedCounter } from "./AnimatedCounter";
 
@@ -15,7 +16,7 @@ export const Hero = () => {
   const { t } = useTranslation();
   return (
     <section id="home" className="relative min-h-screen w-full overflow-hidden bg-background">
-      {/* Background: blurred celebration scene + deep olive overlay */}
+      {/* Background: softly blurred celebration scene + lighter cream overlay for an airy feel */}
       <div className="absolute inset-0">
         <img
           src={heroImage}
@@ -26,15 +27,31 @@ export const Hero = () => {
           fetchPriority="high"
           decoding="async"
           className="h-full w-full scale-[1.05] object-cover"
-          style={{ filter: "blur(10px) saturate(1.1)" }}
+          style={{ filter: "blur(18px) saturate(1.05) brightness(1.05)" }}
         />
-        {/* Deep green overlay at ~50% so foreground text pops */}
+        {/* Soft cream wash so the scene reads as ambience, not subject */}
         <div
           className="absolute inset-0"
-          style={{ backgroundColor: "hsl(var(--primary-deep) / 0.55)" }}
+          style={{
+            background:
+              "linear-gradient(180deg, hsl(var(--cream) / 0.55) 0%, hsl(var(--cream) / 0.35) 45%, hsl(var(--primary-deep) / 0.25) 100%)",
+          }}
+        />
+        {/* Decorative floral sketch — corner accent, not a full background */}
+        <img
+          src={floralSketch}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-10 -left-10 hidden w-[42%] max-w-[560px] opacity-[0.28] mix-blend-multiply md:block rtl:left-auto rtl:-right-10"
+        />
+        <img
+          src={floralSketch}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-16 -right-16 hidden w-[38%] max-w-[480px] -scale-x-100 rotate-180 opacity-[0.22] mix-blend-multiply md:block rtl:right-auto rtl:-left-16 rtl:scale-x-100"
         />
         {/* Subtle gold grain for warmth */}
-        <div className="absolute inset-0 bg-najdi-pattern-dark opacity-30 mix-blend-overlay" />
+        <div className="absolute inset-0 bg-najdi-pattern-dark opacity-[0.12] mix-blend-overlay" />
         {/* Smooth fade-out into next section */}
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       </div>
@@ -45,10 +62,10 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-10 inline-flex items-center gap-2 rounded-full border border-gold/60 bg-primary-deep/40 px-5 py-2 backdrop-blur-md"
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary-deep/30 bg-cream/60 px-5 py-2 backdrop-blur-md"
         >
           <Star className="h-3.5 w-3.5 text-gold" strokeWidth={1.5} fill="currentColor" />
-          <span className="text-xs font-bold tracking-[0.18em] text-gold-soft">
+          <span className="text-xs font-bold tracking-[0.18em] text-primary-deep">
             {t("hero.tag")}
           </span>
           <Sparkles className="h-3 w-3 text-gold" strokeWidth={1.5} />
@@ -59,25 +76,25 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 24, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="relative inline-flex items-center justify-center rounded-[2.5rem] border border-cream/40 px-8 py-4 sm:rounded-[3.5rem] sm:px-14 sm:py-6"
+          className="relative inline-flex items-center justify-center rounded-[2rem] border border-cream/50 px-7 py-3 sm:rounded-[2.75rem] sm:px-12 sm:py-5"
           style={{
             background:
-              "linear-gradient(135deg, hsl(0 0% 100% / 0.32) 0%, hsl(0 0% 100% / 0.18) 100%)",
-            backdropFilter: "blur(22px) saturate(1.15)",
-            WebkitBackdropFilter: "blur(22px) saturate(1.15)",
+              "linear-gradient(135deg, hsl(0 0% 100% / 0.45) 0%, hsl(0 0% 100% / 0.22) 100%)",
+            backdropFilter: "blur(18px) saturate(1.1)",
+            WebkitBackdropFilter: "blur(18px) saturate(1.1)",
             boxShadow:
-              "0 30px 80px -25px hsl(var(--primary-deep) / 0.55), inset 0 1px 0 hsl(0 0% 100% / 0.35)",
+              "0 22px 60px -25px hsl(var(--primary-deep) / 0.4), inset 0 1px 0 hsl(0 0% 100% / 0.4)",
           }}
         >
           <h1
-            className="font-wordmark text-balance text-center text-[140px] font-black leading-[1] sm:text-[200px] md:text-[260px] lg:text-[320px]"
+            className="font-wordmark text-balance text-center text-[80px] font-black leading-[1] sm:text-[110px] md:text-[140px] lg:text-[170px]"
             lang="ar"
             dir="rtl"
             style={{
               color: "hsl(var(--primary-deep))",
               WebkitTextFillColor: "hsl(var(--primary-deep))",
               letterSpacing: "-0.02em",
-              textShadow: "0 2px 12px hsl(0 0% 100% / 0.35)",
+              textShadow: "0 2px 10px hsl(0 0% 100% / 0.4)",
             }}
           >
             {t("hero.titleA")}
@@ -101,13 +118,13 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="font-tagline max-w-3xl text-balance text-center text-2xl font-bold leading-[1.6] text-gold-soft sm:text-3xl md:text-4xl"
+          className="font-tagline max-w-3xl text-balance text-center text-xl font-bold leading-[1.6] sm:text-2xl md:text-3xl"
           lang="ar"
           dir="rtl"
           style={{
+            color: "hsl(var(--primary-deep))",
             wordSpacing: "0.08em",
-            textShadow:
-              "0 2px 18px hsl(var(--primary-deep) / 0.9), 0 1px 4px hsl(var(--primary-deep) / 0.8)",
+            textShadow: "0 1px 8px hsl(0 0% 100% / 0.6)",
           }}
         >
           {t("hero.titleB")}
@@ -118,8 +135,11 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 max-w-xl text-balance text-sm leading-relaxed text-cream/80 sm:text-base"
-          style={{ textShadow: "0 1px 10px hsl(var(--primary-deep) / 0.8)" }}
+          className="mt-5 max-w-xl text-balance text-sm leading-relaxed sm:text-base"
+          style={{
+            color: "hsl(var(--primary-deep) / 0.85)",
+            textShadow: "0 1px 6px hsl(0 0% 100% / 0.5)",
+          }}
         >
           {t("hero.desc")}
         </motion.p>
