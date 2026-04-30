@@ -82,7 +82,7 @@ const PartnerPricingPage = () => {
                           </span>
                         </div>
                         <div className="mt-0.5 text-xs text-muted-foreground">
-                          السعر: {Math.round(adjusted).toLocaleString("en-US")} ر.س
+                          السعر: {Math.round(adjusted).toLocaleString("en-US")} 
                           {r.start_date && ` · من ${r.start_date}`}{r.end_date && ` إلى ${r.end_date}`}
                         </div>
                       </div>

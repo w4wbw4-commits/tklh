@@ -50,8 +50,8 @@ const PartnerAnalyticsPage = () => {
     <PortalLayout>
       <PortalHeader title="التحليلات والإيرادات" subtitle="نظرة شاملة على أداء قاعتك المالي" />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <Card className="border-primary bg-primary p-5 text-primary-foreground"><Wallet className="h-5 w-5 text-secondary" /><div className="mt-3 text-3xl font-black">{fmt(data.totalEarnings)}</div><div className="mt-1 text-xs font-bold text-primary-foreground/70">إجمالي الإيرادات (ر.س)</div></Card>
-        <Card className="p-5"><Clock className="h-5 w-5 text-secondary" /><div className="mt-3 text-3xl font-black">{fmt(data.pendingPayments)}</div><div className="mt-1 text-xs font-bold text-muted-foreground">مدفوعات معلّقة (ر.س)</div></Card>
+        <Card className="border-primary bg-primary p-5 text-primary-foreground"><Wallet className="h-5 w-5 text-secondary" /><div className="mt-3 text-3xl font-black">{fmt(data.totalEarnings)}</div><div className="mt-1 text-xs font-bold text-primary-foreground/70">إجمالي الإيرادات ()</div></Card>
+        <Card className="p-5"><Clock className="h-5 w-5 text-secondary" /><div className="mt-3 text-3xl font-black">{fmt(data.pendingPayments)}</div><div className="mt-1 text-xs font-bold text-muted-foreground">مدفوعات معلّقة ()</div></Card>
         <Card className="p-5">
           <TrendingUp className={`h-5 w-5 ${data.growth >= 0 ? "text-primary" : "text-destructive"}`} />
           <div className={`mt-3 text-3xl font-black ${data.growth >= 0 ? "text-primary" : "text-destructive"}`}>
@@ -62,7 +62,7 @@ const PartnerAnalyticsPage = () => {
       </div>
       <div className="mt-6 grid gap-5 lg:grid-cols-2">
         <Card className="p-5">
-          <h3 className="mb-4 font-black">الإيرادات الشهرية (ر.س)</h3>
+          <h3 className="mb-4 font-black">الإيرادات الشهرية ()</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.monthly}>

@@ -93,11 +93,11 @@ const PartnerInvoicesPage = () => {
                 <div><Label>اسم العميل</Label><Input value={form.customer_name} onChange={(e) => setForm({ ...form, customer_name: e.target.value })} /></div>
                 <div><Label>الجوال</Label><Input value={form.customer_phone} onChange={(e) => setForm({ ...form, customer_phone: e.target.value })} /></div>
                 <div>
-                  <Label>المبلغ شامل الضريبة (ر.س)</Label>
+                  <Label>المبلغ شامل الضريبة ()</Label>
                   <Input type="number" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} />
                   {form.amount && (
                     <p className="mt-1 text-xs text-muted-foreground">
-                      صافي: {fmt(parseFloat(form.amount) / 1.15)} ر.س + ضريبة 15%: {fmt(parseFloat(form.amount) - parseFloat(form.amount) / 1.15)} ر.س
+                      صافي: {fmt(parseFloat(form.amount) / 1.15)}  + ضريبة 15%: {fmt(parseFloat(form.amount) - parseFloat(form.amount) / 1.15)} 
                     </p>
                   )}
                 </div>
@@ -111,8 +111,8 @@ const PartnerInvoicesPage = () => {
       <StatusBanner vendor={vendor} />
       <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="p-5"><Receipt className="h-5 w-5 text-primary" /><div className="mt-3 text-2xl font-black">{fmt(stats.count)}</div><div className="mt-1 text-xs font-bold text-muted-foreground">إجمالي الفواتير</div></Card>
-        <Card className="border-primary bg-primary p-5 text-primary-foreground"><TrendingUp className="h-5 w-5 text-secondary" /><div className="mt-3 text-2xl font-black">{fmt(stats.total)} ر.س</div><div className="mt-1 text-xs font-bold text-primary-foreground/70">إجمالي القيمة</div></Card>
-        <Card className="p-5"><Calendar className="h-5 w-5 text-primary" /><div className="mt-3 text-2xl font-black">{fmt(stats.vat)} ر.س</div><div className="mt-1 text-xs font-bold text-muted-foreground">ضريبة محصّلة</div></Card>
+        <Card className="border-primary bg-primary p-5 text-primary-foreground"><TrendingUp className="h-5 w-5 text-secondary" /><div className="mt-3 text-2xl font-black">{fmt(stats.total)} </div><div className="mt-1 text-xs font-bold text-primary-foreground/70">إجمالي القيمة</div></Card>
+        <Card className="p-5"><Calendar className="h-5 w-5 text-primary" /><div className="mt-3 text-2xl font-black">{fmt(stats.vat)} </div><div className="mt-1 text-xs font-bold text-muted-foreground">ضريبة محصّلة</div></Card>
       </div>
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
@@ -125,7 +125,7 @@ const PartnerInvoicesPage = () => {
                   <td className="p-4 font-mono font-bold text-primary">{inv.invoice_number}</td>
                   <td className="p-4 text-muted-foreground">{new Date(inv.issue_date).toLocaleDateString("ar-SA")}</td>
                   <td className="p-4">{inv.customer_name || "-"}</td>
-                  <td className="p-4 font-black">{fmt(inv.total)} ر.س</td>
+                  <td className="p-4 font-black">{fmt(inv.total)} </td>
                   <td className="p-4"><span className="rounded-full bg-secondary px-2 py-1 text-[10px] font-black text-primary-deep">{inv.source === "auto" ? "تلقائي" : "يدوي"}</span></td>
                   <td className="p-4"><Button size="sm" variant="ghost" onClick={() => downloadPDF(inv)} className="text-primary"><Download className="ml-1 h-4 w-4" /> PDF</Button></td>
                 </tr>

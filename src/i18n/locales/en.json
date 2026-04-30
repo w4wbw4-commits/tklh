@@ -19,18 +19,53 @@
       "wait": "On the way"
     },
     "timeline": {
-      "venue": { "label": "Venue booked", "time": "Done 6 months ago" },
-      "catering": { "label": "Catering confirmed", "time": "3 months left" },
-      "photography": { "label": "Photography booked", "time": "Within a month" },
-      "florals": { "label": "Floral styling", "time": "Two weeks before" },
-      "night": { "label": "Event night", "time": "The big day" }
+      "venue": {
+        "label": "Venue booked",
+        "time": "Done 6 months ago"
+      },
+      "catering": {
+        "label": "Catering confirmed",
+        "time": "3 months left"
+      },
+      "photography": {
+        "label": "Photography booked",
+        "time": "Within a month"
+      },
+      "florals": {
+        "label": "Floral styling",
+        "time": "Two weeks before"
+      },
+      "night": {
+        "label": "Event night",
+        "time": "The big day"
+      }
     },
     "vendors": {
-      "venue": { "name": "Al-Masa Hall", "noteReady": "Ready • Confirmed", "noteLive": "All set" },
-      "catering": { "name": "Gourmet Catering", "noteReady": "Ready • Confirmed", "noteLive": "On the way" },
-      "photography": { "name": "Studio Noor", "noteReady": "Confirmed", "noteLive": "Arrived on site" },
-      "dj": { "name": "DJ Sultan", "noteReady": "Confirmed", "noteLive": "ETA 45 minutes" },
-      "florals": { "name": "Yasmine Florals", "noteReady": "Confirmed", "noteLive": "Setup complete" }
+      "venue": {
+        "name": "Al-Masa Hall",
+        "noteReady": "Ready • Confirmed",
+        "noteLive": "All set"
+      },
+      "catering": {
+        "name": "Gourmet Catering",
+        "noteReady": "Ready • Confirmed",
+        "noteLive": "On the way"
+      },
+      "photography": {
+        "name": "Studio Noor",
+        "noteReady": "Confirmed",
+        "noteLive": "Arrived on site"
+      },
+      "dj": {
+        "name": "DJ Sultan",
+        "noteReady": "Confirmed",
+        "noteLive": "ETA 45 minutes"
+      },
+      "florals": {
+        "name": "Yasmine Florals",
+        "noteReady": "Confirmed",
+        "noteLive": "Setup complete"
+      }
     }
   },
   "upcoming": {
@@ -69,7 +104,7 @@
     "no": "No",
     "or": "or",
     "and": "and",
-    "currency": "SAR",
+    "currency": "",
     "guests": "guests",
     "day": "day",
     "days": "days",
@@ -121,10 +156,22 @@
     "kicker": "Why us",
     "title": "Why TKLH?",
     "subtitle": "Four reasons that make TKLH your first choice for orchestrating events with confidence and peace of mind.",
-    "smart": { "title": "Smart planning", "desc": "A precise financial system that calculates your event costs based on real services and current market rates." },
-    "booking": { "title": "Vetted vendors", "desc": "We only work with the elite. Halls, photographers and planners hand-picked to guarantee the quality of your event." },
-    "budget": { "title": "Lightning-fast booking", "desc": "Say goodbye to endless calls — compare prices, browse photos and book every service in a few minutes." },
-    "live": { "title": "A luxury experience", "desc": "We crafted TKLH to deliver an experience worthy of your special day, from the website to the event itself." },
+    "smart": {
+      "title": "Smart planning",
+      "desc": "A precise financial system that calculates your event costs based on real services and current market rates."
+    },
+    "booking": {
+      "title": "Vetted vendors",
+      "desc": "We only work with the elite. Halls, photographers and planners hand-picked to guarantee the quality of your event."
+    },
+    "budget": {
+      "title": "Lightning-fast booking",
+      "desc": "Say goodbye to endless calls — compare prices, browse photos and book every service in a few minutes."
+    },
+    "live": {
+      "title": "A luxury experience",
+      "desc": "We crafted TKLH to deliver an experience worthy of your special day, from the website to the event itself."
+    },
     "cta": "Custom planning"
   },
   "footer": {
@@ -590,7 +637,11 @@
       "saved": "Package added",
       "deleted": "Package deleted",
       "empty": "No packages yet. Add your first package to start receiving requests.",
-      "tiers": { "basic": "Classic", "premium": "Premium", "royal": "Royal" }
+      "tiers": {
+        "basic": "Classic",
+        "premium": "Premium",
+        "royal": "Royal"
+      }
     },
     "notifications": {
       "title": "Notifications",
@@ -1360,34 +1411,97 @@
     "lastUpdated": "Last updated: {{date}}",
     "tosIntro": "Please read these Terms carefully before using TKLH. They govern your access to and use of our platform, including all bookings, payments, and content.",
     "tosSections": [
-      { "title": "1. About TKLH", "body": "TKLH is a Saudi-based marketplace that connects customers with verified event vendors — wedding halls, catering, photography, decor, transportation and more. We facilitate discovery, booking, secure payment, and post-event reviews." },
-      { "title": "2. Bookings & Escrow", "body": "Bookings are confirmed once the customer pays through our secure escrow system. Funds are held by TKLH until the service is delivered, and are then released to the vendor net of platform fees and applicable VAT (15%). Escrow protects both parties from non-delivery and disputes." },
-      { "title": "3. Vendor Verification", "body": "Vendors must provide accurate business information, a valid IBAN certificate, and a Commercial Register or Freelance Work Document. All submissions are reviewed by TKLH's compliance team before going live. Vendors that misrepresent their business may be permanently suspended." },
-      { "title": "4. Customer Conduct & Content", "body": "Customers and vendors agree to behave professionally. Reviews, replies, and any user-generated content must comply with our content guidelines. TKLH reserves the right to remove content or suspend accounts that violate these standards." },
-      { "title": "5. Refunds & Disputes", "body": "Refunds and disputes are handled in line with the escrow rules and Saudi consumer-protection law. If a vendor cancels a confirmed booking, the customer is eligible for a full refund. For other cases, contact our support team within 14 days of the event." },
-      { "title": "6. Fees & VAT", "body": "TKLH charges a transparent platform fee on each booking, and applies VAT at the statutory rate (currently 15%). All fees are shown clearly at checkout before payment is confirmed." },
-      { "title": "7. Updates to These Terms", "body": "These Terms may be updated from time to time. We'll notify users of material changes by email or in-app notification. Continued use of TKLH after an update constitutes acceptance of the new Terms." }
+      {
+        "title": "1. About TKLH",
+        "body": "TKLH is a Saudi-based marketplace that connects customers with verified event vendors — wedding halls, catering, photography, decor, transportation and more. We facilitate discovery, booking, secure payment, and post-event reviews."
+      },
+      {
+        "title": "2. Bookings & Escrow",
+        "body": "Bookings are confirmed once the customer pays through our secure escrow system. Funds are held by TKLH until the service is delivered, and are then released to the vendor net of platform fees and applicable VAT (15%). Escrow protects both parties from non-delivery and disputes."
+      },
+      {
+        "title": "3. Vendor Verification",
+        "body": "Vendors must provide accurate business information, a valid IBAN certificate, and a Commercial Register or Freelance Work Document. All submissions are reviewed by TKLH's compliance team before going live. Vendors that misrepresent their business may be permanently suspended."
+      },
+      {
+        "title": "4. Customer Conduct & Content",
+        "body": "Customers and vendors agree to behave professionally. Reviews, replies, and any user-generated content must comply with our content guidelines. TKLH reserves the right to remove content or suspend accounts that violate these standards."
+      },
+      {
+        "title": "5. Refunds & Disputes",
+        "body": "Refunds and disputes are handled in line with the escrow rules and Saudi consumer-protection law. If a vendor cancels a confirmed booking, the customer is eligible for a full refund. For other cases, contact our support team within 14 days of the event."
+      },
+      {
+        "title": "6. Fees & VAT",
+        "body": "TKLH charges a transparent platform fee on each booking, and applies VAT at the statutory rate (currently 15%). All fees are shown clearly at checkout before payment is confirmed."
+      },
+      {
+        "title": "7. Updates to These Terms",
+        "body": "These Terms may be updated from time to time. We'll notify users of material changes by email or in-app notification. Continued use of TKLH after an update constitutes acceptance of the new Terms."
+      }
     ],
     "privacyIntro": "This Privacy Policy explains how TKLH collects, uses, and safeguards your data in line with Saudi PDPL and international best practice.",
     "privacySections": [
-      { "title": "1. Data We Collect", "body": "We collect only what we need to operate the platform: account info (name, email, phone), booking history, payment metadata (we never store full card numbers), and vendor onboarding documents." },
-      { "title": "2. How We Use Your Data", "body": "We use your data to operate the marketplace, process payments, send transactional notifications (booking, payment, review activity), enforce platform safety, and comply with Saudi tax and accounting laws." },
-      { "title": "3. Vendor Documents", "body": "Vendor banking documents (IBAN certificate) and business documents (Commercial Register / Freelance Work Document) are stored in private, encrypted storage and are accessible only to authorised admin reviewers." },
-      { "title": "4. Sharing With Third Parties", "body": "We never sell your personal data. We share data only with payment partners (Mada, STC Pay, Apple Pay providers) strictly for processing transactions, and with Saudi tax authorities as required by law." },
-      { "title": "5. Your Rights", "body": "You have the right to access, correct, or request deletion of your personal data. You can also request a copy of your data. Contact our support team to exercise these rights." },
-      { "title": "6. Retention", "body": "We retain transaction and tax records as required by Saudi tax and accounting laws (typically up to 10 years). Account data is deleted on request, except where retention is legally required." },
-      { "title": "7. Cookies & Analytics", "body": "Cookies and analytics are used only to improve performance and detect abuse — never for third-party advertising or behavioural tracking." }
+      {
+        "title": "1. Data We Collect",
+        "body": "We collect only what we need to operate the platform: account info (name, email, phone), booking history, payment metadata (we never store full card numbers), and vendor onboarding documents."
+      },
+      {
+        "title": "2. How We Use Your Data",
+        "body": "We use your data to operate the marketplace, process payments, send transactional notifications (booking, payment, review activity), enforce platform safety, and comply with Saudi tax and accounting laws."
+      },
+      {
+        "title": "3. Vendor Documents",
+        "body": "Vendor banking documents (IBAN certificate) and business documents (Commercial Register / Freelance Work Document) are stored in private, encrypted storage and are accessible only to authorised admin reviewers."
+      },
+      {
+        "title": "4. Sharing With Third Parties",
+        "body": "We never sell your personal data. We share data only with payment partners (Mada, STC Pay, Apple Pay providers) strictly for processing transactions, and with Saudi tax authorities as required by law."
+      },
+      {
+        "title": "5. Your Rights",
+        "body": "You have the right to access, correct, or request deletion of your personal data. You can also request a copy of your data. Contact our support team to exercise these rights."
+      },
+      {
+        "title": "6. Retention",
+        "body": "We retain transaction and tax records as required by Saudi tax and accounting laws (typically up to 10 years). Account data is deleted on request, except where retention is legally required."
+      },
+      {
+        "title": "7. Cookies & Analytics",
+        "body": "Cookies and analytics are used only to improve performance and detect abuse — never for third-party advertising or behavioural tracking."
+      }
     ],
     "refundTitle": "Refund & Cancellation Policy",
     "refundIntro": "This policy explains how cancellations, refunds and disputes are handled on TKLH, in line with the Saudi E-commerce Law and the consumer-protection rules of the Ministry of Commerce.",
     "refundSections": [
-      { "title": "1. Vendor-Specific Terms", "body": "Each vendor (hall, caterer, photographer, etc.) sets their own cancellation window and refund terms. The exact terms applicable to your booking are shown clearly on the vendor's package and on the checkout summary before payment is confirmed." },
-      { "title": "2. TKLH's Role", "body": "TKLH acts as a technical intermediary and holds the customer's payment in escrow until the service is delivered. We do not set vendor pricing or vendor cancellation terms, but we enforce them fairly through our escrow and dispute system." },
-      { "title": "3. Customer Cancellations", "body": "If you cancel a confirmed booking, the refundable amount is calculated according to the vendor's published cancellation window (for example, 100% before X days, 50% within Y days, non-refundable inside Z days). Platform fees and payment-processing fees may be deducted." },
-      { "title": "4. Vendor Cancellations & No-Shows", "body": "If a vendor cancels a confirmed booking, fails to show up, or substantially fails to deliver the agreed service, the customer is entitled to a full refund of the amount paid, including platform fees, in line with the Saudi E-commerce Law." },
-      { "title": "5. Quality Reports & Disputes", "body": "If the service was delivered but you believe the quality was significantly below what was promised, you can submit a Quality Report from your booking page within 14 days of the event. Our team reviews evidence from both sides before deciding on a partial or full refund from the held escrow funds." },
-      { "title": "6. Refund Method & Timing", "body": "Approved refunds are returned to the original payment method (Mada, Apple Pay, STC Pay, credit card). Processing typically takes 5–10 business days depending on your bank or wallet provider." },
-      { "title": "7. Contacting Support", "body": "For any cancellation or refund question, contact TKLH support through your dashboard or via the contact channels listed in the footer. Please include your booking reference and a brief description of the issue." }
+      {
+        "title": "1. Vendor-Specific Terms",
+        "body": "Each vendor (hall, caterer, photographer, etc.) sets their own cancellation window and refund terms. The exact terms applicable to your booking are shown clearly on the vendor's package and on the checkout summary before payment is confirmed."
+      },
+      {
+        "title": "2. TKLH's Role",
+        "body": "TKLH acts as a technical intermediary and holds the customer's payment in escrow until the service is delivered. We do not set vendor pricing or vendor cancellation terms, but we enforce them fairly through our escrow and dispute system."
+      },
+      {
+        "title": "3. Customer Cancellations",
+        "body": "If you cancel a confirmed booking, the refundable amount is calculated according to the vendor's published cancellation window (for example, 100% before X days, 50% within Y days, non-refundable inside Z days). Platform fees and payment-processing fees may be deducted."
+      },
+      {
+        "title": "4. Vendor Cancellations & No-Shows",
+        "body": "If a vendor cancels a confirmed booking, fails to show up, or substantially fails to deliver the agreed service, the customer is entitled to a full refund of the amount paid, including platform fees, in line with the Saudi E-commerce Law."
+      },
+      {
+        "title": "5. Quality Reports & Disputes",
+        "body": "If the service was delivered but you believe the quality was significantly below what was promised, you can submit a Quality Report from your booking page within 14 days of the event. Our team reviews evidence from both sides before deciding on a partial or full refund from the held escrow funds."
+      },
+      {
+        "title": "6. Refund Method & Timing",
+        "body": "Approved refunds are returned to the original payment method (Mada, Apple Pay, STC Pay, credit card). Processing typically takes 5–10 business days depending on your bank or wallet provider."
+      },
+      {
+        "title": "7. Contacting Support",
+        "body": "For any cancellation or refund question, contact TKLH support through your dashboard or via the contact channels listed in the footer. Please include your booking reference and a brief description of the issue."
+      }
     ]
   }
 }

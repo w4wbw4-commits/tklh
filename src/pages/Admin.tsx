@@ -271,13 +271,13 @@ const Admin = () => {
       headerAction={user && <AdminAddVendorDialog adminUserId={user.id} onCreated={load} />}
     >
       {/* KPIs */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        <Kpi icon={TrendingUp} label={t("admin.totalRevenue")} value={`${fmtNumber(totalRevenue)} ${t("common.currency")}`} highlight />
-        <Kpi icon={Percent}    label={t("admin.platformProfit")} value={`${fmtNumber(platformProfit)} ${t("common.currency")}`} />
-        <Kpi icon={Receipt}    label={t("admin.vatCollected")} value={`${fmtNumber(vatCollected)} ${t("common.currency")}`} />
-        <Kpi icon={HandCoins}  label={t("admin.vendorPayouts")} value={`${fmtNumber(vendorPayouts)} ${t("common.currency")}`} />
-        <Kpi icon={Lock}       label={t("admin.heldFunds")} value={`${fmtNumber(heldFunds)} ${t("common.currency")}`} />
-        <Kpi icon={ListChecks} label={t("admin.totalBookings")} value={fmtNumber(totalBookings)} />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+        <Kpi icon={TrendingUp} label={t("admin.totalRevenue")}   value={fmtNumber(totalRevenue)}   currency highlight />
+        <Kpi icon={Percent}    label={t("admin.platformProfit")} value={fmtNumber(platformProfit)} currency />
+        <Kpi icon={Receipt}    label={t("admin.vatCollected")}   value={fmtNumber(vatCollected)}   currency />
+        <Kpi icon={HandCoins}  label={t("admin.vendorPayouts")}  value={fmtNumber(vendorPayouts)}  currency />
+        <Kpi icon={Lock}       label={t("admin.heldFunds")}      value={fmtNumber(heldFunds)}      currency />
+        <Kpi icon={ListChecks} label={t("admin.totalBookings")}  value={fmtNumber(totalBookings)} />
       </div>
 
       {/* Grand control summary */}
@@ -293,24 +293,31 @@ const Admin = () => {
   );
 };
 
-const Kpi = ({ icon: Icon, label, value, highlight }: { icon: typeof Wallet; label: string; value: string; highlight?: boolean }) => (
+const Kpi = ({
+  icon: Icon, label, value, currency, highlight,
+}: { icon: typeof Wallet; label: string; value: string; currency?: boolean; highlight?: boolean }) => (
   <div className={`group relative overflow-hidden rounded-2xl border p-4 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-card-hover ${
     highlight
       ? "border-primary/30 bg-gradient-to-br from-card to-secondary/40 ring-1 ring-primary/15"
       : "border-border bg-card"
   }`}>
-    <div className="flex items-center justify-between gap-2">
-      <div className="text-[11px] font-semibold leading-tight text-foreground/65 line-clamp-2">{label}</div>
+    <div className="flex items-start justify-between gap-2">
+      <div className="min-h-[2.4rem] flex-1 text-[12px] font-semibold leading-tight text-foreground/70">
+        {label}
+      </div>
       <div className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ${
-        highlight
-          ? "bg-gradient-olive text-primary-foreground"
-          : "bg-secondary/70 text-primary-deep"
+        highlight ? "bg-gradient-olive text-primary-foreground" : "bg-secondary/70 text-primary-deep"
       }`}>
         <Icon className="h-4 w-4" />
       </div>
     </div>
-    <div className="mt-3 font-arabic text-xl font-black leading-none tracking-tight text-primary-deep tabular-nums whitespace-nowrap sm:text-2xl">
-      {value}
+    <div className="mt-3 flex items-baseline gap-1.5 font-arabic font-black tracking-tight text-primary-deep">
+      <span className="text-2xl tabular-nums leading-none">{value}</span>
+      {currency && (
+        <span className="text-base leading-none text-primary-deep/80" style={{ fontFamily: "'SaudiRiyal', sans-serif" }}>
+          {"\uE900"}
+        </span>
+      )}
     </div>
   </div>
 );
