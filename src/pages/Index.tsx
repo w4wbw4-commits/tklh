@@ -1,7 +1,5 @@
 import { Navbar } from "@/components/tekillah/Navbar";
 import { Hero } from "@/components/tekillah/Hero";
-import { Story } from "@/components/tekillah/Story";
-import { Features } from "@/components/tekillah/Features";
 import { PlatformPackages } from "@/components/tekillah/PlatformPackages";
 import { PlanningWizard } from "@/components/tekillah/PlanningWizard";
 import { DashboardPreview } from "@/components/tekillah/DashboardPreview";
@@ -9,6 +7,8 @@ import { UpcomingFeatures } from "@/components/tekillah/UpcomingFeatures";
 import { Mission } from "@/components/tekillah/Mission";
 import { Footer } from "@/components/tekillah/Footer";
 import { ProblemSolutionAbout } from "@/components/tekillah/ProblemSolutionAbout";
+import { OccasionsSection } from "@/components/tekillah/OccasionsSection";
+import { PaymentLogosStrip } from "@/components/tekillah/PaymentLogosStrip";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
 import { SEO } from "@/components/SEO";
 
@@ -23,13 +23,17 @@ const Index = () => {
       <ScrollProgress />
       <Navbar />
       <Hero />
-      {/* Storytelling: pain → solution → about */}
+      {/* Expanded brand promise — beyond weddings */}
+      <OccasionsSection />
+      {/* Storytelling: about → speed → value */}
       <ProblemSolutionAbout />
-      {/* Primary path: ready packages first to grab attention */}
+      {/* Primary path: ready packages */}
       <PlatformPackages />
-      {/* Secondary path: bespoke planning sits directly under the packages */}
+      {/* Secondary path: bespoke planning wizard */}
       <PlanningWizard />
       <DashboardPreview />
+      {/* Trust strip: upcoming payment methods */}
+      <PaymentLogosStrip />
       <UpcomingFeatures />
       <Mission />
       <Footer />
@@ -38,3 +42,4 @@ const Index = () => {
 };
 
 export default Index;
+
