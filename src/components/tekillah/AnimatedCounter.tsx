@@ -6,7 +6,7 @@ interface AnimatedCounterProps {
   value: number;
   /** Optional prefix (e.g. currency) */
   prefix?: string;
-  /** Optional suffix (e.g. "+", "%", "ر.س") */
+  /** Optional suffix (e.g. "+", "%", "") */
   suffix?: string;
   /** Animation duration in ms */
   duration?: number;

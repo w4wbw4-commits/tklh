@@ -356,7 +356,7 @@ export const VendorCalendar = ({ vendorId }: Props) => {
                           </div>
                           <div className="mt-0.5 truncate text-xs text-foreground/60">
                             {detail?.customer_name
-                              ? `${detail.customer_name}${detail.amount ? ` · ${detail.amount.toLocaleString("en-US")} ر.س` : ""}`
+                              ? `${detail.customer_name}${detail.amount ? ` · ${detail.amount.toLocaleString("en-US")} ` : ""}`
                               : detail?.label || detail?.text || meta.label}
                           </div>
                         </div>
@@ -461,7 +461,7 @@ export const VendorCalendar = ({ vendorId }: Props) => {
                   </div>
                   <div>
                     <Label htmlFor="amount" className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-foreground/70">
-                      <Banknote className="h-3.5 w-3.5" /> المبلغ (ر.س)
+                      <Banknote className="h-3.5 w-3.5" /> المبلغ ()
                     </Label>
                     <Input
                       id="amount"

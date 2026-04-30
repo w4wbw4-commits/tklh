@@ -426,7 +426,7 @@ export const WizardSceneBudget = ({ className, style }: Props) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: animate === "visible" ? 0.8 : 0 }}
               transition={{ delay: 1.2 + i * 0.15 }}>
-              ر.س
+              
             </motion.text>
           </g>
         ))}

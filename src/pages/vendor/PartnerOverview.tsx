@@ -150,7 +150,7 @@ const PartnerOverview = () => {
         >
           {/* KPIs */}
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            <Kpi label="عوائد الشهر" value={`${fmtMoney(stats.monthRevenue)} ر.س`} trend={`${stats.mom >= 0 ? "+" : ""}${stats.mom}%`} />
+            <Kpi label="عوائد الشهر" value={`${fmtMoney(stats.monthRevenue)} `} trend={`${stats.mom >= 0 ? "+" : ""}${stats.mom}%`} />
             <Kpi label="حجوزات مؤكدة" value={String(stats.confirmedCount)} trend={`+${stats.confirmedCount}`} />
             <Kpi label="معدل الإشغال" value={`${stats.occupancy}%`} trend={`${stats.occupancy}%`} />
             <Kpi label="تقييم العملاء" value="—" trend="مرتفع" soft />

@@ -77,8 +77,8 @@ const PartnerSalesPage = () => {
       <PortalHeader title="استيراد وتصدير المبيعات" subtitle="اربط مبيعاتك السابقة وصدّر تقاريرك بضغطة" badge="ربط شغلك الحالي" />
       <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-3">
         <Card className="p-5"><div className="text-xs font-bold text-muted-foreground">إجمالي الحجوزات</div><div className="mt-2 text-3xl font-black">{fmt(totals.count)}</div></Card>
-        <Card className="border-primary bg-primary p-5 text-primary-foreground"><div className="text-xs font-bold text-primary-foreground/70">إجمالي الإيرادات</div><div className="mt-2 text-3xl font-black">{fmt(totals.revenue)} ر.س</div></Card>
-        <Card className="border-secondary bg-secondary p-5"><div className="text-xs font-bold text-primary-deep">متوسط الحجز</div><div className="mt-2 text-3xl font-black text-primary-deep">{fmt(totals.count ? totals.revenue / totals.count : 0)} ر.س</div></Card>
+        <Card className="border-primary bg-primary p-5 text-primary-foreground"><div className="text-xs font-bold text-primary-foreground/70">إجمالي الإيرادات</div><div className="mt-2 text-3xl font-black">{fmt(totals.revenue)} </div></Card>
+        <Card className="border-secondary bg-secondary p-5"><div className="text-xs font-bold text-primary-deep">متوسط الحجز</div><div className="mt-2 text-3xl font-black text-primary-deep">{fmt(totals.count ? totals.revenue / totals.count : 0)} </div></Card>
       </div>
       <div className="mb-6 grid gap-5 lg:grid-cols-2">
         <Card className="p-6">
@@ -112,7 +112,7 @@ const PartnerSalesPage = () => {
                 <tr key={b.id} className="border-b border-border last:border-0 hover:bg-muted/40">
                   <td className="p-4 text-muted-foreground">{new Date(b.event_date).toLocaleDateString("ar-SA")}</td>
                   <td className="p-4 text-muted-foreground">{b.guest_count || 0}</td>
-                  <td className="p-4 font-black">{fmt(Number(b.total_price ?? 0))} ر.س</td>
+                  <td className="p-4 font-black">{fmt(Number(b.total_price ?? 0))} </td>
                   <td className="p-4"><span className="rounded-full bg-muted px-2 py-1 text-[10px] font-black text-foreground/70">{b.status}</span></td>
                 </tr>
               ))}

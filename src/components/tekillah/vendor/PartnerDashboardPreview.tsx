@@ -144,7 +144,7 @@ export const PartnerDashboardPreview = () => {
             <div className="space-y-5 lg:col-span-10">
               {/* KPI row */}
               <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                <Kpi label={t("partnerPreview.kpi.revenue", { defaultValue: "عوائد الشهر" })} value="312,400 ر.س" trend="+18%" />
+                <Kpi label={t("partnerPreview.kpi.revenue", { defaultValue: "عوائد الشهر" })} value="312,400 " trend="+18%" />
                 <Kpi label={t("partnerPreview.kpi.bookings", { defaultValue: "حجوزات مؤكدة" })} value="42" trend="+6" />
                 <Kpi label={t("partnerPreview.kpi.occupancy", { defaultValue: "معدل الإشغال" })} value="78%" trend="+12%" />
                 <Kpi label={t("partnerPreview.kpi.rating", { defaultValue: "تقييم العملاء" })} value="4.8 / 5" trend={t("partnerPreview.kpi.excellent", { defaultValue: "ممتاز" })} soft />
