@@ -20,6 +20,7 @@ import {
   Globe,
   Phone,
   FileText,
+  Building2,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { ThemeToggle } from "./ThemeToggle";
@@ -68,6 +69,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
     user
       ? { type: "route", href: "/dashboard", icon: LayoutDashboard, labelKey: "nav.myDashboard", fallback: { ar: "لوحتي", en: "My Dashboard" } }
       : { type: "route", href: "/auth", icon: LogIn, labelKey: "nav.start", fallback: { ar: "ابدأ الآن", en: "Get started" } },
+    { type: "route", href: "/vendor", icon: Building2, labelKey: "nav.joinAsVendor", fallback: { ar: "انضم كمزوّد خدمة", en: "Join as Vendor" } },
     ...(isPrimaryAdmin
       ? [{ type: "route" as const, href: "/admin", icon: ShieldCheck, labelKey: "nav.admin", fallback: { ar: "الإدارة", en: "Admin" } }]
       : []),
