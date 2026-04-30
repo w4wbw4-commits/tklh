@@ -9,6 +9,7 @@ import {
   SketchCandelabra,
   SketchBranch,
   SketchBanquet,
+  SketchCurtain,
 } from "./SketchArt";
 
 // ---------------------------------------------------------------------------
@@ -46,6 +47,14 @@ export const Hero = () => {
         {/* Bottom fade into next section */}
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
+
+      {/* Side curtains — olive drape with gold tieback */}
+      <SketchCurtain
+        className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-[140px] md:block lg:w-[180px]"
+      />
+      <SketchCurtain
+        className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[140px] -scale-x-100 md:block lg:w-[180px]"
+      />
 
       {/* Top corner ginkgo fans (inspired by reference frame) */}
       <SketchGinkgo
