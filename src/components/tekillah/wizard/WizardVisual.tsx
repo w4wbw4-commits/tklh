@@ -44,8 +44,8 @@ export const WizardVisual = ({ step, variant = "side" }: Props) => {
     <div
       className={
         isHeader
-          ? "relative h-32 w-full overflow-hidden rounded-2xl border border-primary/15 bg-cream sm:h-44"
-          : "relative hidden h-full min-h-[520px] w-full overflow-hidden rounded-l-3xl border-r border-primary/10 bg-cream lg:block"
+          ? "relative h-44 w-full overflow-hidden rounded-2xl border border-primary/15 bg-cream sm:h-56"
+          : "relative hidden h-full min-h-[560px] w-full overflow-hidden rounded-l-3xl border-r border-primary/10 bg-cream lg:block"
       }
     >
       {/* Soft paper texture wash (subtle dotted grain) */}
@@ -61,22 +61,26 @@ export const WizardVisual = ({ step, variant = "side" }: Props) => {
       {/* Edge vignette for depth */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-primary-deep/10" />
 
-      {/* === Sketch scene (cross-fades on step change) === */}
+      {/* === Sketch scene (cross-fades on step change) — fills the panel === */}
       <AnimatePresence mode="wait">
         <motion.div
           key={v.captionKey}
-          initial={{ opacity: 0, scale: 0.98 }}
+          initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 1.02 }}
+          exit={{ opacity: 0, scale: 1.04 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0 flex items-center justify-center"
+          className={
+            isHeader
+              ? "absolute inset-0 flex items-center justify-center px-2 pb-14 pt-2 sm:pb-16"
+              : "absolute inset-0 flex items-center justify-center px-4 pb-24 pt-6"
+          }
         >
-          <Scene className={isHeader ? "h-full w-full" : "h-[78%] w-[88%]"} />
+          <Scene className="h-full w-full" />
         </motion.div>
       </AnimatePresence>
 
       {/* Bottom soft caption strip — keeps hand-drawn feel without an image overlay */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-cream via-cream/85 to-transparent" />
+      <div className={`pointer-events-none absolute inset-x-0 bottom-0 ${isHeader ? "h-16" : "h-24"} bg-gradient-to-t from-cream via-cream/90 to-transparent`} />
 
       <AnimatePresence mode="wait">
         <motion.div
