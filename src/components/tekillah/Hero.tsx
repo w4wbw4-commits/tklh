@@ -47,32 +47,26 @@ export const Hero = () => {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
 
-      {/* === Side framing — kept slim so center stays open === */}
-      {/* Left: tied-back classical drape */}
+      {/* === Side framing — slim, edge-only, never crosses content === */}
+      {/* Left edge: tied-back classical drape */}
       <SketchCurtain
-        className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-[60px] opacity-75 md:block lg:w-[74px]"
+        className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-[52px] opacity-70 md:block lg:w-[64px]"
       />
 
       {/* Top-right: soft eucalyptus arching down */}
       <SketchEucalyptus
-        className="pointer-events-none absolute top-6 right-2 hidden h-[150px] w-[280px] opacity-65 md:block"
+        className="pointer-events-none absolute top-4 right-0 hidden h-[120px] w-[230px] opacity-55 md:block lg:h-[140px] lg:w-[260px]"
         style={{ transform: "scaleX(-1)" }}
       />
 
-      {/* Top-left: mirrored eucalyptus, lighter — balances the drape */}
-      <SketchEucalyptus
-        className="pointer-events-none absolute top-6 left-[80px] hidden h-[130px] w-[240px] opacity-45 lg:block"
-      />
-
-      {/* === Hero centerpiece: long wedding banquet table with glowing candelabra === */}
-      {/* Sits centered below the fold, anchoring the whole scene. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden justify-center md:flex">
-        <SketchSideTable className="h-[360px] w-auto max-w-[88vw] opacity-90 lg:h-[440px] xl:h-[500px]" />
-      </div>
-
       {/* Bottom-left corner: lotus pads */}
       <SketchLotus
-        className="pointer-events-none absolute bottom-2 left-2 hidden h-[120px] w-[160px] opacity-55 md:block"
+        className="pointer-events-none absolute bottom-3 left-2 hidden h-[100px] w-[140px] opacity-50 md:block"
+      />
+
+      {/* Wedding banquet table — tucked into bottom-right corner only on wide screens */}
+      <SketchSideTable
+        className="pointer-events-none absolute -bottom-4 -right-10 hidden h-[260px] w-auto opacity-60 xl:block 2xl:h-[320px] 2xl:-right-4"
       />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-32 pb-20 text-center">
