@@ -69,7 +69,7 @@ export const UpcomingFeatures = () => {
 
               <div className="relative">
                 <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/20 bg-background/70">
-                  <it.icon className="h-6 w-6 text-primary" strokeWidth={1.5} />
+                  <it.icon className="h-9 w-9" />
                 </div>
                 <h3
                   className="text-xl font-bold sm:text-2xl"
