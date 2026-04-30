@@ -6,6 +6,7 @@
 
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Props {
   children: ReactNode;
@@ -16,25 +17,26 @@ interface Props {
   className?: string;
 }
 
-const buildVariants = (y: number, delay: number): Variants => ({
+const buildVariants = (y: number, delay: number, duration: number): Variants => ({
   hidden: { opacity: 0, y },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration, delay, ease: [0.22, 1, 0.36, 1] },
   },
 });
 
 export const Reveal = ({ children, delay = 0, y = 30, className = "" }: Props) => {
   const reduce = useReducedMotion();
-  // Reduced-motion users get instant content without the slide.
-  if (reduce) return <div className={className}>{children}</div>;
+  const isMobile = useIsMobile();
+  // Reduced-motion users (and mobile) get instant content without the slide.
+  if (reduce || isMobile) return <div className={className}>{children}</div>;
   return (
     <motion.div
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: "-80px" }}
-      variants={buildVariants(y, delay)}
+      variants={buildVariants(y, delay, 0.7)}
       className={className}
     >
       {children}
