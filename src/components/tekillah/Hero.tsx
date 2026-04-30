@@ -60,9 +60,9 @@ export const Hero = () => {
         style={{ transform: "scaleX(-1)" }}
       />
 
-      {/* Round side wedding table on the right edge — vase, candles, tablecloth */}
+      {/* Long wedding banquet table on the right edge — candelabra, candles, florals */}
       <SketchSideTable
-        className="pointer-events-none absolute -bottom-4 right-2 hidden h-[300px] w-auto opacity-75 lg:block"
+        className="pointer-events-none absolute -bottom-6 right-0 hidden h-[440px] w-auto opacity-85 lg:block xl:h-[500px]"
       />
 
       {/* Lotus pads + reeds tucked at the very bottom-right corner */}
