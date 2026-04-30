@@ -6,7 +6,6 @@ import { AnimatedCounter } from "./AnimatedCounter";
 import {
   SketchDivider,
   SketchCurtain,
-  SketchSideTable,
   SketchEucalyptus,
   SketchLotus,
 } from "./SketchArt";
