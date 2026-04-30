@@ -61,7 +61,7 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
             ت
           </span>
           <div>
-            <div className="text-lg font-black leading-none">TKLH تِكله</div>
+            <div className="text-lg font-black leading-none">تِكله</div>
             <div className="mt-1 text-[10px] font-bold text-secondary">
               {t("portal.partnerPortal", { defaultValue: "بوابة الشركاء" })}
             </div>
