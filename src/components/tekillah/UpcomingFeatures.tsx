@@ -1,6 +1,11 @@
 import { motion } from "framer-motion";
-import { CreditCard, Mail, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import {
+  SketchIconCandle,
+  SketchIconBouquet,
+  SketchIconSparkle,
+  SketchCornerOrnament,
+} from "./SketchArt";
 
 export const UpcomingFeatures = () => {
   const { t, i18n } = useTranslation();
@@ -8,8 +13,8 @@ export const UpcomingFeatures = () => {
   const dir: "rtl" | "ltr" = isRtl ? "rtl" : "ltr";
 
   const items = [
-    { icon: CreditCard, key: "installments" },
-    { icon: Mail, key: "invitations" },
+    { icon: SketchIconCandle, key: "installments" },
+    { icon: SketchIconBouquet, key: "invitations" },
   ] as const;
 
   return (
