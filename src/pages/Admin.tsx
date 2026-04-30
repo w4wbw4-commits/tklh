@@ -32,9 +32,12 @@ import { AdminPackagesPanel } from "@/components/tekillah/admin/AdminPackagesPan
 import { AdminPendingBookings } from "@/components/tekillah/admin/AdminPendingBookings";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 
-// Primary admin: phone +966554430196 → synthetic email used by phone-OTP login.
+// Primary admin phones (allowlist) → synthetic emails used by phone-OTP login.
 // Combined with the user_roles 'admin' check (auto-granted via DB trigger).
-const PRIMARY_ADMIN_EMAIL = "966554430196@phone.tekillah.app";
+const PRIMARY_ADMIN_PHONES = ["+966554430196", "+966544057854"];
+const PRIMARY_ADMIN_EMAILS = PRIMARY_ADMIN_PHONES.map(
+  (p) => `${p.replace("+", "")}@phone.tekillah.app`,
+);
 
 interface PaymentRow {
   id: string;
@@ -81,7 +84,8 @@ const Admin = () => {
       // Hardcoded phone allowlist OR admin role. The primary admin phone is
       // always granted access; other admins must have the 'admin' role.
       const isPrimaryPhone =
-        user.email === PRIMARY_ADMIN_EMAIL || user.phone === "+966554430196";
+        (user.email && PRIMARY_ADMIN_EMAILS.includes(user.email)) ||
+        (user.phone && PRIMARY_ADMIN_PHONES.includes(user.phone));
       if (isPrimaryPhone) {
         setIsAdmin(true);
         // Best-effort self-heal: ensure the role row exists for RLS-protected writes.

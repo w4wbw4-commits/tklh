@@ -13,6 +13,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 // the user actually navigates to a partner/admin page.
 import Index from "./pages/Index.tsx";
 import { PartnerFloatingCTA } from "./components/tekillah/PartnerFloatingCTA";
+import { RoleSwitcher } from "./components/tekillah/RoleSwitcher";
 
 const Auth = lazy(() => import("./pages/Auth.tsx"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword.tsx"));
@@ -92,6 +93,7 @@ const App = () => (
                 </Routes>
               </Suspense>
               <PartnerFloatingCTA />
+              <RoleSwitcher />
             </AuthProvider>
           </BrowserRouter>
         </TooltipProvider>
