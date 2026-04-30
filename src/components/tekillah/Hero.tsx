@@ -56,12 +56,12 @@ export const Hero = () => {
         className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[64px] -scale-x-100 opacity-80 md:block lg:w-[78px]"
       />
 
-      {/* Top corner ginkgo fans (inspired by reference frame) */}
+      {/* Top corner ginkgo fans — pushed inside of the kilim curtain */}
       <SketchGinkgo
-        className="pointer-events-none absolute -top-10 -left-12 hidden h-[260px] w-auto opacity-80 md:block"
+        className="pointer-events-none absolute -top-8 left-[60px] hidden h-[230px] w-auto opacity-80 md:block lg:left-[78px]"
       />
       <SketchGinkgo
-        className="pointer-events-none absolute -top-10 -right-12 hidden h-[260px] w-auto -scale-x-100 opacity-80 md:block"
+        className="pointer-events-none absolute -top-8 right-[60px] hidden h-[230px] w-auto -scale-x-100 opacity-80 md:block lg:right-[78px]"
       />
 
       {/* Top center leafy branch */}
@@ -69,22 +69,22 @@ export const Hero = () => {
         className="pointer-events-none absolute top-2 left-1/2 -translate-x-1/2 hidden h-[150px] w-[420px] opacity-70 lg:block"
       />
 
-      {/* Bottom corner ginkgo fans (mirrored, larger) */}
+      {/* Bottom corner ginkgo fans (mirrored) — also offset from the kilim */}
       <SketchGinkgo
-        className="pointer-events-none absolute -bottom-16 -left-16 hidden h-[300px] w-auto opacity-75 md:block"
+        className="pointer-events-none absolute -bottom-12 left-[60px] hidden h-[260px] w-auto opacity-70 md:block lg:left-[78px]"
         style={{ transform: "rotate(180deg)" }}
       />
       <SketchGinkgo
-        className="pointer-events-none absolute -bottom-16 -right-16 hidden h-[300px] w-auto opacity-75 md:block"
+        className="pointer-events-none absolute -bottom-12 right-[60px] hidden h-[260px] w-auto opacity-70 md:block lg:right-[78px]"
         style={{ transform: "rotate(180deg) scaleX(-1)" }}
       />
 
-      {/* Candelabras — small, hugging the bottom edges so they don't overlap content */}
+      {/* Candelabras — small, hugging the bottom edges (inside the curtain) */}
       <SketchCandelabra
-        className="pointer-events-none absolute -bottom-2 left-2 hidden h-[170px] w-auto opacity-75 lg:block"
+        className="pointer-events-none absolute -bottom-2 left-[70px] hidden h-[160px] w-auto opacity-75 lg:block lg:left-[88px]"
       />
       <SketchCandelabra
-        className="pointer-events-none absolute -bottom-2 right-2 hidden h-[170px] w-auto -scale-x-100 opacity-75 lg:block"
+        className="pointer-events-none absolute -bottom-2 right-[70px] hidden h-[160px] w-auto -scale-x-100 opacity-75 lg:block lg:right-[88px]"
       />
 
       {/* Banquet table — pushed below the fold, only peeks under stats */}
