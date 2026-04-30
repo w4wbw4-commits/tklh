@@ -102,19 +102,6 @@ export const Navbar = () => {
                 </Link>
               </Button>
             )}
-            {/* Partner portal — Najdi Gold CTA */}
-            <Button
-              size="sm"
-              asChild
-              className="hidden rounded-full border border-gold/60 bg-gold text-primary-deep shadow-[0_4px_14px_-4px_hsl(var(--gold)/0.5)] transition-all hover:bg-gold hover:scale-[1.03] hover:gold-pulse sm:inline-flex dark:text-background"
-            >
-              <Link to={user ? "/partner" : "/auth?redirect=/partner&role=vendor"}>
-                <Building2 className="me-1 h-3.5 w-3.5 text-primary-deep dark:text-background" />
-                <span className="text-xs font-bold text-primary-deep dark:text-background">
-                  {t("nav.partnerPortal", { defaultValue: isAr ? "دخول الشركاء" : "Partner Portal" })}
-                </span>
-              </Link>
-            </Button>
             {isPrimaryAdmin && (
               <Button
                 size="sm"
