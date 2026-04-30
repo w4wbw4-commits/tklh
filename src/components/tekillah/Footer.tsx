@@ -3,6 +3,7 @@ import { Instagram, Twitter, Mail, Building2, ArrowRight, LogOut } from "lucide-
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { SketchSectionDivider } from "./SketchArt";
 
 export const Footer = () => {
   const { t } = useTranslation();
@@ -16,6 +17,10 @@ export const Footer = () => {
 
   return (
     <footer className="border-t border-border bg-gradient-beige">
+      {/* Top sketch divider — soft hand-drawn farewell */}
+      <div className="mx-auto flex max-w-3xl items-center justify-center px-6 pt-8">
+        <SketchSectionDivider className="h-10 w-full opacity-70" />
+      </div>
       <div className="mx-auto max-w-6xl px-6 py-14">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-5">
           <div className="md:col-span-2">

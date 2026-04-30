@@ -805,3 +805,185 @@ export const SketchLotus = ({ className, style, ariaHidden = true }: SketchProps
     </svg>
   );
 };
+
+// ===========================================================================
+// SECTION TRANSITION & MICRO-ICONS — used across the whole site to weave
+// the sketch language through every section. Tiny, decorative, animated.
+// ===========================================================================
+
+// --- Section divider: ornamental scroll with a center medallion ------------
+export const SketchSectionDivider = ({ className }: { className?: string }) => {
+  const { ref, animate } = useDraw();
+  return (
+    <svg
+      ref={ref}
+      viewBox="0 0 600 60"
+      preserveAspectRatio="xMidYMid meet"
+      fill="none"
+      className={className}
+      aria-hidden
+    >
+      {/* Left flourish */}
+      <motion.path
+        d="M20 30 Q120 30 220 30 Q240 30 250 22 Q260 14 270 22 Q280 30 290 30"
+        stroke={gold} strokeWidth="0.9" strokeLinecap="round" fill="none"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0} />
+      {/* Right flourish (mirror) */}
+      <motion.path
+        d="M580 30 Q480 30 380 30 Q360 30 350 22 Q340 14 330 22 Q320 30 310 30"
+        stroke={gold} strokeWidth="0.9" strokeLinecap="round" fill="none"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0} />
+      {/* Center diamond medallion */}
+      <motion.path d="M300 18 L312 30 L300 42 L288 30 Z"
+        stroke={gold} strokeWidth="1" fill={gold} fillOpacity={0.18} strokeLinejoin="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.4} />
+      <motion.circle cx="300" cy="30" r="2.2" fill={gold}
+        initial={{ opacity: 0 }} animate={{ opacity: animate === "visible" ? 1 : 0 }} transition={{ delay: 0.9 }} />
+      {/* Tiny dots */}
+      <motion.circle cx="240" cy="30" r="1.4" fill={brown}
+        initial={{ opacity: 0 }} animate={{ opacity: animate === "visible" ? 0.8 : 0 }} transition={{ delay: 0.7 }} />
+      <motion.circle cx="360" cy="30" r="1.4" fill={brown}
+        initial={{ opacity: 0 }} animate={{ opacity: animate === "visible" ? 0.8 : 0 }} transition={{ delay: 0.7 }} />
+    </svg>
+  );
+};
+
+// --- Corner ornament: small leafy + gold dot for section corners ----------
+export const SketchCornerOrnament = ({ className, style, ariaHidden = true }: SketchProps) => {
+  const { ref, animate } = useDraw();
+  return (
+    <svg ref={ref} viewBox="0 0 140 140" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
+      {/* Curving stem */}
+      <motion.path d="M10 130 Q40 100 60 70 Q80 40 130 10"
+        stroke={brown} strokeWidth="0.9" fill="none" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0} />
+      {/* Leaves */}
+      {[
+        { x: 30, y: 105, r: -45 }, { x: 50, y: 80, r: -30 },
+        { x: 70, y: 60, r: -10 }, { x: 95, y: 35, r: 20 },
+        { x: 115, y: 22, r: 40 },
+      ].map((l, i) => (
+        <motion.path key={i}
+          d={`M${l.x} ${l.y} q-5 -8 0 -16 q5 8 0 16 z`}
+          stroke={olive} strokeWidth="0.7" fill={olive} fillOpacity={0.1} strokeLinejoin="round"
+          transform={`rotate(${l.r} ${l.x} ${l.y - 8})`}
+          variants={drawVariants} initial="hidden" animate={animate} custom={0.3 + i * 0.08} />
+      ))}
+      {/* Gold dots */}
+      <motion.circle cx="60" cy="70" r="1.6" fill={gold}
+        initial={{ opacity: 0 }} animate={{ opacity: animate === "visible" ? 1 : 0 }} transition={{ delay: 1.0 }} />
+      <motion.circle cx="95" cy="35" r="1.6" fill={gold}
+        initial={{ opacity: 0 }} animate={{ opacity: animate === "visible" ? 1 : 0 }} transition={{ delay: 1.2 }} />
+    </svg>
+  );
+};
+
+// --- Micro-icon: candle (replacement for generic flame icons) -------------
+export const SketchIconCandle = ({ className, style, ariaHidden = true }: SketchProps) => {
+  const { ref, animate } = useDraw();
+  return (
+    <svg ref={ref} viewBox="0 0 40 56" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
+      <defs>
+        <radialGradient id="ic-flame-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor={gold} stopOpacity="0.7" />
+          <stop offset="100%" stopColor={gold} stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      {/* Holder */}
+      <motion.path d="M12 50 L28 50 M14 50 L14 46 Q20 43 26 46 L26 50"
+        stroke={brown} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0} />
+      {/* Candle */}
+      <motion.path d="M20 46 L20 18"
+        stroke={olive} strokeWidth="1.3" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.3} />
+      {/* Wick */}
+      <motion.path d="M20 18 L20 13"
+        stroke={brown} strokeWidth="0.8" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.6} />
+      {/* Halo */}
+      <motion.circle cx="20" cy="9" r="9" fill="url(#ic-flame-halo)"
+        initial={{ opacity: 0, scale: 0.7 }}
+        animate={{
+          opacity: animate === "visible" ? [0.4, 0.85, 0.5, 0.85, 0.45] : 0,
+          scale: animate === "visible" ? [0.85, 1.15, 0.95, 1.2, 0.9] : 0.7,
+        }}
+        transition={{ duration: 2.4, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+        style={{ transformOrigin: "20px 9px" }} />
+      {/* Flame */}
+      <motion.path
+        d="M20 14 q-4 -5 0 -12 q4 7 0 12 z"
+        fill={gold} stroke={gold} strokeWidth="0.6"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{
+          opacity: animate === "visible" ? [0.7, 1, 0.85, 1] : 0,
+          scale: animate === "visible" ? [0.85, 1.15, 0.95, 1.1, 0.9] : 0.8,
+        }}
+        transition={{ duration: 1.4, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+        style={{ transformOrigin: "20px 8px" }} />
+    </svg>
+  );
+};
+
+// --- Micro-icon: linked rings (for wedding/marriage themes) ---------------
+export const SketchIconRings = ({ className, style, ariaHidden = true }: SketchProps) => {
+  const { ref, animate } = useDraw();
+  return (
+    <svg ref={ref} viewBox="0 0 56 40" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
+      <motion.circle cx="20" cy="22" r="13" stroke={gold} strokeWidth="1.4" fill="none"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0} />
+      <motion.circle cx="36" cy="22" r="13" stroke={brown} strokeWidth="1.4" fill="none"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.4} />
+      <motion.path d="M20 9 q3 -2 6 0 M30 9 q3 -2 6 0"
+        stroke={olive} strokeWidth="0.7" fill="none" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.8} />
+      <motion.circle cx="28" cy="9" r="1.5" fill={gold}
+        initial={{ opacity: 0 }} animate={{ opacity: animate === "visible" ? 1 : 0 }} transition={{ delay: 1.0 }} />
+    </svg>
+  );
+};
+
+// --- Micro-icon: bouquet (events/florals) ---------------------------------
+export const SketchIconBouquet = ({ className, style, ariaHidden = true }: SketchProps) => {
+  const { ref, animate } = useDraw();
+  return (
+    <svg ref={ref} viewBox="0 0 56 56" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
+      {/* Stems */}
+      <motion.path d="M28 50 L28 32 M28 50 Q22 44 18 36 M28 50 Q34 44 38 36"
+        stroke={olive} strokeWidth="0.9" fill="none" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0} />
+      {/* Wrap ribbon */}
+      <motion.path d="M22 48 q6 4 12 0"
+        stroke={gold} strokeWidth="1.2" fill="none" strokeLinecap="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.3} />
+      {/* Flowers */}
+      <motion.circle cx="28" cy="20" r="6" stroke={brown} strokeWidth="1" fill={gold} fillOpacity={0.18}
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.5} />
+      <motion.circle cx="16" cy="28" r="4.5" stroke={brown} strokeWidth="0.9" fill={gold} fillOpacity={0.15}
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.7} />
+      <motion.circle cx="40" cy="28" r="4.5" stroke={brown} strokeWidth="0.9" fill={gold} fillOpacity={0.15}
+        variants={drawVariants} initial="hidden" animate={animate} custom={0.9} />
+      {/* Leaves */}
+      <motion.path d="M14 32 q-4 -6 0 -12 q4 6 0 12 z"
+        stroke={olive} strokeWidth="0.7" fill={olive} fillOpacity={0.1} strokeLinejoin="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={1.0} />
+      <motion.path d="M42 32 q4 -6 0 -12 q-4 6 0 12 z"
+        stroke={olive} strokeWidth="0.7" fill={olive} fillOpacity={0.1} strokeLinejoin="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={1.1} />
+    </svg>
+  );
+};
+
+// --- Micro-icon: sparkle star (highlights, premium accents) ---------------
+export const SketchIconSparkle = ({ className, style, ariaHidden = true }: SketchProps) => {
+  const { ref, animate } = useDraw();
+  return (
+    <svg ref={ref} viewBox="0 0 40 40" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
+      <motion.path d="M20 4 L23 17 L36 20 L23 23 L20 36 L17 23 L4 20 L17 17 Z"
+        stroke={gold} strokeWidth="1" fill={gold} fillOpacity={0.2} strokeLinejoin="round"
+        variants={drawVariants} initial="hidden" animate={animate} custom={0} />
+      <motion.circle cx="20" cy="20" r="1.6" fill={gold}
+        initial={{ opacity: 0 }} animate={{ opacity: animate === "visible" ? 1 : 0 }} transition={{ delay: 0.8 }} />
+    </svg>
+  );
+};

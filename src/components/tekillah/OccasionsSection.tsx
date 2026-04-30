@@ -4,8 +4,9 @@
 // Small circular icons for versatility, not a full-height card section.
 // ---------------------------------------------------------------------------
 import { motion } from "framer-motion";
-import { HeartHandshake, Crown, GraduationCap, PartyPopper, Sparkles } from "lucide-react";
+import { HeartHandshake, Crown, GraduationCap, PartyPopper } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { SketchCornerOrnament, SketchIconSparkle } from "./SketchArt";
 
 const OCCASIONS = [
   { icon: HeartHandshake, label: "حفلات الزواج" },
@@ -20,11 +21,18 @@ export const OccasionsSection = () => (
     aria-label="مناسبات يدعمها تِكله"
     className="relative overflow-hidden bg-hero-warm px-6 py-14 sm:px-8 sm:py-16"
   >
+    {/* Sketch corner ornaments — sit in the corners, never overlap content */}
+    <SketchCornerOrnament className="pointer-events-none absolute top-2 left-2 hidden h-[110px] w-[110px] opacity-55 md:block" />
+    <SketchCornerOrnament
+      className="pointer-events-none absolute top-2 right-2 hidden h-[110px] w-[110px] opacity-55 md:block"
+      style={{ transform: "scaleX(-1)" }}
+    />
+
     <div className="relative mx-auto max-w-6xl">
       <Reveal>
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-xs font-bold text-foreground backdrop-blur sm:text-sm">
-            <Sparkles className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
+            <SketchIconSparkle className="h-4 w-4" />
             تِكله معك في كل مناسبة
           </span>
           <h2 className="mt-5 font-arabic text-3xl font-black leading-[1.2] text-green md:text-5xl">

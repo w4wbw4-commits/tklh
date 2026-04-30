@@ -10,6 +10,7 @@ import { ProblemSolutionAbout } from "@/components/tekillah/ProblemSolutionAbout
 import { OccasionsSection } from "@/components/tekillah/OccasionsSection";
 import { PaymentLogosStrip } from "@/components/tekillah/PaymentLogosStrip";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
+import { SketchSectionDivider } from "@/components/tekillah/SketchArt";
 import { SEO } from "@/components/SEO";
 
 const Index = () => {
@@ -23,8 +24,19 @@ const Index = () => {
       <ScrollProgress />
       <Navbar />
       <Hero />
+
+      {/* Sketch divider — weaves the hero motif into every transition */}
+      <div className="mx-auto -mt-6 mb-2 flex max-w-3xl items-center justify-center px-6">
+        <SketchSectionDivider className="h-10 w-full opacity-80" />
+      </div>
+
       {/* Story flow: who we are + why we're better (merged) */}
       <ProblemSolutionAbout />
+
+      <div className="mx-auto my-2 flex max-w-3xl items-center justify-center px-6">
+        <SketchSectionDivider className="h-10 w-full opacity-70" />
+      </div>
+
       {/* Versatility strip — more than weddings */}
       <OccasionsSection />
       {/* Primary path: ready packages */}
@@ -35,6 +47,11 @@ const Index = () => {
       {/* Trust strip: upcoming payment methods */}
       <PaymentLogosStrip />
       <UpcomingFeatures />
+
+      <div className="mx-auto my-2 flex max-w-3xl items-center justify-center px-6">
+        <SketchSectionDivider className="h-10 w-full opacity-70" />
+      </div>
+
       <Mission />
       <Footer />
     </main>

@@ -1,6 +1,11 @@
 import { motion } from "framer-motion";
-import { CreditCard, Mail, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import {
+  SketchIconCandle,
+  SketchIconBouquet,
+  SketchIconSparkle,
+  SketchCornerOrnament,
+} from "./SketchArt";
 
 export const UpcomingFeatures = () => {
   const { t, i18n } = useTranslation();
@@ -8,8 +13,8 @@ export const UpcomingFeatures = () => {
   const dir: "rtl" | "ltr" = isRtl ? "rtl" : "ltr";
 
   const items = [
-    { icon: CreditCard, key: "installments" },
-    { icon: Mail, key: "invitations" },
+    { icon: SketchIconCandle, key: "installments" },
+    { icon: SketchIconBouquet, key: "invitations" },
   ] as const;
 
   return (
@@ -20,6 +25,12 @@ export const UpcomingFeatures = () => {
       {/* Decorative blurs */}
       <div className="pointer-events-none absolute -top-20 start-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 end-0 h-80 w-80 rounded-full bg-secondary/40 blur-3xl" />
+      {/* Sketch corner ornaments — keep the visual language consistent */}
+      <SketchCornerOrnament className="pointer-events-none absolute top-4 left-4 hidden h-[100px] w-[100px] opacity-50 md:block" />
+      <SketchCornerOrnament
+        className="pointer-events-none absolute bottom-4 right-4 hidden h-[100px] w-[100px] opacity-50 md:block"
+        style={{ transform: "scaleX(-1) scaleY(-1)" }}
+      />
 
       <div className="relative mx-auto max-w-6xl px-6">
         <motion.div
@@ -30,7 +41,7 @@ export const UpcomingFeatures = () => {
           className="mx-auto max-w-2xl text-center"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.3em] text-primary backdrop-blur">
-            <Sparkles className="h-3.5 w-3.5" strokeWidth={1.6} />
+            <SketchIconSparkle className="h-4 w-4" />
             {t("upcoming.kicker")}
           </span>
           <h2
@@ -64,7 +75,7 @@ export const UpcomingFeatures = () => {
 
               <div className="relative">
                 <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/20 bg-background/70">
-                  <it.icon className="h-6 w-6 text-primary" strokeWidth={1.5} />
+                  <it.icon className="h-9 w-9" />
                 </div>
                 <h3
                   className="text-xl font-bold sm:text-2xl"
