@@ -1012,20 +1012,39 @@ export const SketchLongBanquet = ({ className, style, ariaHidden = true }: Sketc
       aria-hidden={ariaHidden}
     >
       <defs>
-        <radialGradient id="banquet-flame-halo" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor={gold} stopOpacity="0.65" />
-          <stop offset="40%" stopColor={gold} stopOpacity="0.22" />
+        {/* Outer soft bloom — wide warm glow */}
+        <radialGradient id="banquet-flame-bloom" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor={gold} stopOpacity="0.45" />
+          <stop offset="35%" stopColor={gold} stopOpacity="0.18" />
+          <stop offset="70%" stopColor={gold} stopOpacity="0.06" />
           <stop offset="100%" stopColor={gold} stopOpacity="0" />
+        </radialGradient>
+        {/* Inner halo — concentrated near the wick */}
+        <radialGradient id="banquet-flame-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#fff5d6" stopOpacity="0.95" />
+          <stop offset="25%" stopColor={gold} stopOpacity="0.7" />
+          <stop offset="55%" stopColor={gold} stopOpacity="0.28" />
+          <stop offset="100%" stopColor={gold} stopOpacity="0" />
+        </radialGradient>
+        {/* Flame body gradient — hot core to warm tip */}
+        <radialGradient id="banquet-flame-body" cx="50%" cy="70%" r="60%">
+          <stop offset="0%" stopColor="#fff8e0" stopOpacity="1" />
+          <stop offset="55%" stopColor={gold} stopOpacity="0.95" />
+          <stop offset="100%" stopColor={gold} stopOpacity="0.5" />
         </radialGradient>
         <linearGradient id="banquet-fade" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="hsl(var(--cream))" stopOpacity="0" />
-          <stop offset="18%" stopColor="hsl(var(--cream))" stopOpacity="1" />
-          <stop offset="82%" stopColor="hsl(var(--cream))" stopOpacity="1" />
+          <stop offset="14%" stopColor="hsl(var(--cream))" stopOpacity="1" />
+          <stop offset="86%" stopColor="hsl(var(--cream))" stopOpacity="1" />
           <stop offset="100%" stopColor="hsl(var(--cream))" stopOpacity="0" />
         </linearGradient>
         <mask id="banquet-mask">
           <rect width="480" height="600" fill="url(#banquet-fade)" />
         </mask>
+        {/* Soft blur for the bloom layer */}
+        <filter id="banquet-soft-blur" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" />
+        </filter>
       </defs>
 
       <g mask="url(#banquet-mask)">
