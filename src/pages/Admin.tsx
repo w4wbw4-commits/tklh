@@ -271,13 +271,13 @@ const Admin = () => {
       headerAction={user && <AdminAddVendorDialog adminUserId={user.id} onCreated={load} />}
     >
       {/* KPIs */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        <Kpi icon={TrendingUp} label={t("admin.totalRevenue")} value={`${fmtNumber(totalRevenue)} ${t("common.currency")}`} highlight />
-        <Kpi icon={Percent}    label={t("admin.platformProfit")} value={`${fmtNumber(platformProfit)} ${t("common.currency")}`} />
-        <Kpi icon={Receipt}    label={t("admin.vatCollected")} value={`${fmtNumber(vatCollected)} ${t("common.currency")}`} />
-        <Kpi icon={HandCoins}  label={t("admin.vendorPayouts")} value={`${fmtNumber(vendorPayouts)} ${t("common.currency")}`} />
-        <Kpi icon={Lock}       label={t("admin.heldFunds")} value={`${fmtNumber(heldFunds)} ${t("common.currency")}`} />
-        <Kpi icon={ListChecks} label={t("admin.totalBookings")} value={fmtNumber(totalBookings)} />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+        <Kpi icon={TrendingUp} label={t("admin.totalRevenue")}   value={fmtNumber(totalRevenue)}   currency highlight />
+        <Kpi icon={Percent}    label={t("admin.platformProfit")} value={fmtNumber(platformProfit)} currency />
+        <Kpi icon={Receipt}    label={t("admin.vatCollected")}   value={fmtNumber(vatCollected)}   currency />
+        <Kpi icon={HandCoins}  label={t("admin.vendorPayouts")}  value={fmtNumber(vendorPayouts)}  currency />
+        <Kpi icon={Lock}       label={t("admin.heldFunds")}      value={fmtNumber(heldFunds)}      currency />
+        <Kpi icon={ListChecks} label={t("admin.totalBookings")}  value={fmtNumber(totalBookings)} />
       </div>
 
       {/* Grand control summary */}
