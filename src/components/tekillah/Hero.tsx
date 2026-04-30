@@ -62,10 +62,10 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-10 inline-flex items-center gap-2 rounded-full border border-gold/60 bg-primary-deep/40 px-5 py-2 backdrop-blur-md"
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary-deep/30 bg-cream/60 px-5 py-2 backdrop-blur-md"
         >
           <Star className="h-3.5 w-3.5 text-gold" strokeWidth={1.5} fill="currentColor" />
-          <span className="text-xs font-bold tracking-[0.18em] text-gold-soft">
+          <span className="text-xs font-bold tracking-[0.18em] text-primary-deep">
             {t("hero.tag")}
           </span>
           <Sparkles className="h-3 w-3 text-gold" strokeWidth={1.5} />
