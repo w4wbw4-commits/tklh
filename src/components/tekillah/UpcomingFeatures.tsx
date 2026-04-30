@@ -35,7 +35,7 @@ export const UpcomingFeatures = () => {
           className="mx-auto max-w-2xl text-center"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.3em] text-primary backdrop-blur">
-            <Sparkles className="h-3.5 w-3.5" strokeWidth={1.6} />
+            <SketchIconSparkle className="h-4 w-4" />
             {t("upcoming.kicker")}
           </span>
           <h2
