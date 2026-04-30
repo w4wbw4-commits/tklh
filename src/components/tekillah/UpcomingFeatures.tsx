@@ -25,6 +25,12 @@ export const UpcomingFeatures = () => {
       {/* Decorative blurs */}
       <div className="pointer-events-none absolute -top-20 start-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 end-0 h-80 w-80 rounded-full bg-secondary/40 blur-3xl" />
+      {/* Sketch corner ornaments — keep the visual language consistent */}
+      <SketchCornerOrnament className="pointer-events-none absolute top-4 left-4 hidden h-[100px] w-[100px] opacity-50 md:block" />
+      <SketchCornerOrnament
+        className="pointer-events-none absolute bottom-4 right-4 hidden h-[100px] w-[100px] opacity-50 md:block"
+        style={{ transform: "scaleX(-1) scaleY(-1)" }}
+      />
 
       <div className="relative mx-auto max-w-6xl px-6">
         <motion.div
