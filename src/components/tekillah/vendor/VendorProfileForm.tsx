@@ -214,11 +214,16 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       google_maps_url: mapsUrl || null,
     };
 
+    // Avoid `.select()` (which expands to *) because sensitive PII columns
+    // are revoked from the authenticated role. Project owner-safe columns
+    // explicitly; the form re-merges sensitive values via `get_vendor_private`.
+    const RETURN_COLS =
+      "id, user_id, business_name, category, bio, bio_en, city, region, region_en, district, district_en, portfolio_urls, google_maps_url, daily_capacity, starting_price, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, extra_services, extra_services_en, verified, active, approval_status, rejection_reason";
     let result;
     if (vendor) {
-      result = await supabase.from("vendors").update(payload).eq("id", vendor.id).select().single();
+      result = await supabase.from("vendors").update(payload).eq("id", vendor.id).select(RETURN_COLS).single();
     } else {
-      result = await supabase.from("vendors").insert(payload).select().single();
+      result = await supabase.from("vendors").insert(payload).select(RETURN_COLS).single();
       await supabase.from("user_roles").insert({ user_id: userId, role: "vendor" });
       if (!result.error) {
         await recordTermsAcceptance(userId, "vendor_onboarding", (result.data as VendorRow).id);
