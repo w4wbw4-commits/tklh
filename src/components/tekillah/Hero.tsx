@@ -5,11 +5,12 @@ import { useTranslation } from "react-i18next";
 import { AnimatedCounter } from "./AnimatedCounter";
 import {
   SketchDivider,
-  SketchGinkgo,
-  SketchCandelabra,
   SketchBranch,
   SketchBanquet,
   SketchCurtain,
+  SketchSideTable,
+  SketchEucalyptus,
+  SketchLotus,
 } from "./SketchArt";
 
 // ---------------------------------------------------------------------------
