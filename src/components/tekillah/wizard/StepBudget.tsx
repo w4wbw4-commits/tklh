@@ -3,18 +3,17 @@ import { useEffect, useMemo } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Sparkles, AlertTriangle, TrendingUp, Users, Gem } from "lucide-react";
+import { Sparkles, AlertTriangle, TrendingUp, Users } from "lucide-react";
 import {
   allocationCatalog,
   realisticMinimum,
-  tierForBudget,
-  BUDGET_TIER_THRESHOLDS,
   type BudgetMode,
   type ServiceKey,
 } from "./types";
 import { useMarketPrices } from "@/hooks/useMarketPrices";
 import { useTranslation } from "react-i18next";
 import { fmtNumber } from "@/i18n/format";
+import { BudgetHealthIndicator } from "./BudgetHealthIndicator";
 
 interface Props {
   budgetMode: BudgetMode;
