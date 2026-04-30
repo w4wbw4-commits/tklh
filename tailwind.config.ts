@@ -34,6 +34,10 @@ export default {
           DEFAULT: "hsl(var(--gold))",
           soft: "hsl(var(--gold-soft))",
         },
+        brown: {
+          DEFAULT: "hsl(var(--brown))",
+          soft: "hsl(var(--brown-soft))",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

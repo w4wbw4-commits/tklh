@@ -26,6 +26,9 @@
     /* Gold — signature accent (softened, muted champagne) */
     --gold: 38 38% 58%;
     --gold-soft: 40 42% 82%;
+    /* Antique brown — medieval-luxe accent for sketches */
+    --brown: 28 35% 32%;
+    --brown-soft: 30 30% 55%;
 
     /* Problem / warm terracotta */
     --problem: 14 65% 48%;
