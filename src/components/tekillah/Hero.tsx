@@ -8,8 +8,8 @@ import {
   SketchCurtain,
   SketchEucalyptus,
   SketchLotus,
+  SketchLongBanquet,
 } from "./SketchArt";
-import heroBanquetLeft from "@/assets/hero-banquet-left.jpeg";
 
 // ---------------------------------------------------------------------------
 // Hero — Off-white sketch experience.
@@ -47,56 +47,42 @@ export const Hero = () => {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
 
-      {/* === Reference watercolor on the LEFT — banquet table + foliage ===
-          Width-capped so it never crosses into the centered text column.
-          Soft cream wash + multiply blend + fade-to-cream gradient mask
-          merges it with the sketch palette. */}
+      {/* === Sketch banquet illustration on the RIGHT (mirrored from reference) ===
+          A soft hand-drawn long table with chairs, glowing candelabras and lotus
+          pads underneath. Width-capped + edge-anchored so it never overlaps the
+          centered text column. Top/bottom mask fades it into the cream wash. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-y-0 left-0 hidden w-[26vw] max-w-[300px] overflow-hidden lg:block xl:w-[28vw] xl:max-w-[360px]"
+        className="pointer-events-none absolute inset-y-0 right-0 hidden w-[28vw] max-w-[340px] items-end justify-end overflow-hidden lg:flex xl:w-[30vw] xl:max-w-[400px]"
       >
-        <img
-          src={heroBanquetLeft}
-          alt=""
-          className="h-full w-full object-cover object-right opacity-55 mix-blend-multiply"
+        <SketchLongBanquet
+          className="h-[78%] w-full opacity-70"
           style={{
-            // Tone the photo toward the brand palette (olive/gold/brown)
-            filter: "sepia(0.25) saturate(0.75) hue-rotate(15deg) contrast(0.95) brightness(1.05)",
-            // Fade the right edge into cream so the image dissolves before the text
+            // Mirror so the table runs from the right edge inward
+            transform: "scaleX(-1)",
+            // Soft fade on the inner side toward the text
             WebkitMaskImage:
-              "linear-gradient(to right, hsl(0 0% 0% / 1) 0%, hsl(0 0% 0% / 0.95) 55%, hsl(0 0% 0% / 0.4) 85%, hsl(0 0% 0% / 0) 100%)",
+              "linear-gradient(to right, hsl(0 0% 0% / 0) 0%, hsl(0 0% 0% / 0.45) 18%, hsl(0 0% 0% / 0.95) 55%, hsl(0 0% 0% / 1) 100%)",
             maskImage:
-              "linear-gradient(to right, hsl(0 0% 0% / 1) 0%, hsl(0 0% 0% / 0.95) 55%, hsl(0 0% 0% / 0.4) 85%, hsl(0 0% 0% / 0) 100%)",
-          }}
-        />
-        {/* Cream wash on top to harmonize with the hero palette */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to right, hsl(var(--cream) / 0.35) 0%, hsl(var(--cream) / 0.55) 60%, hsl(var(--cream) / 1) 100%)",
-            mixBlendMode: "screen",
+              "linear-gradient(to right, hsl(0 0% 0% / 0) 0%, hsl(0 0% 0% / 0.45) 18%, hsl(0 0% 0% / 0.95) 55%, hsl(0 0% 0% / 1) 100%)",
           }}
         />
       </div>
 
       {/* === Side framing — slim, edge-only, never crosses content === */}
-      {/* Top-right: soft eucalyptus arching down (sketch echo of the photo) */}
+      {/* Top-left: soft eucalyptus arching down — balances the banquet on the right */}
       <SketchEucalyptus
-        className="pointer-events-none absolute top-4 right-0 hidden h-[120px] w-[230px] opacity-55 md:block lg:h-[140px] lg:w-[260px]"
-        style={{ transform: "scaleX(-1)" }}
+        className="pointer-events-none absolute top-4 left-0 hidden h-[120px] w-[230px] opacity-55 md:block lg:h-[140px] lg:w-[260px]"
       />
 
-      {/* Bottom-right: lotus pads (mirrors the photo's lotus on the left) */}
+      {/* Bottom-left: lotus pads */}
       <SketchLotus
-        className="pointer-events-none absolute bottom-3 right-3 hidden h-[100px] w-[140px] opacity-45 md:block"
-        style={{ transform: "scaleX(-1)" }}
+        className="pointer-events-none absolute bottom-3 left-3 hidden h-[100px] w-[140px] opacity-50 md:block"
       />
 
-      {/* Slim drape on the right edge — balances the photo on the left */}
+      {/* Slim drape on the left edge */}
       <SketchCurtain
-        className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-[44px] opacity-55 md:block lg:w-[56px]"
-        style={{ transform: "scaleX(-1)" }}
+        className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-[44px] opacity-55 md:block lg:w-[56px]"
       />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-32 pb-20 text-center">
