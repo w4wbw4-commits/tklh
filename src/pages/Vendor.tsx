@@ -41,11 +41,18 @@ const VendorPage = () => {
       const { data } = await supabase.from("vendors").select("*").eq("user_id", user.id).maybeSingle();
       const v = data as VendorRow | null;
       setVendor(v);
-      // Default landing tab: approved vendors land on Bookings, others on Profile
-      setTab(v?.approval_status === "approved" ? "bookings" : "profile");
       setVendorLoading(false);
+      // If the vendor already has a profile (any status), send them straight
+      // to the partner dashboard. /vendor is a marketing/onboarding page —
+      // existing partners belong in /partner.
+      if (v) {
+        navigate("/partner", { replace: true });
+        return;
+      }
+      // No profile yet → default landing tab is the profile form.
+      setTab("profile");
     })();
-  }, [user]);
+  }, [user, navigate]);
 
   const handleVendorSaved = (v: VendorRow) => {
     const isFirstSave = !vendor;
@@ -54,6 +61,9 @@ const VendorPage = () => {
     if (isFirstSave) {
       setWelcomeVendor(v);
       setWelcomeOpen(true);
+    } else {
+      // Subsequent edits → go straight back to the partner dashboard.
+      navigate("/partner");
     }
   };
 
@@ -125,7 +135,7 @@ const VendorPage = () => {
                 asChild
                 className="rounded-full border border-gold/60 bg-gold text-primary-deep shadow-[0_4px_14px_-4px_hsl(var(--gold)/0.45)] transition-all hover:bg-gold hover:scale-[1.03]"
               >
-                <Link to="/auth?redirect=/vendor&role=vendor">
+                <Link to="/auth?redirect=/partner&role=vendor">
                   {t("vendor.signIn", { defaultValue: "دخول الشركاء" })}
                 </Link>
               </Button>
