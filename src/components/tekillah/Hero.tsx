@@ -5,11 +5,12 @@ import { useTranslation } from "react-i18next";
 import { AnimatedCounter } from "./AnimatedCounter";
 import {
   SketchDivider,
-  SketchGinkgo,
-  SketchCandelabra,
   SketchBranch,
   SketchBanquet,
   SketchCurtain,
+  SketchSideTable,
+  SketchEucalyptus,
+  SketchLotus,
 } from "./SketchArt";
 
 // ---------------------------------------------------------------------------
@@ -53,14 +54,20 @@ export const Hero = () => {
         className="pointer-events-none absolute inset-y-0 left-0 hidden h-full w-[64px] opacity-80 md:block lg:w-[78px]"
       />
 
-      {/* A single ginkgo fan opposite the curtain (top-right) for balance */}
-      <SketchGinkgo
-        className="pointer-events-none absolute -top-6 right-4 hidden h-[200px] w-auto opacity-70 md:block"
+      {/* Soft eucalyptus branch arching down from top-right */}
+      <SketchEucalyptus
+        className="pointer-events-none absolute top-4 right-0 hidden h-[170px] w-[320px] opacity-70 md:block"
+        style={{ transform: "scaleX(-1)" }}
       />
 
-      {/* One candelabra on the right side, near the bottom — counterweight to the drape */}
-      <SketchCandelabra
-        className="pointer-events-none absolute -bottom-2 right-6 hidden h-[150px] w-auto -scale-x-100 opacity-70 lg:block"
+      {/* Round side wedding table on the right edge — vase, candles, tablecloth */}
+      <SketchSideTable
+        className="pointer-events-none absolute -bottom-4 right-2 hidden h-[300px] w-auto opacity-75 lg:block"
+      />
+
+      {/* Lotus pads + reeds tucked at the very bottom-right corner */}
+      <SketchLotus
+        className="pointer-events-none absolute bottom-0 right-0 hidden h-[140px] w-[180px] opacity-65 md:block"
       />
 
       {/* Banquet table — pushed below the fold, only peeks under stats */}
