@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap');
 
+@font-face {
+  font-family: 'SaudiRiyal';
+  src: url('/fonts/saudi_riyal.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  /* Only the new Riyal glyph at U+E900 is used from this font. */
+  unicode-range: U+E900;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
