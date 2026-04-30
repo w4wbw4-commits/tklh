@@ -1,12 +1,18 @@
 import { motion } from "framer-motion";
-import { Heart, ArrowLeft, Sparkles } from "lucide-react";
+import { Heart, ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import {
+  SketchIconCandle,
+  SketchIconRings,
+  SketchIconBouquet,
+  SketchIconSparkle,
+  SketchCornerOrnament,
+} from "./SketchArt";
 
 /**
  * Mission — "رسالتنا للمجتمع"
- * Closing emotional beat before the footer. Uses the brand's olive/gold palette
- * with floating decorative hearts and a centred quote card to mirror the
- * tone set in the sister project.
+ * Closing emotional beat before the footer. Decorative sketch icons drift
+ * in the corners while the content stays untouched in the center.
  */
 export const Mission = () => {
   const { t } = useTranslation();
@@ -31,33 +37,40 @@ export const Mission = () => {
         }}
       />
 
-      {/* Floating hearts / sparkles */}
+      {/* === Sketch decorations — corners only, never cross the text === */}
+      <SketchCornerOrnament className="pointer-events-none absolute top-6 left-2 hidden h-[120px] w-[120px] opacity-55 md:block" />
+      <SketchCornerOrnament
+        className="pointer-events-none absolute top-6 right-2 hidden h-[120px] w-[120px] opacity-55 md:block"
+        style={{ transform: "scaleX(-1)" }}
+      />
+
+      {/* Floating sketch icons — gentle drift */}
       <motion.div
-        animate={{ y: [0, -14, 0] }}
+        animate={{ y: [0, -12, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute top-20 left-[10%] text-gold/40"
+        className="pointer-events-none absolute top-24 left-[8%] hidden lg:block"
       >
-        <Heart className="h-10 w-10 fill-current" />
+        <SketchIconCandle className="h-14 w-10 opacity-70" />
       </motion.div>
       <motion.div
         animate={{ y: [0, -10, 0] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="pointer-events-none absolute bottom-32 right-[12%] text-primary/30"
+        className="pointer-events-none absolute bottom-32 right-[10%] hidden lg:block"
       >
-        <Heart className="h-7 w-7 fill-current" />
+        <SketchIconBouquet className="h-14 w-14 opacity-70" />
       </motion.div>
       <motion.div
-        animate={{ y: [0, -12, 0] }}
+        animate={{ y: [0, -8, 0] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="pointer-events-none absolute top-1/3 right-[8%] text-gold/35"
+        className="pointer-events-none absolute top-1/3 right-[6%] hidden lg:block"
       >
-        <Sparkles className="h-8 w-8" />
+        <SketchIconSparkle className="h-9 w-9 opacity-75" />
       </motion.div>
 
       <div className="relative mx-auto max-w-4xl px-6 text-center">
         <motion.div {...reveal} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
           <div className="mx-auto mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-gold to-gold/60 shadow-luxury">
-            <Heart className="h-9 w-9 fill-current text-primary-deep" />
+            <SketchIconRings className="h-10 w-14" />
           </div>
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.3em] text-primary backdrop-blur">
             {t("mission.kicker")}
