@@ -4,10 +4,11 @@ import { ArrowLeft, Sparkles, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AnimatedCounter } from "./AnimatedCounter";
 import {
-  SketchArch,
-  SketchPalm,
-  SketchFloral,
   SketchDivider,
+  SketchGinkgo,
+  SketchCandelabra,
+  SketchBranch,
+  SketchBanquet,
 } from "./SketchArt";
 
 // ---------------------------------------------------------------------------
@@ -46,20 +47,40 @@ export const Hero = () => {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
 
-      {/* Decorative line-art — corners */}
-      <SketchPalm
-        className="pointer-events-none absolute -bottom-6 left-2 hidden h-[280px] w-auto opacity-70 md:block rtl:left-auto rtl:right-2"
+      {/* Top corner ginkgo fans (inspired by reference frame) */}
+      <SketchGinkgo
+        className="pointer-events-none absolute -top-10 -left-12 hidden h-[260px] w-auto opacity-80 md:block"
       />
-      <SketchFloral
-        className="pointer-events-none absolute top-24 right-4 hidden h-[180px] w-auto opacity-60 md:block rtl:right-auto rtl:left-4"
-      />
-      <SketchFloral
-        className="pointer-events-none absolute bottom-24 right-1/3 hidden h-[140px] w-auto -scale-x-100 opacity-50 lg:block"
+      <SketchGinkgo
+        className="pointer-events-none absolute -top-10 -right-12 hidden h-[260px] w-auto -scale-x-100 opacity-80 md:block"
       />
 
-      {/* Center-stage arch sketch — sits behind the wordmark */}
-      <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto flex justify-center">
-        <SketchArch className="h-[520px] w-auto max-w-[90vw] opacity-90" />
+      {/* Top center leafy branch */}
+      <SketchBranch
+        className="pointer-events-none absolute top-2 left-1/2 -translate-x-1/2 hidden h-[150px] w-[420px] opacity-70 lg:block"
+      />
+
+      {/* Bottom corner ginkgo fans (mirrored, larger) */}
+      <SketchGinkgo
+        className="pointer-events-none absolute -bottom-16 -left-16 hidden h-[300px] w-auto opacity-75 md:block"
+        style={{ transform: "rotate(180deg)" }}
+      />
+      <SketchGinkgo
+        className="pointer-events-none absolute -bottom-16 -right-16 hidden h-[300px] w-auto opacity-75 md:block"
+        style={{ transform: "rotate(180deg) scaleX(-1)" }}
+      />
+
+      {/* Candelabras at bottom */}
+      <SketchCandelabra
+        className="pointer-events-none absolute bottom-0 left-[18%] hidden h-[260px] w-auto opacity-85 md:block"
+      />
+      <SketchCandelabra
+        className="pointer-events-none absolute bottom-0 right-[18%] hidden h-[260px] w-auto -scale-x-100 opacity-85 md:block"
+      />
+
+      {/* Banquet table behind wordmark, soft */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-[12%] mx-auto flex justify-center">
+        <SketchBanquet className="h-[280px] w-auto max-w-[88vw] opacity-55" />
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-32 pb-20 text-center">
