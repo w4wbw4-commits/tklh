@@ -10,18 +10,18 @@ import { Reveal } from "./Reveal";
 const OCCASIONS = [
   {
     icon: HeartHandshake,
-    title: "حفلات الزفاف",
-    desc: "ليلة العمر تستاهل تخطيط بمزاج رايق — قاعة، ضيافة، تصوير، تنسيق.. كل شي بضغطة.",
+    title: "حفلات الزواج",
+    desc: "ليلة العمر ما تتكرر — خلّيها على كيفك. قاعة، كوش، تصوير، ضيافة، وكل التفاصيل اللي تخلّيها ليلة ما تنتسي.",
   },
   {
     icon: Crown,
     title: "المناسبات الخاصة",
-    desc: "ملكة، خطوبة، تخرّج، أو احتفال بإنجاز.. ننسّق لك تجربة تليق باللحظة.",
+    desc: "أزهل، ملكة، خطوبة، تخرّج، عيد ميلاد، أو لمّة العيلة.. أيًا كانت لحظتك، تِكله تنسّقها لك بذوق يليق فيك.",
   },
   {
     icon: PartyPopper,
     title: "الفعاليات الكبرى",
-    desc: "افتتاحات، مؤتمرات، ولقاءات شركات — تنفيذ احترافي بمعايير سعودية فاخرة.",
+    desc: "افتتاحات، مؤتمرات، لقاءات شركات، ومعارض — تنفيذ احترافي بلمسات سعودية فاخرة من البداية للنهاية.",
   },
 ] as const;
 
@@ -36,17 +36,17 @@ export const OccasionsSection = () => (
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/70 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
-            تِكله لكل المناسبات
+            تِكله معك في كل مناسبة
           </span>
           <h2 className="mt-6 font-arabic text-4xl font-black leading-[1.15] text-green md:text-6xl">
-            لكل مناسباتك{" "}
+            لكل مناسباتك..{" "}
             <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
-              الفاخرة
+              تحتاج ناس تِكله
             </span>
           </h2>
           <p className="mx-auto mt-5 max-w-2xl font-arabic text-lg leading-relaxed text-foreground/65 sm:text-xl">
-            سواء كانت ليلة العمر، أو احتفالاً بإنجاز كبير — تِكله رفيقك لتنظيم
-            مناسبة تليق بك.
+            من ليلة العمر، لأحلى لمّة عيلة، لأكبر فعالية شركتك — تِكله تجمع لك
+            كل شي في مكان واحد، بضمان وذوق سعودي ما يخيب.
           </p>
         </div>
       </Reveal>
