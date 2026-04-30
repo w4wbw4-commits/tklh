@@ -573,6 +573,16 @@ export const SketchSideTable = ({ className, style, ariaHidden = true }: SketchP
   ];
   return (
     <svg ref={ref} viewBox="0 0 400 420" fill="none" className={className} style={style} aria-hidden={ariaHidden}>
+      <defs>
+        <radialGradient id="flame-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor={gold} stopOpacity="0.65" />
+          <stop offset="40%" stopColor={gold} stopOpacity="0.25" />
+          <stop offset="100%" stopColor={gold} stopOpacity="0" />
+        </radialGradient>
+        <filter id="flame-blur" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2" />
+        </filter>
+      </defs>
       {/* ===== Candelabra ===== */}
       {/* Base */}
       <motion.path d="M180 290 L220 290 M186 290 L186 282 Q200 277 214 282 L214 290"
@@ -602,16 +612,29 @@ export const SketchSideTable = ({ className, style, ariaHidden = true }: SketchP
           <motion.path d={`M${a.x} ${a.y - 50} L${a.x} ${a.y - 56}`}
             stroke={brown} strokeWidth="0.9" strokeLinecap="round"
             variants={drawVariants} initial="hidden" animate={animate} custom={1.3 + i * 0.05} />
+          {/* glowing halo behind flame */}
+          <motion.circle
+            cx={a.x} cy={a.y - 54} r="14"
+            fill="url(#flame-halo)"
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{
+              opacity: animate === "visible" ? [0.4, 0.85, 0.55, 0.9, 0.5] : 0,
+              scale: animate === "visible" ? [0.85, 1.15, 0.95, 1.2, 0.9] : 0.7,
+            }}
+            transition={{ delay: 1.6 + i * 0.1, duration: 2.4, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+            style={{ transformOrigin: `${a.x}px ${a.y - 54}px` }}
+          />
           {/* flame */}
           <motion.path
             d={`M${a.x} ${a.y - 48} q-4 -5 0 -12 q4 7 0 12 z`}
             fill={gold} stroke={gold} strokeWidth="0.6"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{
-              opacity: animate === "visible" ? [0, 1, 0.85, 1] : 0,
-              scale: animate === "visible" ? [0.8, 1.05, 0.95, 1] : 0.8,
+              opacity: animate === "visible" ? [0.7, 1, 0.85, 1] : 0,
+              scale: animate === "visible" ? [0.85, 1.15, 0.95, 1.1, 0.9] : 0.8,
+              y: animate === "visible" ? [0, -1, 0.5, -0.5, 0] : 0,
             }}
-            transition={{ delay: 1.6 + i * 0.1, duration: 1.6, repeat: Infinity, repeatType: "reverse" }}
+            transition={{ delay: 1.6 + i * 0.1, duration: 1.4, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
             style={{ transformOrigin: `${a.x}px ${a.y - 52}px` }}
           />
         </g>
@@ -666,13 +689,29 @@ export const SketchSideTable = ({ className, style, ariaHidden = true }: SketchP
           <motion.path d={`M${c.x} ${285 - c.h} L${c.x} ${285 - c.h - 5}`}
             stroke={brown} strokeWidth="0.8" strokeLinecap="round"
             variants={drawVariants} initial="hidden" animate={animate} custom={0.7 + i * 0.05} />
+          {/* glowing halo behind taper flame */}
+          <motion.circle
+            cx={c.x} cy={285 - c.h - 2} r="11"
+            fill="url(#flame-halo)"
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{
+              opacity: animate === "visible" ? [0.35, 0.8, 0.5, 0.85, 0.45] : 0,
+              scale: animate === "visible" ? [0.85, 1.15, 0.95, 1.2, 0.9] : 0.7,
+            }}
+            transition={{ delay: 1.4 + i * 0.12, duration: 2.2, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+            style={{ transformOrigin: `${c.x}px ${285 - c.h - 2}px` }}
+          />
           {/* flame */}
           <motion.path
             d={`M${c.x} ${285 - c.h + 3} q-3 -4 0 -10 q3 6 0 10 z`}
             fill={gold} stroke={gold} strokeWidth="0.5"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: animate === "visible" ? [0, 1, 0.85, 1] : 0 }}
-            transition={{ delay: 1.4 + i * 0.12, duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{
+              opacity: animate === "visible" ? [0.7, 1, 0.85, 1] : 0,
+              scale: animate === "visible" ? [0.85, 1.15, 0.9, 1.1, 0.9] : 0.8,
+            }}
+            transition={{ delay: 1.4 + i * 0.12, duration: 1.3, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+            style={{ transformOrigin: `${c.x}px ${285 - c.h + 1}px` }}
           />
         </g>
       ))}
