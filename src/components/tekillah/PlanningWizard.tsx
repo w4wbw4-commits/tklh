@@ -425,7 +425,7 @@ export const PlanningWizard = () => {
               const isFastTrackBadge = isFastTrack && isLast;
               const isActive = i === step;
               const isComplete = i < step;
-              const StepIcon = [MapPin, Layers, Palette, Wallet, Users][i] ?? Users;
+              const StepIcon = [SketchIconInvitation, SketchIconServices, SketchIconPalette, SketchIconCoin, SketchIconHandshake][i] ?? SketchIconHandshake;
               return (
                 <div key={i} className="flex flex-1 items-center gap-1.5 sm:gap-2">
                   <div className="flex flex-col items-center">
