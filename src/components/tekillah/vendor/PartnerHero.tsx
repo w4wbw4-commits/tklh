@@ -120,7 +120,7 @@ export const PartnerHero = ({ onCtaClick, isAuthenticated }: PartnerHeroProps) =
                 variant="outline"
                 className="h-14 flex-1 rounded-full border-2 border-primary-deep bg-transparent px-8 text-base font-bold text-primary-deep transition-all hover:bg-primary-deep hover:text-gold sm:flex-none sm:px-10"
               >
-                <Link to="/auth?redirect=/vendor&role=vendor">
+                <Link to="/auth?redirect=/partner&role=vendor">
                   <LogIn className="me-2 h-5 w-5" />
                   {isRtl ? "دخول شريك حالي" : "Partner Sign-in"}
                 </Link>
