@@ -141,6 +141,13 @@ export type Database = {
             referencedRelation: "vendors"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "bookings_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       content_reports: {
@@ -545,6 +552,13 @@ export type Database = {
             columns: ["vendor_id"]
             isOneToOne: false
             referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "packages_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors_public"
             referencedColumns: ["id"]
           },
         ]
@@ -1010,6 +1024,13 @@ export type Database = {
             referencedRelation: "vendors"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "vendor_availability_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       vendor_invoices: {
@@ -1293,6 +1314,106 @@ export type Database = {
           completed_bookings: number | null
           reviews_count: number | null
           vendor_id: string | null
+        }
+        Relationships: []
+      }
+      vendors_public: {
+        Row: {
+          active: boolean | null
+          approval_status: Database["public"]["Enums"]["approval_status"] | null
+          bio: string | null
+          bio_en: string | null
+          business_name: string | null
+          category: Database["public"]["Enums"]["vendor_category"] | null
+          city: string | null
+          created_at: string | null
+          daily_capacity: number | null
+          district: string | null
+          district_en: string | null
+          extra_services: string[] | null
+          extra_services_en: string[] | null
+          google_maps_url: string | null
+          hidden: boolean | null
+          hidden_until: string | null
+          id: string | null
+          men_capacity: number | null
+          min_deposit: number | null
+          portfolio_urls: string[] | null
+          region: string | null
+          region_en: string | null
+          starting_price: number | null
+          updated_at: string | null
+          user_id: string | null
+          verified: boolean | null
+          weekday_price: number | null
+          weekend_price: number | null
+          women_capacity: number | null
+        }
+        Insert: {
+          active?: boolean | null
+          approval_status?:
+            | Database["public"]["Enums"]["approval_status"]
+            | null
+          bio?: string | null
+          bio_en?: string | null
+          business_name?: string | null
+          category?: Database["public"]["Enums"]["vendor_category"] | null
+          city?: string | null
+          created_at?: string | null
+          daily_capacity?: number | null
+          district?: string | null
+          district_en?: string | null
+          extra_services?: string[] | null
+          extra_services_en?: string[] | null
+          google_maps_url?: string | null
+          hidden?: boolean | null
+          hidden_until?: string | null
+          id?: string | null
+          men_capacity?: number | null
+          min_deposit?: number | null
+          portfolio_urls?: string[] | null
+          region?: string | null
+          region_en?: string | null
+          starting_price?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          verified?: boolean | null
+          weekday_price?: number | null
+          weekend_price?: number | null
+          women_capacity?: number | null
+        }
+        Update: {
+          active?: boolean | null
+          approval_status?:
+            | Database["public"]["Enums"]["approval_status"]
+            | null
+          bio?: string | null
+          bio_en?: string | null
+          business_name?: string | null
+          category?: Database["public"]["Enums"]["vendor_category"] | null
+          city?: string | null
+          created_at?: string | null
+          daily_capacity?: number | null
+          district?: string | null
+          district_en?: string | null
+          extra_services?: string[] | null
+          extra_services_en?: string[] | null
+          google_maps_url?: string | null
+          hidden?: boolean | null
+          hidden_until?: string | null
+          id?: string | null
+          men_capacity?: number | null
+          min_deposit?: number | null
+          portfolio_urls?: string[] | null
+          region?: string | null
+          region_en?: string | null
+          starting_price?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+          verified?: boolean | null
+          weekday_price?: number | null
+          weekend_price?: number | null
+          women_capacity?: number | null
         }
         Relationships: []
       }
