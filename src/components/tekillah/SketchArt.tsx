@@ -393,6 +393,113 @@ export const SketchBanquet = ({ className, style, ariaHidden = true }: SketchPro
   );
 };
 
+// --- Kilim curtain (vertical tribal pattern, evokes Najdi/Sadu rug) --------
+export const SketchKilim = ({ className, style, ariaHidden = true }: SketchProps) => {
+  const { ref, animate } = useDraw();
+  // 8 motif tiles stacked vertically, each ~120 tall, width 100.
+  const tiles = Array.from({ length: 9 }, (_, i) => i);
+  return (
+    <svg
+      ref={ref}
+      viewBox="0 0 100 1080"
+      preserveAspectRatio="xMidYMid slice"
+      fill="none"
+      className={className}
+      style={style}
+      aria-hidden={ariaHidden}
+    >
+      <defs>
+        <pattern id="kilim-weave" width="6" height="6" patternUnits="userSpaceOnUse">
+          <path d="M0 3 L6 3" stroke={brownSoft} strokeWidth="0.4" opacity="0.4" />
+        </pattern>
+        <linearGradient id="kilim-fade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="hsl(var(--cream))" stopOpacity="0" />
+          <stop offset="8%" stopColor="hsl(var(--cream))" stopOpacity="1" />
+          <stop offset="92%" stopColor="hsl(var(--cream))" stopOpacity="1" />
+          <stop offset="100%" stopColor="hsl(var(--cream))" stopOpacity="0" />
+        </linearGradient>
+        <mask id="kilim-mask">
+          <rect width="100" height="1080" fill="url(#kilim-fade)" />
+        </mask>
+      </defs>
+
+      <g mask="url(#kilim-mask)">
+        {/* Outer hairline borders */}
+        <motion.line x1="2" y1="0" x2="2" y2="1080" stroke={brown} strokeWidth="0.6"
+          variants={drawVariants} initial="hidden" animate={animate} custom={0} />
+        <motion.line x1="98" y1="0" x2="98" y2="1080" stroke={brown} strokeWidth="0.6"
+          variants={drawVariants} initial="hidden" animate={animate} custom={0} />
+        {/* Inner border */}
+        <motion.line x1="14" y1="0" x2="14" y2="1080" stroke={olive} strokeWidth="0.5"
+          variants={drawVariants} initial="hidden" animate={animate} custom={0.2} />
+        <motion.line x1="86" y1="0" x2="86" y2="1080" stroke={olive} strokeWidth="0.5"
+          variants={drawVariants} initial="hidden" animate={animate} custom={0.2} />
+
+        {/* subtle weave wash */}
+        <rect x="14" y="0" width="72" height="1080" fill="url(#kilim-weave)" />
+
+        {/* Zigzag side bands */}
+        <motion.path
+          d={`M6 0 ${Array.from({ length: 60 }, (_, i) => `L${i % 2 === 0 ? 10 : 4} ${i * 18 + 9}`).join(" ")}`}
+          stroke={olive} strokeWidth="0.7" fill="none" strokeLinejoin="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={0.4} />
+        <motion.path
+          d={`M94 0 ${Array.from({ length: 60 }, (_, i) => `L${i % 2 === 0 ? 90 : 96} ${i * 18 + 9}`).join(" ")}`}
+          stroke={olive} strokeWidth="0.7" fill="none" strokeLinejoin="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={0.4} />
+
+        {/* Repeating diamond+hook motif tiles */}
+        {tiles.map((t) => {
+          const cy = 60 + t * 120;
+          // alternate accent color: gold on every 3rd tile, otherwise brown/olive
+          const accent = t % 3 === 0 ? gold : t % 2 === 0 ? brown : olive;
+          return (
+            <g key={t}>
+              {/* central diamond outline */}
+              <motion.path
+                d={`M50 ${cy - 38} L78 ${cy} L50 ${cy + 38} L22 ${cy} Z`}
+                stroke={accent} strokeWidth="0.9" fill={accent} fillOpacity={0.08}
+                strokeLinejoin="round"
+                variants={drawVariants} initial="hidden" animate={animate} custom={0.6 + t * 0.05} />
+              {/* inner diamond */}
+              <motion.path
+                d={`M50 ${cy - 22} L66 ${cy} L50 ${cy + 22} L34 ${cy} Z`}
+                stroke={olive} strokeWidth="0.7" fill="none"
+                variants={drawVariants} initial="hidden" animate={animate} custom={0.7 + t * 0.05} />
+              {/* small center cross */}
+              <motion.path
+                d={`M46 ${cy} L54 ${cy} M50 ${cy - 4} L50 ${cy + 4}`}
+                stroke={gold} strokeWidth="0.8" strokeLinecap="round"
+                variants={drawVariants} initial="hidden" animate={animate} custom={0.9 + t * 0.05} />
+              {/* hooks on the diamond points */}
+              <motion.path
+                d={`M22 ${cy} l-4 -3 M22 ${cy} l-4 3 M78 ${cy} l4 -3 M78 ${cy} l4 3`}
+                stroke={brown} strokeWidth="0.7" strokeLinecap="round"
+                variants={drawVariants} initial="hidden" animate={animate} custom={1.0 + t * 0.05} />
+              {/* divider stitch between tiles */}
+              <motion.path
+                d={`M16 ${cy + 58} L84 ${cy + 58}`}
+                stroke={brownSoft} strokeWidth="0.5" strokeDasharray="2 3"
+                variants={drawVariants} initial="hidden" animate={animate} custom={1.2 + t * 0.05} />
+            </g>
+          );
+        })}
+
+        {/* Top fringe */}
+        <motion.path
+          d={`M14 4 ${Array.from({ length: 18 }, (_, i) => `M${14 + i * 4} 0 L${14 + i * 4} 8`).join(" ")}`}
+          stroke={brown} strokeWidth="0.6" strokeLinecap="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={1.4} />
+        {/* Bottom fringe */}
+        <motion.path
+          d={Array.from({ length: 18 }, (_, i) => `M${14 + i * 4} 1072 L${14 + i * 4} 1080`).join(" ")}
+          stroke={brown} strokeWidth="0.6" strokeLinecap="round"
+          variants={drawVariants} initial="hidden" animate={animate} custom={1.4} />
+      </g>
+    </svg>
+  );
+};
+
 // --- Hairline divider with star (gold) --------------------------------------
 export const SketchDivider = ({ className }: { className?: string }) => (
   <div className={`flex items-center justify-center gap-3 ${className ?? ""}`}>
