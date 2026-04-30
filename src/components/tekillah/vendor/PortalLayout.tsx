@@ -110,7 +110,7 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
             <span className="grid h-8 w-8 place-items-center rounded-full bg-primary-foreground font-black text-primary">
               ت
             </span>
-            <span className="font-black">TKLH</span>
+            <span className="font-black">تِكله</span>
             <span className="text-[10px] font-bold text-secondary">
               {t("portal.partnerShort", { defaultValue: "شريك" })}
             </span>
