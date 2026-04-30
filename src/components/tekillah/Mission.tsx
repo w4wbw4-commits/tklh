@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Heart, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   SketchIconCandle,
