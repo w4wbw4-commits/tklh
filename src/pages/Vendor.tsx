@@ -135,7 +135,7 @@ const VendorPage = () => {
                 asChild
                 className="rounded-full border border-gold/60 bg-gold text-primary-deep shadow-[0_4px_14px_-4px_hsl(var(--gold)/0.45)] transition-all hover:bg-gold hover:scale-[1.03]"
               >
-                <Link to="/auth?redirect=/vendor&role=vendor">
+                <Link to="/auth?redirect=/partner&role=vendor">
                   {t("vendor.signIn", { defaultValue: "دخول الشركاء" })}
                 </Link>
               </Button>
