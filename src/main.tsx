@@ -14,12 +14,12 @@ import "./i18n";
   const { hostname, pathname, search, hash, protocol } = window.location;
 
   const isCanonicalHost = hostname === "tklh.sa";
-  // Only true local development is exempt. Lovable preview/published domains
-  // are redirected so all traffic consolidates on the official domain.
   const isLocal =
     hostname === "localhost" ||
     hostname === "127.0.0.1" ||
     hostname.endsWith(".local");
+  const isLovablePreview =
+    hostname.endsWith(".lovable.app") || hostname.endsWith(".lovableproject.com");
 
   if (isCanonicalHost) {
     // Force HTTPS on the canonical host.
@@ -29,7 +29,7 @@ import "./i18n";
     return;
   }
 
-  if (isLocal) return;
+  if (isLocal || isLovablePreview) return;
 
   window.location.replace(`https://tklh.sa${pathname}${search}${hash}`);
 })();
