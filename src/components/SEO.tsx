@@ -10,7 +10,7 @@ interface SEOProps {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const SITE_URL = "https://tiklh.com";
+const SITE_URL = "https://tklh.sa";
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 /**
