@@ -26,9 +26,7 @@ export const Hero = () => {
       className="relative min-h-screen w-full overflow-hidden"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
-      {/* Sadu-inspired heritage borders — desktop/tablet only */}
-      <SaduBorder side="left" className="hidden w-[56px] md:block lg:w-[72px] xl:w-[84px]" opacity={0.13} />
-      <SaduBorder side="right" className="hidden w-[56px] md:block lg:w-[72px] xl:w-[84px]" opacity={0.13} />
+
 
       {/* Soft warm wash + paper grain */}
       <div className="absolute inset-0 pointer-events-none">
