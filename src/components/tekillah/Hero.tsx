@@ -11,7 +11,6 @@ import {
   SketchLongBanquet,
 } from "./SketchArt";
 
-
 // ---------------------------------------------------------------------------
 // Hero — Off-white sketch experience.
 // No photography. A self-drawing wedding arch sits behind the wordmark, with
@@ -26,8 +25,6 @@ export const Hero = () => {
       className="relative min-h-screen w-full overflow-hidden"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
-
-
       {/* Soft warm wash + paper grain */}
       <div className="absolute inset-0 pointer-events-none">
         <div
