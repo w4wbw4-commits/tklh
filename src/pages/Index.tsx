@@ -3,6 +3,7 @@ import { Navbar } from "@/components/tekillah/Navbar";
 import { Hero } from "@/components/tekillah/Hero";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
 import { SketchSectionDivider } from "@/components/tekillah/SketchArt";
+import { SaduBorder } from "@/components/tekillah/SaduBorder";
 import { SEO } from "@/components/SEO";
 
 // Below-the-fold sections — code-split so the Hero paints fast on mobile.
@@ -50,6 +51,19 @@ const Index = () => {
         canonical="/"
       />
       <ScrollProgress />
+      {/* Najdi heritage borders — fixed frames, hidden on small mobile */}
+      <SaduBorder
+        side="left"
+        fixed
+        opacity={0.45}
+        className="hidden w-[64px] sm:block md:w-[88px] lg:w-[100px]"
+      />
+      <SaduBorder
+        side="right"
+        fixed
+        opacity={0.45}
+        className="hidden w-[64px] sm:block md:w-[88px] lg:w-[100px]"
+      />
       <Navbar />
       <Hero />
 
