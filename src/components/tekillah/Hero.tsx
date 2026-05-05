@@ -101,7 +101,10 @@ export const Hero = () => {
         className="pointer-events-none absolute bottom-3 left-3 hidden h-[100px] w-[140px] opacity-50 md:block lg:block"
       />
 
-      {/* Side Sadu borders are now rendered globally via <SaduBorders /> in App.tsx */}
+      {/* Slim drape on the left edge — visible from mobile up */}
+      <SketchCurtain
+        className="pointer-events-none absolute inset-y-0 left-0 h-full w-[28px] opacity-45 sm:w-[40px] md:w-[44px] lg:w-[56px]"
+      />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-32 pb-20 text-center">
         {/* Tag chip */}

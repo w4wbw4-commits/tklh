@@ -15,7 +15,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 // the user actually navigates to a partner/admin page.
 import Index from "./pages/Index.tsx";
 import { RoleSwitcher } from "./components/tekillah/RoleSwitcher";
-import { SaduBorders } from "./components/tekillah/SaduBorders";
 
 const Auth = lazy(() => import("./pages/Auth.tsx"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword.tsx"));
@@ -101,7 +100,6 @@ const AppRoutes = () => {
                     </Routes>
                   </Suspense>
                   <RoleSwitcher />
-                  <SaduBorders />
                 </AuthProvider>
               </BrowserRouter>
             </TooltipProvider>
