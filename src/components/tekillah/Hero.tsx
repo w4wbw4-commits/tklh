@@ -10,7 +10,7 @@ import {
   SketchLotus,
   SketchLongBanquet,
 } from "./SketchArt";
-import { SaduBorder } from "./SaduBorder";
+
 
 // ---------------------------------------------------------------------------
 // Hero — Off-white sketch experience.
