@@ -19,7 +19,12 @@ import "./i18n";
   const isLocal =
     hostname === "localhost" ||
     hostname === "127.0.0.1" ||
-    hostname.endsWith(".local");
+    hostname.endsWith(".local") ||
+    // Lovable preview/sandbox domains — needed so the in-app preview iframe
+    // and the published *.lovable.app URL keep working as dev tools.
+    hostname.endsWith(".lovable.app") ||
+    hostname.endsWith(".lovableproject.com") ||
+    hostname.endsWith(".lovable.dev");
 
   if (isCanonicalHost) {
     // Force HTTPS on the canonical host.
