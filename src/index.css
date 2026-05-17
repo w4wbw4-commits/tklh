@@ -1,13 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap');
 
+/* Saudi Riyal symbol font — official new SAR glyph.
+   Loaded for the private-use glyph at U+E900 and U+20C1 only,
+   so it never overrides regular Arabic/Latin text. */
 @font-face {
   font-family: 'SaudiRiyal';
-  src: url('/fonts/saudi_riyal.ttf') format('truetype');
-  font-weight: normal;
+  src: url('/fonts/saudi_riyal.woff2') format('woff2'),
+       url('/fonts/saudi_riyal.woff') format('woff'),
+       url('/fonts/saudi_riyal.ttf') format('truetype');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
-  /* Only the new Riyal glyph at U+E900 is used from this font. */
-  unicode-range: U+E900;
+  unicode-range: U+E900, U+20C1;
+}
+@font-face {
+  font-family: 'SaudiRiyal';
+  src: url('/fonts/saudi_riyal_bold.woff2') format('woff2'),
+       url('/fonts/saudi_riyal_bold.woff') format('woff'),
+       url('/fonts/saudi_riyal_bold.ttf') format('truetype');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+E900, U+20C1;
 }
 
 @tailwind base;
