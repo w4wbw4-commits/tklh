@@ -34,7 +34,7 @@ const VALUE_TILES = [
 const VALUE_CHIPS = [
   { icon: ShieldCheck, label: "شفافية كاملة" },
   { icon: Zap,         label: "سرعة وسهولة" },
-  { icon: Heart,       label: "تجربة سعودية أصيلة" },
+  { icon: Heart,       label: "خيارات متنوعة تليق بليلة عمرك" },
 ] as const;
 
 // ============================================================================
