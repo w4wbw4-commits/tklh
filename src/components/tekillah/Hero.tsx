@@ -183,7 +183,7 @@ export const Hero = () => {
           <Button
             size="lg"
             asChild
-            className="group h-14 rounded-full bg-gold px-10 text-base font-bold text-primary-deep shadow-[0_18px_45px_-12px_hsl(var(--gold)/0.5)] transition-all hover:scale-[1.03] hover:bg-gold/90"
+            className="group h-14 rounded-full bg-gold px-10 text-base font-bold text-primary-deep shadow-[0_18px_45px_-12px_hsl(var(--gold)/0.5)] transition-all hover:scale-[1.03] hover:bg-gold/90 bg-[#d6b87a] text-[#223517]"
           >
             <a href="#wizard">
               {t("hero.cta")}
