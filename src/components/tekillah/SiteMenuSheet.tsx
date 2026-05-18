@@ -60,6 +60,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
   const sectionLinks: NavLinkItem[] = [
     { type: "anchor", href: "#home", icon: Home, labelKey: "nav.home", fallback: { ar: "الرئيسية", en: "Home" } },
     { type: "anchor", href: "#about", icon: Info, labelKey: "nav.about", fallback: { ar: "تعرف على تِكله", en: "About TKLH" } },
+    { type: "anchor", href: "#packages", icon: FileText, labelKey: "nav.packages", fallback: { ar: "الباقات", en: "Packages" } },
     { type: "anchor", href: "#wizard", icon: Sparkles, labelKey: "nav.plan", fallback: { ar: "خطط ليلتك", en: "Plan your night" } },
     { type: "anchor", href: "#features", icon: FileText, labelKey: "nav.features", fallback: { ar: "المزايا", en: "Features" } },
     { type: "anchor", href: "#contact", icon: Phone, labelKey: "nav.contact", fallback: { ar: "تواصل معنا", en: "Contact" } },
