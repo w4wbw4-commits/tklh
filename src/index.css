@@ -175,19 +175,19 @@
     --success-foreground: 100 20% 8%;
 
     /* Borders slightly brighter than card to give clean separation */
-    --border: 100 12% 20%;
-    --input: 100 12% 20%;
-    --ring: 40 42% 60%;
+    --border: 100 35% 22%;
+    --input: 100 35% 22%;
+    --ring: 38 70% 72%;
 
     /* Sidebar tokens mirror the main palette */
-    --sidebar-background: 100 18% 9%;
-    --sidebar-foreground: 42 32% 94%;
-    --sidebar-primary: 40 62% 68%;
-    --sidebar-primary-foreground: 100 22% 8%;
-    --sidebar-accent: 100 14% 18%;
-    --sidebar-accent-foreground: 42 32% 94%;
-    --sidebar-border: 100 14% 24%;
-    --sidebar-ring: 40 62% 68%;
+    --sidebar-background: 100 45% 8%;
+    --sidebar-foreground: 40 40% 95%;
+    --sidebar-primary: 38 70% 72%;
+    --sidebar-primary-foreground: 100 45% 9%;
+    --sidebar-accent: 100 40% 18%;
+    --sidebar-accent-foreground: 40 40% 95%;
+    --sidebar-border: 100 35% 24%;
+    --sidebar-ring: 38 70% 72%;
   }
 
   /* === Dark-mode legibility booster ===========================================
