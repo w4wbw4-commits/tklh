@@ -277,56 +277,86 @@ export const PlatformPackages = () => {
         </div>
       </div>
 
-      {/* Detail dialog */}
+      {/* Detail dialog — luxurious editorial layout */}
       <Dialog open={!!active} onOpenChange={(v) => !v && setActive(null)}>
-        <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto">
+        <DialogContent className="max-h-[92vh] max-w-4xl overflow-y-auto border-gold/20 bg-cream p-0">
           {active && (() => {
             const aName = pickLocalized(active.name, active.name_en);
             const aDesc = pickLocalized(active.description, active.description_en);
             const aIncludes = pickLocalizedArray(active.includes, active.includes_en);
+            // Build a media list — fall back to thumbnail if no gallery items
+            const galleryMedia = active.media.length > 0
+              ? active.media
+              : (active.thumbnail_url ? [{ url: active.thumbnail_url, type: "image" as const }] : []);
+            const currentMedia = galleryMedia[activeMediaIdx] ?? galleryMedia[0];
+
             return (
             <>
-              <DialogHeader>
-                <DialogTitle className="font-arabic text-2xl">{aName}</DialogTitle>
-                {aDesc && (
-                  <DialogDescription className="font-arabic">{aDesc}</DialogDescription>
-                )}
+              {/* Accessible header (visually hidden) */}
+              <DialogHeader className="sr-only">
+                <DialogTitle>{aName}</DialogTitle>
+                {aDesc && <DialogDescription>{aDesc}</DialogDescription>}
               </DialogHeader>
 
-              {/* Gallery */}
-              {active.media.length > 0 && (
-                <div className="mt-2 overflow-hidden rounded-2xl border border-border bg-secondary">
-                  <div className="relative aspect-[16/9] w-full bg-secondary">
-                    {active.media[activeMediaIdx]?.type === "video" ? (
+              {/* HERO — large image with overlay branding */}
+              {currentMedia && (
+                <div className="relative w-full overflow-hidden bg-green">
+                  <div className="relative aspect-[16/10] w-full">
+                    {currentMedia.type === "video" ? (
                       <video
-                        src={active.media[activeMediaIdx].url}
+                        src={currentMedia.url}
                         controls
                         className="h-full w-full object-cover"
                       />
                     ) : (
                       <img
-                        src={active.media[activeMediaIdx]?.url ?? active.thumbnail_url ?? ""}
+                        src={currentMedia.url}
                         alt={aName}
                         className="h-full w-full object-cover"
                       />
                     )}
+                    {/* Gradient overlay for readability */}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-green via-green/40 to-transparent" />
+                    {/* Top kicker */}
+                    <div className="absolute right-5 top-5 flex items-center gap-2 rounded-full border border-cream/30 bg-cream/10 px-4 py-1.5 backdrop-blur-md">
+                      <span className="h-1.5 w-1.5 rounded-full bg-gold shadow-[0_0_8px_hsl(var(--gold))]" />
+                      <span className="font-arabic text-[11px] font-bold tracking-[0.2em] text-cream">
+                        {t("platformPackages.sectionKicker")}
+                      </span>
+                    </div>
+                    {/* Bottom title */}
+                    <div className="absolute inset-x-0 bottom-0 px-6 pb-6 sm:px-8 sm:pb-7">
+                      <h3 className="font-arabic text-3xl font-black leading-tight text-cream drop-shadow-lg sm:text-4xl">
+                        {aName}
+                      </h3>
+                      <div className="mt-3 flex items-center gap-3">
+                        <div className="h-px w-12 bg-gold/80" />
+                        <span className="font-arabic text-sm font-medium italic text-gold">
+                          {t("platformPackages.editorialTagline", "تجربة عرس استثنائية بعناية تكله")}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  {active.media.length > 1 && (
-                    <div className="hide-scrollbar flex gap-2 overflow-x-auto p-2">
-                      {active.media.map((m, i) => (
+
+                  {/* Thumbnails strip */}
+                  {galleryMedia.length > 1 && (
+                    <div className="hide-scrollbar flex gap-2 overflow-x-auto border-t border-cream/10 bg-green/95 p-3">
+                      {galleryMedia.map((m, i) => (
                         <button
-                          key={m.url}
+                          key={m.url + i}
                           type="button"
                           onClick={() => setActiveMediaIdx(i)}
-                          className={`relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border transition ${
-                            i === activeMediaIdx ? "border-primary ring-2 ring-primary/40" : "border-border opacity-80"
+                          className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-lg border-2 transition-all ${
+                            i === activeMediaIdx
+                              ? "border-gold shadow-lg shadow-gold/30"
+                              : "border-cream/10 opacity-60 hover:opacity-100"
                           }`}
                         >
                           {m.type === "image" ? (
                             <img src={m.url} alt="" className="h-full w-full object-cover" />
                           ) : (
                             <div className="grid h-full w-full place-items-center bg-black/60">
-                              <Play className="h-4 w-4 text-white" />
+                              <Play className="h-4 w-4 text-cream" />
                             </div>
                           )}
                         </button>
@@ -336,38 +366,87 @@ export const PlatformPackages = () => {
                 </div>
               )}
 
-              {/* Includes */}
-              {aIncludes.length > 0 && (
-                <div className="mt-4 rounded-2xl border border-border bg-card p-4">
-                  <div className="text-sm font-semibold text-foreground font-arabic flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-primary" />
-                    {t("platformPackages.includesTitle")}
-                  </div>
-                  <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-                    {aIncludes.map((inc, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-foreground/85">
-                        <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/15 text-primary">
-                          <Check className="h-3 w-3" strokeWidth={3} />
-                        </span>
-                        <span className="font-arabic">{inc}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              {/* BODY */}
+              <div className="space-y-6 p-6 sm:p-8">
+                {/* Description */}
+                {aDesc && (
+                  <p className="font-arabic text-base leading-loose text-green/85">
+                    {aDesc}
+                  </p>
+                )}
 
-              <div className="mt-4 flex items-center justify-between gap-3 border-t border-border pt-4">
-                <div className="font-arabic text-2xl font-semibold text-foreground tabular-nums">
-                  {fmtNumber(Number(active.price))}
-                  <span className="ms-1 text-sm font-normal text-foreground/60">{t("common.currency")}</span>
+                {/* Includes */}
+                {aIncludes.length > 0 && (
+                  <div className="rounded-2xl border border-gold/20 bg-cream/60 p-6 backdrop-blur-sm">
+                    <div className="mb-5 flex items-center gap-3">
+                      <div className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-[hsl(35_45%_40%)] to-gold shadow-md shadow-gold/30">
+                        <Sparkles className="h-4 w-4 text-cream" strokeWidth={2.5} />
+                      </div>
+                      <h4 className="font-arabic text-lg font-bold text-green">
+                        {t("platformPackages.includesTitle")}
+                      </h4>
+                      <div className="ms-auto h-px flex-1 bg-gradient-to-l from-transparent to-gold/30" />
+                    </div>
+                    <ul className="grid gap-3 sm:grid-cols-2">
+                      {aIncludes.map((inc, i) => (
+                        <li
+                          key={i}
+                          className="group/item flex items-start gap-3 rounded-xl border border-transparent bg-cream/40 p-3 transition-all hover:border-gold/30 hover:bg-cream"
+                        >
+                          <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-gradient-to-br from-green to-green/80 text-cream shadow-sm">
+                            <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                          </span>
+                          <span className="font-arabic text-sm leading-relaxed text-green">
+                            {inc}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Trust badges */}
+                <div className="grid grid-cols-3 gap-3 sm:gap-4">
+                  {[
+                    { icon: "✓", title: t("platformPackages.trust.quality.title", "ضمان الجودة"), sub: t("platformPackages.trust.quality.sub", "موردون معتمدون") },
+                    { icon: "🛡", title: t("platformPackages.trust.payment.title", "دفع آمن"), sub: t("platformPackages.trust.payment.sub", "حماية كاملة") },
+                    { icon: "★", title: t("platformPackages.trust.support.title", "دعم متواصل"), sub: t("platformPackages.trust.support.sub", "حتى يوم العرس") },
+                  ].map((b, i) => (
+                    <div
+                      key={i}
+                      className="flex flex-col items-center gap-1 rounded-xl border border-gold/15 bg-cream/40 p-3 text-center sm:p-4"
+                    >
+                      <span className="font-arabic text-xl text-gold">{b.icon}</span>
+                      <span className="font-arabic text-xs font-bold text-green sm:text-sm">{b.title}</span>
+                      <span className="font-arabic text-[10px] text-green/60 sm:text-xs">{b.sub}</span>
+                    </div>
+                  ))}
                 </div>
-                <Button
-                  onClick={() => bookPackage(active.id)}
-                  className="rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90"
-                >
-                  <Zap className="me-1 h-4 w-4" />
-                  {t("platformPackages.bookNow")}
-                </Button>
+              </div>
+
+              {/* STICKY CTA FOOTER */}
+              <div className="sticky bottom-0 border-t border-gold/20 bg-gradient-to-t from-cream via-cream to-cream/95 px-6 py-5 backdrop-blur-md sm:px-8">
+                <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                  <div className="flex flex-col items-center sm:items-start">
+                    <span className="font-arabic text-[11px] font-bold uppercase tracking-[0.2em] text-gold">
+                      {t("platformPackages.from")}
+                    </span>
+                    <div className="flex items-baseline gap-2 font-arabic tabular-nums">
+                      <span className="text-3xl font-black leading-none text-green sm:text-4xl">
+                        {fmtNumber(Number(active.price))}
+                      </span>
+                      <span className="text-base font-bold text-gold">{t("common.currency")}</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => bookPackage(active.id)}
+                    className="group/cta flex w-full items-center justify-center gap-4 rounded-2xl bg-gradient-to-r from-[hsl(35_45%_40%)] to-gold px-8 py-4 font-arabic text-base font-bold text-cream shadow-xl shadow-gold/30 transition-all hover:brightness-110 hover:shadow-2xl sm:w-auto"
+                  >
+                    <Zap className="h-4 w-4" />
+                    <span>{t("platformPackages.bookNow")}</span>
+                    <Arrow className="h-4 w-4 transition-transform group-hover/cta:-translate-x-1" />
+                  </button>
+                </div>
               </div>
             </>
             );
