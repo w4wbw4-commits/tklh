@@ -9,6 +9,7 @@
 // ---------------------------------------------------------------------------
 
 import { useEffect, useState } from "react";
+import { RiyalSymbol } from "./RiyalSymbol";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, ArrowLeft, Check, PackageOpen, Play, Sparkles, Zap } from "lucide-react";
@@ -171,7 +172,7 @@ export const PlatformPackages = () => {
                         <span className="text-5xl font-black leading-none text-cream drop-shadow-md">
                           {fmtNumber(Number(p.price))}
                         </span>
-                        <span className="text-lg font-bold text-gold">{t("common.currency")}</span>
+                        <span className="text-lg font-bold text-gold"><RiyalSymbol /></span>
                       </div>
                     </div>
 
@@ -248,7 +249,7 @@ export const PlatformPackages = () => {
                         <span className="text-4xl font-black text-green">
                           {fmtNumber(Number(p.price))}
                         </span>
-                        <span className="text-sm font-bold text-gold">{t("common.currency")}</span>
+                        <span className="text-sm font-bold text-gold"><RiyalSymbol /></span>
                       </div>
                     </div>
                   </div>
@@ -435,7 +436,7 @@ export const PlatformPackages = () => {
                       <span className="text-3xl font-black leading-none text-green sm:text-4xl">
                         {fmtNumber(Number(active.price))}
                       </span>
-                      <span className="text-base font-bold text-gold">{t("common.currency")}</span>
+                      <span className="text-base font-bold text-gold"><RiyalSymbol /></span>
                     </div>
                   </div>
                   <button

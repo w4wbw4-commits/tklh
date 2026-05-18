@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { RiyalSymbol } from "../RiyalSymbol";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -605,7 +606,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                                         </div>
                                         <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-foreground">
                                           {fmtNumber(weekday)}{" "}
-                                          <span className="text-[11px] font-medium text-foreground/60">{t("common.currency")}</span>
+                                          <span className="text-[11px] font-medium text-foreground/60"><RiyalSymbol /></span>
                                         </div>
                                       </div>
                                     )}
@@ -617,7 +618,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                                         </div>
                                         <div className="mt-1 font-arabic text-sm font-semibold tabular-nums text-primary">
                                           {fmtNumber(weekend)}{" "}
-                                          <span className="text-[11px] font-medium text-primary/70">{t("common.currency")}</span>
+                                          <span className="text-[11px] font-medium text-primary/70"><RiyalSymbol /></span>
                                         </div>
                                       </div>
                                     )}
@@ -707,7 +708,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                                           </div>
                                           <div className="ms-3 flex flex-col items-end gap-1">
                                             <span className="font-arabic text-sm font-semibold tabular-nums text-primary">
-                                              {fmtNumber(Number(p.price))} {t("common.currency")}
+                                              {fmtNumber(Number(p.price))} <RiyalSymbol />
                                             </span>
                                             <span
                                               className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors ${
@@ -759,7 +760,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
             </span>
           </div>
           <div className="font-arabic text-xl font-semibold tabular-nums text-primary">
-            {fmtNumber(runningTotal)} <span className="text-sm font-medium text-foreground/70">{t("common.currency")}</span>
+            {fmtNumber(runningTotal)} <span className="text-sm font-medium text-foreground/70"><RiyalSymbol /></span>
           </div>
         </div>
       </div>

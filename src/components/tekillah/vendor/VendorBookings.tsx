@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { RiyalSymbol } from "../RiyalSymbol";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -121,7 +122,7 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
             <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
               <Stat icon={CalendarDays} label={t("vendor.bookings.eventDate")} value={fmtDate(b.event_date)} />
               <Stat icon={Users} label={t("vendor.bookings.guests")} value={fmtNumber(Number(b.guest_count ?? 0))} />
-              <Stat label={t("vendor.bookings.amount")} value={`${fmtNumber(Number(b.total_price ?? 0))} ${t("common.currency")}`} highlight />
+              <Stat label={t("vendor.bookings.amount")} value={`${fmtNumber(Number(b.total_price ?? 0))} $<RiyalSymbol />`} highlight />
             </div>
             {b.status === "pending" && (
               <div className="mt-3 flex flex-wrap gap-2">
