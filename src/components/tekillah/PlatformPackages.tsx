@@ -130,7 +130,7 @@ export const PlatformPackages = () => {
                   {/* Featured badge */}
                   <div className="absolute -top-4 inset-x-0 flex justify-center">
                     <span className="rounded-full border border-cream/20 bg-gradient-to-r from-[hsl(35_45%_40%)] to-gold px-6 py-1.5 font-arabic text-xs font-bold text-cream shadow-lg shadow-gold/30">
-                      {t("platformPackages.featuredBadge", "خيار النخبة")}
+                      {t("platformPackages.featuredBadge", "الموصى بها")}
                     </span>
                   </div>
 
