@@ -131,43 +131,43 @@
        AAA contrast. `--primary-deep` is intentionally LIGHT here — every
        hand-drawn sketch uses it as the ink color, so it must read as a
        luminous line on a dark canvas (the inverse of light mode). */
-    --background: 100 14% 7%;            /* deeper, calmer charcoal */
-    --foreground: 42 18% 86%;            /* soft warm cream — easier on the eyes */
-    --surface: 100 12% 10%;
-    --cream: 100 10% 13%;                /* "cream" is a slightly raised olive */
-    --text-muted: 95 8% 65%;
+    --background: 100 45% 9%;            /* deep olive green — matches featured card */
+    --foreground: 40 40% 95%;            /* warm cream text */
+    --surface: 100 45% 12%;
+    --cream: 100 40% 15%;                /* raised olive surface */
+    --text-muted: 40 20% 72%;
 
-    --card: 100 12% 11%;
-    --card-foreground: 42 18% 86%;
-    --popover: 100 12% 11%;
-    --popover-foreground: 42 18% 86%;
+    --card: 100 45% 13%;
+    --card-foreground: 40 40% 95%;
+    --popover: 100 45% 13%;
+    --popover-foreground: 40 40% 95%;
 
-    /* Greens — muted so they sit calmly on dark canvas */
-    --green: 100 22% 62%;
-    --green-mid: 100 20% 48%;
-    --green-light: 100 18% 26%;
+    /* Greens — readable accents on the deep olive canvas */
+    --green: 100 35% 55%;
+    --green-mid: 100 30% 42%;
+    --green-light: 100 40% 22%;
 
-    /* Gold — desaturated for nighttime warmth without glare */
-    --gold: 40 42% 60%;
-    --gold-soft: 40 28% 32%;
+    /* Gold — clearly legible warm accent */
+    --gold: 38 70% 72%;
+    --gold-soft: 40 50% 80%;
 
     /* Brown — soft accents */
-    --brown: 30 26% 62%;
-    --brown-soft: 30 20% 48%;
+    --brown: 30 35% 68%;
+    --brown-soft: 30 28% 52%;
 
     /* Primary — soft olive for buttons */
-    --primary: 100 26% 52%;
-    --primary-foreground: 100 20% 8%;
+    --primary: 100 32% 48%;
+    --primary-foreground: 40 40% 97%;
     /* --primary-deep is the SKETCH INK color in dark mode — light but soft */
-    --primary-deep: 42 22% 82%;
-    --primary-glow: 100 24% 48%;
+    --primary-deep: 40 35% 88%;
+    --primary-glow: 100 30% 42%;
 
-    --secondary: 100 12% 15%;
-    --secondary-foreground: 42 18% 86%;
-    --muted: 100 10% 14%;
-    --muted-foreground: 42 12% 68%;
-    --accent: 100 14% 20%;
-    --accent-foreground: 42 18% 86%;
+    --secondary: 100 40% 16%;
+    --secondary-foreground: 40 40% 95%;
+    --muted: 100 38% 14%;
+    --muted-foreground: 40 22% 75%;
+    --accent: 100 35% 22%;
+    --accent-foreground: 40 40% 95%;
 
     --destructive: 0 55% 52%;
     --destructive-foreground: 42 18% 86%;
@@ -175,19 +175,19 @@
     --success-foreground: 100 20% 8%;
 
     /* Borders slightly brighter than card to give clean separation */
-    --border: 100 12% 20%;
-    --input: 100 12% 20%;
-    --ring: 40 42% 60%;
+    --border: 100 35% 22%;
+    --input: 100 35% 22%;
+    --ring: 38 70% 72%;
 
     /* Sidebar tokens mirror the main palette */
-    --sidebar-background: 100 18% 9%;
-    --sidebar-foreground: 42 32% 94%;
-    --sidebar-primary: 40 62% 68%;
-    --sidebar-primary-foreground: 100 22% 8%;
-    --sidebar-accent: 100 14% 18%;
-    --sidebar-accent-foreground: 42 32% 94%;
-    --sidebar-border: 100 14% 24%;
-    --sidebar-ring: 40 62% 68%;
+    --sidebar-background: 100 45% 8%;
+    --sidebar-foreground: 40 40% 95%;
+    --sidebar-primary: 38 70% 72%;
+    --sidebar-primary-foreground: 100 45% 9%;
+    --sidebar-accent: 100 40% 18%;
+    --sidebar-accent-foreground: 40 40% 95%;
+    --sidebar-border: 100 35% 24%;
+    --sidebar-ring: 38 70% 72%;
   }
 
   /* === Dark-mode legibility booster ===========================================
