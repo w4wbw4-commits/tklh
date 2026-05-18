@@ -69,105 +69,208 @@ export const PlatformPackages = () => {
   };
 
   return (
-    <section id="packages" className="relative bg-background py-20 sm:py-28">
-      <div className="mx-auto max-w-6xl px-6">
+    <section id="packages" className="relative overflow-hidden bg-hero-warm py-20 sm:py-28">
+      {/* Decorative background motif */}
+      <div className="pointer-events-none absolute -bottom-24 -left-24 h-96 w-96 opacity-[0.05]">
+        <svg viewBox="0 0 100 100" fill="none" stroke="hsl(var(--gold))" strokeWidth="0.5">
+          <path d="M50 0 L100 50 L50 100 L0 50 Z" />
+          <path d="M20 20 L80 80 M80 20 L20 80" />
+          <circle cx="50" cy="50" r="30" />
+        </svg>
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-6">
+        {/* Editorial header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="text-center"
+          className="mb-14 text-center"
         >
-          <span className="font-arabic text-xs font-semibold uppercase tracking-[0.3em] text-[hsl(82_39%_30%)]">
-            {t("platformPackages.sectionKicker")}
-          </span>
-          <h2 className="mt-4 font-arabic text-balance text-3xl font-semibold text-foreground sm:text-4xl">
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/60 px-5 py-1.5 backdrop-blur-sm">
+            <span className="h-1 w-1 rounded-full bg-gold shadow-[0_0_8px_hsl(var(--gold))]" />
+            <span className="font-arabic text-[11px] font-bold tracking-[0.2em] text-gold">
+              {t("platformPackages.sectionKicker")}
+            </span>
+            <span className="h-1 w-1 rounded-full bg-gold shadow-[0_0_8px_hsl(var(--gold))]" />
+          </div>
+
+          <h2 className="mb-5 bg-gradient-to-b from-[hsl(35_45%_40%)] via-gold to-[hsl(35_45%_40%)] bg-clip-text font-arabic text-4xl font-black leading-[1.5] text-transparent md:text-5xl">
             {t("platformPackages.sectionTitle")}
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-sm text-foreground/65 font-arabic sm:text-base">
-            {t("platformPackages.sectionSubtitle")}
-          </p>
+
+          <div className="flex items-center justify-center gap-4 opacity-70 sm:gap-6">
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-gold/60 sm:w-24" />
+            <span className="font-arabic text-sm font-light italic text-green sm:text-lg">
+              {t("platformPackages.sectionSubtitle")}
+            </span>
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-gold/60 sm:w-24" />
+          </div>
         </motion.div>
 
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Packages grid */}
+        <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-3">
           {items.map((p, idx) => {
             const displayName = pickLocalized(p.name, p.name_en);
             const displayDesc = pickLocalized(p.description, p.description_en);
+            // Middle card (when 3 items) is the elevated/featured tier.
+            const isFeatured = items.length >= 3 && idx === 1;
+
+            if (isFeatured) {
+              return (
+                <motion.article
+                  key={p.id}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.06 }}
+                  className="group relative z-10 flex flex-col rounded-[2.5rem] border-2 border-gold bg-green p-4 shadow-[0_50px_100px_-20px_hsl(var(--gold)/0.3)] transition-all duration-700 hover:-translate-y-2 md:-my-4"
+                >
+                  {/* Featured badge */}
+                  <div className="absolute -top-4 inset-x-0 flex justify-center">
+                    <span className="rounded-full border border-cream/20 bg-gradient-to-r from-[hsl(35_45%_40%)] to-gold px-6 py-1.5 font-arabic text-xs font-bold text-cream shadow-lg shadow-gold/30">
+                      {t("platformPackages.featuredBadge", "خيار النخبة")}
+                    </span>
+                  </div>
+
+                  {/* Image */}
+                  <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[2rem] bg-secondary shadow-2xl">
+                    {p.thumbnail_url ? (
+                      <img
+                        src={p.thumbnail_url}
+                        alt={displayName}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="grid h-full w-full place-items-center">
+                        <PackageOpen className="h-10 w-10 text-cream/40" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-green/90 via-transparent to-transparent opacity-90" />
+                  </div>
+
+                  {/* Body */}
+                  <div className="flex flex-1 flex-col gap-7 p-7">
+                    <div className="space-y-2 text-center">
+                      <h3 className="font-arabic text-3xl font-black text-cream">{displayName}</h3>
+                      {displayDesc && (
+                        <p className="font-arabic text-sm leading-relaxed text-gold line-clamp-2">
+                          {displayDesc}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Price block — glassy */}
+                    <div className="flex flex-col items-center rounded-2xl border border-cream/10 bg-cream/5 py-7 backdrop-blur-md">
+                      <span className="mb-2 font-arabic text-[11px] font-bold uppercase tracking-[0.2em] text-gold">
+                        {t("platformPackages.from")}
+                      </span>
+                      <div className="flex items-baseline gap-3 font-arabic tabular-nums">
+                        <span className="text-5xl font-black leading-none text-cream drop-shadow-md">
+                          {fmtNumber(Number(p.price))}
+                        </span>
+                        <span className="text-lg font-bold text-gold">{t("common.currency")}</span>
+                      </div>
+                    </div>
+
+                    {/* CTAs */}
+                    <div className="mt-auto flex flex-col gap-3">
+                      <button
+                        onClick={() => bookPackage(p.id)}
+                        className="group/btn flex w-full items-center justify-center gap-4 rounded-2xl bg-gradient-to-r from-[hsl(35_45%_40%)] to-gold py-4 font-arabic text-base font-bold text-cream shadow-xl shadow-black/20 transition-all hover:brightness-110"
+                      >
+                        <Zap className="h-4 w-4" />
+                        <span>{t("platformPackages.bookNow")}</span>
+                        <span className="h-px w-8 bg-cream/40 transition-all group-hover/btn:w-12" />
+                      </button>
+                      <button
+                        onClick={() => { setActive(p); setActiveMediaIdx(0); }}
+                        className="font-arabic text-xs font-medium text-gold/80 transition-colors hover:text-cream"
+                      >
+                        {t("platformPackages.viewDetails")}
+                      </button>
+                    </div>
+                  </div>
+                </motion.article>
+              );
+            }
+
+            // Side cards — cream
             return (
               <motion.article
                 key={p.id}
                 initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.06 }}
-                className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition hover:shadow-luxury"
+                transition={{ duration: 0.6, delay: idx * 0.06 }}
+                className="group relative flex flex-col rounded-[2rem] border border-gold/20 bg-cream/60 p-3 backdrop-blur-sm transition-all duration-700 hover:-translate-y-2 hover:bg-cream hover:shadow-[0_40px_80px_-20px_hsl(var(--green)/0.15)]"
               >
-              <div className="relative aspect-[16/10] w-full bg-secondary">
-                {p.thumbnail_url ? (
-                  <img
-                    src={p.thumbnail_url}
-                    alt={displayName}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                  />
-                ) : (
-                  <div className="grid h-full w-full place-items-center">
-                    <PackageOpen className="h-10 w-10 text-foreground/30" />
-                  </div>
-                )}
-                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
-                <div
-                  className="absolute start-3 top-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold text-primary-foreground shadow-luxury backdrop-blur"
-                  style={{ background: "var(--gradient-olive)" }}
-                >
-                  <Sparkles className="h-3 w-3" />
-                  <span className="font-arabic tracking-wide">{t("platformPackages.cardBadge")}</span>
-                </div>
-              </div>
-
-              <div className="flex flex-1 flex-col p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <h3 className="font-arabic text-xl font-bold text-foreground">{displayName}</h3>
-                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold/40 bg-gold/10 text-gold">
-                    <Sparkles className="h-4 w-4" strokeWidth={2} />
-                  </span>
-                </div>
-                {displayDesc && (
-                  <p className="mt-1.5 text-sm text-foreground/70 font-arabic line-clamp-2">
-                    {displayDesc}
-                  </p>
-                )}
-
-                <div className="mt-5 rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/5 to-transparent p-4">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/55">
-                    {t("platformPackages.from")}
-                  </div>
-                  <div className="mt-1 flex items-baseline gap-1.5 font-arabic tabular-nums">
-                    <span className="text-4xl font-black leading-none text-primary-deep">
-                      {fmtNumber(Number(p.price))}
-                    </span>
-                    <span className="text-base font-bold text-gold">{t("common.currency")}</span>
+                {/* Image */}
+                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[1.5rem] border border-gold/10 bg-secondary">
+                  {p.thumbnail_url ? (
+                    <img
+                      src={p.thumbnail_url}
+                      alt={displayName}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className="grid h-full w-full place-items-center">
+                      <PackageOpen className="h-10 w-10 text-foreground/30" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-green/60 via-transparent to-transparent opacity-80" />
+                  <div className="absolute left-4 top-4 rounded-full border border-cream/20 bg-cream/10 p-2 backdrop-blur-md">
+                    <Sparkles className="h-4 w-4 text-cream/90" strokeWidth={2} />
                   </div>
                 </div>
 
-                <div className="mt-5 flex gap-2">
-                  <Button
-                    variant="ghost"
-                    onClick={() => { setActive(p); setActiveMediaIdx(0); }}
-                    className="flex-1 rounded-full"
-                  >
-                    {t("platformPackages.viewDetails")}
-                  </Button>
-                  <Button
-                    onClick={() => bookPackage(p.id)}
-                    className="flex-1 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
-                  >
-                    <Zap className="me-1 h-4 w-4" />
-                    {t("platformPackages.bookNow")}
-                    <Arrow className="ms-1 h-4 w-4" />
-                  </Button>
+                {/* Body */}
+                <div className="flex flex-1 flex-col gap-6 p-6">
+                  <div className="space-y-1.5">
+                    <h3 className="font-arabic text-2xl font-black text-green">{displayName}</h3>
+                    {displayDesc && (
+                      <p className="font-arabic text-xs leading-relaxed text-green/60 line-clamp-2">
+                        {displayDesc}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Price block */}
+                  <div className="relative border-y border-gold/10 py-6">
+                    <div className="flex flex-col items-center">
+                      <span className="mb-1 font-arabic text-[10px] font-bold uppercase tracking-[0.2em] text-gold">
+                        {t("platformPackages.from")}
+                      </span>
+                      <div className="flex items-baseline gap-2 font-arabic tabular-nums">
+                        <span className="text-4xl font-black text-green">
+                          {fmtNumber(Number(p.price))}
+                        </span>
+                        <span className="text-sm font-bold text-gold">{t("common.currency")}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CTAs */}
+                  <div className="mt-auto flex flex-col gap-2">
+                    <button
+                      onClick={() => bookPackage(p.id)}
+                      className="flex w-full items-center justify-center gap-3 rounded-xl border border-green/20 py-3.5 font-arabic text-sm font-bold text-green transition-all hover:bg-green hover:text-cream"
+                    >
+                      <Zap className="h-4 w-4" />
+                      <span>{t("platformPackages.bookNow")}</span>
+                      <Arrow className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => { setActive(p); setActiveMediaIdx(0); }}
+                      className="font-arabic text-xs font-medium text-green/60 transition-colors hover:text-green"
+                    >
+                      {t("platformPackages.viewDetails")}
+                    </button>
+                  </div>
                 </div>
-              </div>
               </motion.article>
             );
           })}
