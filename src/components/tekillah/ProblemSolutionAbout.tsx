@@ -58,7 +58,7 @@ const AboutValueSection = () => (
           <h2 className="mt-6 font-arabic text-5xl font-black leading-[1.1] text-green md:text-6xl lg:text-7xl">
             تِكله..{" "}
             <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
-              اسم على مسمّى
+              اسم على مسمى
             </span>
           </h2>
 
