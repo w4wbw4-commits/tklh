@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import "@emran-alhaddad/saudi-riyal-font/index.css";
 import "./i18n";
 
 // Canonical domain enforcement.
