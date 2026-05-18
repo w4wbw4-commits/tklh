@@ -126,11 +126,11 @@ export const PlatformPackages = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: idx * 0.06 }}
-                  className="group relative z-10 flex flex-col rounded-[2.5rem] border-2 border-gold bg-green p-4 shadow-[0_50px_100px_-20px_hsl(var(--gold)/0.3)] transition-all duration-700 hover:-translate-y-2 md:-my-4"
+                  className="group relative z-10 flex flex-col rounded-[2.5rem] border-2 border-gold bg-[hsl(100_45%_15%)] p-4 shadow-[0_50px_100px_-20px_hsl(var(--gold)/0.3)] transition-all duration-700 hover:-translate-y-2 md:-my-4"
                 >
                   {/* Featured badge */}
                   <div className="absolute -top-4 inset-x-0 flex justify-center">
-                    <span className="rounded-full border border-cream/20 bg-gradient-to-r from-[hsl(35_45%_40%)] to-gold px-6 py-1.5 font-arabic text-xs font-bold text-cream shadow-lg shadow-gold/30">
+                    <span className="rounded-full border border-[hsl(40_42%_82%)]/30 bg-gradient-to-r from-[hsl(35_45%_40%)] to-[hsl(38_55%_62%)] px-6 py-1.5 font-arabic text-xs font-bold text-[hsl(40_40%_97%)] shadow-lg shadow-black/30">
                       {t("platformPackages.featuredBadge", "الموصى بها")}
                     </span>
                   </div>
@@ -146,33 +146,33 @@ export const PlatformPackages = () => {
                       />
                     ) : (
                       <div className="grid h-full w-full place-items-center">
-                        <PackageOpen className="h-10 w-10 text-cream/40" />
+                        <PackageOpen className="h-10 w-10 text-[hsl(40_40%_97%)]/40" />
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-green/90 via-transparent to-transparent opacity-90" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[hsl(100_45%_15%)] via-transparent to-transparent opacity-90" />
                   </div>
 
                   {/* Body */}
                   <div className="flex flex-1 flex-col gap-7 p-7">
                     <div className="space-y-2 text-center">
-                      <h3 className="font-arabic text-3xl font-black text-cream">{displayName}</h3>
+                      <h3 className="font-arabic text-3xl font-black text-[hsl(40_40%_97%)]">{displayName}</h3>
                       {displayDesc && (
-                        <p className="font-arabic text-sm leading-relaxed text-gold line-clamp-2">
+                        <p className="font-arabic text-sm leading-relaxed text-[hsl(38_70%_75%)] line-clamp-2">
                           {displayDesc}
                         </p>
                       )}
                     </div>
 
                     {/* Price block — glassy */}
-                    <div className="flex flex-col items-center rounded-2xl border border-cream/10 bg-cream/5 py-7 backdrop-blur-md">
-                      <span className="mb-2 font-arabic text-[11px] font-bold uppercase tracking-[0.2em] text-gold">
+                    <div className="flex flex-col items-center rounded-2xl border border-[hsl(40_40%_97%)]/10 bg-[hsl(40_40%_97%)]/5 py-7 backdrop-blur-md">
+                      <span className="mb-2 font-arabic text-[11px] font-bold uppercase tracking-[0.2em] text-[hsl(38_70%_75%)]">
                         {t("platformPackages.from")}
                       </span>
                       <div className="flex items-baseline gap-3 font-arabic tabular-nums">
-                        <span className="text-5xl font-black leading-none text-cream drop-shadow-md">
+                        <span className="text-5xl font-black leading-none text-[hsl(40_40%_97%)] drop-shadow-md">
                           {fmtNumber(Number(p.price))}
                         </span>
-                        <span className="text-lg font-bold text-gold"><RiyalSymbol /></span>
+                        <span className="text-lg font-bold text-[hsl(38_70%_75%)]"><RiyalSymbol /></span>
                       </div>
                     </div>
 
@@ -180,15 +180,15 @@ export const PlatformPackages = () => {
                     <div className="mt-auto flex flex-col gap-3">
                       <button
                         onClick={() => bookPackage(p.id)}
-                        className="group/btn flex w-full items-center justify-center gap-4 rounded-2xl bg-gradient-to-r from-[hsl(35_45%_40%)] to-gold py-4 font-arabic text-base font-bold text-cream shadow-xl shadow-black/20 transition-all hover:brightness-110"
+                        className="group/btn flex w-full items-center justify-center gap-4 rounded-2xl bg-gradient-to-r from-[hsl(35_45%_40%)] to-[hsl(38_55%_62%)] py-4 font-arabic text-base font-bold text-[hsl(40_40%_97%)] shadow-xl shadow-black/30 transition-all hover:brightness-110"
                       >
                         <Zap className="h-4 w-4" />
                         <span>{t("platformPackages.bookNow")}</span>
-                        <span className="h-px w-8 bg-cream/40 transition-all group-hover/btn:w-12" />
+                        <span className="h-px w-8 bg-[hsl(40_40%_97%)]/40 transition-all group-hover/btn:w-12" />
                       </button>
                       <button
                         onClick={() => { setActive(p); setActiveMediaIdx(0); }}
-                        className="font-arabic text-xs font-medium text-gold/80 transition-colors hover:text-cream"
+                        className="font-arabic text-xs font-medium text-[hsl(38_70%_75%)]/90 transition-colors hover:text-[hsl(40_40%_97%)]"
                       >
                         {t("platformPackages.viewDetails")}
                       </button>
