@@ -51,6 +51,7 @@ export const Navbar = () => {
   const navItems = [
     { key: "home", href: "#home" },
     { key: "about", href: "#about", labelOverride: isAr ? "تعرف على تِكله" : "About TKLH" },
+    { key: "packages", href: "#packages", labelOverride: isAr ? "الباقات" : "Packages" },
     { key: "plan", href: "#wizard" },
   ] as const;
 
