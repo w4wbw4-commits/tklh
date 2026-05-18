@@ -427,11 +427,11 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
               <Wallet className="h-4 w-4 text-primary" /> {t("admin.addVendor.pricingTitle")}
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <NumField label={t("vendor.profile.weekdayPrice")} icon={CalendarDays} value={weekdayPrice} onChange={setWeekdayPrice} unit="ريال" />
-              <NumField label={t("vendor.profile.weekendPrice")} icon={CalendarRange} value={weekendPrice} onChange={setWeekendPrice} unit="ريال" />
+              <NumField label={t("vendor.profile.weekdayPrice")} icon={CalendarDays} value={weekdayPrice} onChange={setWeekdayPrice} unit={<RiyalSymbol />} />
+              <NumField label={t("vendor.profile.weekendPrice")} icon={CalendarRange} value={weekendPrice} onChange={setWeekendPrice} unit={<RiyalSymbol />} />
               <div className="sm:col-span-2">
                 <NumField label={t("vendor.profile.minDeposit")} icon={Wallet} value={minDeposit} onChange={setMinDeposit}
-                  unit="ريال" hint={t("vendor.profile.depositHint")} />
+                  unit={<RiyalSymbol />} hint={t("vendor.profile.depositHint")} />
               </div>
             </div>
           </div>
@@ -662,7 +662,7 @@ const NumField = ({
   value: number | "";
   onChange: (n: number | "") => void;
   icon: typeof Users;
-  unit?: string;
+  unit?: React.ReactNode;
   hint?: string;
 }) => (
   <div className="space-y-1.5">
