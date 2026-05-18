@@ -104,14 +104,18 @@ const AboutValueSection = () => (
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               to="/#wizard"
-              className="group inline-flex items-center justify-center gap-2 rounded-full border-2 border-gold bg-green px-7 py-3.5 font-arabic text-sm font-bold text-gold shadow-deep transition-all hover:-translate-y-0.5 hover:bg-green-mid hover:shadow-[0_25px_70px_-20px_hsl(var(--gold)/0.55)] sm:text-base"
+              className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full px-8 py-3.5 font-arabic text-sm font-bold shadow-deep transition-all hover:-translate-y-0.5 sm:text-base
+                border-2 border-gold bg-green text-gold hover:bg-green-mid hover:shadow-[0_25px_70px_-20px_hsl(var(--gold)/0.55)]
+                dark:border-[hsl(40_70%_72%)] dark:bg-gradient-to-r dark:from-[hsl(38_70%_68%)] dark:to-[hsl(40_55%_55%)] dark:text-[hsl(100_45%_10%)] dark:shadow-[0_18px_50px_-15px_hsl(40_70%_55%/0.55)] dark:hover:from-[hsl(38_72%_72%)] dark:hover:to-[hsl(40_58%_60%)] dark:hover:shadow-[0_25px_70px_-15px_hsl(40_75%_60%/0.7)]"
             >
               <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
               ابدأ التخطيط الحين
             </Link>
             <a
               href="#speed"
-              className="inline-flex items-center justify-center rounded-full border border-green/30 bg-cream/70 px-7 py-3.5 font-arabic text-sm font-bold text-green backdrop-blur transition-colors hover:bg-cream sm:text-base"
+              className="inline-flex items-center justify-center rounded-full px-7 py-3.5 font-arabic text-sm font-bold backdrop-blur transition-colors sm:text-base
+                border border-green/30 bg-cream/70 text-green hover:bg-cream
+                dark:border-[hsl(40_60%_70%)]/40 dark:bg-[hsl(100_45%_14%)]/80 dark:text-[hsl(40_60%_82%)] dark:hover:border-[hsl(40_60%_70%)]/70 dark:hover:bg-[hsl(100_45%_18%)]"
             >
               ليش تِكله؟
             </a>
