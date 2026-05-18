@@ -55,9 +55,9 @@ const AboutValueSection = () => (
             تعرف على تِكله
           </span>
 
-          <h2 className="mt-6 font-arabic text-5xl font-black leading-[1.1] text-green md:text-6xl lg:text-7xl">
+          <h2 className="mt-6 font-arabic text-5xl font-black leading-[1.6] text-green md:text-6xl lg:text-7xl">
             تِكله..{" "}
-            <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
+            <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-2 leading-[1.6] text-transparent">
               اسم على مسمى
             </span>
           </h2>
@@ -140,9 +140,9 @@ const SpeedSection = () => (
             <Timer className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
             الفرق اللي بيغير مزاجك
           </span>
-          <h2 className="mt-5 font-arabic text-4xl font-black leading-[1.15] text-green md:text-5xl">
+          <h2 className="mt-5 font-arabic text-4xl font-black leading-[1.6] text-green md:text-5xl">
             من ٦ أسابيع حوسة..{" "}
-            <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
+            <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-2 leading-[1.6] text-transparent">
               لـ ١٠ دقائق وأنت مخلص
             </span>
           </h2>
