@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { RiyalSymbol } from "@/components/tekillah/RiyalSymbol";
 import { useTranslation } from "react-i18next";
 import {
   TrendingUp,
@@ -160,7 +161,7 @@ export const PartnerDashboardPreview = () => {
                         <h3 className="font-black">{t("partnerPreview.chart.title", { defaultValue: "نمو العوائد الشهرية" })}</h3>
                       </div>
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {t("partnerPreview.chart.sub", { defaultValue: "آخر 7 أشهر — بآلاف الريالات" })}
+                        {t("partnerPreview.chart.sub", { defaultValue: "آخر 7 أشهر — بآلاف" })} <RiyalSymbol />
                       </p>
                     </div>
                     <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">+24% MoM</span>

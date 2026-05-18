@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { RiyalSymbol } from "@/components/tekillah/RiyalSymbol";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -165,7 +166,7 @@ const PartnerOverview = () => {
                     <TrendingUp className="h-5 w-5" />
                     <h3 className="font-black">نمو العوائد الشهرية</h3>
                   </div>
-                  <p className="mt-1 text-xs text-muted-foreground">آخر 7 أشهر — بآلاف الريالات</p>
+                  <p className="mt-1 text-xs text-muted-foreground">آخر 7 أشهر — بآلاف <RiyalSymbol /></p>
                 </div>
                 <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
                   {stats.mom >= 0 ? "+" : ""}
