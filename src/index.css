@@ -155,12 +155,12 @@
     --brown: 30 35% 68%;
     --brown-soft: 30 28% 52%;
 
-    /* Primary — soft olive for buttons */
-    --primary: 100 32% 48%;
-    --primary-foreground: 40 40% 97%;
+    /* Primary — warm gold for buttons in dark mode (elegant pop) */
+    --primary: 38 68% 62%;
+    --primary-foreground: 100 45% 10%;
     /* --primary-deep is the SKETCH INK color in dark mode — light but soft */
     --primary-deep: 40 35% 88%;
-    --primary-glow: 100 30% 42%;
+    --primary-glow: 40 75% 70%;
 
     --secondary: 100 40% 16%;
     --secondary-foreground: 40 40% 95%;
