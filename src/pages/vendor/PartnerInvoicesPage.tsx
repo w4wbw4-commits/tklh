@@ -112,7 +112,7 @@ const PartnerInvoicesPage = () => {
       <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="p-5"><Receipt className="h-5 w-5 text-primary" /><div className="mt-3 text-2xl font-black">{fmt(stats.count)}</div><div className="mt-1 text-xs font-bold text-muted-foreground">إجمالي الفواتير</div></Card>
         <Card className="border-primary bg-primary p-5 text-primary-foreground"><TrendingUp className="h-5 w-5 text-secondary" /><div className="mt-3 text-2xl font-black">{fmt(stats.total)} </div><div className="mt-1 text-xs font-bold text-primary-foreground/70">إجمالي القيمة</div></Card>
-        <Card className="p-5"><Calendar className="h-5 w-5 text-primary" /><div className="mt-3 text-2xl font-black">{fmt(stats.vat)} </div><div className="mt-1 text-xs font-bold text-muted-foreground">ضريبة محصّلة</div></Card>
+        <Card className="p-5"><Calendar className="h-5 w-5 text-primary" /><div className="mt-3 text-2xl font-black">{fmt(stats.vat)} </div><div className="mt-1 text-xs font-bold text-muted-foreground">ضريبة محصلة</div></Card>
       </div>
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">

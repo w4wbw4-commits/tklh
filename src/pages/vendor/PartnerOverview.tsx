@@ -237,7 +237,7 @@ const PartnerOverview = () => {
               </div>
               <div className="mt-4 flex flex-wrap gap-3 text-[11px] text-foreground/70">
                 <Legend className="bg-primary" label="محجوز" />
-                <Legend className="bg-secondary" label="معلّق" />
+                <Legend className="bg-secondary" label="معلق" />
                 <Legend className="border border-border bg-background" label="متاح" />
               </div>
             </div>

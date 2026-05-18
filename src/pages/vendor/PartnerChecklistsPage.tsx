@@ -23,7 +23,7 @@ const defaultItems = [
   { category: "catering" as const, title: "تأكيد قائمة الطعام مع العميل" },
   { category: "catering" as const, title: "حصر عدد الضيوف النهائي" },
   { category: "decoration" as const, title: "إعداد قاعة الاستقبال" },
-  { category: "decoration" as const, title: "تركيب الإضاءة وممر الزفّة" },
+  { category: "decoration" as const, title: "تركيب الإضاءة وممر الزفة" },
   { category: "staff" as const, title: "جدول مواعيد الفريق" },
   { category: "logistics" as const, title: "تجهيز موقف السيارات" },
 ];

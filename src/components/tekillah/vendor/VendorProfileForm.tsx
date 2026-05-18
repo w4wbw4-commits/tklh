@@ -255,7 +255,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
         <div className="flex items-center gap-2">
           {vendor?.verified && (
             <Badge className="gap-1 bg-primary/10 text-primary hover:bg-primary/20">
-              <ShieldCheck className="h-3.5 w-3.5" /> موثّق
+              <ShieldCheck className="h-3.5 w-3.5" /> موثق
             </Badge>
           )}
           {vendor && <ApprovalBadge status={status} />}
@@ -377,7 +377,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           <div className="space-y-2 sm:col-span-2">
             <Label>نبذة عن العمل</Label>
             <Textarea value={bio} onChange={(e) => setBio(e.target.value)}
-              placeholder="اكتب وصفاً يعرّف العميل بخدماتك ومميزاتك..."
+              placeholder="اكتب وصفاً يعرف العميل بخدماتك ومميزاتك..."
               className="min-h-[120px] font-arabic" />
           </div>
           <div className="space-y-2 sm:col-span-2">
@@ -460,7 +460,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           <Badge variant="outline" className="ms-1 text-[10px]">اختياري</Badge>
         </div>
         <p className="mb-5 text-xs text-foreground/60">
-          أضف الخدمات التي تقدّمها لعملائك. اكتب الخدمة واضغط Enter لإضافتها كوسم. ستظهر للعميل عند تصفّح ملفك.
+          أضف الخدمات التي تقدمها لعملائك. اكتب الخدمة واضغط Enter لإضافتها كوسم. ستظهر للعميل عند تصفح ملفك.
         </p>
         <ServiceTagsInput
           value={extraServices}
@@ -494,7 +494,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           <Landmark className="h-4 w-4 text-primary" /> المعلومات البنكية <Badge variant="secondary" className="ms-1 text-[10px]">إلزامي</Badge>
         </div>
         <p className="mb-5 text-xs text-foreground/60">
-          يُستخدم الآيبان لتحويل أرباح حجوزاتك. الشهادة سرّية ولا يراها سوى فريق التحقق.
+          يُستخدم الآيبان لتحويل أرباح حجوزاتك. الشهادة سرية ولا يراها سوى فريق التحقق.
         </p>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div className="space-y-2 sm:col-span-2">
@@ -528,7 +528,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           <Badge variant="secondary" className="ms-1 text-[10px]">إلزامي</Badge>
         </div>
         <p className="mb-5 text-xs text-foreground/60">
-          هذه الوثيقة سرّية ولا يراها سواك وفريق التحقق. تساعد في توثيق ملفك بسرعة.
+          هذه الوثيقة سرية ولا يراها سواك وفريق التحقق. تساعد في توثيق ملفك بسرعة.
         </p>
         <div className="flex items-center gap-3">
           <label className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-border bg-secondary/40 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary">

@@ -59,7 +59,7 @@ const PartnerPricingPage = () => {
 
   return (
     <PortalLayout>
-      <PortalHeader title="إدارة التسعير الديناميكي" subtitle="فعّل عروضاً موسمية وأسعاراً خاصة لزيادة إيراداتك" />
+      <PortalHeader title="إدارة التسعير الديناميكي" subtitle="فعل عروضاً موسمية وأسعاراً خاصة لزيادة إيراداتك" />
       <StatusBanner vendor={vendor} />
       <div className="grid gap-5 lg:grid-cols-3">
         <Card className="p-5 lg:col-span-2">

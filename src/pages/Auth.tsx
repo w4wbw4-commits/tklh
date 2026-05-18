@@ -193,7 +193,7 @@ const Auth = () => {
     <div className="relative min-h-screen bg-gradient-soft">
       <SEO
         title="تسجيل الدخول | TKLH"
-        description="سجّل الدخول إلى منصة تِكله TKLH عبر رقم جوالك السعودي لإدارة مناسبتك وحجوزاتك."
+        description="سجل الدخول إلى منصة تِكله TKLH عبر رقم جوالك السعودي لإدارة مناسبتك وحجوزاتك."
         canonical="/auth"
         noindex
       />

@@ -246,7 +246,7 @@ export const VendorCalendar = ({ vendorId }: Props) => {
           <p className="mt-1 text-sm text-foreground/65">
             اضغط على أي يوم لإضافة <span className="font-bold text-primary">حجز محتمل</span>،{" "}
             <span className="font-bold text-primary">حجز مؤكد</span>، أو حجبه. الحجوزات القادمة من المنصة تُضاف تلقائياً
-            ويمكن التعرّف عليها بختم خاص.
+            ويمكن التعرف عليها بختم خاص.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -395,7 +395,7 @@ export const VendorCalendar = ({ vendorId }: Props) => {
             <SheetDescription>
               {isPlatformBooking
                 ? "هذا اليوم مرتبط بحجز من منصة TKLH — للعرض فقط."
-                : "اختر نوع الحدث وعبّ التفاصيل التي تساعدك على متابعة العميل."}
+                : "اختر نوع الحدث وعب التفاصيل التي تساعدك على متابعة العميل."}
             </SheetDescription>
           </SheetHeader>
 

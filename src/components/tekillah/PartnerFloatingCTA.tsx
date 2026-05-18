@@ -33,7 +33,7 @@ export const PartnerFloatingCTA = () => {
   if (shouldHide || dismissed) return null;
 
   const href = user ? "/vendor" : "/vendor";
-  const label = isAr ? "انضم كمزوّد خدمة" : "Join as Vendor";
+  const label = isAr ? "انضم كمزود خدمة" : "Join as Vendor";
 
   return (
     <AnimatePresence>

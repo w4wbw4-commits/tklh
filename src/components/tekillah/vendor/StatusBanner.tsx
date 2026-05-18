@@ -15,7 +15,7 @@ export const StatusBanner = ({ vendor }: { vendor: VendorRow | null }) => {
         <div>
           <h3 className="font-black text-amber-800">ملفك قيد المراجعة من قِبل الإدارة</h3>
           <p className="mt-1 text-sm text-amber-700/85">
-            بعض الميزات معطّلة حتى تتم الموافقة. ستصلك إشعارات بمجرد صدور القرار.
+            بعض الميزات معطلة حتى تتم الموافقة. ستصلك إشعارات بمجرد صدور القرار.
           </p>
         </div>
       </div>
@@ -42,7 +42,7 @@ export const StatusBanner = ({ vendor }: { vendor: VendorRow | null }) => {
     <div className="mb-6 flex items-center gap-3 rounded-3xl border border-primary/20 bg-primary/5 p-4">
       <ShieldCheck className="h-5 w-5 text-primary" />
       <p className="text-sm font-bold text-foreground/80">
-        حسابك مفعّل ويظهر للعملاء — كل العمليات متاحة لك.
+        حسابك مفعل ويظهر للعملاء — كل العمليات متاحة لك.
       </p>
     </div>
   );
