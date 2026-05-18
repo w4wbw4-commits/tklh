@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { RiyalSymbol } from "../RiyalSymbol";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
@@ -201,13 +202,13 @@ export const VendorFinancials = ({ vendorId }: { vendorId: string }) => {
         <StatCard
           icon={Wallet}
           label={t("vendor.financials.totalEarned")}
-          value={`${fmtNumber(stats.totalEarned)} ${t("common.currency")}`}
+          value={`${fmtNumber(stats.totalEarned)} $<RiyalSymbol />`}
           tone="primary"
         />
         <StatCard
           icon={CalendarCheck}
           label={t("vendor.financials.upcomingValue")}
-          value={`${fmtNumber(stats.upcomingValue)} ${t("common.currency")}`}
+          value={`${fmtNumber(stats.upcomingValue)} $<RiyalSymbol />`}
           tone="primary"
         />
         <StatCard
@@ -254,7 +255,7 @@ export const VendorFinancials = ({ vendorId }: { vendorId: string }) => {
                   borderRadius: 12,
                   fontSize: 12,
                 }}
-                formatter={(value: number) => [`${fmtNumber(Number(value))} ${t("common.currency")}`, t("vendor.financials.earnings")]}
+                formatter={(value: number) => [`${fmtNumber(Number(value))} $<RiyalSymbol />`, t("vendor.financials.earnings")]}
               />
               <Bar dataKey="value" fill="hsl(var(--primary))" radius={[8, 8, 0, 0]} />
             </BarChart>
@@ -298,7 +299,7 @@ export const VendorFinancials = ({ vendorId }: { vendorId: string }) => {
                   className="font-arabic text-sm font-semibold text-primary justify-self-start sm:justify-self-end"
                   dir="ltr"
                 >
-                  {fmtNumber(Number(b.total_price ?? 0))} {t("common.currency")}
+                  {fmtNumber(Number(b.total_price ?? 0))} <RiyalSymbol />
                 </div>
               </div>
             ))}

@@ -8,6 +8,7 @@
 // ---------------------------------------------------------------------------
 
 import { useEffect, useState } from "react";
+import { RiyalSymbol } from "../RiyalSymbol";
 import { useTranslation } from "react-i18next";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
@@ -351,7 +352,7 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
             />
             {Number(price) > 0 && (
               <p className="font-arabic text-xs text-foreground/60 tabular-nums">
-                {fmtNumber(Number(price))} {t("common.currency")}
+                {fmtNumber(Number(price))} <RiyalSymbol />
               </p>
             )}
           </div>

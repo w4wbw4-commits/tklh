@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { RiyalSymbol } from "@/components/tekillah/RiyalSymbol";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Loader2, ShieldAlert, Wallet, TrendingUp, Lock, ListChecks,
@@ -189,10 +190,10 @@ const Admin = () => {
                   <Badge className={statusBadge(p.status)}>{t(`admin.payStatus.${p.status}`)}</Badge>
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
-                  <Field label={t("admin.amount")} value={`${fmtNumber(Number(p.amount))} ${t("common.currency")}`} />
-                  <Field label={t("admin.vat")} value={`${fmtNumber(Number(p.vat_amount))} ${t("common.currency")}`} />
-                  <Field label={t("admin.fee")} value={`${fmtNumber(Number(p.platform_fee))} ${t("common.currency")}`} />
-                  <Field label={t("admin.vendorNet")} value={`${fmtNumber(Number(p.vendor_net))} ${t("common.currency")}`} highlight />
+                  <Field label={t("admin.amount")} value={`${fmtNumber(Number(p.amount))} $<RiyalSymbol />`} />
+                  <Field label={t("admin.vat")} value={`${fmtNumber(Number(p.vat_amount))} $<RiyalSymbol />`} />
+                  <Field label={t("admin.fee")} value={`${fmtNumber(Number(p.platform_fee))} $<RiyalSymbol />`} />
+                  <Field label={t("admin.vendorNet")} value={`${fmtNumber(Number(p.vendor_net))} $<RiyalSymbol />`} highlight />
                 </div>
                 {p.status === "held" && (
                   <div className="mt-3 flex justify-end">
@@ -210,7 +211,7 @@ const Admin = () => {
                           <AlertDialogDescription>
                             {t("admin.releaseConfirmDesc")}
                             <span className="mt-3 block rounded-lg bg-secondary p-3 font-arabic font-semibold text-foreground">
-                              {fmtNumber(Number(p.vendor_net))} {t("common.currency")}
+                              {fmtNumber(Number(p.vendor_net))} <RiyalSymbol />
                             </span>
                           </AlertDialogDescription>
                         </AlertDialogHeader>
@@ -252,8 +253,8 @@ const Admin = () => {
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
                   <Field label={t("admin.eventDate")} value={fmtDate(b.event_date)} />
-                  <Field label={t("admin.totalPrice")} value={`${fmtNumber(Number(b.total_price ?? 0))} ${t("common.currency")}`} />
-                  <Field label={t("admin.paid")} value={`${fmtNumber(Number(b.paid_amount))} ${t("common.currency")}`} />
+                  <Field label={t("admin.totalPrice")} value={`${fmtNumber(Number(b.total_price ?? 0))} $<RiyalSymbol />`} />
+                  <Field label={t("admin.paid")} value={`${fmtNumber(Number(b.paid_amount))} $<RiyalSymbol />`} />
                 </div>
               </div>
             ))}

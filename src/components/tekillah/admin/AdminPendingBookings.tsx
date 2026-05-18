@@ -9,6 +9,7 @@
 // ---------------------------------------------------------------------------
 
 import { useEffect, useMemo, useState } from "react";
+import { RiyalSymbol } from "../RiyalSymbol";
 import { useTranslation } from "react-i18next";
 import {
   Loader2, Inbox, Phone, MessageCircle, Package, Sparkles,
@@ -295,7 +296,7 @@ const PendingCard = ({
             {t("admin.pending.totalValue")}
           </div>
           <div className="font-arabic text-sm font-semibold text-primary">
-            {fmtNumber(group.total_value)} {t("common.currency")}
+            {fmtNumber(group.total_value)} <RiyalSymbol />
           </div>
         </div>
       </div>
@@ -426,7 +427,7 @@ const DetailsBody = ({
                   {b.vendor?.category ? t(`categories.${b.vendor.category}`) : ""}
                   {b.package?.name ? ` · ${b.package.name}` : ""}
                   {b.total_price != null
-                    ? ` · ${fmtNumber(Number(b.total_price))} ${t("common.currency")}`
+                    ? ` · ${fmtNumber(Number(b.total_price))} $<RiyalSymbol />`
                     : ""}
                 </div>
               </div>
