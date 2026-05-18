@@ -35,9 +35,9 @@ export const OccasionsSection = () => (
             <SketchIconSparkle className="h-4 w-4" />
             تِكله معك في كل مناسبة
           </span>
-          <h2 className="mt-5 font-arabic text-3xl font-black leading-[1.2] text-green md:text-5xl">
+          <h2 className="mt-5 font-arabic text-3xl font-black leading-[1.6] text-green md:text-5xl">
             تِكله.. لكل{" "}
-            <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
+            <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-2 leading-[1.6] text-transparent">
               مناسباتك السعيدة
             </span>
           </h2>
