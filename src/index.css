@@ -131,54 +131,53 @@
        AAA contrast. `--primary-deep` is intentionally LIGHT here — every
        hand-drawn sketch uses it as the ink color, so it must read as a
        luminous line on a dark canvas (the inverse of light mode). */
-    --background: 100 18% 9%;            /* #131a12 deep olive charcoal */
-    --foreground: 42 32% 94%;            /* warm cream ink */
-    --surface: 100 16% 12%;
-    --cream: 100 14% 15%;                /* "cream" is now a slightly raised olive */
-    --text-muted: 95 10% 72%;
+    --background: 100 14% 7%;            /* deeper, calmer charcoal */
+    --foreground: 42 18% 86%;            /* soft warm cream — easier on the eyes */
+    --surface: 100 12% 10%;
+    --cream: 100 10% 13%;                /* "cream" is a slightly raised olive */
+    --text-muted: 95 8% 65%;
 
-    --card: 100 16% 13%;
-    --card-foreground: 42 32% 94%;
-    --popover: 100 16% 13%;
-    --popover-foreground: 42 32% 94%;
+    --card: 100 12% 11%;
+    --card-foreground: 42 18% 86%;
+    --popover: 100 12% 11%;
+    --popover-foreground: 42 18% 86%;
 
-    /* Greens — brighten so they remain readable on the dark canvas */
-    --green: 100 32% 70%;
-    --green-mid: 100 28% 55%;
-    --green-light: 100 22% 30%;
+    /* Greens — muted so they sit calmly on dark canvas */
+    --green: 100 22% 62%;
+    --green-mid: 100 20% 48%;
+    --green-light: 100 18% 26%;
 
-    /* Gold — slightly more saturated for nighttime warmth */
-    --gold: 40 62% 68%;
-    --gold-soft: 40 38% 38%;
+    /* Gold — desaturated for nighttime warmth without glare */
+    --gold: 40 42% 60%;
+    --gold-soft: 40 28% 32%;
 
-    /* Brown — boosted so sketch accents stay visible */
-    --brown: 30 38% 72%;
-    --brown-soft: 30 28% 58%;
+    /* Brown — soft accents */
+    --brown: 30 26% 62%;
+    --brown-soft: 30 20% 48%;
 
-    /* Primary — soft luminous olive for buttons; foreground is the dark bg */
-    --primary: 100 38% 62%;
-    --primary-foreground: 100 22% 8%;
-    /* IMPORTANT: --primary-deep is the SKETCH INK color used everywhere.
-       In dark mode it must be LIGHT to draw clearly on the olive canvas. */
-    --primary-deep: 42 38% 90%;
-    --primary-glow: 100 36% 55%;
+    /* Primary — soft olive for buttons */
+    --primary: 100 26% 52%;
+    --primary-foreground: 100 20% 8%;
+    /* --primary-deep is the SKETCH INK color in dark mode — light but soft */
+    --primary-deep: 42 22% 82%;
+    --primary-glow: 100 24% 48%;
 
-    --secondary: 100 14% 18%;
-    --secondary-foreground: 42 32% 94%;
-    --muted: 100 12% 17%;
-    --muted-foreground: 42 16% 75%;
-    --accent: 100 18% 24%;
-    --accent-foreground: 42 32% 94%;
+    --secondary: 100 12% 15%;
+    --secondary-foreground: 42 18% 86%;
+    --muted: 100 10% 14%;
+    --muted-foreground: 42 12% 68%;
+    --accent: 100 14% 20%;
+    --accent-foreground: 42 18% 86%;
 
-    --destructive: 0 70% 60%;
-    --destructive-foreground: 42 32% 94%;
-    --success: 140 45% 55%;
-    --success-foreground: 100 22% 8%;
+    --destructive: 0 55% 52%;
+    --destructive-foreground: 42 18% 86%;
+    --success: 140 35% 48%;
+    --success-foreground: 100 20% 8%;
 
     /* Borders slightly brighter than card to give clean separation */
-    --border: 100 14% 24%;
-    --input: 100 14% 24%;
-    --ring: 40 62% 68%;
+    --border: 100 12% 20%;
+    --input: 100 12% 20%;
+    --ring: 40 42% 60%;
 
     /* Sidebar tokens mirror the main palette */
     --sidebar-background: 100 18% 9%;
