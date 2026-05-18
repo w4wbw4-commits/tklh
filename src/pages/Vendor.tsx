@@ -90,7 +90,7 @@ const VendorPage = () => {
     <div className="min-h-screen bg-gradient-soft">
       <SEO
         title="بوابة الشركاء | TKLH Partner Portal"
-        description="انضم إلى شبكة شركاء تِكله TKLH وقدّم خدماتك في تخطيط وحجز المناسبات لعملاء في كافة المملكة العربية السعودية."
+        description="انضم إلى شبكة شركاء تِكله TKLH وقدم خدماتك في تخطيط وحجز المناسبات لعملاء في كافة المملكة العربية السعودية."
         canonical="/vendor"
       />
       <header
@@ -227,11 +227,11 @@ const VendorPage = () => {
               </h2>
               <p className="mt-2 text-foreground/65">
                 {isApproved
-                  ? t("vendor.subtitleApproved", { defaultValue: "حسابك مفعّل — تابع حجوزاتك القادمة وأدر تقويمك من هنا." })
+                  ? t("vendor.subtitleApproved", { defaultValue: "حسابك مفعل — تابع حجوزاتك القادمة وأدر تقويمك من هنا." })
                   : isPending
                     ? t("vendor.subtitlePending", { defaultValue: "ملفك قيد المراجعة. سنخبرك فور صدور القرار." })
                     : isRejected
-                      ? t("vendor.subtitleRejected", { defaultValue: "تم رفض الطلب — عدّل البيانات وأعد الإرسال." })
+                      ? t("vendor.subtitleRejected", { defaultValue: "تم رفض الطلب — عدل البيانات وأعد الإرسال." })
                       : t("vendor.subtitle")}
               </p>
             </div>
@@ -248,7 +248,7 @@ const VendorPage = () => {
                       {t("vendor.underReview.title", { defaultValue: "ملفك قيد المراجعة من قِبل الإدارة" })}
                     </h3>
                     <p className="mt-1 text-sm text-amber-700/85">
-                      {t("vendor.underReview.body", { defaultValue: "نراجع معلومات قاعتك الآن. ستتمكّن من استقبال الحجوزات فور الموافقة. يمكنك تعديل بياناتك في أي وقت." })}
+                      {t("vendor.underReview.body", { defaultValue: "نراجع معلومات قاعتك الآن. ستتمكن من استقبال الحجوزات فور الموافقة. يمكنك تعديل بياناتك في أي وقت." })}
                     </p>
                   </div>
                 </div>
@@ -278,7 +278,7 @@ const VendorPage = () => {
                 <div className="flex items-center gap-3">
                   <ShieldCheck className="h-5 w-5 text-primary" />
                   <p className="text-sm text-foreground/80">
-                    {t("vendor.approved.banner", { defaultValue: "حسابك مفعّل ويظهر للعملاء — راجع طلبات الحجز الجديدة في تبويب الحجوزات." })}
+                    {t("vendor.approved.banner", { defaultValue: "حسابك مفعل ويظهر للعملاء — راجع طلبات الحجز الجديدة في تبويب الحجوزات." })}
                   </p>
                 </div>
               </div>

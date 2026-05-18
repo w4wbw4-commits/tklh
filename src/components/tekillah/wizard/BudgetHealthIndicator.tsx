@@ -124,7 +124,7 @@ export const BudgetHealthIndicator = ({
       label: t("wizard.budget.health.tightTitle", { defaultValue: "ميزانية قريبة من الواقع" }),
       message: t("wizard.budget.health.tightMsg", {
         defaultValue:
-          "ميزانيتك تغطي الأساسيات بشكل جيد. زيادة بسيطة (10–20%) ستمنحك مرونة أكبر في اختيار المزوّدين وتحسين الجودة.",
+          "ميزانيتك تغطي الأساسيات بشكل جيد. زيادة بسيطة (10–20%) ستمنحك مرونة أكبر في اختيار المزودين وتحسين الجودة.",
       }),
     },
     healthy: {
@@ -149,7 +149,7 @@ export const BudgetHealthIndicator = ({
       label: t("wizard.budget.health.premiumTitle", { defaultValue: "تجربة فاخرة مضمونة" }),
       message: t("wizard.budget.health.premiumMsg", {
         defaultValue:
-          "ميزانية رائعة! تتيح لك اختيار أفضل المزوّدين وإضافة لمسات مميزة ترتقي بمناسبتك إلى مستوى استثنائي.",
+          "ميزانية رائعة! تتيح لك اختيار أفضل المزودين وإضافة لمسات مميزة ترتقي بمناسبتك إلى مستوى استثنائي.",
       }),
     },
   }[band];

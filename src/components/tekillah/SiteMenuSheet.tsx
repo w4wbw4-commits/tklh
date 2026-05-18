@@ -59,8 +59,8 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
   // on the section without an overlay covering it.
   const sectionLinks: NavLinkItem[] = [
     { type: "anchor", href: "#home", icon: Home, labelKey: "nav.home", fallback: { ar: "الرئيسية", en: "Home" } },
-    { type: "anchor", href: "#about", icon: Info, labelKey: "nav.about", fallback: { ar: "تعرّف على تِكله", en: "About TKLH" } },
-    { type: "anchor", href: "#wizard", icon: Sparkles, labelKey: "nav.plan", fallback: { ar: "خطّط ليلتك", en: "Plan your night" } },
+    { type: "anchor", href: "#about", icon: Info, labelKey: "nav.about", fallback: { ar: "تعرف على تِكله", en: "About TKLH" } },
+    { type: "anchor", href: "#wizard", icon: Sparkles, labelKey: "nav.plan", fallback: { ar: "خطط ليلتك", en: "Plan your night" } },
     { type: "anchor", href: "#features", icon: FileText, labelKey: "nav.features", fallback: { ar: "المزايا", en: "Features" } },
     { type: "anchor", href: "#contact", icon: Phone, labelKey: "nav.contact", fallback: { ar: "تواصل معنا", en: "Contact" } },
   ];
@@ -69,7 +69,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
     user
       ? { type: "route", href: "/dashboard", icon: LayoutDashboard, labelKey: "nav.myDashboard", fallback: { ar: "لوحتي", en: "My Dashboard" } }
       : { type: "route", href: "/auth", icon: LogIn, labelKey: "nav.start", fallback: { ar: "ابدأ الآن", en: "Get started" } },
-    { type: "route", href: "/vendor", icon: Building2, labelKey: "nav.joinAsVendor", fallback: { ar: "انضم كمزوّد خدمة", en: "Join as Vendor" } },
+    { type: "route", href: "/vendor", icon: Building2, labelKey: "nav.joinAsVendor", fallback: { ar: "انضم كمزود خدمة", en: "Join as Vendor" } },
     ...(isPrimaryAdmin
       ? [{ type: "route" as const, href: "/admin", icon: ShieldCheck, labelKey: "nav.admin", fallback: { ar: "الإدارة", en: "Admin" } }]
       : []),

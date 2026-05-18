@@ -89,7 +89,7 @@ export const PartnerDashboardPreview = () => {
             {t("partnerPreview.kicker", { defaultValue: "منصة الشركاء" })}
           </span>
           <h2 className="mt-5 font-arabic text-3xl font-black leading-tight sm:text-5xl text-primary-deep">
-            {t("partnerPreview.title", { defaultValue: "تحوّل من الإدارة التقليدية إلى" })}{" "}
+            {t("partnerPreview.title", { defaultValue: "تحول من الإدارة التقليدية إلى" })}{" "}
             <span className="text-primary">{t("partnerPreview.titleHighlight", { defaultValue: "الأتمتة الكاملة" })}</span>
           </h2>
           <p className="mt-4 text-base text-muted-foreground sm:text-lg">
@@ -269,7 +269,7 @@ export const PartnerDashboardPreview = () => {
 
                   <div className="mt-4 flex flex-wrap gap-3 text-[11px] text-foreground/70">
                     <Legend className="bg-primary" label={t("partnerPreview.legend.booked", { defaultValue: "محجوز" })} />
-                    <Legend className="bg-secondary" label={t("partnerPreview.legend.hold", { defaultValue: "معلّق" })} />
+                    <Legend className="bg-secondary" label={t("partnerPreview.legend.hold", { defaultValue: "معلق" })} />
                     <Legend className="border border-border bg-background" label={t("partnerPreview.legend.free", { defaultValue: "متاح" })} />
                   </div>
                 </div>

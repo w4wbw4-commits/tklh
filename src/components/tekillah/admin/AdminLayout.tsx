@@ -33,8 +33,8 @@ export interface AdminNavItem {
 
 export const adminNav: AdminNavItem[] = [
   { key: "verification", labelKey: "admin.tabVerification", fallback: "التحقق", Icon: ShieldCheck },
-  { key: "pending", labelKey: "admin.tabPending", fallback: "الحجوزات المعلّقة", Icon: Hourglass, tone: "warning" },
-  { key: "vendors", labelKey: "admin.tabVendors", fallback: "المزوّدون", Icon: Briefcase },
+  { key: "pending", labelKey: "admin.tabPending", fallback: "الحجوزات المعلقة", Icon: Hourglass, tone: "warning" },
+  { key: "vendors", labelKey: "admin.tabVendors", fallback: "المزودون", Icon: Briefcase },
   { key: "late", labelKey: "admin.tabLate", fallback: "تنبيهات التأخر", Icon: AlertTriangle, tone: "danger" },
   { key: "incidents", labelKey: "admin.tabIncidents", fallback: "البلاغات", Icon: AlertOctagon },
   { key: "leads", labelKey: "admin.tabLeads", fallback: "العملاء المحتملون", Icon: Inbox },
@@ -217,7 +217,7 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
                 {t("admin.title", { defaultValue: "لوحة التحكم" })}
               </h1>
               <p className="mt-1 text-sm text-foreground/65">
-                {t("admin.subtitle", { defaultValue: "تحكّم كامل في عمليات المنصة" })}
+                {t("admin.subtitle", { defaultValue: "تحكم كامل في عمليات المنصة" })}
               </p>
             </div>
             {headerAction}

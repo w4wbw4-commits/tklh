@@ -74,7 +74,7 @@ const PartnerSalesPage = () => {
 
   return (
     <PortalLayout>
-      <PortalHeader title="استيراد وتصدير المبيعات" subtitle="اربط مبيعاتك السابقة وصدّر تقاريرك بضغطة" badge="ربط شغلك الحالي" />
+      <PortalHeader title="استيراد وتصدير المبيعات" subtitle="اربط مبيعاتك السابقة وصدر تقاريرك بضغطة" badge="ربط شغلك الحالي" />
       <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-3">
         <Card className="p-5"><div className="text-xs font-bold text-muted-foreground">إجمالي الحجوزات</div><div className="mt-2 text-3xl font-black">{fmt(totals.count)}</div></Card>
         <Card className="border-primary bg-primary p-5 text-primary-foreground"><div className="text-xs font-bold text-primary-foreground/70">إجمالي الإيرادات</div><div className="mt-2 text-3xl font-black">{fmt(totals.revenue)} </div></Card>
@@ -84,7 +84,7 @@ const PartnerSalesPage = () => {
         <Card className="p-6">
           <div className="mb-4 flex items-center gap-3">
             <div className="grid h-12 w-12 place-items-center rounded-2xl bg-secondary text-primary-deep"><Upload className="h-6 w-6" /></div>
-            <div><h3 className="text-lg font-black">قالب الاستيراد</h3><p className="text-xs text-muted-foreground">حمّل القالب لتنظيم بياناتك قبل الرفع</p></div>
+            <div><h3 className="text-lg font-black">قالب الاستيراد</h3><p className="text-xs text-muted-foreground">حمل القالب لتنظيم بياناتك قبل الرفع</p></div>
           </div>
           <input ref={fileRef} type="file" accept=".xlsx,.xls,.csv" className="hidden" />
           <div className="flex gap-2">

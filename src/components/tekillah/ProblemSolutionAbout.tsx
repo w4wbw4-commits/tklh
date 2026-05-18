@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------------------
 // ProblemSolutionAbout — Unified storytelling flow:
-//   1) AboutValueSection — merged "تِكله.. اسم على مسمّى" + 4 value tiles
+//   1) AboutValueSection — merged "تِكله.. اسم على مسمى" + 4 value tiles
 //      with an inline 3-stat strip (10 دقائق / 100% / 50+) replacing the
 //      bulky white card.
 //   2) SpeedSection — 6 weeks vs 10 minutes comparison (kept, tighter rhythm).
@@ -21,13 +21,13 @@ import { ArabicPattern } from "./ArabicPattern";
 const TRUST_STATS = [
   { icon: Clock,       value: 10,  suffix: " دقائق", label: "وقت التخطيط" },
   { icon: BadgePercent, value: 100, suffix: "٪",     label: "شفافية كاملة" },
-  { icon: Users,       value: 50,  suffix: "+",      label: "مزوّد موثّق" },
+  { icon: Users,       value: 50,  suffix: "+",      label: "مزود موثق" },
 ] as const;
 
 const VALUE_TILES = [
-  { icon: Calculator,    title: "خطّط بذكاء",        desc: "حاسبة ذكية تعطيك ميزانيتك بالريال، بدون مفاجآت ولا أرقام مخفية." },
-  { icon: Filter,        title: "مزوّدين ثقة",        desc: "اخترنا لكم أفضل المزوّدين في السعودية — موثّقين، مجرّبين، وما يخيبون." },
-  { icon: CalendarCheck, title: "احجز بلمح البصر",   desc: "خلّص أمورك بدقائق معدودة، وودّع حوسة الاتصالات والمواعيد الطويلة." },
+  { icon: Calculator,    title: "خطط بذكاء",        desc: "حاسبة ذكية تعطيك ميزانيتك بالريال، بدون مفاجآت ولا أرقام مخفية." },
+  { icon: Filter,        title: "مزودين ثقة",        desc: "اخترنا لكم أفضل المزودين في السعودية — موثقين، مجربين، وما يخيبون." },
+  { icon: CalendarCheck, title: "احجز بلمح البصر",   desc: "خلص أمورك بدقائق معدودة، وودع حوسة الاتصالات والمواعيد الطويلة." },
   { icon: Gem,           title: "شبيك لبيك",          desc: "الخدمات اللي تبيها بين يديك، وبالسعر اللي يناسبك — كل شي على كيفك." },
 ] as const;
 
@@ -52,7 +52,7 @@ const AboutValueSection = () => (
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
             <Sparkles className="h-4 w-4 text-gold" strokeWidth={2} />
-            تعرّف على تِكله
+            تعرف على تِكله
           </span>
 
           <h2 className="mt-6 font-arabic text-5xl font-black leading-[1.1] text-green md:text-6xl lg:text-7xl">
@@ -69,7 +69,7 @@ const AboutValueSection = () => (
           </div>
 
           <p className="mx-auto max-w-3xl font-arabic text-xl font-medium leading-[1.95] text-foreground/85 sm:text-2xl">
-            شِلنا عنك همّ التخطيط والبحث والحوسة. تِكله تكفل لك كل شي:
+            شِلنا عنك هم التخطيط والبحث والحوسة. تِكله تكفل لك كل شي:
             من القاعة، للتصوير، للكوش، للضيافة — كل شي بسعر واضح وضمان أكيد.
           </p>
 
@@ -138,12 +138,12 @@ const SpeedSection = () => (
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
             <Timer className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
-            الفرق اللي بيغيّر مزاجك
+            الفرق اللي بيغير مزاجك
           </span>
           <h2 className="mt-5 font-arabic text-4xl font-black leading-[1.15] text-green md:text-5xl">
             من ٦ أسابيع حوسة..{" "}
             <span className="bg-gradient-to-l from-green to-gold bg-clip-text text-transparent">
-              لـ ١٠ دقائق وأنت مخلّص
+              لـ ١٠ دقائق وأنت مخلص
             </span>
           </h2>
         </div>
@@ -175,8 +175,8 @@ const SpeedSection = () => (
                 />
               </div>
               <ul className="mt-6 space-y-2.5 font-arabic text-sm text-foreground/65">
-                <li>• مكالمات وتفاوض مع كل مزوّد</li>
-                <li>• مقارنات يدوية وأسعار متغيّرة</li>
+                <li>• مكالمات وتفاوض مع كل مزود</li>
+                <li>• مقارنات يدوية وأسعار متغيرة</li>
                 <li>• ضياع وقت ومجهود بدون ضمان</li>
               </ul>
             </div>
@@ -200,7 +200,7 @@ const SpeedSection = () => (
                 <span className="font-arabic text-2xl font-bold text-gold">دقائق</span>
               </div>
               <p className="mt-2 font-arabic text-sm font-bold text-green/80">
-                وأنت مخلّص — حجز مكتمل بضمان
+                وأنت مخلص — حجز مكتمل بضمان
               </p>
               <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-green/10">
                 <motion.div
@@ -214,7 +214,7 @@ const SpeedSection = () => (
               <ul className="mt-6 space-y-2.5 font-arabic text-sm text-foreground/80">
                 {[
                   "اختر ميزانيتك وعدد ضيوفك",
-                  "اقتراحات ذكية ومزوّدون مفلترين",
+                  "اقتراحات ذكية ومزودون مفلترين",
                   "احجز كل شيء بضغطة، بسعر واضح",
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-2">

@@ -11,7 +11,7 @@ import { SketchCornerOrnament, SketchIconSparkle } from "./SketchArt";
 const OCCASIONS = [
   { icon: HeartHandshake, label: "حفلات الزواج" },
   { icon: Crown,          label: "خطوبة وملكة" },
-  { icon: GraduationCap,  label: "تخرّج وأزهل" },
+  { icon: GraduationCap,  label: "تخرج وأزهل" },
   { icon: PartyPopper,    label: "فعاليات كبرى" },
 ] as const;
 
@@ -42,7 +42,7 @@ export const OccasionsSection = () => (
             </span>
           </h2>
           <p className="mx-auto mt-3 max-w-xl font-arabic text-sm leading-relaxed text-foreground/65 sm:text-base">
-            من ليلة العمر، لأحلى لمّة، لأكبر فعالية — كل شي بضمان وذوق رفيع ما يخيب.
+            من ليلة العمر، لأحلى لمة، لأكبر فعالية — كل شي بضمان وذوق رفيع ما يخيب.
           </p>
         </div>
       </Reveal>
