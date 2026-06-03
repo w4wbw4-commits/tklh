@@ -133,9 +133,10 @@ export const Hero = () => {
           <img
             src={tklhLogo.url}
             alt="تِكلَه"
-            className="h-[110px] w-auto object-contain sm:h-[160px] md:h-[210px] lg:h-[260px]"
+            className="h-[120px] w-auto object-contain drop-shadow-[0_2px_18px_hsl(var(--cream)/0.6)] sm:h-[180px] md:h-[230px] lg:h-[280px] dark:brightness-[2.4] dark:contrast-110 dark:saturate-50"
             loading="eager"
             decoding="async"
+            draggable={false}
           />
         </motion.h1>
 
