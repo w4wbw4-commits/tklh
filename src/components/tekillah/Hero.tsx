@@ -131,7 +131,7 @@ export const Hero = () => {
           aria-label="تِكلَه"
         >
           <img
-            src={(await import("@/assets/tklh-logo.png.asset.json")).default?.url || ""}
+            src={tklhLogo.url}
             alt="تِكلَه"
             className="h-[110px] w-auto object-contain sm:h-[160px] md:h-[210px] lg:h-[260px]"
             loading="eager"
