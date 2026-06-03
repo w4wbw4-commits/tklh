@@ -10,6 +10,7 @@ import {
   SketchLotus,
   SketchLongBanquet,
 } from "./SketchArt";
+import tklhLogo from "@/assets/tklh-logo.png.asset.json";
 
 // ---------------------------------------------------------------------------
 // Hero — Off-white sketch experience.
