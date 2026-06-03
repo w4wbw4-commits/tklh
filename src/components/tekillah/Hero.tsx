@@ -10,7 +10,6 @@ import {
   SketchLotus,
   SketchLongBanquet,
 } from "./SketchArt";
-import tklhLogo from "@/assets/tklh-logo.png.asset.json";
 
 // ---------------------------------------------------------------------------
 // Hero — Off-white sketch experience.
@@ -122,25 +121,23 @@ export const Hero = () => {
           <Sparkles className="h-3 w-3 text-gold" strokeWidth={1.5} />
         </motion.div>
 
-        {/* Brand logo — exact official artwork (wordmark + chair mark) */}
+        {/* Brand wordmark — تِكله, olive on cream, no glass plate */}
         <motion.h1
           initial={{ opacity: 0, y: 24, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="flex items-center justify-center"
-          aria-label="تِكلَه"
+          className="font-wordmark text-balance text-center text-[80px] font-black leading-[1] sm:text-[110px] md:text-[140px] lg:text-[170px]"
+          lang="ar"
+          dir="rtl"
+          style={{
+            color: "hsl(var(--primary-deep))",
+            WebkitTextFillColor: "hsl(var(--primary-deep))",
+            letterSpacing: "-0.02em",
+            textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream) / 0.9)",
+          }}
         >
-          <img
-            src={tklhLogo.url}
-            alt="تِكلَه"
-            className="h-[130px] w-auto object-contain drop-shadow-[0_2px_18px_hsl(var(--cream)/0.6)] sm:h-[190px] md:h-[240px] lg:h-[290px] dark:[filter:invert(78%)_sepia(38%)_saturate(520%)_hue-rotate(5deg)_brightness(92%)_contrast(92%)_drop-shadow(0_0_24px_hsl(var(--gold)/0.35))]"
-            loading="eager"
-            decoding="async"
-            draggable={false}
-          />
+          {t("hero.titleA")}
         </motion.h1>
-
-
 
         {/* Hairline gold divider */}
         <motion.div

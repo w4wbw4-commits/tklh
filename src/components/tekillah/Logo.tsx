@@ -1,13 +1,5 @@
 import { motion } from "framer-motion";
-import logoAsset from "@/assets/tklh-logo.png.asset.json";
-
-/**
- * Official TKLH logo — exact brand artwork (wordmark + chair mark) on a
- * transparent background. In dark mode the dark-olive ink is recolored to a
- * warm gold via a tuned CSS filter so the mark feels luxurious on a dark canvas.
- */
-const DARK_GOLD_FILTER =
-  "invert(78%) sepia(38%) saturate(520%) hue-rotate(5deg) brightness(92%) contrast(92%) drop-shadow(0 0 8px hsl(var(--gold) / 0.25))";
+import { Sparkles } from "lucide-react";
 
 export const Logo = ({ className = "" }: { className?: string }) => {
   return (
@@ -15,18 +7,22 @@ export const Logo = ({ className = "" }: { className?: string }) => {
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={`flex items-center ${className}`}
+      className={`flex items-center gap-2.5 ${className}`}
     >
-      <img
-        src={logoAsset.url}
-        alt="تِكلَه — TKLH"
-        className="h-10 w-auto object-contain transition-[filter] duration-500 sm:h-11 dark:[filter:var(--logo-dark-filter)]"
-        style={{ ["--logo-dark-filter" as never]: DARK_GOLD_FILTER }}
-        loading="eager"
-        decoding="async"
-        draggable={false}
-      />
+      <div className="relative grid h-9 w-9 place-items-center rounded-full bg-gradient-olive shadow-soft ring-2 ring-gold/60">
+        <Sparkles className="h-4 w-4 text-gold" strokeWidth={1.8} fill="currentColor" />
+      </div>
+      <div className="flex items-baseline leading-none">
+        <span
+          className="font-wordmark text-xl font-black tracking-tight text-primary-deep"
+          style={{
+            color: "hsl(var(--primary-deep))",
+            WebkitTextFillColor: "hsl(var(--primary-deep))",
+          }}
+        >
+          تِكله
+        </span>
+      </div>
     </motion.div>
   );
 };
-
