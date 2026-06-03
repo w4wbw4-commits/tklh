@@ -133,7 +133,7 @@ export const Hero = () => {
           <img
             src={tklhLogo.url}
             alt="تِكلَه"
-            className="h-[120px] w-auto object-contain drop-shadow-[0_2px_18px_hsl(var(--cream)/0.6)] sm:h-[180px] md:h-[230px] lg:h-[280px] dark:brightness-[2.4] dark:contrast-110 dark:saturate-50"
+            className="h-[130px] w-auto object-contain drop-shadow-[0_2px_18px_hsl(var(--cream)/0.6)] sm:h-[190px] md:h-[240px] lg:h-[290px] dark:[filter:invert(78%)_sepia(38%)_saturate(520%)_hue-rotate(5deg)_brightness(92%)_contrast(92%)_drop-shadow(0_0_24px_hsl(var(--gold)/0.35))]"
             loading="eager"
             decoding="async"
             draggable={false}
