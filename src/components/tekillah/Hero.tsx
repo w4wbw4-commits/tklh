@@ -10,6 +10,7 @@ import {
   SketchLotus,
   SketchLongBanquet,
 } from "./SketchArt";
+import tklhLogo from "@/assets/tklh-logo.png.asset.json";
 
 // ---------------------------------------------------------------------------
 // Hero — Off-white sketch experience.
@@ -121,50 +122,23 @@ export const Hero = () => {
           <Sparkles className="h-3 w-3 text-gold" strokeWidth={1.5} />
         </motion.div>
 
-        {/* Brand wordmark — official logo: chair mark on the right, تِكلَه on the left */}
+        {/* Brand logo — exact official artwork (wordmark + chair mark) */}
         <motion.h1
           initial={{ opacity: 0, y: 24, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="flex items-center justify-center gap-4 sm:gap-6 md:gap-8"
-          lang="ar"
-          dir="rtl"
+          className="flex items-center justify-center"
+          aria-label="تِكلَه"
         >
-          {/* Chair mark — right side in RTL (first child) */}
-          <svg
-            viewBox="0 0 60 80"
-            className="h-[80px] w-auto shrink-0 sm:h-[110px] md:h-[140px] lg:h-[170px]"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <ellipse cx="30" cy="20" rx="16" ry="18" fill="hsl(var(--cream))" stroke="hsl(var(--primary-deep))" strokeWidth="1.6" />
-            <ellipse cx="30" cy="20" rx="12" ry="14" stroke="hsl(var(--primary-deep))" strokeWidth="0.8" opacity="0.5" />
-            <path d="M10 44 Q30 38 50 44 L46 52 Q30 56 14 52 Z" fill="hsl(var(--cream))" stroke="hsl(var(--primary-deep))" strokeWidth="1.6" strokeLinejoin="round" />
-            <line x1="22" y1="38" x2="20" y2="46" stroke="hsl(var(--primary-deep))" strokeWidth="1.4" strokeLinecap="round" />
-            <line x1="38" y1="38" x2="40" y2="46" stroke="hsl(var(--primary-deep))" strokeWidth="1.4" strokeLinecap="round" />
-            <line x1="16" y1="52" x2="14" y2="74" stroke="hsl(var(--primary-deep))" strokeWidth="1.6" strokeLinecap="round" />
-            <line x1="44" y1="52" x2="46" y2="74" stroke="hsl(var(--primary-deep))" strokeWidth="1.6" strokeLinecap="round" />
-            <line x1="24" y1="54" x2="22" y2="72" stroke="hsl(var(--primary-deep))" strokeWidth="1.3" strokeLinecap="round" opacity="0.85" />
-            <line x1="36" y1="54" x2="38" y2="72" stroke="hsl(var(--primary-deep))" strokeWidth="1.3" strokeLinecap="round" opacity="0.85" />
-            <line x1="13" y1="66" x2="17" y2="66" stroke="hsl(var(--primary-deep))" strokeWidth="1" strokeLinecap="round" />
-            <line x1="43" y1="66" x2="47" y2="66" stroke="hsl(var(--primary-deep))" strokeWidth="1" strokeLinecap="round" />
-            <line x1="13" y1="60" x2="17" y2="60" stroke="hsl(var(--primary-deep))" strokeWidth="0.8" strokeLinecap="round" opacity="0.7" />
-            <line x1="43" y1="60" x2="47" y2="60" stroke="hsl(var(--primary-deep))" strokeWidth="0.8" strokeLinecap="round" opacity="0.7" />
-          </svg>
-          {/* Wordmark — left side */}
-          <span
-            className="font-wordmark text-balance text-[80px] font-black leading-[1] sm:text-[110px] md:text-[140px] lg:text-[170px]"
-            style={{
-              color: "hsl(var(--primary-deep))",
-              WebkitTextFillColor: "hsl(var(--primary-deep))",
-              letterSpacing: "-0.02em",
-              textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream) / 0.9)",
-            }}
-          >
-            {t("hero.titleA")}
-          </span>
+          <img
+            src={tklhLogo.url}
+            alt="تِكلَه"
+            className="h-[110px] w-auto object-contain sm:h-[160px] md:h-[210px] lg:h-[260px]"
+            loading="eager"
+            decoding="async"
+          />
         </motion.h1>
+
 
 
         {/* Hairline gold divider */}
