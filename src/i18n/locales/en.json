@@ -956,6 +956,7 @@
     "totalRevenue": "Total revenue",
     "periodAll": "All time",
     "periodMonth": "This month",
+    "exportExcel": "Download Excel",
     "heldFunds": "Held funds (escrow)",
     "platformProfit": "Platform profit",
     "totalBookings": "Total bookings",
