@@ -13,6 +13,7 @@ const PrivacyPolicy = () => {
       title={t("terms.privacyTitle")}
       intro={t("terms.privacyIntro")}
       sections={sections}
+      canonical="/privacy"
     />
   );
 };

@@ -13,6 +13,7 @@ const RefundPolicy = () => {
       title={t("terms.refundTitle")}
       intro={t("terms.refundIntro")}
       sections={sections}
+      canonical="/refund-policy"
     />
   );
 };

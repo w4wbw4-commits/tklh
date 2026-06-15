@@ -1,0 +1,18 @@
+# تِكله TKLH
+
+> منصة سعودية لتنسيق الحفلات وحفلات الزواج وإدارة وتنسيق المؤتمرات وحجز القاعات والضيافة والتصوير في الرياض وجدة والدمام.
+
+TKLH (tklh.sa) is a Saudi platform connecting customers with vetted vendors for weddings, private events, and corporate conferences. Payments are held in escrow until the event is delivered. Bilingual (Arabic / English) with full RTL support.
+
+## Pages
+
+- [الرئيسية / Home](/): Overview of TKLH services, featured vendors, and pricing packages.
+- [تنسيق زواج / Weddings](/weddings): Wedding planning, kosha design, halls, catering, and photography in KSA.
+- [تنسيق حفلات / Events](/events): Graduation parties, birthdays, corporate events, and private celebrations.
+- [إدارة وتنسيق مؤتمرات / Conferences](/conferences): Conference management, registration, AV, live streaming, and corporate events.
+
+## Optional
+
+- [شروط الاستخدام / Terms](/terms): Platform terms of service.
+- [سياسة الخصوصية / Privacy](/privacy): Data and privacy policy.
+- [سياسة الاسترجاع / Refunds](/refund-policy): Refund and escrow policy.

@@ -137,6 +137,7 @@ export const Hero = () => {
           }}
         >
           {t("hero.titleA")}
+          <span className="sr-only"> — منصة تنسيق الحفلات والزواج وإدارة المؤتمرات بالسعودية</span>
         </motion.h1>
 
         {/* Hairline gold divider */}
