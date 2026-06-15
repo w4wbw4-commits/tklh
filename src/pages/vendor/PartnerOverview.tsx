@@ -127,7 +127,6 @@ const PartnerOverview = () => {
 
   const quickActions = [
     { Icon: Plus, label: "إضافة عرض موسمي", to: "/vendor/pricing" },
-    { Icon: FileText, label: "إصدار فاتورة ضريبية", to: "/vendor/invoices" },
     { Icon: CreditCard, label: "إدارة الباقات", to: "/vendor/profile" },
   ];
 
