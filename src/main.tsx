@@ -40,4 +40,36 @@ import "./i18n";
   window.location.replace(`https://tklh.sa${pathname}${search}${hash}`);
 })();
 
+// Auto-recover from stale dynamic-import chunks after a redeploy.
+// When Vite rebuilds, old chunk filenames (hashed) disappear from the CDN.
+// A user with the previous index.js still cached will throw
+// "Failed to fetch dynamically imported module" on the next lazy route.
+// We detect that specific error and force a one-shot reload to pick up the
+// fresh manifest. The sessionStorage guard prevents a reload loop if the
+// error is actually a network/offline issue.
+if (typeof window !== "undefined") {
+  const RELOAD_FLAG = "tklh_chunk_reload";
+  const isChunkLoadError = (msg: string) =>
+    /Failed to fetch dynamically imported module|Importing a module script failed|ChunkLoadError/i.test(msg);
+
+  const tryReload = (msg: string) => {
+    if (!isChunkLoadError(msg)) return;
+    if (sessionStorage.getItem(RELOAD_FLAG)) return;
+    sessionStorage.setItem(RELOAD_FLAG, "1");
+    window.location.reload();
+  };
+
+  window.addEventListener("error", (e) => tryReload(e.message ?? ""));
+  window.addEventListener("unhandledrejection", (e) => {
+    const reason = e.reason;
+    const msg = typeof reason === "string" ? reason : reason?.message ?? "";
+    tryReload(msg);
+  });
+
+  // Clear the guard once the app has loaded successfully.
+  window.addEventListener("load", () => {
+    setTimeout(() => sessionStorage.removeItem(RELOAD_FLAG), 2000);
+  });
+}
+
 createRoot(document.getElementById("root")!).render(<App />);
