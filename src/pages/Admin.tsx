@@ -281,6 +281,32 @@ const Admin = () => {
       badges={{ pending: pendingCount }}
       headerAction={user && <AdminAddVendorDialog adminUserId={user.id} onCreated={load} />}
     >
+      {/* Period filter */}
+      <div className="mb-3 flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => setPeriod("all")}
+          className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+            period === "all"
+              ? "border-primary bg-primary text-primary-foreground"
+              : "border-border bg-card text-foreground/70 hover:bg-secondary/40"
+          }`}
+        >
+          {t("admin.periodAll")}
+        </button>
+        <button
+          type="button"
+          onClick={() => setPeriod("month")}
+          className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+            period === "month"
+              ? "border-primary bg-primary text-primary-foreground"
+              : "border-border bg-card text-foreground/70 hover:bg-secondary/40"
+          }`}
+        >
+          {t("admin.periodMonth")}
+        </button>
+      </div>
+
       {/* KPIs */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
         <Kpi icon={TrendingUp} label={t("admin.totalRevenue")}   value={fmtNumber(totalRevenue)}   currency highlight />
