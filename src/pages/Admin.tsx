@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import * as XLSX from "xlsx";
 import { RiyalSymbol } from "@/components/tekillah/RiyalSymbol";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Loader2, ShieldAlert, Wallet, TrendingUp, Lock, ListChecks,
-  CheckCircle2, Receipt, Percent, HandCoins, Inbox,
+  CheckCircle2, Receipt, Percent, HandCoins, Inbox, Download,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
