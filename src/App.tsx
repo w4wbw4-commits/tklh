@@ -42,6 +42,9 @@ const PartnerChecklistsPage = lazy(() => import("./pages/vendor/PartnerChecklist
 const PartnerReviewsPage = lazy(() => import("./pages/vendor/PartnerReviewsPage.tsx"));
 const PartnerNotificationsPage = lazy(() => import("./pages/vendor/PartnerNotificationsPage.tsx"));
 const PartnerProfilePage = lazy(() => import("./pages/vendor/PartnerProfilePage.tsx"));
+const WeddingsPage = lazy(() => import("./pages/seo/WeddingsPage.tsx"));
+const EventsPage = lazy(() => import("./pages/seo/EventsPage.tsx"));
+const ConferencesPage = lazy(() => import("./pages/seo/ConferencesPage.tsx"));
 
 const queryClient = new QueryClient();
 
@@ -95,6 +98,9 @@ const AppRoutes = () => {
                       <Route path="/partner/reviews" element={<PartnerReviewsPage />} />
                       <Route path="/partner/notifications" element={<PartnerNotificationsPage />} />
                       <Route path="/partner/profile" element={<PartnerProfilePage />} />
+                      <Route path="/weddings" element={<WeddingsPage />} />
+                      <Route path="/events" element={<EventsPage />} />
+                      <Route path="/conferences" element={<ConferencesPage />} />
                       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                       <Route path="*" element={<NotFound />} />
                     </Routes>
