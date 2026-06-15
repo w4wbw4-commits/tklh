@@ -153,12 +153,21 @@ const Admin = () => {
   }
 
   // Financial split: separate VAT, platform commission, and vendor net payouts
-  const totalRevenue   = payments.reduce((s, p) => s + Number(p.total_charged ?? 0), 0);
-  const heldFunds      = payments.filter((p) => p.status === "held").reduce((s, p) => s + Number(p.vendor_net ?? 0), 0);
-  const platformProfit = payments.reduce((s, p) => s + Number(p.platform_fee ?? 0), 0);   // commission only, excl VAT
-  const vatCollected   = payments.reduce((s, p) => s + Number(p.vat_amount ?? 0), 0);     // 15% VAT line item
-  const vendorPayouts  = payments.reduce((s, p) => s + Number(p.vendor_net ?? 0), 0);     // net to vendors
-  const totalBookings  = bookings.length;
+  // `period` lets the admin scope KPIs to the current calendar month.
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const scopedPayments = period === "month"
+    ? payments.filter((p) => new Date(p.created_at) >= monthStart)
+    : payments;
+  const scopedBookings = period === "month"
+    ? bookings.filter((b) => new Date(b.created_at) >= monthStart)
+    : bookings;
+  const totalRevenue   = scopedPayments.reduce((s, p) => s + Number(p.total_charged ?? 0), 0);
+  const heldFunds      = scopedPayments.filter((p) => p.status === "held").reduce((s, p) => s + Number(p.vendor_net ?? 0), 0);
+  const platformProfit = scopedPayments.reduce((s, p) => s + Number(p.platform_fee ?? 0), 0);   // commission only, excl VAT
+  const vatCollected   = scopedPayments.reduce((s, p) => s + Number(p.vat_amount ?? 0), 0);     // 15% VAT line item
+  const vendorPayouts  = scopedPayments.reduce((s, p) => s + Number(p.vendor_net ?? 0), 0);     // net to vendors
+  const totalBookings  = scopedBookings.length;
   const pendingCount   = bookings.filter((b) => b.status === "pending").length;
 
   const renderSection = () => {
