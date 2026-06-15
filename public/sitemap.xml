@@ -2,39 +2,39 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://tiklh.com/</loc>
+    <loc>https://tklh.sa/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://tiklh.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://tiklh.com/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://tklh.sa/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tklh.sa/?lang=en" />
   </url>
   <url>
-    <loc>https://tiklh.com/auth</loc>
+    <loc>https://tklh.sa/auth</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://tiklh.com/terms</loc>
+    <loc>https://tklh.sa/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://tiklh.com/privacy</loc>
+    <loc>https://tklh.sa/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://tiklh.com/terms-of-service</loc>
+    <loc>https://tklh.sa/terms-of-service</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://tiklh.com/privacy-policy</loc>
+    <loc>https://tklh.sa/privacy-policy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://tiklh.com/refund-policy</loc>
+    <loc>https://tklh.sa/refund-policy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
