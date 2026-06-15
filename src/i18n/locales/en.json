@@ -954,6 +954,8 @@
     "title": "Master control panel",
     "subtitle": "Real-time financials, bookings and payouts across the platform.",
     "totalRevenue": "Total revenue",
+    "periodAll": "All time",
+    "periodMonth": "This month",
     "heldFunds": "Held funds (escrow)",
     "platformProfit": "Platform profit",
     "totalBookings": "Total bookings",
