@@ -13,6 +13,7 @@ const TermsOfService = () => {
       title={t("terms.tosTitle")}
       intro={t("terms.tosIntro")}
       sections={sections}
+      canonical="/terms"
     />
   );
 };

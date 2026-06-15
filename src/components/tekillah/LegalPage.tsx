@@ -16,9 +16,10 @@ interface LegalPageProps {
   title: string;
   intro: string;
   sections: LegalSection[];
+  canonical?: string;
 }
 
-export const LegalPage = ({ icon: Icon, title, intro, sections }: LegalPageProps) => {
+export const LegalPage = ({ icon: Icon, title, intro, sections, canonical }: LegalPageProps) => {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language?.startsWith("ar");
   const PrevIcon = isAr ? ArrowRight : ArrowLeft;
@@ -38,7 +39,7 @@ export const LegalPage = ({ icon: Icon, title, intro, sections }: LegalPageProps
 
   return (
     <div className="min-h-screen bg-gradient-soft" dir={isAr ? "rtl" : "ltr"}>
-      <SEO title={`${title} | TKLH`} description={intro?.slice(0, 155) || title} />
+      <SEO title={`${title} | TKLH`} description={intro?.slice(0, 155) || title} canonical={canonical} />
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <Logo />
