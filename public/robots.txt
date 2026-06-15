@@ -37,5 +37,5 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://tiklh.com/sitemap.xml
-Host: https://tiklh.com
+Sitemap: https://tklh.sa/sitemap.xml
+Host: https://tklh.sa
