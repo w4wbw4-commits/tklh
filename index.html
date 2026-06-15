@@ -53,11 +53,12 @@
         {
           "@type": "Organization",
           "@id": "https://tklh.sa/#organization",
-          "name": "TKLH",
-          "alternateName": ["تِكله", "Tiklh", "TKLH Platform"],
+          "name": "تكله | TKLH",
+          "alternateName": ["تِكله", "تكله", "Tiklh", "TKLH", "tklh", "tklh.sa", "TKLH Platform"],
           "url": "https://tklh.sa/",
           "logo": "https://tklh.sa/favicon.png",
-          "sameAs": ["https://tklh.sa/"],
+          "description": "تكله (tklh.sa) منصة سعودية لتنسيق الحفلات وتنسيق الزواج وإدارة وتنسيق المؤتمرات وحجز القاعات والضيافة والتصوير.",
+          "sameAs": ["https://tklh.sa/", "https://www.tklh.sa/"],
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer support",
@@ -68,10 +69,11 @@
         {
           "@type": "LocalBusiness",
           "@id": "https://tklh.sa/#business",
-          "name": "TKLH | تِكله",
+          "name": "تكله | TKLH",
           "image": "https://tklh.sa/og-image.jpg",
           "url": "https://tklh.sa/",
           "priceRange": "$$",
+          "description": "تكله — تنسيق حفلات، تنسيق زواج، إدارة وتنسيق مؤتمرات، حجز قاعات، ضيافة، وتصوير في الرياض وجدة والدمام.",
           "address": {
             "@type": "PostalAddress",
             "addressCountry": "SA",
@@ -83,7 +85,56 @@
             { "@type": "City", "name": "Jeddah" },
             { "@type": "City", "name": "Dammam" }
           ],
-          "serviceType": ["Event Planning", "Hall Booking", "Wedding Planning", "Catering", "Photography"]
+          "serviceType": [
+            "تنسيق حفلات",
+            "تنسيق زواج",
+            "إدارة وتنسيق مؤتمرات",
+            "حجز قاعات أفراح",
+            "ضيافة",
+            "تصوير مناسبات",
+            "Event Planning",
+            "Wedding Planning",
+            "Conference Management",
+            "Hall Booking",
+            "Catering",
+            "Photography"
+          ],
+          "knowsAbout": [
+            "تنسيق حفلات",
+            "تنسيق زواج",
+            "تنسيق أعراس",
+            "إدارة المؤتمرات",
+            "تنظيم المؤتمرات",
+            "تخطيط المناسبات",
+            "حجز القاعات"
+          ]
+        },
+        {
+          "@type": "Service",
+          "@id": "https://tklh.sa/#service-weddings",
+          "serviceType": "تنسيق زواج",
+          "name": "تنسيق زواج وأعراس",
+          "provider": { "@id": "https://tklh.sa/#organization" },
+          "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
+          "description": "خدمة تنسيق حفلات الزواج والأعراس في الرياض وجدة والدمام عبر منصة تكله: كوش، ضيافة، تصوير، وقاعات."
+        },
+        {
+          "@type": "Service",
+          "@id": "https://tklh.sa/#service-events",
+          "serviceType": "تنسيق حفلات",
+          "name": "تنسيق حفلات ومناسبات",
+          "provider": { "@id": "https://tklh.sa/#organization" },
+          "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
+          "description": "تنسيق حفلات التخرج، أعياد الميلاد، والمناسبات الخاصة بالكامل عبر تكله."
+        },
+        {
+          "@type": "Service",
+          "@id": "https://tklh.sa/#service-conferences",
+          "serviceType": "إدارة وتنسيق مؤتمرات",
+          "name": "إدارة وتنسيق المؤتمرات",
+          "provider": { "@id": "https://tklh.sa/#organization" },
+          "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
+          "description": "إدارة وتنظيم وتنسيق المؤتمرات وورش العمل والفعاليات المؤسسية في المملكة العربية السعودية."
         },
         {
           "@type": "WebSite",
