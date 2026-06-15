@@ -971,6 +971,8 @@
     "title": "مركز التحكم الرئيسي",
     "subtitle": "البيانات المالية، الحجوزات والمدفوعات لحظة بلحظة.",
     "totalRevenue": "إجمالي الإيرادات",
+    "periodAll": "كل الفترات",
+    "periodMonth": "هذا الشهر",
     "heldFunds": "الأموال المحتجزة (Escrow)",
     "platformProfit": "أرباح المنصة",
     "totalBookings": "إجمالي الحجوزات",
