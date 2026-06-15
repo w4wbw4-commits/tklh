@@ -71,6 +71,7 @@ const Admin = () => {
   const [loading, setLoading] = useState(true);
   const [releasingId, setReleasingId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("verification");
+  const [period, setPeriod] = useState<"all" | "month">("all");
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth?redirect=/admin", { replace: true });
