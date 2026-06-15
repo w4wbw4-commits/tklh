@@ -282,8 +282,8 @@ const Admin = () => {
       badges={{ pending: pendingCount }}
       headerAction={user && <AdminAddVendorDialog adminUserId={user.id} onCreated={load} />}
     >
-      {/* Period filter */}
-      <div className="mb-3 flex items-center gap-2">
+      {/* Period filter + Excel export */}
+      <div className="mb-3 flex flex-wrap items-center gap-2">
         <button
           type="button"
           onClick={() => setPeriod("all")}
@@ -306,6 +306,61 @@ const Admin = () => {
         >
           {t("admin.periodMonth")}
         </button>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            // Build an editable workbook with 3 sheets: Sales/Revenue, Held Funds, Summary.
+            // Rows respect the active period filter so the export matches the on-screen KPIs.
+            const fmt = (n: number | null | undefined) => Number(n ?? 0);
+            const dateOnly = (iso: string) => new Date(iso).toISOString().slice(0, 10);
+
+            const salesRows = scopedPayments.map((p) => ({
+              [t("admin.amount")]: fmt(p.amount),
+              [t("admin.vatCollected")]: fmt(p.vat_amount),
+              [t("admin.platformProfit")]: fmt(p.platform_fee),
+              [t("admin.vendorPayouts")]: fmt(p.vendor_net),
+              [t("admin.totalRevenue")]: fmt(p.total_charged),
+              "status": p.status,
+              "booking_id": p.booking_id,
+              "vendor_id": p.vendor_id,
+              "customer_id": p.customer_id,
+              "created_at": dateOnly(p.created_at),
+            }));
+
+            const heldRows = scopedPayments
+              .filter((p) => p.status === "held")
+              .map((p) => ({
+                [t("admin.heldFunds")]: fmt(p.vendor_net),
+                [t("admin.totalRevenue")]: fmt(p.total_charged),
+                "booking_id": p.booking_id,
+                "vendor_id": p.vendor_id,
+                "created_at": dateOnly(p.created_at),
+              }));
+
+            const summary = [
+              { metric: t("admin.totalRevenue"), value: totalRevenue },
+              { metric: t("admin.platformProfit"), value: platformProfit },
+              { metric: t("admin.vatCollected"), value: vatCollected },
+              { metric: t("admin.vendorPayouts"), value: vendorPayouts },
+              { metric: t("admin.heldFunds"), value: heldFunds },
+              { metric: t("admin.totalBookings"), value: totalBookings },
+            ];
+
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(summary), "Summary");
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(salesRows), "Sales");
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(heldRows), "Escrow");
+
+            const stamp = new Date().toISOString().slice(0, 10);
+            const suffix = period === "month" ? "month" : "all";
+            XLSX.writeFile(wb, `tklh-financials-${suffix}-${stamp}.xlsx`);
+          }}
+          className="ms-auto h-8 rounded-full text-xs"
+        >
+          <Download className="me-1 h-3.5 w-3.5" /> {t("admin.exportExcel")}
+        </Button>
       </div>
 
       {/* KPIs */}
