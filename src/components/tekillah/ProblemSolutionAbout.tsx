@@ -147,7 +147,7 @@ const SpeedSection = () => (
           <h2 className="mt-5 font-arabic text-4xl font-black leading-[1.6] text-green md:text-5xl">
             من ٦ أسابيع حوسة..{" "}
             <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-2 leading-[1.6] text-transparent">
-              لـ ١٠ دقائق وأنت مخلص
+              لـ ٥ دقائق وأنت مخلص
             </span>
           </h2>
         </div>
