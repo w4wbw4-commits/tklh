@@ -29,16 +29,36 @@ export const Footer = () => {
               {t("footer.about")}
             </p>
             <div className="mt-5 flex items-center gap-2">
-              {[Instagram, Twitter, Mail].map((Icon, i) => (
+              {[
+                { Icon: Instagram, href: "#", label: "Instagram" },
+                { Icon: Twitter, href: "#", label: "Twitter" },
+                { Icon: Mail, href: "mailto:Call@tklh.sa", label: "Email" },
+                { Icon: Phone, href: "tel:+966544057854", label: "Phone" },
+              ].map(({ Icon, href, label }) => (
                 <a
-                  key={i}
-                  href="#"
+                  key={label}
+                  href={href}
+                  aria-label={label}
                   className="grid h-10 w-10 place-items-center rounded-full border border-border bg-card text-foreground/70 transition-colors hover:border-primary hover:text-primary"
                 >
                   <Icon className="h-4 w-4" />
                 </a>
               ))}
             </div>
+            <ul className="mt-4 space-y-1.5 text-sm text-muted-foreground">
+              <li>
+                <a href="mailto:Call@tklh.sa" className="inline-flex items-center gap-2 hover:text-primary" dir="ltr">
+                  <Mail className="h-3.5 w-3.5" />
+                  Call@tklh.sa
+                </a>
+              </li>
+              <li>
+                <a href="tel:+966544057854" className="inline-flex items-center gap-2 hover:text-primary tabular-nums" dir="ltr">
+                  <Phone className="h-3.5 w-3.5" />
+                  0544057854
+                </a>
+              </li>
+            </ul>
           </div>
 
           <div>
