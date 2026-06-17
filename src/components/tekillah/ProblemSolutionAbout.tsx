@@ -199,7 +199,7 @@ const SpeedSection = () => (
               </div>
               <div className="mt-5 flex items-baseline gap-2">
                 <span className="font-arabic text-5xl font-black leading-none text-green sm:text-6xl">
-                  <AnimatedCounter value={10} arabicDigits />
+                  <AnimatedCounter value={5} arabicDigits />
                 </span>
                 <span className="font-arabic text-2xl font-bold text-gold">دقائق</span>
               </div>
