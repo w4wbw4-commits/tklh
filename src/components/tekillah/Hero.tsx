@@ -40,95 +40,196 @@ const rise: Variants = {
 // ---- Modern premium card icons ---------------------------------------------
 type CardIconProps = { className?: string };
 
-// Groom — minimalist Bisht silhouette, gold trim
+// Groom — Bisht with gold trim, ghutra + iqal
 const BishtIcon = ({ className }: CardIconProps) => (
-  <svg viewBox="0 0 100 100" fill="none" className={className} aria-hidden>
+  <svg viewBox="0 0 100 120" fill="none" className={className} aria-hidden>
     <defs>
-      <linearGradient id="bishtBlack" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#1a1a1a" />
+      <linearGradient id="bishtBody" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#23211c" />
+        <stop offset="55%" stopColor="#0e0d0b" />
         <stop offset="100%" stopColor="#000" />
       </linearGradient>
+      <linearGradient id="bishtGold" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#f4d98a" />
+        <stop offset="50%" stopColor={gold} />
+        <stop offset="100%" stopColor="#8a6a1f" />
+      </linearGradient>
+      <linearGradient id="ghutra" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#ffffff" />
+        <stop offset="100%" stopColor="#ece5d4" />
+      </linearGradient>
     </defs>
-    {/* shoulders cloak */}
-    <path d="M18 82 Q22 42 42 36 L58 36 Q78 42 82 82 Z" fill="url(#bishtBlack)" />
-    {/* gold trim */}
-    <path d="M22 78 Q50 68 78 78" stroke={gold} strokeWidth="1.6" strokeLinecap="round" fill="none" />
-    <path d="M24 82 Q50 73 76 82" stroke={gold} strokeWidth="0.8" strokeLinecap="round" fill="none" opacity={0.7} />
-    {/* inner V neckline */}
-    <path d="M42 36 L50 52 L58 36" stroke={gold} strokeWidth="1.2" strokeLinejoin="round" fill="none" />
-    {/* head + ghutra */}
-    <circle cx="50" cy="22" r="7" fill="#f5efe4" stroke="#1a1a1a" strokeWidth="1" />
-    <path d="M40 22 Q38 12 50 11 Q62 12 60 22 Q58 28 50 28 Q42 28 40 22 Z" fill="#fff" stroke="#1a1a1a" strokeWidth="1" />
-    <path d="M40 20 Q50 17 60 20" stroke="#000" strokeWidth="2" strokeLinecap="round" fill="none" />
-    {/* gold pin */}
-    <circle cx="50" cy="44" r="1.6" fill={gold} />
+    {/* bisht cloak */}
+    <path d="M14 112 Q14 58 38 46 L62 46 Q86 58 86 112 Z" fill="url(#bishtBody)" />
+    {/* gold front trim */}
+    <path d="M42 46 L46 104 M58 46 L54 104" stroke="url(#bishtGold)" strokeWidth="2.2" strokeLinecap="round" />
+    {/* gold hem */}
+    <path d="M16 106 Q50 98 84 106" stroke="url(#bishtGold)" strokeWidth="2" fill="none" strokeLinecap="round" />
+    <path d="M18 110 Q50 104 82 110" stroke="url(#bishtGold)" strokeWidth="0.9" fill="none" opacity={0.7} />
+    {/* inner thobe V */}
+    <path d="M42 46 L50 62 L58 46 Z" fill="#fafafa" stroke="#d8cdb6" strokeWidth="0.6" />
+    {/* face */}
+    <ellipse cx="50" cy="28" rx="8" ry="9" fill="#f1d9b8" stroke="#9e7d52" strokeWidth="0.6" />
+    {/* ghutra */}
+    <path d="M36 24 Q32 10 50 8 Q68 10 64 24 Q66 36 50 36 Q34 36 36 24 Z" fill="url(#ghutra)" stroke="#bfae8a" strokeWidth="0.8" />
+    {/* iqal */}
+    <ellipse cx="50" cy="14" rx="14" ry="2.6" fill="#0a0a0a" />
+    <ellipse cx="50" cy="14" rx="14" ry="2.6" fill="none" stroke="#3a3a3a" strokeWidth="0.5" />
+    {/* brooch */}
+    <circle cx="50" cy="54" r="1.8" fill="url(#bishtGold)" />
   </svg>
 );
 
-// Bride — A-line dress with veil
+// Bride — A-line gown, long veil, tiara, bouquet
 const DressIcon = ({ className }: CardIconProps) => (
-  <svg viewBox="0 0 100 100" fill="none" className={className} aria-hidden>
+  <svg viewBox="0 0 100 120" fill="none" className={className} aria-hidden>
     <defs>
-      <linearGradient id="dressFade" x1="0" y1="0" x2="0" y2="1">
+      <linearGradient id="dressSilk" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stopColor="#ffffff" />
-        <stop offset="100%" stopColor="#f3ece0" />
+        <stop offset="70%" stopColor="#fbf6ec" />
+        <stop offset="100%" stopColor="#ebdfc7" />
+      </linearGradient>
+      <linearGradient id="veil" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
+        <stop offset="100%" stopColor="#ffffff" stopOpacity="0.25" />
+      </linearGradient>
+      <linearGradient id="tiara" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stopColor="#f4d98a" />
+        <stop offset="100%" stopColor={gold} />
       </linearGradient>
     </defs>
     {/* veil */}
-    <path d="M38 24 Q24 50 22 88 L78 88 Q76 50 62 24 Z" fill="#fff" opacity={0.55} />
-    {/* bodice */}
-    <path d="M42 30 Q50 36 58 30 L58 50 L42 50 Z" fill="url(#dressFade)" stroke="#d8cdb6" strokeWidth="0.8" />
+    <path d="M34 30 Q14 72 14 114 L86 114 Q86 72 66 30 Z" fill="url(#veil)" stroke="#e6dcc8" strokeWidth="0.5" />
     {/* skirt */}
-    <path d="M42 50 L24 88 Q50 84 76 88 L58 50 Z" fill="url(#dressFade)" stroke="#d8cdb6" strokeWidth="0.8" />
-    {/* pleats */}
-    <path d="M48 54 L40 86 M50 54 L50 86 M52 54 L60 86" stroke="#d8cdb6" strokeWidth="0.6" opacity={0.7} />
-    {/* head + tiara */}
-    <circle cx="50" cy="20" r="6" fill="#f5efe4" stroke="#bfae8a" strokeWidth="0.8" />
-    <path d="M44 16 L46 12 L48 15 L50 11 L52 15 L54 12 L56 16" stroke={gold} strokeWidth="1.2" fill="none" strokeLinejoin="round" />
+    <path d="M42 60 L22 114 Q50 108 78 114 L58 60 Z" fill="url(#dressSilk)" stroke="#d8cdb6" strokeWidth="0.8" />
+    <path d="M46 66 L36 112 M50 66 L50 112 M54 66 L64 112" stroke="#d8cdb6" strokeWidth="0.5" opacity={0.7} />
+    {/* bodice (sweetheart) */}
+    <path d="M42 40 Q46 46 50 44 Q54 46 58 40 L58 60 L42 60 Z" fill="url(#dressSilk)" stroke="#cebf9f" strokeWidth="0.8" />
+    {/* sash */}
+    <rect x="42" y="57" width="16" height="2" fill={gold} opacity={0.65} />
+    {/* face */}
+    <ellipse cx="50" cy="28" rx="7" ry="8" fill="#f3dcbb" stroke="#b08c5a" strokeWidth="0.6" />
+    {/* hair updo */}
+    <path d="M43 24 Q40 14 50 13 Q60 14 57 24" fill="#3a2418" />
+    {/* tiara */}
+    <path d="M42 18 L45 14 L48 17 L50 12 L52 17 L55 14 L58 18" stroke="url(#tiara)" strokeWidth="1.4" fill="none" strokeLinejoin="round" />
+    <circle cx="50" cy="15" r="1" fill="url(#tiara)" />
     {/* bouquet */}
-    <circle cx="50" cy="58" r="3.2" fill={gold} opacity={0.55} stroke={gold} strokeWidth="0.6" />
+    <circle cx="50" cy="68" r="5" fill="#f9d6dc" stroke="#c97a8a" strokeWidth="0.6" />
+    <circle cx="47" cy="66" r="1.4" fill="#e08a9a" />
+    <circle cx="52" cy="67" r="1.4" fill="#e08a9a" />
+    <circle cx="50" cy="70" r="1.4" fill="#e08a9a" />
+    <path d="M48 72 L46 80 M52 72 L54 80" stroke="#7a8c5e" strokeWidth="0.8" strokeLinecap="round" />
   </svg>
 );
 
-// Hall — modern arch + chandelier
+// Hall — grand ballroom with chandelier + arch
 const HallIcon = ({ className }: CardIconProps) => (
-  <svg viewBox="0 0 100 100" fill="none" className={className} aria-hidden>
-    <path d="M16 86 L16 46 Q50 14 84 46 L84 86 Z" fill={ink} fillOpacity={0.06} stroke={ink} strokeWidth="1.5" strokeLinejoin="round" />
-    <path d="M22 46 Q26 66 24 86 M78 46 Q74 66 76 86" stroke={ink} strokeWidth="1" strokeLinecap="round" />
-    <line x1="50" y1="20" x2="50" y2="48" stroke={ink} strokeWidth="0.9" />
-    <path d="M40 52 Q50 62 60 52 Q50 46 40 52 Z" fill={gold} fillOpacity={0.25} stroke={gold} strokeWidth="1.2" />
-    <circle cx="44" cy="60" r="1.4" fill={gold} />
-    <circle cx="50" cy="63" r="1.4" fill={gold} />
-    <circle cx="56" cy="60" r="1.4" fill={gold} />
-    <line x1="12" y1="86" x2="88" y2="86" stroke={ink} strokeWidth="1.2" strokeLinecap="round" />
+  <svg viewBox="0 0 100 120" fill="none" className={className} aria-hidden>
+    <defs>
+      <linearGradient id="hallWall" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#f8f1de" />
+        <stop offset="100%" stopColor="#e9dcbb" />
+      </linearGradient>
+      <radialGradient id="chandGlow" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%" stopColor={gold} stopOpacity="0.6" />
+        <stop offset="100%" stopColor={gold} stopOpacity="0" />
+      </radialGradient>
+    </defs>
+    {/* arch building */}
+    <path d="M12 110 L12 56 Q50 14 88 56 L88 110 Z" fill="url(#hallWall)" stroke={ink} strokeWidth="1.2" strokeLinejoin="round" />
+    {/* columns */}
+    <rect x="20" y="58" width="6" height="52" fill="#fff" stroke={ink} strokeWidth="0.8" />
+    <rect x="74" y="58" width="6" height="52" fill="#fff" stroke={ink} strokeWidth="0.8" />
+    {/* arched door */}
+    <path d="M40 110 L40 80 Q50 66 60 80 L60 110 Z" fill="#1a1714" stroke={ink} strokeWidth="0.8" />
+    <line x1="50" y1="68" x2="50" y2="110" stroke={gold} strokeWidth="0.5" />
+    {/* chandelier glow */}
+    <circle cx="50" cy="40" r="14" fill="url(#chandGlow)" />
+    {/* chandelier */}
+    <line x1="50" y1="22" x2="50" y2="32" stroke={ink} strokeWidth="0.7" />
+    <path d="M40 36 Q50 46 60 36 Q50 32 40 36 Z" fill={gold} fillOpacity={0.35} stroke={gold} strokeWidth="1.2" />
+    <circle cx="42" cy="44" r="1.3" fill={gold} />
+    <circle cx="50" cy="47" r="1.3" fill={gold} />
+    <circle cx="58" cy="44" r="1.3" fill={gold} />
+    {/* red carpet */}
+    <path d="M44 110 L36 118 L64 118 L56 110 Z" fill="#8b1e2f" />
+    {/* ground */}
+    <line x1="8" y1="110" x2="92" y2="110" stroke={ink} strokeWidth="1" strokeLinecap="round" />
   </svg>
 );
 
-// Photographer — camera + ring
+// Photographer — DSLR camera with sparkle flash
 const CameraIcon = ({ className }: CardIconProps) => (
-  <svg viewBox="0 0 100 100" fill="none" className={className} aria-hidden>
-    <rect x="14" y="32" width="72" height="48" rx="6" fill={ink} fillOpacity={0.05} stroke={ink} strokeWidth="1.5" />
-    <path d="M36 32 L42 24 L62 24 L68 32" stroke={ink} strokeWidth="1.5" strokeLinejoin="round" fill="none" />
-    <circle cx="42" cy="56" r="14" stroke={ink} strokeWidth="1.4" fill="#fff" />
-    <circle cx="42" cy="56" r="9" stroke={ink} strokeWidth="1.1" />
-    <circle cx="39" cy="53" r="2" fill={ink} fillOpacity={0.7} />
-    <rect x="72" y="38" width="8" height="5" rx="1" fill={gold} fillOpacity={0.4} stroke={ink} strokeWidth="1" />
-    <circle cx="72" cy="66" r="9" stroke={gold} strokeWidth="1.8" fill="none" />
-    <circle cx="72" cy="57" r="1.6" fill={gold} />
+  <svg viewBox="0 0 100 120" fill="none" className={className} aria-hidden>
+    <defs>
+      <linearGradient id="camBody" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#2a2a2e" />
+        <stop offset="100%" stopColor="#0c0c0e" />
+      </linearGradient>
+      <radialGradient id="lensGlow" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%" stopColor="#5ec5ff" stopOpacity="0.5" />
+        <stop offset="100%" stopColor="#5ec5ff" stopOpacity="0" />
+      </radialGradient>
+    </defs>
+    {/* top viewfinder hump */}
+    <rect x="40" y="28" width="20" height="10" rx="2" fill="url(#camBody)" />
+    {/* body */}
+    <rect x="10" y="38" width="80" height="58" rx="8" fill="url(#camBody)" stroke="#000" strokeWidth="0.5" />
+    {/* grip */}
+    <rect x="74" y="42" width="14" height="22" rx="3" fill="#1a1a1c" />
+    {/* lens mount */}
+    <circle cx="42" cy="68" r="22" fill="#15151a" stroke="#3a3a40" strokeWidth="1" />
+    <circle cx="42" cy="68" r="17" fill="#0a0a0d" stroke={gold} strokeWidth="0.8" />
+    <circle cx="42" cy="68" r="11" fill="url(#lensGlow)" stroke="#2a2a30" strokeWidth="0.8" />
+    <circle cx="42" cy="68" r="5" fill="#000" />
+    <circle cx="39" cy="65" r="1.6" fill="#fff" opacity={0.7} />
+    {/* shutter button */}
+    <circle cx="22" cy="36" r="3" fill={gold} stroke="#000" strokeWidth="0.5" />
+    {/* flash sparkle */}
+    <path d="M76 24 L78 30 L84 32 L78 34 L76 40 L74 34 L68 32 L74 30 Z" fill={gold} />
+    {/* brand stripe */}
+    <rect x="14" y="48" width="22" height="3" rx="1" fill={gold} opacity={0.7} />
   </svg>
 );
 
-// Planner — checklist clipboard
+// Planner — clipboard checklist with ring/calendar accents
 const PlannerIcon = ({ className }: CardIconProps) => (
-  <svg viewBox="0 0 100 100" fill="none" className={className} aria-hidden>
-    <rect x="22" y="18" width="56" height="68" rx="6" fill="#fff" stroke={ink} strokeWidth="1.5" />
-    <rect x="38" y="12" width="24" height="10" rx="3" fill={gold} fillOpacity={0.5} stroke={ink} strokeWidth="1.2" />
-    <circle cx="34" cy="38" r="3" fill={gold} />
-    <line x1="42" y1="38" x2="70" y2="38" stroke={ink} strokeWidth="1.4" strokeLinecap="round" />
-    <circle cx="34" cy="52" r="3" fill={gold} />
-    <line x1="42" y1="52" x2="68" y2="52" stroke={ink} strokeWidth="1.4" strokeLinecap="round" />
-    <circle cx="34" cy="66" r="3" stroke={ink} strokeWidth="1.2" fill="none" />
-    <line x1="42" y1="66" x2="64" y2="66" stroke={ink} strokeWidth="1.4" strokeLinecap="round" opacity={0.6} />
+  <svg viewBox="0 0 100 120" fill="none" className={className} aria-hidden>
+    <defs>
+      <linearGradient id="clipPaper" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#ffffff" />
+        <stop offset="100%" stopColor="#f4eedf" />
+      </linearGradient>
+    </defs>
+    {/* clipboard back */}
+    <rect x="18" y="22" width="64" height="86" rx="6" fill="#2a1f14" />
+    {/* paper */}
+    <rect x="22" y="26" width="56" height="78" rx="4" fill="url(#clipPaper)" stroke="#cebf9f" strokeWidth="0.6" />
+    {/* clip */}
+    <rect x="38" y="16" width="24" height="12" rx="3" fill={gold} stroke="#000" strokeWidth="0.6" />
+    <rect x="44" y="20" width="12" height="4" rx="1" fill="#1a1714" />
+    {/* date header */}
+    <rect x="28" y="32" width="44" height="10" rx="2" fill={gold} opacity={0.25} />
+    <text x="50" y="40" fontSize="7" fontWeight="bold" fill={ink} textAnchor="middle" fontFamily="system-ui">EVENT</text>
+    {/* checklist */}
+    <rect x="30" y="50" width="6" height="6" rx="1.5" fill={gold} />
+    <path d="M31.5 53 L33 54.5 L35 51.5" stroke="#fff" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+    <line x1="40" y1="53" x2="72" y2="53" stroke={ink} strokeWidth="1.2" strokeLinecap="round" />
+
+    <rect x="30" y="62" width="6" height="6" rx="1.5" fill={gold} />
+    <path d="M31.5 65 L33 66.5 L35 63.5" stroke="#fff" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+    <line x1="40" y1="65" x2="68" y2="65" stroke={ink} strokeWidth="1.2" strokeLinecap="round" />
+
+    <rect x="30" y="74" width="6" height="6" rx="1.5" stroke={ink} strokeWidth="1" fill="#fff" />
+    <line x1="40" y1="77" x2="70" y2="77" stroke={ink} strokeWidth="1.2" strokeLinecap="round" opacity={0.7} />
+
+    <rect x="30" y="86" width="6" height="6" rx="1.5" stroke={ink} strokeWidth="1" fill="#fff" />
+    <line x1="40" y1="89" x2="64" y2="89" stroke={ink} strokeWidth="1.2" strokeLinecap="round" opacity={0.5} />
+
+    {/* gold ring accent */}
+    <circle cx="72" cy="98" r="5" stroke={gold} strokeWidth="1.6" fill="none" />
+    <circle cx="72" cy="93" r="1.2" fill={gold} />
   </svg>
 );
 
@@ -140,11 +241,11 @@ type CardDef = {
   variant: "black" | "ivory" | "stone";
 };
 const cards: CardDef[] = [
-  { label: "العريس", caption: "بشت وأناقة", Icon: BishtIcon, variant: "black" },
-  { label: "العروس", caption: "فستان حلمها", Icon: DressIcon, variant: "ivory" },
-  { label: "القاعات", caption: "فخامة المكان", Icon: HallIcon, variant: "stone" },
-  { label: "المصور", caption: "لحظة لا تنسى", Icon: CameraIcon, variant: "stone" },
-  { label: "المنسق", caption: "كل التفاصيل", Icon: PlannerIcon, variant: "stone" },
+  { label: "للعريس", caption: "بشتك وأناقتك", Icon: BishtIcon, variant: "black" },
+  { label: "للعروس", caption: "فستان حلمك", Icon: DressIcon, variant: "ivory" },
+  { label: "للقاعات", caption: "فخامة مكانك", Icon: HallIcon, variant: "stone" },
+  { label: "للمصورين", caption: "ذكرى لا تنسى", Icon: CameraIcon, variant: "stone" },
+  { label: "للمنسقين", caption: "كل تفاصيلك", Icon: PlannerIcon, variant: "stone" },
 ];
 
 const variantClass: Record<CardDef["variant"], string> = {
@@ -271,7 +372,13 @@ export const Hero = () => {
         >
           حنا لك{" "}
           <span className="relative inline-block">
-            <span className="bg-gradient-to-b from-[#0b0b0d] to-[#1f1d18] bg-clip-text text-transparent">
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage:
+                  "linear-gradient(180deg, #f4d98a 0%, hsl(var(--gold)) 55%, #8a6a1f 100%)",
+              }}
+            >
               {KASHIDA_TKLH}!
             </span>
             <motion.span
@@ -291,9 +398,20 @@ export const Hero = () => {
           variants={rise}
           className="font-tagline mt-6 max-w-3xl text-balance text-base leading-[1.85] text-primary-deep/75 sm:text-lg md:text-xl"
         >
-          المنظومة الرقمية الذكية لحجز القاعات وكافة تفاصيل ليلة العمر بدون تعقيد
-          وبدون حوسة الواتساب.
+          بدون حوسة المشاوير وأسابيع الترتيبات، <span className="font-bold text-primary-deep">تكلّه</span> منصة ذكية تجمع كل احتياجات زواجك ومناسبتك في مكان واحد، من التخطيط إلى الحجز والدفع.
         </motion.p>
+
+        {/* Section eyebrow */}
+        <motion.div variants={rise} className="mt-12 flex flex-col items-center gap-2">
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary-deep/15 bg-white/60 px-4 py-1.5 text-[11px] font-bold tracking-[0.18em] text-primary-deep/80 backdrop-blur-sm sm:text-xs">
+            <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+            مصمّمة لكل أطراف مناسبتك
+            <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+          </span>
+          <h2 className="font-display text-xl font-black text-primary-deep sm:text-2xl">
+            من العريس والعروس… إلى كل مزوّد خدمة
+          </h2>
+        </motion.div>
 
         {/* === Premium bento cards === */}
         <motion.ul
