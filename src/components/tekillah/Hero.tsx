@@ -259,37 +259,49 @@ const variantClass: Record<CardDef["variant"], string> = {
 
 // ---- Services marquee data --------------------------------------------------
 const marqueeRow1 = [
-  "🎪 قاعات فخمة",
-  "📸 مصورين محترفين",
-  "💐 كوشات مصممة",
-  "🍽️ بوفيه وكيترنق",
-  "🎵 فرق استعراضية",
-  "🚗 سيارات زفة",
+  "قاعات أفراح",
+  "مصورين محترفين",
+  "كوشات مصممة",
+  "بوفيه وكيترنق",
+  "فرق استعراضية",
+  "سيارات زفّة",
 ];
 const marqueeRow2 = [
-  "✨ تنسيق إضاءة",
-  "🎂 كيك مناسبات",
-  "💌 دعوات إلكترونية",
-  "🎁 توزيعات راقية",
-  "🌹 منسقي ورد",
-  "🎤 حفلات DJ",
+  "تنسيق إضاءة",
+  "كيك مناسبات",
+  "دعوات إلكترونية",
+  "توزيعات راقية",
+  "منسقي ورد",
+  "حفلات DJ",
 ];
 
 const MarqueeRow = ({ items, direction }: { items: string[]; direction: "rtl" | "ltr" }) => {
-  const doubled = [...items, ...items];
+  const doubled = [...items, ...items, ...items];
   return (
     <div className="relative w-full overflow-hidden py-2">
       <div
-        className={`flex w-max items-center gap-10 whitespace-nowrap ${
+        className={`flex w-max items-center gap-4 whitespace-nowrap sm:gap-5 ${
           direction === "rtl" ? "animate-marquee-rtl" : "animate-marquee-ltr"
         }`}
       >
         {doubled.map((item, i) => (
-          <div key={`${item}-${i}`} className="flex items-center gap-10">
-            <span className="text-sm font-bold tracking-wide text-primary-deep/85 sm:text-base">
+          <div key={`${item}-${i}`} className="flex items-center gap-4 sm:gap-5">
+            <span
+              className="inline-flex items-center rounded-full px-5 py-2 text-[13px] font-bold tracking-wide shadow-[0_6px_18px_-8px_hsl(var(--green)/0.45)] sm:text-sm"
+              style={{
+                backgroundColor: "hsl(var(--green))",
+                color: "hsl(var(--cream))",
+              }}
+            >
               {item}
             </span>
-            <span className="h-1.5 w-1.5 rounded-full bg-gold/70" aria-hidden />
+            <span
+              aria-hidden
+              className="select-none text-base font-black"
+              style={{ color: "hsl(var(--green) / 0.55)" }}
+            >
+              ✳
+            </span>
           </div>
         ))}
       </div>
@@ -353,8 +365,12 @@ export const Hero = () => {
         {/* Brand wordmark */}
         <motion.div variants={rise} className="mb-6 flex flex-col items-center">
           <span
-            className="font-display text-5xl font-black tracking-tight text-[#0b0b0d] sm:text-6xl"
-            style={{ fontFeatureSettings: '"kern","liga","calt","dlig"', letterSpacing: "0.005em" }}
+            className="font-display text-5xl font-black tracking-tight sm:text-6xl"
+            style={{
+              fontFeatureSettings: '"kern","liga","calt","dlig"',
+              letterSpacing: "0.005em",
+              color: "hsl(var(--green))",
+            }}
           >
             تكلّه
           </span>
@@ -372,21 +388,17 @@ export const Hero = () => {
         >
           حنا لك{" "}
           <span className="relative inline-block">
-            <span
-              className="bg-clip-text text-transparent"
-              style={{
-                backgroundImage:
-                  "linear-gradient(180deg, #f4d98a 0%, hsl(var(--gold)) 55%, #8a6a1f 100%)",
-              }}
-            >
-              {KASHIDA_TKLH}!
-            </span>
+            <span style={{ color: "hsl(var(--green))" }}>{KASHIDA_TKLH}!</span>
             <motion.span
               aria-hidden
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 1.1, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute -bottom-1 left-0 right-0 h-[3px] origin-right rounded-full bg-gradient-to-l from-gold via-gold to-transparent"
+              className="absolute -bottom-1 left-0 right-0 h-[3px] origin-right rounded-full"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent, hsl(var(--green)) 50%, transparent)",
+              }}
             />
           </span>{" "}
           <br className="hidden sm:block" />
@@ -398,7 +410,9 @@ export const Hero = () => {
           variants={rise}
           className="font-tagline mt-6 max-w-3xl text-balance text-base leading-[1.85] text-primary-deep/75 sm:text-lg md:text-xl"
         >
-          بدون حوسة المشاوير وأسابيع الترتيبات، <span className="font-bold text-primary-deep">تكلّه</span> منصة ذكية تجمع كل احتياجات زواجك ومناسبتك في مكان واحد، من التخطيط إلى الحجز والدفع.
+          بدون حوسة المشاوير وأسابيع الترتيبات،{" "}
+          <span className="font-bold" style={{ color: "hsl(var(--green))" }}>تكلّه</span>{" "}
+          منصة ذكية تجمع كل احتياجات زواجك ومناسبتك في مكان واحد، من التخطيط إلى الحجز والدفع.
         </motion.p>
 
         {/* Section eyebrow */}
@@ -418,30 +432,65 @@ export const Hero = () => {
           variants={rise}
           className="mt-10 grid w-full max-w-5xl grid-cols-2 gap-3 sm:grid-cols-5 sm:gap-4"
         >
-          {cards.map(({ label, caption, Icon, variant }, i) => (
+          {cards.map(({ label, caption, variant }, i) => (
             <motion.li
               key={label}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.75, delay: 0.5 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className={`group relative flex flex-col items-center justify-end overflow-hidden rounded-3xl border px-3 py-5 backdrop-blur-sm transition-all duration-500 ease-out hover:-translate-y-2 ${variantClass[variant]}`}
+              className={`group relative flex aspect-[4/5] flex-col items-center justify-end overflow-hidden rounded-3xl border px-3 py-5 backdrop-blur-sm transition-all duration-500 ease-out hover:-translate-y-2 ${variantClass[variant]}`}
             >
-              {/* gold corner accent */}
+              {/* decorative arabesque ornament — same elegant motif on each card */}
+              <svg
+                aria-hidden
+                viewBox="0 0 120 120"
+                className="pointer-events-none absolute inset-x-0 top-3 mx-auto h-20 w-20 opacity-90 transition-transform duration-700 ease-out group-hover:rotate-45 sm:h-24 sm:w-24"
+                fill="none"
+              >
+                <g
+                  stroke={variant === "black" ? "hsl(var(--gold))" : "hsl(var(--green))"}
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                >
+                  {/* outer 8-point star */}
+                  <path d="M60 12 L68 44 L100 36 L76 60 L100 84 L68 76 L60 108 L52 76 L20 84 L44 60 L20 36 L52 44 Z" />
+                  {/* inner rotated square */}
+                  <rect x="42" y="42" width="36" height="36" transform="rotate(45 60 60)" />
+                  {/* center circle */}
+                  <circle cx="60" cy="60" r="6" fill={variant === "black" ? "hsl(var(--gold))" : "hsl(var(--green))"} stroke="none" />
+                  {/* tiny petals */}
+                  <circle cx="60" cy="30" r="2" fill={variant === "black" ? "hsl(var(--gold))" : "hsl(var(--green))"} stroke="none" />
+                  <circle cx="60" cy="90" r="2" fill={variant === "black" ? "hsl(var(--gold))" : "hsl(var(--green))"} stroke="none" />
+                  <circle cx="30" cy="60" r="2" fill={variant === "black" ? "hsl(var(--gold))" : "hsl(var(--green))"} stroke="none" />
+                  <circle cx="90" cy="60" r="2" fill={variant === "black" ? "hsl(var(--gold))" : "hsl(var(--green))"} stroke="none" />
+                </g>
+              </svg>
+
+              {/* soft glow accent behind ornament */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute -right-6 -top-6 h-16 w-16 rounded-full opacity-50 blur-xl transition-opacity duration-500 group-hover:opacity-90"
-                style={{ background: "radial-gradient(circle, hsl(var(--gold)/0.55), transparent 70%)" }}
+                className="pointer-events-none absolute left-1/2 top-8 h-24 w-24 -translate-x-1/2 rounded-full opacity-50 blur-2xl transition-opacity duration-500 group-hover:opacity-80"
+                style={{
+                  background:
+                    variant === "black"
+                      ? "radial-gradient(circle, hsl(var(--gold)/0.45), transparent 70%)"
+                      : "radial-gradient(circle, hsl(var(--green)/0.25), transparent 70%)",
+                }}
               />
-              <div className="relative grid h-20 w-20 place-items-center rounded-2xl transition-transform duration-500 ease-out group-hover:scale-110 sm:h-24 sm:w-24">
-                <Icon className="h-full w-full" />
-              </div>
+
               <span className={`mt-3 text-sm font-black tracking-wide sm:text-base ${variant === "black" ? "text-white" : "text-primary-deep"}`}>
                 {label}
               </span>
-              <span className={`mt-0.5 text-[11px] font-medium ${variant === "black" ? "text-white/60" : "text-primary-deep/55"}`}>
+              <span className={`mt-0.5 text-[11px] font-medium ${variant === "black" ? "text-white/65" : "text-primary-deep/55"}`}>
                 {caption}
               </span>
-              <span className="pointer-events-none absolute inset-x-4 -bottom-px h-px bg-gradient-to-l from-transparent via-gold/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              <span
+                className="pointer-events-none absolute inset-x-4 -bottom-px h-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent, hsl(var(--green)/0.7), transparent)",
+                }}
+              />
             </motion.li>
           ))}
         </motion.ul>
