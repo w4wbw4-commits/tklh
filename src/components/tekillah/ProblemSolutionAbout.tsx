@@ -297,7 +297,6 @@ const SpeedSection = () => (
 // ---------- Public composite -------------------------------------------------
 export const ProblemSolutionAbout = () => (
   <>
-    <AboutValueSection />
     <SpeedSection />
   </>
 );
