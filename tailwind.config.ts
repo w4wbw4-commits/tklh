@@ -149,6 +149,8 @@ export default {
         "scale-in": "scale-in 0.5s var(--ease-luxury) both",
         float: "float 6s ease-in-out infinite",
         shimmer: "shimmer 2.5s linear infinite",
+        "marquee-rtl": "marquee-rtl 38s linear infinite",
+        "marquee-ltr": "marquee-ltr 44s linear infinite",
       },
     },
   },
