@@ -308,12 +308,12 @@
   }
 
   html {
-    font-family: 'SaudiRiyal', 'Tajawal', system-ui, sans-serif;
+    font-family: 'SaudiRiyal', 'Thmanyah Sans', 'Tajawal', system-ui, sans-serif;
     scroll-behavior: smooth;
   }
 
   html[dir="ltr"] {
-    font-family: 'SaudiRiyal', 'Tajawal', system-ui, sans-serif;
+    font-family: 'SaudiRiyal', 'Thmanyah Sans', 'Tajawal', system-ui, sans-serif;
   }
 
   body {
