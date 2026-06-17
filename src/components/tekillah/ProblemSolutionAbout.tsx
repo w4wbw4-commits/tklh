@@ -147,7 +147,7 @@ const SpeedSection = () => (
           <h2 className="mt-5 font-arabic text-4xl font-black leading-[1.6] text-green md:text-5xl">
             من ٦ أسابيع حوسة..{" "}
             <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-2 leading-[1.6] text-transparent">
-              لـ ١٠ دقائق وأنت مخلص
+              لـ ٥ دقائق وأنت مخلص
             </span>
           </h2>
         </div>
@@ -199,7 +199,7 @@ const SpeedSection = () => (
               </div>
               <div className="mt-5 flex items-baseline gap-2">
                 <span className="font-arabic text-5xl font-black leading-none text-green sm:text-6xl">
-                  <AnimatedCounter value={10} arabicDigits />
+                  <AnimatedCounter value={5} arabicDigits />
                 </span>
                 <span className="font-arabic text-2xl font-bold text-gold">دقائق</span>
               </div>
@@ -239,7 +239,7 @@ const SpeedSection = () => (
           <span className="h-12 w-px bg-gradient-to-b from-transparent via-gold/40 to-gold" />
           <span className="mt-3 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream px-4 py-1.5 text-xs font-bold text-green shadow-soft sm:text-sm">
             <Sparkles className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
-            وش وراء الـ١٠ دقائق؟
+            وش وراء الـ٥ دقائق؟
           </span>
         </div>
       </Reveal>
