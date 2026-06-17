@@ -285,7 +285,9 @@ const marqueeRow2 = [
 
 const MarqueeRow = ({ items, direction }: { items: string[]; direction: "rtl" | "ltr" }) => {
   // Duplicate exactly once for a seamless -50% loop (matches keyframes).
-  const doubled = [...items, ...items];
+  // Repeat enough times to overflow any viewport; keep an even count so the
+  // -50% translate loops back onto an identical frame (no gap, no jump).
+  const doubled = Array.from({ length: 6 }).flatMap(() => items);
   return (
     <div className="relative w-full overflow-hidden py-2">
       <div
@@ -449,8 +451,8 @@ export const Hero = () => {
         >
           {[
             { Icon: ShieldCheck, title: "شفافية ووضوح", desc: "أسعار مكشوفة بدون مفاجآت ولا أرقام مخفية." },
-            { Icon: Zap, title: "سرعة وسهولة", desc: "تخطيط كامل بدقائق معدودة، بدون حوسة الواتساب." },
-            { Icon: Heart, title: "خيارات تليق بليلتك", desc: "تشكيلة منتقاة من أفضل المزوّدين بكل ذوق وفخامة." },
+            { Icon: Zap, title: "سرعة وسهولة", desc: "تخطيط كامل بدقائق معدودة بدون حوسة مشاوير وأوراق." },
+            { Icon: Heart, title: "خيارات تليق بليلتك", desc: "كل ما تتمنّاه في ليلة عمرك تجده وتجهّزه." },
           ].map(({ Icon, title, desc }, i) => (
             <motion.div
               key={title}
