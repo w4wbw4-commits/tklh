@@ -284,25 +284,32 @@ const marqueeRow2 = [
 ];
 
 const MarqueeRow = ({ items, direction }: { items: string[]; direction: "rtl" | "ltr" }) => {
-  // Duplicate exactly once for a seamless -50% loop (matches keyframes).
-  // Repeat enough times to overflow any viewport; keep an even count so the
-  // -50% translate loops back onto an identical frame (no gap, no jump).
+  // Repeat enough times to overflow any viewport. Use an even count and put
+  // the spacing as margin on each item (not flex `gap`) — `gap` only inserts
+  // space *between* siblings, which leaves the seam at -50% half-a-gap short
+  // and causes a visible jump. Margin includes the trailing space so the
+  // loop lands perfectly on an identical frame.
   const doubled = Array.from({ length: 6 }).flatMap(() => items);
   return (
     <div className="relative w-full overflow-hidden py-2">
       <div
-        className={`flex w-max items-center gap-4 whitespace-nowrap sm:gap-5 ${
+        className={`flex w-max items-center whitespace-nowrap ${
           direction === "rtl" ? "animate-marquee-rtl" : "animate-marquee-ltr"
         }`}
-        style={{ willChange: "transform" }}
+        style={{ willChange: "transform", transform: "translateZ(0)" }}
       >
         {doubled.map((item, i) => (
-          <div key={`${item}-${i}`} className="flex items-center gap-4 sm:gap-5">
+          <div
+            key={`${item}-${i}`}
+            className="flex items-center"
+            style={{ marginInlineEnd: "1.25rem" }}
+          >
             <span
               className="inline-flex items-center rounded-full px-5 py-2 text-[13px] font-bold tracking-wide shadow-[0_6px_18px_-8px_hsl(var(--green)/0.45)] sm:text-sm"
               style={{
                 backgroundColor: "hsl(var(--green))",
                 color: "hsl(var(--cream))",
+                border: "1px solid hsl(var(--green-mid) / 0.4)",
               }}
             >
               {item}
@@ -310,7 +317,7 @@ const MarqueeRow = ({ items, direction }: { items: string[]; direction: "rtl" | 
             <span
               aria-hidden
               className="select-none text-base font-black"
-              style={{ color: "hsl(var(--green) / 0.55)" }}
+              style={{ color: "hsl(var(--green) / 0.55)", marginInlineStart: "1.25rem" }}
             >
               ✳
             </span>
