@@ -1,5 +1,5 @@
 import { Logo } from "./Logo";
-import { Instagram, Twitter, Mail, Building2, ArrowRight, LogOut } from "lucide-react";
+import { Instagram, Twitter, Mail, Phone, Building2, ArrowRight, LogOut } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
