@@ -239,7 +239,7 @@ const SpeedSection = () => (
           <span className="h-12 w-px bg-gradient-to-b from-transparent via-gold/40 to-gold" />
           <span className="mt-3 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream px-4 py-1.5 text-xs font-bold text-green shadow-soft sm:text-sm">
             <Sparkles className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
-            وش وراء الـ١٠ دقائق؟
+            وش وراء الـ٥ دقائق؟
           </span>
         </div>
       </Reveal>
