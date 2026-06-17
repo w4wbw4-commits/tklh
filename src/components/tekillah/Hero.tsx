@@ -1,244 +1,384 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sparkles, Star } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import { AnimatedCounter } from "./AnimatedCounter";
+import { ArrowLeft, Clock, Gem, Bot } from "lucide-react";
 import {
-  SketchDivider,
   SketchCurtain,
   SketchEucalyptus,
   SketchLotus,
-  SketchLongBanquet,
+  SketchCandelabra,
+  SketchBanquet,
+  SketchTable,
 } from "./SketchArt";
 
 // ---------------------------------------------------------------------------
-// Hero — Off-white sketch experience.
-// No photography. A self-drawing wedding arch sits behind the wordmark, with
-// palm + floral line art floating in the corners. Olive ink + gold accents
-// over a premium beige canvas. RTL-friendly.
+// Hero — High-clarity message in <3s.
+// Editorial Thmanyah-style typography with Kashida-stretched brand word,
+// a horizontal bento row of hand-drawn service icons, and instant trust
+// badges. Background keeps the architectural sketches as a low-opacity
+// watermark so the message stays front and centre.
 // ---------------------------------------------------------------------------
+
+// Unicode tatweel character for Kashida (Arabic letter elongation).
+const T = "\u0640";
+// "تــكــلّــه" — tatweels injected between letters for editorial stretch.
+const TKLH_KASHIDA = `ت${T}${T}ك${T}${T}لّ${T}${T}ه`;
+
+// ---- Minimalist hand-drawn service icons -----------------------------------
+const ink = "hsl(var(--primary-deep))";
+const gold = "hsl(var(--gold))";
+
+const drawTransition = { duration: 1.8, ease: [0.22, 1, 0.36, 1] as const };
+
+type IconProps = { className?: string };
+
+const IconGroom = ({ className }: IconProps) => (
+  // Groom with Saudi Bisht — shoulders, bisht drape, ghutra silhouette.
+  <svg viewBox="0 0 120 120" fill="none" className={className} aria-hidden>
+    {/* Head */}
+    <motion.circle cx="60" cy="34" r="11" stroke={ink} strokeWidth="1.4"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={drawTransition} />
+    {/* Ghutra (headdress) */}
+    <motion.path d="M48 30 Q44 18 60 16 Q76 18 72 30 Q70 38 60 38 Q50 38 48 30 Z"
+      stroke={ink} strokeWidth="1.3" strokeLinejoin="round" fill={gold} fillOpacity={0.08}
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={drawTransition} />
+    {/* Agal (black band) */}
+    <motion.path d="M48 28 Q60 25 72 28" stroke={ink} strokeWidth="1.8" strokeLinecap="round"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.2 }} />
+    {/* Bisht — wide shoulder cloak with gold trim */}
+    <motion.path d="M22 100 Q26 60 50 52 L70 52 Q94 60 98 100 Z"
+      stroke={ink} strokeWidth="1.5" strokeLinejoin="round" fill={ink} fillOpacity={0.04}
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.1 }} />
+    {/* Inner thobe collar V */}
+    <motion.path d="M50 52 L60 70 L70 52" stroke={ink} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.3 }} />
+    {/* Gold bisht trim */}
+    <motion.path d="M30 96 Q60 84 90 96" stroke={gold} strokeWidth="1.2" strokeLinecap="round" strokeDasharray="2 3"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.5 }} />
+  </svg>
+);
+
+const IconBride = ({ className }: IconProps) => (
+  // Wedding dress silhouette — A-line gown with veil.
+  <svg viewBox="0 0 120 120" fill="none" className={className} aria-hidden>
+    {/* Head */}
+    <motion.circle cx="60" cy="22" r="7" stroke={ink} strokeWidth="1.3"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={drawTransition} />
+    {/* Veil — flowing behind */}
+    <motion.path d="M44 26 Q30 50 28 96 M76 26 Q90 50 92 96"
+      stroke={ink} strokeWidth="1" strokeLinecap="round" strokeDasharray="1 3"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.2 }} />
+    {/* Bodice */}
+    <motion.path d="M50 34 Q60 40 70 34 L70 56 L50 56 Z"
+      stroke={ink} strokeWidth="1.4" strokeLinejoin="round"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.1 }} />
+    {/* Skirt — A-line cascade */}
+    <motion.path d="M50 56 L26 106 Q60 100 94 106 L70 56"
+      stroke={ink} strokeWidth="1.5" strokeLinejoin="round" fill={gold} fillOpacity={0.05}
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.2 }} />
+    {/* Skirt pleats */}
+    <motion.path d="M56 60 L46 104 M60 60 L60 104 M64 60 L74 104"
+      stroke={ink} strokeWidth="0.8" strokeLinecap="round" opacity={0.6}
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.4 }} />
+    {/* Bouquet */}
+    <motion.circle cx="60" cy="62" r="4" fill={gold} fillOpacity={0.5} stroke={gold} strokeWidth="0.8"
+      initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.8 }} />
+  </svg>
+);
+
+const IconHall = ({ className }: IconProps) => (
+  // Luxury hall — chandelier, arch, drapes.
+  <svg viewBox="0 0 120 120" fill="none" className={className} aria-hidden>
+    {/* Arch */}
+    <motion.path d="M20 100 L20 50 Q60 14 100 50 L100 100"
+      stroke={ink} strokeWidth="1.5" strokeLinejoin="round"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={drawTransition} />
+    {/* Curtains */}
+    <motion.path d="M22 50 Q30 70 26 100 M98 50 Q90 70 94 100"
+      stroke={ink} strokeWidth="1.2" strokeLinecap="round"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.2 }} />
+    <motion.path d="M30 60 Q34 80 32 100 M90 60 Q86 80 88 100"
+      stroke={ink} strokeWidth="0.9" strokeLinecap="round" opacity={0.6}
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.35 }} />
+    {/* Chandelier chain */}
+    <motion.line x1="60" y1="22" x2="60" y2="50" stroke={ink} strokeWidth="1"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.2 }} />
+    {/* Chandelier body */}
+    <motion.path d="M48 52 Q60 64 72 52 Q60 46 48 52 Z"
+      stroke={ink} strokeWidth="1.3" strokeLinejoin="round" fill={gold} fillOpacity={0.12}
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.4 }} />
+    {/* Drops */}
+    <motion.circle cx="52" cy="62" r="1.6" fill={gold}
+      initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.7 }} />
+    <motion.circle cx="60" cy="66" r="1.6" fill={gold}
+      initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.8 }} />
+    <motion.circle cx="68" cy="62" r="1.6" fill={gold}
+      initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.9 }} />
+    {/* Floor */}
+    <motion.line x1="14" y1="100" x2="106" y2="100" stroke={ink} strokeWidth="1.2" strokeLinecap="round"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.5 }} />
+  </svg>
+);
+
+const IconPhotographer = ({ className }: IconProps) => (
+  // Camera lens with wedding ring overlay.
+  <svg viewBox="0 0 120 120" fill="none" className={className} aria-hidden>
+    {/* Camera body */}
+    <motion.path d="M18 44 L40 44 L46 34 L74 34 L80 44 L102 44 Q104 44 104 46 L104 92 Q104 94 102 94 L18 94 Q16 94 16 92 L16 46 Q16 44 18 44 Z"
+      stroke={ink} strokeWidth="1.5" strokeLinejoin="round"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={drawTransition} />
+    {/* Outer lens */}
+    <motion.circle cx="50" cy="68" r="18" stroke={ink} strokeWidth="1.4"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.2 }} />
+    {/* Inner lens */}
+    <motion.circle cx="50" cy="68" r="11" stroke={ink} strokeWidth="1.1"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.35 }} />
+    {/* Lens highlight */}
+    <motion.circle cx="46" cy="64" r="2.5" fill={ink} fillOpacity={0.7}
+      initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.7 }} />
+    {/* Flash */}
+    <motion.rect x="86" y="52" width="10" height="6" rx="1" stroke={ink} strokeWidth="1.2" fill={gold} fillOpacity={0.2}
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.3 }} />
+    {/* Wedding ring overlapping lens */}
+    <motion.circle cx="84" cy="78" r="12" stroke={gold} strokeWidth="1.8"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.5 }} />
+    <motion.circle cx="84" cy="66" r="2" fill={gold}
+      initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.95 }} />
+  </svg>
+);
+
+const IconPlanner = ({ className }: IconProps) => (
+  // Table setup with chair + candle (planning/styling).
+  <svg viewBox="0 0 120 120" fill="none" className={className} aria-hidden>
+    {/* Chair back (left) */}
+    <motion.path d="M22 96 L22 56 Q22 50 28 50 L36 50 Q42 50 42 56 L42 96"
+      stroke={ink} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={drawTransition} />
+    <motion.path d="M22 72 L42 72" stroke={ink} strokeWidth="1" strokeLinecap="round"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.3 }} />
+    {/* Round table */}
+    <motion.ellipse cx="70" cy="76" rx="34" ry="6" stroke={ink} strokeWidth="1.5" fill={gold} fillOpacity={0.08}
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.15 }} />
+    {/* Drape */}
+    <motion.path d="M36 78 Q40 96 50 100 M104 78 Q100 96 90 100 M70 82 L70 102"
+      stroke={ink} strokeWidth="1.1" strokeLinecap="round"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.4 }} />
+    {/* Candle */}
+    <motion.path d="M68 70 L68 50 L72 50 L72 70 Z" stroke={ink} strokeWidth="1.3" strokeLinejoin="round"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.5 }} />
+    {/* Wick */}
+    <motion.line x1="70" y1="50" x2="70" y2="44" stroke={ink} strokeWidth="1"
+      initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ ...drawTransition, delay: 0.6 }} />
+    {/* Flame */}
+    <motion.path d="M70 44 Q66 38 70 32 Q74 38 70 44 Z" fill={gold} stroke={gold} strokeWidth="0.8"
+      initial={{ opacity: 0, scale: 0.7 }} whileInView={{ opacity: [0, 1, 0.85, 1], scale: [0.7, 1.05, 0.95, 1] }} viewport={{ once: true }} transition={{ delay: 0.9, duration: 1.4, repeat: Infinity, repeatType: "reverse" }}
+      style={{ transformOrigin: "70px 40px" }} />
+    {/* Petals scatter */}
+    <motion.circle cx="50" cy="78" r="1.6" fill={gold} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.95 }} />
+    <motion.circle cx="92" cy="78" r="1.6" fill={gold} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 1.05 }} />
+  </svg>
+);
+
+// ---- Stagger container variants --------------------------------------------
+const stagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
+};
+const rise: Variants = {
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
+};
+
+// ---- Service grid data ------------------------------------------------------
+const services: { label: string; Icon: (p: IconProps) => JSX.Element }[] = [
+  { label: "العريس", Icon: IconGroom },
+  { label: "العروس", Icon: IconBride },
+  { label: "القاعات", Icon: IconHall },
+  { label: "المصور", Icon: IconPhotographer },
+  { label: "المنسق", Icon: IconPlanner },
+];
+
+const badges: { label: string; Icon: typeof Clock }[] = [
+  { label: "حجز فوري في أقل من دقيقة", Icon: Clock },
+  { label: "أسعار مباشرة بشفافية كاملة", Icon: Gem },
+  { label: "أتمتة ذكية تلغي الواتساب", Icon: Bot },
+];
+
 export const Hero = () => {
-  const { t } = useTranslation();
   return (
     <section
       id="home"
-      className="relative min-h-screen w-full overflow-hidden"
+      dir="rtl"
+      lang="ar"
+      className="relative min-h-screen w-full overflow-hidden scroll-smooth"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
-      {/* Soft warm wash + paper grain */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* === Background wash === */}
+      <div className="pointer-events-none absolute inset-0">
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 30%, hsl(var(--surface)) 0%, hsl(var(--cream)) 55%, hsl(var(--background)) 100%)",
+              "radial-gradient(ellipse at 50% 25%, hsl(var(--surface)) 0%, hsl(var(--cream)) 55%, hsl(var(--background)) 100%)",
           }}
         />
-        {/* faint paper texture */}
+        {/* Paper grain */}
         <div
-          className="absolute inset-0 opacity-[0.06] mix-blend-multiply"
+          className="absolute inset-0 opacity-[0.05] mix-blend-multiply"
           style={{
             backgroundImage:
               "radial-gradient(hsl(var(--primary-deep)) 0.5px, transparent 0.5px)",
             backgroundSize: "3px 3px",
           }}
         />
-        {/* Bottom fade into next section */}
+        {/* Fade into next section */}
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
 
-      {/* === Sketch banquet illustration on the RIGHT (desktop/tablet wide) ===
-          Width-capped + edge-anchored so it never overlaps the centered text. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-y-0 right-0 hidden w-[32vw] max-w-[380px] items-end justify-end overflow-hidden lg:flex xl:w-[34vw] xl:max-w-[440px]"
-      >
-        <SketchLongBanquet
-          className="h-[82%] w-full opacity-80"
-          style={{
-            transform: "scaleX(-1)",
-            WebkitMaskImage:
-              "linear-gradient(to right, hsl(0 0% 0% / 0) 0%, hsl(0 0% 0% / 0.25) 14%, hsl(0 0% 0% / 0.7) 38%, hsl(0 0% 0% / 0.95) 65%, hsl(0 0% 0% / 1) 100%)",
-            maskImage:
-              "linear-gradient(to right, hsl(0 0% 0% / 0) 0%, hsl(0 0% 0% / 0.25) 14%, hsl(0 0% 0% / 0.7) 38%, hsl(0 0% 0% / 0.95) 65%, hsl(0 0% 0% / 1) 100%)",
-          }}
-        />
+      {/* === Watermark sketch layer — opacity-20, scattered, non-intrusive === */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-20">
+        <SketchCurtain className="absolute inset-y-0 left-0 h-full w-[60px] sm:w-[90px]" />
+        <SketchCurtain className="absolute inset-y-0 right-0 h-full w-[60px] sm:w-[90px]" style={{ transform: "scaleX(-1)" }} />
+        <SketchEucalyptus className="absolute top-6 left-[6%] h-[140px] w-[260px] hidden md:block" />
+        <SketchLotus className="absolute top-10 right-[8%] h-[120px] w-[170px] hidden md:block" />
+        <SketchCandelabra className="absolute bottom-0 left-[4%] h-[260px] w-[180px] hidden lg:block" />
+        <SketchCandelabra className="absolute bottom-0 right-[4%] h-[260px] w-[180px] hidden lg:block" style={{ transform: "scaleX(-1)" }} />
+        <SketchTable className="absolute bottom-6 left-1/2 h-[180px] w-[320px] -translate-x-1/2 hidden sm:block" />
+        <SketchBanquet className="absolute -bottom-4 left-1/2 h-[200px] w-[520px] -translate-x-1/2 hidden xl:block" />
       </div>
 
-      {/* === MOBILE banquet sketch ===
-          Most users land on phones, so we anchor a wide, low-opacity sketch at
-          the bottom of the hero — masked into the cream wash so it never
-          competes with the wordmark. Hidden on lg+ where the side variant
-          already runs. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 flex h-[44vh] max-h-[360px] items-end justify-center overflow-hidden lg:hidden"
+      {/* === Foreground content === */}
+      <motion.div
+        variants={stagger}
+        initial="hidden"
+        animate="show"
+        className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-5 pt-28 pb-16 text-center sm:px-8"
       >
-        <SketchLongBanquet
-          className="h-full w-[140%] max-w-none opacity-70 sm:w-[120%]"
-          style={{
-            WebkitMaskImage:
-              "linear-gradient(to top, hsl(0 0% 0% / 1) 35%, hsl(0 0% 0% / 0.6) 65%, hsl(0 0% 0% / 0) 100%)",
-            maskImage:
-              "linear-gradient(to top, hsl(0 0% 0% / 1) 35%, hsl(0 0% 0% / 0.6) 65%, hsl(0 0% 0% / 0) 100%)",
-          }}
-        />
-      </div>
-
-      {/* === Side framing — slim, edge-only, never crosses content === */}
-      {/* Top-left: soft eucalyptus arching down */}
-      <SketchEucalyptus
-        className="pointer-events-none absolute top-3 left-0 h-[80px] w-[150px] opacity-50 sm:h-[110px] sm:w-[210px] md:h-[140px] md:w-[260px]"
-      />
-
-      {/* Top-right: small lotus accent on mobile to balance the eucalyptus */}
-      <SketchLotus
-        className="pointer-events-none absolute top-4 right-2 h-[70px] w-[100px] opacity-45 md:hidden"
-      />
-
-      {/* Bottom-left: lotus pads on tablet+ (mobile already has a banquet) */}
-      <SketchLotus
-        className="pointer-events-none absolute bottom-3 left-3 hidden h-[100px] w-[140px] opacity-50 md:block lg:block"
-      />
-
-      {/* Slim drape on the left edge — visible from mobile up */}
-      <SketchCurtain
-        className="pointer-events-none absolute inset-y-0 left-0 h-full w-[28px] opacity-45 sm:w-[40px] md:w-[44px] lg:w-[56px]"
-      />
-
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 pt-32 pb-20 text-center">
-        {/* Tag chip */}
+        {/* Eyebrow */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary-deep/25 bg-cream/80 px-5 py-2 backdrop-blur-sm"
+          variants={rise}
+          className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary-deep/20 bg-cream/70 px-5 py-2 backdrop-blur-sm"
         >
-          <Star className="h-3.5 w-3.5 text-gold" strokeWidth={1.5} fill="currentColor" />
-          <span className="text-xs font-bold tracking-[0.18em] text-primary-deep">
-            {t("hero.tag")}
+          <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+          <span className="text-[11px] font-bold tracking-[0.22em] text-primary-deep">
+            tklh.sa — منصة المناسبات الذكية
           </span>
-          <Sparkles className="h-3 w-3 text-gold" strokeWidth={1.5} />
         </motion.div>
 
-        {/* Brand wordmark — تِكله, olive on cream, no glass plate */}
+        {/* Main headline — editorial, Thmanyah Serif Display */}
         <motion.h1
-          initial={{ opacity: 0, y: 24, scale: 0.96 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1.1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="font-wordmark text-balance text-center text-[80px] font-black leading-[1] sm:text-[110px] md:text-[140px] lg:text-[170px]"
-          lang="ar"
-          dir="rtl"
+          variants={rise}
+          className="font-display text-balance text-[40px] font-black leading-[1.12] tracking-[-0.01em] text-primary-deep sm:text-[56px] md:text-[72px] lg:text-[88px]"
           style={{
-            color: "hsl(var(--primary-deep))",
-            WebkitTextFillColor: "hsl(var(--primary-deep))",
-            letterSpacing: "-0.02em",
             textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream) / 0.9)",
           }}
         >
-          {t("hero.titleA")}
-          <span className="sr-only"> — منصة تنسيق الحفلات والزواج وإدارة المؤتمرات بالسعودية</span>
+          زواجك ومناسباتك..{" "}
+          <span
+            className="relative inline-block text-primary-deep"
+            style={{
+              fontFeatureSettings: '"kern","liga","calt","dlig"',
+              letterSpacing: "0.01em",
+            }}
+          >
+            {/* Kashida-stretched brand word */}
+            <span className="bg-gradient-to-b from-primary-deep to-primary-deep/85 bg-clip-text">
+              {TKLH_KASHIDA}
+            </span>
+            {/* Gold underline flourish */}
+            <motion.span
+              aria-hidden
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 1.1, delay: 1, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute -bottom-1 left-0 right-0 h-[3px] origin-right rounded-full bg-gradient-to-l from-gold via-gold to-transparent"
+            />
+          </span>{" "}
+          وتخلص بلمح البصر.
         </motion.h1>
-
-        {/* Hairline gold divider */}
-        <motion.div
-          initial={{ opacity: 0, scaleX: 0 }}
-          animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 mb-6"
-        >
-          <SketchDivider />
-        </motion.div>
 
         {/* Sub-headline */}
         <motion.p
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="font-tagline max-w-3xl text-balance text-center text-xl font-bold leading-[1.6] sm:text-2xl md:text-3xl"
-          lang="ar"
-          dir="rtl"
-          style={{ color: "hsl(var(--primary-deep))" }}
+          variants={rise}
+          className="font-tagline mt-6 max-w-3xl text-balance text-base leading-[1.85] text-primary-deep/80 sm:text-lg md:text-xl"
         >
-          {t("hero.titleB")}
+          المنصة الذكية الأولى لحجز القاعات وكافة خدمات الزواج بلمح البصر وبدون
+          حوسة التنسيق اليدوي.
         </motion.p>
 
-        {/* Supporting micro description */}
-        <motion.p
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-5 max-w-xl text-balance text-sm leading-relaxed sm:text-base"
-          style={{ color: "hsl(var(--primary-deep) / 0.78)" }}
+        {/* === Services bento row — hand-drawn sketches === */}
+        <motion.ul
+          variants={rise}
+          className="mt-10 grid w-full max-w-4xl grid-cols-5 gap-2 sm:gap-4"
         >
-          {t("hero.desc")}
-        </motion.p>
+          {services.map(({ label, Icon }, i) => (
+            <motion.li
+              key={label}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.7,
+                delay: 0.55 + i * 0.1,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="group relative flex flex-col items-center justify-end rounded-2xl border border-primary-deep/12 bg-cream/70 px-2 py-4 backdrop-blur-sm transition-all duration-500 ease-out hover:-translate-y-1.5 hover:border-gold/60 hover:bg-cream hover:shadow-[0_18px_40px_-18px_hsl(var(--primary-deep)/0.35)] sm:px-3 sm:py-5"
+            >
+              <Icon className="h-12 w-12 transition-transform duration-500 ease-out group-hover:scale-110 sm:h-16 sm:w-16" />
+              <span className="mt-2 text-[11px] font-bold tracking-wide text-primary-deep sm:mt-3 sm:text-sm">
+                {label}
+              </span>
+              <span className="pointer-events-none absolute inset-x-3 -bottom-px h-px bg-gradient-to-l from-transparent via-gold/70 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            </motion.li>
+          ))}
+        </motion.ul>
 
-        {/* CTAs */}
+        {/* === CTAs === */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          variants={rise}
           className="mt-10 flex flex-col items-center gap-3 sm:flex-row"
         >
           <Button
             size="lg"
             asChild
-            className="group h-14 rounded-full bg-gold px-10 text-base font-bold text-primary-deep shadow-[0_18px_45px_-12px_hsl(var(--gold)/0.5)] transition-all hover:scale-[1.03] hover:bg-gold/90"
+            className="group h-14 rounded-full bg-gold px-10 text-base font-bold text-primary-deep shadow-[0_18px_45px_-12px_hsl(var(--gold)/0.5)] transition-all duration-300 hover:scale-[1.03] hover:bg-gold/90"
           >
             <a href="#wizard">
-              {t("hero.cta")}
-              <ArrowLeft className="ms-2 h-4 w-4 text-primary-deep transition-transform group-hover:-translate-x-1 rtl:rotate-0 ltr:rotate-180" />
+              ابدأ التنسيق الآن
+              <ArrowLeft className="ms-2 h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
             </a>
           </Button>
           <Button
             size="lg"
             variant="ghost"
             asChild
-            className="h-14 rounded-full border-2 border-primary-deep/30 bg-transparent px-8 text-base font-bold text-primary-deep hover:bg-primary-deep/5"
+            className="h-14 rounded-full border-2 border-primary-deep/25 bg-transparent px-8 text-base font-bold text-primary-deep transition-all duration-300 hover:bg-primary-deep/5"
           >
-            <a href="#about">{t("hero.secondary")}</a>
+            <a href="#about">شاهد كيف تعمل</a>
           </Button>
         </motion.div>
 
-        {/* Stats — minimal floating rows */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.05, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-16 grid w-full max-w-3xl grid-cols-3 gap-3 sm:gap-6"
+        {/* === Trust badges — instant "aha" === */}
+        <motion.ul
+          variants={rise}
+          className="mt-12 flex flex-wrap items-center justify-center gap-2 sm:gap-3"
         >
-          {[
-            { value: 250, suffix: t("hero.stat1Suffix", { defaultValue: "+" }), label: t("hero.stat1Label"), decimal: false },
-            { value: 1200, suffix: t("hero.stat2Suffix", { defaultValue: "+" }), label: t("hero.stat2Label"), decimal: false },
-            { value: 49, suffix: t("hero.stat3Suffix", { defaultValue: "★" }), label: t("hero.stat3Label"), decimal: true },
-          ].map((s, i) => (
-            <div
-              key={i}
-              className="group rounded-2xl border border-primary-deep/15 bg-cream/70 px-3 py-4 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-gold/60 hover:bg-cream"
+          {badges.map(({ label, Icon }, i) => (
+            <motion.li
+              key={label}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                delay: 1.1 + i * 0.12,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="group inline-flex items-center gap-2 rounded-full border border-primary-deep/15 bg-cream/80 px-4 py-2 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-gold/60 hover:bg-cream"
             >
-              <div className="font-display text-2xl font-bold text-primary-deep sm:text-3xl">
-                {s.decimal ? (
-                  <>
-                    <AnimatedCounter value={4} duration={1400} />
-                    <span>.</span>
-                    <AnimatedCounter value={9} duration={1700} />
-                    <span className="ms-1 text-gold">{s.suffix}</span>
-                  </>
-                ) : (
-                  <>
-                    <AnimatedCounter value={s.value} />
-                    <span className="text-gold">{s.suffix}</span>
-                  </>
-                )}
-              </div>
-              <div className="mt-1 text-[11px] tracking-wide text-primary-deep/60 sm:text-xs">
-                {s.label}
-              </div>
-            </div>
+              <Icon className="h-4 w-4 text-gold transition-transform duration-300 group-hover:scale-110" strokeWidth={1.8} />
+              <span className="text-xs font-bold text-primary-deep sm:text-sm">{label}</span>
+            </motion.li>
           ))}
-        </motion.div>
-      </div>
+        </motion.ul>
+      </motion.div>
     </section>
   );
 };
