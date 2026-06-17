@@ -1,6 +1,6 @@
 import { motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Sparkles, ShieldCheck, Zap, Heart } from "lucide-react";
 import {
   SketchCurtain,
   SketchEucalyptus,
@@ -415,109 +415,55 @@ export const Hero = () => {
           منصة ذكية تجمع كل احتياجات زواجك ومناسبتك في مكان واحد، من التخطيط إلى الحجز والدفع.
         </motion.p>
 
-        {/* Section eyebrow */}
+        {/* === About / تعرف على تكله — replaces the icon cards === */}
         <motion.div variants={rise} className="mt-12 flex flex-col items-center gap-2">
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary-deep/15 bg-white/60 px-4 py-1.5 text-[11px] font-bold tracking-[0.18em] text-primary-deep/80 backdrop-blur-sm sm:text-xs">
-            <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-            مصمّمة لكل أطراف مناسبتك
-            <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+          <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-[11px] font-bold tracking-[0.16em] text-primary-deep backdrop-blur-sm sm:text-xs">
+            <Sparkles className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
+            تعرف على تِكله
           </span>
-          <h2 className="font-display text-xl font-black text-primary-deep sm:text-2xl">
-            من العريس والعروس… إلى كل مزوّد خدمة
-          </h2>
         </motion.div>
 
-        {/* === Premium bento cards === */}
-        <motion.ul
+        <motion.p
           variants={rise}
-          className="mt-10 grid w-full max-w-5xl grid-cols-2 gap-3 sm:grid-cols-5 sm:gap-4"
+          className="font-tagline mx-auto mt-5 max-w-2xl text-balance text-base leading-[1.95] text-primary-deep/75 sm:text-lg"
         >
-          {cards.map(({ label, caption, variant }, i) => (
-            <motion.li
+          اخترنا اسم{" "}
+          <span className="font-bold" style={{ color: "hsl(var(--green))" }}>«تِكله»</span>{" "}
+          من «الاتكال» و«الثقة» — لأن لحظة الفرح ما تستاهل صداع التخطيط.
+        </motion.p>
+
+        {/* Trust chips */}
+        <motion.div variants={rise} className="mt-7 flex flex-wrap items-center justify-center gap-2.5">
+          {[
+            { Icon: ShieldCheck, label: "شفافية كاملة" },
+            { Icon: Zap, label: "سرعة وسهولة" },
+            { Icon: Heart, label: "خيارات متنوعة تليق بليلة عمرك" },
+          ].map(({ Icon, label }) => (
+            <span
               key={label}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, delay: 0.5 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className={`group relative flex aspect-[4/5] flex-col items-center justify-end overflow-hidden rounded-3xl border px-3 py-5 backdrop-blur-sm transition-all duration-500 ease-out hover:-translate-y-2 ${variantClass[variant]}`}
+              className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-cream/80 px-4 py-2 text-xs font-bold text-primary-deep backdrop-blur-sm transition-colors hover:border-gold hover:bg-cream sm:text-sm"
             >
-              {/* decorative arabesque ornament — same elegant motif on each card */}
-              <svg
-                aria-hidden
-                viewBox="0 0 120 120"
-                className="pointer-events-none absolute inset-x-0 top-3 mx-auto h-20 w-20 opacity-90 transition-transform duration-700 ease-out group-hover:rotate-45 sm:h-24 sm:w-24"
-                fill="none"
-              >
-                <g
-                  stroke={variant === "black" ? "hsl(var(--gold))" : "hsl(var(--green))"}
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                >
-                  {/* outer 8-point star */}
-                  <path d="M60 12 L68 44 L100 36 L76 60 L100 84 L68 76 L60 108 L52 76 L20 84 L44 60 L20 36 L52 44 Z" />
-                  {/* inner rotated square */}
-                  <rect x="42" y="42" width="36" height="36" transform="rotate(45 60 60)" />
-                  {/* center circle */}
-                  <circle cx="60" cy="60" r="6" fill={variant === "black" ? "hsl(var(--gold))" : "hsl(var(--green))"} stroke="none" />
-                  {/* tiny petals */}
-                  <circle cx="60" cy="30" r="2" fill={variant === "black" ? "hsl(var(--gold))" : "hsl(var(--green))"} stroke="none" />
-                  <circle cx="60" cy="90" r="2" fill={variant === "black" ? "hsl(var(--gold))" : "hsl(var(--green))"} stroke="none" />
-                  <circle cx="30" cy="60" r="2" fill={variant === "black" ? "hsl(var(--gold))" : "hsl(var(--green))"} stroke="none" />
-                  <circle cx="90" cy="60" r="2" fill={variant === "black" ? "hsl(var(--gold))" : "hsl(var(--green))"} stroke="none" />
-                </g>
-              </svg>
-
-              {/* soft glow accent behind ornament */}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute left-1/2 top-8 h-24 w-24 -translate-x-1/2 rounded-full opacity-50 blur-2xl transition-opacity duration-500 group-hover:opacity-80"
-                style={{
-                  background:
-                    variant === "black"
-                      ? "radial-gradient(circle, hsl(var(--gold)/0.45), transparent 70%)"
-                      : "radial-gradient(circle, hsl(var(--green)/0.25), transparent 70%)",
-                }}
-              />
-
-              <span className={`mt-3 text-sm font-black tracking-wide sm:text-base ${variant === "black" ? "text-white" : "text-primary-deep"}`}>
-                {label}
-              </span>
-              <span className={`mt-0.5 text-[11px] font-medium ${variant === "black" ? "text-white/65" : "text-primary-deep/55"}`}>
-                {caption}
-              </span>
-              <span
-                className="pointer-events-none absolute inset-x-4 -bottom-px h-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                style={{
-                  background:
-                    "linear-gradient(90deg, transparent, hsl(var(--green)/0.7), transparent)",
-                }}
-              />
-            </motion.li>
+              <Icon className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
+              {label}
+            </span>
           ))}
-        </motion.ul>
+        </motion.div>
 
-        {/* === CTAs === */}
-        <motion.div
-          variants={rise}
-          className="mt-10 flex flex-col items-center gap-3 sm:flex-row"
-        >
-          <Button
-            size="lg"
-            asChild
-            className="group h-14 rounded-full bg-gold px-10 text-base font-bold text-primary-deep shadow-[0_18px_45px_-12px_hsl(var(--gold)/0.55)] transition-all duration-500 ease-out hover:scale-[1.04] hover:bg-gold/90"
+        {/* CTAs — primary olive/gold + ghost */}
+        <motion.div variants={rise} className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="#wizard"
+            className="group inline-flex items-center justify-center gap-2 rounded-full border-2 border-gold bg-green px-8 py-3.5 font-bold text-gold shadow-[0_18px_45px_-15px_hsl(var(--green)/0.55)] transition-all duration-500 ease-out hover:-translate-y-0.5 hover:bg-green-mid sm:text-base"
           >
-            <a href="#wizard">
-              ابدأ التنسيق الآن
-              <ArrowLeft className="ms-2 h-4 w-4 transition-transform duration-500 ease-out group-hover:-translate-x-1" />
-            </a>
-          </Button>
-          <Button
-            size="lg"
-            variant="ghost"
-            asChild
-            className="h-14 rounded-full border-2 border-primary-deep/25 bg-transparent px-8 text-base font-bold text-primary-deep transition-all duration-500 ease-out hover:bg-primary-deep/5"
+            <Sparkles className="h-4 w-4 transition-transform duration-500 ease-out group-hover:rotate-12" />
+            ابدأ التخطيط الحين
+          </a>
+          <a
+            href="#speed"
+            className="inline-flex items-center justify-center rounded-full border border-green/30 bg-cream/70 px-7 py-3.5 font-bold text-green backdrop-blur-sm transition-colors hover:bg-cream sm:text-base"
           >
-            <a href="#about">شاهد كيف تعمل</a>
-          </Button>
+            ليش تِكله؟
+          </a>
         </motion.div>
 
         {/* === Crossing services marquee === */}
