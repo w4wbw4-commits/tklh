@@ -1,6 +1,6 @@
 import { motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sparkles, ShieldCheck, Zap, Heart } from "lucide-react";
+import { ArrowLeft, Sparkles, ShieldCheck, Zap, Heart, Gift } from "lucide-react";
 import {
   SketchCurtain,
   SketchEucalyptus,
@@ -259,20 +259,20 @@ const variantClass: Record<CardDef["variant"], string> = {
 
 // ---- Services marquee data --------------------------------------------------
 const marqueeRow1 = [
-  "قاعات أفراح",
-  "مصورين محترفين",
-  "كوشات مصممة",
-  "بوفيه وكيترنق",
-  "فرق استعراضية",
-  "سيارات زفّة",
+  "قاعات أفراح تأخذ القلب",
+  "مصورون يخلّدون لحظتك",
+  "كوشات تزهّاك بالأنظار",
+  "سيارات زفّة فخامة ملكية",
+  "بوفيه يخلّي ضيوفك يتكلمون",
+  "فرق استعراضية تشعل ليلتك",
 ];
 const marqueeRow2 = [
-  "تنسيق إضاءة",
-  "كيك مناسبات",
-  "دعوات إلكترونية",
-  "توزيعات راقية",
-  "منسقي ورد",
-  "حفلات DJ",
+  "دعوات إلكترونية بذوق",
+  "توزيعات تترك أثر",
+  "تنسيق إضاءة سينمائي",
+  "كيك يليق بمناسبتك",
+  "منسّقو ورد بلمسة فنّان",
+  "DJ يرقّص الحفلة كلها",
 ];
 
 const MarqueeRow = ({ items, direction }: { items: string[]; direction: "rtl" | "ltr" }) => {
@@ -432,37 +432,88 @@ export const Hero = () => {
           من «الاتكال» و«الثقة» — لأن لحظة الفرح ما تستاهل صداع التخطيط.
         </motion.p>
 
-        {/* Trust chips */}
-        <motion.div variants={rise} className="mt-7 flex flex-wrap items-center justify-center gap-2.5">
+        {/* === Trust value cards — modern expressive === */}
+        <motion.div
+          variants={rise}
+          className="mt-8 grid w-full max-w-4xl grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4"
+        >
           {[
-            { Icon: ShieldCheck, label: "شفافية كاملة" },
-            { Icon: Zap, label: "سرعة وسهولة" },
-            { Icon: Heart, label: "خيارات متنوعة تليق بليلة عمرك" },
-          ].map(({ Icon, label }) => (
-            <span
-              key={label}
-              className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-cream/80 px-4 py-2 text-xs font-bold text-primary-deep backdrop-blur-sm transition-colors hover:border-gold hover:bg-cream sm:text-sm"
+            { Icon: ShieldCheck, title: "شفافية ووضوح", desc: "أسعار مكشوفة بدون مفاجآت ولا أرقام مخفية." },
+            { Icon: Zap, title: "سرعة وسهولة", desc: "تخطيط كامل بدقائق معدودة، بدون حوسة الواتساب." },
+            { Icon: Heart, title: "خيارات تليق بليلتك", desc: "تشكيلة منتقاة من أفضل المزوّدين بكل ذوق وفخامة." },
+          ].map(({ Icon, title, desc }, i) => (
+            <motion.div
+              key={title}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.4 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative overflow-hidden rounded-2xl border border-green/15 bg-white/70 p-5 text-right backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_20px_45px_-22px_hsl(var(--green)/0.45)]"
             >
-              <Icon className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
-              {label}
-            </span>
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -left-6 -top-6 h-20 w-20 rounded-full opacity-40 blur-2xl transition-opacity duration-500 group-hover:opacity-80"
+                style={{ background: "radial-gradient(circle, hsl(var(--gold)/0.55), transparent 70%)" }}
+              />
+              <div className="flex items-start gap-3">
+                <span
+                  className="grid h-10 w-10 flex-none place-items-center rounded-xl border border-gold/30 transition-transform duration-500 group-hover:scale-110"
+                  style={{ background: "linear-gradient(135deg, hsl(var(--gold)/0.18), hsl(var(--green)/0.10))" }}
+                >
+                  <Icon className="h-5 w-5 text-green" strokeWidth={2.2} />
+                </span>
+                <div className="flex-1">
+                  <h3 className="font-display text-base font-black text-green sm:text-lg">{title}</h3>
+                  <p className="mt-1 text-[12.5px] leading-[1.7] text-primary-deep/70 sm:text-sm">{desc}</p>
+                </div>
+              </div>
+              <span
+                className="pointer-events-none absolute inset-x-5 bottom-3 h-px scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
+                style={{ background: "linear-gradient(90deg, transparent, hsl(var(--gold)), transparent)" }}
+              />
+            </motion.div>
           ))}
         </motion.div>
 
-        {/* CTAs — primary olive/gold + ghost */}
-        <motion.div variants={rise} className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        {/* === Dual-path CTAs === */}
+        <motion.div variants={rise} className="mt-10 grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
           <a
             href="#wizard"
-            className="group inline-flex items-center justify-center gap-2 rounded-full border-2 border-gold bg-green px-8 py-3.5 font-bold text-gold shadow-[0_18px_45px_-15px_hsl(var(--green)/0.55)] transition-all duration-500 ease-out hover:-translate-y-0.5 hover:bg-green-mid sm:text-base"
+            className="group relative overflow-hidden rounded-2xl border-2 border-gold p-5 text-right transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.55)]"
+            style={{ background: "linear-gradient(135deg, hsl(var(--green)) 0%, hsl(var(--green-mid)) 100%)" }}
           >
-            <Sparkles className="h-4 w-4 transition-transform duration-500 ease-out group-hover:rotate-12" />
-            ابدأ التخطيط الحين
+            <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
+              style={{ background: "radial-gradient(circle, hsl(var(--gold)), transparent 70%)" }} />
+            <div className="relative flex items-center gap-3">
+              <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-gold/50 bg-green-mid/40 transition-transform duration-500 group-hover:rotate-6">
+                <Sparkles className="h-5 w-5 text-gold" strokeWidth={2.4} />
+              </span>
+              <div className="flex-1">
+                <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold/80">المسار الذكي</div>
+                <div className="font-display text-lg font-black text-gold sm:text-xl">خطّط ليلتك بنفسك</div>
+                <div className="mt-0.5 text-[12.5px] text-cream/85">حدّد ميزانيتك واختر كل تفصيلة على ذوقك.</div>
+              </div>
+              <ArrowLeft className="h-5 w-5 text-gold transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+            </div>
           </a>
+
           <a
-            href="#speed"
-            className="inline-flex items-center justify-center rounded-full border border-green/30 bg-cream/70 px-7 py-3.5 font-bold text-green backdrop-blur-sm transition-colors hover:bg-cream sm:text-base"
+            href="#packages"
+            className="group relative overflow-hidden rounded-2xl border-2 border-green/30 bg-cream/90 p-5 text-right backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-green hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.35)]"
           >
-            ليش تِكله؟
+            <span aria-hidden className="pointer-events-none absolute -top-10 -right-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
+              style={{ background: "radial-gradient(circle, hsl(var(--green)/0.6), transparent 70%)" }} />
+            <div className="relative flex items-center gap-3">
+              <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-green/30 transition-transform duration-500 group-hover:rotate-6"
+                style={{ background: "linear-gradient(135deg, hsl(var(--gold)/0.25), hsl(var(--green)/0.12))" }}>
+                <Gift className="h-5 w-5 text-green" strokeWidth={2.4} />
+              </span>
+              <div className="flex-1">
+                <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-green/70">جاهزة بضغطة</div>
+                <div className="font-display text-lg font-black text-green sm:text-xl">اختار باقتك</div>
+                <div className="mt-0.5 text-[12.5px] text-primary-deep/65">باقات منسّقة بعناية — احجز وخلّص بدقيقة.</div>
+              </div>
+              <ArrowLeft className="h-5 w-5 text-green transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+            </div>
           </a>
         </motion.div>
 
@@ -472,9 +523,7 @@ export const Hero = () => {
           className="relative mt-14 w-screen max-w-none -mx-5 sm:-mx-8"
           style={{ marginInline: "calc(50% - 50vw)" }}
         >
-          {/* edge fades */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-cream to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-cream to-transparent" />
+          {/* edges kept clean — no fade so badges stay visible all the way through */}
           <div className="flex flex-col gap-1 border-y border-primary-deep/10 py-3">
             <MarqueeRow items={marqueeRow1} direction="rtl" />
             <MarqueeRow items={marqueeRow2} direction="ltr" />
