@@ -12,9 +12,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Tajawal', 'system-ui', 'sans-serif'],
-        arabic: ['Tajawal', 'system-ui', 'sans-serif'],
-        display: ['Tajawal', 'system-ui', 'sans-serif'],
+        sans: ['"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
+        arabic: ['"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
+        display: ['"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
