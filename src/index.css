@@ -25,6 +25,34 @@
   font-weight: 900; font-style: normal; font-display: swap;
 }
 
+/* Thmanyah Serif Display — headings */
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('/__l5e/assets-v1/2bc6a75d-c3b3-4c14-a8b8-69343d7236c1/thmanyahserifdisplay-Light.otf') format('opentype');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('/__l5e/assets-v1/59dc5436-c82b-46af-bffd-b5e7306c70a7/thmanyahserifdisplay-Regular.otf') format('opentype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('/__l5e/assets-v1/4feda739-059e-4292-a555-f40b69a0ed09/thmanyahserifdisplay-Medium.otf') format('opentype');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('/__l5e/assets-v1/ecd6ea4f-da6d-428b-b5de-3bf85b029d91/thmanyahserifdisplay-Bold.otf') format('opentype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('/__l5e/assets-v1/c7e732b6-4d21-46be-b740-12d0f5723de5/thmanyahserifdisplay-Black.otf') format('opentype');
+  font-weight: 900; font-style: normal; font-display: swap;
+}
+
+
 /* Saudi Riyal symbol font — official new SAR glyph.
    Loaded for the private-use glyph at U+E900 and U+20C1 only,
    so it never overrides regular Arabic/Latin text. */

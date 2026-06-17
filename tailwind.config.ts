@@ -14,7 +14,8 @@ export default {
       fontFamily: {
         sans: ['"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
         arabic: ['"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
-        display: ['"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
+        display: ['"Thmanyah Serif Display"', '"Thmanyah Sans"', 'serif'],
+        serif: ['"Thmanyah Serif Display"', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
