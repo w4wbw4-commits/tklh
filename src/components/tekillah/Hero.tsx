@@ -259,30 +259,40 @@ const variantClass: Record<CardDef["variant"], string> = {
 
 // ---- Services marquee data --------------------------------------------------
 const marqueeRow1 = [
-  "قاعات أفراح تأخذ القلب",
-  "مصورون يخلّدون لحظتك",
-  "كوشات تزهّاك بالأنظار",
-  "سيارات زفّة فخامة ملكية",
-  "بوفيه يخلّي ضيوفك يتكلمون",
-  "فرق استعراضية تشعل ليلتك",
+  "قاعات أفراح",
+  "حفلات تخرّج",
+  "حفلات ملكة",
+  "حفلات خطوبة",
+  "تصوير احترافي",
+  "تنسيق كوش",
+  "سيارات زفّة",
+  "بوفيهات وضيافة",
+  "فرق فلكلورية",
+  "تنسيق إضاءة",
 ];
 const marqueeRow2 = [
-  "دعوات إلكترونية بذوق",
-  "توزيعات تترك أثر",
-  "تنسيق إضاءة سينمائي",
-  "كيك يليق بمناسبتك",
-  "منسّقو ورد بلمسة فنّان",
-  "DJ يرقّص الحفلة كلها",
+  "دعوات إلكترونية",
+  "توزيعات مناسبات",
+  "كيك المناسبات",
+  "تنسيق ورود",
+  "DJ وصوتيات",
+  "حفلات استقبال مواليد",
+  "حفلات تأسيس",
+  "مناسبات خاصة",
+  "تنظيم مؤتمرات",
+  "تغطية إعلامية",
 ];
 
 const MarqueeRow = ({ items, direction }: { items: string[]; direction: "rtl" | "ltr" }) => {
-  const doubled = [...items, ...items, ...items];
+  // Duplicate exactly once for a seamless -50% loop (matches keyframes).
+  const doubled = [...items, ...items];
   return (
     <div className="relative w-full overflow-hidden py-2">
       <div
         className={`flex w-max items-center gap-4 whitespace-nowrap sm:gap-5 ${
           direction === "rtl" ? "animate-marquee-rtl" : "animate-marquee-ltr"
         }`}
+        style={{ willChange: "transform" }}
       >
         {doubled.map((item, i) => (
           <div key={`${item}-${i}`} className="flex items-center gap-4 sm:gap-5">
