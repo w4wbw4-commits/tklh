@@ -1,5 +1,5 @@
 import { Logo } from "./Logo";
-import { Instagram, Twitter, Mail, Phone, Building2, ArrowRight, LogOut } from "lucide-react";
+import { Instagram, Twitter, Mail, Building2, ArrowRight, LogOut } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -32,8 +32,7 @@ export const Footer = () => {
               {[
                 { Icon: Instagram, href: "#", label: "Instagram" },
                 { Icon: Twitter, href: "#", label: "Twitter" },
-                { Icon: Mail, href: "mailto:Call@tklh.sa", label: "Email" },
-                { Icon: Phone, href: "tel:+966544057854", label: "Phone" },
+              { Icon: Mail, href: "mailto:Call@tklh.sa", label: "Email" },
               ].map(({ Icon, href, label }) => (
                 <a
                   key={label}
@@ -50,12 +49,6 @@ export const Footer = () => {
                 <a href="mailto:Call@tklh.sa" className="inline-flex items-center gap-2 hover:text-primary" dir="ltr">
                   <Mail className="h-3.5 w-3.5" />
                   Call@tklh.sa
-                </a>
-              </li>
-              <li>
-                <a href="tel:+966544057854" className="inline-flex items-center gap-2 hover:text-primary tabular-nums" dir="ltr">
-                  <Phone className="h-3.5 w-3.5" />
-                  0544057854
                 </a>
               </li>
             </ul>
