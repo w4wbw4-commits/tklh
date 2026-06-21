@@ -1284,6 +1284,14 @@ export type Database = {
       }
     }
     Views: {
+      platform_settings_public: {
+        Row: {
+          currency: string | null
+          vat_number: string | null
+          vat_percent: number | null
+        }
+        Relationships: []
+      }
       public_profiles: {
         Row: {
           avatar_url: string | null
