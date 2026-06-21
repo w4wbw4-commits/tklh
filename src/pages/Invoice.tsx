@@ -86,7 +86,7 @@ const Invoice = () => {
           paidAmount: split.paid,
           bookingId: booking.id,
           vatPercent: vatPct,
-          platformPercent: feePct,
+          platformFee: split.fee,
         },
       });
       if (error) throw error;
