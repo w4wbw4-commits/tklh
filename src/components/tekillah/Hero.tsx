@@ -284,20 +284,31 @@ const marqueeRow2 = [
   "تغطية إعلامية",
 ];
 
-const MarqueeRow = ({ items, direction }: { items: string[]; direction: "rtl" | "ltr" }) => {
-  // Repeat enough times to overflow any viewport. Use an even count and put
-  // the spacing as margin on each item (not flex `gap`) — `gap` only inserts
-  // space *between* siblings, which leaves the seam at -50% half-a-gap short
-  // and causes a visible jump. Margin includes the trailing space so the
-  // loop lands perfectly on an identical frame.
-  const doubled = Array.from({ length: 6 }).flatMap(() => items);
+const MarqueeRow = ({
+  items,
+  direction,
+  delay = "0s",
+}: {
+  items: string[];
+  direction: "rtl" | "ltr";
+  delay?: string;
+}) => {
+  // EXACTLY two copies — the animation translates the track by -50%, which
+  // lands on the start of the second copy = visually identical to frame 0.
+  // Any other count would still work but two is the minimal seamless loop
+  // and guarantees no measurable seam.
+  const doubled = [...items, ...items];
   return (
     <div className="relative w-full overflow-hidden py-2">
       <div
         className={`flex w-max items-center whitespace-nowrap ${
           direction === "rtl" ? "animate-marquee-rtl" : "animate-marquee-ltr"
         }`}
-        style={{ willChange: "transform", transform: "translateZ(0)" }}
+        style={{
+          willChange: "transform",
+          transform: "translateZ(0)",
+          animationDelay: delay,
+        }}
       >
         {doubled.map((item, i) => (
           <div
@@ -546,7 +557,7 @@ export const Hero = () => {
           {/* edges kept clean — no fade so badges stay visible all the way through */}
           <div className="flex flex-col gap-1 border-y border-primary-deep/10 py-3">
             <MarqueeRow items={marqueeRow1} direction="rtl" />
-            <MarqueeRow items={marqueeRow2} direction="ltr" />
+            <MarqueeRow items={marqueeRow2} direction="ltr" delay="-30s" />
           </div>
         </motion.div>
       </motion.div>
