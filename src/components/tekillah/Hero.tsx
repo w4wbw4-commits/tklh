@@ -394,20 +394,6 @@ export const Hero = () => {
         animate="show"
         className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col items-center px-5 pt-20 pb-10 text-center sm:px-8"
       >
-        {/* Brand wordmark */}
-        <motion.div variants={rise} className="mb-6 flex flex-col items-center">
-          <span
-            className="font-display text-5xl font-black tracking-tight sm:text-6xl"
-            style={{
-              fontFeatureSettings: '"kern","liga","calt","dlig"',
-              letterSpacing: "0.005em",
-              color: "hsl(var(--green))",
-            }}
-          >
-            تِكله
-          </span>
-          <span className="mt-2 h-[2px] w-14 rounded-full bg-gradient-to-l from-transparent via-gold to-transparent" />
-        </motion.div>
 
         {/* Massive headline */}
         <motion.h1
