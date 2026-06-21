@@ -14,12 +14,6 @@ const ProblemSolutionAbout = lazy(() =>
 const OccasionsSection = lazy(() =>
   import("@/components/tekillah/OccasionsSection").then((m) => ({ default: m.OccasionsSection })),
 );
-const PlatformPackages = lazy(() =>
-  import("@/components/tekillah/PlatformPackages").then((m) => ({ default: m.PlatformPackages })),
-);
-const PlanningWizard = lazy(() =>
-  import("@/components/tekillah/PlanningWizard").then((m) => ({ default: m.PlanningWizard })),
-);
 const DashboardPreview = lazy(() =>
   import("@/components/tekillah/DashboardPreview").then((m) => ({ default: m.DashboardPreview })),
 );
