@@ -120,7 +120,7 @@ export const Mission = () => {
           transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
         >
           <a
-            href="#wizard"
+            href="/planner"
             className="mt-10 inline-flex items-center gap-3 rounded-full bg-primary px-10 py-5 text-base font-bold text-primary-foreground shadow-luxury transition-all hover:-translate-y-1 hover:bg-primary-deep"
           >
             {t("mission.cta")}

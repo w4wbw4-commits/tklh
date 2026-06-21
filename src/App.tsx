@@ -45,6 +45,8 @@ const PartnerProfilePage = lazy(() => import("./pages/vendor/PartnerProfilePage.
 const WeddingsPage = lazy(() => import("./pages/seo/WeddingsPage.tsx"));
 const EventsPage = lazy(() => import("./pages/seo/EventsPage.tsx"));
 const ConferencesPage = lazy(() => import("./pages/seo/ConferencesPage.tsx"));
+const Packages = lazy(() => import("./pages/Packages.tsx"));
+const Planner = lazy(() => import("./pages/Planner.tsx"));
 
 const queryClient = new QueryClient();
 
@@ -101,6 +103,8 @@ const AppRoutes = () => {
                       <Route path="/weddings" element={<WeddingsPage />} />
                       <Route path="/events" element={<EventsPage />} />
                       <Route path="/conferences" element={<ConferencesPage />} />
+                      <Route path="/packages" element={<Packages />} />
+                      <Route path="/planner" element={<Planner />} />
                       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                       <Route path="*" element={<NotFound />} />
                     </Routes>

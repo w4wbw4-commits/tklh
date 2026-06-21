@@ -49,11 +49,11 @@ export const Navbar = () => {
   };
 
   const navItems = [
-    { key: "home", href: "#home" },
-    { key: "about", href: "#about", labelOverride: isAr ? "تعرف على تِكله" : "About TKLH" },
-    { key: "packages", href: "#packages", labelOverride: isAr ? "الباقات" : "Packages" },
-    { key: "plan", href: "#wizard" },
-  ] as const;
+    { key: "home", href: "/", type: "route" as const },
+    { key: "about", href: "/#about", type: "anchor" as const, labelOverride: isAr ? "تعرف على تِكله" : "About TKLH" },
+    { key: "packages", href: "/packages", type: "route" as const, labelOverride: isAr ? "الباقات" : "Packages" },
+    { key: "plan", href: "/planner", type: "route" as const },
+  ];
 
   return (
     <motion.header
@@ -79,15 +79,23 @@ export const Navbar = () => {
         >
           <Logo />
           <nav className="hidden items-center gap-1 md:flex">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="relative rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition-all hover:text-primary-deep after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:bg-gold after:transition-all hover:after:w-1/2"
-              >
-                {("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`)}
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
+              const cls =
+                "relative rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition-all hover:text-primary-deep after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:bg-gold after:transition-all hover:after:w-1/2";
+              if (item.type === "route") {
+                return (
+                  <Link key={item.href} to={item.href} className={cls}>
+                    {label}
+                  </Link>
+                );
+              }
+              return (
+                <a key={item.href} href={item.href} className={cls}>
+                  {label}
+                </a>
+              );
+            })}
           </nav>
           <div className="flex items-center gap-1.5 sm:gap-2">
             {user && (

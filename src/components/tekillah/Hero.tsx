@@ -506,7 +506,7 @@ export const Hero = () => {
         {/* === Dual-path CTAs === */}
         <motion.div variants={rise} className="mt-10 grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
           <a
-            href="#wizard"
+            href="/planner"
             className="group relative overflow-hidden rounded-2xl border-2 border-gold p-5 text-right transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.55)]"
             style={{ background: "linear-gradient(135deg, hsl(var(--green)) 0%, hsl(var(--green-mid)) 100%)" }}
           >
@@ -526,7 +526,7 @@ export const Hero = () => {
           </a>
 
           <a
-            href="#packages"
+            href="/packages"
             className="group relative overflow-hidden rounded-2xl border-2 border-green/30 bg-cream/90 p-5 text-right backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-green hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.35)]"
           >
             <span aria-hidden className="pointer-events-none absolute -top-10 -right-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
