@@ -39,7 +39,7 @@ export const useMarketPrices = () => {
       // Fetch active vendors with their basic packages joined.
       const { data, error } = await supabase
         .from("packages")
-        .select("price, tier, vendor:vendors!inner(category, active)")
+        .select("price, tier, vendor:vendors_public!inner(category, active)")
         .eq("tier", "basic")
         .eq("active", true);
       if (cancelled) return;

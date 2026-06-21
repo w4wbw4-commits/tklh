@@ -26,7 +26,7 @@ const Invoice = () => {
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
   const [vatPct, setVatPct] = useState(15);
-  const [feePct, setFeePct] = useState(12);
+  const [fee, setFee] = useState(0);
   const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
@@ -43,10 +43,17 @@ const Invoice = () => {
           .select("*, vendor:vendors(business_name, category, city), package:packages(name, description), event:events(title, city, guest_count)")
           .eq("id", bookingId)
           .maybeSingle(),
-        supabase.from("platform_settings").select("vat_percent, commission_percent").maybeSingle(),
+        supabase.from("platform_settings_public").select("vat_percent").maybeSingle(),
       ]);
-      setBooking(b as unknown as Booking | null);
-      if (s) { setVatPct(Number(s.vat_percent)); setFeePct(Number(s.commission_percent)); }
+      const booking = b as unknown as Booking | null;
+      setBooking(booking);
+      if (s) setVatPct(Number(s.vat_percent));
+      const subtotal = Number(booking?.total_price ?? 0);
+      if (subtotal > 0) {
+        const { data: parts } = await supabase.rpc("compute_payment_split", { _amount: subtotal });
+        const row = Array.isArray(parts) ? parts[0] : parts;
+        if (row) setFee(Number(row.platform_fee ?? 0));
+      }
       setLoading(false);
     })();
   }, [user, bookingId]);
@@ -54,12 +61,12 @@ const Invoice = () => {
   const split = useMemo(() => {
     const subtotal = Number(booking?.total_price ?? 0);
     const vat = Math.round((subtotal * vatPct) / 100);
-    const fee = Math.round((subtotal * feePct) / 100);
     const total = subtotal + vat;
     const paid = Number(booking?.paid_amount ?? 0);
     const balance = Math.max(0, total - paid);
     return { subtotal, vat, fee, total, paid, balance };
-  }, [booking, vatPct, feePct]);
+  }, [booking, vatPct, fee]);
+
 
   const handlePrint = () => window.print();
 
@@ -79,7 +86,7 @@ const Invoice = () => {
           paidAmount: split.paid,
           bookingId: booking.id,
           vatPercent: vatPct,
-          platformPercent: feePct,
+          platformFee: split.fee,
         },
       });
       if (error) throw error;
@@ -221,7 +228,7 @@ const Invoice = () => {
             {/* Totals */}
             <div className="mt-6 border-t border-border pt-4">
               <Row label={t("invoice.subtotal")} value={`${fmtNumber(split.subtotal)} ${cur}`} />
-              <Row label={t("checkout.platformFee", { pct: feePct })} value={`${fmtNumber(split.fee)} ${cur}`} muted small />
+              <Row label={t("checkout.platformFee", { pct: "" })} value={`${fmtNumber(split.fee)} ${cur}`} muted small />
               <Row label={t("checkout.vat", { pct: vatPct })} value={`${fmtNumber(split.vat)} ${cur}`} />
               <Row label={t("invoice.paid")} value={`${fmtNumber(split.paid)} ${cur}`} muted />
               <div className="mt-3 flex items-center justify-between border-t border-primary/30 pt-3">

@@ -83,7 +83,7 @@ export const finalisePlan = async ({
 
     if (slots.length > 0 && eligibleIds.length > 0) {
       const { data: vendorRows } = await supabase
-        .from("vendors")
+        .from("vendors_public")
         .select("id, category")
         .in("id", eligibleIds)
         .eq("approval_status", "approved")
