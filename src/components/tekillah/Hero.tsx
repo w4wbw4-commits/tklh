@@ -404,6 +404,8 @@ export const Hero = () => {
             textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream)/0.9)",
           }}
         >
+          <br />
+          <br />
           <span className="relative inline-block">
             <span style={{ color: "hsl(var(--green))" }}>{KASHIDA_TKLH}</span>
             <motion.span
