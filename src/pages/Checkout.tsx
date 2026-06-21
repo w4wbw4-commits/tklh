@@ -45,8 +45,8 @@ const Checkout = () => {
   const [loading, setLoading] = useState(true);
   const [method, setMethod] = useState<PaymentMethodKey>("mada");
   const [vatPercent, setVatPercent] = useState(15);
-  const [commissionPercent, setCommissionPercent] = useState(12);
   const [vatNumber, setVatNumber] = useState<string>("3000000000003");
+  const [split, setSplit] = useState({ amount: 0, vat: 0, platformFee: 0, vendorNet: 0, total: 0 });
   const [submitting, setSubmitting] = useState(false);
   const [acceptedTos, setAcceptedTos] = useState(false);
 
@@ -66,25 +66,31 @@ const Checkout = () => {
           .maybeSingle(),
         supabase.from("platform_settings_public").select("vat_percent, vat_number").maybeSingle(),
       ]);
-      setBooking(b as unknown as Booking | null);
+      const booking = b as unknown as Booking | null;
+      setBooking(booking);
       if (s) {
         setVatPercent(Number(s.vat_percent));
-        setCommissionPercent(Number(s.commission_percent));
         const sAny = s as unknown as { vat_number?: string | null };
         if (sAny.vat_number) setVatNumber(sAny.vat_number);
+      }
+      const amount = Number(booking?.total_price ?? 0);
+      if (amount > 0) {
+        const { data: parts } = await supabase.rpc("compute_payment_split", { _amount: amount });
+        const row = Array.isArray(parts) ? parts[0] : parts;
+        if (row) {
+          setSplit({
+            amount,
+            vat: Number(row.vat ?? 0),
+            platformFee: Number(row.platform_fee ?? 0),
+            vendorNet: Number(row.vendor_net ?? 0),
+            total: Number(row.total ?? amount),
+          });
+        }
       }
       setLoading(false);
     })();
   }, [user, bookingId]);
 
-  const split = useMemo(() => {
-    const amount = Number(booking?.total_price ?? 0);
-    const vat = Math.round((amount * vatPercent) / 100);
-    const platformFee = Math.round((amount * commissionPercent) / 100);
-    const vendorNet = amount - platformFee;
-    const total = amount + vat;
-    return { amount, vat, platformFee, vendorNet, total };
-  }, [booking, vatPercent, commissionPercent]);
 
   const handlePay = async () => {
     if (!user || !booking) return;
@@ -244,7 +250,7 @@ const Checkout = () => {
                 <Row label={t("checkout.eventDate")} value={fmtDate(booking.event_date)} muted />
                 <hr className="border-border" />
                 <Row label={t("checkout.basePrice")} value={`${fmtNumber(split.amount)} ${cur}`} />
-                <Row label={t("checkout.platformFee", { pct: commissionPercent })} value={`${fmtNumber(split.platformFee)} ${cur}`} muted small />
+                <Row label={t("checkout.platformFee", { pct: "" })} value={`${fmtNumber(split.platformFee)} ${cur}`} muted small />
                 <Row label={t("checkout.vat", { pct: vatPercent })} value={`${fmtNumber(split.vat)} ${cur}`} />
                 <div className="text-[10px] text-foreground/55">
                   {t("checkout.vatNumber")}: <span className="font-mono">{vatNumber}</span>
