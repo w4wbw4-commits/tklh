@@ -435,7 +435,9 @@ export const Hero = () => {
           <br />
           <br />
           <br />
-          خطط لمناسباتك.. {KASHIDA_BOOK}&nbsp;..تابعها.. في مكان واحد
+          <span className="block text-[22px] sm:text-[32px] md:text-[42px] lg:text-[52px] font-bold" style={{ color: "hsl(var(--primary-deep))" }}>
+            خطط لمناسباتك.. {KASHIDA_BOOK}&nbsp;..تابعها.. في مكان واحد
+          </span>
         </motion.h1>
 
         {/* Sub-headline */}
