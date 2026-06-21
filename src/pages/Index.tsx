@@ -1,9 +1,57 @@
 import { lazy, Suspense } from "react";
+import { Link } from "react-router-dom";
+import { Sparkles, Gift, ArrowLeft } from "lucide-react";
 import { Navbar } from "@/components/tekillah/Navbar";
 import { Hero } from "@/components/tekillah/Hero";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
 import { SketchSectionDivider } from "@/components/tekillah/SketchArt";
 import { SEO } from "@/components/SEO";
+
+// Dual-path CTA — replaces in-page packages/wizard sections.
+// Each pathway now lives on its own dedicated route for focus & shareability.
+const PathwaysCTA = () => (
+  <section className="mx-auto my-12 grid w-full max-w-5xl grid-cols-1 gap-5 px-6 sm:grid-cols-2">
+    <Link
+      to="/planner"
+      className="group relative overflow-hidden rounded-3xl border-2 border-gold p-6 text-right transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.55)]"
+      style={{ background: "linear-gradient(135deg, hsl(var(--green)) 0%, hsl(var(--green-mid)) 100%)" }}
+    >
+      <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
+        style={{ background: "radial-gradient(circle, hsl(var(--gold)), transparent 70%)" }} />
+      <div className="relative flex items-center gap-3">
+        <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-gold/50 bg-green-mid/40 transition-transform duration-500 group-hover:rotate-6">
+          <Sparkles className="h-5 w-5 text-gold" strokeWidth={2.4} />
+        </span>
+        <div className="flex-1">
+          <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold/80">المسار الذكي</div>
+          <div className="font-display text-lg font-black text-gold sm:text-xl">خطّط ليلتك بنفسك</div>
+          <div className="mt-0.5 text-[12.5px] text-cream/85">حدّد ميزانيتك واختر كل تفصيلة على ذوقك.</div>
+        </div>
+        <ArrowLeft className="h-5 w-5 text-gold transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+      </div>
+    </Link>
+    <Link
+      to="/packages"
+      className="group relative overflow-hidden rounded-3xl border-2 border-green/30 bg-cream/90 p-6 text-right backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-green hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.35)]"
+    >
+      <span aria-hidden className="pointer-events-none absolute -top-10 -right-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
+        style={{ background: "radial-gradient(circle, hsl(var(--green)/0.6), transparent 70%)" }} />
+      <div className="relative flex items-center gap-3">
+        <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-green/30 transition-transform duration-500 group-hover:rotate-6"
+          style={{ background: "linear-gradient(135deg, hsl(var(--gold)/0.25), hsl(var(--green)/0.12))" }}>
+          <Gift className="h-5 w-5 text-green" strokeWidth={2.4} />
+        </span>
+        <div className="flex-1">
+          <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-green/70">جاهزة بضغطة</div>
+          <div className="font-display text-lg font-black text-green sm:text-xl">اختار باقتك</div>
+          <div className="mt-0.5 text-[12.5px] text-primary-deep/65">باقات منسّقة بعناية — احجز وخلّص بدقيقة.</div>
+        </div>
+        <ArrowLeft className="h-5 w-5 text-green transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+      </div>
+    </Link>
+  </section>
+);
+
 
 // Below-the-fold sections — code-split so the Hero paints fast on mobile.
 // React.lazy turns each into its own chunk; Suspense renders a skeleton-height
@@ -63,12 +111,8 @@ const Index = () => {
       <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
         <OccasionsSection />
       </Suspense>
-      <Suspense fallback={<SectionSkeleton minHeight="80vh" />}>
-        <PlatformPackages />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton minHeight="100vh" />}>
-        <PlanningWizard />
-      </Suspense>
+      <PathwaysCTA />
+
       <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
         <DashboardPreview />
       </Suspense>
