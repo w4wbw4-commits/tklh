@@ -147,7 +147,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
 
     const [{ data: v }, { data: ratings }] = await Promise.all([
       supabase
-        .from("vendors")
+        .from("vendors_public")
         .select(
           "id, business_name, bio, bio_en, category, city, region, region_en, district, district_en, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, extra_services, extra_services_en, verified, portfolio_urls, packages(id, name, tier, price, description, active, approval_status)",
         )

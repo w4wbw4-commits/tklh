@@ -64,7 +64,7 @@ const Checkout = () => {
           .select("*, vendor:vendors(business_name, category), package:packages(name)")
           .eq("id", bookingId)
           .maybeSingle(),
-        supabase.from("platform_settings").select("vat_percent, commission_percent, vat_number").maybeSingle(),
+        supabase.from("platform_settings_public").select("vat_percent, vat_number").maybeSingle(),
       ]);
       setBooking(b as unknown as Booking | null);
       if (s) {

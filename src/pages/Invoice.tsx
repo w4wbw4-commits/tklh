@@ -43,7 +43,7 @@ const Invoice = () => {
           .select("*, vendor:vendors(business_name, category, city), package:packages(name, description), event:events(title, city, guest_count)")
           .eq("id", bookingId)
           .maybeSingle(),
-        supabase.from("platform_settings").select("vat_percent, commission_percent").maybeSingle(),
+        supabase.from("platform_settings_public").select("vat_percent").maybeSingle(),
       ]);
       setBooking(b as unknown as Booking | null);
       if (s) { setVatPct(Number(s.vat_percent)); setFeePct(Number(s.commission_percent)); }
