@@ -433,8 +433,9 @@ export const Hero = () => {
               }}
             />
           </span>{" "}
-          <br className="hidden sm:block" />
-          زواجك ومناسباتك {KASHIDA_BOOK} بلمح البصر.
+          <br />
+          <br />
+          خطط لمناسباتك {KASHIDA_BOOK} تابعها في مكان واحد{" "}
         </motion.h1>
 
         {/* Sub-headline */}
