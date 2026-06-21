@@ -443,7 +443,7 @@ export const Hero = () => {
         >
           بدون حوسة المشاوير وأسابيع الترتيبات،{" "}
           <span className="font-bold" style={{ color: "hsl(var(--green))" }}>تِكله</span>{" "}
-          منصة ذكية تجمع كل احتياجات زواجك ومناسبتك في مكان واحد، من التخطيط إلى الحجز والدفع.
+          منصة ذكية تجمع كل احتياجات زواجك ومناسباتك في مكان واحد، من التخطيط إلى الحجز والدفع.
         </motion.p>
 
         {/* === About / تعرف على تكله — replaces the icon cards === */}
@@ -458,9 +458,7 @@ export const Hero = () => {
           variants={rise}
           className="font-tagline mx-auto mt-5 max-w-2xl text-balance text-base leading-[1.95] text-primary-deep/75 sm:text-lg"
         >
-          اخترنا اسم{" "}
-          <span className="font-bold" style={{ color: "hsl(var(--green))" }}>«تِكله»</span>{" "}
-          من «الاتكال» و«الثقة» — لأن لحظة الفرح ما تستاهل صداع التخطيط.
+          «يقولون: "لا هم إلا هم العرس".. وعشان فرحتك ما تستاهل صداع التخطيط، سمّينا أنفسنا "تِكله". المنصة اللي تتكل عليها وتثق فيها.. تشيل عنك الهم، وتترك لك الفرح.»
         </motion.p>
 
         {/* === Trust value cards — modern expressive === */}
