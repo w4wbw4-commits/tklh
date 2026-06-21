@@ -52,8 +52,15 @@ if (typeof window !== "undefined") {
   const isChunkLoadError = (msg: string) =>
     /Failed to fetch dynamically imported module|Importing a module script failed|ChunkLoadError/i.test(msg);
 
+  // React reconciliation crash — usually caused by third-party DOM mutators
+  // (translation extensions, ad blockers) or framer-motion exit-animation
+  // races. The fiber tree is corrupted at this point so a one-shot reload
+  // is the only safe recovery; the sessionStorage guard prevents loops.
+  const isReactDomCrash = (msg: string) =>
+    /removeChild.*not a child|insertBefore.*not a child|NotFoundError.*Node/i.test(msg);
+
   const tryReload = (msg: string) => {
-    if (!isChunkLoadError(msg)) return;
+    if (!isChunkLoadError(msg) && !isReactDomCrash(msg)) return;
     if (sessionStorage.getItem(RELOAD_FLAG)) return;
     sessionStorage.setItem(RELOAD_FLAG, "1");
     window.location.reload();
