@@ -1,51 +1,13 @@
-## الهدف
-تحويل صفحة الواجهة (`/`) إلى صفحة عرض فقط، ونقل الأقسام التفاعلية إلى صفحات مستقلة بروابط خاصة.
+## Issue
+الشريط المتحرك أحياناً يظهر فارغ (فجوة بيضاء)، خصوصاً على الشاشات الواسعة. السبب أن `MarqueeRow` في `src/components/tekillah/Hero.tsx` (سطر ~287-340) يكرّر عناصر القائمة مرتين فقط داخل `w-max`. مع 10 عناصر فقط في كل صف وحركة `translateX` من 0 إلى -50%، إذا كان عرض النسختين أقل من عرض الشاشة (أو قريب منه) يبقى جزء من الشريط بدون محتوى أثناء الحركة.
 
-## الصفحات الجديدة
+## Plan
+ملف واحد: `src/components/tekillah/Hero.tsx`
 
-| المسار | المحتوى | المصدر الحالي |
-|---|---|---|
-| `/` | Hero + ProblemSolutionAbout + OccasionsSection + DashboardPreview + UpcomingFeatures + Mission + PaymentLogosStrip + Footer (عرض فقط) | `src/pages/Index.tsx` |
-| `/packages` | قسم الباقات الكامل مع أزرار "احجز الآن" و"شف التفاصيل" | `PlatformPackages.tsx` |
-| `/planner` | معالج التخطيط الذكي بخطواته الأربع | `PlanningWizard.tsx` |
+1. داخل `MarqueeRow` غيّر `const doubled = [...items, ...items]` إلى أربع نسخ:
+   `const repeated = [...items, ...items, ...items, ...items];`
+   هذا يبقي الحركة سلسة (الانتقال -50% لا يزال يحاذي بداية نسخة مطابقة)، ويضمن أن مجموع العناصر يغطي أعرض الشاشات بدون فراغ.
+2. كإجراء حماية إضافي، أضِف `min-w-[200vw]` (أو `style={{ minWidth: "200vw" }}`) على الـ track المتحرك حتى يضمن دائماً أن العرض يكفي لتغطية الشاشة كاملة قبل تكرار الحلقة.
+3. حدّث التعليق التوضيحي ليصف 4 نسخ بدل 2 (تبقى الحلقة seamless لأن -50% من 4 نسخ = بداية النسخة الثالثة المطابقة).
 
-## التغييرات
-
-1. **`src/pages/Index.tsx`**
-   - إزالة `PlatformPackages` و `PlanningWizard` من قائمة الـ lazy imports والـ JSX
-   - استبدالهما بـ"بطاقتَي دعوة" (CTA cards) قصيرتَين:
-     - بطاقة "اختر باقتك" → زر يوجّه إلى `/packages`
-     - بطاقة "خطط ليلتك بنفسك" → زر يوجّه إلى `/planner`
-   - الحفاظ على فواصل `SketchSectionDivider` والتسلسل البصري
-
-2. **`src/pages/Packages.tsx`** (جديد)
-   - Navbar + ScrollProgress + SEO (عنوان: "باقات تِكله")
-   - عرض `<PlatformPackages />` بكامل تفاعله
-   - Footer
-   - زر رجوع للواجهة
-
-3. **`src/pages/Planner.tsx`** (جديد)
-   - Navbar + ScrollProgress + SEO (عنوان: "خطط ليلتك")
-   - عرض `<PlanningWizard />` بكامل تفاعله
-   - Footer
-   - زر رجوع للواجهة
-
-4. **`src/App.tsx`**
-   - إضافة مسارين جديدين: `/packages` و `/planner` مع lazy loading
-
-5. **`src/components/tekillah/Navbar.tsx`** و **`Footer.tsx`**
-   - تحديث الروابط الداخلية: بدلاً من `#packages` و `#wizard` (anchors)، توجيه إلى `/packages` و `/planner`
-   - الإبقاء على الروابط الأخرى كما هي
-
-6. **أي أزرار CTA في الواجهة** (مثل أزرار Hero التي تنزل لـ wizard/packages) تُحوَّل إلى `Link` بدل scroll-to-anchor.
-
-## نقاط للتأكيد
-
-- IDs `#packages` و `#wizard` تُستبدل بمسارات بدل التمرير الداخلي.
-- تبقى الترجمات (`ar.json` / `en.json`) كما هي — فقط الموقع يتغيّر.
-- لا تعديل على منطق الـ wizard أو الباقات نفسه — فقط نقل مكان العرض.
-
-## أسئلة قبل التنفيذ
-
-- هل تريد بطاقتَي دعوة (CTA) مكان الأقسام المحذوفة في الواجهة، أم إزالتها تماماً والاكتفاء بروابط في الـ Navbar فقط؟
-- هل تريد أن تبقى زر "ابدأ التخطيط" في Hero يفتح `/planner`، أم رابط آخر؟
+لا تغييرات على سرعة الحركة (تبقى 140s / 160s كما طلبت سابقاً)، ولا تغييرات على tailwind keyframes أو على بقية الصفحة.

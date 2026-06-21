@@ -293,15 +293,15 @@ const MarqueeRow = ({
   direction: "rtl" | "ltr";
   delay?: string;
 }) => {
-  // EXACTLY two copies — the animation translates the track by -50%, which
-  // lands on the start of the second copy = visually identical to frame 0.
-  // Any other count would still work but two is the minimal seamless loop
-  // and guarantees no measurable seam.
-  const doubled = [...items, ...items];
+  // FOUR copies — the animation translates the track by -50%, which lands on
+  // the start of an identical repeated copy = seamless loop. Four copies (plus
+  // min-w-[200vw]) guarantee the track is always wider than the viewport so no
+  // empty gap is ever visible on wide screens.
+  const repeated = [...items, ...items, ...items, ...items];
   return (
     <div className="relative w-full overflow-hidden py-2">
       <div
-        className={`flex w-max items-center whitespace-nowrap ${
+        className={`flex w-max min-w-[200vw] items-center whitespace-nowrap ${
           direction === "rtl" ? "animate-marquee-rtl" : "animate-marquee-ltr"
         }`}
         style={{
@@ -310,7 +310,8 @@ const MarqueeRow = ({
           animationDelay: delay,
         }}
       >
-        {doubled.map((item, i) => (
+        {repeated.map((item, i) => (
+
           <div
             key={`${item}-${i}`}
             className="flex items-center"
