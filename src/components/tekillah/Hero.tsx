@@ -418,9 +418,8 @@ export const Hero = () => {
             textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream)/0.9)",
           }}
         >
-          حنا لك{" "}
           <span className="relative inline-block">
-            <span style={{ color: "hsl(var(--green))" }}>{KASHIDA_TKLH}!</span>
+            <span style={{ color: "hsl(var(--green))" }}>{KASHIDA_TKLH}</span>
             <motion.span
               aria-hidden
               initial={{ scaleX: 0 }}
@@ -432,10 +431,11 @@ export const Hero = () => {
                   "linear-gradient(90deg, transparent, hsl(var(--green)) 50%, transparent)",
               }}
             />
-          </span>{" "}
+          </span>
           <br />
           <br />
-          خطط لمناسباتك {KASHIDA_BOOK} تابعها في مكان واحد{" "}
+          <br />
+          خطط لمناسباتك.. {KASHIDA_BOOK}&nbsp;..تابعها.. في مكان واحد
         </motion.h1>
 
         {/* Sub-headline */}
