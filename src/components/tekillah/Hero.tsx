@@ -21,7 +21,8 @@ import {
 
 // Kashida (tatweel) helper for editorial Arabic stretching.
 const T = "\u0640";
-const KASHIDA_TKLH = `ت${T}${T}كلّ${T}${T}ه`; // تــكلّــه
+// Match the header wordmark exactly: ت with kasra, no shadda.
+const KASHIDA_TKLH = `تِكله`;
 const KASHIDA_BOOK = `احجـ${T}${T}زها`;       // احجــــزها
 
 const ink = "hsl(var(--primary-deep))";
@@ -391,7 +392,7 @@ export const Hero = () => {
               color: "hsl(var(--green))",
             }}
           >
-            تكلّه
+            تِكله
           </span>
           <span className="mt-2 h-[2px] w-14 rounded-full bg-gradient-to-l from-transparent via-gold to-transparent" />
         </motion.div>
@@ -430,7 +431,7 @@ export const Hero = () => {
           className="font-tagline mt-6 max-w-3xl text-balance text-base leading-[1.85] text-primary-deep/75 sm:text-lg md:text-xl"
         >
           بدون حوسة المشاوير وأسابيع الترتيبات،{" "}
-          <span className="font-bold" style={{ color: "hsl(var(--green))" }}>تكلّه</span>{" "}
+          <span className="font-bold" style={{ color: "hsl(var(--green))" }}>تِكله</span>{" "}
           منصة ذكية تجمع كل احتياجات زواجك ومناسبتك في مكان واحد، من التخطيط إلى الحجز والدفع.
         </motion.p>
 
