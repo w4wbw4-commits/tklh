@@ -228,7 +228,7 @@ const Invoice = () => {
             {/* Totals */}
             <div className="mt-6 border-t border-border pt-4">
               <Row label={t("invoice.subtotal")} value={`${fmtNumber(split.subtotal)} ${cur}`} />
-              <Row label={t("checkout.platformFee", { pct: feePct })} value={`${fmtNumber(split.fee)} ${cur}`} muted small />
+              <Row label={t("checkout.platformFee", { pct: "" })} value={`${fmtNumber(split.fee)} ${cur}`} muted small />
               <Row label={t("checkout.vat", { pct: vatPct })} value={`${fmtNumber(split.vat)} ${cur}`} />
               <Row label={t("invoice.paid")} value={`${fmtNumber(split.paid)} ${cur}`} muted />
               <div className="mt-3 flex items-center justify-between border-t border-primary/30 pt-3">
