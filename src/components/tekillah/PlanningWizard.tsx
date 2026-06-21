@@ -309,7 +309,7 @@ export const PlanningWizard = () => {
       const ready = Object.keys(picks).length > 0 || !!packageSelection;
       const resumeTarget = ready
         ? "/dashboard"
-        : `/?resume=1&step=${step}#wizard`;
+        : `/planner?resume=1&step=${step}`;
       navigate(`/auth?redirect=${encodeURIComponent(resumeTarget)}`);
       return;
     }

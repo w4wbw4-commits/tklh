@@ -304,7 +304,7 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
               asChild
               className="w-full justify-start rounded-xl text-sm text-foreground/75 hover:text-primary"
             >
-              <Link to="/#wizard">
+              <Link to="/planner">
                 <MessageCircle className="me-2 h-4 w-4" />
                 {t("customer.bookingsTimeline.contactSupport")}
               </Link>
