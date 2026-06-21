@@ -444,8 +444,9 @@ export const Hero = () => {
           className="font-tagline mt-6 max-w-3xl text-balance text-base leading-[1.85] text-primary-deep/75 sm:text-lg md:text-xl"
         >
           بدون حوسة المشاوير وأسابيع الترتيبات،{" "}
-          <span className="font-bold" style={{ color: "hsl(var(--green))" }}>تِكله</span>{" "}
-          منصة ذكية تجمع كل احتياجات مناسباتك في مكان واحد،&nbsp;
+          <span className="font-bold" style={{ color: "hsl(var(--green))" }}>تِكله</span>&nbsp;
+          <br />
+          منصة ذكية تجمع كل احتياجات&nbsp;مناسباتك في مكان&nbsp;
         </motion.p>
 
         {/* === About / تعرف على تكله — replaces the icon cards === */}
