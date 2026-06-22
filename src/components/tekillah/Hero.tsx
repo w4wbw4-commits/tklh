@@ -446,12 +446,6 @@ export const Hero = () => {
               </span>
             </motion.div>
 
-            <motion.p
-              variants={rise}
-              className="font-tagline mt-4 max-w-xl text-balance text-[15px] leading-[1.95] text-primary-deep/75 sm:text-base"
-            >
-              «يقولون: "لا هم إلا هم العرس".. وعشان فرحتك ما تستاهل صداع التخطيط، سمّينا أنفسنا "تِكله". المنصة اللي تتكل عليها وتثق فيها.. تشيل عنك الهم، وتترك لك الفرح.»
-            </motion.p>
           </div>
 
           {/* Left column (mockup) */}
