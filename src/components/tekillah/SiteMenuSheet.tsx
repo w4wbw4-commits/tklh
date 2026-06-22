@@ -63,7 +63,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
     { type: "route", href: "/", icon: Home, labelKey: "nav.home", fallback: { ar: "الرئيسية", en: "Home" } },
     { type: "route", href: "/about", icon: Info, labelKey: "nav.about", fallback: { ar: "تعرف على تِكله", en: "About TKLH" } },
     { type: "route", href: "/packages", icon: FileText, labelKey: "nav.packages", fallback: { ar: "الباقات", en: "Packages" } },
-    { type: "route", href: "/planner", icon: Sparkles, labelKey: "nav.plan", fallback: { ar: "خطط ليلتك", en: "Plan your night" } },
+    { type: "route", href: "/planner", icon: Sparkles, labelKey: "nav.plan", fallback: { ar: "خطط ليلتك", en: "Plan your night" }, disabled: true, badge: { ar: "قريباً", en: "Soon" } },
     { type: "anchor", href: "/#features", icon: FileText, labelKey: "nav.features", fallback: { ar: "المزايا", en: "Features" } },
     { type: "anchor", href: "/#contact", icon: Phone, labelKey: "nav.contact", fallback: { ar: "تواصل معنا", en: "Contact" } },
   ];
