@@ -9,6 +9,8 @@ import {
   SketchBanquet,
   SketchTable,
 } from "./SketchArt";
+import heroMockup from "@/assets/hero-mockup.png";
+
 
 // ---------------------------------------------------------------------------
 // Hero — Premium redesign.
