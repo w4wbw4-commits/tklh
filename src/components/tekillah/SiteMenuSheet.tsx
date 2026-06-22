@@ -87,14 +87,28 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
     const label = t(item.labelKey, { defaultValue: isAr ? item.fallback.ar : item.fallback.en });
     const cls =
       "group flex items-center gap-3 rounded-2xl border border-transparent bg-card/50 px-4 py-3 text-sm font-medium text-foreground/85 transition-all hover:border-gold/40 hover:bg-cream hover:text-primary-deep";
+    const disabledCls =
+      "flex items-center gap-3 rounded-2xl border border-transparent bg-muted/40 px-4 py-3 text-sm font-medium text-muted-foreground cursor-not-allowed opacity-70";
     const inner = (
       <>
-        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-gold/20 group-hover:text-primary-deep">
+        <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl transition-colors ${item.disabled ? "bg-muted text-muted-foreground" : "bg-primary/10 text-primary group-hover:bg-gold/20 group-hover:text-primary-deep"}`}>
           <Icon className="h-4 w-4" />
         </span>
         <span className="flex-1">{label}</span>
+        {item.badge ? (
+          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+            {isAr ? item.badge.ar : item.badge.en}
+          </span>
+        ) : null}
       </>
     );
+    if (item.disabled) {
+      return (
+        <span key={item.href} aria-disabled="true" className={disabledCls}>
+          {inner}
+        </span>
+      );
+    }
     if (item.type === "route") {
       return (
         <Link key={item.href} to={item.href} onClick={close} className={cls}>
