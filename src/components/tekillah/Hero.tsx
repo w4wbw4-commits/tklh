@@ -519,8 +519,30 @@ export const Hero = () => {
           ))}
         </motion.div>
 
-        {/* === Dual-path CTAs (قريباً) === */}
+        {/* === Dual-path CTAs === */}
         <motion.div variants={rise} className="mt-10 grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
+          {/* Active: Packages (right side in RTL = first item) */}
+          <a
+            href="/packages"
+            className="group relative overflow-hidden rounded-2xl border-2 border-gold p-5 text-right transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.55)]"
+            style={{ background: "linear-gradient(135deg, hsl(var(--green)) 0%, hsl(var(--green-mid)) 100%)" }}
+          >
+            <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
+              style={{ background: "radial-gradient(circle, hsl(var(--gold)), transparent 70%)" }} />
+            <div className="relative flex items-center gap-3">
+              <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-gold/50 bg-green-mid/40 transition-transform duration-500 group-hover:rotate-6">
+                <Gift className="h-5 w-5 text-gold" strokeWidth={2.4} />
+              </span>
+              <div className="flex-1">
+                <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold/80">جاهزة بضغطة</div>
+                <div className="font-display text-lg font-black text-gold sm:text-xl">اختار باقتك</div>
+                <div className="mt-0.5 text-[12.5px] text-cream/85">باقات منسّقة بعناية — احجز وخلّص بدقيقة.</div>
+              </div>
+              <ArrowLeft className="h-5 w-5 text-gold transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+            </div>
+          </a>
+
+          {/* Disabled: Smart Planner (left side in RTL = second item) */}
           <div
             aria-disabled="true"
             className="group relative overflow-hidden rounded-2xl border-2 border-neutral-300 bg-neutral-200/70 p-5 text-right cursor-not-allowed select-none"
@@ -539,26 +561,8 @@ export const Hero = () => {
               </div>
             </div>
           </div>
-
-          <div
-            aria-disabled="true"
-            className="group relative overflow-hidden rounded-2xl border-2 border-neutral-300 bg-neutral-200/70 p-5 text-right cursor-not-allowed select-none"
-          >
-            <span className="absolute top-3 left-3 rounded-full bg-neutral-100 px-2.5 py-0.5 text-[10px] font-bold text-neutral-600 ring-1 ring-neutral-300">
-              قَرِيبًا
-            </span>
-            <div className="relative flex items-center gap-3 opacity-80">
-              <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-neutral-300 bg-neutral-100">
-                <Gift className="h-5 w-5 text-neutral-500" strokeWidth={2.4} />
-              </span>
-              <div className="flex-1">
-                <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-neutral-500">جاهزة بضغطة</div>
-                <div className="font-display text-lg font-black text-neutral-600 sm:text-xl">اختار باقتك</div>
-                <div className="mt-0.5 text-[12.5px] text-neutral-500">باقات منسّقة بعناية — احجز وخلّص بدقيقة.</div>
-              </div>
-            </div>
-          </div>
         </motion.div>
+
 
 
         {/* === Crossing services marquee === */}
