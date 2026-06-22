@@ -428,12 +428,12 @@ export const Hero = () => {
               </span>
               <br />
               <br />
-              <span style={{ color: "#7A3B0E" }}>خطط</span>
-              <span style={{ color: "#7A3B0E" }}> لمناسباتك.. </span>
-              <span style={{ color: "#7A3B0E" }}>{KASHIDA_BOOK}</span>
-              <span style={{ color: "#7A3B0E" }}>&nbsp;..</span>
-              <span style={{ color: "#7A3B0E" }}>تابعها</span>
-              <span style={{ color: "#7A3B0E" }}>.. في مكان واحد</span>
+              <span style={{ color: "#3D1A05" }}>خطط</span>
+              <span style={{ color: "#3D1A05" }}> لمناسباتك.. </span>
+              <span style={{ color: "#3D1A05" }}>{KASHIDA_BOOK}</span>
+              <span style={{ color: "#3D1A05" }}>&nbsp;..</span>
+              <span style={{ color: "#3D1A05" }}>تابعها</span>
+              <span style={{ color: "#3D1A05" }}>.. في مكان واحد</span>
             </motion.h1>
 
 
