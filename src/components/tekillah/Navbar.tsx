@@ -52,8 +52,9 @@ export const Navbar = () => {
     { key: "home", href: "/", type: "route" as const },
     { key: "about", href: "/about", type: "route" as const, labelOverride: isAr ? "تعرف على تِكله" : "About TKLH" },
     { key: "packages", href: "/packages", type: "route" as const, labelOverride: isAr ? "الباقات" : "Packages" },
-    { key: "plan", href: "/planner", type: "route" as const },
+    { key: "plan", href: "/planner", type: "route" as const, disabled: true },
   ];
+
 
   return (
     <motion.header
