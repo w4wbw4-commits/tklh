@@ -556,7 +556,7 @@ export const Hero = () => {
               </span>
               <div className="flex-1">
                 <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-neutral-500">المسار الذكي</div>
-                <div className="font-display text-lg font-black text-neutral-600 sm:text-xl">خطّط ليلتك بنفسك</div>
+                <div className="font-display text-lg font-black text-neutral-600 sm:text-xl">خطّط لمناسبتك بنفسك</div>
                 <div className="mt-0.5 text-[12.5px] text-neutral-500">حدّد ميزانيتك واختر كل تفصيلة على ذوقك.</div>
               </div>
             </div>
