@@ -325,13 +325,32 @@
 
   /* Arabic typography: prevent diacritic clipping */
   h1, h2, h3, h4, h5, h6 {
-    @apply tracking-tight;
+    @apply tracking-tight text-balance;
     line-height: 1.45;
     padding-bottom: 0.08em;
     font-weight: 700;
+    overflow-wrap: break-word;
+    word-break: normal;
   }
+  /* === Global fluid typography ===============================================
+     Applies a sane responsive scale to every heading & body element across
+     EVERY page (Landing, Packages, Planner, Dashboards, Admin, Vendor...)
+     without touching individual components. Per-component Tailwind classes
+     still win because utilities have higher specificity. */
+  h1 { @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight md:leading-snug; }
+  h2 { @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight md:leading-snug; }
+  h3 { @apply text-lg sm:text-xl md:text-2xl leading-snug; }
+  h4 { @apply text-base sm:text-lg md:text-xl leading-snug; }
+  h5 { @apply text-sm sm:text-base md:text-lg leading-snug; }
+  h6 { @apply text-sm sm:text-base leading-snug; }
+
   p, span, div, a, button, li {
     line-height: 1.7;
+  }
+  /* Mobile read-comfort: tighten oversize body copy on narrow screens only.
+     Desktop sizes set via utilities (text-lg / text-xl) stay intact. */
+  @media (max-width: 639px) {
+    p { font-size: clamp(0.875rem, 3.6vw, 1rem); }
   }
 
   ::selection {
@@ -342,10 +361,15 @@
 
 @layer components {
   .section-pad {
-    @apply py-20 md:py-28 px-5 md:px-8;
+    @apply py-20 md:py-28 px-4 sm:px-6 lg:px-8;
   }
   .container-tk {
-    @apply max-w-6xl mx-auto;
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  /* Global horizontal safety padding — use on any full-width section wrapper
+     so text/cards never touch the screen edge on mobile. */
+  .container-safe {
+    @apply w-full mx-auto px-4 sm:px-6 lg:px-8;
   }
   .label-badge {
     @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary text-secondary-foreground text-sm font-bold border border-border;
