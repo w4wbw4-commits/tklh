@@ -447,13 +447,6 @@ export const Hero = () => {
               منصة ذكية تجمع كل احتياجات&nbsp;مناسباتك في مكان واحد.
             </motion.p>
 
-            {/* About chip */}
-            <motion.div variants={rise} className="mt-8 flex flex-col items-center gap-2 lg:items-end">
-              <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-[11px] font-bold tracking-[0.16em] text-primary-deep backdrop-blur-sm sm:text-xs">
-                <Sparkles className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
-                تعرف على تِكله
-              </span>
-            </motion.div>
 
           </div>
 
