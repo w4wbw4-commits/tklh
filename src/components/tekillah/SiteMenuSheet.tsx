@@ -32,6 +32,8 @@ interface NavLinkItem {
   icon: ComponentType<{ className?: string }>;
   labelKey: string;
   fallback: { ar: string; en: string };
+  disabled?: boolean;
+  badge?: { ar: string; en: string };
 }
 
 interface Props {
