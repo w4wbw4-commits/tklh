@@ -394,65 +394,92 @@ export const Hero = () => {
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col items-center px-5 pt-20 pb-10 text-center sm:px-8"
+        className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center px-5 pt-20 pb-10 sm:px-8"
       >
+        {/* Two-column hero: text (right in RTL) + mockup (left in RTL) */}
+        <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-12">
+          {/* Right column (text) — appears first in RTL DOM order so it's on the right */}
+          <div className="flex flex-col items-center text-center lg:items-end lg:text-right">
+            {/* Massive headline */}
+            <motion.h1
+              variants={rise}
+              className="font-display text-balance text-[34px] font-black leading-[1.14] tracking-[-0.01em] text-[#0b0b0d] sm:text-[52px] md:text-[64px] lg:text-[68px]"
+              style={{
+                fontFeatureSettings: '"kern","liga","calt","dlig"',
+                textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream)/0.9)",
+              }}
+            >
+              <span className="relative inline-block">
+                <span style={{ color: "hsl(var(--green))" }}>{KASHIDA_TKLH}</span>
+                <motion.span
+                  aria-hidden
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 1.1, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute -bottom-1 left-0 right-0 h-[3px] origin-right rounded-full"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, transparent, hsl(var(--green)) 50%, transparent)",
+                  }}
+                />
+              </span>
+              <br />
+              <br />
+              خطط لمناسباتك.. {KASHIDA_BOOK}&nbsp;..تابعها.. في مكان واحد
+            </motion.h1>
 
-        {/* Massive headline */}
-        <motion.h1
-          variants={rise}
-          className="font-display text-balance text-[34px] font-black leading-[1.14] tracking-[-0.01em] text-[#0b0b0d] sm:text-[52px] md:text-[68px] lg:text-[82px]"
-          style={{
-            fontFeatureSettings: '"kern","liga","calt","dlig"',
-            textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream)/0.9)",
-          }}
-        >
-          <br />
-          <br />
-          <span className="relative inline-block">
-            <span style={{ color: "hsl(var(--green))" }}>{KASHIDA_TKLH}</span>
-            <motion.span
+            {/* Sub-headline */}
+            <motion.p
+              variants={rise}
+              className="font-tagline mt-6 max-w-xl text-balance text-base leading-[1.85] text-primary-deep/75 sm:text-lg md:text-xl"
+            >
+              بدون حوسة المشاوير وأسابيع الترتيبات،{" "}
+              <span className="font-bold" style={{ color: "hsl(var(--green))" }}>تِكله</span>&nbsp;
+              منصة ذكية تجمع كل احتياجات&nbsp;مناسباتك في مكان واحد.
+            </motion.p>
+
+            {/* About chip */}
+            <motion.div variants={rise} className="mt-8 flex flex-col items-center gap-2 lg:items-end">
+              <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-[11px] font-bold tracking-[0.16em] text-primary-deep backdrop-blur-sm sm:text-xs">
+                <Sparkles className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
+                تعرف على تِكله
+              </span>
+            </motion.div>
+
+            <motion.p
+              variants={rise}
+              className="font-tagline mt-4 max-w-xl text-balance text-[15px] leading-[1.95] text-primary-deep/75 sm:text-base"
+            >
+              «يقولون: "لا هم إلا هم العرس".. وعشان فرحتك ما تستاهل صداع التخطيط، سمّينا أنفسنا "تِكله". المنصة اللي تتكل عليها وتثق فيها.. تشيل عنك الهم، وتترك لك الفرح.»
+            </motion.p>
+          </div>
+
+          {/* Left column (mockup) */}
+          <motion.div
+            variants={rise}
+            className="relative flex items-center justify-center lg:order-first"
+          >
+            {/* glow */}
+            <div
               aria-hidden
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 1.1, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute -bottom-1 left-0 right-0 h-[3px] origin-right rounded-full"
+              className="pointer-events-none absolute inset-0 -z-10 blur-3xl"
               style={{
                 background:
-                  "linear-gradient(90deg, transparent, hsl(var(--green)) 50%, transparent)",
+                  "radial-gradient(60% 55% at 50% 50%, hsl(var(--gold)/0.35), transparent 70%), radial-gradient(45% 45% at 30% 70%, hsl(var(--green)/0.30), transparent 70%)",
               }}
             />
-          </span>
-          <br />
-          <br />
-          <br />
-          خطط لمناسباتك.. {KASHIDA_BOOK}&nbsp;..تابعها.. في مكان واحد
-        </motion.h1>
+            <motion.img
+              src={heroMockup}
+              alt="معاينة منصة تِكله — قاعات، مصورين، كوشات، سيارات، ولوحة تحكم الشركاء"
+              width={1280}
+              height={1024}
+              className="relative w-full max-w-[640px] drop-shadow-[0_30px_60px_rgba(11,11,13,0.25)]"
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </motion.div>
+        </div>
 
-        {/* Sub-headline */}
-        <motion.p
-          variants={rise}
-          className="font-tagline mt-6 max-w-3xl text-balance text-base leading-[1.85] text-primary-deep/75 sm:text-lg md:text-xl"
-        >
-          بدون حوسة المشاوير وأسابيع الترتيبات،{" "}
-          <span className="font-bold" style={{ color: "hsl(var(--green))" }}>تِكله</span>&nbsp;
-          <br />
-          منصة ذكية تجمع كل احتياجات&nbsp;مناسباتك في مكان&nbsp;
-        </motion.p>
-
-        {/* === About / تعرف على تكله — replaces the icon cards === */}
-        <motion.div variants={rise} className="mt-12 flex flex-col items-center gap-2">
-          <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-[11px] font-bold tracking-[0.16em] text-primary-deep backdrop-blur-sm sm:text-xs">
-            <Sparkles className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
-            تعرف على تِكله
-          </span>
-        </motion.div>
-
-        <motion.p
-          variants={rise}
-          className="font-tagline mx-auto mt-5 max-w-2xl text-balance text-base leading-[1.95] text-primary-deep/75 sm:text-lg"
-        >
-          «يقولون: "لا هم إلا هم العرس".. وعشان فرحتك ما تستاهل صداع التخطيط، سمّينا أنفسنا "تِكله". المنصة اللي تتكل عليها وتثق فيها.. تشيل عنك الهم، وتترك لك الفرح.»
-        </motion.p>
 
         {/* === Trust value cards — modern expressive === */}
         <motion.div
