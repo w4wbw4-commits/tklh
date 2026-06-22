@@ -403,9 +403,12 @@ export const Hero = () => {
             {/* Massive headline */}
             <motion.h1
               variants={rise}
-              className="font-display text-balance text-[34px] font-black leading-[1.14] tracking-[-0.01em] text-[#0b0b0d] sm:text-[52px] md:text-[64px] lg:text-[68px]"
+              className="font-display text-balance font-black tracking-[-0.005em] text-primary-deep"
               style={{
                 fontFeatureSettings: '"kern","liga","calt","dlig"',
+                fontSize: "clamp(2rem, 6vw, 4.5rem)",
+                lineHeight: 1.5,
+                wordSpacing: "0.05em",
                 textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream)/0.9)",
               }}
             >
@@ -425,8 +428,14 @@ export const Hero = () => {
               </span>
               <br />
               <br />
-              خطط لمناسباتك.. {KASHIDA_BOOK}&nbsp;..تابعها.. في مكان واحد
+              <span style={{ color: "hsl(var(--green))" }}>خطط</span>
+              <span> لمناسباتك.. </span>
+              <span style={{ color: "hsl(var(--green))" }}>{KASHIDA_BOOK}</span>
+              <span>&nbsp;..</span>
+              <span style={{ color: "hsl(var(--green))" }}>تابعها</span>
+              <span>.. في مكان واحد</span>
             </motion.h1>
+
 
             {/* Sub-headline */}
             <motion.p
