@@ -403,11 +403,9 @@ export const Hero = () => {
             {/* Massive headline */}
             <motion.h1
               variants={rise}
-              className="font-display text-balance font-black tracking-[-0.005em] text-primary-deep"
+              className="font-display text-balance font-black tracking-[-0.005em] text-primary-deep w-full max-w-4xl mx-auto px-4 sm:px-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight md:leading-snug"
               style={{
                 fontFeatureSettings: '"kern","liga","calt","dlig"',
-                fontSize: "clamp(2rem, 6vw, 4.5rem)",
-                lineHeight: 1.5,
                 wordSpacing: "0.05em",
                 textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream)/0.9)",
               }}
@@ -440,7 +438,7 @@ export const Hero = () => {
             {/* Sub-headline */}
             <motion.p
               variants={rise}
-              className="font-tagline mt-6 max-w-xl text-balance text-base leading-[1.85] text-primary-deep/75 sm:text-lg md:text-xl"
+              className="font-tagline mt-6 max-w-2xl mx-auto px-4 text-balance text-sm leading-relaxed text-primary-deep/75 sm:text-base md:text-lg"
             >
               بدون حوسة المشاوير وأسابيع الترتيبات،{" "}
               <span className="font-bold" style={{ color: "hsl(var(--green))" }}>تِكله</span>&nbsp;
