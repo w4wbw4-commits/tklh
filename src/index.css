@@ -361,10 +361,15 @@
 
 @layer components {
   .section-pad {
-    @apply py-20 md:py-28 px-5 md:px-8;
+    @apply py-20 md:py-28 px-4 sm:px-6 lg:px-8;
   }
   .container-tk {
-    @apply max-w-6xl mx-auto;
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  /* Global horizontal safety padding — use on any full-width section wrapper
+     so text/cards never touch the screen edge on mobile. */
+  .container-safe {
+    @apply w-full mx-auto px-4 sm:px-6 lg:px-8;
   }
   .label-badge {
     @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary text-secondary-foreground text-sm font-bold border border-border;
