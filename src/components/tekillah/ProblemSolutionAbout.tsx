@@ -144,10 +144,10 @@ const SpeedSection = () => (
             <Timer className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
             الفرق اللي يريح بالك
           </span>
-          <h2 className="mt-5 font-arabic text-4xl font-black leading-[1.6] text-green md:text-5xl">
-            من ٦ أسابيع حوسة..{" "}
-            <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-2 leading-[1.6] text-transparent">
-              لـ ٥ دقائق وأنت مخلص
+          <h2 className="mt-5 font-arabic text-4xl font-black leading-[1.6] tracking-tight md:text-5xl" style={{ color: "#233324" }}>
+            من <span style={{ color: "#B88E55" }}>٦ أسابيع حوسة</span>..{" "}
+            <span className="inline-block">
+              لـ <span style={{ color: "#B88E55" }}>٥ دقائق وأنت مخلص</span>
             </span>
           </h2>
         </div>
