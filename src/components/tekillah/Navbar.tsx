@@ -50,7 +50,7 @@ export const Navbar = () => {
 
   const navItems = [
     { key: "home", href: "/", type: "route" as const },
-    { key: "about", href: "/#about", type: "anchor" as const, labelOverride: isAr ? "تعرف على تِكله" : "About TKLH" },
+    { key: "about", href: "/about", type: "route" as const, labelOverride: isAr ? "تعرف على تِكله" : "About TKLH" },
     { key: "packages", href: "/packages", type: "route" as const, labelOverride: isAr ? "الباقات" : "Packages" },
     { key: "plan", href: "/planner", type: "route" as const },
   ];

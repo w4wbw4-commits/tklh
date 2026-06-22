@@ -59,7 +59,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
   // on the section without an overlay covering it.
   const sectionLinks: NavLinkItem[] = [
     { type: "route", href: "/", icon: Home, labelKey: "nav.home", fallback: { ar: "الرئيسية", en: "Home" } },
-    { type: "anchor", href: "/#about", icon: Info, labelKey: "nav.about", fallback: { ar: "تعرف على تِكله", en: "About TKLH" } },
+    { type: "route", href: "/about", icon: Info, labelKey: "nav.about", fallback: { ar: "تعرف على تِكله", en: "About TKLH" } },
     { type: "route", href: "/packages", icon: FileText, labelKey: "nav.packages", fallback: { ar: "الباقات", en: "Packages" } },
     { type: "route", href: "/planner", icon: Sparkles, labelKey: "nav.plan", fallback: { ar: "خطط ليلتك", en: "Plan your night" } },
     { type: "anchor", href: "/#features", icon: FileText, labelKey: "nav.features", fallback: { ar: "المزايا", en: "Features" } },
