@@ -536,7 +536,7 @@ export const Hero = () => {
               <div className="flex-1">
                 <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold/80">جاهزة بضغطة</div>
                 <div className="font-display text-lg font-black text-gold sm:text-xl">اختار باقتك</div>
-                <div className="mt-0.5 text-[12.5px] text-cream/85">باقات منسّقة بعناية — احجز وخلّص بدقيقة.</div>
+                <div className="mt-0.5 text-[12.5px] text-cream/85">باقات منسّقة بعناية — احجز وخلّص بكل سهولة.</div>
               </div>
               <ArrowLeft className="h-5 w-5 text-gold transition-transform duration-500 ease-out group-hover:-translate-x-1" />
             </div>
