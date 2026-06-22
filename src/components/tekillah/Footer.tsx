@@ -57,7 +57,7 @@ export const Footer = () => {
           <div>
             <div className="font-wordmark text-sm font-semibold text-foreground">{t("footer.platform")}</div>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <li><a href="/#about" className="hover:text-primary">تعرف على تِكله</a></li>
+              <li><Link to="/about" className="hover:text-primary">تعرف على تِكله</Link></li>
               <li><Link to="/planner" className="hover:text-primary">{t("footer.wizard")}</Link></li>
               <li><Link to="/dashboard" className="hover:text-primary">{t("nav.myDashboard")}</Link></li>
             </ul>
