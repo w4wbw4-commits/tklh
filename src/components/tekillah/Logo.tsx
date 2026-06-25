@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { ChairIcon } from "./ChairIcon";
 
 export const Logo = ({ className = "" }: { className?: string }) => {
   return (
@@ -9,8 +9,8 @@ export const Logo = ({ className = "" }: { className?: string }) => {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`flex items-center gap-2.5 ${className}`}
     >
-      <div className="relative grid h-9 w-9 place-items-center rounded-full bg-gradient-olive shadow-soft ring-2 ring-gold/60">
-        <Sparkles className="h-4 w-4 text-gold" strokeWidth={1.8} fill="currentColor" />
+      <div className="relative grid h-9 w-9 shrink-0 aspect-square place-items-center rounded-full bg-gradient-olive shadow-soft ring-2 ring-gold/60">
+        <ChairIcon className="h-5 w-5 text-gold" strokeWidth={1.6} />
       </div>
       <div className="flex items-baseline leading-none">
         <span
