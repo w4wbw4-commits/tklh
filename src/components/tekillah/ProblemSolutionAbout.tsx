@@ -164,7 +164,7 @@ const SpeedSection = () => (
                 الطريقة التقليدية
               </div>
               <div className="mt-5 font-arabic text-5xl font-black text-foreground/70 sm:text-6xl">
-                ٦ أسابيع
+                6 أسابيع
               </div>
               <p className="mt-2 font-arabic text-sm text-foreground/55">
                 من البحث، الاتصالات، والمتابعة
