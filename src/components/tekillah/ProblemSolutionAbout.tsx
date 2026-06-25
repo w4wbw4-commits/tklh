@@ -142,7 +142,7 @@ const SpeedSection = () => (
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
             <Timer className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
-            الفرق اللي يريح بالك
+            الفرق اللي يريح راسك
           </span>
           <h2 className="mt-5 font-arabic text-4xl font-black leading-[1.6] text-green md:text-5xl">
             من ٦ أسابيع حوسة..{" "}
