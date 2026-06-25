@@ -145,9 +145,9 @@ const SpeedSection = () => (
             الفرق اللي يريح راسك
           </span>
           <h2 className="mt-5 font-arabic text-4xl font-black leading-[1.6] text-green md:text-5xl">
-            من ٦ أسابيع حوسة..{" "}
+            من 6 أسابيع حوسة..{" "}
             <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-2 leading-[1.6] text-transparent">
-              لـ ٥ دقائق وأنت مخلص
+              لـ 5 دقائق وأنت مخلص
             </span>
           </h2>
         </div>
@@ -164,7 +164,7 @@ const SpeedSection = () => (
                 الطريقة التقليدية
               </div>
               <div className="mt-5 font-arabic text-5xl font-black text-foreground/70 sm:text-6xl">
-                ٦ أسابيع
+                6 أسابيع
               </div>
               <p className="mt-2 font-arabic text-sm text-foreground/55">
                 من البحث، الاتصالات، والمتابعة
@@ -199,7 +199,7 @@ const SpeedSection = () => (
               </div>
               <div className="mt-5 flex items-baseline gap-2">
                 <span className="font-arabic text-5xl font-black leading-none text-green sm:text-6xl">
-                  <AnimatedCounter value={5} arabicDigits />
+                  <AnimatedCounter value={5} />
                 </span>
                 <span className="font-arabic text-2xl font-bold text-gold">دقائق</span>
               </div>
