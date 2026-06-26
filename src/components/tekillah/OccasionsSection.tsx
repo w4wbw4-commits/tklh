@@ -11,7 +11,7 @@ import { SketchCornerOrnament, SketchIconSparkle } from "./SketchArt";
 const OCCASIONS = [
   { icon: HeartHandshake, label: "حفلات الزواج" },
   { icon: Crown,          label: "خطوبة وملكة" },
-  { icon: GraduationCap,  label: "تخرج وأزهل" },
+  { icon: GraduationCap,  label: "تخرج\u00a0" },
   { icon: PartyPopper,    label: "فعاليات كبرى" },
 ] as const;
 
