@@ -87,7 +87,7 @@ export const Footer = () => {
                   dir="ltr"
                 >
                   <WhatsAppIcon className="h-3.5 w-3.5" />
-                  +966 53 046 6360
+                  +966 53 046 6460
                 </a>
               </li>
             </ul>
