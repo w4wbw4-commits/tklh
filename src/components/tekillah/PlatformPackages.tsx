@@ -378,7 +378,9 @@ export const PlatformPackages = () => {
       <Dialog open={!!active} onOpenChange={(v) => !v && setActive(null)}>
         <DialogContent className="max-h-[92vh] max-w-4xl overflow-y-auto border-gold/20 bg-cream p-0">
           {active && (() => {
-            const aName = pickLocalized(active.name, active.name_en);
+            const rawAName = pickLocalized(active.name, active.name_en);
+            const aName = rawAName === "الباقة الأساسية" ? "باقة الكلاسكية" : 
+                         rawAName === "الباقة المريحة" ? "باقة بريميوم" : rawAName;
             const aDesc = pickLocalized(active.description, active.description_en);
             const aIncludes = pickLocalizedArray(active.includes, active.includes_en);
             // Build a media list — fall back to thumbnail if no gallery items
