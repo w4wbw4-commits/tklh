@@ -21,7 +21,8 @@ export const ScrollProgress = () => {
     <motion.div
       aria-hidden
       style={{ scaleX, transformOrigin: "left" }}
-      className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[3px] bg-gradient-to-r from-primary via-gold to-primary"
+      className="pointer-events-none fixed inset-x-0 top-0 z-[60] hidden h-[3px] bg-gradient-to-r from-primary via-gold to-primary md:block"
     />
   );
+
 };

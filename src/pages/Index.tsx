@@ -79,7 +79,7 @@ const Footer = lazy(() =>
 );
 
 // Reserves vertical space so lazy-loaded sections don't cause layout shift.
-const SectionSkeleton = ({ minHeight = "60vh" }: { minHeight?: string }) => (
+const SectionSkeleton = ({ minHeight = "40vh" }: { minHeight?: string }) => (
   <div style={{ minHeight }} aria-hidden />
 );
 
@@ -100,7 +100,7 @@ const Index = () => {
         <SketchSectionDivider className="h-10 w-full opacity-80" />
       </div>
 
-      <Suspense fallback={<SectionSkeleton minHeight="80vh" />}>
+      <Suspense fallback={<SectionSkeleton minHeight="50vh" />}>
         <ProblemSolutionAbout />
       </Suspense>
 
