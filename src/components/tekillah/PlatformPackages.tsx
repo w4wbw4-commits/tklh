@@ -274,10 +274,10 @@ export const PlatformPackages = () => {
                         {t("platformPackages.from")}
                       </span>
                       <div className="flex items-baseline gap-3 font-arabic tabular-nums">
-                        <span className="text-5xl font-black leading-none text-[hsl(40_40%_97%)] drop-shadow-md">
+                        <span className="text-4xl font-black leading-none text-[hsl(40_40%_97%)] drop-shadow-md">
                           {fmtNumber(Number(p.price))}
                         </span>
-                        <span className="text-lg font-bold text-[hsl(38_70%_75%)]"><RiyalSymbol /></span>
+                        <span className="text-sm font-bold text-[hsl(38_70%_75%)]"><RiyalSymbol /></span>
                       </div>
                     </div>
 
