@@ -269,7 +269,7 @@ export const PlatformPackages = () => {
                     </div>
 
                     {/* Price block — glassy */}
-                    <div className="flex flex-col items-center rounded-2xl border border-[hsl(40_40%_97%)]/10 bg-[hsl(40_40%_97%)]/5 py-7 backdrop-blur-md">
+                    <div className="flex flex-col items-center py-4">
                       <span className="mb-2 font-arabic text-[11px] font-bold uppercase tracking-[0.2em] text-[hsl(38_70%_75%)]">
                         {t("platformPackages.from")}
                       </span>
