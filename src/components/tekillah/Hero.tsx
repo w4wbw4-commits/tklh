@@ -9,7 +9,8 @@ import {
   SketchBanquet,
   SketchTable,
 } from "./SketchArt";
-import heroMockup from "@/assets/hero-mockup.png";
+import heroMockup from "@/assets/hero-mockup.webp";
+import heroMockupMobile from "@/assets/hero-mockup-mobile.webp";
 
 
 // ---------------------------------------------------------------------------
@@ -299,7 +300,7 @@ const MarqueeRow = ({
   // the start of an identical repeated copy = seamless loop. Four copies (plus
   // min-w-[200vw]) guarantee the track is always wider than the viewport so no
   // empty gap is ever visible on wide screens.
-  const repeated = [...items, ...items, ...items, ...items];
+  const repeated = [...items, ...items];
   return (
     <div className="relative w-full overflow-hidden py-2">
       <div
@@ -377,17 +378,18 @@ export const Hero = () => {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
 
-      {/* === Sketch watermark (15%) === */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.15]">
-        <SketchCurtain className="absolute inset-y-0 left-0 h-full w-[60px] sm:w-[90px]" />
-        <SketchCurtain className="absolute inset-y-0 right-0 h-full w-[60px] sm:w-[90px]" style={{ transform: "scaleX(-1)" }} />
-        <SketchEucalyptus className="absolute top-6 left-[6%] h-[140px] w-[260px] hidden md:block" />
-        <SketchLotus className="absolute top-10 right-[8%] h-[120px] w-[170px] hidden md:block" />
+      {/* === Sketch watermark (15%) — desktop only to keep mobile paint cheap === */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 hidden overflow-hidden opacity-[0.15] md:block">
+        <SketchCurtain className="absolute inset-y-0 left-0 h-full w-[90px]" />
+        <SketchCurtain className="absolute inset-y-0 right-0 h-full w-[90px]" style={{ transform: "scaleX(-1)" }} />
+        <SketchEucalyptus className="absolute top-6 left-[6%] h-[140px] w-[260px]" />
+        <SketchLotus className="absolute top-10 right-[8%] h-[120px] w-[170px]" />
         <SketchCandelabra className="absolute bottom-10 left-[3%] h-[240px] w-[170px] hidden lg:block" />
         <SketchCandelabra className="absolute bottom-10 right-[3%] h-[240px] w-[170px] hidden lg:block" style={{ transform: "scaleX(-1)" }} />
-        <SketchTable className="absolute bottom-16 left-1/2 h-[180px] w-[320px] -translate-x-1/2 hidden sm:block" />
+        <SketchTable className="absolute bottom-16 left-1/2 h-[180px] w-[320px] -translate-x-1/2" />
         <SketchBanquet className="absolute -bottom-4 left-1/2 h-[200px] w-[520px] -translate-x-1/2 hidden xl:block" />
       </div>
+
 
       {/* === Foreground === */}
       <motion.div
@@ -464,9 +466,14 @@ export const Hero = () => {
             />
             <motion.img
               src={heroMockup}
+              srcSet={`${heroMockupMobile} 720w, ${heroMockup} 1200w`}
+              sizes="(max-width: 768px) 90vw, 50vw"
               alt="معاينة منصة تِكله — قاعات، مصورين، كوشات، سيارات، ولوحة تحكم الشركاء"
               width={1280}
               height={1024}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               className="relative w-full max-w-[640px] drop-shadow-[0_30px_60px_rgba(11,11,13,0.25)]"
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
