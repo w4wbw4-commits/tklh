@@ -1,5 +1,5 @@
 import { Logo } from "./Logo";
-import { Instagram, Twitter, Mail, Building2, ArrowRight, LogOut } from "lucide-react";
+import { Instagram, Mail, Building2, ArrowRight, LogOut, Music2, Ghost } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -41,9 +41,10 @@ export const Footer = () => {
             </p>
             <div className="mt-5 flex items-center gap-2">
               {[
-                { Icon: Instagram, href: "#", label: "Instagram" },
-                { Icon: Twitter, href: "#", label: "Twitter" },
-              { Icon: Mail, href: "mailto:Call@tklh.sa", label: "Email" },
+              { Icon: Instagram, href: "https://www.instagram.com/tklh.sa/", label: "Instagram" },
+                { Icon: Music2, href: "https://www.tiktok.com/@tklh.sa", label: "TikTok" },
+                { Icon: Ghost, href: "https://snapchat.com/t/kVeQXWxt", label: "Snapchat" },
+                { Icon: Mail, href: "mailto:Call@tklh.sa", label: "Email" },
               ].map(({ Icon, href, label }) => (
                 <a
                   key={label}
