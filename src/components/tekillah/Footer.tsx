@@ -4,16 +4,27 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { SketchSectionDivider } from "./SketchArt";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Footer = () => {
   const { t } = useTranslation();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (!user) { setIsAdmin(false); return; }
+    supabase.rpc("has_role", { _user_id: user.id, _role: "admin" }).then(({ data }) => {
+      setIsAdmin(!!data);
+    });
+  }, [user]);
 
   const handleSignOut = async () => {
     await signOut();
     navigate("/");
   };
+
 
   return (
     <footer className="border-t border-border bg-gradient-beige">
@@ -58,7 +69,16 @@ export const Footer = () => {
             <div className="font-wordmark text-sm font-semibold text-foreground">{t("footer.platform")}</div>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li><Link to="/about" className="hover:text-primary">تعرف على تِكله</Link></li>
-              <li><Link to="/planner" className="hover:text-primary">{t("footer.wizard")}</Link></li>
+              <li>
+                {isAdmin ? (
+                  <Link to="/planner" className="hover:text-primary">{t("footer.wizard")}</Link>
+                ) : (
+                  <span className="inline-flex cursor-not-allowed items-center gap-2 opacity-60">
+                    {t("footer.wizard")}
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold text-muted-foreground">قَرِيبًا</span>
+                  </span>
+                )}
+              </li>
               <li><Link to="/dashboard" className="hover:text-primary">{t("nav.myDashboard")}</Link></li>
             </ul>
           </div>
