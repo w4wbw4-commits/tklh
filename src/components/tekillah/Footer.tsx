@@ -69,7 +69,16 @@ export const Footer = () => {
             <div className="font-wordmark text-sm font-semibold text-foreground">{t("footer.platform")}</div>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li><Link to="/about" className="hover:text-primary">تعرف على تِكله</Link></li>
-              <li><Link to="/planner" className="hover:text-primary">{t("footer.wizard")}</Link></li>
+              <li>
+                {isAdmin ? (
+                  <Link to="/planner" className="hover:text-primary">{t("footer.wizard")}</Link>
+                ) : (
+                  <span className="inline-flex cursor-not-allowed items-center gap-2 opacity-60">
+                    {t("footer.wizard")}
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold text-muted-foreground">قَرِيبًا</span>
+                  </span>
+                )}
+              </li>
               <li><Link to="/dashboard" className="hover:text-primary">{t("nav.myDashboard")}</Link></li>
             </ul>
           </div>
