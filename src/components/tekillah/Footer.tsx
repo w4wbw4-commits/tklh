@@ -56,7 +56,7 @@ export const Footer = () => {
               { Icon: Instagram, href: "https://www.instagram.com/tklh.sa/", label: "Instagram" },
                 { Icon: Music2, href: "https://www.tiktok.com/@tklh.sa", label: "TikTok" },
                 { Icon: SnapchatIcon, href: "https://snapchat.com/t/kVeQXWxt", label: "Snapchat" },
-                { Icon: WhatsAppIcon, href: "https://wa.me/966530466360", label: "WhatsApp" },
+                { Icon: WhatsAppIcon, href: "https://wa.me/966530466460", label: "WhatsApp" },
                 { Icon: Mail, href: "mailto:Call@tklh.sa", label: "Email" },
               ].map(({ Icon, href, label }) => (
                 <a
@@ -80,14 +80,14 @@ export const Footer = () => {
               </li>
               <li>
                 <a
-                  href="https://wa.me/966530466360?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D9%85%D8%B9%20%D8%AA%D9%90%D9%83%D9%84%D9%87"
+                  href="https://wa.me/966530466460?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D9%85%D8%B9%20%D8%AA%D9%90%D9%83%D9%84%D9%87"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 hover:text-primary"
                   dir="ltr"
                 >
                   <WhatsAppIcon className="h-3.5 w-3.5" />
-                  +966 53 046 6360
+                  +966 53 046 6460
                 </a>
               </li>
             </ul>
