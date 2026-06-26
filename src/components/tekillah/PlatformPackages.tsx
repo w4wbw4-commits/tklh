@@ -311,22 +311,11 @@ export const PlatformPackages = () => {
                 transition={{ duration: 0.6, delay: idx * 0.06 }}
                 className="group relative flex flex-col rounded-[2rem] border border-gold/20 bg-cream/60 p-3 backdrop-blur-sm transition-all duration-700 hover:-translate-y-2 hover:bg-cream hover:shadow-[0_40px_80px_-20px_hsl(var(--green)/0.15)]"
               >
-                {/* Image */}
+                {/* Image gallery — swipeable */}
                 <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[1.5rem] border border-gold/10 bg-secondary">
-                  {p.thumbnail_url ? (
-                    <img
-                      src={p.thumbnail_url}
-                      alt={displayName}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                    />
-                  ) : (
-                    <div className="grid h-full w-full place-items-center">
-                      <PackageOpen className="h-10 w-10 text-foreground/30" />
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-green/60 via-transparent to-transparent opacity-80" />
-                  <div className="absolute left-4 top-4 rounded-full border border-cream/20 bg-cream/10 p-2 backdrop-blur-md">
+                  <CardMediaCarousel media={cardMedia} alt={displayName} variant="light" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-green/60 via-transparent to-transparent opacity-60" />
+                  <div className="pointer-events-none absolute left-4 top-4 z-10 rounded-full border border-cream/20 bg-cream/10 p-2 backdrop-blur-md">
                     <Sparkles className="h-4 w-4 text-cream/90" strokeWidth={2} />
                   </div>
                 </div>
