@@ -3,7 +3,7 @@
  * scroll-to-top widgets, links straight to the concierge number with an
  * Arabic prefilled greeting.
  */
-const NUMBER = "966530466360";
+const NUMBER = "966530466460";
 const MESSAGE =
   "السلام عليكم، أود التواصل مع تِكله بخصوص حجز/تنسيق مناسبة.";
 
