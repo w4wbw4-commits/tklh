@@ -105,14 +105,11 @@ export const Mission = () => {
           </p>
 
           <p
-            className="mt-8 bg-gradient-to-r bg-clip-text text-2xl font-bold text-transparent sm:text-3xl"
-            style={{
-              backgroundImage:
-                "linear-gradient(90deg, hsl(var(--primary-deep)), hsl(var(--gold)))",
-            }}
+            className="font-display mt-8 text-2xl font-bold text-gold sm:text-3xl"
           >
             {t("mission.tagline")}
           </p>
+
         </motion.div>
 
         <motion.div
