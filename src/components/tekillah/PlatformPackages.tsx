@@ -8,11 +8,11 @@
 // `?pkg=<id>` URL param it watches on mount).
 // ---------------------------------------------------------------------------
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RiyalSymbol } from "./RiyalSymbol";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { ArrowRight, ArrowLeft, Check, PackageOpen, Play, Sparkles, Zap } from "lucide-react";
+import { ArrowRight, ArrowLeft, Check, ChevronLeft, ChevronRight, PackageOpen, Play, Sparkles, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
@@ -22,6 +22,115 @@ import { supabase } from "@/integrations/supabase/client";
 import { fmtNumber } from "@/i18n/format";
 import { pickLocalized, pickLocalizedArray } from "@/i18n/localized";
 import type { PlatformPackageRow } from "./admin/AdminPackageDialog";
+
+/**
+ * CardMediaCarousel — swipeable gallery used inside each package card.
+ * Uses native scroll-snap so touch swipe works for free on mobile, plus
+ * arrow buttons on hover for desktop and dot indicators reflecting position.
+ */
+type CardMedia = { url: string; type: "image" | "video" };
+const CardMediaCarousel = ({
+  media,
+  alt,
+  variant = "light",
+}: {
+  media: CardMedia[];
+  alt: string;
+  variant?: "light" | "dark";
+}) => {
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+
+  if (media.length === 0) {
+    return (
+      <div className="grid h-full w-full place-items-center">
+        <PackageOpen className={`h-10 w-10 ${variant === "dark" ? "text-[hsl(40_40%_97%)]/40" : "text-foreground/30"}`} />
+      </div>
+    );
+  }
+
+  const scrollToIndex = (i: number) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const clamped = Math.max(0, Math.min(media.length - 1, i));
+    el.scrollTo({ left: el.clientWidth * clamped, behavior: "smooth" });
+  };
+
+  const onScroll = () => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const idx = Math.round(el.scrollLeft / el.clientWidth);
+    if (idx !== active) setActive(idx);
+  };
+
+  const stop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  return (
+    <>
+      <div
+        ref={scrollerRef}
+        onScroll={onScroll}
+        dir="ltr"
+        className="hide-scrollbar flex h-full w-full snap-x snap-mandatory overflow-x-auto scroll-smooth"
+      >
+        {media.map((m, i) => (
+          <div key={m.url + i} className="relative h-full w-full shrink-0 snap-center">
+            {m.type === "video" ? (
+              <div className="grid h-full w-full place-items-center bg-black/60">
+                <Play className="h-10 w-10 text-cream" />
+              </div>
+            ) : (
+              <img
+                src={m.url}
+                alt={alt}
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
+              />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {media.length > 1 && (
+        <>
+          {/* Arrows */}
+          <button
+            type="button"
+            aria-label="previous"
+            onClick={(e) => { stop(e); scrollToIndex(active - 1); }}
+            className="absolute left-2 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-cream/30 bg-black/30 text-cream opacity-0 backdrop-blur-md transition-opacity hover:bg-black/50 group-hover:opacity-100"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            aria-label="next"
+            onClick={(e) => { stop(e); scrollToIndex(active + 1); }}
+            className="absolute right-2 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-cream/30 bg-black/30 text-cream opacity-0 backdrop-blur-md transition-opacity hover:bg-black/50 group-hover:opacity-100"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+
+          {/* Dots */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-3 z-10 flex justify-center gap-1.5">
+            {media.map((_, i) => (
+              <span
+                key={i}
+                className={`h-1.5 rounded-full transition-all ${
+                  i === active ? "w-5 bg-gold" : "w-1.5 bg-cream/70"
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </>
+  );
+};
+
 
 export const PlatformPackages = () => {
   const { t, i18n } = useTranslation();
@@ -115,6 +224,11 @@ export const PlatformPackages = () => {
           {items.map((p, idx) => {
             const displayName = pickLocalized(p.name, p.name_en);
             const displayDesc = pickLocalized(p.description, p.description_en);
+            // Build the card media list — show all gallery images on swipe,
+            // and fall back to the thumbnail so legacy packages still render.
+            const cardMedia: CardMedia[] = (p.media && p.media.length > 0)
+              ? (p.media as CardMedia[])
+              : (p.thumbnail_url ? [{ url: p.thumbnail_url, type: "image" }] : []);
             // Middle card (when 3 items) is the elevated/featured tier.
             const isFeatured = items.length >= 3 && idx === 1;
 
@@ -135,21 +249,10 @@ export const PlatformPackages = () => {
                     </span>
                   </div>
 
-                  {/* Image */}
+                  {/* Image gallery — swipeable */}
                   <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[2rem] bg-secondary shadow-2xl">
-                    {p.thumbnail_url ? (
-                      <img
-                        src={p.thumbnail_url}
-                        alt={displayName}
-                        loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="grid h-full w-full place-items-center">
-                        <PackageOpen className="h-10 w-10 text-[hsl(40_40%_97%)]/40" />
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[hsl(100_45%_15%)] via-transparent to-transparent opacity-90" />
+                    <CardMediaCarousel media={cardMedia} alt={displayName} variant="dark" />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[hsl(100_45%_15%)] via-transparent to-transparent opacity-90" />
                   </div>
 
                   {/* Body */}
@@ -208,22 +311,11 @@ export const PlatformPackages = () => {
                 transition={{ duration: 0.6, delay: idx * 0.06 }}
                 className="group relative flex flex-col rounded-[2rem] border border-gold/20 bg-cream/60 p-3 backdrop-blur-sm transition-all duration-700 hover:-translate-y-2 hover:bg-cream hover:shadow-[0_40px_80px_-20px_hsl(var(--green)/0.15)]"
               >
-                {/* Image */}
+                {/* Image gallery — swipeable */}
                 <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[1.5rem] border border-gold/10 bg-secondary">
-                  {p.thumbnail_url ? (
-                    <img
-                      src={p.thumbnail_url}
-                      alt={displayName}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                    />
-                  ) : (
-                    <div className="grid h-full w-full place-items-center">
-                      <PackageOpen className="h-10 w-10 text-foreground/30" />
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-green/60 via-transparent to-transparent opacity-80" />
-                  <div className="absolute left-4 top-4 rounded-full border border-cream/20 bg-cream/10 p-2 backdrop-blur-md">
+                  <CardMediaCarousel media={cardMedia} alt={displayName} variant="light" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-green/60 via-transparent to-transparent opacity-60" />
+                  <div className="pointer-events-none absolute left-4 top-4 z-10 rounded-full border border-cream/20 bg-cream/10 p-2 backdrop-blur-md">
                     <Sparkles className="h-4 w-4 text-cream/90" strokeWidth={2} />
                   </div>
                 </div>
