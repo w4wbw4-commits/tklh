@@ -97,7 +97,7 @@ export const PlatformPackages = () => {
             <span className="h-1 w-1 rounded-full bg-gold shadow-[0_0_8px_hsl(var(--gold))]" />
           </div>
 
-          <h2 className="mb-5 bg-gradient-to-b from-[hsl(35_45%_40%)] via-gold to-[hsl(35_45%_40%)] bg-clip-text font-arabic text-4xl font-black leading-[2] text-transparent pt-4 pb-3 md:text-5xl [text-box-trim:none] [-webkit-text-box-trim:none]" style={{ overflow: 'visible' }}>
+          <h2 className="mb-5 bg-gradient-to-b from-[hsl(35_45%_40%)] via-gold to-[hsl(35_45%_40%)] bg-clip-text font-display text-4xl font-black leading-[2] text-transparent pt-4 pb-3 md:text-5xl [text-box-trim:none] [-webkit-text-box-trim:none]" style={{ overflow: 'visible' }}>
             {t("platformPackages.sectionTitle")}
           </h2>
 
