@@ -258,7 +258,9 @@ export const PlatformPackages = () => {
                   {/* Body */}
                   <div className="flex flex-1 flex-col gap-7 p-7">
                     <div className="space-y-2 text-center">
-                      <h3 className="font-arabic text-3xl font-black text-[hsl(40_40%_97%)]">{displayName}</h3>
+                      <h3 className="font-arabic text-3xl font-black text-[hsl(40_40%_97%)]">
+                        {displayName === "الباقة الأساسية" ? "باقة الكلاسكية" : displayName === "الباقة المريحة" ? "باقة بريميوم" : displayName}
+                      </h3>
                       {displayDesc && (
                         <p className="font-arabic text-sm leading-relaxed text-[hsl(38_70%_75%)] line-clamp-2">
                           {displayDesc}
@@ -323,7 +325,9 @@ export const PlatformPackages = () => {
                 {/* Body */}
                 <div className="flex flex-1 flex-col gap-6 p-6">
                   <div className="space-y-1.5">
-                    <h3 className="font-arabic text-2xl font-black text-green">{displayName}</h3>
+                    <h3 className="font-arabic text-2xl font-black text-green">
+                      {displayName === "الباقة الأساسية" ? "باقة الكلاسكية" : displayName === "الباقة المريحة" ? "باقة بريميوم" : displayName}
+                    </h3>
                     {displayDesc && (
                       <p className="font-arabic text-xs leading-relaxed text-green/60 line-clamp-2">
                         {displayDesc}
