@@ -300,7 +300,7 @@ const MarqueeRow = ({
   // the start of an identical repeated copy = seamless loop. Four copies (plus
   // min-w-[200vw]) guarantee the track is always wider than the viewport so no
   // empty gap is ever visible on wide screens.
-  const repeated = [...items, ...items];
+  const repeated = [...items, ...items, ...items];
   return (
     <div className="relative w-full overflow-hidden py-2">
       <div
