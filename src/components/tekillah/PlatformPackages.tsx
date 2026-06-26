@@ -249,21 +249,10 @@ export const PlatformPackages = () => {
                     </span>
                   </div>
 
-                  {/* Image */}
+                  {/* Image gallery — swipeable */}
                   <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[2rem] bg-secondary shadow-2xl">
-                    {p.thumbnail_url ? (
-                      <img
-                        src={p.thumbnail_url}
-                        alt={displayName}
-                        loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="grid h-full w-full place-items-center">
-                        <PackageOpen className="h-10 w-10 text-[hsl(40_40%_97%)]/40" />
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[hsl(100_45%_15%)] via-transparent to-transparent opacity-90" />
+                    <CardMediaCarousel media={cardMedia} alt={displayName} variant="dark" />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[hsl(100_45%_15%)] via-transparent to-transparent opacity-90" />
                   </div>
 
                   {/* Body */}
