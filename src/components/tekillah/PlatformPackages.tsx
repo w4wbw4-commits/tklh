@@ -224,6 +224,11 @@ export const PlatformPackages = () => {
           {items.map((p, idx) => {
             const displayName = pickLocalized(p.name, p.name_en);
             const displayDesc = pickLocalized(p.description, p.description_en);
+            // Build the card media list — show all gallery images on swipe,
+            // and fall back to the thumbnail so legacy packages still render.
+            const cardMedia: CardMedia[] = (p.media && p.media.length > 0)
+              ? (p.media as CardMedia[])
+              : (p.thumbnail_url ? [{ url: p.thumbnail_url, type: "image" }] : []);
             // Middle card (when 3 items) is the elevated/featured tier.
             const isFeatured = items.length >= 3 && idx === 1;
 
