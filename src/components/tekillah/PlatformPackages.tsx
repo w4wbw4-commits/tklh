@@ -258,7 +258,9 @@ export const PlatformPackages = () => {
                   {/* Body */}
                   <div className="flex flex-1 flex-col gap-7 p-7">
                     <div className="space-y-2 text-center">
-                      <h3 className="font-arabic text-3xl font-black text-[hsl(40_40%_97%)]">{displayName}</h3>
+                      <h3 className="font-arabic text-3xl font-black text-[hsl(40_40%_97%)]">
+                        {displayName === "الباقة الأساسية" ? "باقة الكلاسكية" : displayName === "الباقة المريحة" ? "باقة بريميوم" : displayName}
+                      </h3>
                       {displayDesc && (
                         <p className="font-arabic text-sm leading-relaxed text-[hsl(38_70%_75%)] line-clamp-2">
                           {displayDesc}
@@ -323,7 +325,9 @@ export const PlatformPackages = () => {
                 {/* Body */}
                 <div className="flex flex-1 flex-col gap-6 p-6">
                   <div className="space-y-1.5">
-                    <h3 className="font-arabic text-2xl font-black text-green">{displayName}</h3>
+                    <h3 className="font-arabic text-2xl font-black text-green">
+                      {displayName === "الباقة الأساسية" ? "باقة الكلاسكية" : displayName === "الباقة المريحة" ? "باقة بريميوم" : displayName}
+                    </h3>
                     {displayDesc && (
                       <p className="font-arabic text-xs leading-relaxed text-green/60 line-clamp-2">
                         {displayDesc}
@@ -374,7 +378,9 @@ export const PlatformPackages = () => {
       <Dialog open={!!active} onOpenChange={(v) => !v && setActive(null)}>
         <DialogContent className="max-h-[92vh] max-w-4xl overflow-y-auto border-gold/20 bg-cream p-0">
           {active && (() => {
-            const aName = pickLocalized(active.name, active.name_en);
+            const rawAName = pickLocalized(active.name, active.name_en);
+            const aName = rawAName === "الباقة الأساسية" ? "باقة الكلاسكية" : 
+                         rawAName === "الباقة المريحة" ? "باقة بريميوم" : rawAName;
             const aDesc = pickLocalized(active.description, active.description_en);
             const aIncludes = pickLocalizedArray(active.includes, active.includes_en);
             // Build a media list — fall back to thumbnail if no gallery items
