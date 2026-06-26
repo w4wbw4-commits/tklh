@@ -291,7 +291,7 @@ export const PlatformPackages = () => {
                       </button>
                       <button
                         onClick={() => { setActive(p); setActiveMediaIdx(0); }}
-                        className="font-arabic text-xs font-medium text-[hsl(38_70%_75%)]/90 transition-colors hover:text-[hsl(40_40%_97%)]"
+                        className="font-arabic text-xs font-medium text-white transition-colors hover:text-white/80"
                       >
                         {t("platformPackages.viewDetails")}
                       </button>
