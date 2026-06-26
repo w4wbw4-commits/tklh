@@ -1,5 +1,5 @@
 import { Logo } from "./Logo";
-import { Instagram, Twitter, Mail, Building2, ArrowRight, LogOut } from "lucide-react";
+import { Instagram, Mail, Building2, ArrowRight, LogOut, Music2, Ghost } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -41,13 +41,16 @@ export const Footer = () => {
             </p>
             <div className="mt-5 flex items-center gap-2">
               {[
-                { Icon: Instagram, href: "#", label: "Instagram" },
-                { Icon: Twitter, href: "#", label: "Twitter" },
-              { Icon: Mail, href: "mailto:Call@tklh.sa", label: "Email" },
+              { Icon: Instagram, href: "https://www.instagram.com/tklh.sa/", label: "Instagram" },
+                { Icon: Music2, href: "https://www.tiktok.com/@tklh.sa", label: "TikTok" },
+                { Icon: Ghost, href: "https://snapchat.com/t/kVeQXWxt", label: "Snapchat" },
+                { Icon: Mail, href: "mailto:Call@tklh.sa", label: "Email" },
               ].map(({ Icon, href, label }) => (
                 <a
                   key={label}
                   href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                   aria-label={label}
                   className="grid h-10 w-10 place-items-center rounded-full border border-border bg-card text-foreground/70 transition-colors hover:border-primary hover:text-primary"
                 >
