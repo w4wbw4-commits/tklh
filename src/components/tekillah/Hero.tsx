@@ -296,16 +296,42 @@ const MarqueeRow = ({
   direction: "rtl" | "ltr";
   delay?: string;
 }) => {
-  // SIX copies — the animation translates the track by -50%, which lands on
-  // the start of an identical repeated copy = seamless loop. Using an EVEN
-  // number of copies (6) guarantees the loop point never cuts through a copy,
-  // and the total content width naturally exceeds any viewport width so no
-  // empty gap is ever visible.
-  const repeated = [...items, ...items, ...items, ...items, ...items, ...items];
+  // Each group is intentionally wider than any viewport, then duplicated once.
+  // The animation moves exactly one group width, so the second identical group
+  // is already in place and the row never exposes an empty section.
+  const groupItems = [...items, ...items, ...items, ...items];
+  const groups = [groupItems, groupItems];
+
+  const renderItem = (item: string, index: number, groupIndex: number) => (
+    <div
+      key={`${groupIndex}-${item}-${index}`}
+      className="flex items-center"
+      style={{ marginInlineEnd: "0.7rem" }}
+    >
+      <span
+        className="inline-flex items-center rounded-full px-4 py-2 text-[13px] font-bold tracking-wide shadow-[0_6px_18px_-8px_hsl(var(--green)/0.45)] sm:px-5 sm:text-sm"
+        style={{
+          backgroundColor: "hsl(var(--green))",
+          color: "hsl(var(--cream))",
+          border: "1px solid hsl(var(--green-mid) / 0.4)",
+        }}
+      >
+        {item}
+      </span>
+      <span
+        aria-hidden
+        className="select-none text-sm font-black sm:text-base"
+        style={{ color: "hsl(var(--green) / 0.55)", marginInlineStart: "0.7rem" }}
+      >
+        ✳
+      </span>
+    </div>
+  );
+
   return (
     <div className="relative w-full overflow-hidden py-2">
       <div
-        className={`flex w-max items-center whitespace-nowrap ${
+        className={`flex w-max min-w-max items-center whitespace-nowrap ${
           direction === "rtl" ? "animate-marquee-rtl" : "animate-marquee-ltr"
         }`}
         style={{
@@ -314,30 +340,13 @@ const MarqueeRow = ({
           animationDelay: delay,
         }}
       >
-        {repeated.map((item, i) => (
-
+        {groups.map((group, groupIndex) => (
           <div
-            key={`${item}-${i}`}
-            className="flex items-center"
-            style={{ marginInlineEnd: "1.25rem" }}
+            key={`marquee-group-${groupIndex}`}
+            aria-hidden={groupIndex === 1}
+            className="flex min-w-max shrink-0 items-center"
           >
-            <span
-              className="inline-flex items-center rounded-full px-5 py-2 text-[13px] font-bold tracking-wide shadow-[0_6px_18px_-8px_hsl(var(--green)/0.45)] sm:text-sm"
-              style={{
-                backgroundColor: "hsl(var(--green))",
-                color: "hsl(var(--cream))",
-                border: "1px solid hsl(var(--green-mid) / 0.4)",
-              }}
-            >
-              {item}
-            </span>
-            <span
-              aria-hidden
-              className="select-none text-base font-black"
-              style={{ color: "hsl(var(--green) / 0.55)", marginInlineStart: "1.25rem" }}
-            >
-              ✳
-            </span>
+            {group.map((item, index) => renderItem(item, index, groupIndex))}
           </div>
         ))}
       </div>
