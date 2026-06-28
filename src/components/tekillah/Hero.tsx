@@ -309,6 +309,7 @@ const MarqueeRow = ({
       style={{ marginInlineEnd: "0.7rem" }}
     >
       <span
+        dir="rtl"
         className="inline-flex items-center rounded-full px-4 py-2 text-[13px] font-bold tracking-wide shadow-[0_6px_18px_-8px_hsl(var(--green)/0.45)] sm:px-5 sm:text-sm"
         style={{
           backgroundColor: "hsl(var(--green))",
@@ -331,6 +332,7 @@ const MarqueeRow = ({
   return (
     <div className="relative w-full overflow-hidden py-2">
       <div
+        dir="ltr"
         className={`flex w-max min-w-max items-center whitespace-nowrap ${
           direction === "rtl" ? "animate-marquee-rtl" : "animate-marquee-ltr"
         }`}
@@ -344,6 +346,7 @@ const MarqueeRow = ({
           <div
             key={`marquee-group-${groupIndex}`}
             aria-hidden={groupIndex === 1}
+            dir="ltr"
             className="flex min-w-max shrink-0 items-center"
           >
             {group.map((item, index) => renderItem(item, index, groupIndex))}
