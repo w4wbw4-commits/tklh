@@ -330,7 +330,7 @@ const MarqueeRow = ({
   );
 
   return (
-    <div className="relative w-full overflow-hidden py-2">
+    <div dir="ltr" className="relative w-full overflow-hidden py-2">
       <div
         dir="ltr"
         className={`flex w-max min-w-max items-center whitespace-nowrap ${
