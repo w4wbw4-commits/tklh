@@ -140,19 +140,6 @@ export const Navbar = () => {
                 </Link>
               </Button>
             )}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleLang}
-              className="hidden rounded-full text-xs font-semibold text-foreground hover:bg-gold/15 hover:text-gold sm:inline-flex"
-            >
-              <Globe className="me-1 h-3.5 w-3.5" />
-              {t("nav.lang")}
-            </Button>
-            {/* Light / Dark toggle */}
-            <div className="relative inline-flex">
-              <ThemeToggle className="text-foreground hover:bg-gold/15 hover:text-gold" />
-            </div>
             {!user && (
               <Button
                 variant="ghost"
