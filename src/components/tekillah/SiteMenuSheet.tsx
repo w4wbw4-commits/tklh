@@ -21,6 +21,8 @@ import {
   Phone,
   FileText,
   Building2,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { ThemeToggle } from "./ThemeToggle";
