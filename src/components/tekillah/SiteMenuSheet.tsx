@@ -56,6 +56,7 @@ interface Props {
 export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
+  const { resolvedTheme, setTheme } = useTheme();
   const isAr = i18n.language === "ar";
   const [open, setOpen] = useState(false);
 
