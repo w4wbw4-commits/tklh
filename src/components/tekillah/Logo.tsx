@@ -23,7 +23,7 @@ export const Logo = ({ className = "" }: { className?: string }) => {
         TKLH
       </span>
       <span
-        className="font-wordmark text-xl sm:text-2xl font-black text-primary-deep"
+        className="font-wordmark text-lg sm:text-xl font-black text-primary-deep"
         style={{ color: "hsl(var(--primary-deep))", WebkitTextFillColor: "hsl(var(--primary-deep))" }}
       >
         تِكله
