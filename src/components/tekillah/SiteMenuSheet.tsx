@@ -25,7 +25,7 @@ import {
   Moon,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { ThemeToggle } from "./ThemeToggle";
+import { useTheme } from "next-themes";
 import { Logo } from "./Logo";
 
 interface NavLinkItem {
