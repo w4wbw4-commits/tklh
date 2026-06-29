@@ -165,29 +165,29 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
             {accountLinks.map(renderItem)}
           </div>
 
-          {/* Preferences row pinned to the bottom */}
-          <div className="mt-auto pt-6">
-            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-foreground/50">
-              {t("nav.preferences", { defaultValue: isAr ? "التفضيلات" : "Preferences" })}
-            </div>
-            <div className="flex items-center justify-between gap-2 rounded-2xl border border-border/60 bg-card/60 p-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={toggleLang}
-                className="flex-1 rounded-xl text-xs text-foreground/80 hover:text-gold"
-              >
-                <Globe className="me-1 h-3.5 w-3.5" />
-                {t("nav.lang")}
-              </Button>
-              <div className="h-6 w-px bg-border" />
-              <div className="relative flex flex-1 items-center justify-center">
-                <ThemeToggle className="!relative" />
-                <span className="ms-1 text-xs text-foreground/70">
-                  {t("nav.theme", { defaultValue: isAr ? "المظهر" : "Theme" })}
-                </span>
-              </div>
-            </div>
+          {/* Language & Theme toggles as regular menu rows */}
+          <div className="mt-auto pt-6 space-y-1.5">
+            <button
+              onClick={toggleLang}
+              className="group flex w-full items-center gap-3 rounded-2xl border border-transparent bg-card/50 px-4 py-3 text-sm font-medium text-foreground/85 transition-all hover:border-gold/40 hover:bg-cream hover:text-primary-deep"
+            >
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-gold/20 group-hover:text-primary-deep">
+                <Globe className="h-4 w-4" />
+              </span>
+              <span className="flex-1 text-start">{t("nav.lang")}</span>
+            </button>
+
+            <button
+              onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+              className="group flex w-full items-center gap-3 rounded-2xl border border-transparent bg-card/50 px-4 py-3 text-sm font-medium text-foreground/85 transition-all hover:border-gold/40 hover:bg-cream hover:text-primary-deep"
+            >
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-gold/20 group-hover:text-primary-deep">
+                {resolvedTheme === "dark" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+              </span>
+              <span className="flex-1 text-start">
+                {t("nav.theme", { defaultValue: isAr ? "المظهر" : "Theme" })}
+              </span>
+            </button>
           </div>
         </div>
       </SheetContent>
