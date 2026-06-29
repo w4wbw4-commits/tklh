@@ -16,7 +16,9 @@ export default {
         arabic: ['"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
         display: ['"Thmanyah Serif Display"', '"Thmanyah Sans"', 'serif'],
         serif: ['"Thmanyah Serif Display"', 'serif'],
+        cinzel: ['"Cinzel"', '"Thmanyah Serif Display"', 'serif'],
       },
+
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
