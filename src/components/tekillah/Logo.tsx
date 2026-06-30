@@ -19,7 +19,6 @@ export const Logo = ({ className = "" }: { className?: string }) => {
         aria-hidden="true"
         className="h-9 w-auto sm:h-10 object-contain select-none"
         draggable={false}
-        style={{ imageRendering: 'crisp-edges' }}
       />
       <div className="flex flex-col items-center leading-none">
         <span className="font-cinzel font-bold uppercase tracking-[0.18em] text-sm sm:text-base text-current">
