@@ -1,20 +1,18 @@
-## التعديل المطلوب
+Change the Navbar rounded pill container to an olive-green background with off-white text.
 
-إعادة إضافة الاسم الإنجليزي **TKLH** بخط **Cinzel** إلى الشعار، بحيث يصبح الشعار: أيقونة الكرسي + "تِكله" (عربي) + "TKLH" (إنجليزي بخط Cinzel). الشعار موحّد عبر مكوّن واحد `src/components/tekillah/Logo.tsx`، لذا التعديل يظهر تلقائياً في كل الصفحات (Navbar / Footer / كل المواضع).
+### What will change
+- `src/components/tekillah/Navbar.tsx`
+  - Pill background: switch from translucent `background` to solid olive green (`bg-primary` or `bg-primary-deep`) in both default and scrolled states.
+  - Text color: switch nav links, logo wordmark, and icon buttons to off-white (`text-primary-foreground`).
+  - Borders: replace gold-tinted borders with a subtle off-white/olive outline.
+  - Hover / focus states: ensure links remain readable (e.g. slightly brighter off-white on hover).
 
-## التخطيط البصري
+### What stays the same
+- Layout, spacing, rounded-full shape, blur backdrop, and animation transitions.
+- Mobile sheet menu styling.
+- All routing and auth logic.
 
-```
-[🪑 كرسي]  تِكله  TKLH
-```
-
-- **الكرسي**: أيقونة الكرسي الحالية من `src/assets/tklh-chair.png` (h-9 sm:h-10).
-- **تِكله**: خط `font-wordmark` (Thmanyah Serif Display)، حجم `text-xl sm:text-2xl`، لون `primary-deep`.
-- **TKLH**: خط `font-cinzel` (Cinzel من Google Fonts، مُحمّل مسبقاً في `index.html` ومُسجّل في `tailwind.config.ts`)، uppercase، tracking-[0.18em]، حجم متناسق `text-sm sm:text-base`، نفس لون `primary-deep`.
-- الترتيب من اليمين لليسار في الواجهة العربية: الكرسي ← تِكله ← TKLH، بفواصل `gap-2`.
-
-## الملف الوحيد المتأثر
-
-- `src/components/tekillah/Logo.tsx` — إضافة `<span class="font-cinzel ...">TKLH</span>` بعد span الخاص بـ "تِكله" داخل نفس الـ `inline-flex items-center gap-2`.
-
-لا حاجة لأي تعديل في Navbar أو Footer أو غيرها — جميعها تستهلك `<Logo />` مباشرة.
+### Technical notes
+- Olive green token: `hsl(var(--primary))` or `hsl(var(--primary-deep))` (deep olive brand color).
+- Off-white token: `hsl(var(--primary-foreground))` (warm cream, already the primary contrast color).
+- No new dependencies or files needed.
