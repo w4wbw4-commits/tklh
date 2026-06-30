@@ -70,7 +70,7 @@ export const Navbar = () => {
             background: "hsl(var(--primary))",
           }}
         >
-          <Logo />
+          <Logo className="text-primary-foreground" />
           <nav className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => {
               const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
