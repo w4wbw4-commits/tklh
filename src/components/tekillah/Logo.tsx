@@ -21,14 +21,14 @@ export const Logo = ({ className = "" }: { className?: string }) => {
         draggable={false}
       />
       <span
-        className="font-wordmark text-xl sm:text-2xl font-black text-primary-deep"
-        style={{ color: "hsl(var(--primary-deep))", WebkitTextFillColor: "hsl(var(--primary-deep))" }}
+        className="font-wordmark text-xl sm:text-2xl font-black text-primary"
+        style={{ color: "hsl(var(--primary))", WebkitTextFillColor: "hsl(var(--primary))" }}
       >
         تِكله
       </span>
       <span
-        className="font-cinzel font-bold uppercase tracking-[0.18em] text-sm sm:text-base text-primary-deep"
-        style={{ color: "hsl(var(--primary-deep))", WebkitTextFillColor: "hsl(var(--primary-deep))" }}
+        className="font-cinzel font-bold uppercase tracking-[0.18em] text-sm sm:text-base text-primary"
+        style={{ color: "hsl(var(--primary))", WebkitTextFillColor: "hsl(var(--primary))" }}
       >
         TKLH
       </span>
