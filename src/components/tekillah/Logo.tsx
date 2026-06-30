@@ -21,10 +21,10 @@ export const Logo = ({ className = "" }: { className?: string }) => {
         draggable={false}
       />
       <div className="flex flex-col items-center leading-none">
-        <span className="font-cinzel font-bold uppercase tracking-[0.18em] text-sm sm:text-base text-current">
+        <span className="font-cinzel font-bold uppercase tracking-[0.18em] text-xs sm:text-sm text-current">
           TKLH
         </span>
-        <span className="font-wordmark text-xl sm:text-2xl font-black text-current">
+        <span className="font-wordmark text-base sm:text-lg font-black text-current">
           تِكله
         </span>
       </div>
