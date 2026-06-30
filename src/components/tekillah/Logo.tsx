@@ -26,6 +26,12 @@ export const Logo = ({ className = "" }: { className?: string }) => {
       >
         تِكله
       </span>
+      <span
+        className="font-cinzel font-bold uppercase tracking-[0.18em] text-sm sm:text-base text-primary-deep"
+        style={{ color: "hsl(var(--primary-deep))", WebkitTextFillColor: "hsl(var(--primary-deep))" }}
+      >
+        TKLH
+      </span>
     </motion.div>
   );
 };
