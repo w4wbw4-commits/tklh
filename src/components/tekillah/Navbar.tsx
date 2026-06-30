@@ -83,14 +83,14 @@ export const Navbar = () => {
             {navItems.map((item) => {
               const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
               const cls =
-                "relative rounded-full px-4 py-2 text-sm font-medium text-primary transition-all hover:text-primary-deep after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:bg-gold after:transition-all hover:after:w-1/2";
+                "relative rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition-all hover:text-primary-deep after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:bg-gold after:transition-all hover:after:w-1/2";
               const isDisabled = "disabled" in item && item.disabled;
               if (isDisabled) {
                 return (
                   <span
                     key={item.href}
                     aria-disabled="true"
-                    className="relative inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-primary/50 cursor-not-allowed select-none"
+                    className="relative inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-foreground/50 cursor-not-allowed select-none"
                   >
                     {label}
                     <span className="rounded-full bg-neutral-100 px-1.5 py-0.5 text-[9px] font-bold text-neutral-600 ring-1 ring-neutral-300">
@@ -120,7 +120,7 @@ export const Navbar = () => {
                 variant="ghost"
                 size="sm"
                 asChild
-                className="hidden rounded-full text-xs text-primary hover:bg-primary/10 hover:text-primary sm:inline-flex"
+                className="hidden rounded-full text-xs text-foreground hover:bg-primary/10 hover:text-primary sm:inline-flex"
               >
                 <Link to="/dashboard">
                   <LayoutDashboard className="me-1 h-3.5 w-3.5" />
@@ -145,7 +145,7 @@ export const Navbar = () => {
                 variant="ghost"
                 size="sm"
                 asChild
-                className="hidden rounded-full text-xs font-semibold text-primary hover:bg-transparent hover:text-primary-deep sm:inline-flex"
+                className="hidden rounded-full text-xs font-semibold text-foreground/85 hover:bg-transparent hover:text-primary-deep sm:inline-flex"
               >
                 <Link to="/auth">{t("nav.start")}</Link>
               </Button>
