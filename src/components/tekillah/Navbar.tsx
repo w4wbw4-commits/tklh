@@ -124,7 +124,7 @@ export const Navbar = () => {
               <Button
                 size="sm"
                 asChild
-                className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                className="rounded-full bg-primary-foreground text-primary hover:bg-primary-foreground/90"
               >
                 <Link to="/admin">
                   <ShieldCheck className="me-1 h-3.5 w-3.5" />
