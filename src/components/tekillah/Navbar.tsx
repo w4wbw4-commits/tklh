@@ -82,10 +82,10 @@ export const Navbar = () => {
                   <span
                     key={item.href}
                     aria-disabled="true"
-                    className="relative inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-foreground/50 cursor-not-allowed select-none"
+                    className="relative inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-primary-foreground/50 cursor-not-allowed select-none"
                   >
                     {label}
-                    <span className="rounded-full bg-neutral-100 px-1.5 py-0.5 text-[9px] font-bold text-neutral-600 ring-1 ring-neutral-300">
+                    <span className="rounded-full bg-primary-foreground/15 px-1.5 py-0.5 text-[9px] font-bold text-primary-foreground/80 ring-1 ring-primary-foreground/25">
                       قَرِيبًا
                     </span>
                   </span>
