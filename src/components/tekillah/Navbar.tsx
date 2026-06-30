@@ -137,7 +137,7 @@ export const Navbar = () => {
                 variant="ghost"
                 size="sm"
                 asChild
-                className="hidden rounded-full text-xs font-semibold text-foreground/85 hover:bg-transparent hover:text-primary-deep sm:inline-flex"
+                className="hidden rounded-full text-xs font-semibold text-primary-foreground/90 hover:bg-transparent hover:text-white sm:inline-flex"
               >
                 <Link to="/auth">{t("nav.start")}</Link>
               </Button>
