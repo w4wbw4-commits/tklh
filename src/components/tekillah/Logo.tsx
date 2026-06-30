@@ -20,12 +20,14 @@ export const Logo = ({ className = "" }: { className?: string }) => {
         className="h-9 w-auto sm:h-10 object-contain select-none"
         draggable={false}
       />
-      <span className="font-wordmark text-xl sm:text-2xl font-black text-current">
-        تِكله
-      </span>
-      <span className="font-cinzel font-bold uppercase tracking-[0.18em] text-sm sm:text-base text-current">
-        TKLH
-      </span>
+      <div className="flex flex-col items-center leading-none">
+        <span className="font-cinzel font-bold uppercase tracking-[0.18em] text-sm sm:text-base text-current">
+          TKLH
+        </span>
+        <span className="font-wordmark text-xl sm:text-2xl font-black text-current">
+          تِكله
+        </span>
+      </div>
     </motion.div>
   );
 };
