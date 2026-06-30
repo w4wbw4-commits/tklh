@@ -65,17 +65,9 @@ export const Navbar = () => {
     >
       <div className={`mx-auto px-4 transition-all duration-500 ${scrolled ? "mt-2 max-w-6xl" : "mt-4 max-w-6xl"}`}>
         <div
-          className={`flex items-center justify-between rounded-full px-4 py-2.5 transition-all duration-500 ${
-            scrolled
-              ? "border border-gold/30 shadow-[0_8px_30px_-12px_hsl(var(--green)/0.3)]"
-              : "border border-gold/20 shadow-soft"
-          }`}
+          className={`flex items-center justify-between rounded-full px-4 py-2.5 transition-all duration-500 border border-primary-foreground/20 shadow-soft`}
           style={{
-            background: scrolled
-              ? "hsl(var(--background) / 0.78)"
-              : "hsl(var(--background) / 0.6)",
-            backdropFilter: scrolled ? "blur(20px) saturate(1.4)" : "blur(14px) saturate(1.2)",
-            WebkitBackdropFilter: scrolled ? "blur(20px) saturate(1.4)" : "blur(14px) saturate(1.2)",
+            background: "hsl(var(--primary))",
           }}
         >
           <Logo />
