@@ -261,101 +261,6 @@ const variantClass: Record<CardDef["variant"], string> = {
     "bg-gradient-to-br from-cream via-cream to-[hsl(var(--surface))] text-primary-deep border-[hsl(var(--primary-deep)/0.08)] hover:shadow-[0_28px_60px_-22px_hsl(var(--primary-deep)/0.3)]",
 };
 
-// ---- Services marquee data --------------------------------------------------
-const marqueeRow1 = [
-  "قاعات أفراح",
-  "حفلات تخرّج",
-  "حفلات ملكة",
-  "حفلات خطوبة",
-  "تصوير احترافي",
-  "تنسيق كوش",
-  "سيارات زفّة",
-  "بوفيهات وضيافة",
-  "فرق فلكلورية",
-  "تنسيق إضاءة",
-];
-const marqueeRow2 = [
-  "دعوات إلكترونية",
-  "توزيعات مناسبات",
-  "كيك المناسبات",
-  "تنسيق ورود",
-  "DJ وصوتيات",
-  "حفلات استقبال مواليد",
-  "حفلات تأسيس",
-  "مناسبات خاصة",
-  "تنظيم مؤتمرات",
-  "تغطية إعلامية",
-];
-
-const MarqueeRow = ({
-  items,
-  direction,
-  delay = "0s",
-}: {
-  items: string[];
-  direction: "rtl" | "ltr";
-  delay?: string;
-}) => {
-  // Each group is intentionally wider than any viewport, then duplicated once.
-  // The animation moves exactly one group width, so the second identical group
-  // is already in place and the row never exposes an empty section.
-  const groupItems = [...items, ...items, ...items, ...items];
-  const groups = [groupItems, groupItems];
-
-  const renderItem = (item: string, index: number, groupIndex: number) => (
-    <div
-      key={`${groupIndex}-${item}-${index}`}
-      className="flex items-center"
-      style={{ marginInlineEnd: "0.7rem" }}
-    >
-      <span
-        dir="rtl"
-        className="inline-flex items-center rounded-full px-4 py-2 text-[13px] font-bold tracking-wide shadow-[0_6px_18px_-8px_hsl(var(--green)/0.45)] sm:px-5 sm:text-sm"
-        style={{
-          backgroundColor: "hsl(var(--green))",
-          color: "hsl(var(--cream))",
-          border: "1px solid hsl(var(--green-mid) / 0.4)",
-        }}
-      >
-        {item}
-      </span>
-      <span
-        aria-hidden
-        className="select-none text-sm font-black sm:text-base"
-        style={{ color: "hsl(var(--green) / 0.55)", marginInlineStart: "0.7rem" }}
-      >
-        ✳
-      </span>
-    </div>
-  );
-
-  return (
-    <div dir="ltr" className="relative w-full overflow-hidden py-2">
-      <div
-        dir="ltr"
-        className={`flex w-max min-w-max items-center whitespace-nowrap ${
-          direction === "rtl" ? "animate-marquee-rtl" : "animate-marquee-ltr"
-        }`}
-        style={{
-          willChange: "transform",
-          transform: "translateZ(0)",
-          animationDelay: delay,
-        }}
-      >
-        {groups.map((group, groupIndex) => (
-          <div
-            key={`marquee-group-${groupIndex}`}
-            aria-hidden={groupIndex === 1}
-            dir="ltr"
-            className="flex min-w-max shrink-0 items-center"
-          >
-            {group.map((item, index) => renderItem(item, index, groupIndex))}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 export const Hero = () => {
   return (
@@ -583,18 +488,6 @@ export const Hero = () => {
 
 
 
-        {/* === Crossing services marquee === */}
-        <motion.div
-          variants={rise}
-          className="relative mt-14 w-screen max-w-none -mx-5 sm:-mx-8"
-          style={{ marginInline: "calc(50% - 50vw)" }}
-        >
-          {/* edges kept clean — no fade so badges stay visible all the way through */}
-          <div className="flex flex-col gap-1 border-y border-primary-deep/10 py-3">
-            <MarqueeRow items={marqueeRow1} direction="rtl" />
-            <MarqueeRow items={marqueeRow2} direction="ltr" delay="-30s" />
-          </div>
-        </motion.div>
       </motion.div>
     </section>
   );
