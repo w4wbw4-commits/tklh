@@ -462,7 +462,7 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
                   return (
                     <div key={m.url} className="group relative aspect-square overflow-hidden rounded-xl border border-border bg-secondary">
                       {m.type === "image" ? (
-                        <img src={m.url} alt="" className="h-full w-full object-cover" />
+                        <img src={m.url} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
                       ) : (
                         <video src={m.url} muted className="h-full w-full object-cover" />
                       )}

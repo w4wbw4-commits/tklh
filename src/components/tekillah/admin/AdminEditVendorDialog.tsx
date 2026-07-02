@@ -617,7 +617,7 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
                   <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
                     {portfolioUrls.map((url, idx) => (
                       <div key={url} className="group relative aspect-square overflow-hidden rounded-xl border border-border bg-secondary">
-                        <img src={url} alt="" className="h-full w-full object-cover" />
+                        <img src={url} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
                         {/* Order badge — first image is the public cover */}
                         <span
                           className="absolute start-1 top-1 grid h-6 min-w-[1.5rem] place-items-center rounded-full bg-primary px-1.5 text-[10px] font-semibold text-primary-foreground tabular-nums shadow-card"
