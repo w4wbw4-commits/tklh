@@ -17,9 +17,8 @@ import heroMockupMobile from "@/assets/hero-mockup-mobile.webp";
 // Hero — Premium redesign.
 // Brand wordmark at top → massive editorial headline with Kashida →
 // clean subhead → 5 modern bento cards (Groom in black/gold Bisht, Bride
-// in pristine white, plus Hall/Photographer/Planner) → CTAs →
-// continuous two-row crossing services marquee. Background sketches stay
-// as a 15% opacity watermark.
+// in pristine white, plus Hall/Photographer/Planner) → CTAs.
+// Background sketches stay as a 15% opacity watermark.
 // ---------------------------------------------------------------------------
 
 // Kashida (tatweel) helper for editorial Arabic stretching.
