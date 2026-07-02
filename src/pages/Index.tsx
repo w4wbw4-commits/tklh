@@ -5,6 +5,7 @@ import { Navbar } from "@/components/tekillah/Navbar";
 import { Hero } from "@/components/tekillah/Hero";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
 import { SketchSectionDivider } from "@/components/tekillah/SketchArt";
+import { LazyVisible } from "@/components/tekillah/LazyVisible";
 import { SEO } from "@/components/SEO";
 
 // Dual-path CTA — replaces in-page packages/wizard sections.
@@ -104,39 +105,53 @@ const Index = () => {
         <SketchSectionDivider className="h-10 w-full opacity-80" />
       </div>
 
-      <Suspense fallback={<SectionSkeleton minHeight="50vh" />}>
-        <ProblemSolutionAbout />
-      </Suspense>
+      <LazyVisible minHeight="50vh" fallback={<SectionSkeleton minHeight="50vh" />}>
+        <Suspense fallback={<SectionSkeleton minHeight="50vh" />}>
+          <ProblemSolutionAbout />
+        </Suspense>
+      </LazyVisible>
 
       <div className="mx-auto my-2 flex max-w-3xl items-center justify-center px-6">
         <SketchSectionDivider className="h-10 w-full opacity-70" />
       </div>
 
-      <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
-        <OccasionsSection />
-      </Suspense>
+      <LazyVisible minHeight="60vh" fallback={<SectionSkeleton minHeight="60vh" />}>
+        <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
+          <OccasionsSection />
+        </Suspense>
+      </LazyVisible>
       <PathwaysCTA />
 
-      <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
-        <DashboardPreview />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton minHeight="20vh" />}>
-        <PaymentLogosStrip />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton minHeight="50vh" />}>
-        <UpcomingFeatures />
-      </Suspense>
+      <LazyVisible minHeight="60vh" fallback={<SectionSkeleton minHeight="60vh" />}>
+        <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
+          <DashboardPreview />
+        </Suspense>
+      </LazyVisible>
+      <LazyVisible minHeight="20vh" fallback={<SectionSkeleton minHeight="20vh" />}>
+        <Suspense fallback={<SectionSkeleton minHeight="20vh" />}>
+          <PaymentLogosStrip />
+        </Suspense>
+      </LazyVisible>
+      <LazyVisible minHeight="50vh" fallback={<SectionSkeleton minHeight="50vh" />}>
+        <Suspense fallback={<SectionSkeleton minHeight="50vh" />}>
+          <UpcomingFeatures />
+        </Suspense>
+      </LazyVisible>
 
       <div className="mx-auto my-2 flex max-w-3xl items-center justify-center px-6">
         <SketchSectionDivider className="h-10 w-full opacity-70" />
       </div>
 
-      <Suspense fallback={<SectionSkeleton minHeight="40vh" />}>
-        <Mission />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton minHeight="30vh" />}>
-        <Footer />
-      </Suspense>
+      <LazyVisible minHeight="40vh" fallback={<SectionSkeleton minHeight="40vh" />}>
+        <Suspense fallback={<SectionSkeleton minHeight="40vh" />}>
+          <Mission />
+        </Suspense>
+      </LazyVisible>
+      <LazyVisible minHeight="30vh" fallback={<SectionSkeleton minHeight="30vh" />}>
+        <Suspense fallback={<SectionSkeleton minHeight="30vh" />}>
+          <Footer />
+        </Suspense>
+      </LazyVisible>
     </main>
   );
 };
