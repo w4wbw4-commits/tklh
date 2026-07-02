@@ -92,6 +92,7 @@ const SectionSkeleton = ({ minHeight = "40vh" }: { minHeight?: string }) => (
 const Index = () => {
   return (
     <main className="min-h-screen bg-background">
+      <Preloader />
       <SEO
         title="تكله tklh — تنسيق حفلات وزواج وإدارة مؤتمرات بالسعودية"
         description="تكله (tklh.sa) منصة سعودية لتنسيق الحفلات وتنسيق الزواج وإدارة وتنسيق المؤتمرات وحجز القاعات والضيافة والتصوير في الرياض وجدة والدمام."
