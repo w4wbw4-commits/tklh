@@ -13,7 +13,7 @@ import chairIcon from "@/assets/tklh-chair.png";
  * The chair PNG is tinted via CSS mask so it inherits the exact brand color.
  */
 const MIN_VISIBLE_MS = 2500;
-const MAX_VISIBLE_ON = 2500;
+const MAX_VISIBLE_MS = 2500;
 const OLIVE = "#233324";
 
 export const Preloader = () => {
