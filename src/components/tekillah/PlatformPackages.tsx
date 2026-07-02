@@ -452,7 +452,7 @@ export const PlatformPackages = () => {
                           }`}
                         >
                           {m.type === "image" ? (
-                            <img src={m.url} alt="" className="h-full w-full object-cover" />
+                            <img src={m.url} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover" />
                           ) : (
                             <div className="grid h-full w-full place-items-center bg-black/60">
                               <Play className="h-4 w-4 text-cream" />
