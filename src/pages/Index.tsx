@@ -6,6 +6,7 @@ import { Hero } from "@/components/tekillah/Hero";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
 import { SketchSectionDivider } from "@/components/tekillah/SketchArt";
 import { LazyVisible } from "@/components/tekillah/LazyVisible";
+import { Preloader } from "@/components/tekillah/Preloader";
 import { SEO } from "@/components/SEO";
 
 // Dual-path CTA — replaces in-page packages/wizard sections.
