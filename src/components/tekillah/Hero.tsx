@@ -488,18 +488,6 @@ export const Hero = () => {
 
 
 
-        {/* === Crossing services marquee === */}
-        <motion.div
-          variants={rise}
-          className="relative mt-14 w-screen max-w-none -mx-5 sm:-mx-8"
-          style={{ marginInline: "calc(50% - 50vw)" }}
-        >
-          {/* edges kept clean — no fade so badges stay visible all the way through */}
-          <div className="flex flex-col gap-1 border-y border-primary-deep/10 py-3">
-            <MarqueeRow items={marqueeRow1} direction="rtl" />
-            <MarqueeRow items={marqueeRow2} direction="ltr" delay="-30s" />
-          </div>
-        </motion.div>
       </motion.div>
     </section>
   );
