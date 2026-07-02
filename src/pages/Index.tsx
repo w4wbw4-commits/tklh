@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { Sparkles, Gift, ArrowLeft } from "lucide-react";
 import { Navbar } from "@/components/tekillah/Navbar";
