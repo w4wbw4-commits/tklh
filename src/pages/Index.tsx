@@ -6,6 +6,7 @@ import { Hero } from "@/components/tekillah/Hero";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
 import { SketchSectionDivider } from "@/components/tekillah/SketchArt";
 import { LazyVisible } from "@/components/tekillah/LazyVisible";
+import { Preloader } from "@/components/tekillah/Preloader";
 import { SEO } from "@/components/SEO";
 
 // Dual-path CTA — replaces in-page packages/wizard sections.
@@ -91,6 +92,7 @@ const SectionSkeleton = ({ minHeight = "40vh" }: { minHeight?: string }) => (
 const Index = () => {
   return (
     <main className="min-h-screen bg-background">
+      <Preloader />
       <SEO
         title="تكله tklh — تنسيق حفلات وزواج وإدارة مؤتمرات بالسعودية"
         description="تكله (tklh.sa) منصة سعودية لتنسيق الحفلات وتنسيق الزواج وإدارة وتنسيق المؤتمرات وحجز القاعات والضيافة والتصوير في الرياض وجدة والدمام."
