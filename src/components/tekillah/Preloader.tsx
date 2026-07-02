@@ -4,17 +4,16 @@ import chairIcon from "@/assets/tklh-chair.png";
 /**
  * Fullscreen splash shown on the homepage while the initial paint settles.
  *
- * Dismissal logic (no arbitrary long timeout):
- * - Waits for `window.load` (all critical assets flushed) AND a 500ms minimum
- *   so the fade never feels jarring on an instant cache hit.
- * - Hard safety cap at 1200ms — if the load event is delayed by a slow font
- *   or third-party, we still reveal the app.
+ * Dismissal logic:
+ * - Displays the splash for exactly 2.5 seconds so the branding animation is
+ *   fully experienced, regardless of how fast the page loads.
+ * - The main homepage data fetching continues asynchronously in the background.
  *
  * Brand: the whole logo group is forced to Luxury Olive Green (#233324).
  * The chair PNG is tinted via CSS mask so it inherits the exact brand color.
  */
-const MIN_VISIBLE_MS = 500;
-const MAX_VISIBLE_MS = 1200;
+const MIN_VISIBLE_MS = 2500;
+const MAX_VISIBLE_MS = 2500;
 const OLIVE = "#233324";
 
 export const Preloader = () => {
