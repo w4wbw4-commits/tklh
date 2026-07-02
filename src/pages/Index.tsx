@@ -60,27 +60,51 @@ const PathwaysCTA = () => (
 // Below-the-fold sections — code-split so the Hero paints fast on mobile.
 // React.lazy turns each into its own chunk; Suspense renders a skeleton-height
 // placeholder so the page layout doesn't jump while the chunk fetches.
-const ProblemSolutionAbout = lazy(() =>
+//
+// `lazyWithRetry` guards against stale chunk hashes after a redeploy: if the
+// browser has an old index.html cached and tries to fetch a chunk that no
+// longer exists, we hard-reload once so the user gets the fresh manifest.
+const lazyWithRetry = <T extends { default: React.ComponentType<any> }>(
+  factory: () => Promise<T>,
+) =>
+  lazy(async () => {
+    try {
+      return await factory();
+    } catch (err) {
+      const reloaded = sessionStorage.getItem("chunk-reload") === "1";
+      if (!reloaded) {
+        sessionStorage.setItem("chunk-reload", "1");
+        window.location.reload();
+        // Return a never-resolving promise so Suspense keeps the fallback
+        // visible until the reload actually happens.
+        return new Promise<T>(() => {});
+      }
+      throw err;
+    }
+  });
+
+const ProblemSolutionAbout = lazyWithRetry(() =>
   import("@/components/tekillah/ProblemSolutionAbout").then((m) => ({ default: m.ProblemSolutionAbout })),
 );
-const OccasionsSection = lazy(() =>
+const OccasionsSection = lazyWithRetry(() =>
   import("@/components/tekillah/OccasionsSection").then((m) => ({ default: m.OccasionsSection })),
 );
-const DashboardPreview = lazy(() =>
+const DashboardPreview = lazyWithRetry(() =>
   import("@/components/tekillah/DashboardPreview").then((m) => ({ default: m.DashboardPreview })),
 );
-const PaymentLogosStrip = lazy(() =>
+const PaymentLogosStrip = lazyWithRetry(() =>
   import("@/components/tekillah/PaymentLogosStrip").then((m) => ({ default: m.PaymentLogosStrip })),
 );
-const UpcomingFeatures = lazy(() =>
+const UpcomingFeatures = lazyWithRetry(() =>
   import("@/components/tekillah/UpcomingFeatures").then((m) => ({ default: m.UpcomingFeatures })),
 );
-const Mission = lazy(() =>
+const Mission = lazyWithRetry(() =>
   import("@/components/tekillah/Mission").then((m) => ({ default: m.Mission })),
 );
-const Footer = lazy(() =>
+const Footer = lazyWithRetry(() =>
   import("@/components/tekillah/Footer").then((m) => ({ default: m.Footer })),
 );
+
 
 // Reserves vertical space so lazy-loaded sections don't cause layout shift.
 const SectionSkeleton = ({ minHeight = "40vh" }: { minHeight?: string }) => (
