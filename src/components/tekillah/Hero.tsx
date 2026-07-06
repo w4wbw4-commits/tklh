@@ -9,8 +9,6 @@ import {
   SketchBanquet,
   SketchTable,
 } from "./SketchArt";
-import heroMockup from "@/assets/hero-mockup.webp";
-import heroMockupMobile from "@/assets/hero-mockup-mobile.webp";
 
 
 // ---------------------------------------------------------------------------
