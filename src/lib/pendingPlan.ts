@@ -52,10 +52,8 @@ export interface PendingPlan {
   city: string;
   eventType: string;
   date: string;
-  eventDays: number;
   men: number;
   women: number;
-
   selected: string[];
   vision: string;
   selectedChips: string[];
