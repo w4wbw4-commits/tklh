@@ -49,34 +49,6 @@ export const StepVision = ({ vision, setVision, selectedChips, toggleChip }: Pro
         />
       </div>
 
-      <div className="mt-8">
-        <div className="mb-3 flex items-center gap-2 text-sm font-medium text-foreground">
-          <Sparkles className="h-4 w-4 text-primary" />
-          {t("wizard.vision.suggestions")}
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {chips.map((chip) => {
-            const isOn = selectedChips.includes(chip);
-            return (
-              <motion.button
-                key={chip}
-                type="button"
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => insertChip(chip)}
-                className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2 font-arabic text-sm transition-all ${
-                  isOn
-                    ? "border-primary bg-primary text-primary-foreground shadow-soft"
-                    : "border-border bg-card text-foreground hover:border-primary/50 hover:bg-primary/5"
-                }`}
-              >
-                {isOn ? <Check className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
-                {chip}
-              </motion.button>
-            );
-          })}
-        </div>
-      </div>
     </motion.div>
   );
 };
