@@ -417,44 +417,45 @@ export const Hero = () => {
 
         {/* === Dual-path CTAs === */}
         <motion.div variants={rise} className="mt-10 grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
-          {/* Active: Packages (right side in RTL = first item) */}
+          {/* Right side in RTL: Smart Planner (first in DOM) */}
           <a
-            href="/packages"
-            className="group relative overflow-hidden rounded-2xl border-2 border-gold p-5 text-right transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.55)]"
-            style={{ background: "linear-gradient(135deg, hsl(var(--green)) 0%, hsl(var(--green-mid)) 100%)" }}
+            href="/planner"
+            className="group relative overflow-hidden rounded-2xl border-2 border-olive/40 p-5 text-right backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-olive/70 hover:shadow-[0_25px_60px_-20px_hsl(var(--olive)/0.45)]"
+            style={{ background: "linear-gradient(135deg, hsl(var(--olive)) 0%, hsl(var(--olive-mid)) 100%)" }}
           >
             <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
-              style={{ background: "radial-gradient(circle, hsl(var(--gold)), transparent 70%)" }} />
+              style={{ background: "radial-gradient(circle, hsl(var(--olive-glow)), transparent 70%)" }} />
             <div className="relative flex items-center gap-3">
-              <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-gold/50 bg-green-mid/40 transition-transform duration-500 group-hover:rotate-6">
-                <Gift className="h-5 w-5 text-gold" strokeWidth={2.4} />
+              <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-olive-gold/50 bg-olive-dark/40 transition-transform duration-500 group-hover:rotate-6">
+                <Sparkles className="h-5 w-5 text-olive-gold" strokeWidth={2.4} />
               </span>
               <div className="flex-1">
-                <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold/80">جاهزة بضغطة</div>
-                <div className="font-display text-lg font-black text-gold sm:text-xl">اختار باقتك</div>
-                <div className="mt-0.5 text-[12.5px] text-cream/85">باقات منسّقة بعناية — احجز وخلّص بكل سهولة.</div>
+                <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-olive-gold/80">المسار الذكي</div>
+                <div className="font-display text-lg font-black text-olive-gold sm:text-xl">خطّط واحجز&nbsp;</div>
+                <div className="mt-0.5 text-[12.5px] text-cream/85">اختر كل تفصيلة على ذوقك.</div>
               </div>
-              <ArrowLeft className="h-5 w-5 text-gold transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+              <ArrowLeft className="h-5 w-5 text-olive-gold transition-transform duration-500 ease-out group-hover:-translate-x-1" />
             </div>
           </a>
 
-          {/* Active: Smart Planner (left side in RTL = second item) */}
+          {/* Left side in RTL: Packages (second in DOM) */}
           <a
-            href="/planner"
-            className="group relative overflow-hidden rounded-2xl border-2 border-green/20 bg-cream/80 p-5 text-right backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-green/50 hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.35)]"
+            href="/packages"
+            className="group relative overflow-hidden rounded-2xl border-2 border-cream/60 p-5 text-right transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_25px_60px_-20px_hsl(var(--gold)/0.35)]"
+            style={{ background: "linear-gradient(135deg, hsl(var(--cream)) 0%, hsl(var(--surface)) 100%)" }}
           >
             <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
-              style={{ background: "radial-gradient(circle, hsl(var(--green)/0.5), transparent 70%)" }} />
+              style={{ background: "radial-gradient(circle, hsl(var(--gold)/0.5), transparent 70%)" }} />
             <div className="relative flex items-center gap-3">
-              <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-green/30 bg-green/10 transition-transform duration-500 group-hover:rotate-6">
-                <Sparkles className="h-5 w-5 text-green" strokeWidth={2.4} />
+              <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-gold/40 bg-gold/10 transition-transform duration-500 group-hover:rotate-6">
+                <Gift className="h-5 w-5 text-gold" strokeWidth={2.4} />
               </span>
               <div className="flex-1">
-                <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-green/70">المسار الذكي</div>
-                <div className="font-display text-lg font-black text-green sm:text-xl">خطّط واحجز&nbsp;</div>
-                <div className="mt-0.5 text-[12.5px] text-primary-deep/65">اختر كل تفصيلة على ذوقك.</div>
+                <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold/70">جاهزة بضغطة</div>
+                <div className="font-display text-lg font-black text-gold sm:text-xl">اختار باقتك</div>
+                <div className="mt-0.5 text-[12.5px] text-primary-deep/65">باقات منسّقة بعناية — احجز وخلّص بكل سهولة.</div>
               </div>
-              <ArrowLeft className="h-5 w-5 text-green transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+              <ArrowLeft className="h-5 w-5 text-gold transition-transform duration-500 ease-out group-hover:-translate-x-1" />
             </div>
           </a>
         </motion.div>
