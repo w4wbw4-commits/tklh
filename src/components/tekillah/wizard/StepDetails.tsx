@@ -50,6 +50,16 @@ export const StepDetails = ({
   const isArabic = i18n.language?.startsWith("ar");
   const locale = isArabic ? arLocale : enUS;
   const selectedDate = isoToDate(date);
+  // If eventType isn't one of the presets and is non-empty, treat it as a custom "other" value.
+  const [isOther, setIsOther] = useState<boolean>(() => !!eventType && !PRESET_TYPES.has(eventType));
+  const [customType, setCustomType] = useState<string>(() => (!!eventType && !PRESET_TYPES.has(eventType) ? eventType : ""));
+  useEffect(() => {
+    if (!isOther && eventType && !PRESET_TYPES.has(eventType)) {
+      setIsOther(true);
+      setCustomType(eventType);
+    }
+  }, [eventType, isOther]);
+  const selectValue = isOther ? "other" : eventType;
   return (
     <motion.div
       key="step-0"
@@ -82,10 +92,29 @@ export const StepDetails = ({
 
         <div className="space-y-2">
           <Label className="font-arabic text-foreground">{t("wizard.details.type")}</Label>
-          <Select value={eventType} onValueChange={setEventType}>
+          <Select
+            value={selectValue}
+            onValueChange={(v) => {
+              if (v === "other") {
+                setIsOther(true);
+                setEventType(customType);
+              } else {
+                setIsOther(false);
+                setEventType(v);
+              }
+            }}
+          >
             <SelectTrigger className="h-12 rounded-xl"><SelectValue placeholder={t("wizard.details.typePlaceholder")} /></SelectTrigger>
             <SelectContent>{eventTypeKeys.map((e) => <SelectItem key={e} value={e}>{t(`eventTypes.${e}`)}</SelectItem>)}</SelectContent>
           </Select>
+          {isOther && (
+            <Input
+              value={customType}
+              onChange={(e) => { setCustomType(e.target.value); setEventType(e.target.value); }}
+              placeholder={isArabic ? "اكتب نوع الحفل" : "Type your event"}
+              className="h-11 rounded-xl font-arabic"
+            />
+          )}
         </div>
 
         <div className="space-y-2 sm:col-span-2">
