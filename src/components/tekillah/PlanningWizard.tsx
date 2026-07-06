@@ -55,8 +55,10 @@ export const PlanningWizard = () => {
   const [city, setCity] = useState("");
   const [eventType, setEventType] = useState("");
   const [date, setDate] = useState("");
+  const [eventDays, setEventDays] = useState(1);
   const [men, setMen] = useState(0);
   const [women, setWomen] = useState(0);
+
 
   // Step 1
   const [selected, setSelected] = useState<string[]>([]);
@@ -138,8 +140,10 @@ export const PlanningWizard = () => {
     setCity(snap.city ?? "");
     setEventType(snap.eventType ?? "");
     setDate(snap.date ?? "");
+    setEventDays(snap.eventDays ?? 1);
     setMen(snap.men ?? 0);
     setWomen(snap.women ?? 0);
+
     setSelected(snap.selected ?? []);
     setVision(snap.vision ?? "");
     setSelectedChips(snap.selectedChips ?? []);
@@ -240,12 +244,13 @@ export const PlanningWizard = () => {
   useEffect(() => {
     if (!hydratedRef.current) return;
     savePendingPlan({
-      city, eventType, date, men, women,
+      city, eventType, date, eventDays, men, women,
       selected, vision, selectedChips,
       budgetMode, budget,
       allocations, enabledServices, picks,
       packageSelection,
     });
+
   }, [city, eventType, date, men, women, selected, vision, selectedChips, budgetMode, budget, allocations, enabledServices, picks, packageSelection]);
 
   // Anchor the form area on step change so the user keeps reading from the
@@ -294,12 +299,13 @@ export const PlanningWizard = () => {
     if (!user) {
       // Persist the latest snapshot so the dashboard can finalise after sign-in.
       savePendingPlan({
-        city, eventType, date, men, women,
+        city, eventType, date, eventDays, men, women,
         selected, vision, selectedChips,
         budgetMode, budget,
         allocations, enabledServices, picks,
         packageSelection,
       });
+
       toast.success(t("wizard.planSaved"));
       // Encode where to resume after auth:
       //  - If they reached the final step (have picks OR a fast-track package)
@@ -330,12 +336,13 @@ export const PlanningWizard = () => {
         t,
         plan: {
           version: 1, savedAt: Date.now(),
-          city, eventType, date, men, women,
+          city, eventType, date, eventDays, men, women,
           selected, vision, selectedChips,
           budgetMode, budget,
           allocations, enabledServices, picks,
           packageSelection,
         },
+
       });
       // Snapshot is fully consumed — clear so we don't re-run on next visit.
       clearPendingPlan();
@@ -490,9 +497,11 @@ export const PlanningWizard = () => {
                   city={city} setCity={setCity}
                   eventType={eventType} setEventType={setEventType}
                   date={date} setDate={setDate}
+                  eventDays={eventDays} setEventDays={setEventDays}
                   men={men} setMen={setMen}
                   women={women} setWomen={setWomen}
                 />
+
               )}
               {step === 1 && <StepServices selected={selected} toggleService={toggleService} />}
               {step === 2 && (

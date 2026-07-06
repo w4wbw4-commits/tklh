@@ -262,8 +262,11 @@
       "type": "Event type",
       "typePlaceholder": "Choose a type",
       "date": "Event date",
+      "eventDays": "Event duration (days)",
+      "eventDaysPlaceholder": "e.g. 1",
       "men": "Number of men",
       "women": "Number of women"
+
     },
     "services": {
       "title": "Choose your services",

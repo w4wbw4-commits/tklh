@@ -38,14 +38,17 @@ interface Props {
   city: string; setCity: (v: string) => void;
   eventType: string; setEventType: (v: string) => void;
   date: string; setDate: (v: string) => void;
+  eventDays: number; setEventDays: (v: number) => void;
   men: number; setMen: (v: number) => void;
   women: number; setWomen: (v: number) => void;
 }
 
+
 export const StepDetails = ({
   city, setCity, eventType, setEventType, date, setDate,
-  men, setMen, women, setWomen,
+  eventDays, setEventDays, men, setMen, women, setWomen,
 }: Props) => {
+
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language?.startsWith("ar");
   const locale = isArabic ? arLocale : enUS;
@@ -117,7 +120,7 @@ export const StepDetails = ({
           )}
         </div>
 
-        <div className="space-y-2 sm:col-span-2">
+        <div className="space-y-2">
           <Label className="font-arabic text-foreground">{t("wizard.details.date")}</Label>
           <Popover>
             <PopoverTrigger asChild>
@@ -150,6 +153,22 @@ export const StepDetails = ({
           </Popover>
           <p className="text-[11px] text-foreground/55" dir="ltr">DD/MM/YYYY</p>
         </div>
+
+        <div className="space-y-2">
+          <Label className="font-arabic text-foreground">{t("wizard.details.eventDays")}</Label>
+          <Input
+            type="number"
+            inputMode="numeric"
+            min={1}
+            value={eventDays}
+            onChange={(e) => setEventDays(Math.max(1, parseInt(e.target.value || "1", 10)))}
+            placeholder={t("wizard.details.eventDaysPlaceholder")}
+            className="h-12 rounded-xl text-start font-arabic tabular-nums"
+            dir="ltr"
+          />
+          <p className="text-[11px] text-foreground/55" dir="ltr">1 – 30</p>
+        </div>
+
 
         <div className="space-y-3 rounded-2xl bg-secondary/50 p-5">
           <Label className="font-arabic text-foreground">{t("wizard.details.men")}</Label>
