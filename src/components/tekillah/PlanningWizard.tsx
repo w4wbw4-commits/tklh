@@ -55,8 +55,8 @@ export const PlanningWizard = () => {
   const [city, setCity] = useState("");
   const [eventType, setEventType] = useState("");
   const [date, setDate] = useState("");
-  const [men, setMen] = useState(150);
-  const [women, setWomen] = useState(150);
+  const [men, setMen] = useState(0);
+  const [women, setWomen] = useState(0);
 
   // Step 1
   const [selected, setSelected] = useState<string[]>([]);
@@ -138,8 +138,8 @@ export const PlanningWizard = () => {
     setCity(snap.city ?? "");
     setEventType(snap.eventType ?? "");
     setDate(snap.date ?? "");
-    setMen(snap.men ?? 150);
-    setWomen(snap.women ?? 150);
+    setMen(snap.men ?? 0);
+    setWomen(snap.women ?? 0);
     setSelected(snap.selected ?? []);
     setVision(snap.vision ?? "");
     setSelectedChips(snap.selectedChips ?? []);
