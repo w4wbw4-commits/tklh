@@ -451,8 +451,8 @@ export const Hero = () => {
               </span>
               <div className="flex-1">
                 <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-green/70">المسار الذكي</div>
-                <div className="font-display text-lg font-black text-green sm:text-xl">خطّط لمناسبتك بنفسك</div>
-                <div className="mt-0.5 text-[12.5px] text-primary-deep/65">حدّد ميزانيتك واختر كل تفصيلة على ذوقك.</div>
+                <div className="font-display text-lg font-black text-green sm:text-xl">خطّط واحجز&nbsp;</div>
+                <div className="mt-0.5 text-[12.5px] text-primary-deep/65">اختر كل تفصيلة على ذوقك.</div>
               </div>
               <ArrowLeft className="h-5 w-5 text-green transition-transform duration-500 ease-out group-hover:-translate-x-1" />
             </div>
