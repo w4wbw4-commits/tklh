@@ -242,13 +242,13 @@ export const PlanningWizard = () => {
   useEffect(() => {
     if (!hydratedRef.current) return;
     savePendingPlan({
-      city, eventType, date, men, women,
+      city, eventType, date, endDate, men, women,
       selected, vision, selectedChips,
       budgetMode, budget,
       allocations, enabledServices, picks,
       packageSelection,
     });
-  }, [city, eventType, date, men, women, selected, vision, selectedChips, budgetMode, budget, allocations, enabledServices, picks, packageSelection]);
+  }, [city, eventType, date, endDate, men, women, selected, vision, selectedChips, budgetMode, budget, allocations, enabledServices, picks, packageSelection]);
 
   // Anchor the form area on step change so the user keeps reading from the
   // top of the current step — but only scroll if the form is out of viewport.
