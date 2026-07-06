@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { Input } from "@/components/ui/input";
 import { format, parse, isValid } from "date-fns";
 import { ar as arLocale, enUS } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
@@ -29,7 +31,8 @@ const isoToDate = (iso: string): Date | undefined => {
 };
 
 const cityKeys = ["riyadh", "jeddah", "dammam", "makkah", "madinah", "khobar"];
-const eventTypeKeys = ["wedding", "engagement", "betrothal", "graduation", "family"];
+const eventTypeKeys = ["wedding", "engagement", "betrothal", "graduation", "family", "opening", "other"];
+const PRESET_TYPES = new Set(["wedding", "engagement", "betrothal", "graduation", "family", "opening"]);
 
 interface Props {
   city: string; setCity: (v: string) => void;

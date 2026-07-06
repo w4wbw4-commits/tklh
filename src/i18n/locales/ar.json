@@ -896,7 +896,9 @@
     "engagement": "ملكة",
     "betrothal": "خطوبة",
     "graduation": "تخرج",
-    "family": "مناسبة عائلية"
+    "family": "مناسبة عائلية",
+    "opening": "حفل افتتاح",
+    "other": "أخرى"
   },
   "notFound": {
     "message": "عذراً! الصفحة غير موجودة",
