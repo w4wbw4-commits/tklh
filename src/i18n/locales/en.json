@@ -879,7 +879,9 @@
     "engagement": "Milkah",
     "betrothal": "Engagement",
     "graduation": "Graduation",
-    "family": "Family event"
+    "family": "Family event",
+    "opening": "Opening ceremony",
+    "other": "Other"
   },
   "notFound": {
     "message": "Oops! Page not found",
