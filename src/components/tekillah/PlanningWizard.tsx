@@ -55,6 +55,7 @@ export const PlanningWizard = () => {
   const [city, setCity] = useState("");
   const [eventType, setEventType] = useState("");
   const [date, setDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [men, setMen] = useState(0);
   const [women, setWomen] = useState(0);
 
