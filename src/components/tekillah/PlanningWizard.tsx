@@ -316,17 +316,9 @@ export const PlanningWizard = () => {
     }
     if (!date) { toast.error(t("customer.create.futureDate")); setStep(0); return; }
 
-    const pickList = Object.values(picks);
-    // Fast-track package booking has no picks but is still a valid finalisation.
-    if (pickList.length === 0 && !packageSelection) {
-      toast.error(t("wizard.vendors.pickAtLeastOne"));
-      setStep(4);
-      return;
-    }
-
     setSubmitting(true);
     try {
-      const result = await finalisePlan({
+      await finalisePlan({
         userId: user.id,
         t,
         plan: {
@@ -338,18 +330,13 @@ export const PlanningWizard = () => {
           packageSelection,
         },
       });
-      // Snapshot is fully consumed — clear so we don't re-run on next visit.
       clearPendingPlan();
-      toast.success(t("wizard.eventCreated"));
-      if (packageSelection) {
-        // Fast-track: no booking row yet (admin will assign vendors). Land the
-        // customer on their dashboard so they see the package they reserved.
-        toast.success(t("wizard.packageDetail.confirmedToast", { name: packageSelection.name }));
-        navigate("/dashboard");
-      } else {
-        toast.success(t("wizard.bookingsCreated", { count: result.bookingIds.length }));
-        navigate(`/checkout/${result.bookingIds[0]}`);
-      }
+      toast.success(
+        isAr
+          ? "تم استلام طلبك، سوف يتم التواصل معك لتأكيد حجزك"
+          : "Request received. We will contact you to confirm your booking.",
+      );
+      navigate("/dashboard");
     } catch {
       toast.error(t("wizard.bookingsFailed"));
     } finally {
@@ -357,21 +344,12 @@ export const PlanningWizard = () => {
     }
   };
 
-  const stepLabels = isFastTrack
-    ? [
-        t("wizard.step1"),
-        t("wizard.step2"),
-        t("wizard.step3"),
-        t("wizard.step4"),
-        t("wizard.packageDetail.fastTrackStep"),
-      ]
-    : [
-        t("wizard.step1"),
-        t("wizard.step2"),
-        t("wizard.step3"),
-        t("wizard.step4"),
-        t("wizard.step5"),
-      ];
+  const stepLabels = [
+    t("wizard.step1"),
+    t("wizard.step2"),
+    t("wizard.step3"),
+    isAr ? "تأكيد الطلب" : "Confirm Request",
+  ];
 
   const PrevIcon = isAr ? ArrowRight : ArrowLeft;
   const NextIcon = isAr ? ArrowLeft : ArrowRight;
