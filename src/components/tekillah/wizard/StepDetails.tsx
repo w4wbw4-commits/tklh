@@ -64,7 +64,16 @@ export const StepDetails = ({
           <Label className="font-arabic text-foreground">{t("wizard.details.city")}</Label>
           <Select value={city} onValueChange={setCity}>
             <SelectTrigger className="h-12 rounded-xl"><SelectValue placeholder={t("wizard.details.cityPlaceholder")} /></SelectTrigger>
-            <SelectContent>{cityKeys.map((c) => <SelectItem key={c} value={c}>{t(`cities.${c}`)}</SelectItem>)}</SelectContent>
+            <SelectContent>{cityKeys.map((c) => (
+              <SelectItem key={c} value={c} disabled={c !== "riyadh"}>
+                <span className="flex items-center gap-2">
+                  <span>{t(`cities.${c}`)}</span>
+                  {c !== "riyadh" && (
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-arabic text-muted-foreground">قريبًا</span>
+                  )}
+                </span>
+              </SelectItem>
+            ))}</SelectContent>
           </Select>
         </div>
 
