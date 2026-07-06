@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Sparkles, Plus, Check } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 interface Props {
@@ -11,16 +11,9 @@ interface Props {
   toggleChip: (chip: string) => void;
 }
 
-export const StepVision = ({ vision, setVision, selectedChips, toggleChip }: Props) => {
+export const StepVision = ({ vision, setVision }: Props) => {
   const { t } = useTranslation();
-  const chips = t("wizard.vision.chips", { returnObjects: true }) as string[];
 
-  const insertChip = (chip: string) => {
-    toggleChip(chip);
-    if (!vision.includes(chip)) {
-      setVision(vision ? `${vision}\n• ${chip}` : `• ${chip}`);
-    }
-  };
 
   return (
     <motion.div
