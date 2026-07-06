@@ -332,7 +332,7 @@ export const PlanningWizard = () => {
         t,
         plan: {
           version: 1, savedAt: Date.now(),
-          city, eventType, date, men, women,
+          city, eventType, date, endDate, men, women,
           selected, vision, selectedChips,
           budgetMode, budget,
           allocations, enabledServices, picks,
