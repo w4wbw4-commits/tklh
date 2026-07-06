@@ -55,6 +55,7 @@ export const PlanningWizard = () => {
   const [city, setCity] = useState("");
   const [eventType, setEventType] = useState("");
   const [date, setDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [men, setMen] = useState(0);
   const [women, setWomen] = useState(0);
 
@@ -138,6 +139,7 @@ export const PlanningWizard = () => {
     setCity(snap.city ?? "");
     setEventType(snap.eventType ?? "");
     setDate(snap.date ?? "");
+    setEndDate(snap.endDate ?? "");
     setMen(snap.men ?? 0);
     setWomen(snap.women ?? 0);
     setSelected(snap.selected ?? []);
@@ -240,13 +242,13 @@ export const PlanningWizard = () => {
   useEffect(() => {
     if (!hydratedRef.current) return;
     savePendingPlan({
-      city, eventType, date, men, women,
+      city, eventType, date, endDate, men, women,
       selected, vision, selectedChips,
       budgetMode, budget,
       allocations, enabledServices, picks,
       packageSelection,
     });
-  }, [city, eventType, date, men, women, selected, vision, selectedChips, budgetMode, budget, allocations, enabledServices, picks, packageSelection]);
+  }, [city, eventType, date, endDate, men, women, selected, vision, selectedChips, budgetMode, budget, allocations, enabledServices, picks, packageSelection]);
 
   // Anchor the form area on step change so the user keeps reading from the
   // top of the current step — but only scroll if the form is out of viewport.
@@ -294,7 +296,7 @@ export const PlanningWizard = () => {
     if (!user) {
       // Persist the latest snapshot so the dashboard can finalise after sign-in.
       savePendingPlan({
-        city, eventType, date, men, women,
+        city, eventType, date, endDate, men, women,
         selected, vision, selectedChips,
         budgetMode, budget,
         allocations, enabledServices, picks,
@@ -330,7 +332,7 @@ export const PlanningWizard = () => {
         t,
         plan: {
           version: 1, savedAt: Date.now(),
-          city, eventType, date, men, women,
+          city, eventType, date, endDate, men, women,
           selected, vision, selectedChips,
           budgetMode, budget,
           allocations, enabledServices, picks,
@@ -490,6 +492,7 @@ export const PlanningWizard = () => {
                   city={city} setCity={setCity}
                   eventType={eventType} setEventType={setEventType}
                   date={date} setDate={setDate}
+                  endDate={endDate} setEndDate={setEndDate}
                   men={men} setMen={setMen}
                   women={women} setWomen={setWomen}
                 />

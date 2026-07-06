@@ -38,18 +38,23 @@ interface Props {
   city: string; setCity: (v: string) => void;
   eventType: string; setEventType: (v: string) => void;
   date: string; setDate: (v: string) => void;
+  endDate: string; setEndDate: (v: string) => void;
   men: number; setMen: (v: number) => void;
   women: number; setWomen: (v: number) => void;
 }
 
 export const StepDetails = ({
-  city, setCity, eventType, setEventType, date, setDate,
+  city, setCity, eventType, setEventType, date, setDate, endDate, setEndDate,
   men, setMen, women, setWomen,
 }: Props) => {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language?.startsWith("ar");
   const locale = isArabic ? arLocale : enUS;
   const selectedDate = isoToDate(date);
+  const selectedEndDate = isoToDate(endDate);
+  const nights = selectedDate && selectedEndDate
+    ? Math.max(1, Math.round((selectedEndDate.getTime() - selectedDate.getTime()) / (1000 * 60 * 60 * 24)) + 1)
+    : 0;
   // If eventType isn't one of the presets and is non-empty, treat it as a custom "other" value.
   const [isOther, setIsOther] = useState<boolean>(() => !!eventType && !PRESET_TYPES.has(eventType));
   const [customType, setCustomType] = useState<string>(() => (!!eventType && !PRESET_TYPES.has(eventType) ? eventType : ""));
@@ -119,36 +124,92 @@ export const StepDetails = ({
 
         <div className="space-y-2 sm:col-span-2">
           <Label className="font-arabic text-foreground">{t("wizard.details.date")}</Label>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                type="button"
-                variant="outline"
-                className={cn(
-                  "h-12 w-full justify-start rounded-xl px-4 text-start font-normal tabular-nums",
-                  !selectedDate && "text-muted-foreground",
-                )}
-              >
-                <CalendarIcon className="me-2 h-4 w-4 opacity-70" />
-                <span dir="ltr" className="tabular-nums">
-                  {selectedDate ? format(selectedDate, DISPLAY) : "DD/MM/YYYY"}
-                </span>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={selectedDate}
-                onSelect={(d) => setDate(d ? format(d, ISO) : "")}
-                disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
-                locale={locale}
-                weekStartsOn={6}
-                initialFocus
-                className={cn("p-3 pointer-events-auto")}
-              />
-            </PopoverContent>
-          </Popover>
-          <p className="text-[11px] text-foreground/55" dir="ltr">DD/MM/YYYY</p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={cn(
+                    "h-12 w-full justify-start rounded-xl px-4 text-start font-normal tabular-nums",
+                    !selectedDate && "text-muted-foreground",
+                  )}
+                >
+                  <CalendarIcon className="me-2 h-4 w-4 opacity-70" />
+                  <span className="me-2 font-arabic text-xs text-foreground/60">
+                    {isArabic ? "من" : "From"}
+                  </span>
+                  <span dir="ltr" className="tabular-nums">
+                    {selectedDate ? format(selectedDate, DISPLAY) : "DD/MM/YYYY"}
+                  </span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={(d) => {
+                    const iso = d ? format(d, ISO) : "";
+                    setDate(iso);
+                    // Clear end if it's now before start
+                    if (d && selectedEndDate && selectedEndDate < d) setEndDate("");
+                  }}
+                  disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                  locale={locale}
+                  weekStartsOn={6}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={!selectedDate}
+                  className={cn(
+                    "h-12 w-full justify-start rounded-xl px-4 text-start font-normal tabular-nums",
+                    !selectedEndDate && "text-muted-foreground",
+                  )}
+                >
+                  <CalendarIcon className="me-2 h-4 w-4 opacity-70" />
+                  <span className="me-2 font-arabic text-xs text-foreground/60">
+                    {isArabic ? "إلى" : "To"}
+                  </span>
+                  <span dir="ltr" className="tabular-nums">
+                    {selectedEndDate ? format(selectedEndDate, DISPLAY) : "DD/MM/YYYY"}
+                  </span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={selectedEndDate}
+                  onSelect={(d) => setEndDate(d ? format(d, ISO) : "")}
+                  disabled={(d) => {
+                    const min = selectedDate ?? new Date(new Date().setHours(0, 0, 0, 0));
+                    return d < min;
+                  }}
+                  locale={locale}
+                  weekStartsOn={6}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-[11px] text-foreground/55" dir="ltr">DD/MM/YYYY</p>
+            {nights > 0 && (
+              <p className="font-arabic text-xs font-medium text-primary">
+                {isArabic
+                  ? `عدد الأيام: ${nights} ${nights === 1 ? "يوم" : nights === 2 ? "يومان" : "أيام"}`
+                  : `${nights} ${nights === 1 ? "day" : "days"} selected`}
+              </p>
+            )}
+          </div>
         </div>
 
         <div className="space-y-3 rounded-2xl bg-secondary/50 p-5">

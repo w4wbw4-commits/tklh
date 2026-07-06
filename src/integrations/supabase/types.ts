@@ -309,6 +309,7 @@ export type Database = {
           created_at: string
           customer_id: string
           event_date: string
+          event_days: number | null
           guest_count: number | null
           id: string
           notes: string | null
@@ -323,6 +324,7 @@ export type Database = {
           created_at?: string
           customer_id: string
           event_date: string
+          event_days?: number | null
           guest_count?: number | null
           id?: string
           notes?: string | null
@@ -337,6 +339,7 @@ export type Database = {
           created_at?: string
           customer_id?: string
           event_date?: string
+          event_days?: number | null
           guest_count?: number | null
           id?: string
           notes?: string | null
