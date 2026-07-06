@@ -9,8 +9,6 @@ import {
   SketchBanquet,
   SketchTable,
 } from "./SketchArt";
-import heroMockup from "@/assets/hero-mockup.webp";
-import heroMockupMobile from "@/assets/hero-mockup-mobile.webp";
 
 
 // ---------------------------------------------------------------------------
@@ -367,35 +365,11 @@ export const Hero = () => {
 
           </div>
 
-          {/* Left column (mockup) */}
+          {/* Left column (mockup) — intentionally empty */}
           <motion.div
             variants={rise}
             className="relative flex items-center justify-center lg:order-first"
-          >
-            {/* glow */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 -z-10 blur-3xl"
-              style={{
-                background:
-                  "radial-gradient(60% 55% at 50% 50%, hsl(var(--gold)/0.35), transparent 70%), radial-gradient(45% 45% at 30% 70%, hsl(var(--green)/0.30), transparent 70%)",
-              }}
-            />
-            <motion.img
-              src={heroMockup}
-              srcSet={`${heroMockupMobile} 720w, ${heroMockup} 1200w`}
-              sizes="(max-width: 768px) 90vw, 50vw"
-              alt="معاينة منصة تِكله — قاعات، مصورين، كوشات، سيارات، ولوحة تحكم الشركاء"
-              width={1280}
-              height={1024}
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              className="relative w-full max-w-[640px] drop-shadow-[0_30px_60px_rgba(11,11,13,0.25)]"
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </motion.div>
+          />
         </div>
 
 
