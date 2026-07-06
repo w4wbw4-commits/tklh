@@ -438,25 +438,25 @@ export const Hero = () => {
             </div>
           </a>
 
-          {/* Disabled: Smart Planner (left side in RTL = second item) */}
-          <div
-            aria-disabled="true"
-            className="group relative overflow-hidden rounded-2xl border-2 border-neutral-300 bg-neutral-200/70 p-5 text-right cursor-not-allowed select-none"
+          {/* Active: Smart Planner (left side in RTL = second item) */}
+          <a
+            href="/planner"
+            className="group relative overflow-hidden rounded-2xl border-2 border-green/20 bg-cream/80 p-5 text-right backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-green/50 hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.35)]"
           >
-            <span className="absolute top-3 left-3 rounded-full bg-neutral-100 px-2.5 py-0.5 text-[10px] font-bold text-neutral-600 ring-1 ring-neutral-300">
-              قَرِيبًا
-            </span>
-            <div className="relative flex items-center gap-3 opacity-80">
-              <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-neutral-300 bg-neutral-100">
-                <Sparkles className="h-5 w-5 text-neutral-500" strokeWidth={2.4} />
+            <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
+              style={{ background: "radial-gradient(circle, hsl(var(--green)/0.5), transparent 70%)" }} />
+            <div className="relative flex items-center gap-3">
+              <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-green/30 bg-green/10 transition-transform duration-500 group-hover:rotate-6">
+                <Sparkles className="h-5 w-5 text-green" strokeWidth={2.4} />
               </span>
               <div className="flex-1">
-                <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-neutral-500">المسار الذكي</div>
-                <div className="font-display text-lg font-black text-neutral-600 sm:text-xl">خطّط لمناسبتك بنفسك</div>
-                <div className="mt-0.5 text-[12.5px] text-neutral-500">حدّد ميزانيتك واختر كل تفصيلة على ذوقك.</div>
+                <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-green/70">المسار الذكي</div>
+                <div className="font-display text-lg font-black text-green sm:text-xl">خطّط لمناسبتك بنفسك</div>
+                <div className="mt-0.5 text-[12.5px] text-primary-deep/65">حدّد ميزانيتك واختر كل تفصيلة على ذوقك.</div>
               </div>
+              <ArrowLeft className="h-5 w-5 text-green transition-transform duration-500 ease-out group-hover:-translate-x-1" />
             </div>
-          </div>
+          </a>
         </motion.div>
 
 
