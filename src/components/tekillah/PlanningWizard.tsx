@@ -267,7 +267,7 @@ export const PlanningWizard = () => {
   };
 
   const next = () => {
-    setStep((s) => Math.min(s + 1, 4));
+    setStep((s) => Math.min(s + 1, 3));
     requestAnimationFrame(scrollFormIntoView);
   };
   const prev = () => {
@@ -280,9 +280,8 @@ export const PlanningWizard = () => {
     if (step === 0) return !!city && !!eventType && !!date && (men + women) > 0;
     if (step === 1) return selected.length > 0;
     if (step === 2) return vision.trim().length > 0 || selectedChips.length > 0;
-    if (step === 3) return budget > 0;
     return true;
-  }, [step, city, eventType, date, men, women, selected, vision, selectedChips, budget]);
+  }, [step, city, eventType, date, men, women, selected, vision, selectedChips]);
 
   const nextHint = useMemo(() => {
     if (canProceed) return "";
