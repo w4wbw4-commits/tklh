@@ -279,8 +279,11 @@
       "type": "نوع المناسبة",
       "typePlaceholder": "اختر النوع",
       "date": "تاريخ المناسبة",
+      "eventDays": "عدد أيام الحفل",
+      "eventDaysPlaceholder": "مثلاً: 1",
       "men": "عدد الرجال",
       "women": "عدد النساء"
+
     },
     "services": {
       "title": "اختر خدماتك",
