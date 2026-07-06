@@ -572,3 +572,10 @@ export const PlanningWizard = () => {
     </section>
   );
 };
+
+const SummaryRow = ({ label, value, valueDir }: { label: string; value: string; valueDir?: "ltr" | "rtl" }) => (
+  <div className="flex items-start justify-between gap-4 border-b border-border/60 pb-2 last:border-b-0 last:pb-0">
+    <span className="font-arabic text-xs text-foreground/60">{label}</span>
+    <span className="text-sm font-medium text-foreground" dir={valueDir}>{value}</span>
+  </div>
+);
