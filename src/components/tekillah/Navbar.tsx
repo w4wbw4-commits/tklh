@@ -52,7 +52,7 @@ export const Navbar = () => {
     { key: "home", href: "/", type: "route" as const },
     { key: "about", href: "/about", type: "route" as const, labelOverride: isAr ? "تعرف على تِكله" : "About TKLH" },
     { key: "packages", href: "/packages", type: "route" as const, labelOverride: isAr ? "الباقات" : "Packages" },
-    { key: "plan", href: "/planner", type: "route" as const, disabled: true },
+    { key: "plan", href: "/planner", type: "route" as const },
   ];
 
 
@@ -76,21 +76,6 @@ export const Navbar = () => {
               const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
               const cls =
                 "relative rounded-full px-4 py-2 text-sm font-medium text-primary-foreground/90 transition-all hover:text-white after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:bg-primary-foreground/50 after:transition-all hover:after:w-1/2";
-              const isDisabled = "disabled" in item && item.disabled;
-              if (isDisabled) {
-                return (
-                  <span
-                    key={item.href}
-                    aria-disabled="true"
-                    className="relative inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-primary-foreground/50 cursor-not-allowed select-none"
-                  >
-                    {label}
-                    <span className="rounded-full bg-primary-foreground/15 px-1.5 py-0.5 text-[9px] font-bold text-primary-foreground/80 ring-1 ring-primary-foreground/25">
-                      قَرِيبًا
-                    </span>
-                  </span>
-                );
-              }
               if (item.type === "route") {
                 return (
                   <Link key={item.href} to={item.href} className={cls}>
