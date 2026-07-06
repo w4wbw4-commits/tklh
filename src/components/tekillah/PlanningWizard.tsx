@@ -492,6 +492,7 @@ export const PlanningWizard = () => {
                   city={city} setCity={setCity}
                   eventType={eventType} setEventType={setEventType}
                   date={date} setDate={setDate}
+                  endDate={endDate} setEndDate={setEndDate}
                   men={men} setMen={setMen}
                   women={women} setWomen={setWomen}
                 />
