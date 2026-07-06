@@ -296,7 +296,7 @@ export const PlanningWizard = () => {
     if (!user) {
       // Persist the latest snapshot so the dashboard can finalise after sign-in.
       savePendingPlan({
-        city, eventType, date, men, women,
+        city, eventType, date, endDate, men, women,
         selected, vision, selectedChips,
         budgetMode, budget,
         allocations, enabledServices, picks,
