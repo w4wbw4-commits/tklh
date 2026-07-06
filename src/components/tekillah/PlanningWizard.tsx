@@ -139,6 +139,7 @@ export const PlanningWizard = () => {
     setCity(snap.city ?? "");
     setEventType(snap.eventType ?? "");
     setDate(snap.date ?? "");
+    setEndDate(snap.endDate ?? "");
     setMen(snap.men ?? 0);
     setWomen(snap.women ?? 0);
     setSelected(snap.selected ?? []);
