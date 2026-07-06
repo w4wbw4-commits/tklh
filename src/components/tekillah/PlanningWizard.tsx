@@ -267,7 +267,7 @@ export const PlanningWizard = () => {
   };
 
   const next = () => {
-    setStep((s) => Math.min(s + 1, 4));
+    setStep((s) => Math.min(s + 1, 3));
     requestAnimationFrame(scrollFormIntoView);
   };
   const prev = () => {
@@ -280,9 +280,8 @@ export const PlanningWizard = () => {
     if (step === 0) return !!city && !!eventType && !!date && (men + women) > 0;
     if (step === 1) return selected.length > 0;
     if (step === 2) return vision.trim().length > 0 || selectedChips.length > 0;
-    if (step === 3) return budget > 0;
     return true;
-  }, [step, city, eventType, date, men, women, selected, vision, selectedChips, budget]);
+  }, [step, city, eventType, date, men, women, selected, vision, selectedChips]);
 
   const nextHint = useMemo(() => {
     if (canProceed) return "";
@@ -317,17 +316,9 @@ export const PlanningWizard = () => {
     }
     if (!date) { toast.error(t("customer.create.futureDate")); setStep(0); return; }
 
-    const pickList = Object.values(picks);
-    // Fast-track package booking has no picks but is still a valid finalisation.
-    if (pickList.length === 0 && !packageSelection) {
-      toast.error(t("wizard.vendors.pickAtLeastOne"));
-      setStep(4);
-      return;
-    }
-
     setSubmitting(true);
     try {
-      const result = await finalisePlan({
+      await finalisePlan({
         userId: user.id,
         t,
         plan: {
@@ -339,18 +330,13 @@ export const PlanningWizard = () => {
           packageSelection,
         },
       });
-      // Snapshot is fully consumed — clear so we don't re-run on next visit.
       clearPendingPlan();
-      toast.success(t("wizard.eventCreated"));
-      if (packageSelection) {
-        // Fast-track: no booking row yet (admin will assign vendors). Land the
-        // customer on their dashboard so they see the package they reserved.
-        toast.success(t("wizard.packageDetail.confirmedToast", { name: packageSelection.name }));
-        navigate("/dashboard");
-      } else {
-        toast.success(t("wizard.bookingsCreated", { count: result.bookingIds.length }));
-        navigate(`/checkout/${result.bookingIds[0]}`);
-      }
+      toast.success(
+        isAr
+          ? "تم استلام طلبك، سوف يتم التواصل معك لتأكيد حجزك"
+          : "Request received. We will contact you to confirm your booking.",
+      );
+      navigate("/dashboard");
     } catch {
       toast.error(t("wizard.bookingsFailed"));
     } finally {
@@ -358,21 +344,12 @@ export const PlanningWizard = () => {
     }
   };
 
-  const stepLabels = isFastTrack
-    ? [
-        t("wizard.step1"),
-        t("wizard.step2"),
-        t("wizard.step3"),
-        t("wizard.step4"),
-        t("wizard.packageDetail.fastTrackStep"),
-      ]
-    : [
-        t("wizard.step1"),
-        t("wizard.step2"),
-        t("wizard.step3"),
-        t("wizard.step4"),
-        t("wizard.step5"),
-      ];
+  const stepLabels = [
+    t("wizard.step1"),
+    t("wizard.step2"),
+    t("wizard.step3"),
+    isAr ? "تأكيد الطلب" : "Confirm Request",
+  ];
 
   const PrevIcon = isAr ? ArrowRight : ArrowLeft;
   const NextIcon = isAr ? ArrowLeft : ArrowRight;
@@ -505,43 +482,48 @@ export const PlanningWizard = () => {
                 />
               )}
               {step === 3 && (
-                <StepBudget
-                  budgetMode={budgetMode} setBudgetMode={setBudgetMode}
-                  budget={budget} setBudget={setBudget}
-                  guests={guests}
-                  allocations={allocations} setAllocation={setAllocation}
-                  enabledServices={enabledServices} toggleEnabled={toggleEnabled}
-                />
-              )}
-              {step === 4 && isFastTrack && packageSelection && (
-                <StepPackageDetail
-                  selection={packageSelection}
-                  submitting={submitting}
-                  onConfirm={handleFinish}
-                  onChangePackage={() => {
-                    // Drop the package selection and send the user back to the
-                    // budget step where they can repick or switch to smart mode.
-                    setPackageSelection(null);
-                    setStep(3);
-                  }}
-                />
-              )}
-              {step === 4 && !isFastTrack && (
-                <StepVendors
-                  selectedServices={selected as ServiceKey[]}
-                  picks={picks}
-                  setPick={setPick}
-                  budget={liveBudget || budget}
-                  allocations={allocations}
-                  onBookNow={(pick) => {
-                    // One-click "احجز" — register the pick and immediately
-                    // finalise so the customer lands on checkout/auth.
-                    setPicks((p) => ({ ...p, [pick.category]: pick }));
-                    // Defer to the next tick so React commits the new pick
-                    // before finalisePlan reads from the snapshot.
-                    setTimeout(() => handleFinish(), 0);
-                  }}
-                />
+                <motion.div
+                  key="step-3-confirm"
+                  initial={{ opacity: 0, x: -24 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 24 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="p-6 sm:p-10"
+                >
+                  <h3 className="font-arabic text-2xl font-semibold text-foreground">
+                    {isAr ? "تأكيد طلبك" : "Confirm your request"}
+                  </h3>
+                  <p className="mt-2 text-sm text-foreground/70">
+                    {isAr
+                      ? "راجع تفاصيل طلبك، وعند الضغط على تأكيد سوف يتم التواصل معك لتأكيد الحجز."
+                      : "Review your details. After confirming, we will contact you to finalise your booking."}
+                  </p>
+
+                  <div className="mt-6 space-y-3 rounded-2xl border border-border bg-secondary/40 p-5">
+                    <SummaryRow label={isAr ? "المدينة" : "City"} value={city ? t(`cities.${city}`, { defaultValue: city }) : "—"} />
+                    <SummaryRow label={isAr ? "نوع المناسبة" : "Event type"} value={eventType ? t(`eventTypes.${eventType}`, { defaultValue: eventType }) : "—"} />
+                    <SummaryRow label={isAr ? "تاريخ البداية" : "Start date"} value={date || "—"} valueDir="ltr" />
+                    <SummaryRow label={isAr ? "تاريخ النهاية" : "End date"} value={endDate || "—"} valueDir="ltr" />
+                    <SummaryRow label={isAr ? "عدد الرجال" : "Men"} value={String(men)} />
+                    <SummaryRow label={isAr ? "عدد النساء" : "Women"} value={String(women)} />
+                    <SummaryRow
+                      label={isAr ? "الخدمات" : "Services"}
+                      value={selected.length ? selected.map((s) => t(`services.${s}`, { defaultValue: s })).join("، ") : "—"}
+                    />
+                    {(vision || selectedChips.length > 0) && (
+                      <SummaryRow
+                        label={isAr ? "الرؤية / الطابع" : "Vision / theme"}
+                        value={[vision, selectedChips.join("، ")].filter(Boolean).join(" — ")}
+                      />
+                    )}
+                  </div>
+
+                  <p className="mt-5 rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-foreground/80 font-arabic">
+                    {isAr
+                      ? "بعد تأكيد الطلب سيتواصل معك فريقنا في أقرب وقت لإكمال تفاصيل الحجز."
+                      : "After confirming, our team will contact you shortly to complete your booking."}
+                  </p>
+                </motion.div>
               )}
             </AnimatePresence>
             </div>
@@ -557,7 +539,7 @@ export const PlanningWizard = () => {
                 <PrevIcon className="me-2 h-4 w-4" />
                 {t("common.previous")}
               </Button>
-              {step < 4 ? (
+              {step < 3 ? (
                 <div className="flex flex-col items-end gap-1">
                   <Button
                     onClick={next}
@@ -572,8 +554,6 @@ export const PlanningWizard = () => {
                     <span className="text-[11px] font-medium text-foreground/60">{nextHint}</span>
                   )}
                 </div>
-              ) : isFastTrack ? (
-                <span className="text-xs text-foreground/60">{t("wizard.packageDetail.footerHint")}</span>
               ) : (
                 <Button
                   onClick={handleFinish}
@@ -582,7 +562,7 @@ export const PlanningWizard = () => {
                   className="rounded-full bg-primary px-5 text-primary-foreground shadow-[0_6px_18px_-8px_hsl(var(--gold)/0.5)] hover:bg-primary/90 sm:size-default sm:px-6"
                 >
                   {submitting ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : <Check className="me-2 h-4 w-4" />}
-                  {t("wizard.confirmBooking")}
+                  {isAr ? "تأكيد الطلب" : "Confirm Request"}
                 </Button>
               )}
             </div>
@@ -592,3 +572,10 @@ export const PlanningWizard = () => {
     </section>
   );
 };
+
+const SummaryRow = ({ label, value, valueDir }: { label: string; value: string; valueDir?: "ltr" | "rtl" }) => (
+  <div className="flex items-start justify-between gap-4 border-b border-border/60 pb-2 last:border-b-0 last:pb-0">
+    <span className="font-arabic text-xs text-foreground/60">{label}</span>
+    <span className="text-sm font-medium text-foreground" dir={valueDir}>{value}</span>
+  </div>
+);
