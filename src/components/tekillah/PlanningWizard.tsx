@@ -346,16 +346,13 @@ export const PlanningWizard = () => {
         lines.push("");
         lines.push(`📦 الباقة المختارة: ${packageSelection.name} — ${packageSelection.price.toLocaleString("ar-SA")} ر.س`);
       } else {
-        lines.push("");
-        lines.push(`💰 الميزانية: ${Number(budget).toLocaleString("ar-SA")} ر.س`);
         const pickEntries = Object.values(picks);
         if (pickEntries.length) {
-          const total = pickEntries.reduce((s, p) => s + (p.price || 0), 0);
+          lines.push("");
           lines.push(`✅ الموردون المختارون (${pickEntries.length}):`);
           pickEntries.forEach((p) => {
-            lines.push(`   - ${p.category}: ${Number(p.price || 0).toLocaleString("ar-SA")} ر.س`);
+            lines.push(`   - ${p.category}`);
           });
-          lines.push(`الإجمالي: ${total.toLocaleString("ar-SA")} ر.س`);
         }
       }
       const waMessage = encodeURIComponent(lines.join("\n"));
