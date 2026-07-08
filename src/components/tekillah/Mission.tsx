@@ -1,10 +1,6 @@
 import { motion } from "framer-motion";
-
-const WhatsAppGlyph = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 32 32" fill="currentColor" className={className} aria-hidden="true">
-    <path d="M16.04 3.2c-7.07 0-12.8 5.73-12.8 12.8 0 2.26.59 4.46 1.71 6.4L3.2 28.8l6.6-1.72a12.74 12.74 0 0 0 6.24 1.6h.01c7.06 0 12.8-5.73 12.8-12.8 0-3.42-1.33-6.63-3.75-9.05A12.71 12.71 0 0 0 16.04 3.2Zm5.83 16.41c-.32-.16-1.88-.93-2.18-1.04-.29-.11-.5-.16-.7.16-.21.32-.81 1.03-.99 1.24-.18.21-.37.24-.69.08-.32-.16-1.34-.49-2.55-1.57-.94-.84-1.58-1.88-1.76-2.2-.18-.32-.02-.49.14-.65.14-.14.32-.37.48-.55.16-.18.21-.32.32-.53.11-.21.05-.4-.03-.55-.08-.16-.7-1.69-.96-2.32-.25-.61-.52-.53-.7-.54l-.6-.01c-.21 0-.55.08-.84.4-.29.32-1.1 1.07-1.1 2.6s1.13 3.02 1.29 3.23c.16.21 2.22 3.39 5.39 4.75.75.32 1.34.51 1.8.65.76.24 1.45.21 2 .13.61-.09 1.88-.77 2.14-1.51.27-.74.27-1.37.19-1.51-.08-.13-.29-.21-.61-.37Z"/>
-  </svg>
-);
+import { Link } from "react-router-dom";
+import { Sparkles, ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
   SketchIconCandle,
@@ -121,15 +117,25 @@ export const Mission = () => {
           {...reveal}
           transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
         >
-          <a
-            href={`https://wa.me/966530466460?text=${encodeURIComponent("السلام عليكم، أود بدء رحلتي مع تِكله 🌿")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-10 inline-flex items-center gap-3 rounded-full bg-primary px-10 py-5 text-base font-bold text-primary-foreground shadow-luxury transition-all hover:-translate-y-1 hover:bg-primary-deep"
+          <Link
+            to="/planner"
+            className="group relative mx-auto mt-10 block w-full max-w-md overflow-hidden rounded-2xl border-2 border-green/40 p-5 text-right backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-green/70 hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.45)]"
+            style={{ background: "linear-gradient(135deg, hsl(var(--green)) 0%, hsl(var(--green-mid)) 100%)" }}
           >
-            {t("mission.cta")}
-            <WhatsAppGlyph className="h-5 w-5" />
-          </a>
+            <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
+              style={{ background: "radial-gradient(circle, hsl(var(--gold)), transparent 70%)" }} />
+            <div className="relative flex items-center gap-3">
+              <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-gold/50 bg-green-mid/40 transition-transform duration-500 group-hover:rotate-6">
+                <Sparkles className="h-5 w-5 text-gold" strokeWidth={2.4} />
+              </span>
+              <div className="flex-1">
+                <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold/80">المسار الذكي</div>
+                <div className="font-display text-lg font-black text-gold sm:text-xl">خطّط واحجز&nbsp;</div>
+                <div className="mt-0.5 text-[12.5px] text-cream/85">اختر كل تفصيلة على ذوقك.</div>
+              </div>
+              <ArrowLeft className="h-5 w-5 text-gold transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+            </div>
+          </Link>
         </motion.div>
       </div>
     </section>
