@@ -1,6 +1,6 @@
 import { motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sparkles, ShieldCheck, Zap, Heart, Gift } from "lucide-react";
+import { ArrowLeft, Sparkles, Gift } from "lucide-react";
 import {
   SketchCurtain,
   SketchEucalyptus,
@@ -373,47 +373,7 @@ export const Hero = () => {
         </div>
 
 
-        {/* === Trust value cards — modern expressive === */}
-        <motion.div
-          variants={rise}
-          className="mt-8 grid w-full max-w-4xl grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4"
-        >
-          {[
-            { Icon: ShieldCheck, title: "شفافية ووضوح", desc: "أسعار مكشوفة بدون مفاجآت ولا أرقام مخفية." },
-            { Icon: Zap, title: "سرعة وسهولة", desc: "تخطيط كامل بدقائق معدودة بدون حوسة مشاوير وأوراق." },
-            { Icon: Heart, title: "خيارات تليق بليلتك", desc: "كل ما تتمنّاه في ليلة عمرك تجده وتجهّزه." },
-          ].map(({ Icon, title, desc }, i) => (
-            <motion.div
-              key={title}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative overflow-hidden rounded-2xl border border-green/15 bg-white/70 p-5 text-right backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_20px_45px_-22px_hsl(var(--green)/0.45)]"
-            >
-              <span
-                aria-hidden
-                className="pointer-events-none absolute -left-6 -top-6 h-20 w-20 rounded-full opacity-40 blur-2xl transition-opacity duration-500 group-hover:opacity-80"
-                style={{ background: "radial-gradient(circle, hsl(var(--gold)/0.55), transparent 70%)" }}
-              />
-              <div className="flex items-start gap-3">
-                <span
-                  className="grid h-10 w-10 flex-none place-items-center rounded-xl border border-gold/30 transition-transform duration-500 group-hover:scale-110"
-                  style={{ background: "linear-gradient(135deg, hsl(var(--gold)/0.18), hsl(var(--green)/0.10))" }}
-                >
-                  <Icon className="h-5 w-5 text-green" strokeWidth={2.2} />
-                </span>
-                <div className="flex-1">
-                  <h3 className="font-display text-base font-black text-green sm:text-lg">{title}</h3>
-                  <p className="mt-1 text-[12.5px] leading-[1.7] text-primary-deep/70 sm:text-sm">{desc}</p>
-                </div>
-              </div>
-              <span
-                className="pointer-events-none absolute inset-x-5 bottom-3 h-px scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
-                style={{ background: "linear-gradient(90deg, transparent, hsl(var(--gold)), transparent)" }}
-              />
-            </motion.div>
-          ))}
-        </motion.div>
+
 
         {/* === Dual-path CTAs === */}
         <motion.div variants={rise} className="mt-10 grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
