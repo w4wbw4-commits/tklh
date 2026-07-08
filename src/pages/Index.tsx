@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
-import { Sparkles, Gift, ArrowLeft } from "lucide-react";
+
 import { Navbar } from "@/components/tekillah/Navbar";
 import { Hero } from "@/components/tekillah/Hero";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
