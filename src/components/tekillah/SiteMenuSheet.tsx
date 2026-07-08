@@ -119,8 +119,16 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
         </Link>
       );
     }
+    const isExternal = /^https?:\/\//.test(item.href);
     return (
-      <a key={item.href} href={item.href} onClick={close} className={cls}>
+      <a
+        key={item.href}
+        href={item.href}
+        onClick={close}
+        className={cls}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+      >
         {inner}
       </a>
     );
