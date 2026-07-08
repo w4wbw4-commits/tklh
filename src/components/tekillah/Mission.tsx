@@ -117,15 +117,25 @@ export const Mission = () => {
           {...reveal}
           transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
         >
-          <a
-            href={`https://wa.me/966530466460?text=${encodeURIComponent("السلام عليكم، أود بدء رحلتي مع تِكله 🌿")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-10 inline-flex items-center gap-3 rounded-full bg-primary px-10 py-5 text-base font-bold text-primary-foreground shadow-luxury transition-all hover:-translate-y-1 hover:bg-primary-deep"
+          <Link
+            to="/planner"
+            className="group relative mx-auto mt-10 block w-full max-w-md overflow-hidden rounded-2xl border-2 border-green/40 p-5 text-right backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-green/70 hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.45)]"
+            style={{ background: "linear-gradient(135deg, hsl(var(--green)) 0%, hsl(var(--green-mid)) 100%)" }}
           >
-            {t("mission.cta")}
-            <WhatsAppGlyph className="h-5 w-5" />
-          </a>
+            <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
+              style={{ background: "radial-gradient(circle, hsl(var(--gold)), transparent 70%)" }} />
+            <div className="relative flex items-center gap-3">
+              <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-gold/50 bg-green-mid/40 transition-transform duration-500 group-hover:rotate-6">
+                <Sparkles className="h-5 w-5 text-gold" strokeWidth={2.4} />
+              </span>
+              <div className="flex-1">
+                <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold/80">المسار الذكي</div>
+                <div className="font-display text-lg font-black text-gold sm:text-xl">خطّط واحجز&nbsp;</div>
+                <div className="mt-0.5 text-[12.5px] text-cream/85">اختر كل تفصيلة على ذوقك.</div>
+              </div>
+              <ArrowLeft className="h-5 w-5 text-gold transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+            </div>
+          </Link>
         </motion.div>
       </div>
     </section>
