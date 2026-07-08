@@ -330,6 +330,37 @@ export const PlanningWizard = () => {
           packageSelection,
         },
       });
+      // Build a WhatsApp summary of the confirmed request so the concierge
+      // team receives the details immediately after the customer finishes.
+      const lines: string[] = [];
+      lines.push("🌿 طلب حجز جديد من موقع تِكله");
+      lines.push("");
+      if (city) lines.push(`• المدينة: ${city}`);
+      if (eventType) lines.push(`• نوع المناسبة: ${eventType}`);
+      if (date) lines.push(`• التاريخ: ${date}${endDate ? ` → ${endDate}` : ""}`);
+      lines.push(`• عدد الضيوف: ${men + women} (رجال ${men} / نساء ${women})`);
+      if (selected.length) lines.push(`• الخدمات: ${selected.join("، ")}`);
+      if (selectedChips.length) lines.push(`• الطابع: ${selectedChips.join("، ")}`);
+      if (vision.trim()) lines.push(`• الرؤية: ${vision.trim()}`);
+      if (packageSelection) {
+        lines.push("");
+        lines.push(`📦 الباقة المختارة: ${packageSelection.name} — ${packageSelection.price.toLocaleString("ar-SA")} ر.س`);
+      } else {
+        lines.push("");
+        lines.push(`💰 الميزانية: ${Number(budget).toLocaleString("ar-SA")} ر.س`);
+        const pickEntries = Object.values(picks);
+        if (pickEntries.length) {
+          const total = pickEntries.reduce((s, p) => s + (p.price || 0), 0);
+          lines.push(`✅ الموردون المختارون (${pickEntries.length}):`);
+          pickEntries.forEach((p) => {
+            lines.push(`   - ${p.category}: ${Number(p.price || 0).toLocaleString("ar-SA")} ر.س`);
+          });
+          lines.push(`الإجمالي: ${total.toLocaleString("ar-SA")} ر.س`);
+        }
+      }
+      const waMessage = encodeURIComponent(lines.join("\n"));
+      window.open(`https://wa.me/966530466460?text=${waMessage}`, "_blank", "noopener,noreferrer");
+
       clearPendingPlan();
       toast.success(
         isAr
