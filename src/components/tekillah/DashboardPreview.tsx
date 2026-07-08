@@ -1,22 +1,13 @@
-import { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useMemo } from "react";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Switch } from "@/components/ui/switch";
 import {
   CheckCircle2,
   Clock,
   AlertCircle,
-  Building2,
-  UtensilsCrossed,
-  Camera,
-  Music2,
-  Flower2,
-  Radio,
 } from "lucide-react";
 
 type StepKey = "venue" | "catering" | "photography" | "florals" | "night";
-type VendorKey = "venue" | "catering" | "photography" | "dj" | "florals";
-type StatusKey = "ready" | "active" | "wait";
 
 const TIMELINE: { key: StepKey; status: "done" | "active" | "todo" }[] = [
   { key: "venue", status: "done" },
@@ -26,24 +17,8 @@ const TIMELINE: { key: StepKey; status: "done" | "active" | "todo" }[] = [
   { key: "night", status: "todo" },
 ];
 
-const VENDORS: { key: VendorKey; icon: typeof Building2; status: StatusKey }[] = [
-  { key: "venue", icon: Building2, status: "ready" },
-  { key: "catering", icon: UtensilsCrossed, status: "ready" },
-  { key: "photography", icon: Camera, status: "active" },
-  { key: "dj", icon: Music2, status: "wait" },
-  { key: "florals", icon: Flower2, status: "ready" },
-];
-
-// Semantic-token-driven status pills — keep luxury palette consistent.
-const statusStyles: Record<StatusKey, string> = {
-  ready: "bg-primary/10 text-primary border-primary/20",
-  active: "bg-secondary text-primary-deep border-primary/25",
-  wait: "bg-muted text-foreground/60 border-border",
-};
-
 export const DashboardPreview = () => {
   const { t } = useTranslation();
-  const [liveMode, setLiveMode] = useState(false);
 
   const timeline = useMemo(
     () =>
