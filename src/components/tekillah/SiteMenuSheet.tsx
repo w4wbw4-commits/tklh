@@ -85,9 +85,9 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
     const Icon = item.icon;
     const label = t(item.labelKey, { defaultValue: isAr ? item.fallback.ar : item.fallback.en });
     const cls =
-      "group flex items-center gap-3 rounded-2xl border border-[rgba(255,247,174,0.25)] bg-[#163726] px-4 py-3 text-sm font-medium text-[#fff7ae] transition-all hover:border-[rgba(255,247,174,0.45)] hover:bg-[#1f4532] hover:text-[#fff7ae]";
+      "group flex items-center gap-3 rounded-2xl border border-[rgba(250,250,247,0.25)] bg-[#163726] px-4 py-3 text-sm font-medium text-[#fafaf7] transition-all hover:border-[rgba(250,250,247,0.45)] hover:bg-[#1f4532] hover:text-[#fafaf7]";
     const disabledCls =
-      "flex items-center gap-3 rounded-2xl border border-[rgba(255,247,174,0.15)] bg-[#163726]/60 px-4 py-3 text-sm font-medium text-[#fff7ae]/60 cursor-not-allowed opacity-80";
+      "flex items-center gap-3 rounded-2xl border border-[rgba(250,250,247,0.15)] bg-[#163726]/60 px-4 py-3 text-sm font-medium text-[#fafaf7]/60 cursor-not-allowed opacity-80";
     const inner = (
       <>
         <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl transition-colors ${item.disabled ? "bg-[rgba(255,247,174,0.1)] text-[#fff7ae]/60" : "bg-[rgba(255,247,174,0.15)] text-[#fff7ae] group-hover:bg-[rgba(255,247,174,0.25)] group-hover:text-[#fff7ae]"}`}>
