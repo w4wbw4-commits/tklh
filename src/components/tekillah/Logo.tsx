@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import logoAsset from "@/assets/tklh-logo-full.png.asset.json";
+import logoAsset from "@/assets/tklh-logo-transparent.png.asset.json";
 
 /**
  * Brand Logo — official TKLH / تِكله lockup (Arabic wordmark + Latin "Tklh"
@@ -18,7 +18,7 @@ export const Logo = ({ className = "" }: { className?: string }) => {
       <img
         src={logoAsset.url}
         alt="TKLH تِكله"
-        className="h-10 w-auto sm:h-12 object-contain select-none rounded-md"
+        className="h-10 w-auto sm:h-12 object-contain select-none"
         draggable={false}
       />
     </motion.div>
