@@ -506,50 +506,6 @@ export const PlanningWizard = () => {
                   selectedChips={selectedChips} toggleChip={toggleChip}
                 />
               )}
-              {step === 3 && (
-                <motion.div
-                  key="step-3-confirm"
-                  initial={{ opacity: 0, x: -24 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 24 }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="p-6 sm:p-10"
-                >
-                  <h3 className="font-arabic text-2xl font-semibold text-foreground">
-                    {isAr ? "تأكيد طلبك" : "Confirm your request"}
-                  </h3>
-                  <p className="mt-2 text-sm text-foreground/70">
-                    {isAr
-                      ? "راجع تفاصيل طلبك، وعند الضغط على تأكيد سوف يتم التواصل معك لتأكيد الحجز."
-                      : "Review your details. After confirming, we will contact you to finalise your booking."}
-                  </p>
-
-                  <div className="mt-6 space-y-3 rounded-2xl border border-border bg-secondary/40 p-5">
-                    <SummaryRow label={isAr ? "المدينة" : "City"} value={city ? t(`cities.${city}`, { defaultValue: city }) : "—"} />
-                    <SummaryRow label={isAr ? "نوع المناسبة" : "Event type"} value={eventType ? t(`eventTypes.${eventType}`, { defaultValue: eventType }) : "—"} />
-                    <SummaryRow label={isAr ? "تاريخ البداية" : "Start date"} value={date || "—"} valueDir="ltr" />
-                    <SummaryRow label={isAr ? "تاريخ النهاية" : "End date"} value={endDate || "—"} valueDir="ltr" />
-                    <SummaryRow label={isAr ? "عدد الرجال" : "Men"} value={String(men)} />
-                    <SummaryRow label={isAr ? "عدد النساء" : "Women"} value={String(women)} />
-                    <SummaryRow
-                      label={isAr ? "الخدمات" : "Services"}
-                      value={selected.length ? selected.map((s) => t(`services.${s}`, { defaultValue: s })).join("، ") : "—"}
-                    />
-                    {(vision || selectedChips.length > 0) && (
-                      <SummaryRow
-                        label={isAr ? "الرؤية / الطابع" : "Vision / theme"}
-                        value={[vision, selectedChips.join("، ")].filter(Boolean).join(" — ")}
-                      />
-                    )}
-                  </div>
-
-                  <p className="mt-5 rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-foreground/80 font-arabic">
-                    {isAr
-                      ? "بعد تأكيد الطلب سيتواصل معك فريقنا في أقرب وقت لإكمال تفاصيل الحجز."
-                      : "After confirming, our team will contact you shortly to complete your booking."}
-                  </p>
-                </motion.div>
-              )}
             </AnimatePresence>
             </div>
 
