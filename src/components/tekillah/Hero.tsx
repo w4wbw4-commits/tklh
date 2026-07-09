@@ -332,7 +332,7 @@ export const Hero = () => {
                 <img
                   src={wordmarkAsset.url}
                   alt="TKLH تِكله"
-                  className="inline-block h-28 sm:h-36 md:h-44 lg:h-52 xl:h-60 w-auto select-none align-middle rounded-2xl"
+                  className="inline-block h-28 sm:h-36 md:h-44 lg:h-52 xl:h-60 w-auto select-none align-middle"
                   draggable={false}
                 />
               </span>
