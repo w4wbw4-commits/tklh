@@ -265,7 +265,7 @@ export const PlanningWizard = () => {
   };
 
   const next = () => {
-    setStep((s) => Math.min(s + 1, 3));
+    setStep((s) => Math.min(s + 1, 2));
     requestAnimationFrame(scrollFormIntoView);
   };
   const prev = () => {
@@ -374,7 +374,6 @@ export const PlanningWizard = () => {
     t("wizard.step1"),
     t("wizard.step2"),
     t("wizard.step3"),
-    isAr ? "تأكيد الطلب" : "Confirm Request",
   ];
 
   const PrevIcon = isAr ? ArrowRight : ArrowLeft;
