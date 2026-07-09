@@ -379,7 +379,7 @@ export const Hero = () => {
             <div className="flex-1">
               <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[rgba(255,247,174,0.8)]"><br /></div>
               <div className="font-display text-lg font-black text-[#fff7ae] sm:text-xl">خطّط واحجز&nbsp;</div>
-              <div className="mt-0.5 text-[12.5px] text-[rgba(255,247,174,0.85)]">اختر كل تفصيلة على ذوقك.</div>
+              <div className="mt-0.5 text-[12.5px] text-[rgba(250,250,245,0.9)]">اختر كل تفصيلة على ذوقك.</div>
             </div>
             <ArrowLeft className="h-5 w-5 text-[#fff7ae] transition-transform duration-500 ease-out group-hover:-translate-x-1" />
           </a>
