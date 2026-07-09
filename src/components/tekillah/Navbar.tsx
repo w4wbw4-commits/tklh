@@ -72,19 +72,22 @@ export const Navbar = () => {
     >
       <div className={`mx-auto px-4 transition-all duration-500 ${scrolled ? "mt-2 max-w-6xl" : "mt-4 max-w-6xl"}`}>
         <div
-          className={`flex items-center justify-between rounded-full px-4 py-2.5 transition-all duration-500 border border-primary-foreground/20 shadow-soft`}
+          className={`flex items-center justify-between rounded-full px-4 py-2.5 transition-all duration-500 border shadow-soft`}
           style={{
-            background: "hsl(var(--primary))",
+            background: "#163726",
+            borderColor: "rgba(160, 208, 158, 0.22)",
           }}
         >
-          <Logo className="text-primary-foreground" />
+          <Logo />
           <nav className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => {
               const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
               const cls =
-                "relative rounded-full px-4 py-2 text-sm font-medium text-primary-foreground/90 transition-all hover:text-white after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:bg-primary-foreground/50 after:transition-all hover:after:w-1/2";
+                "relative rounded-full px-4 py-2 text-sm font-medium transition-all after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all hover:after:w-1/2";
+              const linkStyle = { color: "#a0d09e" } as const;
               const disabledCls =
-                "relative flex cursor-not-allowed items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-primary-foreground/50 opacity-70";
+                "relative flex cursor-not-allowed items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium opacity-70";
+              const disabledStyle = { color: "rgba(160, 208, 158, 0.55)" } as const;
               const badge = "badge" in item && item.badge ? (isAr ? item.badge.ar : item.badge.en) : null;
               if ("disabled" in item && item.disabled) {
                 return (
