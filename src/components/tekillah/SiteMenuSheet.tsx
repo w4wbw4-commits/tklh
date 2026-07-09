@@ -137,7 +137,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
           variant="ghost"
           size="sm"
           aria-label={t("nav.openMenu", { defaultValue: isAr ? "فتح القائمة" : "Open menu" })}
-          className="rounded-full border border-[rgba(255,247,174,0.35)] bg-[#163726] text-[#fff7ae] hover:border-[rgba(255,247,174,0.65)] hover:bg-[#1f4532] hover:text-[#fff7ae]"
+          className="rounded-full border border-[rgba(203,164,92,0.35)] bg-[#163726] text-[#cba45c] hover:border-[rgba(203,164,92,0.65)] hover:bg-[#1f4532] hover:text-[#cba45c]"
         >
           <Menu className="h-5 w-5" />
         </Button>
