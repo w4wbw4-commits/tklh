@@ -133,52 +133,52 @@ const SpeedSection = () => (
   <section
     id="speed"
     aria-label="مقارنة الوقت بين الطريقة التقليدية وتِكله"
-    className="relative overflow-hidden bg-background px-6 py-16 sm:px-8 sm:py-20"
+    className="relative overflow-hidden bg-background px-4 py-10 sm:px-6 sm:py-12"
   >
     <ArabicPattern opacity={0.035} />
 
-    <div className="relative mx-auto max-w-5xl">
+    <div className="relative mx-auto max-w-4xl">
       <Reveal>
         <div className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
-            <Timer className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-cream/80 px-3 py-1 text-xs font-bold text-foreground backdrop-blur">
+            <Timer className="h-3 w-3 text-gold" strokeWidth={2} />
             الفرق اللي يريح راسك
           </span>
-          <h2 className="mt-5 font-arabic text-4xl font-black leading-[1.6] text-green md:text-5xl">
+          <h2 className="mt-3 font-arabic text-2xl font-black leading-[1.5] text-green md:text-3xl">
             من 6 أسابيع حوسة..{" "}
-            <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-2 leading-[1.6] text-transparent">
+            <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-1 leading-[1.5] text-transparent">
               لـ 5 دقائق وأنت مخلص
             </span>
           </h2>
         </div>
       </Reveal>
 
-      <div className="mt-10 grid gap-5 md:grid-cols-2">
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
         {/* Legacy */}
         <Reveal>
-          <div className="relative h-full overflow-hidden rounded-3xl border border-foreground/10 bg-foreground/[0.05] p-7 shadow-card">
+          <div className="relative h-full overflow-hidden rounded-2xl border border-foreground/10 bg-foreground/[0.05] p-5 shadow-card">
             <div className="absolute inset-0 bg-gradient-to-br from-foreground/[0.06] to-transparent" />
             <div className="relative">
-              <div className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-background/40 px-3 py-1 text-xs font-bold text-foreground/60">
-                <ListChecks className="h-3.5 w-3.5" />
+              <div className="inline-flex items-center gap-1.5 rounded-full border border-foreground/15 bg-background/40 px-2.5 py-0.5 text-[10px] font-bold text-foreground/60">
+                <ListChecks className="h-3 w-3" />
                 الطريقة التقليدية
               </div>
-              <div className="mt-5 font-arabic text-5xl font-black text-foreground/70 sm:text-6xl">
+              <div className="mt-3 font-arabic text-3xl font-black text-foreground/70 sm:text-4xl">
                 6 أسابيع
               </div>
-              <p className="mt-2 font-arabic text-sm text-foreground/55">
+              <p className="mt-1 font-arabic text-xs text-foreground/55">
                 من البحث، الاتصالات، والمتابعة
               </p>
-              <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-foreground/10">
+              <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-foreground/10">
                 <div
                   className="h-full w-full rounded-full"
                   style={{
                     background:
-                      "repeating-linear-gradient(90deg, hsl(var(--foreground) / 0.25) 0 10px, transparent 10px 18px)",
+                      "repeating-linear-gradient(90deg, hsl(var(--foreground) / 0.25) 0 8px, transparent 8px 14px)",
                   }}
                 />
               </div>
-              <ul className="mt-6 space-y-2.5 font-arabic text-sm text-foreground/65">
+              <ul className="mt-4 space-y-1.5 font-arabic text-xs text-foreground/65">
                 <li>• مكالمات وتفاوض مع كل مزود</li>
                 <li>• مقارنات يدوية وأسعار متغيرة</li>
                 <li>• ضياع وقت ومجهود بدون ضمان</li>
@@ -189,40 +189,40 @@ const SpeedSection = () => (
 
         {/* Tikkilah */}
         <Reveal delay={0.12}>
-          <div className="group relative h-full overflow-hidden rounded-3xl border-2 border-gold/50 bg-cream p-7 shadow-deep">
-            <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-gold/30 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-green/15 blur-3xl" />
+          <div className="group relative h-full overflow-hidden rounded-2xl border-2 border-gold/50 bg-cream p-5 shadow-deep">
+            <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gold/30 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-green/15 blur-3xl" />
             <div className="relative">
-              <div className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/15 px-3 py-1 text-xs font-bold text-green">
-                <Zap className="h-3.5 w-3.5 text-gold" strokeWidth={2.5} />
+              <div className="inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/15 px-2.5 py-0.5 text-[10px] font-bold text-green">
+                <Zap className="h-3 w-3 text-gold" strokeWidth={2.5} />
                 مع تِكله
               </div>
-              <div className="mt-5 flex items-baseline gap-2">
-                <span className="font-arabic text-5xl font-black leading-none text-green sm:text-6xl">
+              <div className="mt-3 flex items-baseline gap-1.5">
+                <span className="font-arabic text-3xl font-black leading-none text-green sm:text-4xl">
                   <AnimatedCounter value={5} />
                 </span>
-                <span className="font-arabic text-2xl font-bold text-gold">دقائق</span>
+                <span className="font-arabic text-lg font-bold text-gold">دقائق</span>
               </div>
-              <p className="mt-2 font-arabic text-sm font-bold text-green/80">
+              <p className="mt-1 font-arabic text-xs font-bold text-green/80">
                 وأنت مخلص — حجز مكتمل بضمان
               </p>
-              <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-green/10">
+              <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-green/10">
                 <motion.div
                   initial={{ width: "0%" }}
                   whileInView={{ width: "100%" }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                  className="h-full rounded-full bg-gradient-to-l from-green via-gold to-gold shadow-[0_0_18px_hsl(var(--gold)/0.6)]"
+                  className="h-full rounded-full bg-gradient-to-l from-green via-gold to-gold shadow-[0_0_14px_hsl(var(--gold)/0.6)]"
                 />
               </div>
-              <ul className="mt-6 space-y-2.5 font-arabic text-sm text-foreground/80">
+              <ul className="mt-4 space-y-1.5 font-arabic text-xs text-foreground/80">
                 {[
                   "اختر ميزانيتك وعدد ضيوفك",
                   "اقتراحات ذكية ومزودون مفلترين",
                   "احجز كل شيء بضغطة، بسعر واضح",
                 ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 shrink-0 text-gold" strokeWidth={2.5} />
+                  <li key={i} className="flex items-center gap-1.5">
+                    <CheckCircle2 className="h-3 w-3 shrink-0 text-gold" strokeWidth={2.5} />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -235,17 +235,17 @@ const SpeedSection = () => (
       {/* ── Cascade connector: hairline + label that ties the comparison
           to the supporting "ليش تِكله أسرع" tiles below. */}
       <Reveal delay={0.2}>
-        <div className="relative mx-auto mt-14 flex flex-col items-center">
-          <span className="h-12 w-px bg-gradient-to-b from-transparent via-gold/40 to-gold" />
-          <span className="mt-3 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream px-4 py-1.5 text-xs font-bold text-green shadow-soft sm:text-sm">
-            <Sparkles className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
+        <div className="relative mx-auto mt-8 flex flex-col items-center">
+          <span className="h-8 w-px bg-gradient-to-b from-transparent via-gold/40 to-gold" />
+          <span className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-cream px-3 py-1 text-[10px] font-bold text-green shadow-soft sm:text-xs">
+            <Sparkles className="h-3 w-3 text-gold" strokeWidth={2} />
             وش وراء الـ٥ دقائق؟
           </span>
         </div>
       </Reveal>
 
       {/* ── 4 creative value tiles in a 2x2 grid below the comparison ── */}
-      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+      <div className="mt-6 grid gap-3 sm:grid-cols-2">
         {VALUE_TILES.map((tile, i) => {
           const Icon = tile.icon;
           // Stagger entry from alternating sides for a "cascade" rhythm.
@@ -253,15 +253,15 @@ const SpeedSection = () => (
           return (
             <Reveal key={i} delay={0.05 + i * 0.08}>
               <motion.div
-                initial={{ opacity: 0, x: fromRight ? 24 : -24 }}
+                initial={{ opacity: 0, x: fromRight ? 16 : -16 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
-                whileHover={{ y: -6 }}
-                className="group relative flex items-start gap-4 overflow-hidden rounded-2xl border border-gold/20 bg-cream/70 p-5 shadow-card backdrop-blur-md transition-all duration-500 hover:border-gold/55 hover:bg-cream hover:shadow-[0_22px_50px_-20px_hsl(var(--gold)/0.45)]"
+                whileHover={{ y: -4 }}
+                className="group relative flex items-start gap-3 overflow-hidden rounded-xl border border-gold/20 bg-cream/70 p-3.5 shadow-card backdrop-blur-md transition-all duration-500 hover:border-gold/55 hover:bg-cream hover:shadow-[0_16px_40px_-16px_hsl(var(--gold)/0.45)]"
               >
                 {/* Number badge — adds creative ranking */}
-                <span className="absolute left-4 top-4 font-wordmark text-xs font-black text-gold/60">
+                <span className="absolute left-3 top-3 font-wordmark text-[10px] font-black text-gold/60">
                   ٠{i + 1}
                 </span>
 
@@ -271,19 +271,19 @@ const SpeedSection = () => (
                 <motion.span
                   whileHover={{ rotate: -6, scale: 1.08 }}
                   transition={{ type: "spring", stiffness: 240, damping: 14 }}
-                  className="relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-gold/35 bg-gradient-to-br from-gold/20 to-gold/5 text-gold shadow-soft"
+                  className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-gold/35 bg-gradient-to-br from-gold/20 to-gold/5 text-gold shadow-soft"
                 >
-                  <Icon className="h-5 w-5" strokeWidth={1.8} />
+                  <Icon className="h-4 w-4" strokeWidth={1.8} />
                 </motion.span>
 
                 <div className="relative min-w-0 flex-1">
-                  <h3 className="font-arabic text-lg font-black text-green sm:text-xl">
+                  <h3 className="font-arabic text-sm font-black text-green sm:text-base">
                     {tile.title}
                   </h3>
-                  <p className="mt-1.5 font-arabic text-sm leading-[1.8] text-foreground/70">
+                  <p className="mt-1 font-arabic text-xs leading-[1.7] text-foreground/70">
                     {tile.desc}
                   </p>
-                  <div className="mt-3 h-0.5 w-10 rounded-full bg-gradient-to-l from-green to-gold transition-all duration-500 group-hover:w-20" />
+                  <div className="mt-2 h-0.5 w-8 rounded-full bg-gradient-to-l from-green to-gold transition-all duration-500 group-hover:w-14" />
                 </div>
               </motion.div>
             </Reveal>
