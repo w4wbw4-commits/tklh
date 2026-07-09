@@ -310,18 +310,21 @@ export const PlatformPackages = () => {
                     <div className="mt-auto flex flex-col gap-3">
                       <button
                         onClick={() => bookPackage(p.id)}
-                        className="group/btn flex w-full items-center justify-center gap-4 rounded-2xl bg-gradient-to-r from-[hsl(35_45%_40%)] to-[hsl(38_55%_62%)] py-4 font-arabic text-base font-bold text-[hsl(40_40%_97%)] shadow-xl shadow-black/30 transition-all hover:brightness-110"
+                        disabled={comingSoon}
+                        className="group/btn flex w-full items-center justify-center gap-4 rounded-2xl bg-gradient-to-r from-[hsl(35_45%_40%)] to-[hsl(38_55%_62%)] py-4 font-arabic text-base font-bold text-[hsl(40_40%_97%)] shadow-xl shadow-black/30 transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:brightness-100"
                       >
                         <Zap className="h-4 w-4" />
-                        <span>{t("platformPackages.bookNow")}</span>
+                        <span>{comingSoon ? soonLabel : t("platformPackages.bookNow")}</span>
                         <span className="h-px w-8 bg-[hsl(40_40%_97%)]/40 transition-all group-hover/btn:w-12" />
                       </button>
-                      <button
-                        onClick={() => { setActive(p); setActiveMediaIdx(0); }}
-                        className="font-arabic text-xs font-medium text-white transition-colors hover:text-white/80"
-                      >
-                        {t("platformPackages.viewDetails")}
-                      </button>
+                      {!comingSoon && (
+                        <button
+                          onClick={() => { setActive(p); setActiveMediaIdx(0); }}
+                          className="font-arabic text-xs font-medium text-white transition-colors hover:text-white/80"
+                        >
+                          {t("platformPackages.viewDetails")}
+                        </button>
+                      )}
                     </div>
                   </div>
                 </motion.article>
