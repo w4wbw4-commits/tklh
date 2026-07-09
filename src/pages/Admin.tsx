@@ -383,7 +383,6 @@ const Admin = () => {
           {renderSection()}
         </section>
       </AdminLayout>
-    </ThemeProvider>
   );
 };
 
