@@ -144,10 +144,10 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
       </SheetTrigger>
       <SheetContent
         side={isAr ? "right" : "left"}
-        className="w-[88vw] max-w-sm border-gold/20 bg-background/95 p-0 backdrop-blur-xl"
+        className="w-[88vw] max-w-sm border-gold/20 bg-primary p-0 backdrop-blur-xl"
       >
-        <SheetHeader className="border-b border-border/60 px-5 py-4 text-start">
-          <SheetTitle className="flex items-center justify-between gap-2">
+        <SheetHeader className="border-b border-primary-foreground/15 px-5 py-4 text-start">
+          <SheetTitle className="flex items-center justify-between gap-2 text-primary-foreground">
             <Logo />
           </SheetTitle>
         </SheetHeader>
