@@ -160,7 +160,7 @@ export const Footer = () => {
               </p>
             </div>
           </div>
-          <span className="inline-flex items-center gap-1 rounded-full bg-[hsl(var(--green))] px-4 py-2 text-xs font-medium text-cream">
+          <span className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-xs font-medium text-primary-foreground">
             {t("footer.partnerPortalCta")}
             <ArrowRight className="h-3.5 w-3.5 rtl:rotate-180" />
           </span>
