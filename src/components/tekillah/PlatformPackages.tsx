@@ -141,10 +141,28 @@ const CardMediaCarousel = ({
 export const PlatformPackages = () => {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language === "ar";
+  const { user } = useAuth();
   const [items, setItems] = useState<PlatformPackageRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState<PlatformPackageRow | null>(null);
   const [activeMediaIdx, setActiveMediaIdx] = useState(0);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (!user) { setIsAdmin(false); return; }
+    const allowlisted =
+      (user.email && PRIMARY_ADMIN_EMAILS.includes(user.email)) ||
+      (user.phone && PRIMARY_ADMIN_PHONES.includes(user.phone));
+    if (allowlisted) { setIsAdmin(true); return; }
+    (async () => {
+      const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
+      setIsAdmin(Boolean(data));
+    })();
+  }, [user]);
+
+  const comingSoon = !isAdmin;
+  const soonLabel = isAr ? "قريباً" : "Coming soon";
+
 
   useEffect(() => {
     const load = async () => {
