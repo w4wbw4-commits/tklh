@@ -72,12 +72,12 @@ export const StepDetails = ({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 24 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className="p-6 sm:p-10"
+      className="p-3 sm:p-5"
     >
       <h3 className="font-arabic text-2xl font-semibold text-foreground">{t("wizard.details.title")}</h3>
-      <p className="mt-2 text-sm text-foreground/70">{t("wizard.details.desc")}</p>
+      <p className="mt-1 text-sm text-foreground/70">{t("wizard.details.desc")}</p>
 
-      <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
         <div className="space-y-2">
           <Label className="font-arabic text-foreground">{t("wizard.details.city")}</Label>
           <Select value={city} onValueChange={setCity}>
