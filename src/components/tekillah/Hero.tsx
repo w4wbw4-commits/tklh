@@ -382,7 +382,7 @@ export const Hero = () => {
               <div className="font-display text-lg font-black text-gold sm:text-xl">خطّط واحجز&nbsp;</div>
               <div className="mt-0.5 text-[12.5px] text-cream/85">اختر كل تفصيلة على ذوقك.</div>
             </div>
-            <ArrowLeft className="h-5 w-5 text-gold transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+            <ArrowLeft className="h-5 w-5 text-[hsl(var(--green))] transition-transform duration-500 ease-out group-hover:-translate-x-1" />
           </a>
         </motion.div>
 
