@@ -245,7 +245,7 @@ const SpeedSection = () => (
       </Reveal>
 
       {/* ── 4 creative value tiles in a 2x2 grid below the comparison ── */}
-      <div className="mt-6 grid gap-3 sm:grid-cols-2">
+      <div className="mt-6 grid grid-cols-2 gap-2 sm:gap-3">
         {VALUE_TILES.map((tile, i) => {
           const Icon = tile.icon;
           // Stagger entry from alternating sides for a "cascade" rhythm.
@@ -258,10 +258,10 @@ const SpeedSection = () => (
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
                 whileHover={{ y: -4 }}
-                className="group relative flex items-start gap-3 overflow-hidden rounded-xl border border-gold/20 bg-cream/70 p-3.5 shadow-card backdrop-blur-md transition-all duration-500 hover:border-gold/55 hover:bg-cream hover:shadow-[0_16px_40px_-16px_hsl(var(--gold)/0.45)]"
+                className="group relative flex flex-col items-start gap-2 overflow-hidden rounded-xl border border-gold/20 bg-cream/70 p-2.5 shadow-card backdrop-blur-md transition-all duration-500 hover:border-gold/55 hover:bg-cream hover:shadow-[0_16px_40px_-16px_hsl(var(--gold)/0.45)] sm:flex-row sm:items-start sm:gap-3 sm:p-3.5"
               >
                 {/* Number badge — adds creative ranking */}
-                <span className="absolute left-3 top-3 font-wordmark text-[10px] font-black text-gold/60">
+                <span className="absolute left-2 top-2 font-wordmark text-[9px] font-black text-gold/60 sm:left-3 sm:top-3 sm:text-[10px]">
                   ٠{i + 1}
                 </span>
 
@@ -271,19 +271,19 @@ const SpeedSection = () => (
                 <motion.span
                   whileHover={{ rotate: -6, scale: 1.08 }}
                   transition={{ type: "spring", stiffness: 240, damping: 14 }}
-                  className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-gold/35 bg-gradient-to-br from-gold/20 to-gold/5 text-gold shadow-soft"
+                  className="relative inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-gold/35 bg-gradient-to-br from-gold/20 to-gold/5 text-gold shadow-soft sm:h-9 sm:w-9"
                 >
-                  <Icon className="h-4 w-4" strokeWidth={1.8} />
+                  <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={1.8} />
                 </motion.span>
 
                 <div className="relative min-w-0 flex-1">
-                  <h3 className="font-arabic text-sm font-black text-green sm:text-base">
+                  <h3 className="font-arabic text-[11px] font-black text-green sm:text-sm md:text-base">
                     {tile.title}
                   </h3>
-                  <p className="mt-1 font-arabic text-xs leading-[1.7] text-foreground/70">
+                  <p className="mt-0.5 font-arabic text-[10px] leading-[1.65] text-foreground/70 sm:mt-1 sm:text-xs sm:leading-[1.7]">
                     {tile.desc}
                   </p>
-                  <div className="mt-2 h-0.5 w-8 rounded-full bg-gradient-to-l from-green to-gold transition-all duration-500 group-hover:w-14" />
+                  <div className="mt-1.5 h-0.5 w-6 rounded-full bg-gradient-to-l from-green to-gold transition-all duration-500 group-hover:w-10 sm:mt-2 sm:w-8 group-hover:sm:w-14" />
                 </div>
               </motion.div>
             </Reveal>
