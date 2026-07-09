@@ -72,13 +72,13 @@ export const StepDetails = ({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 24 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className="p-6 sm:p-10"
+      className="p-3 sm:p-5"
     >
       <h3 className="font-arabic text-2xl font-semibold text-foreground">{t("wizard.details.title")}</h3>
-      <p className="mt-2 text-sm text-foreground/70">{t("wizard.details.desc")}</p>
+      <p className="mt-1 text-sm text-foreground/70">{t("wizard.details.desc")}</p>
 
-      <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <div className="space-y-2">
+      <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+        <div className="space-y-1">
           <Label className="font-arabic text-foreground">{t("wizard.details.city")}</Label>
           <Select value={city} onValueChange={setCity}>
             <SelectTrigger className="h-12 rounded-xl"><SelectValue placeholder={t("wizard.details.cityPlaceholder")} /></SelectTrigger>
@@ -95,7 +95,7 @@ export const StepDetails = ({
           </Select>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1">
           <Label className="font-arabic text-foreground">{t("wizard.details.type")}</Label>
           <Select
             value={selectValue}
@@ -122,9 +122,9 @@ export const StepDetails = ({
           )}
         </div>
 
-        <div className="space-y-2 sm:col-span-2">
+        <div className="space-y-1 sm:col-span-2">
           <Label className="font-arabic text-foreground">{t("wizard.details.date")}</Label>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -212,7 +212,7 @@ export const StepDetails = ({
           </div>
         </div>
 
-        <div className="space-y-3 rounded-2xl bg-secondary/50 p-5">
+        <div className="space-y-1.5 rounded-2xl bg-secondary/50 p-2.5">
           <Label className="font-arabic text-foreground">{t("wizard.details.men")}</Label>
           <NumberStepper
             value={men}
@@ -224,7 +224,7 @@ export const StepDetails = ({
           />
         </div>
 
-        <div className="space-y-3 rounded-2xl bg-secondary/50 p-5">
+        <div className="space-y-1.5 rounded-2xl bg-secondary/50 p-2.5">
           <Label className="font-arabic text-foreground">{t("wizard.details.women")}</Label>
           <NumberStepper
             value={women}
