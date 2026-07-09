@@ -136,11 +136,7 @@ const Admin = () => {
   };
 
   if (authLoading || isAdmin === null) {
-    return (
-      <ThemeProvider attribute="class" forcedTheme="dark" enableSystem={false} storageKey="tekillah-admin-theme">
-        <div className="grid min-h-screen place-items-center bg-gradient-soft"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
-      </ThemeProvider>
-    );
+    return <div className="grid min-h-screen place-items-center bg-gradient-soft"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
   }
 
   if (!isAdmin) {
