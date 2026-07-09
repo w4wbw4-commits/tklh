@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ThemeProvider } from "next-themes";
 import * as XLSX from "xlsx";
 import { RiyalSymbol } from "@/components/tekillah/RiyalSymbol";
 import { useNavigate, Link } from "react-router-dom";
