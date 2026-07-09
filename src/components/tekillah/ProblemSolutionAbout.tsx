@@ -140,8 +140,8 @@ const SpeedSection = () => (
     <div className="relative mx-auto max-w-4xl">
       <Reveal>
         <div className="text-center">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-cream/80 px-3 py-1 text-xs font-bold text-foreground backdrop-blur">
-            <Timer className="h-3 w-3 text-gold" strokeWidth={2} />
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#fff7ae]/40 bg-[#163726] px-3 py-1 text-xs font-bold text-[#fff7ae] backdrop-blur">
+            <Timer className="h-3 w-3 text-[#fff7ae]" strokeWidth={2} />
             الفرق اللي يريح راسك
           </span>
           <h2 className="mt-3 font-arabic text-2xl font-black leading-[1.5] text-green md:text-3xl">
