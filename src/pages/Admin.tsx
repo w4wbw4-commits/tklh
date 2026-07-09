@@ -276,8 +276,7 @@ const Admin = () => {
   };
 
   return (
-    <ThemeProvider attribute="class" forcedTheme="dark" enableSystem={false} storageKey="tekillah-admin-theme">
-      <AdminLayout
+    <AdminLayout
         active={activeTab}
         onChange={setActiveTab}
         badges={{ pending: pendingCount }}
