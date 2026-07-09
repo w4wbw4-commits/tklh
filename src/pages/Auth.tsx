@@ -224,14 +224,9 @@ const Auth = () => {
       </header>
 
       <div className="mx-auto flex max-w-md flex-col items-center px-6 pb-20 pt-10">
-        {/* Brand wordmark — geometric Kufic, matches hero */}
-        <div className="mb-6 text-center">
-          <div
-            className="font-wordmark text-5xl font-black text-primary"
-            style={{ WebkitTextFillColor: "hsl(var(--primary-deep, var(--primary)))" }}
-          >
-            تِكله
-          </div>
+        {/* Official TKLH lockup */}
+        <div className="mb-6 flex justify-center">
+          <Logo className="scale-125" />
         </div>
 
         <motion.div
