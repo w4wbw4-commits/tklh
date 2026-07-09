@@ -173,9 +173,9 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
           <div className="mt-auto pt-6 space-y-1.5">
             <button
               onClick={toggleLang}
-              className="group flex w-full items-center gap-3 rounded-2xl border border-[rgba(250,250,247,0.25)] bg-[#163726] px-4 py-3 text-sm font-medium text-[#fafaf7] transition-all hover:border-[rgba(250,250,247,0.45)] hover:bg-[#1f4532] hover:text-[#fafaf7]"
+              className="group flex w-full items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.15)] bg-[#fafaf7] px-4 py-3 text-sm font-medium text-[#163726] transition-all hover:border-[rgba(22,55,38,0.35)] hover:bg-[#f5f5f0] hover:text-[#163726]"
             >
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(250,250,247,0.15)] text-[#fafaf7] transition-colors group-hover:bg-[rgba(250,250,247,0.25)] group-hover:text-[#fafaf7]">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(22,55,38,0.1)] text-[#163726] transition-colors group-hover:bg-[rgba(22,55,38,0.18)] group-hover:text-[#163726]">
                 <Globe className="h-4 w-4" />
               </span>
               <span className="flex-1 text-start">{t("nav.lang")}</span>
