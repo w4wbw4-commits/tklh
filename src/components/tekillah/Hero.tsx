@@ -338,8 +338,8 @@ export const Hero = () => {
               </span>
               <br />
               <br />
-              <span style={{ color: "#6c592e" }}>خطط</span>
-              <span style={{ color: "#6c592e" }}> لمناسباتك.. </span>
+              <span style={{ color: "hsl(var(--green))" }}>خطط</span>
+              <span style={{ color: "hsl(var(--green))" }}> لمناسباتك.. </span>
               <span style={{ color: "#6c592e" }}>{KASHIDA_BOOK}</span>
               <span style={{ color: "#6c592e" }}>&nbsp;..</span>
               <span style={{ color: "#6c592e" }}>تابعها</span>
