@@ -6,8 +6,6 @@ import {
   SketchIconInvitation,
   SketchIconServices,
   SketchIconPalette,
-  SketchIconCoin,
-  SketchIconHandshake,
 } from "./wizard/WizardSketches";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -170,7 +168,7 @@ export const PlanningWizard = () => {
       window.history.replaceState({}, "", url.pathname + url.search + url.hash);
     } else if (snap.packageSelection) setStep(4);
     else if (Object.keys(snap.picks ?? {}).length > 0) setStep(4);
-    else if (snap.budget) setStep(3);
+    else if (snap.budget) setStep(2);
     else if (snap.selected?.length) setStep(1);
   }, []);
 
@@ -267,7 +265,7 @@ export const PlanningWizard = () => {
   };
 
   const next = () => {
-    setStep((s) => Math.min(s + 1, 3));
+    setStep((s) => Math.min(s + 1, 2));
     requestAnimationFrame(scrollFormIntoView);
   };
   const prev = () => {
@@ -376,7 +374,6 @@ export const PlanningWizard = () => {
     t("wizard.step1"),
     t("wizard.step2"),
     t("wizard.step3"),
-    isAr ? "تأكيد الطلب" : "Confirm Request",
   ];
 
   const PrevIcon = isAr ? ArrowRight : ArrowLeft;
@@ -432,7 +429,7 @@ export const PlanningWizard = () => {
               const isFastTrackBadge = isFastTrack && isLast;
               const isActive = i === step;
               const isComplete = i < step;
-              const StepIcon = [SketchIconInvitation, SketchIconServices, SketchIconPalette, SketchIconCoin, SketchIconHandshake][i] ?? SketchIconHandshake;
+              const StepIcon = [SketchIconInvitation, SketchIconServices, SketchIconPalette][i] ?? SketchIconPalette;
               return (
                 <div key={i} className="flex flex-1 items-center gap-1.5 sm:gap-2">
                   <div className="flex flex-col items-center">
@@ -509,50 +506,6 @@ export const PlanningWizard = () => {
                   selectedChips={selectedChips} toggleChip={toggleChip}
                 />
               )}
-              {step === 3 && (
-                <motion.div
-                  key="step-3-confirm"
-                  initial={{ opacity: 0, x: -24 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 24 }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="p-6 sm:p-10"
-                >
-                  <h3 className="font-arabic text-2xl font-semibold text-foreground">
-                    {isAr ? "تأكيد طلبك" : "Confirm your request"}
-                  </h3>
-                  <p className="mt-2 text-sm text-foreground/70">
-                    {isAr
-                      ? "راجع تفاصيل طلبك، وعند الضغط على تأكيد سوف يتم التواصل معك لتأكيد الحجز."
-                      : "Review your details. After confirming, we will contact you to finalise your booking."}
-                  </p>
-
-                  <div className="mt-6 space-y-3 rounded-2xl border border-border bg-secondary/40 p-5">
-                    <SummaryRow label={isAr ? "المدينة" : "City"} value={city ? t(`cities.${city}`, { defaultValue: city }) : "—"} />
-                    <SummaryRow label={isAr ? "نوع المناسبة" : "Event type"} value={eventType ? t(`eventTypes.${eventType}`, { defaultValue: eventType }) : "—"} />
-                    <SummaryRow label={isAr ? "تاريخ البداية" : "Start date"} value={date || "—"} valueDir="ltr" />
-                    <SummaryRow label={isAr ? "تاريخ النهاية" : "End date"} value={endDate || "—"} valueDir="ltr" />
-                    <SummaryRow label={isAr ? "عدد الرجال" : "Men"} value={String(men)} />
-                    <SummaryRow label={isAr ? "عدد النساء" : "Women"} value={String(women)} />
-                    <SummaryRow
-                      label={isAr ? "الخدمات" : "Services"}
-                      value={selected.length ? selected.map((s) => t(`services.${s}`, { defaultValue: s })).join("، ") : "—"}
-                    />
-                    {(vision || selectedChips.length > 0) && (
-                      <SummaryRow
-                        label={isAr ? "الرؤية / الطابع" : "Vision / theme"}
-                        value={[vision, selectedChips.join("، ")].filter(Boolean).join(" — ")}
-                      />
-                    )}
-                  </div>
-
-                  <p className="mt-5 rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-foreground/80 font-arabic">
-                    {isAr
-                      ? "بعد تأكيد الطلب سيتواصل معك فريقنا في أقرب وقت لإكمال تفاصيل الحجز."
-                      : "After confirming, our team will contact you shortly to complete your booking."}
-                  </p>
-                </motion.div>
-              )}
             </AnimatePresence>
             </div>
 
@@ -567,7 +520,7 @@ export const PlanningWizard = () => {
                 <PrevIcon className="me-2 h-4 w-4" />
                 {t("common.previous")}
               </Button>
-              {step < 3 ? (
+              {step < 2 ? (
                 <div className="flex flex-col items-end gap-1">
                   <Button
                     onClick={next}
@@ -601,9 +554,3 @@ export const PlanningWizard = () => {
   );
 };
 
-const SummaryRow = ({ label, value, valueDir }: { label: string; value: string; valueDir?: "ltr" | "rtl" }) => (
-  <div className="flex items-start justify-between gap-4 border-b border-border/60 pb-2 last:border-b-0 last:pb-0">
-    <span className="font-arabic text-xs text-foreground/60">{label}</span>
-    <span className="text-sm font-medium text-foreground" dir={valueDir}>{value}</span>
-  </div>
-);
