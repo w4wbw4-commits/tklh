@@ -117,16 +117,6 @@ export const Navbar = () => {
                 </Link>
               </Button>
             )}
-            {!user && (
-              <Button
-                variant="ghost"
-                size="sm"
-                asChild
-                className="hidden rounded-full text-xs font-semibold text-primary-foreground/90 hover:bg-transparent hover:text-white sm:inline-flex"
-              >
-                <Link to="/auth">{t("nav.start")}</Link>
-              </Button>
-            )}
             {/* Hamburger pinned at the very END of the cluster — in RTL this
                 renders at the far-right (start edge), which is where the user
                 expects the primary menu in Arabic. Visible on every breakpoint. */}
