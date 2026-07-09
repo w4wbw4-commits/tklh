@@ -31,10 +31,10 @@ const useDraw = () => {
   return { ref, animate: inView ? "visible" : "hidden" };
 };
 
-const olive = "hsl(var(--primary-deep))";
-const gold = "hsl(var(--gold))";
-const brown = "hsl(var(--brown))";
-const brownSoft = "hsl(var(--brown-soft))";
+const olive = "hsl(var(--green))";
+const gold = "hsl(var(--green))";
+const brown = "hsl(var(--green))";
+const brownSoft = "hsl(var(--green))";
 
 // --- Wedding arch (hero centerpiece) ----------------------------------------
 export const SketchArch = ({ className, style, ariaHidden = true }: SketchProps) => {
