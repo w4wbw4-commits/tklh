@@ -369,20 +369,26 @@ export const Hero = () => {
         <motion.div variants={rise} className="mt-10 w-full max-w-xl">
           <a
             href="/planner"
-            className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border-2 border-green/40 p-5 text-right backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-green/70 hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.45)]"
-            style={{ background: "linear-gradient(135deg, hsl(var(--green)) 0%, hsl(var(--green-mid)) 100%)" }}
+            className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border-2 p-5 text-right backdrop-blur-md transition-all duration-500 hover:-translate-y-1"
+            style={{
+              background: "linear-gradient(135deg, #163726 0%, #163726 100%)",
+              borderColor: "rgba(22, 55, 38, 0.4)",
+              color: "#fff7ae",
+              boxShadow: "0 25px 60px -20px rgba(22, 55, 38, 0.45)",
+            }}
           >
             <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
-              style={{ background: "radial-gradient(circle, hsl(var(--gold)), transparent 70%)" }} />
-            <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-gold/50 bg-green-mid/40 transition-transform duration-500 group-hover:rotate-6">
-              <Sparkles className="h-5 w-5 text-gold" strokeWidth={2.4} />
+              style={{ background: "radial-gradient(circle, #fff7ae, transparent 70%)" }} />
+            <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border transition-transform duration-500 group-hover:rotate-6"
+              style={{ borderColor: "rgba(255, 247, 174, 0.5)", backgroundColor: "rgba(22, 55, 38, 0.4)" }}>
+              <Sparkles className="h-5 w-5" strokeWidth={2.4} style={{ color: "#fff7ae" }} />
             </span>
             <div className="flex-1">
-              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold/80">المسار الذكي</div>
-              <div className="font-display text-lg font-black text-gold sm:text-xl">خطّط واحجز&nbsp;</div>
-              <div className="mt-0.5 text-[12.5px] text-cream/85">اختر كل تفصيلة على ذوقك.</div>
+              <div className="text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: "rgba(255, 247, 174, 0.8)" }}>المسار الذكي</div>
+              <div className="font-display text-lg font-black sm:text-xl" style={{ color: "#fff7ae" }}>خطّط واحجز&nbsp;</div>
+              <div className="mt-0.5 text-[12.5px]" style={{ color: "rgba(255, 247, 174, 0.85)" }}>اختر كل تفصيلة على ذوقك.</div>
             </div>
-            <ArrowLeft className="h-5 w-5 text-gold transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+            <ArrowLeft className="h-5 w-5 transition-transform duration-500 ease-out group-hover:-translate-x-1" style={{ color: "#fff7ae" }} />
           </a>
         </motion.div>
 
