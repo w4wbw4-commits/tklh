@@ -146,16 +146,18 @@ const Admin = () => {
 
   if (!isAdmin) {
     return (
-      <div className="grid min-h-screen place-items-center bg-gradient-soft p-6">
-        <div className="max-w-md rounded-3xl border border-border bg-card p-8 text-center shadow-card">
-          <ShieldAlert className="mx-auto h-10 w-10 text-destructive" />
-          <h1 className="mt-4 font-arabic text-xl font-semibold">{t("admin.deniedTitle")}</h1>
-          <p className="mt-2 text-sm text-foreground/65">{t("admin.deniedDesc")}</p>
-          <Button asChild className="mt-6 rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
-            <Link to="/">{t("common.backToHome")}</Link>
-          </Button>
+      <ThemeProvider attribute="class" forcedTheme="dark" enableSystem={false} storageKey="tekillah-admin-theme">
+        <div className="grid min-h-screen place-items-center bg-gradient-soft p-6">
+          <div className="max-w-md rounded-3xl border border-border bg-card p-8 text-center shadow-card">
+            <ShieldAlert className="mx-auto h-10 w-10 text-destructive" />
+            <h1 className="mt-4 font-arabic text-xl font-semibold">{t("admin.deniedTitle")}</h1>
+            <p className="mt-2 text-sm text-foreground/65">{t("admin.deniedDesc")}</p>
+            <Button asChild className="mt-6 rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
+              <Link to="/">{t("common.backToHome")}</Link>
+            </Button>
+          </div>
         </div>
-      </div>
+      </ThemeProvider>
     );
   }
 
