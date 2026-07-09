@@ -85,17 +85,17 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
     const Icon = item.icon;
     const label = t(item.labelKey, { defaultValue: isAr ? item.fallback.ar : item.fallback.en });
     const cls =
-      "group flex items-center gap-3 rounded-2xl border border-[rgba(255,247,174,0.25)] bg-[#163726] px-4 py-3 text-sm font-medium text-[#fff7ae] transition-all hover:border-[rgba(255,247,174,0.45)] hover:bg-[#1f4532] hover:text-[#fff7ae]";
+      "group flex items-center gap-3 rounded-2xl border border-[rgba(250,250,247,0.25)] bg-[#163726] px-4 py-3 text-sm font-medium text-[#fafaf7] transition-all hover:border-[rgba(250,250,247,0.45)] hover:bg-[#1f4532] hover:text-[#fafaf7]";
     const disabledCls =
-      "flex items-center gap-3 rounded-2xl border border-[rgba(255,247,174,0.15)] bg-[#163726]/60 px-4 py-3 text-sm font-medium text-[#fff7ae]/60 cursor-not-allowed opacity-80";
+      "flex items-center gap-3 rounded-2xl border border-[rgba(250,250,247,0.15)] bg-[#163726]/60 px-4 py-3 text-sm font-medium text-[#fafaf7]/60 cursor-not-allowed opacity-80";
     const inner = (
       <>
-        <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl transition-colors ${item.disabled ? "bg-[rgba(255,247,174,0.1)] text-[#fff7ae]/60" : "bg-[rgba(255,247,174,0.15)] text-[#fff7ae] group-hover:bg-[rgba(255,247,174,0.25)] group-hover:text-[#fff7ae]"}`}>
+        <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl transition-colors ${item.disabled ? "bg-[rgba(250,250,247,0.1)] text-[#fafaf7]/60" : "bg-[rgba(250,250,247,0.15)] text-[#fafaf7] group-hover:bg-[rgba(250,250,247,0.25)] group-hover:text-[#fafaf7]"}`}>
           <Icon className="h-4 w-4" />
         </span>
         <span className="flex-1">{label}</span>
         {item.badge ? (
-          <span className="rounded-full bg-[#fff7ae] px-2 py-0.5 text-[10px] font-semibold text-[#163726]">
+          <span className="rounded-full bg-[#163726] px-2 py-0.5 text-[10px] font-semibold text-[#fafaf7]">
             {isAr ? item.badge.ar : item.badge.en}
           </span>
         ) : null}
@@ -173,9 +173,9 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
           <div className="mt-auto pt-6 space-y-1.5">
             <button
               onClick={toggleLang}
-              className="group flex w-full items-center gap-3 rounded-2xl border border-[rgba(255,247,174,0.25)] bg-[#163726] px-4 py-3 text-sm font-medium text-[#fff7ae] transition-all hover:border-[rgba(255,247,174,0.45)] hover:bg-[#1f4532] hover:text-[#fff7ae]"
+              className="group flex w-full items-center gap-3 rounded-2xl border border-[rgba(250,250,247,0.25)] bg-[#163726] px-4 py-3 text-sm font-medium text-[#fafaf7] transition-all hover:border-[rgba(250,250,247,0.45)] hover:bg-[#1f4532] hover:text-[#fafaf7]"
             >
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(255,247,174,0.15)] text-[#fff7ae] transition-colors group-hover:bg-[rgba(255,247,174,0.25)] group-hover:text-[#fff7ae]">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(250,250,247,0.15)] text-[#fafaf7] transition-colors group-hover:bg-[rgba(250,250,247,0.25)] group-hover:text-[#fafaf7]">
                 <Globe className="h-4 w-4" />
               </span>
               <span className="flex-1 text-start">{t("nav.lang")}</span>
