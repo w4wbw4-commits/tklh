@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { SiteMenuSheet } from "./SiteMenuSheet";
-import { ThemeToggle } from "./ThemeToggle";
+
 
 // Primary admin allowlist — phone +966554430196 (synthetic email used by phone-OTP login).
 const PRIMARY_ADMIN_EMAIL = "966554430196@phone.tekillah.app";

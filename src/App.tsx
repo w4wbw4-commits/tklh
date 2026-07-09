@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "next-themes";
 import { MotionConfig } from "framer-motion";
@@ -59,6 +59,28 @@ const RouteFallback = () => (
   <div className="min-h-screen bg-background" aria-hidden />
 );
 
+/**
+ * RouteAwareTheme — forces light mode on every page except /admin.
+ * The admin dashboard keeps the dark palette for contrast and a distinct
+ * "operations" feel. This wrapper lives inside BrowserRouter so it can read
+ * the current route via useLocation.
+ */
+const RouteAwareTheme = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+  return (
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      forcedTheme={isAdminRoute ? "dark" : "light"}
+      enableSystem={false}
+      storageKey="tekillah-theme"
+    >
+      {children}
+    </ThemeProvider>
+  );
+};
+
 const AppRoutes = () => {
   const isMobile = useIsMobile();
   // On mobile (or when the user prefers reduced motion), tell framer-motion to
@@ -68,12 +90,12 @@ const AppRoutes = () => {
     <MotionConfig reducedMotion={isMobile ? "always" : "user"}>
       <QueryClientProvider client={queryClient}>
         <HelmetProvider>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} storageKey="tekillah-theme">
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <AuthProvider>
+          <BrowserRouter>
+            <AuthProvider>
+              <RouteAwareTheme>
+                <TooltipProvider>
+                  <Toaster />
+                  <Sonner />
                   <Suspense fallback={<RouteFallback />}>
                     <Routes>
                       <Route path="/" element={<Index />} />
@@ -114,10 +136,10 @@ const AppRoutes = () => {
                   </Suspense>
                   <RoleSwitcher />
                   <WhatsAppFloating />
-                </AuthProvider>
-              </BrowserRouter>
-            </TooltipProvider>
-          </ThemeProvider>
+                </TooltipProvider>
+              </RouteAwareTheme>
+            </AuthProvider>
+          </BrowserRouter>
         </HelmetProvider>
       </QueryClientProvider>
     </MotionConfig>

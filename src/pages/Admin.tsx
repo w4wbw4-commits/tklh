@@ -97,7 +97,8 @@ const Admin = () => {
     })();
   }, [user]);
 
-  // Admin uses the standard light olive theme — no dark-mode toggle.
+  // Admin dashboard is rendered in dark mode via the route-aware ThemeProvider in App.tsx.
+
 
   const load = async () => {
     setLoading(true);
@@ -277,112 +278,112 @@ const Admin = () => {
 
   return (
     <AdminLayout
-      active={activeTab}
-      onChange={setActiveTab}
-      badges={{ pending: pendingCount }}
-      headerAction={user && <AdminAddVendorDialog adminUserId={user.id} onCreated={load} />}
-    >
-      {/* Period filter + Excel export */}
-      <div className="mb-3 flex flex-wrap items-center gap-2">
-        <button
-          type="button"
-          onClick={() => setPeriod("all")}
-          className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
-            period === "all"
-              ? "border-primary bg-primary text-primary-foreground"
-              : "border-border bg-card text-foreground/70 hover:bg-secondary/40"
-          }`}
-        >
-          {t("admin.periodAll")}
-        </button>
-        <button
-          type="button"
-          onClick={() => setPeriod("month")}
-          className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
-            period === "month"
-              ? "border-primary bg-primary text-primary-foreground"
-              : "border-border bg-card text-foreground/70 hover:bg-secondary/40"
-          }`}
-        >
-          {t("admin.periodMonth")}
-        </button>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={() => {
-            // Build an editable workbook with 3 sheets: Sales/Revenue, Held Funds, Summary.
-            // Rows respect the active period filter so the export matches the on-screen KPIs.
-            const fmt = (n: number | null | undefined) => Number(n ?? 0);
-            const dateOnly = (iso: string) => new Date(iso).toISOString().slice(0, 10);
+        active={activeTab}
+        onChange={setActiveTab}
+        badges={{ pending: pendingCount }}
+        headerAction={user && <AdminAddVendorDialog adminUserId={user.id} onCreated={load} />}
+      >
+        {/* Period filter + Excel export */}
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setPeriod("all")}
+            className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+              period === "all"
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-card text-foreground/70 hover:bg-secondary/40"
+            }`}
+          >
+            {t("admin.periodAll")}
+          </button>
+          <button
+            type="button"
+            onClick={() => setPeriod("month")}
+            className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+              period === "month"
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-card text-foreground/70 hover:bg-secondary/40"
+            }`}
+          >
+            {t("admin.periodMonth")}
+          </button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              // Build an editable workbook with 3 sheets: Sales/Revenue, Held Funds, Summary.
+              // Rows respect the active period filter so the export matches the on-screen KPIs.
+              const fmt = (n: number | null | undefined) => Number(n ?? 0);
+              const dateOnly = (iso: string) => new Date(iso).toISOString().slice(0, 10);
 
-            const salesRows = scopedPayments.map((p) => ({
-              [t("admin.amount")]: fmt(p.amount),
-              [t("admin.vatCollected")]: fmt(p.vat_amount),
-              [t("admin.platformProfit")]: fmt(p.platform_fee),
-              [t("admin.vendorPayouts")]: fmt(p.vendor_net),
-              [t("admin.totalRevenue")]: fmt(p.total_charged),
-              "status": p.status,
-              "booking_id": p.booking_id,
-              "vendor_id": p.vendor_id,
-              "customer_id": p.customer_id,
-              "created_at": dateOnly(p.created_at),
-            }));
-
-            const heldRows = scopedPayments
-              .filter((p) => p.status === "held")
-              .map((p) => ({
-                [t("admin.heldFunds")]: fmt(p.vendor_net),
+              const salesRows = scopedPayments.map((p) => ({
+                [t("admin.amount")]: fmt(p.amount),
+                [t("admin.vatCollected")]: fmt(p.vat_amount),
+                [t("admin.platformProfit")]: fmt(p.platform_fee),
+                [t("admin.vendorPayouts")]: fmt(p.vendor_net),
                 [t("admin.totalRevenue")]: fmt(p.total_charged),
+                "status": p.status,
                 "booking_id": p.booking_id,
                 "vendor_id": p.vendor_id,
+                "customer_id": p.customer_id,
                 "created_at": dateOnly(p.created_at),
               }));
 
-            const summary = [
-              { metric: t("admin.totalRevenue"), value: totalRevenue },
-              { metric: t("admin.platformProfit"), value: platformProfit },
-              { metric: t("admin.vatCollected"), value: vatCollected },
-              { metric: t("admin.vendorPayouts"), value: vendorPayouts },
-              { metric: t("admin.heldFunds"), value: heldFunds },
-              { metric: t("admin.totalBookings"), value: totalBookings },
-            ];
+              const heldRows = scopedPayments
+                .filter((p) => p.status === "held")
+                .map((p) => ({
+                  [t("admin.heldFunds")]: fmt(p.vendor_net),
+                  [t("admin.totalRevenue")]: fmt(p.total_charged),
+                  "booking_id": p.booking_id,
+                  "vendor_id": p.vendor_id,
+                  "created_at": dateOnly(p.created_at),
+                }));
 
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(summary), "Summary");
-            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(salesRows), "Sales");
-            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(heldRows), "Escrow");
+              const summary = [
+                { metric: t("admin.totalRevenue"), value: totalRevenue },
+                { metric: t("admin.platformProfit"), value: platformProfit },
+                { metric: t("admin.vatCollected"), value: vatCollected },
+                { metric: t("admin.vendorPayouts"), value: vendorPayouts },
+                { metric: t("admin.heldFunds"), value: heldFunds },
+                { metric: t("admin.totalBookings"), value: totalBookings },
+              ];
 
-            const stamp = new Date().toISOString().slice(0, 10);
-            const suffix = period === "month" ? "month" : "all";
-            XLSX.writeFile(wb, `tklh-financials-${suffix}-${stamp}.xlsx`);
-          }}
-          className="ms-auto h-8 rounded-full text-xs"
-        >
-          <Download className="me-1 h-3.5 w-3.5" /> {t("admin.exportExcel")}
-        </Button>
-      </div>
+              const wb = XLSX.utils.book_new();
+              XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(summary), "Summary");
+              XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(salesRows), "Sales");
+              XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(heldRows), "Escrow");
 
-      {/* KPIs */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
-        <Kpi icon={TrendingUp} label={t("admin.totalRevenue")}   value={fmtNumber(totalRevenue)}   currency highlight />
-        <Kpi icon={Percent}    label={t("admin.platformProfit")} value={fmtNumber(platformProfit)} currency />
-        <Kpi icon={Receipt}    label={t("admin.vatCollected")}   value={fmtNumber(vatCollected)}   currency />
-        <Kpi icon={HandCoins}  label={t("admin.vendorPayouts")}  value={fmtNumber(vendorPayouts)}  currency />
-        <Kpi icon={Lock}       label={t("admin.heldFunds")}      value={fmtNumber(heldFunds)}      currency />
-        <Kpi icon={ListChecks} label={t("admin.totalBookings")}  value={fmtNumber(totalBookings)} />
-      </div>
+              const stamp = new Date().toISOString().slice(0, 10);
+              const suffix = period === "month" ? "month" : "all";
+              XLSX.writeFile(wb, `tklh-financials-${suffix}-${stamp}.xlsx`);
+            }}
+            className="ms-auto h-8 rounded-full text-xs"
+          >
+            <Download className="me-1 h-3.5 w-3.5" /> {t("admin.exportExcel")}
+          </Button>
+        </div>
 
-      {/* Grand control summary */}
-      <div className="mt-5">
-        <AdminGrandControl onJump={setActiveTab} />
-      </div>
+        {/* KPIs */}
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+          <Kpi icon={TrendingUp} label={t("admin.totalRevenue")}   value={fmtNumber(totalRevenue)}   currency highlight />
+          <Kpi icon={Percent}    label={t("admin.platformProfit")} value={fmtNumber(platformProfit)} currency />
+          <Kpi icon={Receipt}    label={t("admin.vatCollected")}   value={fmtNumber(vatCollected)}   currency />
+          <Kpi icon={HandCoins}  label={t("admin.vendorPayouts")}  value={fmtNumber(vendorPayouts)}  currency />
+          <Kpi icon={Lock}       label={t("admin.heldFunds")}      value={fmtNumber(heldFunds)}      currency />
+          <Kpi icon={ListChecks} label={t("admin.totalBookings")}  value={fmtNumber(totalBookings)} />
+        </div>
 
-      {/* Active section */}
-      <section className="mt-6">
-        {renderSection()}
-      </section>
-    </AdminLayout>
+        {/* Grand control summary */}
+        <div className="mt-5">
+          <AdminGrandControl onJump={setActiveTab} />
+        </div>
+
+        {/* Active section */}
+        <section className="mt-6">
+          {renderSection()}
+        </section>
+      </AdminLayout>
   );
 };
 
