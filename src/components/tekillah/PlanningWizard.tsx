@@ -168,7 +168,7 @@ export const PlanningWizard = () => {
       window.history.replaceState({}, "", url.pathname + url.search + url.hash);
     } else if (snap.packageSelection) setStep(4);
     else if (Object.keys(snap.picks ?? {}).length > 0) setStep(4);
-    else if (snap.budget) setStep(3);
+    else if (snap.budget) setStep(2);
     else if (snap.selected?.length) setStep(1);
   }, []);
 
