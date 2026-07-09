@@ -212,7 +212,7 @@ export const StepDetails = ({
           </div>
         </div>
 
-        <div className="space-y-3 rounded-2xl bg-secondary/50 p-5">
+        <div className="space-y-1.5 rounded-2xl bg-secondary/50 p-2.5">
           <Label className="font-arabic text-foreground">{t("wizard.details.men")}</Label>
           <NumberStepper
             value={men}
