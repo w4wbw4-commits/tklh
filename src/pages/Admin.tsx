@@ -97,7 +97,8 @@ const Admin = () => {
     })();
   }, [user]);
 
-  // Admin uses the standard light olive theme — no dark-mode toggle.
+  // Admin dashboard is rendered in dark mode via the route-aware ThemeProvider in App.tsx.
+
 
   const load = async () => {
     setLoading(true);
