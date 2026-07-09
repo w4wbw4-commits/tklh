@@ -85,17 +85,17 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
     const Icon = item.icon;
     const label = t(item.labelKey, { defaultValue: isAr ? item.fallback.ar : item.fallback.en });
     const cls =
-      "group flex items-center gap-3 rounded-2xl border border-transparent bg-card/50 px-4 py-3 text-sm font-medium text-foreground/85 transition-all hover:border-gold/40 hover:bg-cream hover:text-primary-deep";
+      "group flex items-center gap-3 rounded-2xl border border-[rgba(255,247,174,0.25)] bg-[#163726] px-4 py-3 text-sm font-medium text-[#fff7ae] transition-all hover:border-[rgba(255,247,174,0.55)] hover:bg-[#1f4532] hover:text-[#fff7ae]";
     const disabledCls =
-      "flex items-center gap-3 rounded-2xl border border-transparent bg-muted/40 px-4 py-3 text-sm font-medium text-muted-foreground cursor-not-allowed opacity-70";
+      "flex items-center gap-3 rounded-2xl border border-[rgba(255,247,174,0.15)] bg-[#163726]/60 px-4 py-3 text-sm font-medium text-[#fff7ae]/60 cursor-not-allowed opacity-80";
     const inner = (
       <>
-        <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl transition-colors ${item.disabled ? "bg-muted text-muted-foreground" : "bg-primary/10 text-primary group-hover:bg-gold/20 group-hover:text-primary-deep"}`}>
+        <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl transition-colors ${item.disabled ? "bg-[rgba(255,247,174,0.1)] text-[#fff7ae]/60" : "bg-[rgba(255,247,174,0.15)] text-[#fff7ae] group-hover:bg-[rgba(255,247,174,0.25)] group-hover:text-[#fff7ae]"}`}>
           <Icon className="h-4 w-4" />
         </span>
         <span className="flex-1">{label}</span>
         {item.badge ? (
-          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+          <span className="rounded-full bg-[#fff7ae] px-2 py-0.5 text-[10px] font-semibold text-[#163726]">
             {isAr ? item.badge.ar : item.badge.en}
           </span>
         ) : null}
@@ -137,16 +137,16 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
           variant="ghost"
           size="sm"
           aria-label={t("nav.openMenu", { defaultValue: isAr ? "فتح القائمة" : "Open menu" })}
-          className="rounded-full border border-primary-foreground/25 bg-primary-foreground/10 text-primary-foreground hover:border-primary-foreground/50 hover:bg-primary-foreground/20 hover:text-white"
+          className="rounded-full border border-[rgba(255,247,174,0.35)] bg-[#163726] text-[#fff7ae] hover:border-[rgba(255,247,174,0.65)] hover:bg-[#1f4532] hover:text-[#fff7ae]"
         >
           <Menu className="h-5 w-5" />
         </Button>
       </SheetTrigger>
       <SheetContent
         side={isAr ? "right" : "left"}
-        className="w-[88vw] max-w-sm border-gold/20 bg-background/95 p-0 backdrop-blur-xl"
+        className="w-[88vw] max-w-sm border-[rgba(255,247,174,0.25)] bg-[#163726] p-0 backdrop-blur-xl"
       >
-        <SheetHeader className="border-b border-border/60 px-5 py-4 text-start">
+        <SheetHeader className="border-b border-[rgba(255,247,174,0.2)] px-5 py-4 text-start">
           <SheetTitle className="flex items-center justify-between gap-2">
             <Logo />
           </SheetTitle>
@@ -155,7 +155,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
         <div className="flex h-[calc(100dvh-72px)] flex-col overflow-y-auto p-5">
           {/* Site sections */}
           <div className="space-y-1.5">
-            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-foreground/50">
+            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-[#fff7ae]/60">
               {t("nav.sections", { defaultValue: isAr ? "أقسام الموقع" : "Sections" })}
             </div>
             {sectionLinks.map(renderItem)}
@@ -163,7 +163,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
 
           {/* Account / Roles */}
           <div className="mt-6 space-y-1.5">
-            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-foreground/50">
+            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-[#fff7ae]/60">
               {t("nav.account", { defaultValue: isAr ? "حسابي" : "Account" })}
             </div>
             {accountLinks.map(renderItem)}
@@ -173,9 +173,9 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
           <div className="mt-auto pt-6 space-y-1.5">
             <button
               onClick={toggleLang}
-              className="group flex w-full items-center gap-3 rounded-2xl border border-transparent bg-card/50 px-4 py-3 text-sm font-medium text-foreground/85 transition-all hover:border-gold/40 hover:bg-cream hover:text-primary-deep"
+              className="group flex w-full items-center gap-3 rounded-2xl border border-[rgba(255,247,174,0.25)] bg-[#163726] px-4 py-3 text-sm font-medium text-[#fff7ae] transition-all hover:border-[rgba(255,247,174,0.55)] hover:bg-[#1f4532] hover:text-[#fff7ae]"
             >
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-gold/20 group-hover:text-primary-deep">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(255,247,174,0.15)] text-[#fff7ae] transition-colors group-hover:bg-[rgba(255,247,174,0.25)] group-hover:text-[#fff7ae]">
                 <Globe className="h-4 w-4" />
               </span>
               <span className="flex-1 text-start">{t("nav.lang")}</span>
