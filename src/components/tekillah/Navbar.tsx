@@ -91,10 +91,13 @@ export const Navbar = () => {
               const badge = "badge" in item && item.badge ? (isAr ? item.badge.ar : item.badge.en) : null;
               if ("disabled" in item && item.disabled) {
                 return (
-                  <span key={item.href} aria-disabled="true" className={disabledCls}>
+                  <span key={item.href} aria-disabled="true" className={disabledCls} style={disabledStyle}>
                     {label}
                     {badge && (
-                      <span className="rounded-full bg-primary-foreground/20 px-1.5 py-0.5 text-[10px] font-semibold text-primary-foreground/80">
+                      <span
+                        className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
+                        style={{ background: "rgba(160, 208, 158, 0.18)", color: "#a0d09e" }}
+                      >
                         {badge}
                       </span>
                     )}
@@ -103,13 +106,13 @@ export const Navbar = () => {
               }
               if (item.type === "route") {
                 return (
-                  <Link key={item.href} to={item.href} className={cls}>
+                  <Link key={item.href} to={item.href} className={cls} style={linkStyle}>
                     {label}
                   </Link>
                 );
               }
               return (
-                <a key={item.href} href={item.href} className={cls}>
+                <a key={item.href} href={item.href} className={cls} style={linkStyle}>
                   {label}
                 </a>
               );
