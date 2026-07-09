@@ -122,9 +122,9 @@ export const StepDetails = ({
           )}
         </div>
 
-        <div className="space-y-2 sm:col-span-2">
+        <div className="space-y-1 sm:col-span-2">
           <Label className="font-arabic text-foreground">{t("wizard.details.date")}</Label>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
             <Popover>
               <PopoverTrigger asChild>
                 <Button
