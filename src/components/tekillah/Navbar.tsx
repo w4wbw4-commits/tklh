@@ -84,10 +84,10 @@ export const Navbar = () => {
               const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
               const cls =
                 "relative rounded-full px-4 py-2 text-sm font-medium transition-all after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all hover:after:w-1/2";
-              const linkStyle = { color: "#a0d09e" } as const;
+              const linkStyle = { color: "#fff7ae" } as const;
               const disabledCls =
                 "relative flex cursor-not-allowed items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium opacity-70";
-              const disabledStyle = { color: "rgba(160, 208, 158, 0.55)" } as const;
+              const disabledStyle = { color: "rgba(255, 247, 174, 0.55)" } as const;
               const badge = "badge" in item && item.badge ? (isAr ? item.badge.ar : item.badge.en) : null;
               if ("disabled" in item && item.disabled) {
                 return (
@@ -96,7 +96,7 @@ export const Navbar = () => {
                     {badge && (
                       <span
                         className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
-                        style={{ background: "rgba(160, 208, 158, 0.18)", color: "#a0d09e" }}
+                        style={{ background: "rgba(255, 247, 174, 0.18)", color: "#fff7ae" }}
                       >
                         {badge}
                       </span>
