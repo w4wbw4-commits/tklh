@@ -153,17 +153,17 @@ const SpeedSection = () => (
         </div>
       </Reveal>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4">
         {/* Legacy */}
         <Reveal>
-          <div className="relative h-full overflow-hidden rounded-2xl border border-foreground/10 bg-foreground/[0.05] p-5 shadow-card">
+          <div className="relative h-full overflow-hidden rounded-2xl border border-foreground/10 bg-foreground/[0.05] p-3 shadow-card sm:p-5">
             <div className="absolute inset-0 bg-gradient-to-br from-foreground/[0.06] to-transparent" />
             <div className="relative">
               <div className="inline-flex items-center gap-1.5 rounded-full border border-foreground/15 bg-background/40 px-2.5 py-0.5 text-[10px] font-bold text-foreground/60">
                 <ListChecks className="h-3 w-3" />
                 الطريقة التقليدية
               </div>
-              <div className="mt-3 font-arabic text-3xl font-black text-foreground/70 sm:text-4xl">
+              <div className="mt-3 font-arabic text-xl font-black text-foreground/70 sm:text-3xl md:text-4xl">
                 6 أسابيع
               </div>
               <p className="mt-1 font-arabic text-xs text-foreground/55">
@@ -189,7 +189,7 @@ const SpeedSection = () => (
 
         {/* Tikkilah */}
         <Reveal delay={0.12}>
-          <div className="group relative h-full overflow-hidden rounded-2xl border-2 border-gold/50 bg-cream p-5 shadow-deep">
+          <div className="group relative h-full overflow-hidden rounded-2xl border-2 border-gold/50 bg-cream p-3 shadow-deep sm:p-5">
             <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gold/30 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-green/15 blur-3xl" />
             <div className="relative">
@@ -198,7 +198,7 @@ const SpeedSection = () => (
                 مع تِكله
               </div>
               <div className="mt-3 flex items-baseline gap-1.5">
-                <span className="font-arabic text-3xl font-black leading-none text-green sm:text-4xl">
+                <span className="font-arabic text-xl font-black leading-none text-green sm:text-3xl md:text-4xl">
                   <AnimatedCounter value={5} />
                 </span>
                 <span className="font-arabic text-lg font-bold text-gold">دقائق</span>
