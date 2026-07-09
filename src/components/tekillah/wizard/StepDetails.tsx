@@ -95,7 +95,7 @@ export const StepDetails = ({
           </Select>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1">
           <Label className="font-arabic text-foreground">{t("wizard.details.type")}</Label>
           <Select
             value={selectValue}
