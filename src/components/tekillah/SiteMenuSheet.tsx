@@ -95,7 +95,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
         </span>
         <span className="flex-1">{label}</span>
         {item.badge ? (
-          <span className="rounded-full bg-[#fff7ae] px-2 py-0.5 text-[10px] font-semibold text-[#163726]">
+          <span className="rounded-full bg-[#163726] px-2 py-0.5 text-[10px] font-semibold text-[#fff7ae]">
             {isAr ? item.badge.ar : item.badge.en}
           </span>
         ) : null}
