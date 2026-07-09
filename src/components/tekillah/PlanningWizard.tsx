@@ -6,8 +6,6 @@ import {
   SketchIconInvitation,
   SketchIconServices,
   SketchIconPalette,
-  SketchIconCoin,
-  SketchIconHandshake,
 } from "./wizard/WizardSketches";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
