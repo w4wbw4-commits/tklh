@@ -9,6 +9,7 @@ import {
   SketchBanquet,
   SketchTable,
 } from "./SketchArt";
+import wordmarkAsset from "@/assets/tklh-wordmark.png.asset.json";
 
 
 // ---------------------------------------------------------------------------
