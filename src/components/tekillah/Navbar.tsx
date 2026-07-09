@@ -51,7 +51,14 @@ export const Navbar = () => {
   const navItems = [
     { key: "home", href: "/", type: "route" as const },
     { key: "about", href: "/about", type: "route" as const, labelOverride: isAr ? "تعرف على تِكله" : "About TKLH" },
-    { key: "packages", href: "/packages", type: "route" as const, labelOverride: isAr ? "الباقات" : "Packages" },
+    {
+      key: "packages",
+      href: "/packages",
+      type: "route" as const,
+      labelOverride: isAr ? "الباقات" : "Packages",
+      disabled: !isPrimaryAdmin,
+      badge: { ar: "قريباً", en: "Soon" },
+    },
     { key: "plan", href: "/planner", type: "route" as const },
   ];
 
@@ -76,6 +83,21 @@ export const Navbar = () => {
               const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
               const cls =
                 "relative rounded-full px-4 py-2 text-sm font-medium text-primary-foreground/90 transition-all hover:text-white after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:bg-primary-foreground/50 after:transition-all hover:after:w-1/2";
+              const disabledCls =
+                "relative flex cursor-not-allowed items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-primary-foreground/50 opacity-70";
+              const badge = "badge" in item && item.badge ? (isAr ? item.badge.ar : item.badge.en) : null;
+              if ("disabled" in item && item.disabled) {
+                return (
+                  <span key={item.href} aria-disabled="true" className={disabledCls}>
+                    {label}
+                    {badge && (
+                      <span className="rounded-full bg-primary-foreground/20 px-1.5 py-0.5 text-[10px] font-semibold text-primary-foreground/80">
+                        {badge}
+                      </span>
+                    )}
+                  </span>
+                );
+              }
               if (item.type === "route") {
                 return (
                   <Link key={item.href} to={item.href} className={cls}>
