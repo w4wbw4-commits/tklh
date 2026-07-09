@@ -444,7 +444,7 @@ export const PlanningWizard = () => {
                           : "0 0px 0px 0 transparent",
                       }}
                       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                      className={`relative grid h-11 w-11 place-items-center rounded-full text-sm font-semibold transition-colors ${
+                      className={`relative grid h-9 w-9 place-items-center rounded-full text-sm font-semibold transition-colors sm:h-11 sm:w-11 ${
                         isComplete
                           ? "bg-primary text-primary-foreground"
                           : isActive
@@ -453,11 +453,11 @@ export const PlanningWizard = () => {
                       }`}
                     >
                       {isFastTrackBadge ? (
-                        <Zap className="h-4 w-4" strokeWidth={2.5} />
+                        <Zap className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={2.5} />
                       ) : isComplete ? (
-                        <Check className="h-4 w-4" />
+                        <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       ) : (
-                        <StepIcon className="h-5 w-5" />
+                        <StepIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                       )}
                     </motion.div>
                     <span
