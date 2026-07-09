@@ -520,7 +520,7 @@ export const PlanningWizard = () => {
                 <PrevIcon className="me-2 h-4 w-4" />
                 {t("common.previous")}
               </Button>
-              {step < 3 ? (
+              {step < 2 ? (
                 <div className="flex flex-col items-end gap-1">
                   <Button
                     onClick={next}
