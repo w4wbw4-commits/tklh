@@ -22,6 +22,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { fmtNumber } from "@/i18n/format";
 import { pickLocalized, pickLocalizedArray } from "@/i18n/localized";
 import type { PlatformPackageRow } from "./admin/AdminPackageDialog";
+import { useAuth } from "@/hooks/useAuth";
+
+const PRIMARY_ADMIN_PHONES = ["+966554430196", "+966544057854"];
+const PRIMARY_ADMIN_EMAILS = PRIMARY_ADMIN_PHONES.map(
+  (p) => `${p.replace("+", "")}@phone.tekillah.app`,
+);
 
 /**
  * CardMediaCarousel — swipeable gallery used inside each package card.
@@ -135,10 +141,28 @@ const CardMediaCarousel = ({
 export const PlatformPackages = () => {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language === "ar";
+  const { user } = useAuth();
   const [items, setItems] = useState<PlatformPackageRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState<PlatformPackageRow | null>(null);
   const [activeMediaIdx, setActiveMediaIdx] = useState(0);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (!user) { setIsAdmin(false); return; }
+    const allowlisted =
+      (user.email && PRIMARY_ADMIN_EMAILS.includes(user.email)) ||
+      (user.phone && PRIMARY_ADMIN_PHONES.includes(user.phone));
+    if (allowlisted) { setIsAdmin(true); return; }
+    (async () => {
+      const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
+      setIsAdmin(Boolean(data));
+    })();
+  }, [user]);
+
+  const comingSoon = !isAdmin;
+  const soonLabel = isAr ? "قريباً" : "Coming soon";
+
 
   useEffect(() => {
     const load = async () => {
@@ -165,6 +189,7 @@ export const PlatformPackages = () => {
   const Arrow = isAr ? ArrowLeft : ArrowRight;
 
   const bookPackage = (id: string) => {
+    if (comingSoon) return;
     setActive(null);
     // Tell the wizard which package to fast-track via the URL.
     const url = new URL(window.location.href);
@@ -285,18 +310,21 @@ export const PlatformPackages = () => {
                     <div className="mt-auto flex flex-col gap-3">
                       <button
                         onClick={() => bookPackage(p.id)}
-                        className="group/btn flex w-full items-center justify-center gap-4 rounded-2xl bg-gradient-to-r from-[hsl(35_45%_40%)] to-[hsl(38_55%_62%)] py-4 font-arabic text-base font-bold text-[hsl(40_40%_97%)] shadow-xl shadow-black/30 transition-all hover:brightness-110"
+                        disabled={comingSoon}
+                        className="group/btn flex w-full items-center justify-center gap-4 rounded-2xl bg-gradient-to-r from-[hsl(35_45%_40%)] to-[hsl(38_55%_62%)] py-4 font-arabic text-base font-bold text-[hsl(40_40%_97%)] shadow-xl shadow-black/30 transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:brightness-100"
                       >
                         <Zap className="h-4 w-4" />
-                        <span>{t("platformPackages.bookNow")}</span>
+                        <span>{comingSoon ? soonLabel : t("platformPackages.bookNow")}</span>
                         <span className="h-px w-8 bg-[hsl(40_40%_97%)]/40 transition-all group-hover/btn:w-12" />
                       </button>
-                      <button
-                        onClick={() => { setActive(p); setActiveMediaIdx(0); }}
-                        className="font-arabic text-xs font-medium text-white transition-colors hover:text-white/80"
-                      >
-                        {t("platformPackages.viewDetails")}
-                      </button>
+                      {!comingSoon && (
+                        <button
+                          onClick={() => { setActive(p); setActiveMediaIdx(0); }}
+                          className="font-arabic text-xs font-medium text-white transition-colors hover:text-white/80"
+                        >
+                          {t("platformPackages.viewDetails")}
+                        </button>
+                      )}
                     </div>
                   </div>
                 </motion.article>
@@ -354,18 +382,21 @@ export const PlatformPackages = () => {
                   <div className="mt-auto flex flex-col gap-2">
                     <button
                       onClick={() => bookPackage(p.id)}
-                      className="flex w-full items-center justify-center gap-3 rounded-xl border border-green/20 py-3.5 font-arabic text-sm font-bold text-green transition-all hover:bg-green hover:text-cream"
+                      disabled={comingSoon}
+                      className="flex w-full items-center justify-center gap-3 rounded-xl border border-green/20 py-3.5 font-arabic text-sm font-bold text-green transition-all hover:bg-green hover:text-cream disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-transparent disabled:hover:text-green"
                     >
                       <Zap className="h-4 w-4" />
-                      <span>{t("platformPackages.bookNow")}</span>
-                      <Arrow className="h-4 w-4" />
+                      <span>{comingSoon ? soonLabel : t("platformPackages.bookNow")}</span>
+                      {!comingSoon && <Arrow className="h-4 w-4" />}
                     </button>
-                    <button
-                      onClick={() => { setActive(p); setActiveMediaIdx(0); }}
-                      className="font-arabic text-xs font-medium text-green/60 transition-colors hover:text-green"
-                    >
-                      {t("platformPackages.viewDetails")}
-                    </button>
+                    {!comingSoon && (
+                      <button
+                        onClick={() => { setActive(p); setActiveMediaIdx(0); }}
+                        className="font-arabic text-xs font-medium text-green/60 transition-colors hover:text-green"
+                      >
+                        {t("platformPackages.viewDetails")}
+                      </button>
+                    )}
                   </div>
                 </div>
               </motion.article>
