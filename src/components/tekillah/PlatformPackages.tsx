@@ -22,6 +22,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { fmtNumber } from "@/i18n/format";
 import { pickLocalized, pickLocalizedArray } from "@/i18n/localized";
 import type { PlatformPackageRow } from "./admin/AdminPackageDialog";
+import { useAuth } from "@/hooks/useAuth";
+
+const PRIMARY_ADMIN_PHONES = ["+966554430196", "+966544057854"];
+const PRIMARY_ADMIN_EMAILS = PRIMARY_ADMIN_PHONES.map(
+  (p) => `${p.replace("+", "")}@phone.tekillah.app`,
+);
 
 /**
  * CardMediaCarousel — swipeable gallery used inside each package card.
