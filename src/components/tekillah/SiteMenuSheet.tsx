@@ -155,7 +155,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
         <div className="flex h-[calc(100dvh-72px)] flex-col overflow-y-auto p-5">
           {/* Site sections */}
           <div className="space-y-1.5">
-            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-[#fff7ae]/60">
+            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-[#163726]/60">
               {t("nav.sections", { defaultValue: isAr ? "أقسام الموقع" : "Sections" })}
             </div>
             {sectionLinks.map(renderItem)}
@@ -163,7 +163,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
 
           {/* Account / Roles */}
           <div className="mt-6 space-y-1.5">
-            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-[#fff7ae]/60">
+            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-[#163726]/60">
               {t("nav.account", { defaultValue: isAr ? "حسابي" : "Account" })}
             </div>
             {accountLinks.map(renderItem)}
