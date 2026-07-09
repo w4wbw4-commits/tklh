@@ -189,6 +189,7 @@ export const PlatformPackages = () => {
   const Arrow = isAr ? ArrowLeft : ArrowRight;
 
   const bookPackage = (id: string) => {
+    if (comingSoon) return;
     setActive(null);
     // Tell the wizard which package to fast-track via the URL.
     const url = new URL(window.location.href);
