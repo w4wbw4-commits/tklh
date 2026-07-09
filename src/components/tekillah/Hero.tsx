@@ -9,6 +9,7 @@ import {
   SketchBanquet,
   SketchTable,
 } from "./SketchArt";
+import wordmarkAsset from "@/assets/tklh-wordmark.png.asset.json";
 
 
 // ---------------------------------------------------------------------------
@@ -328,17 +329,11 @@ export const Hero = () => {
               }}
             >
               <span className="relative inline-block">
-                <span style={{ color: "hsl(var(--green))" }}>{KASHIDA_TKLH}</span>
-                <motion.span
-                  aria-hidden
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: 1.1, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute -bottom-1 left-0 right-0 h-[3px] origin-right rounded-full"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, transparent, hsl(var(--green)) 50%, transparent)",
-                  }}
+                <img
+                  src={wordmarkAsset.url}
+                  alt="تِكله"
+                  className="inline-block h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32 w-auto select-none align-middle"
+                  draggable={false}
                 />
               </span>
               <br />
