@@ -446,9 +446,9 @@ export const PlanningWizard = () => {
                       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                       className={`relative grid h-11 w-11 place-items-center rounded-full text-sm font-semibold transition-colors ${
                         isComplete
-                          ? "bg-primary text-primary-foreground"
+                          ? "bg-[#163726] text-[#fff7ae]"
                           : isActive
-                          ? "bg-primary text-primary-foreground ring-2 ring-gold/60 ring-offset-2 ring-offset-background"
+                          ? "bg-[#163726] text-[#fff7ae] ring-2 ring-[#fff7ae]/60 ring-offset-2 ring-offset-background"
                           : "bg-secondary text-foreground/60"
                       }`}
                     >
