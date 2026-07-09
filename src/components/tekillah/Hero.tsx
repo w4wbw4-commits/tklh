@@ -369,20 +369,19 @@ export const Hero = () => {
         <motion.div variants={rise} className="mt-10 w-full max-w-xl">
           <a
             href="/planner"
-            className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border-2 border-green/40 p-5 text-right backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-green/70 hover:shadow-[0_25px_60px_-20px_hsl(var(--green)/0.45)]"
-            style={{ background: "linear-gradient(135deg, hsl(var(--green)) 0%, hsl(var(--green-mid)) 100%)" }}
+            className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border-2 border-[rgba(22,55,38,0.4)] bg-gradient-to-br from-[#163726] to-[#163726] p-5 text-right text-[#fff7ae] shadow-[0_25px_60px_-20px_rgba(22,55,38,0.45)] backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-[rgba(22,55,38,0.7)]"
           >
             <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
-              style={{ background: "radial-gradient(circle, hsl(var(--gold)), transparent 70%)" }} />
-            <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-gold/50 bg-green-mid/40 transition-transform duration-500 group-hover:rotate-6">
-              <Sparkles className="h-5 w-5 text-gold" strokeWidth={2.4} />
+              style={{ background: "radial-gradient(circle, #fff7ae, transparent 70%)" }} />
+            <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-[rgba(255,247,174,0.5)] bg-[rgba(22,55,38,0.4)] transition-transform duration-500 group-hover:rotate-6">
+              <Sparkles className="h-5 w-5 text-[#fff7ae]" strokeWidth={2.4} />
             </span>
             <div className="flex-1">
-              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold/80">المسار الذكي</div>
-              <div className="font-display text-lg font-black text-gold sm:text-xl">خطّط واحجز&nbsp;</div>
-              <div className="mt-0.5 text-[12.5px] text-cream/85">اختر كل تفصيلة على ذوقك.</div>
+              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[rgba(255,247,174,0.8)]">المسار الذكي</div>
+              <div className="font-display text-lg font-black text-[#fff7ae] sm:text-xl">خطّط واحجز&nbsp;</div>
+              <div className="mt-0.5 text-[12.5px] text-[rgba(255,247,174,0.85)]">اختر كل تفصيلة على ذوقك.</div>
             </div>
-            <ArrowLeft className="h-5 w-5 text-gold transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+            <ArrowLeft className="h-5 w-5 text-[#fff7ae] transition-transform duration-500 ease-out group-hover:-translate-x-1" />
           </a>
         </motion.div>
 
