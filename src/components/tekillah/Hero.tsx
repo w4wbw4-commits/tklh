@@ -9,7 +9,7 @@ import {
   SketchBanquet,
   SketchTable,
 } from "./SketchArt";
-import wordmarkAsset from "@/assets/tklh-wordmark.png.asset.json";
+import wordmarkAsset from "@/assets/tklh-logo-full.png.asset.json";
 
 
 // ---------------------------------------------------------------------------
@@ -331,8 +331,8 @@ export const Hero = () => {
               <span className="relative inline-block">
                 <img
                   src={wordmarkAsset.url}
-                  alt="تِكله"
-                  className="inline-block h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32 w-auto select-none align-middle"
+                  alt="TKLH تِكله"
+                  className="inline-block h-28 sm:h-36 md:h-44 lg:h-52 xl:h-60 w-auto select-none align-middle rounded-2xl"
                   draggable={false}
                 />
               </span>
