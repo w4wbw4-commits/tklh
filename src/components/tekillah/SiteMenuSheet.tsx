@@ -16,16 +16,12 @@ import {
   Sparkles,
   LayoutDashboard,
   ShieldCheck,
-  LogIn,
   Globe,
   Phone,
   FileText,
   Building2,
-  Sun,
-  Moon,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useTheme } from "next-themes";
 import { Logo } from "./Logo";
 
 interface NavLinkItem {
@@ -56,7 +52,6 @@ interface Props {
 export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-  const { resolvedTheme, setTheme } = useTheme();
   const isAr = i18n.language === "ar";
   const [open, setOpen] = useState(false);
 
@@ -67,14 +62,13 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
     { type: "route", href: "/about", icon: Info, labelKey: "nav.about", fallback: { ar: "تعرف على تِكله", en: "About TKLH" } },
     { type: "route", href: "/packages", icon: FileText, labelKey: "nav.packages", fallback: { ar: "الباقات", en: "Packages" } },
     { type: "route", href: "/planner", icon: Sparkles, labelKey: "nav.plan", fallback: { ar: "خطط ليلتك", en: "Plan your night" } },
-    { type: "anchor", href: "/#features", icon: FileText, labelKey: "nav.features", fallback: { ar: "المزايا", en: "Features" } },
     { type: "anchor", href: "https://wa.me/966530466460?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D9%85%D8%B9%20%D8%AA%D9%90%D9%83%D9%84%D9%87", icon: Phone, labelKey: "nav.contact", fallback: { ar: "تواصل معنا", en: "Contact" } },
   ];
 
   const accountLinks: NavLinkItem[] = [
-    user
-      ? { type: "route", href: "/dashboard", icon: LayoutDashboard, labelKey: "nav.myDashboard", fallback: { ar: "لوحتي", en: "My Dashboard" } }
-      : { type: "route", href: "/auth", icon: LogIn, labelKey: "nav.start", fallback: { ar: "ابدأ الآن", en: "Get started" } },
+    ...(user
+      ? [{ type: "route" as const, href: "/dashboard", icon: LayoutDashboard, labelKey: "nav.myDashboard", fallback: { ar: "لوحتي", en: "My Dashboard" } }]
+      : []),
     { type: "route", href: "/vendor", icon: Building2, labelKey: "nav.joinAsVendor", fallback: { ar: "انضم كمزود خدمة", en: "Join as Vendor" } },
     ...(isPrimaryAdmin
       ? [{ type: "route" as const, href: "/admin", icon: ShieldCheck, labelKey: "nav.admin", fallback: { ar: "الإدارة", en: "Admin" } }]
@@ -173,7 +167,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
             {accountLinks.map(renderItem)}
           </div>
 
-          {/* Language & Theme toggles as regular menu rows */}
+          {/* Language toggle */}
           <div className="mt-auto pt-6 space-y-1.5">
             <button
               onClick={toggleLang}
@@ -183,18 +177,6 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
                 <Globe className="h-4 w-4" />
               </span>
               <span className="flex-1 text-start">{t("nav.lang")}</span>
-            </button>
-
-            <button
-              onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-              className="group flex w-full items-center gap-3 rounded-2xl border border-transparent bg-card/50 px-4 py-3 text-sm font-medium text-foreground/85 transition-all hover:border-gold/40 hover:bg-cream hover:text-primary-deep"
-            >
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-gold/20 group-hover:text-primary-deep">
-                {resolvedTheme === "dark" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-              </span>
-              <span className="flex-1 text-start">
-                {t("nav.theme", { defaultValue: isAr ? "المظهر" : "Theme" })}
-              </span>
             </button>
           </div>
         </div>
