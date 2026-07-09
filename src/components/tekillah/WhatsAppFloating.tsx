@@ -11,7 +11,7 @@ export const WhatsAppFloating = () => (
     to="/planner"
     aria-label="خطّط واحجز الآن"
     className="fixed bottom-5 left-5 z-50 inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold shadow-[0_12px_30px_-8px_rgba(22,55,38,0.55)] ring-2 ring-white/70 transition-transform hover:scale-105 active:scale-95"
-    style={{ background: "#163726", color: "#fff7ae" }}
+    style={{ background: "#163726", color: "#cba45c" }}
   >
     <Sparkles className="h-4 w-4" aria-hidden="true" />
     <span>خطّط واحجز الآن</span>
