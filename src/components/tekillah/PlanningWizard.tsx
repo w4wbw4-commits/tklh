@@ -469,13 +469,13 @@ export const PlanningWizard = () => {
                     </span>
                   </div>
                   {i < stepLabels.length - 1 && (
-                    <div className="relative h-[3px] w-10 overflow-hidden rounded-full bg-secondary/70 sm:w-14">
+                    <div className="relative h-[3px] w-10 overflow-hidden rounded-full bg-[#fff7ae]/40 sm:w-14">
                       <motion.div
                         initial={false}
                         animate={{ scaleX: i < step ? 1 : 0 }}
                         style={{ originX: isAr ? 1 : 0 }}
                         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                        className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-primary to-gold"
+                        className="absolute inset-0 rounded-full bg-[#fff7ae]"
                       />
                     </div>
                   )}
