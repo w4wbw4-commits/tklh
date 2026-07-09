@@ -60,7 +60,9 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
   const sectionLinks: NavLinkItem[] = [
     { type: "route", href: "/", icon: Home, labelKey: "nav.home", fallback: { ar: "الرئيسية", en: "Home" } },
     { type: "route", href: "/about", icon: Info, labelKey: "nav.about", fallback: { ar: "تعرف على تِكله", en: "About TKLH" } },
-    { type: "route", href: "/packages", icon: FileText, labelKey: "nav.packages", fallback: { ar: "الباقات", en: "Packages" } },
+    ...(isPrimaryAdmin
+      ? [{ type: "route" as const, href: "/packages", icon: FileText, labelKey: "nav.packages", fallback: { ar: "الباقات", en: "Packages" } }]
+      : [{ type: "route" as const, href: "/packages", icon: FileText, labelKey: "nav.packages", fallback: { ar: "الباقات", en: "Packages" }, disabled: true, badge: { ar: "قريباً", en: "Soon" } }]),
     { type: "route", href: "/planner", icon: Sparkles, labelKey: "nav.plan", fallback: { ar: "خطط ليلتك", en: "Plan your night" } },
     { type: "anchor", href: "https://wa.me/966530466460?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D9%85%D8%B9%20%D8%AA%D9%90%D9%83%D9%84%D9%87", icon: Phone, labelKey: "nav.contact", fallback: { ar: "تواصل معنا", en: "Contact" } },
   ];
