@@ -78,7 +78,7 @@ export const StepDetails = ({
       <p className="mt-1 text-sm text-foreground/70">{t("wizard.details.desc")}</p>
 
       <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-        <div className="space-y-2">
+        <div className="space-y-1">
           <Label className="font-arabic text-foreground">{t("wizard.details.city")}</Label>
           <Select value={city} onValueChange={setCity}>
             <SelectTrigger className="h-12 rounded-xl"><SelectValue placeholder={t("wizard.details.cityPlaceholder")} /></SelectTrigger>
