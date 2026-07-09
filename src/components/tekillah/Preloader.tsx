@@ -58,34 +58,13 @@ export const Preloader = () => {
       }`}
       style={{ backgroundColor: "hsl(var(--background))", willChange: "opacity, transform" }}
     >
-      <div
-        className="flex flex-col items-center gap-4 animate-[splashBreath_2.4s_ease-in-out_infinite]"
-        style={{ color: OLIVE }}
-      >
-        {/* Chair icon — masked so it renders as a solid olive silhouette */}
-        <span
-          aria-hidden="true"
-          className="block h-14 w-14 sm:h-16 sm:w-16"
-          style={{
-            backgroundColor: OLIVE,
-            WebkitMaskImage: `url(${chairIcon})`,
-            maskImage: `url(${chairIcon})`,
-            WebkitMaskRepeat: "no-repeat",
-            maskRepeat: "no-repeat",
-            WebkitMaskPosition: "center",
-            maskPosition: "center",
-            WebkitMaskSize: "contain",
-            maskSize: "contain",
-          }}
+      <div className="flex flex-col items-center gap-4 animate-[splashBreath_2.4s_ease-in-out_infinite]">
+        <img
+          src={logoAsset.url}
+          alt="TKLH تِكله"
+          className="h-24 w-auto sm:h-28 object-contain rounded-xl select-none"
+          draggable={false}
         />
-        <div className="flex flex-col items-center leading-none">
-          <span className="font-cinzel text-lg font-bold uppercase tracking-[0.32em] sm:text-xl">
-            TKLH
-          </span>
-          <span className="font-wordmark mt-2 text-2xl font-black sm:text-3xl">
-            تِكله
-          </span>
-        </div>
       </div>
       <style>{`
         @keyframes splashBreath {
