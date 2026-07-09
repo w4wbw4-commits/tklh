@@ -426,7 +426,7 @@ export const PlanningWizard = () => {
 
         {/* Progress — refined creative stepper with step icons + soft track */}
         <div className="mx-auto mt-10 w-full max-w-3xl overflow-x-auto px-1 pb-2 sm:overflow-visible sm:pb-0">
-          <div className="flex min-w-[460px] items-center justify-between gap-1.5 sm:min-w-0 sm:gap-2">
+          <div className="flex items-center justify-center gap-1 sm:gap-1.5">
             {stepLabels.map((label, i) => {
               const isLast = i === stepLabels.length - 1;
               const isFastTrackBadge = isFastTrack && isLast;
@@ -434,7 +434,7 @@ export const PlanningWizard = () => {
               const isComplete = i < step;
               const StepIcon = [SketchIconInvitation, SketchIconServices, SketchIconPalette, SketchIconCoin, SketchIconHandshake][i] ?? SketchIconHandshake;
               return (
-                <div key={i} className="flex flex-1 items-center gap-1.5 sm:gap-2">
+                <div key={i} className="flex items-center gap-1 sm:gap-1.5">
                   <div className="flex flex-col items-center">
                     <motion.div
                       animate={{
@@ -469,7 +469,7 @@ export const PlanningWizard = () => {
                     </span>
                   </div>
                   {i < stepLabels.length - 1 && (
-                    <div className="relative h-[3px] flex-1 overflow-hidden rounded-full bg-secondary/70">
+                    <div className="relative h-[3px] w-10 overflow-hidden rounded-full bg-secondary/70 sm:w-14">
                       <motion.div
                         initial={false}
                         animate={{ scaleX: i < step ? 1 : 0 }}
