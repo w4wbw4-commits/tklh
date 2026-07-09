@@ -68,7 +68,7 @@ const AppRoutes = () => {
     <MotionConfig reducedMotion={isMobile ? "always" : "user"}>
       <QueryClientProvider client={queryClient}>
         <HelmetProvider>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} storageKey="tekillah-theme">
+          <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false} storageKey="tekillah-theme">
             <TooltipProvider>
               <Toaster />
               <Sonner />
