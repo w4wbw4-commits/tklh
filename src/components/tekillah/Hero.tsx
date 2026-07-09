@@ -1,6 +1,6 @@
 import { motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sparkles, Gift } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import {
   SketchCurtain,
   SketchEucalyptus,
