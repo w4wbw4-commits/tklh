@@ -85,17 +85,17 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
     const Icon = item.icon;
     const label = t(item.labelKey, { defaultValue: isAr ? item.fallback.ar : item.fallback.en });
     const cls =
-      "group flex items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.15)] bg-[#fafaf7] px-4 py-3 text-sm font-medium text-[#163726] transition-all hover:border-[rgba(22,55,38,0.35)] hover:bg-white hover:text-[#163726]";
+      "group flex items-center gap-3 rounded-2xl border border-[rgba(255,247,174,0.25)] bg-[#163726] px-4 py-3 text-sm font-medium text-[#fff7ae] transition-all hover:border-[rgba(255,247,174,0.45)] hover:bg-[#1f4532] hover:text-[#fff7ae]";
     const disabledCls =
-      "flex items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.1)] bg-[#fafaf7]/60 px-4 py-3 text-sm font-medium text-[#163726]/60 cursor-not-allowed opacity-80";
+      "flex items-center gap-3 rounded-2xl border border-[rgba(255,247,174,0.15)] bg-[#163726]/60 px-4 py-3 text-sm font-medium text-[#fff7ae]/60 cursor-not-allowed opacity-80";
     const inner = (
       <>
-        <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl transition-colors ${item.disabled ? "bg-[rgba(22,55,38,0.08)] text-[#163726]/60" : "bg-[rgba(22,55,38,0.1)] text-[#163726] group-hover:bg-[rgba(22,55,38,0.18)] group-hover:text-[#163726]"}`}>
+        <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl transition-colors ${item.disabled ? "bg-[rgba(255,247,174,0.1)] text-[#fff7ae]/60" : "bg-[rgba(255,247,174,0.15)] text-[#fff7ae] group-hover:bg-[rgba(255,247,174,0.25)] group-hover:text-[#fff7ae]"}`}>
           <Icon className="h-4 w-4" />
         </span>
         <span className="flex-1">{label}</span>
         {item.badge ? (
-          <span className="rounded-full bg-[#163726] px-2 py-0.5 text-[10px] font-semibold text-[#fff7ae]">
+          <span className="rounded-full bg-[#fff7ae] px-2 py-0.5 text-[10px] font-semibold text-[#163726]">
             {isAr ? item.badge.ar : item.badge.en}
           </span>
         ) : null}
@@ -144,9 +144,9 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
       </SheetTrigger>
       <SheetContent
         side={isAr ? "right" : "left"}
-        className="w-[88vw] max-w-sm border-[rgba(255,247,174,0.25)] bg-[#163726] p-0 backdrop-blur-xl"
+        className="w-[88vw] max-w-sm border-[rgba(22,55,38,0.15)] bg-[#fafaf7] p-0 backdrop-blur-xl"
       >
-        <SheetHeader className="border-b border-[rgba(255,247,174,0.2)] px-5 py-4 text-start">
+        <SheetHeader className="border-b border-[rgba(255,247,174,0.2)] bg-[#163726] px-5 py-4 text-start">
           <SheetTitle className="flex items-center justify-between gap-2">
             <Logo />
           </SheetTitle>
@@ -155,7 +155,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
         <div className="flex h-[calc(100dvh-72px)] flex-col overflow-y-auto p-5">
           {/* Site sections */}
           <div className="space-y-1.5">
-            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-[#fff7ae]/60">
+            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-[#163726]/60">
               {t("nav.sections", { defaultValue: isAr ? "أقسام الموقع" : "Sections" })}
             </div>
             {sectionLinks.map(renderItem)}
@@ -163,7 +163,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
 
           {/* Account / Roles */}
           <div className="mt-6 space-y-1.5">
-            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-[#fff7ae]/60">
+            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-[#163726]/60">
               {t("nav.account", { defaultValue: isAr ? "حسابي" : "Account" })}
             </div>
             {accountLinks.map(renderItem)}
@@ -173,9 +173,9 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
           <div className="mt-auto pt-6 space-y-1.5">
             <button
               onClick={toggleLang}
-              className="group flex w-full items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.15)] bg-[#fafaf7] px-4 py-3 text-sm font-medium text-[#163726] transition-all hover:border-[rgba(22,55,38,0.35)] hover:bg-white hover:text-[#163726]"
+              className="group flex w-full items-center gap-3 rounded-2xl border border-[rgba(255,247,174,0.25)] bg-[#163726] px-4 py-3 text-sm font-medium text-[#fff7ae] transition-all hover:border-[rgba(255,247,174,0.45)] hover:bg-[#1f4532] hover:text-[#fff7ae]"
             >
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(22,55,38,0.1)] text-[#163726] transition-colors group-hover:bg-[rgba(22,55,38,0.18)] group-hover:text-[#163726]">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(255,247,174,0.15)] text-[#fff7ae] transition-colors group-hover:bg-[rgba(255,247,174,0.25)] group-hover:text-[#fff7ae]">
                 <Globe className="h-4 w-4" />
               </span>
               <span className="flex-1 text-start">{t("nav.lang")}</span>
