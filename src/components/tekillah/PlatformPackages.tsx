@@ -382,18 +382,21 @@ export const PlatformPackages = () => {
                   <div className="mt-auto flex flex-col gap-2">
                     <button
                       onClick={() => bookPackage(p.id)}
-                      className="flex w-full items-center justify-center gap-3 rounded-xl border border-green/20 py-3.5 font-arabic text-sm font-bold text-green transition-all hover:bg-green hover:text-cream"
+                      disabled={comingSoon}
+                      className="flex w-full items-center justify-center gap-3 rounded-xl border border-green/20 py-3.5 font-arabic text-sm font-bold text-green transition-all hover:bg-green hover:text-cream disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-transparent disabled:hover:text-green"
                     >
                       <Zap className="h-4 w-4" />
-                      <span>{t("platformPackages.bookNow")}</span>
-                      <Arrow className="h-4 w-4" />
+                      <span>{comingSoon ? soonLabel : t("platformPackages.bookNow")}</span>
+                      {!comingSoon && <Arrow className="h-4 w-4" />}
                     </button>
-                    <button
-                      onClick={() => { setActive(p); setActiveMediaIdx(0); }}
-                      className="font-arabic text-xs font-medium text-green/60 transition-colors hover:text-green"
-                    >
-                      {t("platformPackages.viewDetails")}
-                    </button>
+                    {!comingSoon && (
+                      <button
+                        onClick={() => { setActive(p); setActiveMediaIdx(0); }}
+                        className="font-arabic text-xs font-medium text-green/60 transition-colors hover:text-green"
+                      >
+                        {t("platformPackages.viewDetails")}
+                      </button>
+                    )}
                   </div>
                 </div>
               </motion.article>
