@@ -22,7 +22,6 @@ import {
   Building2,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useTheme } from "next-themes";
 import { Logo } from "./Logo";
 
 interface NavLinkItem {
@@ -53,7 +52,6 @@ interface Props {
 export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-  const { resolvedTheme, setTheme } = useTheme();
   const isAr = i18n.language === "ar";
   const [open, setOpen] = useState(false);
 
