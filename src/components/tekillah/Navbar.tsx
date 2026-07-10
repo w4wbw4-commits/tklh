@@ -51,12 +51,12 @@ export const Navbar = () => {
 
   const navItems = [
     { key: "home", href: "/", type: "route" as const },
-    { key: "about", href: "/about", type: "route" as const, labelOverride: isAr ? "تعرف على تِكله" : "About TKLH" },
+    { key: "about", href: "/about", type: "route" as const, labelOverride: t("nav.aboutFull") },
     {
       key: "packages",
       href: "/packages",
       type: "route" as const,
-      labelOverride: isAr ? "الباقات" : "Packages",
+      labelOverride: t("nav.packages"),
       disabled: !isPrimaryAdmin,
       badge: { ar: "قريباً", en: "Soon" },
     },
