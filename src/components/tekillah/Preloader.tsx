@@ -53,10 +53,10 @@ export const Preloader = () => {
     <div
       aria-hidden={ready}
       role="status"
-      className={`fixed inset-0 z-[9999] grid place-items-center transition-all duration-500 ease-out ${
+      className={`fixed inset-0 z-[9999] grid place-items-center bg-green transition-all duration-500 ease-out ${
         ready ? "pointer-events-none scale-95 opacity-0" : "opacity-100"
       }`}
-      style={{ backgroundColor: "hsl(var(--green))", willChange: "opacity, transform" }}
+      style={{ willChange: "opacity, transform" }}
     >
       <div className="flex flex-col items-center gap-4 animate-[splashBreath_2.4s_ease-in-out_infinite]">
         <img
@@ -65,7 +65,7 @@ export const Preloader = () => {
           className="h-24 w-auto sm:h-28 object-contain select-none"
           draggable={false}
         />
-        <span className="font-tagline text-lg font-medium tracking-wide text-[hsl(var(--gold))] sm:text-xl">
+        <span className="font-tagline text-lg font-medium tracking-wide text-gold sm:text-xl">
           خطط لمناسباتك واحجزها في مكان واحد
         </span>
       </div>
