@@ -350,25 +350,34 @@ export const PlanningWizard = () => {
       // Build a WhatsApp summary of the confirmed request so the concierge
       // team receives the details immediately after the customer finishes.
       const lines: string[] = [];
-      lines.push("🌿 طلب حجز جديد من موقع تِكله");
+      lines.push(isAr ? "🌿 طلب حجز جديد من موقع تِكله" : "🌿 New booking request from Tekillah");
       lines.push("");
-      if (city) lines.push(`• المدينة: ${city}`);
-      if (eventType) lines.push(`• نوع المناسبة: ${eventType}`);
-      if (date) lines.push(`• التاريخ: ${date}${endDate ? ` → ${endDate}` : ""}`);
-      lines.push(`• عدد الضيوف: ${men + women} (رجال ${men} / نساء ${women})`);
-      if (selected.length) lines.push(`• الخدمات: ${selected.join("، ")}`);
-      if (selectedChips.length) lines.push(`• الطابع: ${selectedChips.join("، ")}`);
-      if (vision.trim()) lines.push(`• الرؤية: ${vision.trim()}`);
+      const cityLabel = isAr ? "المدينة" : "City";
+      const typeLabel = isAr ? "نوع المناسبة" : "Event type";
+      const dateLabel = isAr ? "التاريخ" : "Date";
+      const guestsLabel = isAr ? "عدد الضيوف" : "Guests";
+      const menLabel = isAr ? "رجال" : "men";
+      const womenLabel = isAr ? "نساء" : "women";
+      const servicesLabel = isAr ? "الخدمات" : "Services";
+      const themeLabel = isAr ? "الطابع" : "Theme";
+      const sep = isAr ? "، " : ", ";
+      if (city) lines.push(`• ${cityLabel}: ${t(`cities.${city}`, { defaultValue: city })}`);
+      if (eventType) lines.push(`• ${typeLabel}: ${t(`eventTypes.${eventType}`, { defaultValue: eventType })}`);
+      if (date) lines.push(`• ${dateLabel}: ${date}${endDate ? ` → ${endDate}` : ""}`);
+      lines.push(`• ${guestsLabel}: ${men + women} (${menLabel} ${men} / ${womenLabel} ${women})`);
+      if (selected.length) lines.push(`• ${servicesLabel}: ${selected.map((s) => t(`wizard.services.${s}`, { defaultValue: s })).join(sep)}`);
+      if (selectedChips.length) lines.push(`• ${themeLabel}: ${selectedChips.join(sep)}`);
+      if (vision.trim()) lines.push(`• ${isAr ? "الرؤية" : "Vision"}: ${vision.trim()}`);
       if (packageSelection) {
         lines.push("");
-        lines.push(`📦 الباقة المختارة: ${packageSelection.name} — ${packageSelection.price.toLocaleString("ar-SA")} ر.س`);
+        lines.push(`📦 ${isAr ? "الباقة المختارة" : "Selected package"}: ${packageSelection.name} — ${packageSelection.price.toLocaleString(isAr ? "ar-SA" : "en-US")} ${isAr ? "ر.س" : "SAR"}`);
       } else {
         const pickEntries = Object.values(picks);
         if (pickEntries.length) {
           lines.push("");
-          lines.push(`✅ الموردون المختارون (${pickEntries.length}):`);
+          lines.push(`✅ ${isAr ? "الموردون المختارون" : "Selected vendors"} (${pickEntries.length}):`);
           pickEntries.forEach((p) => {
-            lines.push(`   - ${p.category}`);
+            lines.push(`   - ${t(`wizard.services.${p.category}`, { defaultValue: p.category })}`);
           });
         }
       }
@@ -553,7 +562,7 @@ export const PlanningWizard = () => {
                     <SummaryRow label={isAr ? "عدد النساء" : "Women"} value={String(women)} />
                     <SummaryRow
                       label={isAr ? "الخدمات" : "Services"}
-                      value={selected.length ? selected.map((s) => t(`services.${s}`, { defaultValue: s })).join("، ") : "—"}
+                      value={selected.length ? selected.map((s) => t(`wizard.services.${s}`, { defaultValue: s })).join("، ") : "—"}
                     />
                     {(vision || selectedChips.length > 0) && (
                       <SummaryRow
