@@ -1650,5 +1650,19 @@
       "graduation": "Graduations",
       "events": "Major Events"
     }
+  },
+  "payments": {
+    "aria": "Upcoming payment methods",
+    "label": "Payment Methods",
+    "soon": "Coming Soon",
+    "desc": "We're integrating the leading Saudi and global payment methods — a secure, flexible checkout with no surprises.",
+    "providers": {
+      "tabby": "Tabby",
+      "tamara": "Tamara",
+      "mada": "mada",
+      "applepay": "Apple Pay",
+      "visa": "Visa",
+      "mastercard": "Mastercard"
+    }
   }
 }
