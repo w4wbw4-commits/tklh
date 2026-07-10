@@ -33,11 +33,14 @@ const FACILITY_ICONS = [CalendarCheck, LayoutDashboard, ShieldCheck] as const;
 interface FacilityI18n { title: string; desc: string; points: string[] }
 
 const About = () => {
+  const { t, i18n } = useTranslation();
+  const isAr = i18n.language === "ar";
+  const facilities = t("aboutPage.facilities", { returnObjects: true }) as FacilityI18n[];
   return (
     <main className="min-h-screen bg-background">
       <SEO
-        title="عن منصة تِكله — هويتنا والتسهيلات الرقمية"
-        description="تعرف على منصة تِكله: منصتك الذكية الموحدة لتنظيم وتنسيق وإدارة كافة الفعاليات من المؤتمرات إلى حفلات الزفاف في مكان واحد."
+        title={t("aboutPage.seoTitle")}
+        description={t("aboutPage.seoDesc")}
         canonical="https://tklh.sa/about"
       />
       <ScrollProgress />
