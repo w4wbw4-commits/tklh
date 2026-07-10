@@ -125,12 +125,12 @@
 
     /* Secondary — soft sage */
     --secondary: 92 38% 83%;
-    --secondary-foreground: 100 41% 21%;
+    --secondary-foreground: 151 43% 15%;
 
     --muted: 45 26% 94%;
     --muted-foreground: 95 16% 40%;
 
-    --accent: 102 36% 32%;
+    --accent: 151 43% 15%;
     --accent-foreground: 44 38% 97%;
 
     --destructive: 0 75% 45%;
@@ -140,7 +140,7 @@
 
     --border: 42 18% 80%;
     --input: 44 17% 81%;
-    --ring: 100 41% 21%;
+    --ring: 151 43% 15%;
 
     --radius: 1rem;
 
@@ -164,12 +164,12 @@
     /* Sidebar */
     --sidebar-background: 44 22% 92%;
     --sidebar-foreground: 100 38% 14%;
-    --sidebar-primary: 100 41% 21%;
+    --sidebar-primary: 151 43% 15%;
     --sidebar-primary-foreground: 44 38% 97%;
     --sidebar-accent: 92 38% 83%;
-    --sidebar-accent-foreground: 100 41% 21%;
+    --sidebar-accent-foreground: 151 43% 15%;
     --sidebar-border: 42 18% 80%;
-    --sidebar-ring: 100 41% 21%;
+    --sidebar-ring: 151 43% 15%;
 
     /* Health indicator tokens — Deep Emerald (#043927) for positive states.
        Used by the BudgetHealthIndicator and any future "good signal" UI. */
@@ -594,6 +594,32 @@ html {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+}
+
+/* ==== Unified deep green active states (#163726) ==== */
+@layer components {
+  /* Radix Select / Dropdown highlighted & selected items */
+  [role="option"][data-highlighted],
+  [role="option"][data-state="checked"],
+  [role="menuitem"][data-highlighted],
+  [role="menuitemradio"][data-state="checked"],
+  [data-radix-collection-item][data-highlighted] {
+    background-color: #163726 !important;
+    color: #ffffff !important;
+  }
+
+  /* React Day Picker — selected day */
+  .rdp-day_selected,
+  .rdp-day_selected:focus-visible,
+  .rdp-day_selected:hover,
+  [data-selected="true"].rdp-day,
+  .rdp-day[aria-selected="true"] {
+    background-color: #163726 !important;
+    color: #ffffff !important;
+  }
+  .rdp-day_today:not(.rdp-day_selected) {
+    color: #163726 !important;
   }
 }
 
