@@ -129,7 +129,7 @@ export const Navbar = () => {
                 variant="ghost"
                 size="sm"
                 asChild
-                className="hidden rounded-full text-xs text-[#cba45c] hover:bg-primary-foreground/10 hover:text-[#e8c87c] sm:inline-flex"
+                className="hidden rounded-full text-xs text-[#A7CAA1] hover:bg-primary-foreground/10 hover:text-[#c8e0c4] sm:inline-flex"
               >
                 <Link to="/dashboard">
                   <LayoutDashboard className="me-1 h-3.5 w-3.5" />
