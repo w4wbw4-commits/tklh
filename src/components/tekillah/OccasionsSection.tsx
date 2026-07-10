@@ -6,7 +6,7 @@
 import { motion } from "framer-motion";
 import { HeartHandshake, Crown, GraduationCap, PartyPopper } from "lucide-react";
 import { Reveal } from "./Reveal";
-import { SketchCornerOrnament, SketchIconSparkle } from "./SketchArt";
+import { SketchCornerOrnament } from "./SketchArt";
 
 const OCCASIONS = [
   { icon: HeartHandshake, label: "حفلات الزواج" },
@@ -32,7 +32,6 @@ export const OccasionsSection = () => (
       <Reveal>
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-xs font-bold text-foreground backdrop-blur sm:text-sm">
-            <SketchIconSparkle className="h-4 w-4" />
             تِكله معك في كل مناسبة
           </span>
           <h2 className="mt-5 font-arabic text-3xl font-black leading-[1.6] text-green md:text-5xl">
