@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import logoAsset from "@/assets/tklh-logo-full.png.asset.json";
+const logoAsset = { url: "https://id-preview--d978ea61-fed9-4b34-bbe9-757c7793d22b.lovable.app/__l5e/assets-v1/0da52b6a-f45a-4029-8e0a-98613e28b596/tklh-logo-transparent.png" };
 
 /**
  * Fullscreen splash shown on the homepage while the initial paint settles.
@@ -58,20 +58,17 @@ export const Preloader = () => {
       }`}
       style={{ backgroundColor: "hsl(var(--background))", willChange: "opacity, transform" }}
     >
-      <div className="flex flex-col items-center gap-4 animate-[splashBreath_2.4s_ease-in-out_infinite]">
+      <div className="flex flex-col items-center gap-4">
         <img
           src={logoAsset.url}
           alt="TKLH تِكله"
-          className="h-24 w-auto sm:h-28 object-contain rounded-xl select-none"
+          className="h-24 w-auto sm:h-28 object-contain select-none"
           draggable={false}
         />
+        <span className="font-tagline text-lg font-medium tracking-wide text-[#A7CAA1] sm:text-xl">
+          لجميع مناسباتك
+        </span>
       </div>
-      <style>{`
-        @keyframes splashBreath {
-          0%, 100% { opacity: 0.55; transform: scale(1); }
-          50%      { opacity: 1;    transform: scale(1.04); }
-        }
-      `}</style>
     </div>
   );
 };
