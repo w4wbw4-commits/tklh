@@ -40,9 +40,6 @@ export const OccasionsSection = () => (
               مناسباتك السعيدة
             </span>
           </h2>
-          <p className="mx-auto mt-3 max-w-xl font-arabic text-sm leading-relaxed text-foreground/65 sm:text-base">
-            من ليلة العمر، لأحلى لمة، لأكبر فعالية — كل شي بضمان وذوق رفيع ما يخيب.
-          </p>
         </div>
       </Reveal>
 
