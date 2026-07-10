@@ -79,7 +79,10 @@ export const Navbar = () => {
             borderColor: "rgba(160, 208, 158, 0.22)",
           }}
         >
-          <Logo />
+          <div className="flex items-center gap-2">
+            <Logo />
+            <WhatsAppFloating />
+          </div>
           <nav className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => {
               const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
