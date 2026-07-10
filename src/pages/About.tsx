@@ -7,12 +7,14 @@
 import { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Sparkles,
   CalendarCheck,
   LayoutDashboard,
   ShieldCheck,
   ArrowLeft,
+  ArrowRight,
   Check,
 } from "lucide-react";
 import { Navbar } from "@/components/tekillah/Navbar";
@@ -26,26 +28,9 @@ const Footer = lazy(() =>
   import("@/components/tekillah/Footer").then((m) => ({ default: m.Footer })),
 );
 
-const FACILITIES = [
-  {
-    icon: CalendarCheck,
-    title: "تنسيق ذكي متكامل",
-    desc: "حجز قاعات الأفراح، المؤتمرات، الديكورات، والبوفيه بضغطة زر.",
-    points: ["قاعات وكوش", "بوفيه وضيافة", "تصوير وديكور"],
-  },
-  {
-    icon: LayoutDashboard,
-    title: "إدارة ومتابعة الحجوزات",
-    desc: "لوحة تحكم ذكية ومباشرة لمتابعة المواعيد، التكاليف، وتفاصيل الفعالية أولاً بأول.",
-    points: ["تنبيهات لحظية", "تقارير مالية واضحة", "خط زمني للفعالية"],
-  },
-  {
-    icon: ShieldCheck,
-    title: "شركاء موثوقين",
-    desc: "شبكة واسعة من أفضل مزودي الخدمات والقاعات في المملكة لضمان جودة تبيّض وجهك.",
-    points: ["مزودون موثّقون", "تقييمات حقيقية", "ضمان جودة"],
-  },
-] as const;
+const FACILITY_ICONS = [CalendarCheck, LayoutDashboard, ShieldCheck] as const;
+
+interface FacilityI18n { title: string; desc: string; points: string[] }
 
 const About = () => {
   return (
