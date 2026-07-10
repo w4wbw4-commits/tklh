@@ -88,10 +88,10 @@ export const Navbar = () => {
               const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
               const cls =
                 "relative rounded-full px-4 py-2 text-sm font-medium transition-all after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all hover:after:w-1/2";
-              const linkStyle = { color: "#cba45c" } as const;
+              const linkStyle = { color: "#A7CAA1" } as const;
               const disabledCls =
                 "relative flex cursor-not-allowed items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium opacity-70";
-              const disabledStyle = { color: "rgba(203, 164, 92, 0.55)" } as const;
+              const disabledStyle = { color: "rgba(167, 202, 161, 0.55)" } as const;
               const badge = "badge" in item && item.badge ? (isAr ? item.badge.ar : item.badge.en) : null;
               if ("disabled" in item && item.disabled) {
                 return (
@@ -100,7 +100,7 @@ export const Navbar = () => {
                     {badge && (
                       <span
                         className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
-                        style={{ background: "rgba(203, 164, 92, 0.18)", color: "#cba45c" }}
+                        style={{ background: "rgba(167, 202, 161, 0.18)", color: "#A7CAA1" }}
                       >
                         {badge}
                       </span>
@@ -129,7 +129,7 @@ export const Navbar = () => {
                 variant="ghost"
                 size="sm"
                 asChild
-                className="hidden rounded-full text-xs text-[#cba45c] hover:bg-primary-foreground/10 hover:text-[#e8c87c] sm:inline-flex"
+                className="hidden rounded-full text-xs text-[#A7CAA1] hover:bg-primary-foreground/10 hover:text-[#c8e0c4] sm:inline-flex"
               >
                 <Link to="/dashboard">
                   <LayoutDashboard className="me-1 h-3.5 w-3.5" />
