@@ -1,6 +1,6 @@
 import { motion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sparkles } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import {
   SketchCurtain,
   SketchEucalyptus,
@@ -373,9 +373,7 @@ export const Hero = () => {
           >
             <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
               style={{ background: "radial-gradient(circle, #A7CAA1, transparent 70%)" }} />
-            <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-[rgba(167,202,161,0.5)] bg-[rgba(22,55,38,0.4)] transition-transform duration-500 group-hover:rotate-6">
-              <Sparkles className="h-5 w-5 text-[#A7CAA1]" strokeWidth={2.4} />
-            </span>
+            <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-[rgba(167,202,161,0.5)] bg-[rgba(22,55,38,0.4)] transition-transform duration-500 group-hover:rotate-6" />
             <div className="flex-1">
               <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[rgba(167,202,161,0.8)]"><br /></div>
               <div className="font-display text-lg font-black text-[#A7CAA1] sm:text-xl">خطّط واحجز&nbsp;</div>

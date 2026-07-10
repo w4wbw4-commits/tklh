@@ -51,7 +51,6 @@ const AboutValueSection = () => (
       <Reveal>
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
-            <Sparkles className="h-4 w-4 text-gold" strokeWidth={2} />
             تعرف على تِكله
           </span>
 
