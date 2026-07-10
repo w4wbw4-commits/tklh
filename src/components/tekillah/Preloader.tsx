@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import logoAsset from "@/assets/tklh-logo-full.png.asset.json";
+import logoAsset from "@/assets/tklh-logo-transparent.png.asset.json";
 
 /**
  * Fullscreen splash shown on the homepage while the initial paint settles.
@@ -62,9 +62,12 @@ export const Preloader = () => {
         <img
           src={logoAsset.url}
           alt="TKLH تِكله"
-          className="h-24 w-auto sm:h-28 object-contain rounded-xl select-none"
+          className="h-24 w-auto sm:h-28 object-contain select-none"
           draggable={false}
         />
+        <span className="font-tagline text-lg font-medium tracking-wide text-[#A7CAA1] sm:text-xl">
+          لجميع مناسباتك
+        </span>
       </div>
       <style>{`
         @keyframes splashBreath {
