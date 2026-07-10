@@ -330,6 +330,7 @@ export const Hero = () => {
                 fontFeatureSettings: '"kern","liga","calt","dlig"',
                 wordSpacing: "0.05em",
                 textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream)/0.9)",
+                color: "#163726",
               }}
             >
               <span className="relative inline-block">
