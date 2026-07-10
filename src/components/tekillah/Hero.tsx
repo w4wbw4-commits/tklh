@@ -338,7 +338,7 @@ export const Hero = () => {
               </span>
               <br />
               <br />
-              <span style={{ color: "hsl(var(--green))" }}>خطط لمناسباتك واحجزها في مكان واحد</span>
+              <span style={{ color: "#163726" }}>خطط لمناسباتك واحجزها في مكان واحد</span>
             </motion.h1>
 
 
