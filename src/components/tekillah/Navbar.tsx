@@ -100,7 +100,7 @@ export const Navbar = () => {
                     {badge && (
                       <span
                         className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
-                        style={{ background: "rgba(203, 164, 92, 0.18)", color: "#cba45c" }}
+                        style={{ background: "rgba(167, 202, 161, 0.18)", color: "#A7CAA1" }}
                       >
                         {badge}
                       </span>
