@@ -263,11 +263,13 @@ const variantClass: Record<CardDef["variant"], string> = {
 
 
 export const Hero = () => {
+  const { t, i18n } = useTranslation();
+  const isAr = i18n.language === "ar";
   return (
     <section
       id="home"
-      dir="rtl"
-      lang="ar"
+      dir={isAr ? "rtl" : "ltr"}
+      lang={i18n.language}
       className="relative min-h-screen w-full overflow-hidden scroll-smooth"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
