@@ -58,7 +58,7 @@ export const Preloader = () => {
       }`}
       style={{ backgroundColor: "hsl(var(--background))", willChange: "opacity, transform" }}
     >
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-4 animate-[splashBreath_2.4s_ease-in-out_infinite]">
         <img
           src={logoAsset.url}
           alt="TKLH تِكله"
@@ -69,6 +69,12 @@ export const Preloader = () => {
           لجميع مناسباتك
         </span>
       </div>
+      <style>{`
+        @keyframes splashBreath {
+          0%, 100% { opacity: 0.55; transform: scale(1); }
+          50%      { opacity: 1;    transform: scale(1.04); }
+        }
+      `}</style>
     </div>
   );
 };
