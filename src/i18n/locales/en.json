@@ -516,7 +516,8 @@
     "prefilledMessage": "مرحباً تِكله، لقد انتهيت من التخطيط لمناسبتي وأرغب في مناقشة التفاصيل. رقم خطتي هو: {{planId}}",
     "successTitle": "Your plan is locked in 🎉",
     "successDesc": "Our concierge can finalise the smaller details with you on WhatsApp — usually within an hour.",
-    "skipToCheckout": "Continue to secure checkout"
+    "skipToCheckout": "Continue to secure checkout",
+    "planNow": "Plan & Book Now"
   },
   "vendor": {
     "partnerHero": {
