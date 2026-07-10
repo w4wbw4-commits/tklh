@@ -352,12 +352,21 @@ export const PlanningWizard = () => {
       const lines: string[] = [];
       lines.push("🌿 طلب حجز جديد من موقع تِكله");
       lines.push("");
-      if (city) lines.push(`• المدينة: ${city}`);
-      if (eventType) lines.push(`• نوع المناسبة: ${eventType}`);
-      if (date) lines.push(`• التاريخ: ${date}${endDate ? ` → ${endDate}` : ""}`);
-      lines.push(`• عدد الضيوف: ${men + women} (رجال ${men} / نساء ${women})`);
-      if (selected.length) lines.push(`• الخدمات: ${selected.join("، ")}`);
-      if (selectedChips.length) lines.push(`• الطابع: ${selectedChips.join("، ")}`);
+      const cityLabel = isAr ? "المدينة" : "City";
+      const typeLabel = isAr ? "نوع المناسبة" : "Event type";
+      const dateLabel = isAr ? "التاريخ" : "Date";
+      const guestsLabel = isAr ? "عدد الضيوف" : "Guests";
+      const menLabel = isAr ? "رجال" : "men";
+      const womenLabel = isAr ? "نساء" : "women";
+      const servicesLabel = isAr ? "الخدمات" : "Services";
+      const themeLabel = isAr ? "الطابع" : "Theme";
+      const sep = isAr ? "، " : ", ";
+      if (city) lines.push(`• ${cityLabel}: ${t(`cities.${city}`, { defaultValue: city })}`);
+      if (eventType) lines.push(`• ${typeLabel}: ${t(`eventTypes.${eventType}`, { defaultValue: eventType })}`);
+      if (date) lines.push(`• ${dateLabel}: ${date}${endDate ? ` → ${endDate}` : ""}`);
+      lines.push(`• ${guestsLabel}: ${men + women} (${menLabel} ${men} / ${womenLabel} ${women})`);
+      if (selected.length) lines.push(`• ${servicesLabel}: ${selected.map((s) => t(`wizard.services.${s}`, { defaultValue: s })).join(sep)}`);
+      if (selectedChips.length) lines.push(`• ${themeLabel}: ${selectedChips.join(sep)}`);
       if (vision.trim()) lines.push(`• الرؤية: ${vision.trim()}`);
       if (packageSelection) {
         lines.push("");
