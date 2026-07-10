@@ -350,7 +350,7 @@ export const PlanningWizard = () => {
       // Build a WhatsApp summary of the confirmed request so the concierge
       // team receives the details immediately after the customer finishes.
       const lines: string[] = [];
-      lines.push("🌿 طلب حجز جديد من موقع تِكله");
+      lines.push(isAr ? "🌿 طلب حجز جديد من موقع تِكله" : "🌿 New booking request from Tekillah");
       lines.push("");
       const cityLabel = isAr ? "المدينة" : "City";
       const typeLabel = isAr ? "نوع المناسبة" : "Event type";
