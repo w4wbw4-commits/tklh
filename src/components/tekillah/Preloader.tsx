@@ -56,7 +56,7 @@ export const Preloader = () => {
       className={`fixed inset-0 z-[9999] grid place-items-center transition-all duration-500 ease-out ${
         ready ? "pointer-events-none scale-95 opacity-0" : "opacity-100"
       }`}
-      style={{ backgroundColor: "hsl(var(--background))", willChange: "opacity, transform" }}
+      style={{ backgroundColor: "#163726", willChange: "opacity, transform" }}
     >
       <div className="flex flex-col items-center gap-4 animate-[splashBreath_2.4s_ease-in-out_infinite]">
         <img
@@ -66,7 +66,7 @@ export const Preloader = () => {
           draggable={false}
         />
         <span className="font-tagline text-lg font-medium tracking-wide text-[#A7CAA1] sm:text-xl">
-          لجميع مناسباتك
+          خطط لمناسباتك واحجزها في مكان واحد
         </span>
       </div>
       <style>{`
