@@ -4,7 +4,6 @@
  * visible on every page without overlapping content.
  */
 import { Link } from "react-router-dom";
-import { Sparkles } from "lucide-react";
 
 export const WhatsAppFloating = () => (
   <Link
