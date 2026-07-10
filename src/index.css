@@ -88,58 +88,58 @@
 
 @layer base {
   :root {
-    /* Brand surfaces — warm cream / beige */
-    --background: 44 22% 92%;           /* #ece9e0 luxury cream */
-    --surface: 42 28% 95%;              /* #f5f1ea */
-    --cream: 40 40% 97%;                /* #faf7f1 */
-    --foreground: 100 38% 10%;          /* #15240e deep olive ink */
-    --text-muted: 95 14% 45%;           /* #6b7a5e */
+    /* Brand surfaces — off-white */
+    --background: 60 20% 97%;           /* #f8f8f3 off-white */
+    --surface: 60 22% 96%;              /* #f5f5ee */
+    --cream: 60 30% 98%;                /* #fafaf5 */
+    --foreground: 151 43% 12%;          /* #163726 deep olive ink */
+    --text-muted: 151 15% 35%;
 
-    /* Greens — deeper, richer */
-    --green: 151 19% 15%; /* #163726 */
-    --green-mid: 102 38% 30%;
-    --green-light: 92 40% 85%;
+    /* Greens — brand identity #163726 */
+    --green: 151 43% 15%;               /* #163726 */
+    --green-mid: 151 30% 30%;
+    --green-light: 111 28% 71%;         /* #A7CAA1 sage accent */
 
-    /* Gold — signature accent (softened, muted champagne) */
-    --gold: 38 38% 58%;
-    --gold-soft: 40 42% 82%;
-    /* Antique brown — medieval-luxe accent for sketches */
-    --brown: 28 35% 32%;
-    --brown-soft: 30 30% 55%;
+    /* Sage — signature accent #A7CAA1 (replaces gold) */
+    --gold: 111 28% 71%;                /* #A7CAA1 */
+    --gold-soft: 111 30% 85%;
+    /* Antique brown — kept for sketch tonality */
+    --brown: 151 25% 25%;
+    --brown-soft: 111 20% 55%;
 
     /* Problem / warm terracotta */
     --problem: 14 65% 48%;
     --problem-soft: 18 70% 88%;
 
     /* Cards & popovers */
-    --card: 45 26% 94%;
-    --card-foreground: 95 35% 13%;
-    --popover: 44 38% 97%;
-    --popover-foreground: 95 35% 13%;
+    --card: 60 25% 97%;
+    --card-foreground: 151 43% 13%;
+    --popover: 60 30% 98%;
+    --popover-foreground: 151 43% 13%;
 
     /* Primary — premium dark green #163726 */
     --primary: 151 43% 15%;
-    --primary-foreground: 44 38% 97%;
-    --primary-glow: 151 35% 25%;
+    --primary-foreground: 60 30% 98%;   /* off-white */
+    --primary-glow: 111 28% 71%;        /* sage glow */
     --primary-deep: 151 45% 11%;
 
-    /* Secondary — soft sage */
-    --secondary: 92 38% 83%;
+    /* Secondary — sage #A7CAA1 */
+    --secondary: 111 28% 71%;
     --secondary-foreground: 151 43% 15%;
 
-    --muted: 45 26% 94%;
-    --muted-foreground: 95 16% 40%;
+    --muted: 60 22% 94%;
+    --muted-foreground: 151 15% 35%;
 
-    --accent: 151 43% 15%;
-    --accent-foreground: 44 38% 97%;
+    --accent: 111 28% 71%;              /* #A7CAA1 */
+    --accent-foreground: 151 43% 15%;
 
     --destructive: 0 75% 45%;
-    --destructive-foreground: 44 38% 97%;
+    --destructive-foreground: 60 30% 98%;
     --success: 140 41% 32%;
-    --success-foreground: 44 38% 97%;
+    --success-foreground: 60 30% 98%;
 
-    --border: 42 18% 80%;
-    --input: 44 17% 81%;
+    --border: 111 18% 82%;
+    --input: 111 15% 84%;
     --ring: 151 43% 15%;
 
     --radius: 1rem;
