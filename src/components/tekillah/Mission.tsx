@@ -88,7 +88,7 @@ export const Mission = () => {
           transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           className="mt-10 rounded-3xl border border-primary/15 bg-background/70 p-8 shadow-card backdrop-blur md:p-12"
         >
-          <p className="font-arabic text-xl leading-[2] text-foreground/85 sm:text-2xl">
+          <p className={`text-xl leading-[2] text-foreground/85 sm:text-2xl ${isAr ? "font-arabic" : ""}`}>
             {t("mission.p1")}
             <br />
             {t("mission.p2Prefix")}
@@ -98,7 +98,7 @@ export const Mission = () => {
 
           <div className="mx-auto my-8 h-px w-24 bg-gradient-to-r from-transparent via-gold to-transparent" />
 
-          <p className="font-arabic text-xl leading-[2] text-foreground/85 sm:text-2xl">
+          <p className={`text-xl leading-[2] text-foreground/85 sm:text-2xl ${isAr ? "font-arabic" : ""}`}>
             {t("mission.p3Prefix")}
             <span className="font-bold text-primary-deep">{t("mission.p3Highlight")}</span>
             {t("mission.p3Suffix")}
