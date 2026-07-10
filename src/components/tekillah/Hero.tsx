@@ -294,16 +294,16 @@ export const Hero = () => {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
 
-      {/* === Sketch watermark (15%) — desktop only to keep mobile paint cheap === */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 hidden overflow-hidden opacity-[0.15] md:block">
-        <SketchCurtain className="absolute inset-y-0 left-0 h-full w-[90px]" />
-        <SketchCurtain className="absolute inset-y-0 right-0 h-full w-[90px]" style={{ transform: "scaleX(-1)" }} />
-        <SketchEucalyptus className="absolute top-6 left-[6%] h-[140px] w-[260px]" />
-        <SketchLotus className="absolute top-10 right-[8%] h-[120px] w-[170px]" />
-        <SketchCandelabra className="absolute bottom-10 left-[3%] h-[240px] w-[170px] hidden lg:block" />
-        <SketchCandelabra className="absolute bottom-10 right-[3%] h-[240px] w-[170px] hidden lg:block" style={{ transform: "scaleX(-1)" }} />
-        <SketchTable className="absolute bottom-16 left-1/2 h-[180px] w-[320px] -translate-x-1/2" />
-        <SketchBanquet className="absolute -bottom-4 left-1/2 h-[200px] w-[520px] -translate-x-1/2 hidden xl:block" />
+      {/* === Sketch watermark (15%) — visible on all screens, narrower on mobile === */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.15]">
+        <SketchCurtain className="absolute inset-y-0 left-0 h-full w-[44px] sm:w-[60px] md:w-[90px]" />
+        <SketchCurtain className="absolute inset-y-0 right-0 h-full w-[44px] sm:w-[60px] md:w-[90px]" style={{ transform: "scaleX(-1)" }} />
+        <SketchEucalyptus className="absolute top-6 left-[6%] h-[80px] w-[140px] sm:h-[110px] sm:w-[200px] md:h-[140px] md:w-[260px]" />
+        <SketchLotus className="absolute top-10 right-[8%] h-[70px] w-[100px] sm:h-[100px] sm:w-[140px] md:h-[120px] md:w-[170px]" />
+        <SketchCandelabra className="absolute bottom-10 left-[3%] h-[160px] w-[110px] hidden lg:block" />
+        <SketchCandelabra className="absolute bottom-10 right-[3%] h-[160px] w-[110px] hidden lg:block" style={{ transform: "scaleX(-1)" }} />
+        <SketchTable className="absolute bottom-16 left-1/2 h-[100px] w-[180px] -translate-x-1/2 sm:h-[140px] sm:w-[240px] md:h-[180px] md:w-[320px]" />
+        <SketchBanquet className="absolute -bottom-4 left-1/2 h-[120px] w-[300px] -translate-x-1/2 hidden xl:block sm:h-[160px] sm:w-[400px] md:h-[200px] md:w-[520px]" />
       </div>
 
 
