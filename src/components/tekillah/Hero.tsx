@@ -342,17 +342,18 @@ export const Hero = () => {
               </span>
               <br />
               <br />
-              <span style={{ color: "#163726" }}>{t("hero.slogan")}</span>
+              <span style={{ color: "hsl(var(--gold))" }}>{t("hero.slogan")}</span>
             </motion.h1>
 
 
             {/* Sub-headline */}
             <motion.p
               variants={rise}
-              className="font-tagline mt-6 max-w-2xl mx-auto px-4 text-balance text-sm leading-relaxed text-primary-deep/75 sm:text-base md:text-lg"
+              className="font-tagline mt-6 max-w-2xl mx-auto px-4 text-balance text-sm leading-relaxed sm:text-base md:text-lg"
+              style={{ color: "hsl(var(--gold))" }}
             >
               {t("hero.subheadPrefix")}{" "}
-              <span className="font-bold" style={{ color: "hsl(var(--green))" }}>{t("hero.brand")}</span>&nbsp;
+              <span className="font-bold" style={{ color: "hsl(var(--gold))" }}>{t("hero.brand")}</span>&nbsp;
               {t("hero.subheadSuffix")}
             </motion.p>
 
