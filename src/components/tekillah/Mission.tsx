@@ -14,7 +14,8 @@ import {
  * in the corners while the content stays untouched in the center.
  */
 export const Mission = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isAr = i18n.language?.startsWith("ar");
   const reveal = {
     initial: { opacity: 0, y: 24 },
     whileInView: { opacity: 1, y: 0 },
@@ -24,7 +25,7 @@ export const Mission = () => {
   return (
     <section
       id="mission"
-      dir="rtl"
+      dir={isAr ? "rtl" : "ltr"}
       className="relative overflow-hidden py-24 sm:py-32"
     >
       {/* Layered warm gradient background */}
