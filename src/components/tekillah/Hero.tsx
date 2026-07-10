@@ -271,7 +271,7 @@ export const Hero = () => {
       dir={isAr ? "rtl" : "ltr"}
       lang={i18n.language}
       className="relative min-h-screen w-full overflow-hidden scroll-smooth"
-      style={{ backgroundColor: "#163726" }}
+      style={{ backgroundColor: "hsl(var(--cream))" }}
     >
       {/* === Background wash === */}
       <div className="pointer-events-none absolute inset-0">
@@ -279,19 +279,19 @@ export const Hero = () => {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 20%, rgba(255,255,255,0.06) 0%, rgba(22,55,38,0) 60%)",
+              "radial-gradient(ellipse at 50% 20%, hsl(var(--surface)) 0%, hsl(var(--cream)) 55%, hsl(var(--background)) 100%)",
           }}
         />
         {/* warm glow */}
         <div
           className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
-          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.22), transparent 70%)" }}
+          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.18), transparent 70%)" }}
         />
         {/* paper grain */}
         <div
-          className="absolute inset-0 opacity-[0.05] mix-blend-screen"
+          className="absolute inset-0 opacity-[0.05] mix-blend-multiply"
           style={{
-            backgroundImage: "radial-gradient(hsl(var(--gold)) 0.5px, transparent 0.5px)",
+            backgroundImage: "radial-gradient(hsl(var(--primary-deep)) 0.5px, transparent 0.5px)",
             backgroundSize: "3px 3px",
           }}
         />
@@ -329,6 +329,7 @@ export const Hero = () => {
               style={{
                 fontFeatureSettings: '"kern","liga","calt","dlig"',
                 wordSpacing: "0.05em",
+                textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream)/0.9)",
               }}
             >
               <span className="relative inline-block">
@@ -341,18 +342,17 @@ export const Hero = () => {
               </span>
               <br />
               <br />
-              <span style={{ color: "hsl(var(--gold))" }}>{t("hero.slogan")}</span>
+              <span style={{ color: "#163726" }}>{t("hero.slogan")}</span>
             </motion.h1>
 
 
             {/* Sub-headline */}
             <motion.p
               variants={rise}
-              className="font-tagline mt-6 max-w-2xl mx-auto px-4 text-balance text-sm leading-relaxed sm:text-base md:text-lg"
-              style={{ color: "hsl(var(--gold))" }}
+              className="font-tagline mt-6 max-w-2xl mx-auto px-4 text-balance text-sm leading-relaxed text-primary-deep/75 sm:text-base md:text-lg"
             >
               {t("hero.subheadPrefix")}{" "}
-              <span className="font-bold" style={{ color: "hsl(var(--gold))" }}>{t("hero.brand")}</span>&nbsp;
+              <span className="font-bold" style={{ color: "hsl(var(--green))" }}>{t("hero.brand")}</span>&nbsp;
               {t("hero.subheadSuffix")}
             </motion.p>
 
