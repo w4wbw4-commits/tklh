@@ -367,17 +367,17 @@ export const PlanningWizard = () => {
       lines.push(`• ${guestsLabel}: ${men + women} (${menLabel} ${men} / ${womenLabel} ${women})`);
       if (selected.length) lines.push(`• ${servicesLabel}: ${selected.map((s) => t(`wizard.services.${s}`, { defaultValue: s })).join(sep)}`);
       if (selectedChips.length) lines.push(`• ${themeLabel}: ${selectedChips.join(sep)}`);
-      if (vision.trim()) lines.push(`• الرؤية: ${vision.trim()}`);
+      if (vision.trim()) lines.push(`• ${isAr ? "الرؤية" : "Vision"}: ${vision.trim()}`);
       if (packageSelection) {
         lines.push("");
-        lines.push(`📦 الباقة المختارة: ${packageSelection.name} — ${packageSelection.price.toLocaleString("ar-SA")} ر.س`);
+        lines.push(`📦 ${isAr ? "الباقة المختارة" : "Selected package"}: ${packageSelection.name} — ${packageSelection.price.toLocaleString(isAr ? "ar-SA" : "en-US")} ${isAr ? "ر.س" : "SAR"}`);
       } else {
         const pickEntries = Object.values(picks);
         if (pickEntries.length) {
           lines.push("");
-          lines.push(`✅ الموردون المختارون (${pickEntries.length}):`);
+          lines.push(`✅ ${isAr ? "الموردون المختارون" : "Selected vendors"} (${pickEntries.length}):`);
           pickEntries.forEach((p) => {
-            lines.push(`   - ${p.category}`);
+            lines.push(`   - ${t(`wizard.services.${p.category}`, { defaultValue: p.category })}`);
           });
         }
       }
