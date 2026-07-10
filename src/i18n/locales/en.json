@@ -1638,5 +1638,17 @@
     "ctaTitle": "Ready to experience the difference?",
     "ctaPlan": "Plan & Book Now",
     "ctaPackages": "Explore Packages"
+  },
+  "occasions": {
+    "badge": "Tklh is with you for every occasion",
+    "titlePrefix": "Tklh.. for all your",
+    "titleHighlight": "joyful occasions",
+    "aria": "Occasions supported by Tklh",
+    "items": {
+      "wedding": "Weddings",
+      "engagement": "Engagements & Milkah",
+      "graduation": "Graduations",
+      "events": "Major Events"
+    }
   }
 }
