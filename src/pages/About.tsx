@@ -59,13 +59,13 @@ const About = () => {
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
               <Sparkles className="h-4 w-4 text-gold" strokeWidth={2} />
-              من نحن
+              {t("aboutPage.heroBadge")}
             </span>
 
             <h1 className="mt-6 font-arabic text-5xl font-black leading-[1.3] text-green md:text-6xl lg:text-7xl">
-              عن منصة{" "}
+              {t("aboutPage.heroTitlePart1")}{" "}
               <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text leading-[1.3] text-transparent">
-                تِكله
+                {t("aboutPage.heroTitlePart2")}
               </span>
             </h1>
 
@@ -76,13 +76,10 @@ const About = () => {
             </div>
 
             <p className="mx-auto mt-8 max-w-3xl font-arabic text-lg leading-[2] text-foreground/85 sm:text-xl md:text-2xl">
-              تِكله هي منصتك الذكية الموحدة الشاملة لتنظيم وتنسيق وإدارة كافة
-              الفعاليات والمناسبات، من المؤتمرات الرسمية الكبرى إلى حفلات الزفاف
-              والمناسبات الشخصية{" "}
+              {t("aboutPage.heroIntro")}{" "}
               <span className="font-black text-green">
-                في مكان واحد وبأقل مجهود
+                {t("aboutPage.heroIntroHighlight")}
               </span>
-              .
             </p>
           </Reveal>
         </div>
@@ -104,24 +101,24 @@ const About = () => {
             <div className="text-center">
               <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
                 <Sparkles className="h-4 w-4 text-gold" strokeWidth={2} />
-                التسهيلات والمميزات
+                {t("aboutPage.facilitiesBadge")}
               </span>
               <h2 className="mt-5 font-arabic text-4xl font-black leading-[1.4] text-green md:text-5xl">
-                كل ما تحتاجه{" "}
+                {t("aboutPage.facilitiesTitlePart1")}{" "}
                 <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text leading-[1.4] text-transparent">
-                  تحت سقف واحد
+                  {t("aboutPage.facilitiesTitlePart2")}
                 </span>
               </h2>
               <p className="mx-auto mt-4 max-w-2xl font-arabic leading-[1.95] text-foreground/65 sm:text-lg">
-                تجربة رقمية متكاملة مصممة بعناية لتمنحك الراحة، الشفافية،
-                والثقة في كل خطوة.
+                {t("aboutPage.facilitiesSubtitle")}
               </p>
             </div>
           </Reveal>
 
+
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {FACILITIES.map((f, i) => {
-              const Icon = f.icon;
+            {facilities.map((f, i) => {
+              const Icon = FACILITY_ICONS[i] ?? CalendarCheck;
               return (
                 <Reveal key={i} delay={0.08 + i * 0.1}>
                   <motion.article
@@ -129,16 +126,11 @@ const About = () => {
                     transition={{ type: "spring", stiffness: 220, damping: 18 }}
                     className="group relative h-full overflow-hidden rounded-3xl border-2 border-gold/25 bg-cream/80 p-7 shadow-card backdrop-blur-md transition-all duration-500 hover:border-gold/70 hover:bg-cream hover:shadow-[0_25px_60px_-20px_hsl(var(--gold)/0.45)]"
                   >
-                    {/* Gold sheen sweep */}
                     <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold/15 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-                    {/* Corner glow */}
                     <div
                       aria-hidden
                       className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full opacity-50 blur-3xl"
-                      style={{
-                        background:
-                          "radial-gradient(circle, hsl(var(--gold)/0.45), transparent 70%)",
-                      }}
+                      style={{ background: "radial-gradient(circle, hsl(var(--gold)/0.45), transparent 70%)" }}
                     />
 
                     <div className="relative">
@@ -165,14 +157,8 @@ const About = () => {
 
                       <ul className="mt-5 space-y-2.5">
                         {f.points.map((p, j) => (
-                          <li
-                            key={j}
-                            className="flex items-center gap-2 font-arabic text-sm text-foreground/80"
-                          >
-                            <Check
-                              className="h-4 w-4 shrink-0 text-gold"
-                              strokeWidth={2.6}
-                            />
+                          <li key={j} className="flex items-center gap-2 font-arabic text-sm text-foreground/80">
+                            <Check className="h-4 w-4 shrink-0 text-gold" strokeWidth={2.6} />
                             <span>{p}</span>
                           </li>
                         ))}
@@ -190,7 +176,7 @@ const About = () => {
           <Reveal delay={0.3}>
             <div className="mt-16 flex flex-col items-center gap-4 text-center">
               <p className="font-arabic text-lg font-bold text-green sm:text-xl">
-                جاهز تجرب الفرق بنفسك؟
+                {t("aboutPage.ctaTitle")}
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <Link
@@ -198,20 +184,25 @@ const About = () => {
                   className="group inline-flex items-center gap-2 rounded-full border-2 border-gold bg-green px-8 py-3.5 font-arabic text-base font-bold text-gold shadow-deep transition-all hover:-translate-y-0.5 hover:bg-green-mid hover:shadow-[0_25px_70px_-20px_hsl(var(--gold)/0.55)]"
                 >
                   <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
-                  ابدأ التخطيط الآن
-                  <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                  {t("aboutPage.ctaPlan")}
+                  {isAr ? (
+                    <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                  ) : (
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  )}
                 </Link>
                 <Link
                   to="/packages"
                   className="inline-flex items-center justify-center rounded-full border border-green/30 bg-cream/80 px-7 py-3.5 font-arabic text-base font-bold text-green backdrop-blur transition-colors hover:bg-cream"
                 >
-                  استعرض الباقات
+                  {t("aboutPage.ctaPackages")}
                 </Link>
               </div>
             </div>
           </Reveal>
         </div>
       </section>
+
 
       <Suspense fallback={<div className="min-h-[30vh]" aria-hidden />}>
         <Footer />
