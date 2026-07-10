@@ -1,302 +1,185 @@
 // ---------------------------------------------------------------------------
-// ProblemSolutionAbout — Unified storytelling flow:
-//   1) AboutValueSection — merged "تِكله.. اسم على مسمى" + 4 value tiles
-//      with an inline 3-stat strip (10 دقائق / 100% / 50+) replacing the
-//      bulky white card.
-//   2) SpeedSection — 6 weeks vs 10 minutes comparison (kept, tighter rhythm).
-// All visuals use design-system semantic tokens (no hex / hardcoded colors).
+// ProblemSolutionAbout — SpeedSection only (About section removed).
+// Fully bilingual via react-i18next (see `speed.*` keys in locales).
 // ---------------------------------------------------------------------------
 
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import {
-  ShieldCheck, Zap, Heart, Sparkles, Clock, BadgePercent, Users,
-  Calculator, Filter, CalendarCheck, Gem, Timer, ListChecks, CheckCircle2,
+  Zap, Calculator, Filter, CalendarCheck, Gem, Timer,
+  ListChecks, CheckCircle2, Sparkles,
 } from "lucide-react";
 import { Reveal } from "./Reveal";
-import { Link } from "react-router-dom";
 import { AnimatedCounter } from "./AnimatedCounter";
 import { ArabicPattern } from "./ArabicPattern";
 
-// ---------- Data ------------------------------------------------------------
-const TRUST_STATS = [
-  { icon: Clock,       value: 10,  suffix: " دقائق", label: "وقت التخطيط" },
-  { icon: BadgePercent, value: 100, suffix: "٪",     label: "شفافية كاملة" },
-  { icon: Users,       value: 50,  suffix: "+",      label: "مزود موثق" },
-] as const;
-
-const VALUE_TILES = [
-  { icon: Calculator,    title: "خطط بذكاء",        desc: "حاسبة ذكية تعطيك ميزانيتك بدقّة، بدون مفاجآت ولا أرقام مخفية." },
-  { icon: Filter,        title: "مزودين ثقة",        desc: "اخترنا لكم أفضل المزودين في السعودية — موثقين، مجربين، وما يخيبون." },
-  { icon: CalendarCheck, title: "احجز بلمح البصر",   desc: "خلص أمورك بدقائق معدودة، وودع حوسة الاتصالات والمواعيد الطويلة." },
-  { icon: Gem,           title: "شبيك لبيك",          desc: "الخدمات اللي تبيها بين يديك، وبالسعر اللي يناسبك — كل شي على كيفك." },
-] as const;
-
-const VALUE_CHIPS = [
-  { icon: ShieldCheck, label: "شفافية كاملة" },
-  { icon: Zap,         label: "سرعة وسهولة" },
-  { icon: Heart,       label: "خيارات متنوعة تليق بليلة عمرك" },
-] as const;
+const TILE_ICONS = [Calculator, Filter, CalendarCheck, Gem] as const;
 
 // ============================================================================
-// Section A — Unified About + Value
+// Speed Comparison + 4 Value Tiles
 // ============================================================================
-const AboutValueSection = () => (
-  <section
-    id="about"
-    className="relative overflow-hidden bg-hero-warm px-6 py-20 sm:px-8 sm:py-24"
-  >
-    <ArabicPattern opacity={0.04} />
+const SpeedSection = () => {
+  const { t } = useTranslation();
+  const tradPoints = t("speed.traditional.points", { returnObjects: true }) as string[];
+  const tekPoints = t("speed.tekillah.points", { returnObjects: true }) as string[];
+  const tiles = t("speed.tiles", { returnObjects: true }) as { title: string; desc: string }[];
 
-    <div className="relative mx-auto max-w-4xl">
-      <Reveal>
-        <div className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
-            تعرف على تِكله
-          </span>
+  return (
+    <section
+      id="speed"
+      aria-label={t("speed.ariaLabel")}
+      className="relative overflow-hidden bg-background px-4 py-10 sm:px-6 sm:py-12"
+    >
+      <ArabicPattern opacity={0.035} />
 
-          <h2 className="mt-6 font-arabic text-5xl font-black leading-[1.6] text-green md:text-6xl lg:text-7xl">
-            تِكله..{" "}
-            <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-2 leading-[1.6] text-transparent">
-              اسم على مسمى
-            </span>
-          </h2>
-
-          <div className="mx-auto mt-6 mb-6 flex items-center justify-center gap-3">
-            <span className="h-px w-16 bg-gold/60" />
-            <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-            <span className="h-px w-16 bg-gold/60" />
-          </div>
-
-          <p className="mx-auto max-w-3xl font-arabic text-xl font-medium leading-[1.95] text-foreground/85 sm:text-2xl">
-            شِلنا عنك هم التخطيط والبحث والحوسة. تِكله تكفل لك كل شي:
-            من القاعة، للتصوير، للكوش، للضيافة — كل شي بسعر واضح وضمان أكيد.
-          </p>
-
-          <p className="mx-auto mt-4 max-w-2xl font-arabic leading-[1.95] text-foreground/65 sm:text-lg">
-            اخترنا اسم «تِكله» من «الاتكال» و«الثقة» — لأن لحظة الفرح ما
-            تستاهل صداع التخطيط.
-          </p>
-        </div>
-      </Reveal>
-
-      {/* (Trust stats strip removed — duplicated below in the Speed section) */}
-
-      {/* Chips + CTAs */}
-      <Reveal delay={0.18}>
-        <div className="mt-8 flex flex-col items-center gap-5">
-          <div className="flex flex-wrap justify-center gap-2.5">
-            {VALUE_CHIPS.map((v, i) => {
-              const Icon = v.icon;
-              return (
-                <motion.span
-                  key={i}
-                  whileHover={{ y: -2 }}
-                  className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-cream/80 px-3.5 py-1.5 text-xs font-bold text-foreground backdrop-blur transition-colors hover:border-gold hover:bg-cream sm:text-sm"
-                >
-                  <Icon className="h-3.5 w-3.5 text-gold" strokeWidth={2} />
-                  {v.label}
-                </motion.span>
-              );
-            })}
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-3">
-            <Link
-              to="/planner"
-              className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full px-8 py-3.5 font-arabic text-sm font-bold shadow-deep transition-all hover:-translate-y-0.5 sm:text-base
-                border-2 border-gold bg-green text-gold hover:bg-green-mid hover:shadow-[0_25px_70px_-20px_hsl(var(--gold)/0.55)]
-                dark:border-[hsl(40_70%_72%)] dark:bg-gradient-to-r dark:from-[hsl(38_70%_68%)] dark:to-[hsl(40_55%_55%)] dark:text-[hsl(100_45%_10%)] dark:shadow-[0_18px_50px_-15px_hsl(40_70%_55%/0.55)] dark:hover:from-[hsl(38_72%_72%)] dark:hover:to-[hsl(40_58%_60%)] dark:hover:shadow-[0_25px_70px_-15px_hsl(40_75%_60%/0.7)]"
-            >
-              <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
-              ابدأ التخطيط الحين
-            </Link>
-            <a
-              href="#speed"
-              className="inline-flex items-center justify-center rounded-full px-7 py-3.5 font-arabic text-sm font-bold backdrop-blur transition-colors sm:text-base
-                border border-green/30 bg-cream/70 text-green hover:bg-cream
-                dark:border-[hsl(40_60%_70%)]/40 dark:bg-[hsl(100_45%_14%)]/80 dark:text-[hsl(40_60%_82%)] dark:hover:border-[hsl(40_60%_70%)]/70 dark:hover:bg-[hsl(100_45%_18%)]"
-            >
-              ليش تِكله؟
-            </a>
-          </div>
-        </div>
-      </Reveal>
-    </div>
-  </section>
-);
-
-// ============================================================================
-// Section B — Speed Comparison + 4 Value Tiles below (creative cascade)
-// ============================================================================
-const SpeedSection = () => (
-  <section
-    id="speed"
-    aria-label="مقارنة الوقت بين الطريقة التقليدية وتِكله"
-    className="relative overflow-hidden bg-background px-4 py-10 sm:px-6 sm:py-12"
-  >
-    <ArabicPattern opacity={0.035} />
-
-    <div className="relative mx-auto max-w-4xl">
-      <Reveal>
-        <div className="text-center">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#A7CAA1]/50 bg-[#163726] px-3 py-1 text-xs font-bold text-[#A7CAA1] backdrop-blur">
-            <Timer className="h-3 w-3 text-[#A7CAA1]" strokeWidth={2} />
-            الفرق اللي يريح راسك
-          </span>
-          <h2 className="mt-3 font-arabic text-2xl font-black leading-[1.5] text-green md:text-3xl">
-            من 6 أسابيع حوسة..{" "}
-            <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-1 leading-[1.5] text-transparent">
-              لـ 5 دقائق وأنت مخلص
-            </span>
-          </h2>
-        </div>
-      </Reveal>
-
-      <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4">
-        {/* Legacy */}
+      <div className="relative mx-auto max-w-4xl">
         <Reveal>
-          <div className="relative h-full overflow-hidden rounded-2xl border border-foreground/10 bg-foreground/[0.05] p-3 shadow-card sm:p-5">
-            <div className="absolute inset-0 bg-gradient-to-br from-foreground/[0.06] to-transparent" />
-            <div className="relative">
-              <div className="inline-flex items-center gap-1.5 rounded-full border border-foreground/15 bg-background/40 px-2.5 py-0.5 text-[10px] font-bold text-foreground/60">
-                <ListChecks className="h-3 w-3" />
-                الطريقة التقليدية
-              </div>
-              <div className="mt-3 font-arabic text-xl font-black text-foreground/70 sm:text-3xl md:text-4xl">
-                6 أسابيع
-              </div>
-              <p className="mt-1 font-arabic text-xs text-foreground/55">
-                من البحث، الاتصالات، والمتابعة
-              </p>
-              <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-foreground/10">
-                <div
-                  className="h-full w-full rounded-full"
-                  style={{
-                    background:
-                      "repeating-linear-gradient(90deg, hsl(var(--foreground) / 0.25) 0 8px, transparent 8px 14px)",
-                  }}
-                />
-              </div>
-              <ul className="mt-4 space-y-1.5 font-arabic text-xs text-foreground/65">
-                <li>• مكالمات وتفاوض مع كل مزود</li>
-                <li>• مقارنات يدوية وأسعار متغيرة</li>
-                <li>• ضياع وقت ومجهود بدون ضمان</li>
-              </ul>
-            </div>
+          <div className="text-center">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#A7CAA1]/50 bg-[#163726] px-3 py-1 text-xs font-bold text-[#A7CAA1] backdrop-blur">
+              <Timer className="h-3 w-3 text-[#A7CAA1]" strokeWidth={2} />
+              {t("speed.badge")}
+            </span>
+            <h2 className="mt-3 font-arabic text-2xl font-black leading-[1.5] text-green md:text-3xl">
+              {t("speed.title1")}{" "}
+              <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-1 leading-[1.5] text-transparent">
+                {t("speed.title2")}
+              </span>
+            </h2>
           </div>
         </Reveal>
 
-        {/* Tikkilah */}
-        <Reveal delay={0.12}>
-          <div className="group relative h-full overflow-hidden rounded-2xl border-2 border-gold/50 bg-cream p-3 shadow-deep sm:p-5">
-            <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gold/30 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-green/15 blur-3xl" />
-            <div className="relative">
-              <div className="inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/15 px-2.5 py-0.5 text-[10px] font-bold text-green">
-                <Zap className="h-3 w-3 text-gold" strokeWidth={2.5} />
-                مع تِكله
-              </div>
-              <div className="mt-3 flex items-baseline gap-1.5">
-                <span className="font-arabic text-xl font-black leading-none text-green sm:text-3xl md:text-4xl">
-                  <AnimatedCounter value={5} />
-                </span>
-                <span className="font-arabic text-lg font-bold text-gold">دقائق</span>
-              </div>
-              <p className="mt-1 font-arabic text-xs font-bold text-green/80">
-                وأنت مخلص — حجز مكتمل بضمان
-              </p>
-              <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-green/10">
-                <motion.div
-                  initial={{ width: "0%" }}
-                  whileInView={{ width: "100%" }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                  className="h-full rounded-full bg-gradient-to-l from-green via-gold to-gold shadow-[0_0_14px_hsl(var(--gold)/0.6)]"
-                />
-              </div>
-              <ul className="mt-4 space-y-1.5 font-arabic text-xs text-foreground/80">
-                {[
-                  "اختر ميزانيتك وعدد ضيوفك",
-                  "اقتراحات ذكية ومزودون مفلترين",
-                  "احجز كل شيء بضغطة، بسعر واضح",
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-1.5">
-                    <CheckCircle2 className="h-3 w-3 shrink-0 text-gold" strokeWidth={2.5} />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </Reveal>
-      </div>
-
-      {/* ── Cascade connector: hairline + label that ties the comparison
-          to the supporting "ليش تِكله أسرع" tiles below. */}
-      <Reveal delay={0.2}>
-        <div className="relative mx-auto mt-8 flex flex-col items-center">
-          <span className="h-8 w-px bg-gradient-to-b from-transparent via-gold/40 to-gold" />
-          <span className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-cream px-3 py-1 text-[10px] font-bold text-green shadow-soft sm:text-xs">
-            <Sparkles className="h-3 w-3 text-gold" strokeWidth={2} />
-            وش وراء الـ٥ دقائق؟
-          </span>
-        </div>
-      </Reveal>
-
-      {/* ── 4 creative value tiles in a 2x2 grid below the comparison ── */}
-      <div className="mt-6 grid grid-cols-2 gap-2 sm:gap-3">
-        {VALUE_TILES.map((tile, i) => {
-          const Icon = tile.icon;
-          // Stagger entry from alternating sides for a "cascade" rhythm.
-          const fromRight = i % 2 === 0;
-          return (
-            <Reveal key={i} delay={0.05 + i * 0.08}>
-              <motion.div
-                initial={{ opacity: 0, x: fromRight ? 16 : -16 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
-                whileHover={{ y: -4 }}
-                className="group relative flex flex-col items-start gap-2 overflow-hidden rounded-xl border border-gold/20 bg-cream/70 p-2.5 shadow-card backdrop-blur-md transition-all duration-500 hover:border-gold/55 hover:bg-cream hover:shadow-[0_16px_40px_-16px_hsl(var(--gold)/0.45)] sm:flex-row sm:items-start sm:gap-3 sm:p-3.5"
-              >
-                {/* Number badge — adds creative ranking */}
-                <span className="absolute left-2 top-2 font-wordmark text-[9px] font-black text-gold/60 sm:left-3 sm:top-3 sm:text-[10px]">
-                  ٠{i + 1}
-                </span>
-
-                {/* Gold sheen sweep */}
-                <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold/15 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-
-                <motion.span
-                  whileHover={{ rotate: -6, scale: 1.08 }}
-                  transition={{ type: "spring", stiffness: 240, damping: 14 }}
-                  className="relative inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-gold/35 bg-gradient-to-br from-gold/20 to-gold/5 text-gold shadow-soft sm:h-9 sm:w-9"
-                >
-                  <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={1.8} />
-                </motion.span>
-
-                <div className="relative min-w-0 flex-1">
-                  <h3 className="font-arabic text-[11px] font-black text-green sm:text-sm md:text-base">
-                    {tile.title}
-                  </h3>
-                  <p className="mt-0.5 font-arabic text-[10px] leading-[1.65] text-foreground/70 sm:mt-1 sm:text-xs sm:leading-[1.7]">
-                    {tile.desc}
-                  </p>
-                  <div className="mt-1.5 h-0.5 w-6 rounded-full bg-gradient-to-l from-green to-gold transition-all duration-500 group-hover:w-10 sm:mt-2 sm:w-8 group-hover:sm:w-14" />
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4">
+          {/* Legacy */}
+          <Reveal>
+            <div className="relative h-full overflow-hidden rounded-2xl border border-foreground/10 bg-foreground/[0.05] p-3 shadow-card sm:p-5">
+              <div className="absolute inset-0 bg-gradient-to-br from-foreground/[0.06] to-transparent" />
+              <div className="relative">
+                <div className="inline-flex items-center gap-1.5 rounded-full border border-foreground/15 bg-background/40 px-2.5 py-0.5 text-[10px] font-bold text-foreground/60">
+                  <ListChecks className="h-3 w-3" />
+                  {t("speed.traditional.chip")}
                 </div>
-              </motion.div>
-            </Reveal>
-          );
-        })}
+                <div className="mt-3 font-arabic text-xl font-black text-foreground/70 sm:text-3xl md:text-4xl">
+                  {t("speed.traditional.value")}
+                </div>
+                <p className="mt-1 font-arabic text-xs text-foreground/55">
+                  {t("speed.traditional.desc")}
+                </p>
+                <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-foreground/10">
+                  <div
+                    className="h-full w-full rounded-full"
+                    style={{
+                      background:
+                        "repeating-linear-gradient(90deg, hsl(var(--foreground) / 0.25) 0 8px, transparent 8px 14px)",
+                    }}
+                  />
+                </div>
+                <ul className="mt-4 space-y-1.5 font-arabic text-xs text-foreground/65">
+                  {tradPoints.map((p, i) => (
+                    <li key={i}>• {p}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Tikkilah */}
+          <Reveal delay={0.12}>
+            <div className="group relative h-full overflow-hidden rounded-2xl border-2 border-gold/50 bg-cream p-3 shadow-deep sm:p-5">
+              <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gold/30 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-green/15 blur-3xl" />
+              <div className="relative">
+                <div className="inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-gold/15 px-2.5 py-0.5 text-[10px] font-bold text-green">
+                  <Zap className="h-3 w-3 text-gold" strokeWidth={2.5} />
+                  {t("speed.tekillah.chip")}
+                </div>
+                <div className="mt-3 flex items-baseline gap-1.5">
+                  <span className="font-arabic text-xl font-black leading-none text-green sm:text-3xl md:text-4xl">
+                    <AnimatedCounter value={5} />
+                  </span>
+                  <span className="font-arabic text-lg font-bold text-gold">{t("speed.tekillah.unit")}</span>
+                </div>
+                <p className="mt-1 font-arabic text-xs font-bold text-green/80">
+                  {t("speed.tekillah.desc")}
+                </p>
+                <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-green/10">
+                  <motion.div
+                    initial={{ width: "0%" }}
+                    whileInView={{ width: "100%" }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                    className="h-full rounded-full bg-gradient-to-l from-green via-gold to-gold shadow-[0_0_14px_hsl(var(--gold)/0.6)]"
+                  />
+                </div>
+                <ul className="mt-4 space-y-1.5 font-arabic text-xs text-foreground/80">
+                  {tekPoints.map((item, i) => (
+                    <li key={i} className="flex items-center gap-1.5">
+                      <CheckCircle2 className="h-3 w-3 shrink-0 text-gold" strokeWidth={2.5} />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Cascade connector */}
+        <Reveal delay={0.2}>
+          <div className="relative mx-auto mt-8 flex flex-col items-center">
+            <span className="h-8 w-px bg-gradient-to-b from-transparent via-gold/40 to-gold" />
+            <span className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-cream px-3 py-1 text-[10px] font-bold text-green shadow-soft sm:text-xs">
+              <Sparkles className="h-3 w-3 text-gold" strokeWidth={2} />
+              {t("speed.connector")}
+            </span>
+          </div>
+        </Reveal>
+
+        {/* 4 creative value tiles */}
+        <div className="mt-6 grid grid-cols-2 gap-2 sm:gap-3">
+          {tiles.map((tile, i) => {
+            const Icon = TILE_ICONS[i] ?? Calculator;
+            const fromRight = i % 2 === 0;
+            return (
+              <Reveal key={i} delay={0.05 + i * 0.08}>
+                <motion.div
+                  initial={{ opacity: 0, x: fromRight ? 16 : -16 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
+                  whileHover={{ y: -4 }}
+                  className="group relative flex flex-col items-start gap-2 overflow-hidden rounded-xl border border-gold/20 bg-cream/70 p-2.5 shadow-card backdrop-blur-md transition-all duration-500 hover:border-gold/55 hover:bg-cream hover:shadow-[0_16px_40px_-16px_hsl(var(--gold)/0.45)] sm:flex-row sm:items-start sm:gap-3 sm:p-3.5"
+                >
+                  <span className="absolute left-2 top-2 font-wordmark text-[9px] font-black text-gold/60 sm:left-3 sm:top-3 sm:text-[10px]">
+                    ٠{i + 1}
+                  </span>
+
+                  <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold/15 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+
+                  <motion.span
+                    whileHover={{ rotate: -6, scale: 1.08 }}
+                    transition={{ type: "spring", stiffness: 240, damping: 14 }}
+                    className="relative inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-gold/35 bg-gradient-to-br from-gold/20 to-gold/5 text-gold shadow-soft sm:h-9 sm:w-9"
+                  >
+                    <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" strokeWidth={1.8} />
+                  </motion.span>
+
+                  <div className="relative min-w-0 flex-1">
+                    <h3 className="font-arabic text-[11px] font-black text-green sm:text-sm md:text-base">
+                      {tile.title}
+                    </h3>
+                    <p className="mt-0.5 font-arabic text-[10px] leading-[1.65] text-foreground/70 sm:mt-1 sm:text-xs sm:leading-[1.7]">
+                      {tile.desc}
+                    </p>
+                    <div className="mt-1.5 h-0.5 w-6 rounded-full bg-gradient-to-l from-green to-gold transition-all duration-500 group-hover:w-10 sm:mt-2 sm:w-8 group-hover:sm:w-14" />
+                  </div>
+                </motion.div>
+              </Reveal>
+            );
+          })}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
-// ---------- Public composite -------------------------------------------------
-export const ProblemSolutionAbout = () => (
-  <>
-    <SpeedSection />
-  </>
-);
-
+export const ProblemSolutionAbout = () => <SpeedSection />;

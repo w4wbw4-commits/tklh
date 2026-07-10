@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import logoAsset from "@/assets/tklh-logo-transparent.png.asset.json";
+
 
 /**
  * Fullscreen splash shown on the homepage while the initial paint settles.
@@ -17,6 +19,7 @@ const MAX_VISIBLE_MS = 2500;
 const OLIVE = "#233324";
 
 export const Preloader = () => {
+  const { t } = useTranslation();
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -66,7 +69,7 @@ export const Preloader = () => {
           draggable={false}
         />
         <span className="font-tagline text-lg font-medium tracking-wide text-gold sm:text-xl">
-          خطط لمناسباتك واحجزها في مكان واحد
+          {t("preloader.slogan")}
         </span>
       </div>
       <style>{`

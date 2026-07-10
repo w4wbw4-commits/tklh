@@ -104,7 +104,7 @@
     "no": "No",
     "or": "or",
     "and": "and",
-    "currency": "\u20C1",
+    "currency": "⃁",
     "guests": "guests",
     "day": "day",
     "days": "days",
@@ -116,7 +116,12 @@
     "logout": "Sign out",
     "backToHome": "Back to home",
     "backToTop": "Back to top",
-    "main": "Main site"
+    "main": "Main site",
+    "continue": "Continue",
+    "getStarted": "Get Started",
+    "planAndBook": "Plan & Book Now",
+    "explorePackages": "Explore Packages",
+    "comingSoon": "Coming Soon"
   },
   "nav": {
     "home": "Home",
@@ -128,7 +133,10 @@
     "admin": "Admin Panel",
     "adminWelcome": "Welcome Mohammed, admin privileges activated",
     "start": "Sign In",
-    "lang": "ع"
+    "lang": "ع",
+    "aboutFull": "About Teklah",
+    "packages": "Packages",
+    "comingSoon": "Coming Soon"
   },
   "hero": {
     "tag": "A luxury Saudi platform for planning your events",
@@ -143,7 +151,35 @@
     "stat2Label": "Events organized",
     "stat3Value": "4.9",
     "stat3Label": "Customer rating",
-    "imgAlt": "Luxury wedding hall with warm lighting"
+    "imgAlt": "Luxury wedding hall with warm lighting",
+    "slogan": "Plan and book all your events in one place",
+    "brand": "Teklah",
+    "subheadPrefix": "Skip the endless errands and weeks of arrangements —",
+    "subheadSuffix": "an intelligent platform that brings every event essential together in one place.",
+    "ctaTitle": "Plan & Book",
+    "ctaDesc": "Curate every detail your way.",
+    "cards": {
+      "groom": {
+        "label": "For the Groom",
+        "caption": "Your Bisht, your elegance"
+      },
+      "bride": {
+        "label": "For the Bride",
+        "caption": "The gown of your dreams"
+      },
+      "hall": {
+        "label": "Venues",
+        "caption": "Halls worthy of the moment"
+      },
+      "photographer": {
+        "label": "Photographers",
+        "caption": "Memories that never fade"
+      },
+      "planner": {
+        "label": "Planners",
+        "caption": "Every detail, curated"
+      }
+    }
   },
   "story": {
     "kicker": "Our story",
@@ -192,7 +228,8 @@
     "privacy": "Privacy Policy",
     "refund": "Refund & Cancellation Policy",
     "legal": "Legal",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "aboutLink": "About Teklah"
   },
   "wizard": {
     "kicker": "Smart planning wizard",
@@ -1508,5 +1545,98 @@
         "body": "For any cancellation or refund question, contact TKLH support through your dashboard or via the contact channels listed in the footer. Please include your booking reference and a brief description of the issue."
       }
     ]
+  },
+  "preloader": {
+    "slogan": "Plan and book all your events in one place"
+  },
+  "speed": {
+    "badge": "The difference that gives you peace of mind",
+    "title1": "From 6 weeks of chaos",
+    "title2": "to 5 minutes and you're done",
+    "traditional": {
+      "chip": "The Traditional Way",
+      "value": "6 Weeks",
+      "desc": "Searching, calling, and following up",
+      "points": [
+        "Calls and negotiations with every vendor",
+        "Manual comparisons and shifting prices",
+        "Wasted time and effort with no guarantee"
+      ]
+    },
+    "tekillah": {
+      "chip": "With Teklah",
+      "unit": "Minutes",
+      "desc": "And you're done — a complete, guaranteed booking",
+      "points": [
+        "Choose your budget and guest count",
+        "Smart recommendations, curated vendors",
+        "Book everything in a click, at a clear price"
+      ]
+    },
+    "connector": "What's behind those 5 minutes?",
+    "tiles": [
+      {
+        "title": "Plan Intelligently",
+        "desc": "A smart calculator gives you your exact budget — no surprises, no hidden numbers."
+      },
+      {
+        "title": "Trusted Vendors",
+        "desc": "We've curated Saudi Arabia's finest providers — verified, proven, dependable."
+      },
+      {
+        "title": "Book in an Instant",
+        "desc": "Finish your arrangements in minutes and skip the endless calls and appointments."
+      },
+      {
+        "title": "Your Wish, Delivered",
+        "desc": "Every service you want, at the price that suits you — exactly as you envision."
+      }
+    ],
+    "ariaLabel": "Time comparison between the traditional way and Teklah"
+  },
+  "aboutPage": {
+    "seoTitle": "About Teklah — Our Identity & Digital Facilities",
+    "seoDesc": "Discover Teklah: your unified intelligent platform for planning, coordinating and managing every event — from major conferences to weddings — all in one place.",
+    "heroBadge": "Who We Are",
+    "heroTitlePart1": "About",
+    "heroTitlePart2": "Teklah",
+    "heroIntro": "Teklah is your unified intelligent platform for planning, coordinating and managing every event — from major official conferences to weddings and personal celebrations —",
+    "heroIntroHighlight": "in one place, with minimal effort.",
+    "facilitiesBadge": "Facilities & Features",
+    "facilitiesTitlePart1": "Everything you need",
+    "facilitiesTitlePart2": "under one roof",
+    "facilitiesSubtitle": "An end-to-end digital experience, crafted to give you comfort, transparency, and confidence at every step.",
+    "facilities": [
+      {
+        "title": "Integrated Smart Coordination",
+        "desc": "Book wedding halls, conferences, décor, and catering with a single click.",
+        "points": [
+          "Halls & stages",
+          "Catering & hospitality",
+          "Photography & décor"
+        ]
+      },
+      {
+        "title": "Booking Management & Tracking",
+        "desc": "A live, intelligent dashboard to follow your dates, costs, and event details in real time.",
+        "points": [
+          "Live notifications",
+          "Clear financial reports",
+          "Event timeline"
+        ]
+      },
+      {
+        "title": "Trusted Partners",
+        "desc": "A wide network of the Kingdom's finest service providers and venues to guarantee a quality that reflects on you.",
+        "points": [
+          "Verified providers",
+          "Genuine reviews",
+          "Quality guarantee"
+        ]
+      }
+    ],
+    "ctaTitle": "Ready to experience the difference?",
+    "ctaPlan": "Plan & Book Now",
+    "ctaPackages": "Explore Packages"
   }
 }
