@@ -1,6 +1,7 @@
 import { motion, type Variants } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import {
   SketchCurtain,
   SketchEucalyptus,
@@ -10,6 +11,7 @@ import {
   SketchTable,
 } from "./SketchArt";
 import wordmarkAsset from "@/assets/tklh-logo-transparent.png.asset.json";
+
 
 
 // ---------------------------------------------------------------------------
@@ -237,17 +239,17 @@ const PlannerIcon = ({ className }: CardIconProps) => (
 
 // ---- Card definitions ------------------------------------------------------
 type CardDef = {
-  label: string;
-  caption: string;
+  labelKey: string;
+  captionKey: string;
   Icon: (p: CardIconProps) => JSX.Element;
   variant: "black" | "ivory" | "stone";
 };
 const cards: CardDef[] = [
-  { label: "للعريس", caption: "بشتك وأناقتك", Icon: BishtIcon, variant: "black" },
-  { label: "للعروس", caption: "فستان حلمك", Icon: DressIcon, variant: "ivory" },
-  { label: "للقاعات", caption: "فخامة مكانك", Icon: HallIcon, variant: "stone" },
-  { label: "للمصورين", caption: "ذكرى لا تنسى", Icon: CameraIcon, variant: "stone" },
-  { label: "للمنسقين", caption: "كل تفاصيلك", Icon: PlannerIcon, variant: "stone" },
+  { labelKey: "hero.cards.groom.label",        captionKey: "hero.cards.groom.caption",        Icon: BishtIcon,   variant: "black" },
+  { labelKey: "hero.cards.bride.label",        captionKey: "hero.cards.bride.caption",        Icon: DressIcon,   variant: "ivory" },
+  { labelKey: "hero.cards.hall.label",         captionKey: "hero.cards.hall.caption",         Icon: HallIcon,    variant: "stone" },
+  { labelKey: "hero.cards.photographer.label", captionKey: "hero.cards.photographer.caption", Icon: CameraIcon,  variant: "stone" },
+  { labelKey: "hero.cards.planner.label",      captionKey: "hero.cards.planner.caption",      Icon: PlannerIcon, variant: "stone" },
 ];
 
 const variantClass: Record<CardDef["variant"], string> = {
