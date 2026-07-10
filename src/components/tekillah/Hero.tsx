@@ -271,7 +271,7 @@ export const Hero = () => {
       dir={isAr ? "rtl" : "ltr"}
       lang={i18n.language}
       className="relative min-h-screen w-full overflow-hidden scroll-smooth"
-      style={{ backgroundColor: "hsl(var(--cream))" }}
+      style={{ backgroundColor: "#163726" }}
     >
       {/* === Background wash === */}
       <div className="pointer-events-none absolute inset-0">
@@ -279,19 +279,19 @@ export const Hero = () => {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 20%, hsl(var(--surface)) 0%, hsl(var(--cream)) 55%, hsl(var(--background)) 100%)",
+              "radial-gradient(ellipse at 50% 20%, rgba(255,255,255,0.06) 0%, rgba(22,55,38,0) 60%)",
           }}
         />
         {/* warm glow */}
         <div
           className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
-          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.18), transparent 70%)" }}
+          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.22), transparent 70%)" }}
         />
         {/* paper grain */}
         <div
-          className="absolute inset-0 opacity-[0.05] mix-blend-multiply"
+          className="absolute inset-0 opacity-[0.05] mix-blend-screen"
           style={{
-            backgroundImage: "radial-gradient(hsl(var(--primary-deep)) 0.5px, transparent 0.5px)",
+            backgroundImage: "radial-gradient(hsl(var(--gold)) 0.5px, transparent 0.5px)",
             backgroundSize: "3px 3px",
           }}
         />
