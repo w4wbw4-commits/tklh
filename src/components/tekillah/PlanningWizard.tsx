@@ -562,7 +562,7 @@ export const PlanningWizard = () => {
                     <SummaryRow label={isAr ? "عدد النساء" : "Women"} value={String(women)} />
                     <SummaryRow
                       label={isAr ? "الخدمات" : "Services"}
-                      value={selected.length ? selected.map((s) => t(`services.${s}`, { defaultValue: s })).join("، ") : "—"}
+                      value={selected.length ? selected.map((s) => t(`wizard.services.${s}`, { defaultValue: s })).join("، ") : "—"}
                     />
                     {(vision || selectedChips.length > 0) && (
                       <SummaryRow
