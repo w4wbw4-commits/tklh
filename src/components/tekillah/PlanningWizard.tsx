@@ -266,7 +266,40 @@ export const PlanningWizard = () => {
     window.scrollTo({ top: target, behavior: "smooth" });
   };
 
+  // Per-step validation — keeps "Next" disabled until required fields are filled.
+  const missingFields = useMemo(() => {
+    const miss: string[] = [];
+    if (step === 0) {
+      if (!city) miss.push(isAr ? "المدينة" : "City");
+      if (!eventType) miss.push(isAr ? "نوع المناسبة" : "Event type");
+      if (!date) miss.push(isAr ? "تاريخ المناسبة" : "Event date");
+      if ((men + women) <= 0) miss.push(isAr ? "عدد الضيوف" : "Guest count");
+    } else if (step === 1) {
+      if (selected.length === 0) miss.push(isAr ? "خدمة واحدة على الأقل" : "At least one service");
+    } else if (step === 2) {
+      if (vision.trim().length === 0 && selectedChips.length === 0) {
+        miss.push(isAr ? "رؤيتك أو طابع الحفل" : "Vision or theme");
+      }
+    }
+    return miss;
+  }, [step, city, eventType, date, men, women, selected, vision, selectedChips, isAr]);
+
+  const canProceed = missingFields.length === 0;
+
+  const nextHint = useMemo(() => {
+    if (canProceed) return "";
+    return (isAr ? "المطلوب: " : "Required: ") + missingFields.join(isAr ? "، " : ", ");
+  }, [canProceed, missingFields, isAr]);
+
   const next = () => {
+    if (!canProceed) {
+      toast.error(
+        isAr
+          ? "الرجاء إكمال الحقول المطلوبة للانتقال للخطوة التالية"
+          : "Please complete the required fields to proceed",
+      );
+      return;
+    }
     setStep((s) => Math.min(s + 1, 3));
     requestAnimationFrame(scrollFormIntoView);
   };
@@ -274,22 +307,6 @@ export const PlanningWizard = () => {
     setStep((s) => Math.max(s - 1, 0));
     requestAnimationFrame(scrollFormIntoView);
   };
-
-  // Per-step validation — keeps "Next" disabled until required fields are filled.
-  const canProceed = useMemo(() => {
-    if (step === 0) return !!city && !!eventType && !!date && (men + women) > 0;
-    if (step === 1) return selected.length > 0;
-    if (step === 2) return vision.trim().length > 0 || selectedChips.length > 0;
-    return true;
-  }, [step, city, eventType, date, men, women, selected, vision, selectedChips]);
-
-  const nextHint = useMemo(() => {
-    if (canProceed) return "";
-    if (step === 0) return t("wizard.details.fillRequired", { defaultValue: "أكمل بيانات الحفل أولاً" });
-    if (step === 1) return t("wizard.services.pickAtLeastOne", { defaultValue: "اختر خدمة واحدة على الأقل" });
-    if (step === 2) return t("wizard.vision.fillRequired", { defaultValue: "اكتب رؤيتك أو اختر طابع" });
-    return "";
-  }, [canProceed, step, t]);
 
   const handleFinish = async () => {
     if (!user) {
