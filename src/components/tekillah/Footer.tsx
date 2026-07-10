@@ -59,9 +59,10 @@ export const Footer = () => {
             </p>
             <div className="mt-5 flex items-center gap-2">
               {[
-              { Icon: Instagram, href: "https://www.instagram.com/tklh.sa/", label: "Instagram" },
+                { Icon: Instagram, href: "https://www.instagram.com/tklh.sa/", label: "Instagram" },
                 { Icon: Music2, href: "https://www.tiktok.com/@tklh.sa", label: "TikTok" },
                 { Icon: SnapchatIcon, href: "https://snapchat.com/t/kVeQXWxt", label: "Snapchat" },
+                { Icon: PinterestIcon, href: "https://pin.it/ex1i0JARN", label: "Pinterest" },
                 { Icon: WhatsAppIcon, href: "https://wa.me/966530466460", label: "WhatsApp" },
                 { Icon: Mail, href: "mailto:Call@tklh.sa", label: "Email" },
               ].map(({ Icon, href, label }) => (
