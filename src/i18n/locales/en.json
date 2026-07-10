@@ -134,7 +134,7 @@
     "adminWelcome": "Welcome Mohammed, admin privileges activated",
     "start": "Sign In",
     "lang": "ع",
-    "aboutFull": "About Teklah",
+    "aboutFull": "About Tklh",
     "packages": "Packages",
     "comingSoon": "Coming Soon"
   },
@@ -153,7 +153,7 @@
     "stat3Label": "Customer rating",
     "imgAlt": "Luxury wedding hall with warm lighting",
     "slogan": "Plan and book all your events in one place",
-    "brand": "Teklah",
+    "brand": "Tklh",
     "subheadPrefix": "Skip the endless errands and weeks of arrangements —",
     "subheadSuffix": "an intelligent platform that brings every event essential together in one place.",
     "ctaTitle": "Plan & Book",
@@ -229,7 +229,7 @@
     "refund": "Refund & Cancellation Policy",
     "legal": "Legal",
     "signOut": "Sign Out",
-    "aboutLink": "About Teklah"
+    "aboutLink": "About Tklh"
   },
   "wizard": {
     "kicker": "Smart planning wizard",
@@ -1564,7 +1564,7 @@
       ]
     },
     "tekillah": {
-      "chip": "With Teklah",
+      "chip": "With Tklh",
       "unit": "Minutes",
       "desc": "And you're done — a complete, guaranteed booking",
       "points": [
@@ -1592,15 +1592,15 @@
         "desc": "Every service you want, at the price that suits you — exactly as you envision."
       }
     ],
-    "ariaLabel": "Time comparison between the traditional way and Teklah"
+    "ariaLabel": "Time comparison between the traditional way and Tklh"
   },
   "aboutPage": {
-    "seoTitle": "About Teklah — Our Identity & Digital Facilities",
-    "seoDesc": "Discover Teklah: your unified intelligent platform for planning, coordinating and managing every event — from major conferences to weddings — all in one place.",
+    "seoTitle": "About Tklh — Our Identity & Digital Facilities",
+    "seoDesc": "Discover Tklh: your unified intelligent platform for planning, coordinating and managing every event — from major conferences to weddings — all in one place.",
     "heroBadge": "Who We Are",
     "heroTitlePart1": "About",
-    "heroTitlePart2": "Teklah",
-    "heroIntro": "Teklah is your unified intelligent platform for planning, coordinating and managing every event — from major official conferences to weddings and personal celebrations —",
+    "heroTitlePart2": "Tklh",
+    "heroIntro": "Tklh is your unified intelligent platform for planning, coordinating and managing every event — from major official conferences to weddings and personal celebrations —",
     "heroIntroHighlight": "in one place, with minimal effort.",
     "facilitiesBadge": "Facilities & Features",
     "facilitiesTitlePart1": "Everything you need",

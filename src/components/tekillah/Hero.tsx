@@ -335,7 +335,7 @@ export const Hero = () => {
               <span className="relative inline-block">
                 <img
                   src={wordmarkAsset.url}
-                  alt={isAr ? "TKLH تِكله" : "TKLH Teklah"}
+                  alt={isAr ? "TKLH تِكله" : "TKLH Tklh"}
                   className="inline-block h-28 sm:h-36 md:h-44 lg:h-52 xl:h-60 w-auto select-none align-middle"
                   draggable={false}
                 />
