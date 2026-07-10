@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-const logoAsset = { url: "https://id-preview--d978ea61-fed9-4b34-bbe9-757c7793d22b.lovable.app/__l5e/assets-v1/0da52b6a-f45a-4029-8e0a-98613e28b596/tklh-logo-transparent.png" };
+import logoAsset from "@/assets/tklh-logo-full.png.asset.json";
 
 /**
  * Fullscreen splash shown on the homepage while the initial paint settles.
