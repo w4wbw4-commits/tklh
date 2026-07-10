@@ -117,11 +117,11 @@
     --popover: 44 38% 97%;
     --popover-foreground: 95 35% 13%;
 
-    /* Primary — deep olive */
-    --primary: 100 41% 21%;
+    /* Primary — premium dark green #163726 */
+    --primary: 151 43% 15%;
     --primary-foreground: 44 38% 97%;
-    --primary-glow: 102 38% 38%;
-    --primary-deep: 100 45% 14%;
+    --primary-glow: 151 35% 25%;
+    --primary-deep: 151 45% 11%;
 
     /* Secondary — soft sage */
     --secondary: 92 38% 83%;
