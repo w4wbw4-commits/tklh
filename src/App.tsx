@@ -134,7 +134,6 @@ const AppRoutes = () => {
                     </Routes>
                   </Suspense>
                   <RoleSwitcher />
-                  <WhatsAppFloating />
                 </TooltipProvider>
               </RouteAwareTheme>
             </AuthProvider>
