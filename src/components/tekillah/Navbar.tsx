@@ -60,7 +60,6 @@ export const Navbar = () => {
       disabled: !isPrimaryAdmin,
       badge: { ar: "قريباً", en: "Soon" },
     },
-    { key: "plan", href: "/planner", type: "route" as const },
   ];
 
 
