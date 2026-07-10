@@ -20,33 +20,7 @@ export const Preloader = () => {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const start = performance.now();
-
-    const finish = () => {
-      const elapsed = performance.now() - start;
-      const wait = Math.max(0, MIN_VISIBLE_MS - elapsed);
-      window.setTimeout(() => setReady(true), wait);
-    };
-
-    if (document.readyState === "complete") {
-      finish();
-      return;
-    }
-
-    let done = false;
-    const onLoad = () => {
-      if (done) return;
-      done = true;
-      finish();
-    };
-
-    window.addEventListener("load", onLoad, { once: true });
-    const cap = window.setTimeout(onLoad, MAX_VISIBLE_MS);
-
-    return () => {
-      window.removeEventListener("load", onLoad);
-      window.clearTimeout(cap);
-    };
+    // temporarily disabled for preview
   }, []);
 
   return (
