@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import logoAsset from "@/assets/tklh-logo-full.png.asset.json";
+import logoAsset from "@/assets/tklh-logo-transparent.png.asset.json";
 
 /**
  * Fullscreen splash shown on the homepage while the initial paint settles.
