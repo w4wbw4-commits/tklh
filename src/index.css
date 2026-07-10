@@ -597,3 +597,29 @@ html {
   }
 }
 
+/* ==== Unified deep green active states (#163726) ==== */
+@layer components {
+  /* Radix Select / Dropdown highlighted & selected items */
+  [role="option"][data-highlighted],
+  [role="option"][data-state="checked"],
+  [role="menuitem"][data-highlighted],
+  [role="menuitemradio"][data-state="checked"],
+  [data-radix-collection-item][data-highlighted] {
+    background-color: #163726 !important;
+    color: #ffffff !important;
+  }
+
+  /* React Day Picker — selected day */
+  .rdp-day_selected,
+  .rdp-day_selected:focus-visible,
+  .rdp-day_selected:hover,
+  [data-selected="true"].rdp-day,
+  .rdp-day[aria-selected="true"] {
+    background-color: #163726 !important;
+    color: #ffffff !important;
+  }
+  .rdp-day_today:not(.rdp-day_selected) {
+    color: #163726 !important;
+  }
+}
+
