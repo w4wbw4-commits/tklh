@@ -40,6 +40,9 @@ const lazyWithRetry = <T extends { default: React.ComponentType<any> }>(
 const ProblemSolutionAbout = lazyWithRetry(() =>
   import("@/components/tekillah/ProblemSolutionAbout").then((m) => ({ default: m.ProblemSolutionAbout })),
 );
+const Gallery = lazyWithRetry(() =>
+  import("@/components/tekillah/Gallery").then((m) => ({ default: m.Gallery })),
+);
 const OccasionsSection = lazyWithRetry(() =>
   import("@/components/tekillah/OccasionsSection").then((m) => ({ default: m.OccasionsSection })),
 );
