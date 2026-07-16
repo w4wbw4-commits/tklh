@@ -100,6 +100,12 @@ const Index = () => {
 
       <LazyVisible minHeight="60vh" fallback={<SectionSkeleton minHeight="60vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
+          <Gallery />
+        </Suspense>
+      </LazyVisible>
+
+      <LazyVisible minHeight="60vh" fallback={<SectionSkeleton minHeight="60vh" />}>
+        <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
           <OccasionsSection />
         </Suspense>
       </LazyVisible>
