@@ -40,6 +40,9 @@ const lazyWithRetry = <T extends { default: React.ComponentType<any> }>(
 const ProblemSolutionAbout = lazyWithRetry(() =>
   import("@/components/tekillah/ProblemSolutionAbout").then((m) => ({ default: m.ProblemSolutionAbout })),
 );
+const Gallery = lazyWithRetry(() =>
+  import("@/components/tekillah/Gallery").then((m) => ({ default: m.Gallery })),
+);
 const OccasionsSection = lazyWithRetry(() =>
   import("@/components/tekillah/OccasionsSection").then((m) => ({ default: m.OccasionsSection })),
 );
@@ -94,6 +97,12 @@ const Index = () => {
       <div className="mx-auto my-2 flex max-w-3xl items-center justify-center px-6">
         <SketchSectionDivider className="h-10 w-full opacity-70" />
       </div>
+
+      <LazyVisible minHeight="60vh" fallback={<SectionSkeleton minHeight="60vh" />}>
+        <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
+          <Gallery />
+        </Suspense>
+      </LazyVisible>
 
       <LazyVisible minHeight="60vh" fallback={<SectionSkeleton minHeight="60vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
