@@ -273,30 +273,41 @@ export const Hero = () => {
       className="relative min-h-screen w-full overflow-hidden scroll-smooth"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
-      {/* === Background wash === */}
+      {/* === Background: luxury celebration photo + olive gradient overlay === */}
       <div className="pointer-events-none absolute inset-0">
+        {/* Hero photograph — swap freely at /public/gallery/hero.jpg */}
+        <img
+          src="/gallery/hero.jpg"
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover"
+          loading="eager"
+          fetchPriority="high"
+        />
+        {/* Deep olive gradient overlay for text legibility */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 20%, hsl(var(--surface)) 0%, hsl(var(--cream)) 55%, hsl(var(--background)) 100%)",
+              "linear-gradient(180deg, hsl(151 43% 12% / 0.85) 0%, hsl(151 43% 12% / 0.72) 40%, hsl(151 43% 15% / 0.88) 100%)",
           }}
         />
-        {/* warm glow */}
+        {/* Warm gold glow accent */}
         <div
-          className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
-          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.18), transparent 70%)" }}
+          className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-30 blur-3xl"
+          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.35), transparent 70%)" }}
         />
-        {/* paper grain */}
+        {/* Subtle paper grain */}
         <div
-          className="absolute inset-0 opacity-[0.05] mix-blend-multiply"
+          className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
           style={{
-            backgroundImage: "radial-gradient(hsl(var(--primary-deep)) 0.5px, transparent 0.5px)",
+            backgroundImage: "radial-gradient(hsl(var(--gold)) 0.5px, transparent 0.5px)",
             backgroundSize: "3px 3px",
           }}
         />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
+
 
       {/* === Sketch watermark (15%) — visible on all screens, narrower on mobile === */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.15]">
