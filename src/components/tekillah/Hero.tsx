@@ -282,14 +282,13 @@ export const Hero = () => {
           aria-hidden
           className="absolute inset-0 h-full w-full object-cover"
           loading="eager"
-          fetchPriority="high"
         />
-        {/* Deep olive gradient overlay for text legibility */}
+        {/* Deep olive gradient overlay — dark enough for text legibility, light enough to feel the photo */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, hsl(151 43% 12% / 0.85) 0%, hsl(151 43% 12% / 0.72) 40%, hsl(151 43% 15% / 0.88) 100%)",
+              "linear-gradient(180deg, hsl(151 43% 10% / 0.65) 0%, hsl(151 43% 12% / 0.5) 45%, hsl(151 43% 14% / 0.78) 100%)",
           }}
         />
         {/* Warm gold glow accent */}
