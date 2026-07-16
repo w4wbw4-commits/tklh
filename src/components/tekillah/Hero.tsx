@@ -309,8 +309,8 @@ export const Hero = () => {
       </div>
 
 
-      {/* === Sketch watermark (15%) — visible on all screens, narrower on mobile === */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.15]">
+      {/* === Sketch watermark — soft cream tint over the dark hero image === */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.08]">
         <SketchCurtain className="absolute inset-y-0 left-0 h-full w-[44px] sm:w-[60px] md:w-[90px]" />
         <SketchCurtain className="absolute inset-y-0 right-0 h-full w-[44px] sm:w-[60px] md:w-[90px]" style={{ transform: "scaleX(-1)" }} />
         <SketchEucalyptus className="absolute top-6 left-[6%] h-[80px] w-[140px] sm:h-[110px] sm:w-[200px] md:h-[140px] md:w-[260px]" />
@@ -336,39 +336,42 @@ export const Hero = () => {
             {/* Massive headline */}
             <motion.h1
               variants={rise}
-              className="font-display text-balance font-black tracking-[-0.005em] text-primary-deep w-full max-w-4xl mx-auto px-4 sm:px-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight md:leading-snug"
+              className="font-display text-balance font-black tracking-[-0.005em] w-full max-w-4xl mx-auto px-4 sm:px-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight md:leading-snug"
               style={{
+                color: "hsl(var(--cream))",
                 fontFeatureSettings: '"kern","liga","calt","dlig"',
                 wordSpacing: "0.05em",
-                textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream)/0.9)",
+                textShadow: "0 2px 20px hsl(151 43% 8% / 0.7), 0 1px 3px hsl(151 43% 8% / 0.9)",
               }}
             >
               <span className="relative inline-block">
                 <img
                   src={wordmarkAsset.url}
                   alt={isAr ? "TKLH تِكله" : "TKLH Tklh"}
-                  className="inline-block h-28 sm:h-36 md:h-44 lg:h-52 xl:h-60 w-auto select-none align-middle"
+                  className="inline-block h-28 sm:h-36 md:h-44 lg:h-52 xl:h-60 w-auto select-none align-middle drop-shadow-[0_6px_24px_rgba(0,0,0,0.55)]"
                   draggable={false}
                 />
               </span>
               <br />
               <br />
-              <span style={{ color: "#163726" }}>{t("hero.slogan")}</span>
+              <span style={{ color: "hsl(var(--cream))" }}>{t("hero.slogan")}</span>
             </motion.h1>
 
 
             {/* Sub-headline */}
             <motion.p
               variants={rise}
-              className="font-tagline mt-6 max-w-2xl mx-auto px-4 text-balance text-sm leading-relaxed text-primary-deep/75 sm:text-base md:text-lg"
+              className="font-tagline mt-6 max-w-2xl mx-auto px-4 text-balance text-sm leading-relaxed sm:text-base md:text-lg"
+              style={{ color: "hsl(var(--cream) / 0.88)", textShadow: "0 1px 8px hsl(151 43% 8% / 0.6)" }}
             >
               {t("hero.subheadPrefix")}{" "}
-              <span className="font-bold" style={{ color: "hsl(var(--green))" }}>{t("hero.brand")}</span>&nbsp;
+              <span className="font-bold" style={{ color: "hsl(var(--gold))" }}>{t("hero.brand")}</span>&nbsp;
               {t("hero.subheadSuffix")}
             </motion.p>
 
 
           </div>
+
 
           {/* Left column (mockup) — intentionally empty */}
           <motion.div
