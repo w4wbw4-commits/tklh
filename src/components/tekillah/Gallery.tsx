@@ -7,9 +7,12 @@
 
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import heroPrepVideo from "../../../public/gallery/hero-prep.mp4.asset.json";
 
 type GalleryItem = {
   src: string;
+  /** Optional looping video that replaces the still image (e.g. hero card). */
+  videoSrc?: string;
   titleAr: string;
   titleEn: string;
   captionAr: string;
@@ -19,7 +22,8 @@ type GalleryItem = {
 // ⬇️  Replace image paths (or drop new jpgs into /public/gallery/) to update.
 export const galleryItems: GalleryItem[] = [
   {
-    src: "/gallery/weddings.jpg",
+    src: "/gallery/weddings.jpg", // used as poster/fallback for the video card
+    videoSrc: heroPrepVideo.url,
     titleAr: "أعراس وزواج",
     titleEn: "Weddings",
     captionAr: "كوش، ديكور، وتنسيق كامل",
@@ -109,12 +113,26 @@ export const Gallery = () => {
               style={{ borderColor: "hsl(var(--gold) / 0.25)" }}
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden">
-                <img
-                  src={item.src}
-                  alt={isAr ? item.titleAr : item.titleEn}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
+                {item.videoSrc ? (
+                  <video
+                    src={item.videoSrc}
+                    poster={item.src}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label={isAr ? item.titleAr : item.titleEn}
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                ) : (
+                  <img
+                    src={item.src}
+                    alt={isAr ? item.titleAr : item.titleEn}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                )}
                 {/* Olive gradient overlay for text legibility */}
                 <div
                   className="absolute inset-0"

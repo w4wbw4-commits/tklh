@@ -1,64 +1,48 @@
-# خطة التوحيد الشاملة للترجمة (AR / EN)
+# خطة التنفيذ
 
 ## الهدف
-كل صفحة يشوفها العميل أو الشريك (Vendor/Partner) تعرض النصوص بالكامل حسب اللغة المختارة، مع نبرة إنجليزية «Corporate Premium» راقية، والحفاظ 100% على النصوص العربية الحالية كما هي بدون أي تغيير في الصياغة أو الخط.
+استبدال أول بطاقة في المعرض (`Gallery.tsx`) بفيديو سينمائي هادئ مدته ~10 ثواني يعرض تجهيز المناسبة، مع تكرار سلس بدون تقطيع، ووضوح عالٍ على الجوال. وإعادة توليد الصور الثلاث المتبقية بجودة فوتوغرافية واقعية 100%.
 
-## قواعد ثابتة
-- **العربية تبقى كما هي حرفياً** — نسخ النصوص الحالية إلى ملف `ar.json` بدون تعديل كلمة.
-- **الإنجليزية Corporate Premium** — «Plan & Book Now», «Get Started», «Continue», «Event Details», «Explore Packages»…
-- **الخطوط**: العربية = Thmanyah / إنجليزية العناوين = Cinzel (مطبّق مسبقاً عبر `html[lang="en"]`).
-- **الاتجاه**: مبدّل تلقائياً في `src/i18n/index.ts` — لا تغيير.
-- **بدون كسر منطق أو تصميم** — فقط استبدال السلاسل النصية بمفاتيح `t()`.
+## 1) توليد الفيديو الافتتاحي
+- الأداة: `videogen--generate_video` (Seedance عبر Lovable AI).
+- المواصفات:
+  - `aspect_ratio: "9:16"` (عمودي للجوال)
+  - `resolution: "1080p"`
+  - `duration: 10` ثوانٍ
+  - `camera_fixed: true` (لتقليل الاهتزاز وتسهيل التكرار السلس)
+- المسار: `public/gallery/hero-prep.mp4`
+- الـ prompt سيغطي 4 مشاهد سينمائية بطيئة تنتقل بسلاسة:
+  1. لمسة أخيرة على كوشة أعراس فاخرة بالورد الأبيض والذهبي
+  2. دخان بخور يتصاعد ببطء في قاعة بإضاءة ذهبية دافئة
+  3. ترتيب صواني القهوة العربية والتمر والحلا على بوفيه أنيق
+  4. يد بثوب أبيض تقدّم فنجان قهوة عربية لضيف بأناقة
+- تلميحات لضمان التكرار السلس بدون قطع: بداية ونهاية بلقطة هادئة متشابهة (fade-friendly)، حركة كاميرا بطيئة جداً، إضاءة ثابتة، بدون قصات حادة.
 
-## النطاق المتفق عليه
-✅ صفحات العميل الكاملة + بوابة الشريك.
-❌ لوحة الأدمن (`/admin/*` وملفات `admin/`) خارج النطاق حالياً.
+## 2) إعادة توليد الصور بجودة واقعية 100%
+باستخدام `imagegen--generate_image` بنموذج `premium` (Gemini 3 Pro Image) للحصول على واقعية فوتوغرافية عالية.
+- `public/gallery/corporate.jpg` — مؤتمر سعودي فاخر، إضاءة طبيعية، تفاصيل واقعية
+- `public/gallery/catering.jpg` — بوفيه ضيافة سعودي واقعي (قهوة عربية، تمر، حلا)، إضاءة ذهبية طبيعية
+- `public/gallery/photography.jpg` — مصور محترف يوثق مناسبة، لقطة كواليس واقعية
+- كل الـ prompts ستؤكد: `photorealistic, shot on medium format camera, natural lighting, no illustration, no CGI, real Saudi setting`.
 
-## التنفيذ على 3 مراحل
+## 3) تعديل مكوّن `Gallery.tsx`
+- إضافة حقل اختياري `videoSrc?: string` إلى نوع `GalleryItem`.
+- جعل أول عنصر (Weddings) يحمل `videoSrc: "/gallery/hero-prep.mp4"`.
+- في الشبكة: إذا كان العنصر يحوي `videoSrc` نعرض `<video>` بدل `<img>` بالخصائص:
+  - `autoPlay muted loop playsInline preload="metadata"`
+  - `poster={item.src}` (لعرض صورة أثناء التحميل — يبقي التصميم سليم)
+  - `object-cover w-full h-full` بنفس نسبة `aspect-[4/5]` الحالية
+  - نفس التراكب الزيتوني والعنوان الذهبي (بدون أي تغيير بصري بالتصميم)
+- الفوائد: تكرار سلس (`loop`)، بدون صوت، تشغيل مضمون على iOS (`playsInline muted`)، تحميل خفيف (`preload="metadata"`).
 
-### المرحلة 1 — الصفحات العامة للزائر (Marketing + Legal + SEO)
-الملفات:
-- `Hero.tsx`, `ProblemSolutionAbout.tsx`, `Mission.tsx`, `OccasionsSection.tsx`, `PlatformPackages.tsx`, `PaymentLogosStrip.tsx`, `Preloader.tsx`, `Footer.tsx`, `PartnerFloatingCTA.tsx`, `WhatsAppFloating.tsx`, `Logo.tsx`, `SiteMenuSheet.tsx`
-- `pages/Index.tsx`, `pages/About.tsx`, `pages/Packages.tsx`, `pages/Vendor.tsx`, `pages/NotFound.tsx`
-- `pages/Terms.tsx`, `pages/Privacy.tsx` (النصوص القانونية الطويلة تُنقل كمصفوفة إلى JSON)
-- `pages/seo/WeddingsPage.tsx`, `EventsPage.tsx`, `ConferencesPage.tsx` (شامل meta titles/descriptions)
-- `components/SEO.tsx` — قراءة العنوان/الوصف الافتراضي من `t()`.
+## 4) ملاحظات فنية
+- نُبقي `public/gallery/weddings.jpg` كصورة `poster` احتياطية لبطاقة الفيديو (سرعة عرض أعلى + fallback).
+- لا تغييرات على باقي الصفحات أو الألوان أو الخطوط.
+- بعد التنفيذ سأتحقق من الحجم والتشغيل التلقائي على الجوال.
 
-### المرحلة 2 — مسار التخطيط والحجز والدفع
-- `PlanningWizard.tsx` + `wizard/StepDetails.tsx`, `StepServices.tsx`, `StepVendors.tsx`, `StepVision.tsx`, `StepBudget.tsx`, `StepPackageDetail.tsx`, `BudgetHealthIndicator.tsx`, `wizard/types.ts` (labels الافتراضية)
-- `pages/Auth.tsx`, `ForgotPassword.tsx`, `ResetPassword.tsx`
-- `pages/Checkout.tsx`, `Success.tsx`, `Invoice.tsx`
-- `customer/*` (Dashboard, Timeline, GuestManager, InvitationDialog, PaymentsPanel, ReportIncidentDialog, EventDayMode…)
-- `reviews/*` (RateBookingDialog, ReportDialog, ReviewsList, VendorRatingBadge)
-
-### المرحلة 3 — بوابة الشريك (Vendor/Partner)
-- كل `pages/vendor/Partner*.tsx` (Overview, Bookings, Calendar, Invoices, Sales, Analytics, Pricing, Checklists, Reviews, Notifications, Profile)
-- `components/tekillah/vendor/*` (PortalLayout, PartnerHero, PartnerDashboardPreview, VendorBookings, VendorCalendar, VendorFinancials, VendorNotifications, VendorPortfolioManager, VendorProfileForm, VendorReviews, WelcomeDialog, StatusBanner, SmartCombobox, SmartPriceField, ExtraServicesPicker, ServiceTagsInput, saudiPlaces.ts, types.ts)
-
-## التفاصيل التقنية
-1. **بنية مفاتيح `ar.json` / `en.json`**: تفريعات حسب الصفحة/المكوّن — مثال `hero.title`, `wizard.details.city`, `partner.overview.kpi.revenue`, `legal.terms.sections[0].title`…
-2. **استبدال النمط `isAr ? "…" : "…"`** بـ `t('key')` مع بقاء `useTranslation()` كما هو.
-3. **قوائم البيانات** (المدن، أنواع المناسبات، الخدمات، فئات الموردين، تصنيفات الشكاوى…) → JSON dictionaries مفتاحها ID ثابت وقيمتها مترجمة، مع دالة helper `tList(prefix, ids)`.
-4. **saudiPlaces.ts** — نضيف حقل `nameEn` لكل مدينة/حي (Riyadh, Jeddah, Dammam, Khobar, Al-Malqa, Al-Olaya…) ونختار الحقل حسب `i18n.language`.
-5. **رسائل WhatsApp/التأكيد**: تُبنى بالكامل من مفاتيح مترجمة (مبدأ مطبّق جزئياً في `PlanningWizard`، يُعمَّم).
-6. **SEO meta**: كل صفحة تمرّر `title`/`description` من `t()`؛ `<html lang>` تحدَّث تلقائياً.
-7. **الأرقام والتواريخ**: توحيد عبر helper واحد في `src/i18n/format.ts` (يستخدم `Intl.NumberFormat` و`Intl.DateTimeFormat` مع `ar-SA`/`en-SA`).
-8. **قاموس مصطلحات إنجليزية موحّد** (Style Guide مختصر داخل الـ PR):
-   - Wedding / Marriage Contract Ceremony / Engagement / Graduation / Family Event / Opening Ceremony
-   - Event Details · Event Type · Event Date · Male Guests · Female Guests
-   - Plan & Book Now · Continue · Back · Previous · Next · Save Changes
-   - Partner Portal · Overview · Bookings · Calendar · Invoices · Sales · Analytics · Pricing · Checklists · Reviews · Notifications · Profile
-   - Coming Soon · Beta · Verified Partner
-   - Slogan: **Relax — Teklah takes care of everything.**
-
-## التحقّق
-- بناء ناجح بعد كل مرحلة.
-- تشغيل الصفحات الرئيسية بمحاكي Playwright في اللغتين والتقاط لقطات للتأكد أن التخطيط لا ينكسر (RTL/LTR، الأيقونات، سهم Back/Next).
-- فحص أن `document.documentElement.lang` و`dir` صحيحان بعد التبديل.
-- التأكد أن الخطوط: Cinzel للعناوين الإنجليزية، Thmanyah للعربية.
-
-## المخرجات
-- ملفّان محدّثان: `src/i18n/locales/ar.json` و `en.json` (توسعة كبيرة).
-- ~70 ملف مكوّن/صفحة يستبدل النص المباشر بـ `t()`.
-- helper `src/i18n/localized.ts` موسّع بدوال `tPlace`, `tService`, `tEventType`.
-- لا تغيير على منطق الأعمال أو قاعدة البيانات.
+## الملفات المتأثرة
+- ✏️ `src/components/tekillah/Gallery.tsx` (إضافة دعم فيديو للعنصر الأول)
+- ➕ `public/gallery/hero-prep.mp4` (فيديو جديد ~10s، 9:16، 1080p)
+- 🔁 `public/gallery/corporate.jpg` (إعادة توليد واقعي)
+- 🔁 `public/gallery/catering.jpg` (إعادة توليد واقعي)
+- 🔁 `public/gallery/photography.jpg` (إعادة توليد واقعي)
