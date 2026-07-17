@@ -88,70 +88,64 @@
 
 @layer base {
   :root {
-    /* === TKLH Brand palette (unified) =========================================
-       Deep olive       #163726  → primary / foreground
-       Sage             #A7CAA1  → secondary / accents / details
-       Warm gold        #C9A84C  → prominent CTAs & premium accents
-       Cream            #F6F1E8  → light section backgrounds
-    */
-    --background: 39 44% 94%;            /* #F6F1E8 cream */
-    --surface:    39 40% 92%;            /* slightly deeper cream */
-    --cream:      39 44% 94%;            /* #F6F1E8 */
-    --foreground: 151 43% 12%;           /* #163726 deep olive ink */
-    --text-muted: 151 15% 32%;
+    /* Brand surfaces — off-white */
+    --background: 60 20% 97%;           /* #f8f8f3 off-white */
+    --surface: 60 22% 96%;              /* #f5f5ee */
+    --cream: 60 30% 98%;                /* #fafaf5 */
+    --foreground: 151 43% 12%;          /* #163726 deep olive ink */
+    --text-muted: 151 15% 35%;
 
-    /* Greens — brand identity #163726 + sage #A7CAA1 */
-    --green:       151 43% 15%;          /* #163726 */
-    --green-mid:   151 30% 30%;
-    --green-light: 111 28% 71%;          /* #A7CAA1 sage */
+    /* Greens — brand identity #163726 */
+    --green: 151 43% 15%;               /* #163726 */
+    --green-mid: 151 30% 30%;
+    --green-light: 111 28% 71%;         /* #A7CAA1 sage accent */
 
-    /* Gold — warm accent #C9A84C */
-    --gold:      44 56% 54%;             /* #C9A84C */
-    --gold-soft: 44 60% 82%;             /* soft champagne */
-
+    /* Sage — signature accent #A7CAA1 (replaces gold) */
+    --gold: 111 28% 71%;                /* #A7CAA1 */
+    --gold-soft: 111 30% 85%;
     /* Antique brown — kept for sketch tonality */
-    --brown:      151 25% 25%;
+    --brown: 151 25% 25%;
     --brown-soft: 111 20% 55%;
 
     /* Problem / warm terracotta */
-    --problem:      14 65% 48%;
+    --problem: 14 65% 48%;
     --problem-soft: 18 70% 88%;
 
     /* Cards & popovers */
-    --card: 39 44% 96%;
+    --card: 60 25% 97%;
     --card-foreground: 151 43% 13%;
-    --popover: 39 44% 97%;
+    --popover: 60 30% 98%;
     --popover-foreground: 151 43% 13%;
 
-    /* Primary — deep olive #163726 */
+    /* Primary — premium dark green #163726 */
     --primary: 151 43% 15%;
-    --primary-foreground: 39 44% 96%;
-    --primary-glow: 111 28% 71%;         /* sage glow */
+    --primary-foreground: 60 30% 98%;   /* off-white */
+    --primary-glow: 111 28% 71%;        /* sage glow */
     --primary-deep: 151 45% 11%;
 
     /* Secondary — sage #A7CAA1 */
     --secondary: 111 28% 71%;
     --secondary-foreground: 151 43% 15%;
 
-    --muted: 39 30% 90%;
-    --muted-foreground: 151 15% 32%;
+    --muted: 60 22% 94%;
+    --muted-foreground: 151 15% 35%;
 
-    --accent: 111 28% 71%;               /* sage */
+    --accent: 111 28% 71%;              /* #A7CAA1 */
     --accent-foreground: 151 43% 15%;
 
     --destructive: 0 75% 45%;
-    --destructive-foreground: 39 44% 96%;
+    --destructive-foreground: 60 30% 98%;
     --success: 140 41% 32%;
-    --success-foreground: 39 44% 96%;
+    --success-foreground: 60 30% 98%;
 
-    --border: 39 25% 84%;
-    --input:  39 22% 86%;
-    --ring:   151 43% 15%;
+    --border: 111 18% 82%;
+    --input: 111 15% 84%;
+    --ring: 151 43% 15%;
 
     --radius: 1rem;
 
-    /* Gradients — cream + olive + gold */
-    --gradient-hero: radial-gradient(ellipse at top right, hsl(var(--gold) / 0.22), transparent 55%), radial-gradient(ellipse at bottom left, hsl(var(--green-light) / 0.45), transparent 55%);
+    /* Gradients — warm + olive blend */
+    --gradient-hero: radial-gradient(ellipse at top right, hsl(var(--gold-soft) / 0.35), transparent 55%), radial-gradient(ellipse at bottom left, hsl(var(--green-light) / 0.5), transparent 55%);
     --gradient-soft: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--surface)) 100%);
     --gradient-olive: linear-gradient(135deg, hsl(var(--green)) 0%, hsl(var(--green-mid)) 100%);
     --gradient-beige: linear-gradient(135deg, hsl(var(--surface)) 0%, hsl(var(--cream)) 100%);
@@ -314,28 +308,12 @@
   }
 
   html {
-    font-family: 'SaudiRiyal', 'IBM Plex Sans Arabic', 'Cairo', 'Thmanyah Sans', 'Tajawal', system-ui, sans-serif;
+    font-family: 'SaudiRiyal', 'Thmanyah Sans', 'Tajawal', system-ui, sans-serif;
     scroll-behavior: smooth;
   }
 
   html[dir="ltr"], html[lang="en"] {
-    font-family: 'SaudiRiyal', 'Inter', 'IBM Plex Sans Arabic', system-ui, sans-serif;
-  }
-
-  /* Arabic headings use Cairo (Bold/SemiBold) for a modern, editorial feel;
-     body copy stays on IBM Plex Sans Arabic for maximum readability. */
-  html[lang="ar"] h1,
-  html[lang="ar"] h2,
-  html[lang="ar"] h3,
-  html[lang="ar"] h4,
-  html[lang="ar"] h5,
-  html[lang="ar"] h6,
-  html[lang="ar"] .font-display,
-  html[lang="ar"] .font-serif,
-  html[lang="ar"] .font-arabic {
-    font-family: 'Cairo', 'IBM Plex Sans Arabic', 'Thmanyah Serif Display', system-ui, sans-serif !important;
-    font-weight: 700;
-    letter-spacing: -0.005em;
+    font-family: 'SaudiRiyal', 'Inter', 'Thmanyah Sans', system-ui, sans-serif;
   }
 
   /* English mode: premium Roman serif for all headings + brand titles.

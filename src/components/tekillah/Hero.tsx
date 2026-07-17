@@ -273,43 +273,33 @@ export const Hero = () => {
       className="relative min-h-screen w-full overflow-hidden scroll-smooth"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
-      {/* === Background: luxury celebration photo + olive gradient overlay === */}
+      {/* === Background wash === */}
       <div className="pointer-events-none absolute inset-0">
-        {/* Hero photograph — swap freely at /public/gallery/hero.jpg */}
-        <img
-          src="/gallery/hero.jpg"
-          alt=""
-          aria-hidden
-          className="absolute inset-0 h-full w-full object-cover"
-          loading="eager"
-        />
-        {/* Deep olive gradient overlay — dark enough for text legibility, light enough to feel the photo */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, hsl(151 43% 10% / 0.65) 0%, hsl(151 43% 12% / 0.5) 45%, hsl(151 43% 14% / 0.78) 100%)",
+              "radial-gradient(ellipse at 50% 20%, hsl(var(--surface)) 0%, hsl(var(--cream)) 55%, hsl(var(--background)) 100%)",
           }}
         />
-        {/* Warm gold glow accent */}
+        {/* warm glow */}
         <div
-          className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-30 blur-3xl"
-          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.35), transparent 70%)" }}
+          className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
+          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.18), transparent 70%)" }}
         />
-        {/* Subtle paper grain */}
+        {/* paper grain */}
         <div
-          className="absolute inset-0 opacity-[0.06] mix-blend-overlay"
+          className="absolute inset-0 opacity-[0.05] mix-blend-multiply"
           style={{
-            backgroundImage: "radial-gradient(hsl(var(--gold)) 0.5px, transparent 0.5px)",
+            backgroundImage: "radial-gradient(hsl(var(--primary-deep)) 0.5px, transparent 0.5px)",
             backgroundSize: "3px 3px",
           }}
         />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
 
-
-      {/* === Sketch watermark — soft cream tint over the dark hero image === */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.08]">
+      {/* === Sketch watermark (15%) — visible on all screens, narrower on mobile === */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.15]">
         <SketchCurtain className="absolute inset-y-0 left-0 h-full w-[44px] sm:w-[60px] md:w-[90px]" />
         <SketchCurtain className="absolute inset-y-0 right-0 h-full w-[44px] sm:w-[60px] md:w-[90px]" style={{ transform: "scaleX(-1)" }} />
         <SketchEucalyptus className="absolute top-6 left-[6%] h-[80px] w-[140px] sm:h-[110px] sm:w-[200px] md:h-[140px] md:w-[260px]" />
@@ -335,42 +325,39 @@ export const Hero = () => {
             {/* Massive headline */}
             <motion.h1
               variants={rise}
-              className="font-display text-balance font-black tracking-[-0.005em] w-full max-w-4xl mx-auto px-4 sm:px-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight md:leading-snug"
+              className="font-display text-balance font-black tracking-[-0.005em] text-primary-deep w-full max-w-4xl mx-auto px-4 sm:px-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight md:leading-snug"
               style={{
-                color: "hsl(var(--cream))",
                 fontFeatureSettings: '"kern","liga","calt","dlig"',
                 wordSpacing: "0.05em",
-                textShadow: "0 2px 20px hsl(151 43% 8% / 0.7), 0 1px 3px hsl(151 43% 8% / 0.9)",
+                textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream)/0.9)",
               }}
             >
               <span className="relative inline-block">
                 <img
                   src={wordmarkAsset.url}
                   alt={isAr ? "TKLH تِكله" : "TKLH Tklh"}
-                  className="inline-block h-28 sm:h-36 md:h-44 lg:h-52 xl:h-60 w-auto select-none align-middle drop-shadow-[0_6px_24px_rgba(0,0,0,0.55)]"
+                  className="inline-block h-28 sm:h-36 md:h-44 lg:h-52 xl:h-60 w-auto select-none align-middle"
                   draggable={false}
                 />
               </span>
               <br />
               <br />
-              <span style={{ color: "hsl(var(--cream))" }}>{t("hero.slogan")}</span>
+              <span style={{ color: "#163726" }}>{t("hero.slogan")}</span>
             </motion.h1>
 
 
             {/* Sub-headline */}
             <motion.p
               variants={rise}
-              className="font-tagline mt-6 max-w-2xl mx-auto px-4 text-balance text-sm leading-relaxed sm:text-base md:text-lg"
-              style={{ color: "hsl(var(--cream) / 0.88)", textShadow: "0 1px 8px hsl(151 43% 8% / 0.6)" }}
+              className="font-tagline mt-6 max-w-2xl mx-auto px-4 text-balance text-sm leading-relaxed text-primary-deep/75 sm:text-base md:text-lg"
             >
               {t("hero.subheadPrefix")}{" "}
-              <span className="font-bold" style={{ color: "hsl(var(--gold))" }}>{t("hero.brand")}</span>&nbsp;
+              <span className="font-bold" style={{ color: "hsl(var(--green))" }}>{t("hero.brand")}</span>&nbsp;
               {t("hero.subheadSuffix")}
             </motion.p>
 
 
           </div>
-
 
           {/* Left column (mockup) — intentionally empty */}
           <motion.div
@@ -382,27 +369,27 @@ export const Hero = () => {
 
 
 
-        {/* === CTA — prominent gold on olive === */}
+        {/* === CTA === */}
         <motion.div variants={rise} className="mt-10 w-full max-w-xl">
           <a
             href="/planner"
-            className={`group relative flex scale-[0.78] items-center gap-3 overflow-hidden rounded-2xl border-2 border-[hsl(var(--gold)/0.7)] bg-gradient-to-br from-[hsl(var(--gold))] via-[hsl(44_60%_60%)] to-[hsl(38_50%_45%)] p-5 ${isAr ? "text-right" : "text-left"} text-[#163726] shadow-[0_25px_60px_-18px_hsl(44_60%_35%/0.65)] backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_30px_70px_-18px_hsl(44_60%_35%/0.8)]`}
+            className={`group relative flex scale-[0.7] items-center gap-3 overflow-hidden rounded-2xl border-2 border-[rgba(22,55,38,0.4)] bg-gradient-to-br from-[#163726] to-[#163726] p-5 ${isAr ? "text-right" : "text-left"} text-[#A7CAA1] shadow-[0_25px_60px_-20px_rgba(22,55,38,0.45)] backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-[rgba(22,55,38,0.7)]`}
           >
-            <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-40 blur-2xl"
-              style={{ background: "radial-gradient(circle, hsl(var(--cream)), transparent 70%)" }} />
-            <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-[rgba(22,55,38,0.35)] bg-[rgba(22,55,38,0.12)] transition-transform duration-500 group-hover:rotate-6" />
+            <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
+              style={{ background: "radial-gradient(circle, #A7CAA1, transparent 70%)" }} />
+            <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-[rgba(167,202,161,0.5)] bg-[rgba(22,55,38,0.4)] transition-transform duration-500 group-hover:rotate-6" />
             <div className="flex-1">
-              <div className="font-display text-lg font-black text-[#163726] sm:text-xl">{t("hero.ctaTitle")}&nbsp;</div>
-              <div className="mt-0.5 text-[12.5px] text-[rgba(22,55,38,0.85)]">{t("hero.ctaDesc")}</div>
+              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[rgba(167,202,161,0.8)]"><br /></div>
+              <div className="font-display text-lg font-black text-[#A7CAA1] sm:text-xl">{t("hero.ctaTitle")}&nbsp;</div>
+              <div className="mt-0.5 text-[12.5px] text-[rgba(250,250,245,0.9)]">{t("hero.ctaDesc")}</div>
             </div>
             {isAr ? (
-              <ArrowLeft className="h-5 w-5 text-[#163726] transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+              <ArrowLeft className="h-5 w-5 text-[#A7CAA1] transition-transform duration-500 ease-out group-hover:-translate-x-1" />
             ) : (
-              <ArrowRight className="h-5 w-5 text-[#163726] transition-transform duration-500 ease-out group-hover:translate-x-1" />
+              <ArrowRight className="h-5 w-5 text-[#A7CAA1] transition-transform duration-500 ease-out group-hover:translate-x-1" />
             )}
           </a>
         </motion.div>
-
 
 
 

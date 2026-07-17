@@ -12,10 +12,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"IBM Plex Sans Arabic"', '"Cairo"', '"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
-        arabic: ['"IBM Plex Sans Arabic"', '"Cairo"', '"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
-        display: ['"Cairo"', '"Thmanyah Serif Display"', '"IBM Plex Sans Arabic"', 'serif'],
-        serif: ['"Cairo"', '"Thmanyah Serif Display"', 'serif'],
+        sans: ['"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
+        arabic: ['"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
+        display: ['"Thmanyah Serif Display"', '"Thmanyah Sans"', 'serif'],
+        serif: ['"Thmanyah Serif Display"', 'serif'],
         cinzel: ['"Cinzel"', '"Thmanyah Serif Display"', 'serif'],
       },
 
