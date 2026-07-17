@@ -7,9 +7,12 @@
 
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import heroPrepVideo from "../../../public/gallery/hero-prep.mp4.asset.json";
 
 type GalleryItem = {
   src: string;
+  /** Optional looping video that replaces the still image (e.g. hero card). */
+  videoSrc?: string;
   titleAr: string;
   titleEn: string;
   captionAr: string;
@@ -19,7 +22,8 @@ type GalleryItem = {
 // ⬇️  Replace image paths (or drop new jpgs into /public/gallery/) to update.
 export const galleryItems: GalleryItem[] = [
   {
-    src: "/gallery/weddings.jpg",
+    src: "/gallery/weddings.jpg", // used as poster/fallback for the video card
+    videoSrc: heroPrepVideo.url,
     titleAr: "أعراس وزواج",
     titleEn: "Weddings",
     captionAr: "كوش، ديكور، وتنسيق كامل",
