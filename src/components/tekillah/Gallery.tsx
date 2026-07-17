@@ -113,12 +113,26 @@ export const Gallery = () => {
               style={{ borderColor: "hsl(var(--gold) / 0.25)" }}
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden">
-                <img
-                  src={item.src}
-                  alt={isAr ? item.titleAr : item.titleEn}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
+                {item.videoSrc ? (
+                  <video
+                    src={item.videoSrc}
+                    poster={item.src}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label={isAr ? item.titleAr : item.titleEn}
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                ) : (
+                  <img
+                    src={item.src}
+                    alt={isAr ? item.titleAr : item.titleEn}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                )}
                 {/* Olive gradient overlay for text legibility */}
                 <div
                   className="absolute inset-0"
