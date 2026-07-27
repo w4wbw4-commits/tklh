@@ -11,6 +11,7 @@ import {
   SketchTable,
 } from "./SketchArt";
 import wordmarkAsset from "@/assets/tklh-logo-transparent.png.asset.json";
+import heroPoster from "@/assets/hero-poster.jpg";
 
 
 
@@ -273,6 +274,18 @@ export const Hero = () => {
       className="relative min-h-screen w-full overflow-hidden scroll-smooth"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
+      {/* === Background poster (placeholder for future hero video) === */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <img
+          src={heroPoster}
+          alt=""
+          width={1920}
+          height={1088}
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-[hsl(var(--cream))]/80 backdrop-blur-[1px]" />
+      </div>
+
       {/* === Background wash === */}
       <div className="pointer-events-none absolute inset-0">
         <div
