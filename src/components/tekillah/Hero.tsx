@@ -271,44 +271,34 @@ export const Hero = () => {
       id="home"
       dir={isAr ? "rtl" : "ltr"}
       lang={i18n.language}
-      className="relative min-h-screen w-full overflow-hidden scroll-smooth"
+      className="relative min-h-screen w-full overflow-hidden scroll-smooth lg:max-h-[960px]"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
-      {/* === Background poster (placeholder for future hero video) === */}
+      {/* === Background poster / future hero video === */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <img
           src={heroPoster}
           alt=""
           width={1920}
           height={1088}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover object-top"
         />
-        <div className="absolute inset-0 bg-[hsl(var(--cream))]/80 backdrop-blur-[1px]" />
-      </div>
-
-      {/* === Background wash === */}
-      <div className="pointer-events-none absolute inset-0">
+        {/* Soft vignette: keeps the headline readable without hiding the photo */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 20%, hsl(var(--surface)) 0%, hsl(var(--cream)) 55%, hsl(var(--background)) 100%)",
+              "radial-gradient(ellipse at 50% 35%, hsl(var(--cream)) / 0.28 0%, transparent 55%)",
           }}
         />
-        {/* warm glow */}
+      </div>
+
+      {/* === Soft warm glow === */}
+      <div className="pointer-events-none absolute inset-0">
         <div
-          className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
-          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.18), transparent 70%)" }}
+          className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-20 blur-3xl"
+          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.22), transparent 70%)" }}
         />
-        {/* paper grain */}
-        <div
-          className="absolute inset-0 opacity-[0.05] mix-blend-multiply"
-          style={{
-            backgroundImage: "radial-gradient(hsl(var(--primary-deep)) 0.5px, transparent 0.5px)",
-            backgroundSize: "3px 3px",
-          }}
-        />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
       </div>
 
       {/* === Sketch watermark (15%) — visible on all screens, narrower on mobile === */}
