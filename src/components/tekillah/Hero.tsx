@@ -12,6 +12,9 @@ import {
 } from "./SketchArt";
 import wordmarkAsset from "@/assets/tklh-logo-transparent.png.asset.json";
 import heroPoster from "@/assets/hero-poster.jpg";
+import heroVideo from "@/assets/hero-video.mp4.asset.json";
+
+
 
 
 
