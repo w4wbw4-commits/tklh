@@ -281,7 +281,7 @@ export const Hero = () => {
           alt=""
           width={1920}
           height={1088}
-          className="h-full w-full object-cover object-bottom"
+          className="h-full w-full object-contain"
         />
         {/* Vignette overlay: image shows at edges, soft cream center keeps text readable */}
         <div
