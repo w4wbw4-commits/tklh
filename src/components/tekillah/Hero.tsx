@@ -288,10 +288,10 @@ export const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--primary-deep))]/10 via-transparent to-[hsl(var(--primary-deep))]/10" />
       </div>
 
-      {/* === Background wash === */}
+      {/* === Background wash (kept light so the poster/video stays visible) === */}
       <div className="pointer-events-none absolute inset-0">
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-60"
           style={{
             background:
               "radial-gradient(ellipse at 50% 20%, hsl(var(--surface)) 0%, hsl(var(--cream)) 55%, hsl(var(--background)) 100%)",
@@ -299,18 +299,11 @@ export const Hero = () => {
         />
         {/* warm glow */}
         <div
-          className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
+          className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-25 blur-3xl"
           style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.18), transparent 70%)" }}
         />
-        {/* paper grain */}
-        <div
-          className="absolute inset-0 opacity-[0.05] mix-blend-multiply"
-          style={{
-            backgroundImage: "radial-gradient(hsl(var(--primary-deep)) 0.5px, transparent 0.5px)",
-            backgroundSize: "3px 3px",
-          }}
-        />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
+        {/* bottom fade for readability */}
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-[hsl(var(--cream))]" />
       </div>
 
       {/* === Sketch watermark (15%) — visible on all screens, narrower on mobile === */}
