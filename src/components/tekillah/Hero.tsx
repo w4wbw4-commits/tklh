@@ -283,14 +283,8 @@ export const Hero = () => {
           height={1088}
           className="h-full w-full object-cover object-[center_35%]"
         />
-        {/* Very light center wash so headline stays readable over the busy photo */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse at 50% 38%, hsl(var(--cream)) / 0.35 0%, transparent 60%)",
-          }}
-        />
+        {/* No overlay — image should be fully visible */}
+        {/* <div className="absolute inset-0" style={{background:"transparent"}} /> */}
       </div>
 
       {/* === Soft warm glow === */}
