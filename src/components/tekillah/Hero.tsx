@@ -283,27 +283,24 @@ export const Hero = () => {
           height={1088}
           className="h-full w-full object-cover"
         />
-        {/* Soft overlay so text stays readable while the image remains visible */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--cream))]/35 via-[hsl(var(--cream))]/25 to-[hsl(var(--cream))]/75" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--primary-deep))]/10 via-transparent to-[hsl(var(--primary-deep))]/10" />
-      </div>
-
-      {/* === Background wash (kept light so the poster/video stays visible) === */}
-      <div className="pointer-events-none absolute inset-0">
+        {/* Vignette overlay: image shows at edges, soft cream center keeps text readable */}
         <div
-          className="absolute inset-0 opacity-60"
+          className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 20%, hsl(var(--surface)) 0%, hsl(var(--cream)) 55%, hsl(var(--background)) 100%)",
+              "radial-gradient(ellipse at 50% 45%, hsl(var(--cream)) / 0.72 0%, hsl(var(--cream)) / 0.45 45%, transparent 75%)",
           }}
         />
-        {/* warm glow */}
+        {/* Subtle top/bottom darkening so the photo feels cinematic */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--primary-deep))]/10 via-transparent to-[hsl(var(--primary-deep))]/20" />
+      </div>
+
+      {/* === Soft warm glow === */}
+      <div className="pointer-events-none absolute inset-0">
         <div
-          className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-25 blur-3xl"
-          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.18), transparent 70%)" }}
+          className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full opacity-20 blur-3xl"
+          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.22), transparent 70%)" }}
         />
-        {/* bottom fade for readability */}
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-[hsl(var(--cream))]" />
       </div>
 
       {/* === Sketch watermark (15%) — visible on all screens, narrower on mobile === */}
