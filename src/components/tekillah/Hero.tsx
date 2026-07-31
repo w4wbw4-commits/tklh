@@ -271,7 +271,7 @@ export const Hero = () => {
       id="home"
       dir={isAr ? "rtl" : "ltr"}
       lang={i18n.language}
-      className="relative min-h-screen w-full overflow-hidden scroll-smooth"
+      className="relative min-h-screen w-full overflow-hidden scroll-smooth lg:max-h-[960px]"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
       {/* === Background poster / future hero video === */}
