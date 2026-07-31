@@ -20,9 +20,8 @@ import {
   formatSaudiLocal,
   normalizeSaudiPhone,
   phoneToSyntheticEmail,
-  phoneToSyntheticPassword,
-  sendOtp,
-  verifyOtp,
+  requestOtp,
+  verifyOtpAndGetCredentials,
 } from "@/lib/phone";
 import { upsertCustomerLead } from "@/lib/leads";
 import { isPendingPlanReady, loadPendingPlan } from "@/lib/pendingPlan";
@@ -75,7 +74,11 @@ const Auth = () => {
     return () => clearTimeout(id);
   }, [resendCooldown]);
 
-  const showDevCodeToast = (code: string) => {
+  const showDevCodeToast = (code?: string) => {
+    if (!code) {
+      toast.success(t("auth.phone.codeSentDevDesc"));
+      return;
+    }
     toast.success(t("auth.phone.codeSentDev", { code }), {
       duration: 12000,
       description: t("auth.phone.codeSentDevDesc"),
@@ -98,14 +101,14 @@ const Auth = () => {
     }
     setSubmitting(true);
     try {
-      const code = await sendOtp(normalized);
+      const { devCode } = await requestOtp(normalized);
       setPhoneE164(normalized);
       setStage("otp");
       setResendCooldown(30);
       setOtp("");
       setOtpError(null);
       setOtpVerified(false);
-      showDevCodeToast(code);
+      showDevCodeToast(devCode);
     } catch {
       toast.error(t("auth.phone.errors.sendFailed"));
     } finally {
@@ -123,35 +126,21 @@ const Auth = () => {
       setOtpError(t("auth.phone.errors.codeLength"));
       return;
     }
-    if (!verifyOtp(phoneE164, code)) {
-      setOtpError(t("auth.phone.errors.codeInvalid"));
-      return;
-    }
 
     verifyInFlightRef.current = true;
     setSubmitting(true);
-    setOtpVerified(true);
 
     try {
-      const email = phoneToSyntheticEmail(phoneE164);
-      const password = await phoneToSyntheticPassword(phoneE164);
-
-      const { error: bootstrapError, data: bootstrapData } = await supabase.functions.invoke("mock-phone-auth", {
-        body: {
-          email,
-          password,
-          phone: phoneE164,
-          displayName: phoneE164,
-        },
-      });
-
-      if (bootstrapError) throw bootstrapError;
+      // The code is validated on the server; it also returns single-use
+      // credentials for the immediate sign-in.
+      const { userId, email, password } = await verifyOtpAndGetCredentials(phoneE164, code, phoneE164);
+      setOtpVerified(true);
 
       const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
       if (signInError || !signInData.user) throw signInError ?? new Error("Sign-in failed");
 
       upsertCustomerLead({
-        userId: bootstrapData?.userId ?? signInData.user.id,
+        userId: userId ?? signInData.user.id,
         phone: phoneE164,
         status: "verified",
         source: "phone_otp",
@@ -165,7 +154,7 @@ const Auth = () => {
       setTimeout(() => navigate(dest, { replace: true }), 250);
     } catch {
       setOtpVerified(false);
-      setOtpError(t("auth.phone.errors.authFailed"));
+      setOtpError(t("auth.phone.errors.codeInvalid"));
     } finally {
       setSubmitting(false);
       verifyInFlightRef.current = false;
@@ -176,12 +165,12 @@ const Auth = () => {
     if (!phoneE164 || resendCooldown > 0) return;
     setSubmitting(true);
     try {
-      const code = await sendOtp(phoneE164);
+      const { devCode } = await requestOtp(phoneE164);
       setResendCooldown(30);
       setOtp("");
       setOtpError(null);
       setOtpVerified(false);
-      showDevCodeToast(code);
+      showDevCodeToast(devCode);
     } catch {
       toast.error(t("auth.phone.errors.sendFailed"));
     } finally {
