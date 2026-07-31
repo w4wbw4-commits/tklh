@@ -320,7 +320,6 @@ export const Hero = () => {
         initial="hidden"
         animate="show"
         className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center px-5 pt-20 pb-10 sm:px-8"
-        style={{border:"4px solid lime"}}
       >
         {/* Two-column hero: text (right in RTL) + mockup (left in RTL) */}
         <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-12">
