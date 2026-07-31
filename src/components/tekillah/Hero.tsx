@@ -274,7 +274,7 @@ export const Hero = () => {
       className="relative min-h-screen w-full overflow-hidden scroll-smooth"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
-      {/* === Background poster (placeholder for future hero video) === */}
+      {/* === Background poster / future hero video === */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <img
           src={heroPoster}
@@ -283,7 +283,9 @@ export const Hero = () => {
           height={1088}
           className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-[hsl(var(--cream))]/80 backdrop-blur-[1px]" />
+        {/* Soft overlay so text stays readable while the image remains visible */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--cream))]/35 via-[hsl(var(--cream))]/25 to-[hsl(var(--cream))]/75" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--primary-deep))]/10 via-transparent to-[hsl(var(--primary-deep))]/10" />
       </div>
 
       {/* === Background wash === */}
