@@ -277,16 +277,21 @@ export const Hero = () => {
       className="relative min-h-screen w-full overflow-hidden scroll-smooth lg:max-h-[960px]"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
-      {/* === Background poster / future hero video === */}
+      {/* === Background hero video (poster fallback) === */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <img
-          src={heroPoster}
-          alt=""
+        <video
+          src={heroVideo.url}
+          poster={heroPoster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
           width={1920}
-          height={1088}
+          height={1080}
           className="h-full w-full object-cover object-top"
         />
-        {/* Soft vignette: keeps the headline readable without hiding the photo */}
+        {/* Soft vignette: keeps the headline readable without hiding the video */}
         <div
           className="absolute inset-0"
           style={{
