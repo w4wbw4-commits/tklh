@@ -281,18 +281,16 @@ export const Hero = () => {
           alt=""
           width={1920}
           height={1088}
-          className="h-full w-full object-contain"
+          className="h-full w-full object-cover object-[center_35%]"
         />
-        {/* Vignette overlay: image shows at edges, soft cream center keeps text readable */}
+        {/* Very light center wash so headline stays readable over the busy photo */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 45%, hsl(var(--cream)) / 0.72 0%, hsl(var(--cream)) / 0.45 45%, transparent 75%)",
+              "radial-gradient(ellipse at 50% 38%, hsl(var(--cream)) / 0.35 0%, transparent 60%)",
           }}
         />
-        {/* Subtle top/bottom darkening so the photo feels cinematic */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--primary-deep))]/10 via-transparent to-[hsl(var(--primary-deep))]/20" />
       </div>
 
       {/* === Soft warm glow === */}
