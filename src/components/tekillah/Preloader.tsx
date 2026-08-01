@@ -120,12 +120,12 @@ export const Preloader = () => {
               </defs>
 
               <path d={outerPath} fill="url(#waxFill)" />
-              <path d={innerPath} fill="none" stroke="rgba(0,0,0,0.28)" strokeWidth="2.5" />
-              <circle cx="100" cy="100" r="66" fill="none" stroke="#A7CAA1" strokeWidth="1.4" opacity="0.85" />
+              <path d={innerPath} fill="none" stroke="rgba(22,55,38,0.25)" strokeWidth="2.5" />
+              <circle cx="100" cy="100" r="66" fill="none" stroke="#163726" strokeWidth="1.4" opacity="0.75" />
 
               {/* official TKLH chair mark — unchanged */}
               <g
-                stroke="#A7CAA1"
+                stroke="#163726"
                 strokeWidth="1.6"
                 fill="none"
                 strokeLinecap="round"
@@ -157,7 +157,7 @@ export const Preloader = () => {
 
           <span
             className="font-tagline text-center text-base font-medium tracking-[0.14em] sm:text-lg animate-[sealFade_1.2s_ease-out_400ms_both]"
-            style={{ color: "#163726" }}
+            style={{ color: "#e8dfc6" }}
           >
             {t("preloader.slogan")}
           </span>
