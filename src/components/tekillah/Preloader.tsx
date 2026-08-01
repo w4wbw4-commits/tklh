@@ -1,178 +1,81 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import cardBgUrl from "@/assets/invite-card-green.jpg";
+import logoAsset from "@/assets/tklh-logo-transparent.png.asset.json";
+
 
 /**
- * Fullscreen splash — an invitation card that unseals and opens.
+ * Fullscreen splash shown on the homepage while the initial paint settles.
  *
- * Phase 1: the faded vintage invitation ground with the olive wax seal
- *          (official TKLH chair mark, untouched) pressed in the centre.
- * Phase 2: the seal lifts and the card splits open like two doors,
- *          revealing the site behind it.
+ * Dismissal logic:
+ * - Displays the splash for exactly 2.5 seconds so the branding animation is
+ *   fully experienced, regardless of how fast the page loads.
+ * - The main homepage data fetching continues asynchronously in the background.
+ *
+ * Brand: the whole logo group is forced to Luxury Olive Green (#233324).
+ * The chair PNG is tinted via CSS mask so it inherits the exact brand color.
  */
-const SEAL_MS = 1900;
-const OPEN_MS = 1400;
-
-/** Organic wavy wax-seal outline built from polar coordinates. */
-const useSealPath = (radius: number, lobes: number, amp: number, seed: number) =>
-  useMemo(() => {
-    const steps = 240;
-    const pts: string[] = [];
-    for (let i = 0; i <= steps; i++) {
-      const a = (i / steps) * Math.PI * 2;
-      const r =
-        radius *
-        (1 + amp * Math.sin(a * lobes + seed) + amp * 0.35 * Math.sin(a * (lobes * 2 + 1) + seed * 2));
-      pts.push(`${(100 + r * Math.cos(a)).toFixed(2)},${(100 + r * Math.sin(a)).toFixed(2)}`);
-    }
-    return `M${pts.join(" L")} Z`;
-  }, [radius, lobes, amp, seed]);
+const MIN_VISIBLE_MS = 2500;
+const MAX_VISIBLE_MS = 2500;
+const OLIVE = "#233324";
 
 export const Preloader = () => {
   const { t } = useTranslation();
-  const [phase, setPhase] = useState<"seal" | "opening" | "done">("seal");
-
-  const outerPath = useSealPath(88, 11, 0.035, 0.6);
-  const innerPath = useSealPath(80, 11, 0.03, 0.6);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const a = window.setTimeout(() => setPhase("opening"), SEAL_MS);
-    const b = window.setTimeout(() => setPhase("done"), SEAL_MS + OPEN_MS);
+    const start = performance.now();
+
+    const finish = () => {
+      const elapsed = performance.now() - start;
+      const wait = Math.max(0, MIN_VISIBLE_MS - elapsed);
+      window.setTimeout(() => setReady(true), wait);
+    };
+
+    if (document.readyState === "complete") {
+      finish();
+      return;
+    }
+
+    let done = false;
+    const onLoad = () => {
+      if (done) return;
+      done = true;
+      finish();
+    };
+
+    window.addEventListener("load", onLoad, { once: true });
+    const cap = window.setTimeout(onLoad, MAX_VISIBLE_MS);
+
     return () => {
-      window.clearTimeout(a);
-      window.clearTimeout(b);
+      window.removeEventListener("load", onLoad);
+      window.clearTimeout(cap);
     };
   }, []);
 
-  const opening = phase !== "seal";
-  const done = phase === "done";
-
-  const half = (side: "left" | "right") => (
-    <div
-      className="absolute inset-y-0 w-1/2 overflow-hidden"
-      style={{
-        [side]: 0,
-        transformOrigin: side === "left" ? "left center" : "right center",
-        transform: opening
-          ? `perspective(1600px) rotateY(${side === "left" ? "" : "-"}72deg) translateX(${side === "left" ? "-" : ""}6%)`
-          : "perspective(1600px) rotateY(0deg)",
-        transition: `transform ${OPEN_MS}ms cubic-bezier(0.65,0,0.35,1), opacity ${OPEN_MS}ms ease-in`,
-        opacity: opening ? 0 : 1,
-        boxShadow: "0 0 80px rgba(0,0,0,0.35)",
-      }}
-    >
-      <div
-        className="absolute inset-y-0 w-[200%]"
-        style={{
-          [side]: 0,
-          backgroundImage: `url(${cardBgUrl})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
-      {/* soft crease along the fold */}
-      <div
-        className="pointer-events-none absolute inset-y-0 w-16"
-        style={{
-          [side === "left" ? "right" : "left"]: 0,
-          background:
-            side === "left"
-              ? "linear-gradient(to right, transparent, rgba(0,0,0,0.22))"
-              : "linear-gradient(to left, transparent, rgba(0,0,0,0.22))",
-        }}
-      />
-    </div>
-  );
-
   return (
     <div
-      aria-hidden={done}
+      aria-hidden={ready}
       role="status"
-      className={`fixed inset-0 z-[9999] overflow-hidden ${done ? "pointer-events-none opacity-0" : "opacity-100"}`}
-      style={{ backgroundColor: "#163726", transition: "opacity 300ms ease-out" }}
+      className={`fixed inset-0 z-[9999] grid place-items-center bg-green transition-all duration-500 ease-out ${
+        ready ? "pointer-events-none scale-95 opacity-0" : "opacity-100"
+      }`}
+      style={{ willChange: "opacity, transform" }}
     >
-      {half("left")}
-      {half("right")}
-
-      {/* seal + slogan */}
-      <div
-        className="absolute inset-0 grid place-items-center"
-        style={{
-          transform: opening ? "scale(1.35) translateY(-8px)" : "scale(1)",
-          opacity: opening ? 0 : 1,
-          transition: `transform ${OPEN_MS}ms cubic-bezier(0.22,1,0.36,1), opacity 700ms ease-out`,
-        }}
-      >
-        <div className="flex flex-col items-center gap-7">
-          <div className="animate-[sealPress_900ms_cubic-bezier(0.22,1,0.36,1)_both]">
-            <svg
-              viewBox="0 0 200 200"
-              className="h-44 w-44 sm:h-56 sm:w-56 drop-shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
-              aria-label="TKLH تِكله"
-              role="img"
-            >
-              <defs>
-                <radialGradient id="waxFill" cx="0.38" cy="0.32" r="0.85">
-                  <stop offset="0%" stopColor="#f3ecd9" />
-                  <stop offset="55%" stopColor="#e8dfc6" />
-                  <stop offset="100%" stopColor="#d6c8a4" />
-                </radialGradient>
-              </defs>
-
-              <path d={outerPath} fill="url(#waxFill)" />
-              <path d={innerPath} fill="none" stroke="rgba(22,55,38,0.25)" strokeWidth="2.5" />
-              <circle cx="100" cy="100" r="66" fill="none" stroke="#163726" strokeWidth="1.4" opacity="0.75" />
-
-              {/* official TKLH chair mark — unchanged */}
-              <g
-                stroke="#163726"
-                strokeWidth="1.6"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                opacity="0.95"
-              >
-                <ellipse cx="100" cy="76" rx="17" ry="22" />
-                <ellipse cx="100" cy="76" rx="12" ry="16.5" opacity="0.55" />
-                <path d="M88 92 L86 112" />
-                <path d="M112 92 L114 112" />
-                <path d="M78 114 Q100 106 122 114 Q100 124 78 114 Z" />
-                <path d="M78 118 Q100 128 122 118" opacity="0.6" />
-                <path d="M82 120 L79 146" />
-                <path d="M118 120 L121 146" />
-                <path d="M94 123 L93 142" opacity="0.7" />
-                <path d="M106 123 L107 142" opacity="0.7" />
-                <path d="M81 136 Q100 141 119 136" opacity="0.5" />
-              </g>
-
-              <path
-                d={outerPath}
-                fill="none"
-                stroke="rgba(255,255,255,0.14)"
-                strokeWidth="1.6"
-                transform="translate(-1,-1)"
-              />
-            </svg>
-          </div>
-
-          <span
-            className="font-tagline text-center text-base font-medium tracking-[0.14em] sm:text-lg animate-[sealFade_1.2s_ease-out_400ms_both]"
-            style={{ color: "#e8dfc6" }}
-          >
-            {t("preloader.slogan")}
-          </span>
-        </div>
+      <div className="flex flex-col items-center gap-4 animate-[splashBreath_2.4s_ease-in-out_infinite]">
+        <img
+          src={logoAsset.url}
+          alt="TKLH تِكله"
+          className="h-24 w-auto sm:h-28 object-contain select-none"
+          draggable={false}
+        />
+        <span className="font-tagline text-lg font-medium tracking-wide text-gold sm:text-xl">
+          {t("preloader.slogan")}
+        </span>
       </div>
-
       <style>{`
-        @keyframes sealPress {
-          0%   { opacity: 0; transform: scale(1.5) rotate(-9deg); }
-          60%  { opacity: 1; transform: scale(0.96) rotate(1.5deg); }
-          100% { opacity: 1; transform: scale(1) rotate(0deg); }
-        }
-        @keyframes sealFade {
-          from { opacity: 0; transform: translateY(8px); }
-          to   { opacity: 1; transform: translateY(0); }
+        @keyframes splashBreath {
+          0%, 100% { opacity: 0.55; transform: scale(1); }
+          50%      { opacity: 1;    transform: scale(1.04); }
         }
       `}</style>
     </div>
