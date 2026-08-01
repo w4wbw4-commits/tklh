@@ -37,17 +37,16 @@ const lazyWithRetry = <T extends { default: React.ComponentType<any> }>(
     }
   });
 
-const ProblemSolutionAbout = lazyWithRetry(() =>
-  import("@/components/tekillah/ProblemSolutionAbout").then((m) => ({ default: m.ProblemSolutionAbout })),
+// Was: the long "6 weeks vs 5 minutes" comparison. Replaced by three short
+// horizontal step cards (HowItWorks).
+const HowItWorks = lazyWithRetry(() =>
+  import("@/components/tekillah/HowItWorks").then((m) => ({ default: m.HowItWorks })),
 );
 const OccasionsSection = lazyWithRetry(() =>
   import("@/components/tekillah/OccasionsSection").then((m) => ({ default: m.OccasionsSection })),
 );
 const DashboardPreview = lazyWithRetry(() =>
   import("@/components/tekillah/DashboardPreview").then((m) => ({ default: m.DashboardPreview })),
-);
-const PaymentLogosStrip = lazyWithRetry(() =>
-  import("@/components/tekillah/PaymentLogosStrip").then((m) => ({ default: m.PaymentLogosStrip })),
 );
 const UpcomingFeatures = lazyWithRetry(() =>
   import("@/components/tekillah/UpcomingFeatures").then((m) => ({ default: m.UpcomingFeatures })),
@@ -87,7 +86,7 @@ const Index = () => {
 
       <LazyVisible minHeight="50vh" fallback={<SectionSkeleton minHeight="50vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="50vh" />}>
-          <ProblemSolutionAbout />
+          <HowItWorks />
         </Suspense>
       </LazyVisible>
 
@@ -103,11 +102,6 @@ const Index = () => {
       <LazyVisible minHeight="60vh" fallback={<SectionSkeleton minHeight="60vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
           <DashboardPreview />
-        </Suspense>
-      </LazyVisible>
-      <LazyVisible minHeight="20vh" fallback={<SectionSkeleton minHeight="20vh" />}>
-        <Suspense fallback={<SectionSkeleton minHeight="20vh" />}>
-          <PaymentLogosStrip />
         </Suspense>
       </LazyVisible>
       <LazyVisible minHeight="50vh" fallback={<SectionSkeleton minHeight="50vh" />}>

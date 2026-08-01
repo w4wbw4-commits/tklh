@@ -12,10 +12,13 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
-        arabic: ['"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
-        display: ['"Thmanyah Serif Display"', '"Thmanyah Sans"', 'serif'],
-        serif: ['"Thmanyah Serif Display"', 'serif'],
+        // NOTE: 'Cairo' (Arabic) and 'Baloo 2' (Latin) are TEMPORARY Google Fonts
+        // stand-ins for the custom brand face until the original licence is
+        // purchased. Remove them from these stacks once the real font lands.
+        sans: ['"Thmanyah Sans"', 'Cairo', 'Tajawal', 'system-ui', 'sans-serif'],
+        arabic: ['"Thmanyah Sans"', 'Cairo', 'Tajawal', 'system-ui', 'sans-serif'],
+        display: ['"Thmanyah Serif Display"', '"Thmanyah Sans"', '"Baloo 2"', 'Cairo', 'serif'],
+        serif: ['"Thmanyah Serif Display"', '"Baloo 2"', 'serif'],
         cinzel: ['"Cinzel"', '"Thmanyah Serif Display"', 'serif'],
       },
 
@@ -27,6 +30,15 @@ export default {
         foreground: "hsl(var(--foreground))",
         surface: "hsl(var(--surface))",
         cream: "hsl(var(--cream))",
+        bone: "hsl(var(--bone))",
+        brass: {
+          DEFAULT: "hsl(var(--brass))",
+          soft: "hsl(var(--brass-soft))",
+        },
+        cherry: {
+          DEFAULT: "hsl(var(--cherry))",
+          soft: "hsl(var(--cherry-soft))",
+        },
         "text-muted": "hsl(var(--text-muted))",
         green: {
           DEFAULT: "hsl(var(--green))",
@@ -41,6 +53,7 @@ export default {
           DEFAULT: "hsl(var(--brown))",
           soft: "hsl(var(--brown-soft))",
         },
+
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
