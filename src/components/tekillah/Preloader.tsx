@@ -1,15 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import cardBg from "@/assets/invite-card-bg.jpg.asset.json";
 
 /**
- * Fullscreen splash — wax-seal opening.
+ * Fullscreen splash — an invitation card that unseals and opens.
  *
- * A hand-pressed olive wax seal (organic wavy edge) stamped on a warm
- * cream paper ground, with the official TKLH chair mark embossed inside.
- * Text content is unchanged.
+ * Phase 1: the faded vintage invitation ground with the olive wax seal
+ *          (official TKLH chair mark, untouched) pressed in the centre.
+ * Phase 2: the seal lifts and the card splits open like two doors,
+ *          revealing the site behind it.
  */
-const MIN_VISIBLE_MS = 2500;
-const MAX_VISIBLE_MS = 2500;
+const SEAL_MS = 1900;
+const OPEN_MS = 1400;
 
 /** Organic wavy wax-seal outline built from polar coordinates. */
 const useSealPath = (radius: number, lobes: number, amp: number, seed: number) =>
@@ -28,127 +30,138 @@ const useSealPath = (radius: number, lobes: number, amp: number, seed: number) =
 
 export const Preloader = () => {
   const { t } = useTranslation();
-  const [ready, setReady] = useState(false);
+  const [phase, setPhase] = useState<"seal" | "opening" | "done">("seal");
 
   const outerPath = useSealPath(88, 11, 0.035, 0.6);
   const innerPath = useSealPath(80, 11, 0.03, 0.6);
 
   useEffect(() => {
-    const start = performance.now();
-
-    const finish = () => {
-      const elapsed = performance.now() - start;
-      const wait = Math.max(0, MIN_VISIBLE_MS - elapsed);
-      window.setTimeout(() => setReady(true), wait);
-    };
-
-    if (document.readyState === "complete") {
-      finish();
-      return;
-    }
-
-    let done = false;
-    const onLoad = () => {
-      if (done) return;
-      done = true;
-      finish();
-    };
-
-    window.addEventListener("load", onLoad, { once: true });
-    const cap = window.setTimeout(onLoad, MAX_VISIBLE_MS);
-
+    const a = window.setTimeout(() => setPhase("opening"), SEAL_MS);
+    const b = window.setTimeout(() => setPhase("done"), SEAL_MS + OPEN_MS);
     return () => {
-      window.removeEventListener("load", onLoad);
-      window.clearTimeout(cap);
+      window.clearTimeout(a);
+      window.clearTimeout(b);
     };
   }, []);
 
-  return (
+  const opening = phase !== "seal";
+  const done = phase === "done";
+
+  const half = (side: "left" | "right") => (
     <div
-      aria-hidden={ready}
-      role="status"
-      className={`fixed inset-0 z-[9999] grid place-items-center transition-all duration-700 ease-out ${
-        ready ? "pointer-events-none scale-[1.03] opacity-0" : "opacity-100"
-      }`}
-      style={{ backgroundColor: "#f6f1e8", willChange: "opacity, transform" }}
+      className="absolute inset-y-0 w-1/2 overflow-hidden"
+      style={{
+        [side]: 0,
+        transformOrigin: side === "left" ? "left center" : "right center",
+        transform: opening
+          ? `perspective(1600px) rotateY(${side === "left" ? "" : "-"}72deg) translateX(${side === "left" ? "-" : ""}6%)`
+          : "perspective(1600px) rotateY(0deg)",
+        transition: `transform ${OPEN_MS}ms cubic-bezier(0.65,0,0.35,1), opacity ${OPEN_MS}ms ease-in`,
+        opacity: opening ? 0 : 1,
+        boxShadow: "0 0 80px rgba(22,55,38,0.25)",
+      }}
     >
-      {/* paper texture + soft vignette */}
       <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.5]"
+        className="absolute inset-y-0 w-[200%]"
         style={{
-          background:
-            "radial-gradient(circle at 50% 45%, rgba(255,255,255,0.7), transparent 60%), radial-gradient(circle at 50% 55%, rgba(22,55,38,0.06), transparent 70%)",
+          [side]: 0,
+          backgroundImage: `url(${cardBg.url})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       />
+      {/* soft crease along the fold */}
+      <div
+        className="pointer-events-none absolute inset-y-0 w-16"
+        style={{
+          [side === "left" ? "right" : "left"]: 0,
+          background:
+            side === "left"
+              ? "linear-gradient(to right, transparent, rgba(22,55,38,0.14))"
+              : "linear-gradient(to left, transparent, rgba(22,55,38,0.14))",
+        }}
+      />
+    </div>
+  );
 
-      <div className="relative flex flex-col items-center gap-7">
-        <div className="animate-[sealPress_900ms_cubic-bezier(0.22,1,0.36,1)_both]">
-          <svg
-            viewBox="0 0 200 200"
-            className="h-40 w-40 sm:h-52 sm:w-52 drop-shadow-[0_18px_34px_rgba(22,55,38,0.28)]"
-            aria-label="TKLH تِكله"
-            role="img"
-          >
-            <defs>
-              <radialGradient id="waxFill" cx="0.38" cy="0.32" r="0.85">
-                <stop offset="0%" stopColor="#2b4732" />
-                <stop offset="55%" stopColor="#1d3826" />
-                <stop offset="100%" stopColor="#12281b" />
-              </radialGradient>
-            </defs>
+  return (
+    <div
+      aria-hidden={done}
+      role="status"
+      className={`fixed inset-0 z-[9999] overflow-hidden ${done ? "pointer-events-none opacity-0" : "opacity-100"}`}
+      style={{ backgroundColor: "#f6f1e8", transition: "opacity 300ms ease-out" }}
+    >
+      {half("left")}
+      {half("right")}
 
-            {/* wax body */}
-            <path d={outerPath} fill="url(#waxFill)" />
-            {/* embossed inner lip */}
-            <path d={innerPath} fill="none" stroke="rgba(0,0,0,0.28)" strokeWidth="2.5" />
-            {/* engraved ring */}
-            <circle cx="100" cy="100" r="66" fill="none" stroke="#A7CAA1" strokeWidth="1.4" opacity="0.85" />
-
-            {/* official TKLH chair mark — engraved line art */}
-            <g
-              stroke="#A7CAA1"
-              strokeWidth="1.6"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              opacity="0.95"
+      {/* seal + slogan */}
+      <div
+        className="absolute inset-0 grid place-items-center"
+        style={{
+          transform: opening ? "scale(1.35) translateY(-8px)" : "scale(1)",
+          opacity: opening ? 0 : 1,
+          transition: `transform ${OPEN_MS}ms cubic-bezier(0.22,1,0.36,1), opacity 700ms ease-out`,
+        }}
+      >
+        <div className="flex flex-col items-center gap-7">
+          <div className="animate-[sealPress_900ms_cubic-bezier(0.22,1,0.36,1)_both]">
+            <svg
+              viewBox="0 0 200 200"
+              className="h-40 w-40 sm:h-52 sm:w-52 drop-shadow-[0_18px_34px_rgba(22,55,38,0.35)]"
+              aria-label="TKLH تِكله"
+              role="img"
             >
-              {/* medallion back */}
-              <ellipse cx="100" cy="76" rx="17" ry="22" />
-              <ellipse cx="100" cy="76" rx="12" ry="16.5" opacity="0.55" />
-              {/* back posts down to seat */}
-              <path d="M88 92 L86 112" />
-              <path d="M112 92 L114 112" />
-              {/* seat */}
-              <path d="M78 114 Q100 106 122 114 Q100 124 78 114 Z" />
-              <path d="M78 118 Q100 128 122 118" opacity="0.6" />
-              {/* legs */}
-              <path d="M82 120 L79 146" />
-              <path d="M118 120 L121 146" />
-              <path d="M94 123 L93 142" opacity="0.7" />
-              <path d="M106 123 L107 142" opacity="0.7" />
-              {/* stretcher */}
-              <path d="M81 136 Q100 141 119 136" opacity="0.5" />
-            </g>
+              <defs>
+                <radialGradient id="waxFill" cx="0.38" cy="0.32" r="0.85">
+                  <stop offset="0%" stopColor="#2b4732" />
+                  <stop offset="55%" stopColor="#1d3826" />
+                  <stop offset="100%" stopColor="#12281b" />
+                </radialGradient>
+              </defs>
 
-            {/* subtle wax highlight */}
-            <path
-              d={outerPath}
-              fill="none"
-              stroke="rgba(255,255,255,0.14)"
-              strokeWidth="1.6"
-              transform="translate(-1,-1)"
-            />
-          </svg>
+              <path d={outerPath} fill="url(#waxFill)" />
+              <path d={innerPath} fill="none" stroke="rgba(0,0,0,0.28)" strokeWidth="2.5" />
+              <circle cx="100" cy="100" r="66" fill="none" stroke="#A7CAA1" strokeWidth="1.4" opacity="0.85" />
+
+              {/* official TKLH chair mark — unchanged */}
+              <g
+                stroke="#A7CAA1"
+                strokeWidth="1.6"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                opacity="0.95"
+              >
+                <ellipse cx="100" cy="76" rx="17" ry="22" />
+                <ellipse cx="100" cy="76" rx="12" ry="16.5" opacity="0.55" />
+                <path d="M88 92 L86 112" />
+                <path d="M112 92 L114 112" />
+                <path d="M78 114 Q100 106 122 114 Q100 124 78 114 Z" />
+                <path d="M78 118 Q100 128 122 118" opacity="0.6" />
+                <path d="M82 120 L79 146" />
+                <path d="M118 120 L121 146" />
+                <path d="M94 123 L93 142" opacity="0.7" />
+                <path d="M106 123 L107 142" opacity="0.7" />
+                <path d="M81 136 Q100 141 119 136" opacity="0.5" />
+              </g>
+
+              <path
+                d={outerPath}
+                fill="none"
+                stroke="rgba(255,255,255,0.14)"
+                strokeWidth="1.6"
+                transform="translate(-1,-1)"
+              />
+            </svg>
+          </div>
+
+          <span
+            className="font-tagline text-center text-base font-medium tracking-[0.14em] sm:text-lg animate-[sealFade_1.2s_ease-out_400ms_both]"
+            style={{ color: "#163726" }}
+          >
+            {t("preloader.slogan")}
+          </span>
         </div>
-
-        <span
-          className="font-tagline text-center text-base font-medium tracking-[0.14em] sm:text-lg animate-[sealFade_1.2s_ease-out_400ms_both]"
-          style={{ color: "#163726" }}
-        >
-          {t("preloader.slogan")}
-        </span>
       </div>
 
       <style>{`
