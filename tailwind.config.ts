@@ -12,14 +12,13 @@ export default {
     },
     extend: {
       fontFamily: {
-        // NOTE: 'Cairo' (Arabic) and 'Baloo 2' (Latin) are TEMPORARY Google Fonts
-        // stand-ins for the custom brand face until the original licence is
-        // purchased. Remove them from these stacks once the real font lands.
-        sans: ['"Thmanyah Sans"', 'Cairo', 'Tajawal', 'system-ui', 'sans-serif'],
-        arabic: ['"Thmanyah Sans"', 'Cairo', 'Tajawal', 'system-ui', 'sans-serif'],
-        display: ['"Thmanyah Serif Display"', '"Thmanyah Sans"', '"Baloo 2"', 'Cairo', 'serif'],
-        serif: ['"Thmanyah Serif Display"', '"Baloo 2"', 'serif'],
-        cinzel: ['"Cinzel"', '"Thmanyah Serif Display"', 'serif'],
+        // Identity file typography: Poppins (Latin) + IBM Plex Sans Arabic
+        // (Arabic) as the sanctioned fallbacks behind the custom brand face.
+        sans: ['"Thmanyah Sans"', '"IBM Plex Sans Arabic"', 'Poppins', 'system-ui', 'sans-serif'],
+        arabic: ['"Thmanyah Sans"', '"IBM Plex Sans Arabic"', 'system-ui', 'sans-serif'],
+        display: ['"Thmanyah Serif Display"', 'Poppins', '"IBM Plex Sans Arabic"', 'serif'],
+        serif: ['"Thmanyah Serif Display"', 'Poppins', 'serif'],
+        cinzel: ['"Cinzel"', 'Poppins', '"Thmanyah Serif Display"', 'serif'],
       },
 
       colors: {
