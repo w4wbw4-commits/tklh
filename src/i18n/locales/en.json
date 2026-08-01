@@ -158,15 +158,28 @@
     "subheadSuffix": "an intelligent platform that brings every event essential together in one place.",
     "ctaTitle": "Plan & Book",
     "ctaDesc": "Curate every detail your way.",
-    "sectors": {
-      "graduation": "Graduation",
-      "engagement": "Engagement",
-      "wedding": "Weddings",
-      "hospitality": "Hospitality",
-      "kids": "Kids parties",
-      "events": "Major events"
-    },
-    "footnote": "Sit back and relax — we handle the details."
+    "cards": {
+      "groom": {
+        "label": "For the Groom",
+        "caption": "Your Bisht, your elegance"
+      },
+      "bride": {
+        "label": "For the Bride",
+        "caption": "The gown of your dreams"
+      },
+      "hall": {
+        "label": "Venues",
+        "caption": "Halls worthy of the moment"
+      },
+      "photographer": {
+        "label": "Photographers",
+        "caption": "Memories that never fade"
+      },
+      "planner": {
+        "label": "Planners",
+        "caption": "Every detail, curated"
+      }
+    }
   },
   "story": {
     "kicker": "Our story",
@@ -208,8 +221,7 @@
     "p3Highlight": "\"take care\"",
     "p3Suffix": " of everything for you. We handle the planning and the searching, so you can focus on the joy and live every detail of your celebration..",
     "tagline": "Relax — Tklh takes care of everything!",
-    "cta": "Start your journey with Tklh",
-    "oneLine": "Our mission: every celebration in Saudi Arabia planned with clarity and lived without worry."
+    "cta": "Start your journey with Tklh"
   },
   "footer": {
     "about": "TKLH is a luxury Saudi platform for planning and booking events. Trust, reliability, peace of mind — from first idea to last guest.",
@@ -1549,8 +1561,7 @@
     ]
   },
   "preloader": {
-    "slogan": "Plan and book all your events in one place",
-    "above": "A special invitation"
+    "slogan": "Plan and book all your events in one place"
   },
   "speed": {
     "badge": "The difference that gives you peace of mind",
@@ -1666,24 +1677,6 @@
       "applepay": "Apple Pay",
       "visa": "Visa",
       "mastercard": "Mastercard"
-    }
-  },
-  "how": {
-    "aria": "How TKLH works",
-    "title": "Just three steps",
-    "steps": {
-      "choose": {
-        "title": "Choose your occasion",
-        "desc": "Wedding, engagement, graduation or a large event — pick it in a second."
-      },
-      "compare": {
-        "title": "Compare offers",
-        "desc": "Vendor prices and details laid out clearly — no calls, no waiting."
-      },
-      "book": {
-        "title": "Book directly",
-        "desc": "Confirm your booking and follow every detail from one dashboard."
-      }
     }
   }
 }

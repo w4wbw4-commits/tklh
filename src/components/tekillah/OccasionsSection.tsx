@@ -1,80 +1,75 @@
 // ---------------------------------------------------------------------------
-// OccasionsSection — a row of sector cards (was: plain grey icon circles).
-// Each card uses its OWN secondary sector colour (light background + dark
-// corner seal). Sector colours never leak into the global site identity.
+// OccasionsSection — Compact "more than weddings" strip.
 // Localized via i18n (AR/EN).
 // ---------------------------------------------------------------------------
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { HeartHandshake, Crown, GraduationCap, PartyPopper } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
-import { WaxSeal, BRAND_EASE } from "./BrandMarks";
+import { SketchCornerOrnament } from "./SketchArt";
 
 const OCCASIONS = [
-  { icon: HeartHandshake, key: "wedding",     token: "wedding" },
-  { icon: Crown,          key: "engagement",  token: "engagement" },
-  { icon: GraduationCap,  key: "graduation",  token: "graduation" },
-  { icon: PartyPopper,    key: "events",      token: "events" },
+  { icon: HeartHandshake, key: "wedding" },
+  { icon: Crown,          key: "engagement" },
+  { icon: GraduationCap,  key: "graduation" },
+  { icon: PartyPopper,    key: "events" },
 ] as const;
 
 export const OccasionsSection = () => {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language?.startsWith("ar");
-  const reduce = useReducedMotion();
 
   return (
     <section
       id="occasions"
       aria-label={t("occasions.aria")}
       dir={isAr ? "rtl" : "ltr"}
-      className="relative overflow-hidden bg-background px-5 py-14 sm:px-8 sm:py-16"
+      className="relative overflow-hidden bg-hero-warm px-6 py-14 sm:px-8 sm:py-16"
     >
+      <SketchCornerOrnament className="pointer-events-none absolute top-2 left-2 hidden h-[110px] w-[110px] opacity-55 md:block" />
+      <SketchCornerOrnament
+        className="pointer-events-none absolute top-2 right-2 hidden h-[110px] w-[110px] opacity-55 md:block"
+        style={{ transform: "scaleX(-1)" }}
+      />
+
       <div className="relative mx-auto max-w-6xl">
         <Reveal>
-          <div className="flex flex-col items-center text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-brass/40 bg-bone px-4 py-1.5 text-xs font-bold text-green sm:text-sm">
+          <div className="text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-xs font-bold text-foreground backdrop-blur sm:text-sm">
               {t("occasions.badge")}
             </span>
-            <h2 className={`mt-5 text-3xl font-black leading-[1.5] text-green md:text-4xl ${isAr ? "font-arabic" : "font-cinzel"}`}>
+            <h2 className={`mt-5 text-3xl font-black leading-[1.6] text-green md:text-5xl ${isAr ? "font-arabic" : ""}`}>
               {t("occasions.titlePrefix")}{" "}
-              <span className="text-brass">{t("occasions.titleHighlight")}</span>
+              <span className={`inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-2 leading-[1.6] text-transparent`}>
+                {t("occasions.titleHighlight")}
+              </span>
             </h2>
           </div>
         </Reveal>
 
-        <div className="mt-9 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {OCCASIONS.map((o, i) => {
-            const Icon = o.icon;
-            const dark = `hsl(var(--sector-${o.token}))`;
-            const soft = `hsl(var(--sector-${o.token}-soft))`;
-            return (
-              <motion.article
-                key={o.key}
-                initial={reduce ? undefined : { opacity: 0, y: 16 }}
-                whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{ duration: 0.4, delay: i * 0.07, ease: BRAND_EASE }}
-                whileHover={reduce ? undefined : { y: -3 }}
-                className="group relative overflow-hidden rounded-[28px] p-5 shadow-card transition-shadow duration-300 hover:shadow-card-hover"
-                style={{ background: soft, border: `1px solid ${dark}22` }}
-              >
-                <WaxSeal color={dark} size={38} className="absolute top-4 end-4 opacity-60 transition-opacity duration-300 group-hover:opacity-100" />
-                <span
-                  className="inline-grid h-10 w-10 place-items-center rounded-xl"
-                  style={{ background: `${dark}14`, color: dark }}
+        <Reveal delay={0.1}>
+          <div className="mx-auto mt-9 flex flex-wrap items-start justify-center gap-5 sm:gap-10">
+            {OCCASIONS.map((o, i) => {
+              const Icon = o.icon;
+              return (
+                <motion.div
+                  key={i}
+                  whileHover={{ y: -4 }}
+                  transition={{ type: "spring", stiffness: 240, damping: 18 }}
+                  className="group flex flex-col items-center gap-2.5"
                 >
-                  <Icon className="h-5 w-5" strokeWidth={1.7} />
-                </span>
-                <h3
-                  className={`mt-3 text-sm font-black sm:text-base ${isAr ? "font-arabic" : ""}`}
-                  style={{ color: dark }}
-                >
-                  {t(`occasions.items.${o.key}`)}
-                </h3>
-              </motion.article>
-            );
-          })}
-        </div>
+                  <div className="relative grid h-16 w-16 place-items-center rounded-full border border-gold/35 bg-cream/80 text-gold shadow-soft transition-all duration-500 group-hover:border-gold/70 group-hover:bg-cream group-hover:shadow-[0_18px_40px_-15px_hsl(var(--gold)/0.55)] sm:h-20 sm:w-20">
+                    <Icon className="h-6 w-6 sm:h-8 sm:w-8" strokeWidth={1.7} />
+                    <div className="pointer-events-none absolute inset-0 rounded-full bg-gold/0 opacity-0 blur-xl transition-all duration-700 group-hover:bg-gold/30 group-hover:opacity-100" />
+                  </div>
+                  <span className={`text-xs font-bold text-foreground/80 sm:text-sm ${isAr ? "font-arabic" : ""}`}>
+                    {t(`occasions.items.${o.key}`)}
+                  </span>
+                </motion.div>
+              );
+            })}
+          </div>
+        </Reveal>
       </div>
     </section>
   );

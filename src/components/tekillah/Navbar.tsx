@@ -9,8 +9,6 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { SiteMenuSheet } from "./SiteMenuSheet";
-import { ZariRule } from "./BrandMarks";
-
 
 
 // Primary admin allowlist — phone +966554430196 (synthetic email used by phone-OTP login).
@@ -51,15 +49,18 @@ export const Navbar = () => {
     i18n.changeLanguage(isAr ? "en" : "ar");
   };
 
-  // "Packages" was removed from the main nav: it was a non-clickable
-  // "Soon" chip, which reads as an unfinished site. Admins reach it from
-  // the side menu until the real packages flow ships.
   const navItems = [
     { key: "home", href: "/", type: "route" as const },
     { key: "about", href: "/about", type: "route" as const, labelOverride: t("nav.aboutFull") },
-    { key: "plan", href: "/planner", type: "route" as const, labelOverride: t("whatsapp.planNow") },
+    {
+      key: "packages",
+      href: "/packages",
+      type: "route" as const,
+      labelOverride: t("nav.packages"),
+      disabled: !isPrimaryAdmin,
+      badge: { ar: "قريباً", en: "Soon" },
+    },
   ];
-
 
 
   return (
@@ -69,37 +70,56 @@ export const Navbar = () => {
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="fixed top-0 left-0 right-0 z-50"
     >
-      <div className={`mx-auto px-4 transition-all duration-300 ${scrolled ? "mt-2 max-w-6xl" : "mt-4 max-w-6xl"}`}
-        style={{ transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)" }}>
+      <div className={`mx-auto px-4 transition-all duration-500 ${scrolled ? "mt-2 max-w-6xl" : "mt-4 max-w-6xl"}`}>
         <div
-          className={`relative flex items-center justify-between overflow-hidden rounded-full border shadow-soft backdrop-blur-md transition-all duration-300 ${scrolled ? "px-4 py-1.5" : "px-4 py-2.5"}`}
+          className={`flex items-center justify-between rounded-full px-4 py-2.5 transition-all duration-500 border shadow-soft`}
           style={{
-            background: scrolled ? "hsl(var(--green) / 0.88)" : "hsl(var(--green))",
+            background: "#163726",
             borderColor: "rgba(160, 208, 158, 0.22)",
-            transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
-          {/* The one sanctioned zari boundary line: under the navbar. */}
-          <span aria-hidden className="pointer-events-none absolute bottom-0 start-0 end-0">
-            <ZariRule color="hsl(var(--brass))" height={2} />
-          </span>
-
           <div className="flex items-center gap-2">
             <Logo />
             <WhatsAppFloating />
           </div>
           <nav className="hidden items-center gap-1 md:flex">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                to={item.href}
-                className="relative rounded-full px-4 py-2 text-sm font-medium transition-all after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all hover:after:w-1/2"
-                style={{ color: "#A7CAA1" }}
-              >
-                {item.labelOverride || t(`nav.${item.key}`)}
-              </Link>
-            ))}
-
+            {navItems.map((item) => {
+              const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
+              const cls =
+                "relative rounded-full px-4 py-2 text-sm font-medium transition-all after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all hover:after:w-1/2";
+              const linkStyle = { color: "#A7CAA1" } as const;
+              const disabledCls =
+                "relative flex cursor-not-allowed items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium opacity-70";
+              const disabledStyle = { color: "rgba(167, 202, 161, 0.55)" } as const;
+              const badge = "badge" in item && item.badge ? (isAr ? item.badge.ar : item.badge.en) : null;
+              if ("disabled" in item && item.disabled) {
+                return (
+                  <span key={item.href} aria-disabled="true" className={disabledCls} style={disabledStyle}>
+                    {label}
+                    {badge && (
+                      <span
+                        className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
+                        style={{ background: "rgba(167, 202, 161, 0.18)", color: "#A7CAA1" }}
+                      >
+                        {badge}
+                      </span>
+                    )}
+                  </span>
+                );
+              }
+              if (item.type === "route") {
+                return (
+                  <Link key={item.href} to={item.href} className={cls} style={linkStyle}>
+                    {label}
+                  </Link>
+                );
+              }
+              return (
+                <a key={item.href} href={item.href} className={cls} style={linkStyle}>
+                  {label}
+                </a>
+              );
+            })}
 
           </nav>
           <div className="flex items-center gap-1.5 sm:gap-2">

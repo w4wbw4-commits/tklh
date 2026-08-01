@@ -41,12 +41,9 @@ export const LazyVisible = ({
     return () => io.disconnect();
   }, [visible, rootMargin]);
 
-  // The reserved height is only a placeholder guard against layout shift; once
-  // the real section mounts we drop it so short sections don't leave dead space.
   return (
-    <div ref={ref} style={!visible && minHeight ? { minHeight } : undefined}>
+    <div ref={ref} style={minHeight ? { minHeight } : undefined}>
       {visible ? children : fallback}
     </div>
   );
-
 };

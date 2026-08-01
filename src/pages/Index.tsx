@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Navbar } from "@/components/tekillah/Navbar";
 import { Hero } from "@/components/tekillah/Hero";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
+import { SketchSectionDivider } from "@/components/tekillah/SketchArt";
 import { LazyVisible } from "@/components/tekillah/LazyVisible";
 import { Preloader } from "@/components/tekillah/Preloader";
 import { SEO } from "@/components/SEO";
@@ -36,16 +37,17 @@ const lazyWithRetry = <T extends { default: React.ComponentType<any> }>(
     }
   });
 
-// Was: the long "6 weeks vs 5 minutes" comparison. Replaced by three short
-// horizontal step cards (HowItWorks).
-const HowItWorks = lazyWithRetry(() =>
-  import("@/components/tekillah/HowItWorks").then((m) => ({ default: m.HowItWorks })),
+const ProblemSolutionAbout = lazyWithRetry(() =>
+  import("@/components/tekillah/ProblemSolutionAbout").then((m) => ({ default: m.ProblemSolutionAbout })),
 );
 const OccasionsSection = lazyWithRetry(() =>
   import("@/components/tekillah/OccasionsSection").then((m) => ({ default: m.OccasionsSection })),
 );
 const DashboardPreview = lazyWithRetry(() =>
   import("@/components/tekillah/DashboardPreview").then((m) => ({ default: m.DashboardPreview })),
+);
+const PaymentLogosStrip = lazyWithRetry(() =>
+  import("@/components/tekillah/PaymentLogosStrip").then((m) => ({ default: m.PaymentLogosStrip })),
 );
 const UpcomingFeatures = lazyWithRetry(() =>
   import("@/components/tekillah/UpcomingFeatures").then((m) => ({ default: m.UpcomingFeatures })),
@@ -78,13 +80,20 @@ const Index = () => {
       <Navbar />
       <Hero />
 
+      {/* Sketch divider — weaves the hero motif into every transition */}
+      <div className="mx-auto -mt-6 mb-2 flex max-w-3xl items-center justify-center px-6">
+        <SketchSectionDivider className="h-10 w-full opacity-80" />
+      </div>
 
       <LazyVisible minHeight="50vh" fallback={<SectionSkeleton minHeight="50vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="50vh" />}>
-          <HowItWorks />
+          <ProblemSolutionAbout />
         </Suspense>
       </LazyVisible>
 
+      <div className="mx-auto my-2 flex max-w-3xl items-center justify-center px-6">
+        <SketchSectionDivider className="h-10 w-full opacity-70" />
+      </div>
 
       <LazyVisible minHeight="60vh" fallback={<SectionSkeleton minHeight="60vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
@@ -96,12 +105,20 @@ const Index = () => {
           <DashboardPreview />
         </Suspense>
       </LazyVisible>
+      <LazyVisible minHeight="20vh" fallback={<SectionSkeleton minHeight="20vh" />}>
+        <Suspense fallback={<SectionSkeleton minHeight="20vh" />}>
+          <PaymentLogosStrip />
+        </Suspense>
+      </LazyVisible>
       <LazyVisible minHeight="50vh" fallback={<SectionSkeleton minHeight="50vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="50vh" />}>
           <UpcomingFeatures />
         </Suspense>
       </LazyVisible>
 
+      <div className="mx-auto my-2 flex max-w-3xl items-center justify-center px-6">
+        <SketchSectionDivider className="h-10 w-full opacity-70" />
+      </div>
 
       <LazyVisible minHeight="40vh" fallback={<SectionSkeleton minHeight="40vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="40vh" />}>
