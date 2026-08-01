@@ -23,14 +23,14 @@ interface ReviewItem {
   quality: number;
   comment: string | null;
   created_at: string;
-  customer_id: string;
+  customer_id?: string;
 }
 
 interface ReplyItem {
   id: string;
   review_id: string;
   vendor_id: string;
-  vendor_user_id: string;
+  vendor_user_id?: string;
   body: string;
   created_at: string;
   updated_at: string;
@@ -148,7 +148,7 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <div className="font-arabic text-sm font-semibold text-foreground">
-                  {profiles[r.customer_id] ?? t("reviews.anonymous")}
+                  {profiles[r.id] ?? t("reviews.anonymous")}
                 </div>
                 <div className="mt-0.5 text-[11px] text-foreground/55">{fmtRelative(r.created_at)}</div>
               </div>
