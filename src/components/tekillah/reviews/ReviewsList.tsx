@@ -59,29 +59,16 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("reviews")
-      .select("id, rating, communication, punctuality, quality, comment, created_at, customer_id")
-      .eq("vendor_id", vendorId)
-      .order("created_at", { ascending: false });
-    const list = (data ?? []) as ReviewItem[];
-    setReviews(list);
+    const { data } = await supabase.rpc("get_vendor_reviews" as never, { _vendor_id: vendorId } as never);
+    const rows = (data ?? []) as unknown as Array<ReviewItem & { reviewer_name: string | null }>;
+    setReviews(rows);
 
-    const ids = Array.from(new Set(list.map((r) => r.customer_id)));
-    if (ids.length) {
-      const { data: profs } = await supabase
-        .from("public_profiles" as any).select("user_id, display_name").in("user_id", ids);
-      const map: Record<string, string> = {};
-      ((profs ?? []) as unknown as Array<{ user_id: string; display_name: string | null }>).forEach((p) => { map[p.user_id] = p.display_name ?? "—"; });
-      setProfiles(map);
-    }
+    const nameMap: Record<string, string> = {};
+    rows.forEach((r) => { nameMap[r.id] = r.reviewer_name ?? "—"; });
+    setProfiles(nameMap);
 
-    const reviewIds = list.map((r) => r.id);
-    if (reviewIds.length) {
-      const { data: reps } = await supabase
-        .from("review_replies")
-        .select("id, review_id, vendor_id, vendor_user_id, body, created_at, updated_at")
-        .in("review_id", reviewIds);
+    if (rows.length) {
+      const { data: reps } = await supabase.rpc("get_vendor_review_replies" as never, { _vendor_id: vendorId } as never);
       const repMap: Record<string, ReplyItem> = {};
       ((reps ?? []) as unknown as ReplyItem[]).forEach((r) => { repMap[r.review_id] = r; });
       setReplies(repMap);
