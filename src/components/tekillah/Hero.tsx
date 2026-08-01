@@ -147,7 +147,7 @@ export const Hero = () => {
             className={`group inline-flex items-center gap-2 rounded-full bg-green-light px-7 py-3.5 text-sm font-semibold text-green transition-all duration-300 hover:brightness-105 active:translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bone focus-visible:ring-offset-2 focus-visible:ring-offset-green sm:text-base ${isAr ? "font-arabic" : ""}`}
             style={{ transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)", boxShadow: "var(--shadow-soft)" }}
           >
-            {t("hero.cta")}
+            {t("hero.ctaTitle")}
             {isAr ? (
               <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
             ) : (
