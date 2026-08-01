@@ -1,223 +1,143 @@
 // ---------------------------------------------------------------------------
-// BrandMarks — the new TKLH brand element kit.
+// BrandMarks — the TKLH brand element kit, reduced to what the identity file
+// actually sanctions:
 //
-//  • CornerSeal        thin corner stamp built on the brand chair silhouette
-//  • ZariEdge          single-side geometric gold braid (bisht hem motif)
-//  • CompositePattern  scattered seal + zari wallpaper (hero / social only)
-//  • SignatureLine     leaning hand-signature divider that draws itself once
-//  • DuotoneImage      two-tone brand treatment for any photo
+//  • WaxSeal      pressed wax disc with the chair mark debossed in the centre
+//  • ZariRule     one horizontal gold zari boundary line (never a frame)
+//  • DuotoneImage two-tone brand treatment for a photograph
+//
+// Deliberately removed: CornerSeal (thin empty rings), ZariEdge (dashed
+// borders on every card), SignatureLine (repeated squiggle), CompositePattern
+// (scattered wallpaper). They read as clutter, not as a system.
 //
 // Motion rule: one curve everywhere — cubic-bezier(0.4, 0, 0.2, 1), no bounce.
 // ---------------------------------------------------------------------------
 
-import { motion, useReducedMotion } from "framer-motion";
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties } from "react";
 
 export const BRAND_EASE = [0.4, 0, 0.2, 1] as const;
 
 /* ------------------------------------------------------------------ */
-/* Chair silhouette — the site-wide base shape for every seal.        */
+/* Chair silhouette — the brand mark debossed inside the wax.          */
 /* ------------------------------------------------------------------ */
-const ChairGlyph = () => (
-  <g
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2.4}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    {/* backrest */}
-    <path d="M32 20 Q50 8 68 20 L68 46 Q50 52 32 46 Z" />
-    {/* seat */}
-    <path d="M28 52 H72 L70 62 H30 Z" />
-    {/* legs */}
-    <path d="M33 62 V82 M67 62 V82" />
-    {/* arms */}
-    <path d="M28 46 V56 M72 46 V56" />
+const ChairGlyph = ({ stroke, width = 3 }: { stroke: string; width?: number }) => (
+  <g fill="none" stroke={stroke} strokeWidth={width} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M32 22 Q50 10 68 22 L68 46 Q50 52 32 46 Z" />
+    <path d="M28 52 H72 L70 61 H30 Z" />
+    <path d="M34 61 V80 M66 61 V80" />
+    <path d="M28 46 V55 M72 46 V55" />
   </g>
 );
 
-type SealProps = {
+// Irregular wax rim — hand-shaped, never a perfect circle.
+const WAX_RIM =
+  "M50 3 C63 3 70 9 78 13 C88 18 97 26 96 39 C95 50 99 58 95 68 C91 78 82 84 72 90 C63 95 55 98 45 96 C34 94 25 96 17 89 C8 81 5 71 3 60 C1 49 2 39 6 29 C10 19 19 11 30 7 C37 4 43 3 50 3 Z";
+
+type WaxSealProps = {
   className?: string;
   style?: CSSProperties;
-  /** Which corner the seal is pinned to. One fixed corner per card. */
-  corner?: "start-top" | "end-top" | "start-bottom" | "end-bottom";
-  /** Optional custom glyph (a sector icon on its own page). */
-  children?: ReactNode;
+  /** Wax colour. Defaults to the brand green. */
   color?: string;
+  /** Size in px. One small size across the product. */
+  size?: number;
+  /** Colourless pressed-emboss variant for quiet ivory surfaces. */
+  emboss?: boolean;
+  title?: string;
 };
-
-const cornerClass: Record<NonNullable<SealProps["corner"]>, string> = {
-  "start-top": "top-3 start-3",
-  "end-top": "top-3 end-3",
-  "start-bottom": "bottom-3 start-3",
-  "end-bottom": "bottom-3 end-3",
-};
-
-/** Small, thin corner stamp — replaces oversized centred icons. */
-export const CornerSeal = ({
-  className = "",
-  style,
-  corner = "end-top",
-  children,
-  color,
-}: SealProps) => (
-  <span
-    aria-hidden
-    className={`pointer-events-none absolute ${cornerClass[corner]} ${className}`}
-    style={{ color, ...style }}
-  >
-    <svg viewBox="0 0 100 100" className="h-9 w-9 opacity-80">
-      <circle
-        cx="50"
-        cy="50"
-        r="46"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        opacity="0.55"
-      />
-      <circle
-        cx="50"
-        cy="50"
-        r="39"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="0.8"
-        opacity="0.35"
-      />
-      <g transform="translate(50 52) scale(0.62) translate(-50 -50)">
-        {children ?? <ChairGlyph />}
-      </g>
-    </svg>
-  </span>
-);
-
-/** Single-side gold braid. Never wraps the whole element. */
-export const ZariEdge = ({
-  side = "top",
-  className = "",
-  color,
-}: {
-  side?: "top" | "bottom" | "start" | "end";
-  className?: string;
-  color?: string;
-}) => {
-  const vertical = side === "start" || side === "end";
-  const pos =
-    side === "top"
-      ? "top-0 start-0 end-0"
-      : side === "bottom"
-        ? "bottom-0 start-0 end-0"
-        : side === "start"
-          ? "top-0 bottom-0 start-0"
-          : "top-0 bottom-0 end-0";
-  const braid = `repeating-linear-gradient(${vertical ? "180deg" : "90deg"},
-      ${color ?? "hsl(var(--brass) / 0.95)"} 0 7px,
-      transparent 7px 11px,
-      ${color ?? "hsl(var(--brass) / 0.45)"} 11px 14px,
-      transparent 14px 21px)`;
-  return (
-    <span
-      aria-hidden
-      className={`pointer-events-none absolute ${pos} ${vertical ? "w-[3px]" : "h-[3px]"} ${className}`}
-      style={{ backgroundImage: braid }}
-    />
-  );
-};
-
-/** Scattered seal + zari wallpaper. Hero section & social covers only. */
-export const CompositePattern = ({
-  className = "",
-  opacity = 0.07,
-}: {
-  className?: string;
-  opacity?: number;
-}) => (
-  <svg
-    aria-hidden
-    className={`pointer-events-none absolute inset-0 h-full w-full ${className}`}
-    style={{ opacity }}
-    viewBox="0 0 800 600"
-    preserveAspectRatio="xMidYMid slice"
-  >
-    <g stroke="hsl(var(--brass))" fill="none" strokeWidth="1.4">
-      {[
-        [60, 90, 0.55, -18],
-        [240, 40, 0.35, 12],
-        [430, 130, 0.7, 24],
-        [660, 60, 0.4, -8],
-        [120, 320, 0.45, 32],
-        [330, 400, 0.6, -26],
-        [560, 330, 0.3, 8],
-        [720, 440, 0.5, 18],
-        [190, 530, 0.32, -12],
-        [480, 560, 0.42, 20],
-      ].map(([x, y, s, r], i) => (
-        <g
-          key={i}
-          transform={`translate(${x} ${y}) rotate(${r}) scale(${s})`}
-          opacity={0.4 + (i % 3) * 0.22}
-          color="hsl(var(--brass))"
-        >
-          <circle cx="50" cy="50" r="46" strokeWidth="1.6" />
-          <g transform="translate(50 52) scale(0.6) translate(-50 -50)">
-            <ChairGlyph />
-          </g>
-        </g>
-      ))}
-      {[
-        [30, 210, 160, 6],
-        [520, 240, 210, -9],
-        [260, 470, 180, 14],
-        [600, 520, 140, -4],
-      ].map(([x, y, w, r], i) => (
-        <g key={`z${i}`} transform={`translate(${x} ${y}) rotate(${r})`} opacity={0.5}>
-          {Array.from({ length: Math.round(w / 18) }).map((_, k) => (
-            <path key={k} d={`M${k * 18} 0 h7 M${k * 18 + 11} 0 h3`} strokeWidth="2" />
-          ))}
-        </g>
-      ))}
-    </g>
-  </svg>
-);
 
 /**
- * SignatureLine — a leaning, hand-drawn stroke that replaces straight rules
- * under headings. Draws itself once on first reveal, then stays still.
+ * WaxSeal — a small pressed-wax stamp. One size, one placement per surface.
+ * Used as a signature, not as decoration.
  */
-export const SignatureLine = ({
+export const WaxSeal = ({
   className = "",
-  color = "hsl(var(--brass))",
-  width = 180,
-}: {
-  className?: string;
-  color?: string;
-  width?: number;
-}) => {
-  const reduce = useReducedMotion();
+  style,
+  color = "hsl(var(--green))",
+  size = 40,
+  emboss = false,
+  title,
+}: WaxSealProps) => {
+  const uid = `${color}-${size}-${emboss}`.replace(/[^a-z0-9]/gi, "");
+  const bodyId = `wax-body-${uid}`;
+  const glossId = `wax-gloss-${uid}`;
   return (
     <svg
-      aria-hidden
-      viewBox="0 0 200 26"
-      width={width}
-      height={(26 / 200) * width}
+      viewBox="0 0 100 100"
+      width={size}
+      height={size}
       className={className}
-      fill="none"
+      style={style}
+      role={title ? "img" : undefined}
+      aria-hidden={title ? undefined : true}
+      aria-label={title}
     >
-      <motion.path
-        d="M4 20 C 34 22, 52 6, 86 8 C 118 10, 136 22, 168 14 C 180 11, 190 8, 196 5"
-        stroke={color}
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        initial={reduce ? { pathLength: 1 } : { pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: reduce ? 0 : 0.5, ease: BRAND_EASE }}
+      <defs>
+        <radialGradient id={bodyId} cx="0.36" cy="0.3" r="0.85">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity={emboss ? 0.35 : 0.34} />
+          <stop offset="45%" stopColor={emboss ? "hsl(var(--bone))" : color} stopOpacity={emboss ? 0.16 : 1} />
+          <stop offset="100%" stopColor={emboss ? "hsl(var(--green))" : "#000000"} stopOpacity={emboss ? 0.14 : 0.55} />
+        </radialGradient>
+        <linearGradient id={glossId} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.28" />
+          <stop offset="60%" stopColor="#ffffff" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+
+      {/* wax body */}
+      <path d={WAX_RIM} fill={emboss ? "hsl(var(--bone))" : color} />
+      <path d={WAX_RIM} fill={`url(#${bodyId})`} />
+      <path d={WAX_RIM} fill={`url(#${glossId})`} />
+
+      {/* pressed inner ring */}
+      <circle
+        cx="50"
+        cy="50"
+        r="37"
+        fill="none"
+        stroke={emboss ? "hsl(var(--green))" : "#000000"}
+        strokeOpacity={emboss ? 0.18 : 0.28}
+        strokeWidth="2"
       />
+
+      {/* debossed chair mark: dark press shadow + light lift */}
+      <g transform="translate(50 51) scale(0.56) translate(-50 -50)">
+        <g transform="translate(0 1.6)">
+          <ChairGlyph stroke={emboss ? "hsl(var(--green))" : "#000000"} width={3.4} />
+        </g>
+        <g opacity={emboss ? 0.9 : 0.85}>
+          <ChairGlyph stroke={emboss ? "hsl(var(--bone))" : "#ffffff"} width={3} />
+        </g>
+      </g>
     </svg>
   );
 };
+
+/**
+ * ZariRule — the gold bisht-hem braid, allowed only as a boundary line
+ * between two surfaces. Never wraps an element.
+ */
+export const ZariRule = ({
+  className = "",
+  color = "hsl(var(--brass))",
+  height = 3,
+}: {
+  className?: string;
+  color?: string;
+  height?: number;
+}) => (
+  <span
+    aria-hidden
+    className={`pointer-events-none block w-full ${className}`}
+    style={{
+      height,
+      backgroundImage: `repeating-linear-gradient(90deg,
+        ${color} 0 9px,
+        transparent 9px 13px,
+        color-mix(in srgb, ${color} 45%, transparent) 13px 17px,
+        transparent 17px 26px)`,
+    }}
+  />
+);
 
 /** Two-tone brand treatment for any photograph. */
 export const DuotoneImage = ({
