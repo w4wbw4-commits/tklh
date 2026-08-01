@@ -21,7 +21,6 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { SketchSectionDivider } from "./SketchArt";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -48,7 +47,6 @@ export const Footer = () => {
     <footer className="border-t border-border bg-gradient-beige">
       {/* Top sketch divider — soft hand-drawn farewell */}
       <div className="mx-auto flex max-w-3xl items-center justify-center px-6 pt-8">
-        <SketchSectionDivider className="h-10 w-full opacity-70" />
       </div>
       <div className="mx-auto max-w-6xl px-6 py-14">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-5">

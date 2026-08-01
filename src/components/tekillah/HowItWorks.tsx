@@ -6,7 +6,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { CornerSeal, ZariEdge, SignatureLine, BRAND_EASE } from "./BrandMarks";
+import { WaxSeal, BRAND_EASE } from "./BrandMarks";
 
 const STEPS = ["choose", "compare", "book"] as const;
 
@@ -27,7 +27,6 @@ export const HowItWorks = () => {
           <h2 className={`text-2xl font-black text-green sm:text-3xl ${isAr ? "font-arabic" : "font-cinzel"}`}>
             {t("how.title", { defaultValue: isAr ? "ثلاث خطوات فقط" : "Just three steps" })}
           </h2>
-          <SignatureLine className="mt-3" width={150} />
         </div>
 
         <div className="mt-9 grid gap-4 sm:grid-cols-3">
@@ -38,11 +37,11 @@ export const HowItWorks = () => {
               whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.4, delay: i * 0.08, ease: BRAND_EASE }}
-              className="relative overflow-hidden rounded-2xl border border-[hsl(var(--green)/0.12)] bg-bone p-5 shadow-card"
+              className="group relative overflow-hidden rounded-[28px] border border-[hsl(var(--green)/0.12)] bg-bone p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
+              style={{ transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)" }}
             >
-              <ZariEdge side={isAr ? "end" : "start"} />
-              <CornerSeal corner="end-top" color="hsl(var(--brass))" />
-              <span className="text-[11px] font-black tracking-[0.2em] text-brass">
+              <WaxSeal color="hsl(var(--brass))" size={34} className="absolute top-4 end-4 opacity-60 transition-opacity duration-300 group-hover:opacity-100" />
+              <span className="block text-[13px] font-bold tracking-[0.2em] text-brass transition-all duration-300 group-hover:text-[17px]">
                 {isAr ? `٠${i + 1}` : `0${i + 1}`}
               </span>
               <h3 className={`mt-2 text-base font-black text-green ${isAr ? "font-arabic" : ""}`}>

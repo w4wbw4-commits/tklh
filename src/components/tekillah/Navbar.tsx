@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { SiteMenuSheet } from "./SiteMenuSheet";
-import { ZariEdge } from "./BrandMarks";
+import { ZariRule } from "./BrandMarks";
 
 
 
@@ -79,8 +79,10 @@ export const Navbar = () => {
             transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
-          {/* Zari braid on the bottom edge only — never a full frame. */}
-          <ZariEdge side="bottom" />
+          {/* The one sanctioned zari boundary line: under the navbar. */}
+          <span aria-hidden className="pointer-events-none absolute bottom-0 start-0 end-0">
+            <ZariRule color="hsl(var(--brass))" height={2} />
+          </span>
 
           <div className="flex items-center gap-2">
             <Logo />

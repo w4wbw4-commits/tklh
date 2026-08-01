@@ -8,7 +8,7 @@ import {
   SketchIconSparkle,
   SketchCornerOrnament,
 } from "./SketchArt";
-import { SignatureLine } from "./BrandMarks";
+import { WaxSeal } from "./BrandMarks";
 
 
 /**
@@ -86,7 +86,7 @@ export const Mission = () => {
           </p>
 
           <div className="mt-5 flex justify-center">
-            <SignatureLine width={190} />
+            <WaxSeal size={44} />
           </div>
 
           <Link
