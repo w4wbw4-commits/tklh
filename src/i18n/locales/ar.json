@@ -162,28 +162,15 @@
     "subheadSuffix": "منصة ذكية تجمع كل احتياجات مناسباتك في مكان واحد.",
     "ctaTitle": "خطّط واحجز",
     "ctaDesc": "اختر كل تفصيلة على ذوقك.",
-    "cards": {
-      "groom": {
-        "label": "للعريس",
-        "caption": "بشتك وأناقتك"
-      },
-      "bride": {
-        "label": "للعروس",
-        "caption": "فستان حلمك"
-      },
-      "hall": {
-        "label": "للقاعات",
-        "caption": "فخامة مكانك"
-      },
-      "photographer": {
-        "label": "للمصورين",
-        "caption": "ذكرى لا تنسى"
-      },
-      "planner": {
-        "label": "للمنسقين",
-        "caption": "كل تفاصيلك"
-      }
-    }
+    "sectors": {
+      "graduation": "تخرج",
+      "engagement": "خطوبة وملكة",
+      "wedding": "حفلات الزواج",
+      "hospitality": "الضيافة",
+      "kids": "حفلات أطفال",
+      "events": "فعاليات كبرى"
+    },
+    "footnote": "اجلس وارتاح — والتفاصيل علينا"
   },
   "story": {
     "kicker": "حكايتنا",

@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { SiteMenuSheet } from "./SiteMenuSheet";
-import { ZariEdge } from "./BrandMarks";
+import { ZariRule } from "./BrandMarks";
 
 
 
@@ -72,15 +72,17 @@ export const Navbar = () => {
       <div className={`mx-auto px-4 transition-all duration-300 ${scrolled ? "mt-2 max-w-6xl" : "mt-4 max-w-6xl"}`}
         style={{ transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)" }}>
         <div
-          className={`relative flex items-center justify-between overflow-hidden rounded-full px-4 py-2.5 transition-all duration-300 border shadow-soft`}
+          className={`relative flex items-center justify-between overflow-hidden rounded-full border shadow-soft backdrop-blur-md transition-all duration-300 ${scrolled ? "px-4 py-1.5" : "px-4 py-2.5"}`}
           style={{
-            background: "#163726",
+            background: scrolled ? "hsl(var(--green) / 0.88)" : "hsl(var(--green))",
             borderColor: "rgba(160, 208, 158, 0.22)",
             transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
-          {/* Zari braid on the bottom edge only — never a full frame. */}
-          <ZariEdge side="bottom" />
+          {/* The one sanctioned zari boundary line: under the navbar. */}
+          <span aria-hidden className="pointer-events-none absolute bottom-0 start-0 end-0">
+            <ZariRule color="hsl(var(--brass))" height={2} />
+          </span>
 
           <div className="flex items-center gap-2">
             <Logo />

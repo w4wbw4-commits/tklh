@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { Navbar } from "@/components/tekillah/Navbar";
 import { Hero } from "@/components/tekillah/Hero";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
-import { SketchSectionDivider } from "@/components/tekillah/SketchArt";
 import { LazyVisible } from "@/components/tekillah/LazyVisible";
 import { Preloader } from "@/components/tekillah/Preloader";
 import { SEO } from "@/components/SEO";
@@ -79,10 +78,6 @@ const Index = () => {
       <Navbar />
       <Hero />
 
-      {/* Sketch divider — weaves the hero motif into every transition */}
-      <div className="mx-auto -mt-6 mb-2 flex max-w-3xl items-center justify-center px-6">
-        <SketchSectionDivider className="h-10 w-full opacity-80" />
-      </div>
 
       <LazyVisible minHeight="50vh" fallback={<SectionSkeleton minHeight="50vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="50vh" />}>
@@ -90,9 +85,6 @@ const Index = () => {
         </Suspense>
       </LazyVisible>
 
-      <div className="mx-auto my-2 flex max-w-3xl items-center justify-center px-6">
-        <SketchSectionDivider className="h-10 w-full opacity-70" />
-      </div>
 
       <LazyVisible minHeight="60vh" fallback={<SectionSkeleton minHeight="60vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
@@ -110,9 +102,6 @@ const Index = () => {
         </Suspense>
       </LazyVisible>
 
-      <div className="mx-auto my-2 flex max-w-3xl items-center justify-center px-6">
-        <SketchSectionDivider className="h-10 w-full opacity-70" />
-      </div>
 
       <LazyVisible minHeight="40vh" fallback={<SectionSkeleton minHeight="40vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="40vh" />}>

@@ -158,28 +158,15 @@
     "subheadSuffix": "an intelligent platform that brings every event essential together in one place.",
     "ctaTitle": "Plan & Book",
     "ctaDesc": "Curate every detail your way.",
-    "cards": {
-      "groom": {
-        "label": "For the Groom",
-        "caption": "Your Bisht, your elegance"
-      },
-      "bride": {
-        "label": "For the Bride",
-        "caption": "The gown of your dreams"
-      },
-      "hall": {
-        "label": "Venues",
-        "caption": "Halls worthy of the moment"
-      },
-      "photographer": {
-        "label": "Photographers",
-        "caption": "Memories that never fade"
-      },
-      "planner": {
-        "label": "Planners",
-        "caption": "Every detail, curated"
-      }
-    }
+    "sectors": {
+      "graduation": "Graduation",
+      "engagement": "Engagement",
+      "wedding": "Weddings",
+      "hospitality": "Hospitality",
+      "kids": "Kids parties",
+      "events": "Major events"
+    },
+    "footnote": "Sit back and relax — we handle the details."
   },
   "story": {
     "kicker": "Our story",

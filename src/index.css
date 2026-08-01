@@ -96,12 +96,12 @@
     --text-muted: 151 15% 35%;
 
     /* Greens — brand identity #163726 */
-    --green: 151 43% 15%;               /* #163726 */
+    --green: 145 33% 15%;               /* #1A3425 Tklh Forest */
     --green-mid: 151 30% 30%;
-    --green-light: 111 28% 71%;         /* #A7CAA1 sage accent */
+    --green-light: 119 34% 74%;         /* #A6D3A5 Sage Mint */
 
     /* Sage — signature accent #A7CAA1 (replaces gold) */
-    --gold: 111 28% 71%;                /* #A7CAA1 */
+    --gold: 119 34% 74%;                /* #A6D3A5 */
     --gold-soft: 111 30% 85%;
     /* Antique brown — kept for sketch tonality */
     --brown: 151 25% 25%;
@@ -118,19 +118,19 @@
     --popover-foreground: 151 43% 13%;
 
     /* Primary — premium dark green #163726 */
-    --primary: 151 43% 15%;
+    --primary: 145 33% 15%;
     --primary-foreground: 60 30% 98%;   /* off-white */
-    --primary-glow: 111 28% 71%;        /* sage glow */
+    --primary-glow: 119 34% 74%;        /* sage glow */
     --primary-deep: 151 45% 11%;
 
     /* Secondary — sage #A7CAA1 */
-    --secondary: 111 28% 71%;
+    --secondary: 119 34% 74%;
     --secondary-foreground: 151 43% 15%;
 
     --muted: 60 22% 94%;
     --muted-foreground: 151 15% 35%;
 
-    --accent: 111 28% 71%;              /* #A7CAA1 */
+    --accent: 119 34% 74%;              /* #A6D3A5 */
     --accent-foreground: 151 43% 15%;
 
     --destructive: 0 75% 45%;
@@ -198,6 +198,10 @@
     --sector-graduation-soft: 222 32% 93%;
     --sector-events: 20 41% 27%;         /* clay */
     --sector-events-soft: 20 35% 92%;
+    --sector-hospitality: 30 34% 30%;    /* warm hospitality umber */
+    --sector-hospitality-soft: 30 40% 93%;
+    --sector-kids: 344 42% 40%;          /* soft celebration rose */
+    --sector-kids-soft: 344 45% 94%;
 
     /* Motion — single site-wide curve, no bounce. */
     --ease-brand: cubic-bezier(0.4, 0, 0.2, 1);

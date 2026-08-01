@@ -8,7 +8,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { HeartHandshake, Crown, GraduationCap, PartyPopper } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
-import { CornerSeal, ZariEdge, SignatureLine, BRAND_EASE } from "./BrandMarks";
+import { WaxSeal, BRAND_EASE } from "./BrandMarks";
 
 const OCCASIONS = [
   { icon: HeartHandshake, key: "wedding",     token: "wedding" },
@@ -39,7 +39,6 @@ export const OccasionsSection = () => {
               {t("occasions.titlePrefix")}{" "}
               <span className="text-brass">{t("occasions.titleHighlight")}</span>
             </h2>
-            <SignatureLine className="mt-3" width={170} />
           </div>
         </Reveal>
 
@@ -56,13 +55,10 @@ export const OccasionsSection = () => {
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.4, delay: i * 0.07, ease: BRAND_EASE }}
                 whileHover={reduce ? undefined : { y: -3 }}
-                className="relative overflow-hidden rounded-2xl p-5 shadow-card"
+                className="group relative overflow-hidden rounded-[28px] p-5 shadow-card transition-shadow duration-300 hover:shadow-card-hover"
                 style={{ background: soft, border: `1px solid ${dark}22` }}
               >
-                <ZariEdge side={isAr ? "end" : "start"} color={dark} />
-                <CornerSeal corner="end-top" color={dark}>
-                  <g />
-                </CornerSeal>
+                <WaxSeal color={dark} size={38} className="absolute top-4 end-4 opacity-60 transition-opacity duration-300 group-hover:opacity-100" />
                 <span
                   className="inline-grid h-10 w-10 place-items-center rounded-xl"
                   style={{ background: `${dark}14`, color: dark }}
