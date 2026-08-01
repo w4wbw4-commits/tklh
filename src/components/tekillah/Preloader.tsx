@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import cardBg from "@/assets/invite-card-bg.jpg.asset.json";
+import cardBgUrl from "@/assets/invite-card-green.jpg";
 
 /**
  * Fullscreen splash — an invitation card that unseals and opens.
@@ -58,14 +58,14 @@ export const Preloader = () => {
           : "perspective(1600px) rotateY(0deg)",
         transition: `transform ${OPEN_MS}ms cubic-bezier(0.65,0,0.35,1), opacity ${OPEN_MS}ms ease-in`,
         opacity: opening ? 0 : 1,
-        boxShadow: "0 0 80px rgba(22,55,38,0.25)",
+        boxShadow: "0 0 80px rgba(0,0,0,0.35)",
       }}
     >
       <div
         className="absolute inset-y-0 w-[200%]"
         style={{
           [side]: 0,
-          backgroundImage: `url(${cardBg.url})`,
+          backgroundImage: `url(${cardBgUrl})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -77,8 +77,8 @@ export const Preloader = () => {
           [side === "left" ? "right" : "left"]: 0,
           background:
             side === "left"
-              ? "linear-gradient(to right, transparent, rgba(22,55,38,0.14))"
-              : "linear-gradient(to left, transparent, rgba(22,55,38,0.14))",
+              ? "linear-gradient(to right, transparent, rgba(0,0,0,0.22))"
+              : "linear-gradient(to left, transparent, rgba(0,0,0,0.22))",
         }}
       />
     </div>
@@ -89,7 +89,7 @@ export const Preloader = () => {
       aria-hidden={done}
       role="status"
       className={`fixed inset-0 z-[9999] overflow-hidden ${done ? "pointer-events-none opacity-0" : "opacity-100"}`}
-      style={{ backgroundColor: "#f6f1e8", transition: "opacity 300ms ease-out" }}
+      style={{ backgroundColor: "#163726", transition: "opacity 300ms ease-out" }}
     >
       {half("left")}
       {half("right")}
@@ -107,25 +107,25 @@ export const Preloader = () => {
           <div className="animate-[sealPress_900ms_cubic-bezier(0.22,1,0.36,1)_both]">
             <svg
               viewBox="0 0 200 200"
-              className="h-40 w-40 sm:h-52 sm:w-52 drop-shadow-[0_18px_34px_rgba(22,55,38,0.35)]"
+              className="h-44 w-44 sm:h-56 sm:w-56 drop-shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
               aria-label="TKLH تِكله"
               role="img"
             >
               <defs>
                 <radialGradient id="waxFill" cx="0.38" cy="0.32" r="0.85">
-                  <stop offset="0%" stopColor="#2b4732" />
-                  <stop offset="55%" stopColor="#1d3826" />
-                  <stop offset="100%" stopColor="#12281b" />
+                  <stop offset="0%" stopColor="#f3ecd9" />
+                  <stop offset="55%" stopColor="#e8dfc6" />
+                  <stop offset="100%" stopColor="#d6c8a4" />
                 </radialGradient>
               </defs>
 
               <path d={outerPath} fill="url(#waxFill)" />
-              <path d={innerPath} fill="none" stroke="rgba(0,0,0,0.28)" strokeWidth="2.5" />
-              <circle cx="100" cy="100" r="66" fill="none" stroke="#A7CAA1" strokeWidth="1.4" opacity="0.85" />
+              <path d={innerPath} fill="none" stroke="rgba(22,55,38,0.25)" strokeWidth="2.5" />
+              <circle cx="100" cy="100" r="66" fill="none" stroke="#163726" strokeWidth="1.4" opacity="0.75" />
 
               {/* official TKLH chair mark — unchanged */}
               <g
-                stroke="#A7CAA1"
+                stroke="#163726"
                 strokeWidth="1.6"
                 fill="none"
                 strokeLinecap="round"
@@ -157,7 +157,7 @@ export const Preloader = () => {
 
           <span
             className="font-tagline text-center text-base font-medium tracking-[0.14em] sm:text-lg animate-[sealFade_1.2s_ease-out_400ms_both]"
-            style={{ color: "#163726" }}
+            style={{ color: "#e8dfc6" }}
           >
             {t("preloader.slogan")}
           </span>
