@@ -1511,6 +1511,31 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_vendor_review_replies: {
+        Args: { _vendor_id: string }
+        Returns: {
+          body: string
+          created_at: string
+          id: string
+          review_id: string
+          updated_at: string
+          vendor_id: string
+        }[]
+      }
+      get_vendor_reviews: {
+        Args: { _vendor_id: string }
+        Returns: {
+          comment: string
+          communication: number
+          created_at: string
+          id: string
+          punctuality: number
+          quality: number
+          rating: number
+          reviewer_name: string
+          vendor_id: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
