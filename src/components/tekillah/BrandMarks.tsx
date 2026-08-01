@@ -92,17 +92,17 @@ export const WaxSeal = ({
       <circle
         cx="50"
         cy="50"
-        r="37"
+        r="35"
         fill="none"
         stroke={emboss ? "hsl(var(--green))" : "#000000"}
-        strokeOpacity={emboss ? 0.18 : 0.28}
+        strokeOpacity={emboss ? 0.16 : 0.22}
         strokeWidth="2"
       />
 
       {/* debossed chair mark: dark press shadow + light lift */}
-      <g transform="translate(50 51) scale(0.56) translate(-50 -50)">
+      <g transform="translate(50 51) scale(0.68) translate(-50 -50)">
         <g transform="translate(0 1.6)">
-          <ChairGlyph stroke={emboss ? "hsl(var(--green))" : "#000000"} width={3.4} />
+          <ChairGlyph stroke={emboss ? "hsl(var(--green))" : "#000000"} width={3.8} />
         </g>
         <g opacity={emboss ? 0.9 : 0.85}>
           <ChairGlyph stroke={emboss ? "hsl(var(--bone))" : "#ffffff"} width={3} />

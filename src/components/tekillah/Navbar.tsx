@@ -72,9 +72,9 @@ export const Navbar = () => {
       <div className={`mx-auto px-4 transition-all duration-300 ${scrolled ? "mt-2 max-w-6xl" : "mt-4 max-w-6xl"}`}
         style={{ transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)" }}>
         <div
-          className={`relative flex items-center justify-between overflow-hidden rounded-full px-4 py-2.5 transition-all duration-300 border shadow-soft`}
+          className={`relative flex items-center justify-between overflow-hidden rounded-full border shadow-soft backdrop-blur-md transition-all duration-300 ${scrolled ? "px-4 py-1.5" : "px-4 py-2.5"}`}
           style={{
-            background: "#163726",
+            background: scrolled ? "hsl(var(--green) / 0.88)" : "hsl(var(--green))",
             borderColor: "rgba(160, 208, 158, 0.22)",
             transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
           }}
