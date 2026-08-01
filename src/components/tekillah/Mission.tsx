@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   SketchIconCandle,
@@ -7,6 +8,8 @@ import {
   SketchIconSparkle,
   SketchCornerOrnament,
 } from "./SketchArt";
+import { SignatureLine } from "./BrandMarks";
+
 
 /**
  * Mission — "رسالتنا للمجتمع"
@@ -67,52 +70,35 @@ export const Mission = () => {
         <SketchIconSparkle className="h-9 w-9 opacity-75" />
       </motion.div>
 
-      <div className="relative mx-auto max-w-4xl px-6 text-center">
-        <motion.div {...reveal} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
-          <div className="mx-auto mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-gold to-gold/60 shadow-luxury">
-            <SketchIconRings className="h-10 w-14" />
-          </div>
+      <div className="relative mx-auto max-w-3xl px-6 text-center">
+        <motion.div {...reveal} transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}>
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.3em] text-primary backdrop-blur">
             {t("mission.kicker")}
           </span>
-          <h2
-            className="mt-5 font-wordmark text-4xl font-bold leading-tight sm:text-5xl md:text-6xl"
+
+          {/* One-sentence mission, then the leaning signature line + CTA to
+              the full About page (the long copy lives there now). */}
+          <p
+            className={`mt-6 text-2xl font-bold leading-[1.7] sm:text-3xl ${isAr ? "font-arabic" : "font-cinzel"}`}
             style={{ color: "hsl(var(--primary-deep))" }}
           >
-            {t("mission.title")}
-          </h2>
-        </motion.div>
-
-        <motion.div
-          {...reveal}
-          transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10 rounded-3xl border border-primary/15 bg-background/70 p-8 shadow-card backdrop-blur md:p-12"
-        >
-          <p className={`text-xl leading-[2] text-foreground/85 sm:text-2xl ${isAr ? "font-arabic" : ""}`}>
-            {t("mission.p1")}
-            <br />
-            {t("mission.p2Prefix")}
-            <span className="font-bold text-primary-deep">{t("mission.p2Highlight")}</span>
-            {t("mission.p2Suffix")}
+            {t("mission.oneLine", { defaultValue: t("mission.tagline") })}
           </p>
 
-          <div className="mx-auto my-8 h-px w-24 bg-gradient-to-r from-transparent via-gold to-transparent" />
+          <div className="mt-5 flex justify-center">
+            <SignatureLine width={190} />
+          </div>
 
-          <p className={`text-xl leading-[2] text-foreground/85 sm:text-2xl ${isAr ? "font-arabic" : ""}`}>
-            {t("mission.p3Prefix")}
-            <span className="font-bold text-primary-deep">{t("mission.p3Highlight")}</span>
-            {t("mission.p3Suffix")}
-          </p>
-
-          <p
-            className="font-display mt-8 text-2xl font-bold text-gold sm:text-3xl"
+          <Link
+            to="/about"
+            className="mt-7 inline-flex items-center gap-2 rounded-full bg-green px-6 py-3 text-sm font-bold text-bone transition-transform duration-300 hover:-translate-y-0.5"
+            style={{ transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)" }}
           >
-            {t("mission.tagline")}
-          </p>
-
+            {t("mission.cta")}
+          </Link>
         </motion.div>
-
       </div>
     </section>
   );
 };
+

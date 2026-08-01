@@ -1,5 +1,6 @@
 import { motion, type Variants } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import {
@@ -10,7 +11,9 @@ import {
   SketchBanquet,
   SketchTable,
 } from "./SketchArt";
+import { CompositePattern, SignatureLine, ZariEdge } from "./BrandMarks";
 import wordmarkAsset from "@/assets/tklh-logo-transparent.png.asset.json";
+
 
 
 
@@ -275,6 +278,12 @@ export const Hero = () => {
       className="relative min-h-screen w-full overflow-hidden scroll-smooth lg:max-h-[960px]"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
+      {/* === Composite brand pattern — hero background only === */}
+      <CompositePattern opacity={0.06} />
+
+      {/* Zari braid on the top edge of the hero, single side only */}
+      <ZariEdge side="top" />
+
       {/* === Soft warm glow === */}
       <div className="pointer-events-none absolute inset-0">
         <div
@@ -282,6 +291,7 @@ export const Hero = () => {
           style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.22), transparent 70%)" }}
         />
       </div>
+
 
       {/* === Sketch watermark (15%) — visible on all screens, narrower on mobile === */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.15]">
@@ -330,6 +340,12 @@ export const Hero = () => {
               <span style={{ color: "#163726" }}>{t("hero.slogan")}</span>
             </motion.h1>
 
+            {/* Leaning signature line — replaces straight rules under headings */}
+            <motion.div variants={rise} className="mt-4 flex w-full justify-center lg:justify-end">
+              <SignatureLine width={200} />
+            </motion.div>
+
+
 
             {/* Sub-headline */}
             <motion.p
@@ -354,27 +370,27 @@ export const Hero = () => {
 
 
 
-        {/* === CTA === */}
+        {/* === CTA — real client-side route to the booking wizard === */}
         <motion.div variants={rise} className="mt-10 w-full max-w-xl">
-          <a
-            href="/planner"
-            className={`group relative flex scale-[0.7] items-center gap-3 overflow-hidden rounded-2xl border-2 border-[rgba(22,55,38,0.4)] bg-gradient-to-br from-[#163726] to-[#163726] p-5 ${isAr ? "text-right" : "text-left"} text-[#A7CAA1] shadow-[0_25px_60px_-20px_rgba(22,55,38,0.45)] backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-[rgba(22,55,38,0.7)]`}
+          <Link
+            to="/planner"
+            aria-label={t("hero.ctaTitle")}
+            className={`group relative flex scale-[0.85] items-center gap-3 overflow-hidden rounded-2xl border-2 border-[rgba(22,55,38,0.4)] bg-[#163726] p-5 ${isAr ? "text-right" : "text-left"} text-[#A7CAA1] shadow-[0_25px_60px_-20px_rgba(22,55,38,0.45)] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(22,55,38,0.7)]`}
+            style={{ transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)" }}
           >
-            <span aria-hidden className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full opacity-30 blur-2xl"
-              style={{ background: "radial-gradient(circle, #A7CAA1, transparent 70%)" }} />
-            <span className="grid h-12 w-12 flex-none place-items-center rounded-xl border border-[rgba(167,202,161,0.5)] bg-[rgba(22,55,38,0.4)] transition-transform duration-500 group-hover:rotate-6" />
+            <ZariEdge side="bottom" />
             <div className="flex-1">
-              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[rgba(167,202,161,0.8)]"><br /></div>
-              <div className="font-display text-lg font-black text-[#A7CAA1] sm:text-xl">{t("hero.ctaTitle")}&nbsp;</div>
+              <div className="font-display text-lg font-black text-[#A7CAA1] sm:text-xl">{t("hero.ctaTitle")}</div>
               <div className="mt-0.5 text-[12.5px] text-[rgba(250,250,245,0.9)]">{t("hero.ctaDesc")}</div>
             </div>
             {isAr ? (
-              <ArrowLeft className="h-5 w-5 text-[#A7CAA1] transition-transform duration-500 ease-out group-hover:-translate-x-1" />
+              <ArrowLeft className="h-5 w-5 text-[#A7CAA1] transition-transform duration-300 group-hover:-translate-x-1" />
             ) : (
-              <ArrowRight className="h-5 w-5 text-[#A7CAA1] transition-transform duration-500 ease-out group-hover:translate-x-1" />
+              <ArrowRight className="h-5 w-5 text-[#A7CAA1] transition-transform duration-300 group-hover:translate-x-1" />
             )}
-          </a>
+          </Link>
         </motion.div>
+
 
 
 
