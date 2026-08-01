@@ -275,25 +275,6 @@ export const Hero = () => {
       className="relative min-h-screen w-full overflow-hidden scroll-smooth lg:max-h-[960px]"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
-      {/* === Background hero image === */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <img
-          src={heroPoster}
-          alt=""
-          width={1920}
-          height={1080}
-          className="h-full w-full object-cover object-top"
-        />
-        {/* Soft vignette: keeps the headline readable without hiding the image */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse at 50% 35%, hsl(var(--cream)) / 0.28 0%, transparent 55%)",
-          }}
-        />
-      </div>
-
       {/* === Soft warm glow === */}
       <div className="pointer-events-none absolute inset-0">
         <div
