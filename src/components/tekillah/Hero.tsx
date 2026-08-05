@@ -276,10 +276,19 @@ export const Hero = () => {
 
   const words = t("hero.rotating", { returnObjects: true }) as string[];
   const [wordIndex, setWordIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
-    const id = setInterval(() => setWordIndex((n) => (n + 1) % words.length), 2600);
+    const mq = window.matchMedia("(max-width: 640px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    const id = setInterval(() => setWordIndex((n) => (n + 1) % words.length), isMobile ? 1800 : 2400);
     return () => clearInterval(id);
-  }, [words.length]);
+  }, [words.length, isMobile]);
   const word = words[wordIndex % words.length];
 
   return (
