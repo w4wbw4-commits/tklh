@@ -330,14 +330,14 @@ export const Hero = () => {
           draggable={false}
         />
 
-        {/* Rotating line — "تِكله لـ …" : clean, large, one baseline */}
+        {/* Rotating line — "تِكله لـ …" : refined, compact, high-contrast */}
         <motion.div
           variants={rise}
-          className="mt-8 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 sm:gap-x-4"
+          className="mt-5 flex flex-wrap items-baseline justify-center gap-x-2 gap-y-0.5 sm:gap-x-3"
         >
           <span
-            className="font-display shrink-0 text-2xl font-black tracking-tight sm:text-3xl md:text-4xl"
-            style={{ color: "hsl(var(--primary-deep) / 0.5)" }}
+            className="font-display shrink-0 text-lg font-black tracking-tight sm:text-xl md:text-2xl"
+            style={{ color: "hsl(var(--primary-deep))" }}
           >
             {t("hero.forPrefix")}
           </span>
@@ -347,29 +347,32 @@ export const Hero = () => {
             transition={{ type: "spring", stiffness: 220, damping: 26 }}
             className="relative inline-flex flex-col items-center overflow-hidden pb-1"
           >
-            <span className="relative block overflow-hidden py-1">
+            <span className="relative block overflow-hidden py-0.5">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
                   key={word}
-                  initial={{ y: "115%", opacity: 0, filter: "blur(6px)" }}
+                  initial={{ y: "115%", opacity: 0, filter: "blur(5px)" }}
                   animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
-                  exit={{ y: "-115%", opacity: 0, filter: "blur(6px)" }}
-                  transition={{ duration: 0.62, ease: [0.19, 1, 0.22, 1] }}
-                  className="font-display block whitespace-nowrap text-3xl font-black leading-[1.15] tracking-tight sm:text-5xl md:text-6xl"
-                  style={{ color: "#163726" }}
+                  exit={{ y: "-115%", opacity: 0, filter: "blur(5px)" }}
+                  transition={{ duration: 0.58, ease: [0.19, 1, 0.22, 1] }}
+                  className="font-display block whitespace-nowrap text-2xl font-black leading-[1.1] tracking-tight sm:text-3xl md:text-4xl"
+                  style={{
+                    color: "#163726",
+                    textShadow: "0 1px 0 hsl(var(--cream)), 0 0 28px hsl(var(--gold) / 0.18)",
+                  }}
                 >
                   {word}
                 </motion.span>
               </AnimatePresence>
             </span>
 
-            {/* gold underline redraws with each word */}
+            {/* refined gold underline */}
             <motion.span
               key={`rule-${word}`}
               initial={{ scaleX: 0, opacity: 0 }}
               animate={{ scaleX: 1, opacity: 1 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-1 block h-[3px] w-full origin-center rounded-full"
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-0.5 block h-[2px] w-[92%] origin-center rounded-full"
               style={{ background: `linear-gradient(90deg, transparent, ${gold}, transparent)` }}
               aria-hidden
             />
