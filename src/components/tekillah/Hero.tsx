@@ -337,7 +337,7 @@ export const Hero = () => {
         >
           <span
             className="font-display shrink-0 text-lg font-black tracking-tight sm:text-xl md:text-2xl"
-            style={{ color: "hsl(var(--primary-deep))" }}
+            style={{ color: "hsl(var(--green-light))" }}
           >
             {t("hero.forPrefix")}
           </span>
