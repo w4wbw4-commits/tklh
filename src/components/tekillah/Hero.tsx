@@ -491,7 +491,7 @@ export const Hero = () => {
 
 
         {/* === CTA === */}
-        <motion.div variants={rise} className="mt-10 flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
+        <motion.div variants={rise} className="mt-9 flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
           <motion.a
             href="/planner"
             whileHover={{ y: -3 }}
