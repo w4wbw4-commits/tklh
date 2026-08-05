@@ -422,14 +422,23 @@ export const Hero = () => {
 
           <motion.a
             href="/partner"
-            whileHover={{ y: -2 }}
+            whileHover={{ y: -3 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 280, damping: 20 }}
-            className="inline-flex items-center justify-center gap-1.5 text-sm font-semibold underline-offset-4 transition-all hover:underline sm:text-base"
-            style={{ color: "hsl(var(--primary-deep))" }}
+            className="group relative inline-flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-full border px-8 py-4 text-sm font-black sm:w-auto sm:text-base"
+            style={{
+              borderColor: "hsl(var(--primary-deep) / 0.35)",
+              color: "hsl(var(--primary-deep))",
+              backgroundColor: "hsl(var(--cream) / 0.5)",
+            }}
           >
-            {t("hero.secondary")}
-            <Arrow className="h-3.5 w-3.5" />
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -translate-x-full transition-transform duration-700 group-hover:translate-x-0"
+              style={{ background: "linear-gradient(90deg, transparent, rgba(22,55,38,0.08), transparent)" }}
+            />
+            <span className="relative">{t("hero.secondary")}</span>
+            <Arrow className="relative h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1" />
           </motion.a>
         </motion.div>
       </motion.div>
