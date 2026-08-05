@@ -353,7 +353,7 @@ export const Hero = () => {
 
           <motion.span
             layout
-            transition={{ type: "spring", stiffness: 220, damping: 26 }}
+            transition={{ type: "spring", stiffness: isMobile ? 280 : 220, damping: 24 }}
             className="relative inline-flex flex-col items-center overflow-hidden pb-1"
           >
             <span className="relative block overflow-hidden py-0.5">
@@ -363,7 +363,7 @@ export const Hero = () => {
                   initial={{ y: "115%", opacity: 0, filter: "blur(5px)" }}
                   animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
                   exit={{ y: "-115%", opacity: 0, filter: "blur(5px)" }}
-                  transition={{ duration: 0.58, ease: [0.19, 1, 0.22, 1] }}
+                  transition={{ duration: isMobile ? 0.4 : 0.52, ease: [0.19, 1, 0.22, 1] }}
                   className="font-display block whitespace-nowrap text-2xl font-black leading-[1.1] tracking-tight sm:text-3xl md:text-4xl"
                   style={{
                     color: "#163726",
@@ -380,7 +380,7 @@ export const Hero = () => {
               key={`rule-${word}`}
               initial={{ scaleX: 0, opacity: 0 }}
               animate={{ scaleX: 1, opacity: 1 }}
-              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: isMobile ? 0.45 : 0.58, ease: [0.16, 1, 0.3, 1] }}
               className="mt-0.5 block h-[2px] w-[92%] origin-center rounded-full"
               style={{ background: `linear-gradient(90deg, transparent, ${gold}, transparent)` }}
               aria-hidden
