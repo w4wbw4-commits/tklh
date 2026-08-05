@@ -644,66 +644,69 @@ html {
     pointer-events: none;
     z-index: 0;
     background:
-      radial-gradient(ellipse 120% 60% at 50% 0%, hsl(151 25% 22% / 0.55), transparent 60%),
-      linear-gradient(180deg, hsl(151 18% 28% / 0.22) 0%, hsl(60 30% 97% / 0.35) 45%, hsl(60 30% 97%) 100%),
-      linear-gradient(135deg, hsl(60 25% 94%) 0%, hsl(60 30% 98%) 50%, hsl(55 25% 92%) 100%);
+      /* very soft olive wash at the top, like the reference shadow */
+      radial-gradient(ellipse 140% 70% at 50% 0%, hsl(151 22% 24% / 0.18), transparent 55%),
+      /* warm cream body */
+      linear-gradient(180deg, hsl(60 28% 96%) 0%, hsl(55 32% 98%) 40%, hsl(50 30% 97%) 100%),
+      /* subtle side-to-side warmth */
+      linear-gradient(105deg, hsl(60 26% 94%) 0%, hsl(55 30% 97%) 50%, hsl(50 28% 95%) 100%);
   }
 
   .hero-canvas::before,
   .hero-canvas::after {
     content: "";
     position: absolute;
-    inset: -30%;
-    opacity: 0.28;
-    filter: blur(80px);
-    animation: hero-drift 28s ease-in-out infinite alternate;
+    inset: -25%;
+    opacity: 0.16;
+    filter: blur(90px);
+    animation: hero-drift 32s ease-in-out infinite alternate;
     background:
-      radial-gradient(circle at 30% 20%, hsl(151 30% 26% / 0.45) 0%, transparent 45%),
-      radial-gradient(circle at 70% 60%, hsl(55 30% 82% / 0.55) 0%, transparent 50%),
-      radial-gradient(circle at 50% 90%, hsl(151 25% 18% / 0.35) 0%, transparent 40%);
+      radial-gradient(circle at 25% 15%, hsl(151 25% 28% / 0.22) 0%, transparent 50%),
+      radial-gradient(circle at 75% 55%, hsl(55 30% 88% / 0.45) 0%, transparent 55%),
+      radial-gradient(circle at 50% 95%, hsl(151 20% 22% / 0.14) 0%, transparent 45%);
   }
 
   .hero-canvas::after {
-    animation-delay: -14s;
-    animation-duration: 34s;
-    opacity: 0.22;
+    animation-delay: -16s;
+    animation-duration: 40s;
+    opacity: 0.12;
     transform: rotate(180deg);
     background:
-      radial-gradient(circle at 60% 10%, hsl(55 25% 88% / 0.5) 0%, transparent 48%),
-      radial-gradient(circle at 25% 70%, hsl(151 28% 24% / 0.4) 0%, transparent 42%);
+      radial-gradient(circle at 65% 10%, hsl(55 28% 90% / 0.38) 0%, transparent 52%),
+      radial-gradient(circle at 30% 75%, hsl(151 22% 26% / 0.18) 0%, transparent 48%);
   }
 
   .hero-grain {
     position: absolute;
     inset: 0;
-    opacity: 0.07;
+    opacity: 0.045;
     pointer-events: none;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 220px 220px;
+    background-size: 240px 240px;
   }
 
   .hero-beam {
     position: absolute;
     inset: 0;
-    opacity: 0.18;
+    opacity: 0.12;
     pointer-events: none;
     background:
       repeating-linear-gradient(
         115deg,
         transparent 0px,
-        hsl(55 30% 92% / 0.12) 60px,
-        transparent 120px,
-        hsl(151 25% 20% / 0.08) 180px,
-        transparent 240px
+        hsl(55 30% 94% / 0.18) 80px,
+        transparent 160px,
+        hsl(151 20% 24% / 0.05) 240px,
+        transparent 320px
       );
     background-size: 200% 200%;
-    animation: hero-beam-sweep 42s linear infinite;
+    animation: hero-beam-sweep 48s linear infinite;
   }
 
   @keyframes hero-drift {
-    0% { transform: translate3d(-4%, -3%, 0) scale(1); }
-    100% { transform: translate3d(4%, 3%, 0) scale(1.08); }
+    0% { transform: translate3d(-3%, -2%, 0) scale(1); }
+    100% { transform: translate3d(3%, 2%, 0) scale(1.06); }
   }
 
   @keyframes hero-beam-sweep {
@@ -719,5 +722,6 @@ html {
     }
   }
 }
+
 
 
