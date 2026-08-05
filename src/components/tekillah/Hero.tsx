@@ -266,72 +266,51 @@ const variantClass: Record<CardDef["variant"], string> = {
 
 
 // ---- Refined official seal / stamp -----------------------------------------
-const WordSeal = ({ label, isAr }: { label: string; isAr: boolean }) => (
+// Small, restrained gold seal that "stamps" next to the rotating word.
+const WordSeal = ({ label }: { label: string }) => (
   <motion.span
     key={label}
-    initial={{ scale: 1.55, rotate: -20, opacity: 0 }}
-    animate={{ scale: 1, rotate: -8, opacity: 1 }}
-    exit={{ scale: 0.92, rotate: 3, opacity: 0 }}
-    transition={{ type: "spring", stiffness: 340, damping: 15 }}
-    className="pointer-events-none absolute hidden h-16 w-16 place-items-center sm:grid"
-    style={{ top: -92, [isAr ? "right" : "left"]: -8 }}
+    initial={{ scale: 1.5, rotate: -18, opacity: 0 }}
+    animate={{ scale: 1, rotate: -7, opacity: 1 }}
+    exit={{ scale: 0.9, rotate: 2, opacity: 0 }}
+    transition={{ type: "spring", stiffness: 320, damping: 16 }}
+    className="pointer-events-none hidden h-11 w-11 shrink-0 sm:inline-grid sm:place-items-center md:h-14 md:w-14"
     aria-hidden
   >
     <svg viewBox="0 0 72 72" className="h-full w-full">
       <defs>
         <radialGradient id="sealGlow" cx="0.5" cy="0.4" r="0.6">
-          <stop offset="0%" stopColor="#f6e3a8" stopOpacity="0.55" />
-          <stop offset="100%" stopColor={gold} stopOpacity="0.05" />
+          <stop offset="0%" stopColor="#f6e3a8" stopOpacity="0.5" />
+          <stop offset="100%" stopColor={gold} stopOpacity="0.04" />
         </radialGradient>
-        <path id="sealArc" d="M36 36 m-23 0 a23 23 0 1 1 46 0" fill="none" />
       </defs>
       <circle cx="36" cy="36" r="31" fill="url(#sealGlow)" />
-      <circle cx="36" cy="36" r="30" fill="none" stroke={gold} strokeWidth="1.6" />
-      <circle cx="36" cy="36" r="26.5" fill="none" stroke={gold} strokeWidth="0.6" opacity="0.75" />
-      <circle cx="36" cy="36" r="23" fill="none" stroke={gold} strokeWidth="0.5" strokeDasharray="1.5 3" opacity="0.7" />
-      {/* laurel-ish ticks */}
+      <circle cx="36" cy="36" r="29" fill="none" stroke={gold} strokeWidth="1.4" />
+      <circle cx="36" cy="36" r="24.5" fill="none" stroke={gold} strokeWidth="0.5" strokeDasharray="1.5 3.5" opacity="0.7" />
       {Array.from({ length: 24 }).map((_, i) => (
         <line
           key={i}
           x1="36"
-          y1="7.5"
+          y1="8.5"
           x2="36"
-          y2="10.5"
+          y2="11"
           stroke={gold}
-          strokeWidth="0.8"
-          opacity="0.6"
+          strokeWidth="0.7"
+          opacity="0.5"
           transform={`rotate(${i * 15} 36 36)`}
         />
       ))}
-      <text
-        x="36"
-        y="33"
-        textAnchor="middle"
-        fill={gold}
-        fontSize="11"
-        fontWeight="700"
-        fontFamily="system-ui"
-        letterSpacing="1.5"
-      >
+      <text x="36" y="34" textAnchor="middle" fill={gold} fontSize="12" fontWeight="700" fontFamily="system-ui" letterSpacing="1.4">
         TKLH
       </text>
-      <line x1="24" y1="38" x2="48" y2="38" stroke={gold} strokeWidth="0.7" opacity="0.8" />
-      <text
-        x="36"
-        y="49"
-        textAnchor="middle"
-        fill={gold}
-        fontSize="6.2"
-        fontWeight="600"
-        fontFamily="system-ui"
-        letterSpacing="0.8"
-        opacity="0.9"
-      >
+      <line x1="25" y1="39" x2="47" y2="39" stroke={gold} strokeWidth="0.6" opacity="0.8" />
+      <text x="36" y="49" textAnchor="middle" fill={gold} fontSize="6" fontWeight="600" fontFamily="system-ui" letterSpacing="0.7" opacity="0.85">
         VERIFIED
       </text>
     </svg>
   </motion.span>
 );
+
 
 
 export const Hero = () => {
