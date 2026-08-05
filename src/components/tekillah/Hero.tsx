@@ -265,51 +265,7 @@ const variantClass: Record<CardDef["variant"], string> = {
 };
 
 
-// ---- Refined official seal / stamp -----------------------------------------
-// Small, restrained gold seal that "stamps" next to the rotating word.
-const WordSeal = ({ label }: { label: string }) => (
-  <motion.span
-    key={label}
-    initial={{ scale: 1.5, rotate: -18, opacity: 0 }}
-    animate={{ scale: 1, rotate: -7, opacity: 1 }}
-    exit={{ scale: 0.9, rotate: 2, opacity: 0 }}
-    transition={{ type: "spring", stiffness: 320, damping: 16 }}
-    className="pointer-events-none hidden h-11 w-11 shrink-0 sm:inline-grid sm:place-items-center md:h-14 md:w-14"
-    aria-hidden
-  >
-    <svg viewBox="0 0 72 72" className="h-full w-full">
-      <defs>
-        <radialGradient id="sealGlow" cx="0.5" cy="0.4" r="0.6">
-          <stop offset="0%" stopColor="#f6e3a8" stopOpacity="0.5" />
-          <stop offset="100%" stopColor={gold} stopOpacity="0.04" />
-        </radialGradient>
-      </defs>
-      <circle cx="36" cy="36" r="31" fill="url(#sealGlow)" />
-      <circle cx="36" cy="36" r="29" fill="none" stroke={gold} strokeWidth="1.4" />
-      <circle cx="36" cy="36" r="24.5" fill="none" stroke={gold} strokeWidth="0.5" strokeDasharray="1.5 3.5" opacity="0.7" />
-      {Array.from({ length: 24 }).map((_, i) => (
-        <line
-          key={i}
-          x1="36"
-          y1="8.5"
-          x2="36"
-          y2="11"
-          stroke={gold}
-          strokeWidth="0.7"
-          opacity="0.5"
-          transform={`rotate(${i * 15} 36 36)`}
-        />
-      ))}
-      <text x="36" y="34" textAnchor="middle" fill={gold} fontSize="12" fontWeight="700" fontFamily="system-ui" letterSpacing="1.4">
-        TKLH
-      </text>
-      <line x1="25" y1="39" x2="47" y2="39" stroke={gold} strokeWidth="0.6" opacity="0.8" />
-      <text x="36" y="49" textAnchor="middle" fill={gold} fontSize="6" fontWeight="600" fontFamily="system-ui" letterSpacing="0.7" opacity="0.85">
-        VERIFIED
-      </text>
-    </svg>
-  </motion.span>
-);
+
 
 
 
@@ -374,61 +330,52 @@ export const Hero = () => {
           draggable={false}
         />
 
-        {/* Rotating line — "تِكله لـ …" as a refined 3D drum on one baseline */}
+        {/* Rotating line — "تِكله لـ …" : clean, large, one baseline */}
         <motion.div
           variants={rise}
-          className="mt-7 flex items-center justify-center gap-2.5 sm:gap-3.5"
+          className="mt-8 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 sm:gap-x-4"
         >
-          <span className="font-display shrink-0 text-xl font-black text-primary-deep/55 sm:text-2xl md:text-3xl">
+          <span
+            className="font-display shrink-0 text-2xl font-black tracking-tight sm:text-3xl md:text-4xl"
+            style={{ color: "hsl(var(--primary-deep) / 0.5)" }}
+          >
             {t("hero.forPrefix")}
           </span>
 
-          <span
-            className="relative block h-[2.6rem] w-[11.5rem] overflow-hidden sm:h-[3.6rem] sm:w-[14rem] md:h-[4.2rem] md:w-[17rem]"
-            style={{
-              perspective: "760px",
-              WebkitMaskImage: "linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent)",
-              maskImage: "linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent)",
-            }}
+          <motion.span
+            layout
+            transition={{ type: "spring", stiffness: 220, damping: 26 }}
+            className="relative inline-flex flex-col items-center overflow-hidden pb-1"
           >
-            <AnimatePresence mode="popLayout" initial={false}>
-              <motion.span
-                key={word}
-                initial={{ rotateX: -82, y: "-100%", opacity: 0 }}
-                animate={{ rotateX: 0, y: "0%", opacity: 1 }}
-                exit={{ rotateX: 78, y: "100%", opacity: 0 }}
-                transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display absolute inset-0 flex items-center justify-start whitespace-nowrap text-[1.6rem] font-black sm:text-4xl md:text-5xl"
-                style={{
-                  transformOrigin: "center center -50px",
-                  transformStyle: "preserve-3d",
-                  backgroundImage:
-                    "linear-gradient(100deg, hsl(var(--primary-deep)) 10%, hsl(var(--gold)) 52%, hsl(var(--primary-deep)) 92%)",
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                  color: "transparent",
-                }}
-              >
-                {word}
-              </motion.span>
-            </AnimatePresence>
-          </span>
+            <span className="relative block overflow-hidden py-1">
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.span
+                  key={word}
+                  initial={{ y: "115%", opacity: 0, filter: "blur(6px)" }}
+                  animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
+                  exit={{ y: "-115%", opacity: 0, filter: "blur(6px)" }}
+                  transition={{ duration: 0.62, ease: [0.19, 1, 0.22, 1] }}
+                  className="font-display block whitespace-nowrap text-3xl font-black leading-[1.15] tracking-tight sm:text-5xl md:text-6xl"
+                  style={{ color: "#163726" }}
+                >
+                  {word}
+                </motion.span>
+              </AnimatePresence>
+            </span>
 
-          <AnimatePresence mode="wait">
-            <WordSeal key={`seal-${word}`} label={word} />
-          </AnimatePresence>
+            {/* gold underline redraws with each word */}
+            <motion.span
+              key={`rule-${word}`}
+              initial={{ scaleX: 0, opacity: 0 }}
+              animate={{ scaleX: 1, opacity: 1 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-1 block h-[3px] w-full origin-center rounded-full"
+              style={{ background: `linear-gradient(90deg, transparent, ${gold}, transparent)` }}
+              aria-hidden
+            />
+          </motion.span>
         </motion.div>
 
-        {/* Gold hairline that redraws with every word */}
-        <motion.span
-          key={`rule-${word}`}
-          initial={{ scaleX: 0, opacity: 0 }}
-          animate={{ scaleX: 1, opacity: 1 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-1 block h-px w-40 origin-center sm:w-56"
-          style={{ background: `linear-gradient(90deg, transparent, ${gold}, transparent)` }}
-          aria-hidden
-        />
 
         {/* Headline */}
         <motion.h1
