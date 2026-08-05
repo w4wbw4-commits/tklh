@@ -422,39 +422,59 @@ export const Hero = () => {
             </motion.p>
           </div>
 
-          {/* ---- Rotating "تِكله لـ ..." fills the former empty column ---- */}
+          {/* ---- Rotating wheel "تِكله لـ ..." ---- */}
           <motion.div
             variants={rise}
-            className="relative flex flex-col items-center justify-center gap-4 lg:order-first"
+            className="relative flex flex-col items-center justify-center gap-2 lg:order-first"
           >
-            <span className="font-display text-2xl font-black text-primary-deep/80 sm:text-3xl md:text-4xl">
+            <span className="font-display text-xl font-black text-primary-deep/70 sm:text-2xl md:text-3xl">
               {t("hero.forPrefix")}
             </span>
-            <span className="relative inline-flex min-h-[4rem] items-center justify-center">
-              <AnimatePresence mode="wait">
+
+            <span
+              className="relative inline-flex w-full max-w-md items-center justify-center overflow-hidden py-2"
+              style={{
+                perspective: "700px",
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, transparent, #000 26%, #000 74%, transparent)",
+                maskImage:
+                  "linear-gradient(to bottom, transparent, #000 26%, #000 74%, transparent)",
+              }}
+            >
+              {/* fixed drum height so nothing jumps */}
+              <span className="block h-[5.5rem] w-full sm:h-[6.5rem]" />
+              <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
                   key={word}
-                  initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -18, filter: "blur(8px)" }}
-                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className="font-display rounded-3xl border px-7 py-3 text-2xl font-black sm:text-4xl md:text-5xl"
+                  initial={{ rotateX: -78, y: "-95%", opacity: 0, scale: 0.9 }}
+                  animate={{ rotateX: 0, y: "0%", opacity: 1, scale: 1 }}
+                  exit={{ rotateX: 74, y: "95%", opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                  className="font-display absolute inset-x-0 mx-auto flex items-center justify-center rounded-[1.75rem] border px-6 py-3 text-2xl font-black sm:text-4xl md:text-5xl"
                   style={{
+                    transformOrigin: "center center -60px",
+                    transformStyle: "preserve-3d",
                     color: "hsl(var(--primary-deep))",
-                    borderColor: "hsl(var(--gold) / 0.45)",
-                    background: "linear-gradient(135deg, hsl(var(--gold) / 0.22), hsl(var(--cream) / 0.4))",
-                    boxShadow: "0 18px 44px -22px hsl(var(--primary-deep) / 0.5)",
+                    borderColor: "hsl(var(--gold) / 0.5)",
+                    background:
+                      "linear-gradient(135deg, hsl(var(--gold) / 0.24), hsl(var(--cream) / 0.5))",
+                    boxShadow:
+                      "0 22px 48px -26px hsl(var(--primary-deep) / 0.55), inset 0 1px 0 hsl(var(--cream) / 0.8)",
                     backdropFilter: "blur(10px)",
                   }}
                 >
                   {word}
                 </motion.span>
               </AnimatePresence>
+            </span>
+
+            <span className="relative block h-0 w-full">
               <AnimatePresence mode="wait">
                 <WordSeal key={`seal-${word}`} label={word} isAr={isAr} />
               </AnimatePresence>
             </span>
           </motion.div>
+
 
         </div>
 
