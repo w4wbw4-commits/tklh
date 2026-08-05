@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import logoAsset from "@/assets/tklh-logo-transparent.png.asset.json";
+import logoAsset from "@/assets/tklh-logo-official-light.png.asset.json";
 
 
 /**
