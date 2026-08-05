@@ -355,8 +355,13 @@ export const Hero = () => {
       className="relative w-full overflow-hidden scroll-smooth"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
+      {/* === Animated canvas background (reference-inspired) === */}
+      <div className="hero-canvas" aria-hidden="true" />
+      <div className="hero-beam" aria-hidden="true" />
+      <div className="hero-grain" aria-hidden="true" />
+
       {/* === Soft warm glow === */}
-      <div className="pointer-events-none absolute inset-0">
+      <div className="pointer-events-none absolute inset-0 z-[1]">
         <div
           className="absolute -top-32 left-1/2 h-[520px] w-[860px] -translate-x-1/2 rounded-full opacity-25 blur-3xl"
           style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.26), transparent 70%)" }}
@@ -366,6 +371,7 @@ export const Hero = () => {
           style={{ background: "radial-gradient(circle, hsl(var(--primary-deep) / 0.5), transparent 70%)" }}
         />
       </div>
+
 
       {/* === Sketch watermark === */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.15]">
