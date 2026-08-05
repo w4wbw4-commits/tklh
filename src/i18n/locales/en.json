@@ -179,7 +179,15 @@
         "label": "Planners",
         "caption": "Every detail, curated"
       }
-    }
+    },
+    "forPrefix": "Tklh for",
+    "rotating": [
+      "your wedding",
+      "your engagement",
+      "your events",
+      "your conferences",
+      "your vendors"
+    ]
   },
   "story": {
     "kicker": "Our story",
