@@ -3,8 +3,6 @@ import { useTranslation } from "react-i18next";
 import {
   SketchIconCandle,
   SketchIconBouquet,
-  SketchIconSparkle,
-  SketchCornerOrnament,
 } from "./SketchArt";
 
 export const UpcomingFeatures = () => {
@@ -25,12 +23,6 @@ export const UpcomingFeatures = () => {
       {/* Decorative blurs */}
       <div className="pointer-events-none absolute -top-20 start-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 end-0 h-80 w-80 rounded-full bg-secondary/40 blur-3xl" />
-      {/* Sketch corner ornaments — keep the visual language consistent */}
-      <SketchCornerOrnament className="pointer-events-none absolute top-4 left-4 hidden h-[100px] w-[100px] opacity-50 md:block" />
-      <SketchCornerOrnament
-        className="pointer-events-none absolute bottom-4 right-4 hidden h-[100px] w-[100px] opacity-50 md:block"
-        style={{ transform: "scaleX(-1) scaleY(-1)" }}
-      />
 
       <div className="relative mx-auto max-w-6xl px-6">
         <motion.div
@@ -40,12 +32,11 @@ export const UpcomingFeatures = () => {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto max-w-2xl text-center"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.3em] text-primary backdrop-blur">
-            <SketchIconSparkle className="h-4 w-4" />
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-primary backdrop-blur sm:text-xs sm:tracking-[0.24em]">
             {t("upcoming.kicker")}
           </span>
           <h2
-            className="mt-5 text-balance text-3xl font-bold leading-tight sm:text-4xl md:text-5xl"
+            className="mt-5 text-balance text-2xl font-bold leading-[1.45] sm:text-3xl md:text-4xl"
             style={{ color: "hsl(var(--primary-deep))" }}
           >
             {t("upcoming.title")}

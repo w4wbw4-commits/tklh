@@ -3,14 +3,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import {
-  SketchCurtain,
-  SketchEucalyptus,
-  SketchLotus,
-  SketchCandelabra,
-  SketchBanquet,
-  SketchTable,
-} from "./SketchArt";
 import wordmarkAsset from "@/assets/tklh-logo-official.png.asset.json";
 
 
@@ -309,18 +301,6 @@ export const Hero = () => {
           className="absolute bottom-0 left-0 h-[420px] w-[720px] rounded-full opacity-[0.14] blur-3xl"
           style={{ background: "radial-gradient(circle, hsl(var(--primary-deep) / 0.5), transparent 70%)" }}
         />
-      </div>
-
-      {/* === Sketch watermark === */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.15]">
-        <SketchCurtain className="absolute inset-y-0 left-0 h-full w-[44px] sm:w-[60px] md:w-[90px]" />
-        <SketchCurtain className="absolute inset-y-0 right-0 h-full w-[44px] sm:w-[60px] md:w-[90px]" style={{ transform: "scaleX(-1)" }} />
-        <SketchEucalyptus className="absolute top-6 left-[6%] h-[80px] w-[140px] sm:h-[110px] sm:w-[200px] md:h-[140px] md:w-[260px]" />
-        <SketchLotus className="absolute top-10 right-[8%] h-[70px] w-[100px] sm:h-[100px] sm:w-[140px] md:h-[120px] md:w-[170px]" />
-        <SketchCandelabra className="absolute bottom-10 left-[3%] hidden h-[160px] w-[110px] lg:block" />
-        <SketchCandelabra className="absolute bottom-10 right-[3%] hidden h-[160px] w-[110px] lg:block" style={{ transform: "scaleX(-1)" }} />
-        <SketchTable className="absolute bottom-16 left-1/2 h-[100px] w-[180px] -translate-x-1/2 sm:h-[140px] sm:w-[240px] md:h-[180px] md:w-[320px]" />
-        <SketchBanquet className="absolute -bottom-4 left-1/2 hidden h-[200px] w-[520px] -translate-x-1/2 xl:block" />
       </div>
 
       {/* === Foreground — one calm, centered editorial column === */}

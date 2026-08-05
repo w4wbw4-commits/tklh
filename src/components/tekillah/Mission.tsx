@@ -1,11 +1,7 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
-  SketchIconCandle,
   SketchIconRings,
-  SketchIconBouquet,
-  SketchIconSparkle,
-  SketchCornerOrnament,
 } from "./SketchArt";
 
 /**
@@ -37,46 +33,16 @@ export const Mission = () => {
         }}
       />
 
-      {/* === Sketch decorations — corners only, never cross the text === */}
-      <SketchCornerOrnament className="pointer-events-none absolute top-6 left-2 hidden h-[120px] w-[120px] opacity-55 md:block" />
-      <SketchCornerOrnament
-        className="pointer-events-none absolute top-6 right-2 hidden h-[120px] w-[120px] opacity-55 md:block"
-        style={{ transform: "scaleX(-1)" }}
-      />
-
-      {/* Floating sketch icons — gentle drift */}
-      <motion.div
-        animate={{ y: [0, -12, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="pointer-events-none absolute top-24 left-[8%] hidden lg:block"
-      >
-        <SketchIconCandle className="h-14 w-10 opacity-70" />
-      </motion.div>
-      <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="pointer-events-none absolute bottom-32 right-[10%] hidden lg:block"
-      >
-        <SketchIconBouquet className="h-14 w-14 opacity-70" />
-      </motion.div>
-      <motion.div
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="pointer-events-none absolute top-1/3 right-[6%] hidden lg:block"
-      >
-        <SketchIconSparkle className="h-9 w-9 opacity-75" />
-      </motion.div>
-
       <div className="relative mx-auto max-w-4xl px-6 text-center">
         <motion.div {...reveal} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
           <div className="mx-auto mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-gold to-gold/60 shadow-luxury">
             <SketchIconRings className="h-10 w-14" />
           </div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.3em] text-primary backdrop-blur">
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-primary backdrop-blur sm:text-xs sm:tracking-[0.24em]">
             {t("mission.kicker")}
           </span>
           <h2
-            className="mt-5 font-wordmark text-4xl font-bold leading-tight sm:text-5xl md:text-6xl"
+            className="mt-5 font-wordmark text-balance text-2xl font-bold leading-[1.45] sm:text-4xl md:text-5xl"
             style={{ color: "hsl(var(--primary-deep))" }}
           >
             {t("mission.title")}
@@ -105,7 +71,7 @@ export const Mission = () => {
           </p>
 
           <p
-            className="font-display mt-8 text-2xl font-bold text-gold sm:text-3xl"
+            className="font-display mt-7 text-balance text-lg font-bold leading-[1.5] text-gold sm:text-2xl md:text-3xl"
           >
             {t("mission.tagline")}
           </p>
