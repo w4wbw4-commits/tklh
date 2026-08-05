@@ -469,7 +469,7 @@ export const Hero = () => {
           variants={rise}
           className="mt-7 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5"
         >
-          {(["groom", "bride", "hall", "photographer", "planner"] as const).map((k, i) => (
+          {(["groom", "bride", "hall", "planner"] as const).map((k, i) => (
             <motion.li
               key={k}
               initial={{ opacity: 0, y: 12 }}
