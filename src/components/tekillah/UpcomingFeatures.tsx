@@ -32,11 +32,11 @@ export const UpcomingFeatures = () => {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto max-w-2xl text-center"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.3em] text-primary backdrop-blur">
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-primary backdrop-blur sm:text-xs sm:tracking-[0.24em]">
             {t("upcoming.kicker")}
           </span>
           <h2
-            className="mt-5 text-balance text-3xl font-bold leading-tight sm:text-4xl md:text-5xl"
+            className="mt-5 text-balance text-2xl font-bold leading-[1.45] sm:text-3xl md:text-4xl"
             style={{ color: "hsl(var(--primary-deep))" }}
           >
             {t("upcoming.title")}

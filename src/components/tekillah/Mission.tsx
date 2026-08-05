@@ -38,11 +38,11 @@ export const Mission = () => {
           <div className="mx-auto mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-gold to-gold/60 shadow-luxury">
             <SketchIconRings className="h-10 w-14" />
           </div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.3em] text-primary backdrop-blur">
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-primary backdrop-blur sm:text-xs sm:tracking-[0.24em]">
             {t("mission.kicker")}
           </span>
           <h2
-            className="mt-5 font-wordmark text-4xl font-bold leading-tight sm:text-5xl md:text-6xl"
+            className="mt-5 font-wordmark text-balance text-2xl font-bold leading-[1.45] sm:text-4xl md:text-5xl"
             style={{ color: "hsl(var(--primary-deep))" }}
           >
             {t("mission.title")}
@@ -71,7 +71,7 @@ export const Mission = () => {
           </p>
 
           <p
-            className="font-display mt-8 text-2xl font-bold text-gold sm:text-3xl"
+            className="font-display mt-7 text-balance text-lg font-bold leading-[1.5] text-gold sm:text-2xl md:text-3xl"
           >
             {t("mission.tagline")}
           </p>

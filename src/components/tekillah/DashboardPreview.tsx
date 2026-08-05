@@ -40,10 +40,10 @@ export const DashboardPreview = () => {
           transition={{ duration: 0.8 }}
           className="mx-auto max-w-2xl text-center"
         >
-          <span className="text-xs font-medium uppercase tracking-[0.3em] text-primary">
+          <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-primary sm:text-xs sm:tracking-[0.24em]">
             {t("dashboardPreview.kicker")}
           </span>
-          <h2 className="mt-4 font-arabic text-balance text-4xl font-semibold sm:text-5xl">
+          <h2 className="mt-4 font-arabic text-balance text-2xl font-semibold leading-[1.45] sm:text-4xl md:text-5xl">
             {t("dashboardPreview.title")}
           </h2>
           <p className="mt-4 text-muted-foreground sm:text-lg">

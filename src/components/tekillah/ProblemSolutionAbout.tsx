@@ -58,7 +58,7 @@ const SpeedSection = () => {
                   <ListChecks className="h-3 w-3" />
                   {t("speed.traditional.chip")}
                 </div>
-                <div className="mt-3 font-arabic text-xl font-black text-foreground/70 sm:text-3xl md:text-4xl">
+                <div className="mt-3 font-arabic text-xl font-black leading-[1.4] text-foreground/70 sm:text-3xl md:text-4xl">
                   {t("speed.traditional.value")}
                 </div>
                 <p className="mt-1 font-arabic text-xs text-foreground/55">
@@ -93,7 +93,7 @@ const SpeedSection = () => {
                   {t("speed.tekillah.chip")}
                 </div>
                 <div className="mt-3 flex items-baseline gap-1.5">
-                  <span className="font-arabic text-xl font-black leading-none text-green sm:text-3xl md:text-4xl">
+                  <span className="font-arabic text-xl font-black leading-[1.35] text-green sm:text-3xl md:text-4xl">
                     <AnimatedCounter value={5} />
                   </span>
                   <span className="font-arabic text-lg font-bold text-gold">{t("speed.tekillah.unit")}</span>

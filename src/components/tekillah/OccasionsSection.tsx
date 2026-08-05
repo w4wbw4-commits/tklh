@@ -32,9 +32,9 @@ export const OccasionsSection = () => {
             <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-xs font-bold text-foreground backdrop-blur sm:text-sm">
               {t("occasions.badge")}
             </span>
-            <h2 className={`mt-5 text-3xl font-black leading-[1.6] text-green md:text-5xl ${isAr ? "font-arabic" : ""}`}>
+            <h2 className={`mt-5 text-balance text-2xl font-black leading-[1.5] text-green sm:text-3xl md:text-4xl ${isAr ? "font-arabic" : ""}`}>
               {t("occasions.titlePrefix")}{" "}
-              <span className={`inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-2 leading-[1.6] text-transparent`}>
+              <span className={`inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-1 leading-[1.5] text-transparent`}>
                 {t("occasions.titleHighlight")}
               </span>
             </h2>
