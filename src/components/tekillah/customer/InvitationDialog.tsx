@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { Download, Loader2, Sparkles } from "lucide-react";
+import { Download, Loader2, Palette } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
@@ -77,7 +77,7 @@ export const InvitationDialog = ({ open, onOpenChange, event }: Props) => {
           <TabsList className="grid w-full grid-cols-2 rounded-full bg-secondary/60">
             <TabsTrigger value="template" className="rounded-full">{t("customer.invitation.template")}</TabsTrigger>
             <TabsTrigger value="ai" className="rounded-full">
-              <Sparkles className="me-1 h-3.5 w-3.5" /> {t("customer.invitation.ai")}
+              {t("customer.invitation.ai")}
             </TabsTrigger>
           </TabsList>
 
@@ -131,7 +131,7 @@ export const InvitationDialog = ({ open, onOpenChange, event }: Props) => {
               <div className="flex gap-2">
                 <Button onClick={generateAiCard} disabled={generating}
                   className="rounded-full bg-gradient-olive text-primary-foreground hover:opacity-90">
-                  {generating ? <Loader2 className="me-1 h-4 w-4 animate-spin" /> : <Sparkles className="me-1 h-4 w-4" />}
+                  {generating ? <Loader2 className="me-1 h-4 w-4 animate-spin" /> : <Palette className="me-1 h-4 w-4" />}
                   {aiImage ? t("customer.invitation.redesign") : t("customer.invitation.designMine")}
                 </Button>
                 {aiImage && (

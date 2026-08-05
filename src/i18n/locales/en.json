@@ -80,7 +80,7 @@
       },
       "invitations": {
         "title": "Invitations with a Signature of Their Own",
-        "desc": "Because you're one of a kind — stand out with us. Design and share your invitations with a wide range of luxury templates, powered by AI to craft a look that's uniquely yours."
+        "desc": "Because you're one of a kind — stand out with us. Design and share your invitations with a wide range of luxury templates, crafted to reflect your personal style."
       }
     }
   },
@@ -865,9 +865,9 @@
     },
     "invitation": {
       "title": "Digital invitation",
-      "desc": "Pick a ready template or let AI design a unique card.",
+      "desc": "Pick a ready template or request a custom design for a unique card.",
       "template": "Elegant template",
-      "ai": "Design with AI",
+      "ai": "Custom design",
       "kicker": "You're invited",
       "youAreInvited": "We'd be honored by your presence",
       "download": "Download invitation",
@@ -876,12 +876,12 @@
       "downloaded": "Downloaded",
       "downloadFailed": "Download failed",
       "noImage": "No image received",
-      "designing": "Designing your card with AI…",
+      "designing": "Designing your card…",
       "pressToDesign": "Press the design button to generate a unique card",
       "redesign": "Redesign",
       "designMine": "Design my card",
       "downloadShort": "Download",
-      "altAi": "AI invitation card"
+      "altAi": "Custom invitation card"
     },
     "payments": {
       "totalBooked": "Total booked budget",
