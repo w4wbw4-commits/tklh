@@ -75,7 +75,7 @@ const VendorPage = () => {
 
   const handleCtaClick = () => {
     if (!user) {
-      navigate("/auth?redirect=/vendor&role=vendor");
+      navigate("/join-vendor");
       return;
     }
     dashboardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -131,7 +131,7 @@ const VendorPage = () => {
               size="sm"
               onClick={() => {
                 if (!isAuthed) {
-                  navigate("/auth?redirect=/vendor&role=vendor");
+                  navigate("/join-vendor");
                   return;
                 }
                 if (vendor) {
