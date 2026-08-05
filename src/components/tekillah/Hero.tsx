@@ -466,16 +466,10 @@ export const Hero = () => {
         {/* Trust stats */}
         <motion.div
           variants={rise}
-          className="mt-14 grid w-full max-w-3xl grid-cols-3 divide-x rounded-3xl border px-2 py-5 backdrop-blur rtl:divide-x-reverse"
-          style={{
-            borderColor: "hsl(var(--primary-deep) / 0.1)",
-            backgroundColor: "hsl(var(--cream) / 0.7)",
-            // @ts-expect-error CSS custom prop for divide color
-            "--tw-divide-opacity": 1,
-          }}
+          className="mt-14 grid w-full max-w-3xl grid-cols-3 divide-x divide-[hsl(var(--primary-deep)/0.12)] rounded-3xl border border-[hsl(var(--primary-deep)/0.1)] bg-[hsl(var(--cream)/0.7)] px-2 py-5 backdrop-blur rtl:divide-x-reverse"
         >
           {stats.map((s) => (
-            <div key={s.label} className="px-2" style={{ borderColor: "hsl(var(--primary-deep) / 0.1)" }}>
+            <div key={s.label} className="px-2">
               <div className="font-display text-xl font-black sm:text-3xl" style={{ color: "hsl(var(--primary-deep))" }}>
                 {s.value}
                 <span style={{ color: gold }}>{s.suffix}</span>
