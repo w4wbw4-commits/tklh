@@ -28,6 +28,7 @@ import { AdminAddVendorDialog } from "@/components/tekillah/admin/AdminAddVendor
 import { AdminVendorsPanel } from "@/components/tekillah/admin/AdminVendorsPanel";
 import { AdminPackagesPanel } from "@/components/tekillah/admin/AdminPackagesPanel";
 import { AdminPendingBookings } from "@/components/tekillah/admin/AdminPendingBookings";
+import { AdminVendorApplications } from "@/components/tekillah/admin/AdminVendorApplications";
 import { AdminLayout } from "@/components/tekillah/admin/AdminLayout";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 
@@ -176,6 +177,7 @@ const Admin = () => {
   const renderSection = () => {
     switch (activeTab) {
       case "verification": return <AdminVerificationQueue />;
+      case "applications": return <AdminVendorApplications />;
       case "pending":      return <AdminPendingBookings />;
       case "vendors":      return <AdminVendorsPanel />;
       case "late":         return <AdminLateAlerts />;

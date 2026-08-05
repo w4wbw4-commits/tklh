@@ -18,6 +18,7 @@ import {
   Sparkles,
   Building2,
   Home,
+  UserPlus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +34,7 @@ export interface AdminNavItem {
 
 export const adminNav: AdminNavItem[] = [
   { key: "verification", labelKey: "admin.tabVerification", fallback: "التحقق", Icon: ShieldCheck },
+  { key: "applications", labelKey: "admin.tabApplications", fallback: "طلبات الانضمام", Icon: UserPlus, tone: "warning" },
   { key: "pending", labelKey: "admin.tabPending", fallback: "الحجوزات المعلقة", Icon: Hourglass, tone: "warning" },
   { key: "vendors", labelKey: "admin.tabVendors", fallback: "المزودون", Icon: Briefcase },
   { key: "late", labelKey: "admin.tabLate", fallback: "تنبيهات التأخر", Icon: AlertTriangle, tone: "danger" },
