@@ -11,7 +11,7 @@ import {
   SketchBanquet,
   SketchTable,
 } from "./SketchArt";
-import wordmarkAsset from "@/assets/tklh-logo-transparent.png.asset.json";
+import wordmarkAsset from "@/assets/tklh-logo-official.png.asset.json";
 
 
 
