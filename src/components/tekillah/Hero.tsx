@@ -352,7 +352,7 @@ export const Hero = () => {
       id="home"
       dir={isAr ? "rtl" : "ltr"}
       lang={i18n.language}
-      className="relative min-h-screen w-full overflow-hidden scroll-smooth lg:max-h-[1020px]"
+      className="relative w-full overflow-hidden scroll-smooth"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
       {/* === Soft warm glow === */}
@@ -384,7 +384,7 @@ export const Hero = () => {
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center px-5 pt-16 pb-8 sm:px-8"
+        className="relative z-10 mx-auto flex min-h-[78vh] max-w-7xl flex-col items-center justify-center px-5 pt-16 pb-10 sm:px-8"
       >
         <div className="grid w-full grid-cols-1 items-center gap-6 lg:grid-cols-2 lg:gap-8">
           {/* ---- Text column (right in RTL) ---- */}
