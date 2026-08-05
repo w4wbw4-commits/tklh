@@ -274,7 +274,7 @@ const WordSeal = ({ label, isAr }: { label: string; isAr: boolean }) => (
     exit={{ scale: 0.92, rotate: 3, opacity: 0 }}
     transition={{ type: "spring", stiffness: 340, damping: 15 }}
     className="pointer-events-none absolute hidden h-16 w-16 place-items-center sm:grid"
-    style={{ top: -30, [isAr ? "right" : "left"]: -26 }}
+    style={{ top: -92, [isAr ? "right" : "left"]: -8 }}
     aria-hidden
   >
     <svg viewBox="0 0 72 72" className="h-full w-full">
@@ -384,9 +384,9 @@ export const Hero = () => {
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center px-5 pt-20 pb-10 sm:px-8"
+        className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center px-5 pt-16 pb-8 sm:px-8"
       >
-        <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-12">
+        <div className="grid w-full grid-cols-1 items-center gap-6 lg:grid-cols-2 lg:gap-8">
           {/* ---- Text column (right in RTL) ---- */}
           <div className="flex flex-col items-center text-center">
             <motion.h1
@@ -406,7 +406,6 @@ export const Hero = () => {
                   draggable={false}
                 />
               </span>
-              <br />
               <br />
               <span style={{ color: "#163726" }}>{t("hero.slogan")}</span>
             </motion.h1>
@@ -468,7 +467,7 @@ export const Hero = () => {
               </AnimatePresence>
             </span>
 
-            <span className="relative block h-0 w-full">
+            <span className="relative mx-auto block h-0 w-full max-w-md">
               <AnimatePresence mode="wait">
                 <WordSeal key={`seal-${word}`} label={word} isAr={isAr} />
               </AnimatePresence>
