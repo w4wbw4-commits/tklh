@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { HeartHandshake, Crown, GraduationCap, PartyPopper } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
-import { SketchCornerOrnament } from "./SketchArt";
 
 const OCCASIONS = [
   { icon: HeartHandshake, key: "wedding" },
@@ -26,11 +25,6 @@ export const OccasionsSection = () => {
       dir={isAr ? "rtl" : "ltr"}
       className="relative overflow-hidden bg-hero-warm px-6 py-14 sm:px-8 sm:py-16"
     >
-      <SketchCornerOrnament className="pointer-events-none absolute top-2 left-2 hidden h-[110px] w-[110px] opacity-55 md:block" />
-      <SketchCornerOrnament
-        className="pointer-events-none absolute top-2 right-2 hidden h-[110px] w-[110px] opacity-55 md:block"
-        style={{ transform: "scaleX(-1)" }}
-      />
 
       <div className="relative mx-auto max-w-6xl">
         <Reveal>

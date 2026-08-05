@@ -3,8 +3,6 @@ import { useTranslation } from "react-i18next";
 import {
   SketchIconCandle,
   SketchIconBouquet,
-  SketchIconSparkle,
-  SketchCornerOrnament,
 } from "./SketchArt";
 
 export const UpcomingFeatures = () => {
@@ -25,12 +23,6 @@ export const UpcomingFeatures = () => {
       {/* Decorative blurs */}
       <div className="pointer-events-none absolute -top-20 start-0 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 end-0 h-80 w-80 rounded-full bg-secondary/40 blur-3xl" />
-      {/* Sketch corner ornaments — keep the visual language consistent */}
-      <SketchCornerOrnament className="pointer-events-none absolute top-4 left-4 hidden h-[100px] w-[100px] opacity-50 md:block" />
-      <SketchCornerOrnament
-        className="pointer-events-none absolute bottom-4 right-4 hidden h-[100px] w-[100px] opacity-50 md:block"
-        style={{ transform: "scaleX(-1) scaleY(-1)" }}
-      />
 
       <div className="relative mx-auto max-w-6xl px-6">
         <motion.div
@@ -41,7 +33,6 @@ export const UpcomingFeatures = () => {
           className="mx-auto max-w-2xl text-center"
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.3em] text-primary backdrop-blur">
-            <SketchIconSparkle className="h-4 w-4" />
             {t("upcoming.kicker")}
           </span>
           <h2

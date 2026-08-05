@@ -21,7 +21,6 @@ import { Navbar } from "@/components/tekillah/Navbar";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
 import { ArabicPattern } from "@/components/tekillah/ArabicPattern";
 import { Reveal } from "@/components/tekillah/Reveal";
-import { SketchSectionDivider } from "@/components/tekillah/SketchArt";
 import { SEO } from "@/components/SEO";
 
 const Footer = lazy(() =>
@@ -85,9 +84,6 @@ const About = () => {
         </div>
       </section>
 
-      <div className="mx-auto -mt-4 mb-2 flex max-w-3xl items-center justify-center px-6">
-        <SketchSectionDivider className="h-10 w-full opacity-70" />
-      </div>
 
       {/* ──────────────── Facilities ──────────────── */}
       <section
