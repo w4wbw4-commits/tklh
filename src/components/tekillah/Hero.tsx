@@ -365,21 +365,6 @@ export const Hero = () => {
         animate="show"
         className="relative z-10 mx-auto flex min-h-[80vh] max-w-4xl flex-col items-center justify-center px-5 pt-20 pb-12 text-center sm:px-8"
       >
-        {/* Eyebrow */}
-        <motion.span
-          variants={rise}
-          className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] font-bold tracking-[0.14em] sm:text-xs"
-          style={{
-            borderColor: "hsl(var(--gold) / 0.45)",
-            color: "hsl(var(--primary-deep) / 0.72)",
-            background: "hsl(var(--cream) / 0.7)",
-            backdropFilter: "blur(8px)",
-          }}
-        >
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: gold }} />
-          {t("hero.tag")}
-        </motion.span>
-
         {/* Wordmark */}
         <motion.img
           variants={rise}
