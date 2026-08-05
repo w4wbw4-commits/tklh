@@ -265,26 +265,74 @@ const variantClass: Record<CardDef["variant"], string> = {
 };
 
 
-// ---- Wax seal / stamp that re-stamps on every word change ------------------
+// ---- Refined official seal / stamp -----------------------------------------
 const WordSeal = ({ label, isAr }: { label: string; isAr: boolean }) => (
   <motion.span
     key={label}
-    initial={{ scale: 1.7, rotate: -22, opacity: 0 }}
-    animate={{ scale: 1, rotate: -9, opacity: 1 }}
-    exit={{ scale: 0.9, rotate: 4, opacity: 0 }}
-    transition={{ type: "spring", stiffness: 320, damping: 16 }}
-    className="pointer-events-none absolute hidden h-14 w-14 place-items-center sm:grid"
-    style={{ top: -34, [isAr ? "right" : "left"]: -30 }}
+    initial={{ scale: 1.55, rotate: -20, opacity: 0 }}
+    animate={{ scale: 1, rotate: -8, opacity: 1 }}
+    exit={{ scale: 0.92, rotate: 3, opacity: 0 }}
+    transition={{ type: "spring", stiffness: 340, damping: 15 }}
+    className="pointer-events-none absolute hidden h-16 w-16 place-items-center sm:grid"
+    style={{ top: -92, [isAr ? "right" : "left"]: -8 }}
     aria-hidden
   >
-    <svg viewBox="0 0 64 64" className="h-full w-full">
-      <circle cx="32" cy="32" r="29" fill={gold} fillOpacity="0.14" stroke={gold} strokeWidth="1.4" />
-      <circle cx="32" cy="32" r="23" fill="none" stroke={gold} strokeWidth="0.7" strokeDasharray="2 3" opacity="0.8" />
-      <path d="M32 16 L34.5 27 L45 30 L34.5 33.5 L32 45 L29.5 33.5 L19 30 L29.5 27 Z" fill={gold} fillOpacity="0.55" />
-      <circle cx="32" cy="32" r="4" fill={gold} />
+    <svg viewBox="0 0 72 72" className="h-full w-full">
+      <defs>
+        <radialGradient id="sealGlow" cx="0.5" cy="0.4" r="0.6">
+          <stop offset="0%" stopColor="#f6e3a8" stopOpacity="0.55" />
+          <stop offset="100%" stopColor={gold} stopOpacity="0.05" />
+        </radialGradient>
+        <path id="sealArc" d="M36 36 m-23 0 a23 23 0 1 1 46 0" fill="none" />
+      </defs>
+      <circle cx="36" cy="36" r="31" fill="url(#sealGlow)" />
+      <circle cx="36" cy="36" r="30" fill="none" stroke={gold} strokeWidth="1.6" />
+      <circle cx="36" cy="36" r="26.5" fill="none" stroke={gold} strokeWidth="0.6" opacity="0.75" />
+      <circle cx="36" cy="36" r="23" fill="none" stroke={gold} strokeWidth="0.5" strokeDasharray="1.5 3" opacity="0.7" />
+      {/* laurel-ish ticks */}
+      {Array.from({ length: 24 }).map((_, i) => (
+        <line
+          key={i}
+          x1="36"
+          y1="7.5"
+          x2="36"
+          y2="10.5"
+          stroke={gold}
+          strokeWidth="0.8"
+          opacity="0.6"
+          transform={`rotate(${i * 15} 36 36)`}
+        />
+      ))}
+      <text
+        x="36"
+        y="33"
+        textAnchor="middle"
+        fill={gold}
+        fontSize="11"
+        fontWeight="700"
+        fontFamily="system-ui"
+        letterSpacing="1.5"
+      >
+        TKLH
+      </text>
+      <line x1="24" y1="38" x2="48" y2="38" stroke={gold} strokeWidth="0.7" opacity="0.8" />
+      <text
+        x="36"
+        y="49"
+        textAnchor="middle"
+        fill={gold}
+        fontSize="6.2"
+        fontWeight="600"
+        fontFamily="system-ui"
+        letterSpacing="0.8"
+        opacity="0.9"
+      >
+        VERIFIED
+      </text>
     </svg>
   </motion.span>
 );
+
 
 export const Hero = () => {
   const { t, i18n } = useTranslation();
@@ -304,7 +352,7 @@ export const Hero = () => {
       id="home"
       dir={isAr ? "rtl" : "ltr"}
       lang={i18n.language}
-      className="relative min-h-screen w-full overflow-hidden scroll-smooth lg:max-h-[1020px]"
+      className="relative w-full overflow-hidden scroll-smooth"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
       {/* === Soft warm glow === */}
@@ -336,9 +384,9 @@ export const Hero = () => {
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center px-5 pt-20 pb-10 sm:px-8"
+        className="relative z-10 mx-auto flex min-h-[78vh] max-w-7xl flex-col items-center justify-center px-5 pt-16 pb-10 sm:px-8"
       >
-        <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-12">
+        <div className="grid w-full grid-cols-1 items-center gap-6 lg:grid-cols-2 lg:gap-8">
           {/* ---- Text column (right in RTL) ---- */}
           <div className="flex flex-col items-center text-center">
             <motion.h1
@@ -359,7 +407,6 @@ export const Hero = () => {
                 />
               </span>
               <br />
-              <br />
               <span style={{ color: "#163726" }}>{t("hero.slogan")}</span>
             </motion.h1>
 
@@ -374,39 +421,59 @@ export const Hero = () => {
             </motion.p>
           </div>
 
-          {/* ---- Rotating "تِكله لـ ..." fills the former empty column ---- */}
+          {/* ---- Rotating wheel "تِكله لـ ..." ---- */}
           <motion.div
             variants={rise}
-            className="relative flex flex-col items-center justify-center gap-4 lg:order-first"
+            className="relative flex flex-col items-center justify-center gap-2 lg:order-first"
           >
-            <span className="font-display text-2xl font-black text-primary-deep/80 sm:text-3xl md:text-4xl">
+            <span className="font-display text-xl font-black text-primary-deep/70 sm:text-2xl md:text-3xl">
               {t("hero.forPrefix")}
             </span>
-            <span className="relative inline-flex min-h-[4rem] items-center justify-center">
-              <AnimatePresence mode="wait">
+
+            <span
+              className="relative inline-flex w-full max-w-md items-center justify-center overflow-hidden py-2"
+              style={{
+                perspective: "700px",
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, transparent, #000 26%, #000 74%, transparent)",
+                maskImage:
+                  "linear-gradient(to bottom, transparent, #000 26%, #000 74%, transparent)",
+              }}
+            >
+              {/* fixed drum height so nothing jumps */}
+              <span className="block h-[5.5rem] w-full sm:h-[6.5rem]" />
+              <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
                   key={word}
-                  initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -18, filter: "blur(8px)" }}
-                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className="font-display rounded-3xl border px-7 py-3 text-2xl font-black sm:text-4xl md:text-5xl"
+                  initial={{ rotateX: -78, y: "-95%", opacity: 0, scale: 0.9 }}
+                  animate={{ rotateX: 0, y: "0%", opacity: 1, scale: 1 }}
+                  exit={{ rotateX: 74, y: "95%", opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                  className="font-display absolute inset-x-0 mx-auto flex items-center justify-center rounded-[1.75rem] border px-6 py-3 text-2xl font-black sm:text-4xl md:text-5xl"
                   style={{
+                    transformOrigin: "center center -60px",
+                    transformStyle: "preserve-3d",
                     color: "hsl(var(--primary-deep))",
-                    borderColor: "hsl(var(--gold) / 0.45)",
-                    background: "linear-gradient(135deg, hsl(var(--gold) / 0.22), hsl(var(--cream) / 0.4))",
-                    boxShadow: "0 18px 44px -22px hsl(var(--primary-deep) / 0.5)",
+                    borderColor: "hsl(var(--gold) / 0.5)",
+                    background:
+                      "linear-gradient(135deg, hsl(var(--gold) / 0.24), hsl(var(--cream) / 0.5))",
+                    boxShadow:
+                      "0 22px 48px -26px hsl(var(--primary-deep) / 0.55), inset 0 1px 0 hsl(var(--cream) / 0.8)",
                     backdropFilter: "blur(10px)",
                   }}
                 >
                   {word}
                 </motion.span>
               </AnimatePresence>
+            </span>
+
+            <span className="relative mx-auto block h-0 w-full max-w-md">
               <AnimatePresence mode="wait">
                 <WordSeal key={`seal-${word}`} label={word} isAr={isAr} />
               </AnimatePresence>
             </span>
           </motion.div>
+
 
         </div>
 
