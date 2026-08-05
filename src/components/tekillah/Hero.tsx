@@ -399,7 +399,7 @@ export const Hero = () => {
           </span>
 
           <span
-            className="relative block h-[2.9rem] w-[9.5rem] overflow-hidden sm:h-[3.6rem] sm:w-[13rem] md:h-[4.2rem] md:w-[16rem]"
+            className="relative block h-[2.6rem] w-[11.5rem] overflow-hidden sm:h-[3.6rem] sm:w-[14rem] md:h-[4.2rem] md:w-[17rem]"
             style={{
               perspective: "760px",
               WebkitMaskImage: "linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent)",
@@ -413,7 +413,7 @@ export const Hero = () => {
                 animate={{ rotateX: 0, y: "0%", opacity: 1 }}
                 exit={{ rotateX: 78, y: "100%", opacity: 0 }}
                 transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display absolute inset-0 flex items-center justify-start text-3xl font-black sm:text-4xl md:text-5xl"
+                className="font-display absolute inset-0 flex items-center justify-start whitespace-nowrap text-[1.6rem] font-black sm:text-4xl md:text-5xl"
                 style={{
                   transformOrigin: "center center -50px",
                   transformStyle: "preserve-3d",
