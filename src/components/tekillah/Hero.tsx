@@ -396,30 +396,6 @@ export const Hero = () => {
           {t("hero.subheadSuffix")}
         </motion.p>
 
-        {/* Service chips — highlights what we cover without visual clutter */}
-        <motion.ul
-          variants={rise}
-          className="mt-7 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5"
-        >
-          {(["groom", "bride", "hall", "planner"] as const).map((k, i) => (
-            <motion.li
-              key={k}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 + i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -2 }}
-              className="rounded-full border px-3.5 py-1.5 text-[11px] font-bold sm:px-4 sm:text-xs"
-              style={{
-                borderColor: "hsl(var(--primary-deep) / 0.12)",
-                color: "hsl(var(--primary-deep) / 0.78)",
-                background: "hsl(var(--cream) / 0.75)",
-                backdropFilter: "blur(6px)",
-              }}
-            >
-              {t(`hero.cards.${k}.label`)}
-            </motion.li>
-          ))}
-        </motion.ul>
 
 
         {/* === CTA === */}
