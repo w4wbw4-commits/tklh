@@ -266,14 +266,15 @@ const variantClass: Record<CardDef["variant"], string> = {
 
 
 // ---- Wax seal / stamp that re-stamps on every word change ------------------
-const WordSeal = ({ label }: { label: string }) => (
+const WordSeal = ({ label, isAr }: { label: string; isAr: boolean }) => (
   <motion.span
     key={label}
     initial={{ scale: 1.7, rotate: -22, opacity: 0 }}
     animate={{ scale: 1, rotate: -9, opacity: 1 }}
     exit={{ scale: 0.9, rotate: 4, opacity: 0 }}
     transition={{ type: "spring", stiffness: 320, damping: 16 }}
-    className="pointer-events-none absolute -top-6 -left-8 hidden h-16 w-16 place-items-center sm:grid"
+    className="pointer-events-none absolute hidden h-14 w-14 place-items-center sm:grid"
+    style={{ top: -26, [isAr ? "right" : "left"]: -22 }}
     aria-hidden
   >
     <svg viewBox="0 0 64 64" className="h-full w-full">
@@ -365,7 +366,7 @@ export const Hero = () => {
             {/* Rotating "تِكله لـ ..." line with wax seal */}
             <motion.div
               variants={rise}
-              className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 lg:justify-end"
+              className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 pt-2 lg:justify-end"
             >
               <span className="font-display text-lg font-black text-primary-deep/80 sm:text-2xl md:text-3xl">
                 {t("hero.forPrefix")}
@@ -391,7 +392,7 @@ export const Hero = () => {
                   </motion.span>
                 </AnimatePresence>
                 <AnimatePresence mode="wait">
-                  <WordSeal key={`seal-${word}`} label={word} />
+                  <WordSeal key={`seal-${word}`} label={word} isAr={isAr} />
                 </AnimatePresence>
               </span>
             </motion.div>
