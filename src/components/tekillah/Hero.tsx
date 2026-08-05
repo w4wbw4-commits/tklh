@@ -363,40 +363,6 @@ export const Hero = () => {
               <span style={{ color: "#163726" }}>{t("hero.slogan")}</span>
             </motion.h1>
 
-            {/* Rotating "تِكله لـ ..." line with wax seal */}
-            <motion.div
-              variants={rise}
-              className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 pt-2"
-            >
-              <span className="font-display text-lg font-black text-primary-deep/80 sm:text-2xl md:text-3xl">
-                {t("hero.forPrefix")}
-              </span>
-              <span className="relative inline-flex min-h-[2.6rem] items-center">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={word}
-                    initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, y: -14, filter: "blur(6px)" }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    className="font-display rounded-2xl border px-4 py-1.5 text-lg font-black sm:text-2xl md:text-3xl"
-                    style={{
-                      color: "hsl(var(--primary-deep))",
-                      borderColor: "hsl(var(--gold) / 0.45)",
-                      background: "linear-gradient(135deg, hsl(var(--gold) / 0.22), hsl(var(--cream) / 0.4))",
-                      boxShadow: "0 14px 34px -20px hsl(var(--primary-deep) / 0.5)",
-                      backdropFilter: "blur(10px)",
-                    }}
-                  >
-                    {word}
-                  </motion.span>
-                </AnimatePresence>
-                <AnimatePresence mode="wait">
-                  <WordSeal key={`seal-${word}`} label={word} isAr={isAr} />
-                </AnimatePresence>
-              </span>
-            </motion.div>
-
             {/* Sub-headline */}
             <motion.p
               variants={rise}
@@ -408,62 +374,40 @@ export const Hero = () => {
             </motion.p>
           </div>
 
-          {/* ---- Glass card collage (fills the former empty column) ---- */}
+          {/* ---- Rotating "تِكله لـ ..." fills the former empty column ---- */}
           <motion.div
             variants={rise}
-            className="relative flex items-center justify-center lg:order-first"
+            className="relative flex flex-col items-center justify-center gap-4 lg:order-first"
           >
-            <div className="relative grid w-full max-w-md grid-cols-2 gap-3 sm:gap-4">
-              {cards.map((card, i) => {
-                const float = [0, 1, 2, 1, 0][i];
-                return (
-                  <motion.div
-                    key={card.labelKey}
-                    initial={{ opacity: 0, y: 30, scale: 0.94 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.8, delay: 0.35 + i * 0.11, ease: [0.22, 1, 0.36, 1] }}
-                    whileHover={{ y: -10, scale: 1.03 }}
-                    className={`group relative overflow-hidden rounded-3xl border p-4 ${
-                      i === 4 ? "col-span-2" : ""
-                    } ${i % 2 === 0 ? "lg:translate-y-3" : "lg:-translate-y-3"}`}
-                    style={{
-                      borderColor: "hsl(var(--gold) / 0.32)",
-                      background:
-                        "linear-gradient(140deg, hsl(0 0% 100% / 0.55), hsl(var(--cream) / 0.28))",
-                      backdropFilter: "blur(18px) saturate(1.1)",
-                      WebkitBackdropFilter: "blur(18px) saturate(1.1)",
-                      boxShadow:
-                        "0 26px 60px -26px hsl(var(--primary-deep) / 0.45), inset 0 1px 0 hsl(0 0% 100% / 0.6)",
-                    }}
-                  >
-                    {/* floating motion */}
-                    <motion.div
-                      animate={{ y: [0, -7, 0] }}
-                      transition={{ duration: 5 + float, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
-                      className={`flex items-center gap-3 ${i === 4 ? "justify-center" : "flex-col text-center"}`}
-                    >
-                      <card.Icon className="h-14 w-auto drop-shadow-[0_10px_18px_rgba(0,0,0,0.18)] sm:h-16" />
-                      <div className={i === 4 ? "text-start" : ""}>
-                        <div className="font-display text-sm font-black text-primary-deep sm:text-base">
-                          {t(card.labelKey)}
-                        </div>
-                        <div className="mt-0.5 text-[11px] text-primary-deep/60 sm:text-xs">
-                          {t(card.captionKey)}
-                        </div>
-                      </div>
-                    </motion.div>
-
-                    {/* glass sheen sweep */}
-                    <span
-                      aria-hidden
-                      className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 opacity-0 transition-all duration-[900ms] group-hover:left-[120%] group-hover:opacity-100"
-                      style={{ background: "linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.55), transparent)" }}
-                    />
-                  </motion.div>
-                );
-              })}
-            </div>
+            <span className="font-display text-2xl font-black text-primary-deep/80 sm:text-3xl md:text-4xl">
+              {t("hero.forPrefix")}
+            </span>
+            <span className="relative inline-flex min-h-[4rem] items-center justify-center">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={word}
+                  initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, y: -18, filter: "blur(8px)" }}
+                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                  className="font-display rounded-3xl border px-7 py-3 text-2xl font-black sm:text-4xl md:text-5xl"
+                  style={{
+                    color: "hsl(var(--primary-deep))",
+                    borderColor: "hsl(var(--gold) / 0.45)",
+                    background: "linear-gradient(135deg, hsl(var(--gold) / 0.22), hsl(var(--cream) / 0.4))",
+                    boxShadow: "0 18px 44px -22px hsl(var(--primary-deep) / 0.5)",
+                    backdropFilter: "blur(10px)",
+                  }}
+                >
+                  {word}
+                </motion.span>
+              </AnimatePresence>
+              <AnimatePresence mode="wait">
+                <WordSeal key={`seal-${word}`} label={word} isAr={isAr} />
+              </AnimatePresence>
+            </span>
           </motion.div>
+
         </div>
 
         {/* === CTA === */}
