@@ -1,4 +1,5 @@
-import { motion, type Variants } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -264,46 +265,70 @@ const variantClass: Record<CardDef["variant"], string> = {
 };
 
 
+// ---- Wax seal / stamp that re-stamps on every word change ------------------
+const WordSeal = ({ label, isAr }: { label: string; isAr: boolean }) => (
+  <motion.span
+    key={label}
+    initial={{ scale: 1.7, rotate: -22, opacity: 0 }}
+    animate={{ scale: 1, rotate: -9, opacity: 1 }}
+    exit={{ scale: 0.9, rotate: 4, opacity: 0 }}
+    transition={{ type: "spring", stiffness: 320, damping: 16 }}
+    className="pointer-events-none absolute hidden h-14 w-14 place-items-center sm:grid"
+    style={{ top: -34, [isAr ? "right" : "left"]: -30 }}
+    aria-hidden
+  >
+    <svg viewBox="0 0 64 64" className="h-full w-full">
+      <circle cx="32" cy="32" r="29" fill={gold} fillOpacity="0.14" stroke={gold} strokeWidth="1.4" />
+      <circle cx="32" cy="32" r="23" fill="none" stroke={gold} strokeWidth="0.7" strokeDasharray="2 3" opacity="0.8" />
+      <path d="M32 16 L34.5 27 L45 30 L34.5 33.5 L32 45 L29.5 33.5 L19 30 L29.5 27 Z" fill={gold} fillOpacity="0.55" />
+      <circle cx="32" cy="32" r="4" fill={gold} />
+    </svg>
+  </motion.span>
+);
+
 export const Hero = () => {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language === "ar";
   const Arrow = isAr ? ArrowLeft : ArrowRight;
 
-  const stats = [
-    { value: t("hero.stat1Value"), suffix: t("hero.stat1Suffix", { defaultValue: "+" }), label: t("hero.stat1Label") },
-    { value: t("hero.stat2Value"), suffix: t("hero.stat2Suffix", { defaultValue: "+" }), label: t("hero.stat2Label") },
-    { value: t("hero.stat3Value"), suffix: t("hero.stat3Suffix", { defaultValue: "★" }), label: t("hero.stat3Label") },
-  ];
+  const words = t("hero.rotating", { returnObjects: true }) as string[];
+  const [wordIndex, setWordIndex] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setWordIndex((n) => (n + 1) % words.length), 2600);
+    return () => clearInterval(id);
+  }, [words.length]);
+  const word = words[wordIndex % words.length];
 
   return (
     <section
       id="home"
       dir={isAr ? "rtl" : "ltr"}
       lang={i18n.language}
-      className="relative w-full overflow-hidden scroll-smooth"
+      className="relative min-h-screen w-full overflow-hidden scroll-smooth lg:max-h-[1020px]"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
       {/* === Soft warm glow === */}
       <div className="pointer-events-none absolute inset-0">
         <div
-          className="absolute -top-40 left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full opacity-25 blur-3xl"
-          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.28), transparent 70%)" }}
+          className="absolute -top-32 left-1/2 h-[520px] w-[860px] -translate-x-1/2 rounded-full opacity-25 blur-3xl"
+          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.26), transparent 70%)" }}
         />
         <div
-          className="absolute bottom-0 left-1/2 h-[420px] w-[1100px] -translate-x-1/2 rounded-full opacity-[0.12] blur-3xl"
+          className="absolute bottom-0 left-0 h-[420px] w-[720px] rounded-full opacity-[0.14] blur-3xl"
           style={{ background: "radial-gradient(circle, hsl(var(--primary-deep) / 0.5), transparent 70%)" }}
         />
       </div>
 
       {/* === Sketch watermark === */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.13]">
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.15]">
         <SketchCurtain className="absolute inset-y-0 left-0 h-full w-[44px] sm:w-[60px] md:w-[90px]" />
         <SketchCurtain className="absolute inset-y-0 right-0 h-full w-[44px] sm:w-[60px] md:w-[90px]" style={{ transform: "scaleX(-1)" }} />
-        <SketchEucalyptus className="absolute top-24 left-[4%] h-[80px] w-[140px] sm:h-[110px] sm:w-[200px] md:h-[140px] md:w-[260px]" />
-        <SketchLotus className="absolute top-28 right-[5%] h-[70px] w-[100px] sm:h-[100px] sm:w-[140px] md:h-[120px] md:w-[170px]" />
-        <SketchCandelabra className="absolute bottom-24 left-[2%] hidden h-[150px] w-[100px] lg:block" />
-        <SketchCandelabra className="absolute bottom-24 right-[2%] hidden h-[150px] w-[100px] lg:block" style={{ transform: "scaleX(-1)" }} />
-        <SketchBanquet className="absolute -bottom-6 left-1/2 hidden h-[160px] w-[420px] -translate-x-1/2 xl:block" />
+        <SketchEucalyptus className="absolute top-6 left-[6%] h-[80px] w-[140px] sm:h-[110px] sm:w-[200px] md:h-[140px] md:w-[260px]" />
+        <SketchLotus className="absolute top-10 right-[8%] h-[70px] w-[100px] sm:h-[100px] sm:w-[140px] md:h-[120px] md:w-[170px]" />
+        <SketchCandelabra className="absolute bottom-10 left-[3%] hidden h-[160px] w-[110px] lg:block" />
+        <SketchCandelabra className="absolute bottom-10 right-[3%] hidden h-[160px] w-[110px] lg:block" style={{ transform: "scaleX(-1)" }} />
+        <SketchTable className="absolute bottom-16 left-1/2 h-[100px] w-[180px] -translate-x-1/2 sm:h-[140px] sm:w-[240px] md:h-[180px] md:w-[320px]" />
+        <SketchBanquet className="absolute -bottom-4 left-1/2 hidden h-[200px] w-[520px] -translate-x-1/2 xl:block" />
       </div>
 
       {/* === Foreground === */}
@@ -311,78 +336,138 @@ export const Hero = () => {
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-5 pt-24 pb-16 text-center sm:px-8 sm:pt-28 sm:pb-20"
+        className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col items-center px-5 pt-20 pb-10 sm:px-8"
       >
-        {/* Eyebrow badge */}
-        <motion.span
-          variants={rise}
-          className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] font-bold tracking-[0.12em] sm:text-xs"
-          style={{
-            borderColor: "hsl(var(--gold) / 0.45)",
-            backgroundColor: "hsl(var(--gold) / 0.1)",
-            color: "hsl(var(--primary-deep))",
-          }}
-        >
-          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: gold }} />
-          {t("hero.tag")}
-        </motion.span>
+        <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-12">
+          {/* ---- Text column (right in RTL) ---- */}
+          <div className="flex flex-col items-center text-center">
+            <motion.h1
+              variants={rise}
+              className="font-display mx-auto w-full max-w-4xl text-balance px-4 text-2xl font-black leading-tight tracking-[-0.005em] text-primary-deep sm:px-6 sm:text-3xl md:text-4xl md:leading-snug lg:text-5xl xl:text-6xl"
+              style={{
+                fontFeatureSettings: '"kern","liga","calt","dlig"',
+                wordSpacing: "0.05em",
+                textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream)/0.9)",
+              }}
+            >
+              <span className="relative inline-block">
+                <img
+                  src={wordmarkAsset.url}
+                  alt={isAr ? "TKLH تِكله" : "TKLH Tklh"}
+                  className="inline-block h-28 w-auto select-none align-middle sm:h-36 md:h-44 lg:h-52 xl:h-60"
+                  draggable={false}
+                />
+              </span>
+              <br />
+              <br />
+              <span style={{ color: "#163726" }}>{t("hero.slogan")}</span>
+            </motion.h1>
 
-        {/* Wordmark — gently floating */}
-        <motion.div variants={rise} className="mt-7">
-          <motion.img
-            src={wordmarkAsset.url}
-            alt={isAr ? "TKLH تِكله" : "TKLH Tklh"}
-            draggable={false}
-            animate={{ y: [0, -7, 0] }}
-            transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
-            className="h-24 w-auto select-none sm:h-32 md:h-40 lg:h-44"
-          />
-        </motion.div>
+            {/* Rotating "تِكله لـ ..." line with wax seal */}
+            <motion.div
+              variants={rise}
+              className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 pt-2"
+            >
+              <span className="font-display text-lg font-black text-primary-deep/80 sm:text-2xl md:text-3xl">
+                {t("hero.forPrefix")}
+              </span>
+              <span className="relative inline-flex min-h-[2.6rem] items-center">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={word}
+                    initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, y: -14, filter: "blur(6px)" }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="font-display rounded-2xl border px-4 py-1.5 text-lg font-black sm:text-2xl md:text-3xl"
+                    style={{
+                      color: "hsl(var(--primary-deep))",
+                      borderColor: "hsl(var(--gold) / 0.45)",
+                      background: "linear-gradient(135deg, hsl(var(--gold) / 0.22), hsl(var(--cream) / 0.4))",
+                      boxShadow: "0 14px 34px -20px hsl(var(--primary-deep) / 0.5)",
+                      backdropFilter: "blur(10px)",
+                    }}
+                  >
+                    {word}
+                  </motion.span>
+                </AnimatePresence>
+                <AnimatePresence mode="wait">
+                  <WordSeal key={`seal-${word}`} label={word} isAr={isAr} />
+                </AnimatePresence>
+              </span>
+            </motion.div>
 
-        {/* Gold rule */}
-        <motion.div
-          variants={rise}
-          className="mt-6 flex items-center gap-3"
-          aria-hidden
-        >
-          <motion.span
-            initial={{ width: 0 }}
-            animate={{ width: 56 }}
-            transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="h-px"
-            style={{ background: `linear-gradient(to right, transparent, ${gold})` }}
-          />
-          <span className="h-1.5 w-1.5 rotate-45" style={{ backgroundColor: gold, opacity: 0.8 }} />
-          <motion.span
-            initial={{ width: 0 }}
-            animate={{ width: 56 }}
-            transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="h-px"
-            style={{ background: `linear-gradient(to left, transparent, ${gold})` }}
-          />
-        </motion.div>
+            {/* Sub-headline */}
+            <motion.p
+              variants={rise}
+              className="font-tagline mx-auto mt-6 max-w-2xl text-balance px-4 text-sm leading-relaxed text-primary-deep/75 sm:text-base md:text-lg"
+            >
+              {t("hero.subheadPrefix")}{" "}
+              <span className="font-bold" style={{ color: "hsl(var(--green))" }}>{t("hero.brand")}</span>{" "}
+              {t("hero.subheadSuffix")}
+            </motion.p>
+          </div>
 
-        {/* Headline */}
-        <motion.h1
-          variants={rise}
-          className="font-display mt-6 max-w-3xl text-balance text-3xl font-black leading-[1.35] tracking-[-0.005em] sm:text-4xl md:text-5xl lg:text-[3.4rem] lg:leading-[1.3]"
-          style={{ color: "hsl(var(--primary-deep))", fontFeatureSettings: '"kern","liga","calt","dlig"' }}
-        >
-          {t("hero.slogan")}
-        </motion.h1>
+          {/* ---- Glass card collage (fills the former empty column) ---- */}
+          <motion.div
+            variants={rise}
+            className="relative flex items-center justify-center lg:order-first"
+          >
+            <div className="relative grid w-full max-w-md grid-cols-2 gap-3 sm:gap-4">
+              {cards.map((card, i) => {
+                const float = [0, 1, 2, 1, 0][i];
+                return (
+                  <motion.div
+                    key={card.labelKey}
+                    initial={{ opacity: 0, y: 30, scale: 0.94 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.8, delay: 0.35 + i * 0.11, ease: [0.22, 1, 0.36, 1] }}
+                    whileHover={{ y: -10, scale: 1.03 }}
+                    className={`group relative overflow-hidden rounded-3xl border p-4 ${
+                      i === 4 ? "col-span-2" : ""
+                    } ${i % 2 === 0 ? "lg:translate-y-3" : "lg:-translate-y-3"}`}
+                    style={{
+                      borderColor: "hsl(var(--gold) / 0.32)",
+                      background:
+                        "linear-gradient(140deg, hsl(0 0% 100% / 0.55), hsl(var(--cream) / 0.28))",
+                      backdropFilter: "blur(18px) saturate(1.1)",
+                      WebkitBackdropFilter: "blur(18px) saturate(1.1)",
+                      boxShadow:
+                        "0 26px 60px -26px hsl(var(--primary-deep) / 0.45), inset 0 1px 0 hsl(0 0% 100% / 0.6)",
+                    }}
+                  >
+                    {/* floating motion */}
+                    <motion.div
+                      animate={{ y: [0, -7, 0] }}
+                      transition={{ duration: 5 + float, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
+                      className={`flex items-center gap-3 ${i === 4 ? "justify-center" : "flex-col text-center"}`}
+                    >
+                      <card.Icon className="h-14 w-auto drop-shadow-[0_10px_18px_rgba(0,0,0,0.18)] sm:h-16" />
+                      <div className={i === 4 ? "text-start" : ""}>
+                        <div className="font-display text-sm font-black text-primary-deep sm:text-base">
+                          {t(card.labelKey)}
+                        </div>
+                        <div className="mt-0.5 text-[11px] text-primary-deep/60 sm:text-xs">
+                          {t(card.captionKey)}
+                        </div>
+                      </div>
+                    </motion.div>
 
-        {/* Sub-headline */}
-        <motion.p
-          variants={rise}
-          className="font-tagline mx-auto mt-5 max-w-2xl text-balance text-sm leading-[1.9] text-primary-deep/70 sm:text-base md:text-lg"
-        >
-          {t("hero.subheadPrefix")}{" "}
-          <span className="font-bold" style={{ color: "hsl(var(--green))" }}>{t("hero.brand")}</span>{" "}
-          {t("hero.subheadSuffix")}
-        </motion.p>
+                    {/* glass sheen sweep */}
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 opacity-0 transition-all duration-[900ms] group-hover:left-[120%] group-hover:opacity-100"
+                      style={{ background: "linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.55), transparent)" }}
+                    />
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+        </div>
 
-        {/* CTAs */}
-        <motion.div variants={rise} className="mt-9 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row">
+        {/* === CTA === */}
+        <motion.div variants={rise} className="mt-10 flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
           <motion.a
             href="/planner"
             whileHover={{ y: -3 }}
@@ -397,7 +482,7 @@ export const Hero = () => {
               style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent)" }}
             />
             <span className="relative">{t("hero.ctaTitle")}</span>
-            <Arrow className="relative h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1 rtl:group-hover:-translate-x-1" />
+            <Arrow className="relative h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1" />
           </motion.a>
 
           <motion.a
@@ -405,7 +490,7 @@ export const Hero = () => {
             whileHover={{ y: -3 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 280, damping: 20 }}
-            className="inline-flex w-full items-center justify-center rounded-full border px-8 py-4 text-sm font-bold backdrop-blur transition-colors sm:w-auto sm:text-base"
+            className="inline-flex w-full items-center justify-center rounded-full border px-8 py-4 text-sm font-bold backdrop-blur sm:w-auto sm:text-base"
             style={{
               borderColor: "hsl(var(--primary-deep) / 0.22)",
               color: "hsl(var(--primary-deep))",
@@ -414,69 +499,6 @@ export const Hero = () => {
           >
             {t("hero.secondary")}
           </motion.a>
-        </motion.div>
-
-        {/* Caption under CTA */}
-        <motion.p variants={rise} className="mt-3 text-xs text-primary-deep/55">
-          {t("hero.ctaDesc")}
-        </motion.p>
-
-        {/* Service cards — balanced 5-up strip */}
-        <motion.div
-          variants={rise}
-          className="mt-14 grid w-full grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5"
-        >
-          {cards.map((card, i) => (
-            <motion.div
-              key={card.labelKey}
-              initial={{ opacity: 0, y: 26 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.7, delay: 0.06 * i, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -8 }}
-              className={`group relative flex flex-col items-center gap-3 overflow-hidden rounded-3xl border p-4 shadow-[0_14px_34px_-22px_hsl(var(--primary-deep)/0.35)] transition-shadow duration-500 sm:p-5 ${
-                i === 4 ? "col-span-2 sm:col-span-1" : ""
-              } ${variantClass[card.variant]}`}
-            >
-              <span
-                aria-hidden
-                className="pointer-events-none absolute -top-10 left-1/2 h-24 w-24 -translate-x-1/2 rounded-full opacity-0 blur-2xl transition-opacity duration-700 group-hover:opacity-60"
-                style={{ background: `radial-gradient(circle, ${gold}, transparent 70%)` }}
-              />
-              <motion.div
-                whileHover={{ scale: 1.07, rotate: -3 }}
-                transition={{ type: "spring", stiffness: 240, damping: 15 }}
-                className="relative"
-              >
-                <card.Icon className="h-16 w-auto sm:h-20" />
-              </motion.div>
-              <div className="relative text-center">
-                <div className="font-display text-sm font-black sm:text-base">{t(card.labelKey)}</div>
-                <div className="mt-1 text-[11px] opacity-70 sm:text-xs">{t(card.captionKey)}</div>
-              </div>
-              <span
-                aria-hidden
-                className="relative h-0.5 w-6 rounded-full transition-all duration-500 group-hover:w-12"
-                style={{ backgroundColor: gold, opacity: 0.75 }}
-              />
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Trust stats */}
-        <motion.div
-          variants={rise}
-          className="mt-14 grid w-full max-w-3xl grid-cols-3 divide-x divide-[hsl(var(--primary-deep)/0.12)] rounded-3xl border border-[hsl(var(--primary-deep)/0.1)] bg-[hsl(var(--cream)/0.7)] px-2 py-5 backdrop-blur rtl:divide-x-reverse"
-        >
-          {stats.map((s) => (
-            <div key={s.label} className="px-2">
-              <div className="font-display text-xl font-black sm:text-3xl" style={{ color: "hsl(var(--primary-deep))" }}>
-                {s.value}
-                <span style={{ color: gold }}>{s.suffix}</span>
-              </div>
-              <div className="mt-1 text-[10px] leading-snug text-primary-deep/60 sm:text-xs">{s.label}</div>
-            </div>
-          ))}
         </motion.div>
       </motion.div>
     </section>
