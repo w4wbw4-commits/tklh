@@ -392,14 +392,14 @@ export const Hero = () => {
         {/* Rotating line — "تِكله لـ …" as a refined 3D drum on one baseline */}
         <motion.div
           variants={rise}
-          className="mt-7 flex w-full items-center justify-center gap-3 sm:gap-4"
+          className="mt-7 flex items-center justify-center gap-2.5 sm:gap-3.5"
         >
           <span className="font-display shrink-0 text-xl font-black text-primary-deep/55 sm:text-2xl md:text-3xl">
             {t("hero.forPrefix")}
           </span>
 
           <span
-            className="relative block h-[2.9rem] flex-1 overflow-hidden text-start sm:h-[3.6rem] md:h-[4.2rem]"
+            className="relative block h-[2.9rem] w-[9.5rem] overflow-hidden sm:h-[3.6rem] sm:w-[13rem] md:h-[4.2rem] md:w-[16rem]"
             style={{
               perspective: "760px",
               WebkitMaskImage: "linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent)",
@@ -413,7 +413,7 @@ export const Hero = () => {
                 animate={{ rotateX: 0, y: "0%", opacity: 1 }}
                 exit={{ rotateX: 78, y: "100%", opacity: 0 }}
                 transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display absolute inset-0 flex items-center justify-center text-3xl font-black sm:text-4xl md:text-5xl"
+                className="font-display absolute inset-0 flex items-center justify-start text-3xl font-black sm:text-4xl md:text-5xl"
                 style={{
                   transformOrigin: "center center -50px",
                   transformStyle: "preserve-3d",
