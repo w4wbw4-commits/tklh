@@ -266,72 +266,51 @@ const variantClass: Record<CardDef["variant"], string> = {
 
 
 // ---- Refined official seal / stamp -----------------------------------------
-const WordSeal = ({ label, isAr }: { label: string; isAr: boolean }) => (
+// Small, restrained gold seal that "stamps" next to the rotating word.
+const WordSeal = ({ label }: { label: string }) => (
   <motion.span
     key={label}
-    initial={{ scale: 1.55, rotate: -20, opacity: 0 }}
-    animate={{ scale: 1, rotate: -8, opacity: 1 }}
-    exit={{ scale: 0.92, rotate: 3, opacity: 0 }}
-    transition={{ type: "spring", stiffness: 340, damping: 15 }}
-    className="pointer-events-none absolute hidden h-16 w-16 place-items-center sm:grid"
-    style={{ top: -92, [isAr ? "right" : "left"]: -8 }}
+    initial={{ scale: 1.5, rotate: -18, opacity: 0 }}
+    animate={{ scale: 1, rotate: -7, opacity: 1 }}
+    exit={{ scale: 0.9, rotate: 2, opacity: 0 }}
+    transition={{ type: "spring", stiffness: 320, damping: 16 }}
+    className="pointer-events-none hidden h-11 w-11 shrink-0 sm:inline-grid sm:place-items-center md:h-14 md:w-14"
     aria-hidden
   >
     <svg viewBox="0 0 72 72" className="h-full w-full">
       <defs>
         <radialGradient id="sealGlow" cx="0.5" cy="0.4" r="0.6">
-          <stop offset="0%" stopColor="#f6e3a8" stopOpacity="0.55" />
-          <stop offset="100%" stopColor={gold} stopOpacity="0.05" />
+          <stop offset="0%" stopColor="#f6e3a8" stopOpacity="0.5" />
+          <stop offset="100%" stopColor={gold} stopOpacity="0.04" />
         </radialGradient>
-        <path id="sealArc" d="M36 36 m-23 0 a23 23 0 1 1 46 0" fill="none" />
       </defs>
       <circle cx="36" cy="36" r="31" fill="url(#sealGlow)" />
-      <circle cx="36" cy="36" r="30" fill="none" stroke={gold} strokeWidth="1.6" />
-      <circle cx="36" cy="36" r="26.5" fill="none" stroke={gold} strokeWidth="0.6" opacity="0.75" />
-      <circle cx="36" cy="36" r="23" fill="none" stroke={gold} strokeWidth="0.5" strokeDasharray="1.5 3" opacity="0.7" />
-      {/* laurel-ish ticks */}
+      <circle cx="36" cy="36" r="29" fill="none" stroke={gold} strokeWidth="1.4" />
+      <circle cx="36" cy="36" r="24.5" fill="none" stroke={gold} strokeWidth="0.5" strokeDasharray="1.5 3.5" opacity="0.7" />
       {Array.from({ length: 24 }).map((_, i) => (
         <line
           key={i}
           x1="36"
-          y1="7.5"
+          y1="8.5"
           x2="36"
-          y2="10.5"
+          y2="11"
           stroke={gold}
-          strokeWidth="0.8"
-          opacity="0.6"
+          strokeWidth="0.7"
+          opacity="0.5"
           transform={`rotate(${i * 15} 36 36)`}
         />
       ))}
-      <text
-        x="36"
-        y="33"
-        textAnchor="middle"
-        fill={gold}
-        fontSize="11"
-        fontWeight="700"
-        fontFamily="system-ui"
-        letterSpacing="1.5"
-      >
+      <text x="36" y="34" textAnchor="middle" fill={gold} fontSize="12" fontWeight="700" fontFamily="system-ui" letterSpacing="1.4">
         TKLH
       </text>
-      <line x1="24" y1="38" x2="48" y2="38" stroke={gold} strokeWidth="0.7" opacity="0.8" />
-      <text
-        x="36"
-        y="49"
-        textAnchor="middle"
-        fill={gold}
-        fontSize="6.2"
-        fontWeight="600"
-        fontFamily="system-ui"
-        letterSpacing="0.8"
-        opacity="0.9"
-      >
+      <line x1="25" y1="39" x2="47" y2="39" stroke={gold} strokeWidth="0.6" opacity="0.8" />
+      <text x="36" y="49" textAnchor="middle" fill={gold} fontSize="6" fontWeight="600" fontFamily="system-ui" letterSpacing="0.7" opacity="0.85">
         VERIFIED
       </text>
     </svg>
   </motion.span>
 );
+
 
 
 export const Hero = () => {
@@ -379,106 +358,140 @@ export const Hero = () => {
         <SketchBanquet className="absolute -bottom-4 left-1/2 hidden h-[200px] w-[520px] -translate-x-1/2 xl:block" />
       </div>
 
-      {/* === Foreground === */}
+      {/* === Foreground — one calm, centered editorial column === */}
       <motion.div
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative z-10 mx-auto flex min-h-[78vh] max-w-7xl flex-col items-center justify-center px-5 pt-16 pb-10 sm:px-8"
+        className="relative z-10 mx-auto flex min-h-[80vh] max-w-4xl flex-col items-center justify-center px-5 pt-20 pb-12 text-center sm:px-8"
       >
-        <div className="grid w-full grid-cols-1 items-center gap-6 lg:grid-cols-2 lg:gap-8">
-          {/* ---- Text column (right in RTL) ---- */}
-          <div className="flex flex-col items-center text-center">
-            <motion.h1
-              variants={rise}
-              className="font-display mx-auto w-full max-w-4xl text-balance px-4 text-2xl font-black leading-tight tracking-[-0.005em] text-primary-deep sm:px-6 sm:text-3xl md:text-4xl md:leading-snug lg:text-5xl xl:text-6xl"
-              style={{
-                fontFeatureSettings: '"kern","liga","calt","dlig"',
-                wordSpacing: "0.05em",
-                textShadow: "0 1px 0 hsl(var(--cream)), 0 2px 18px hsl(var(--cream)/0.9)",
-              }}
-            >
-              <span className="relative inline-block">
-                <img
-                  src={wordmarkAsset.url}
-                  alt={isAr ? "TKLH تِكله" : "TKLH Tklh"}
-                  className="inline-block h-28 w-auto select-none align-middle sm:h-36 md:h-44 lg:h-52 xl:h-60"
-                  draggable={false}
-                />
-              </span>
-              <br />
-              <span style={{ color: "#163726" }}>{t("hero.slogan")}</span>
-            </motion.h1>
+        {/* Eyebrow */}
+        <motion.span
+          variants={rise}
+          className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] font-bold tracking-[0.14em] sm:text-xs"
+          style={{
+            borderColor: "hsl(var(--gold) / 0.45)",
+            color: "hsl(var(--primary-deep) / 0.72)",
+            background: "hsl(var(--cream) / 0.7)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: gold }} />
+          {t("hero.tag")}
+        </motion.span>
 
-            {/* Sub-headline */}
-            <motion.p
-              variants={rise}
-              className="font-tagline mx-auto mt-6 max-w-2xl text-balance px-4 text-sm leading-relaxed text-primary-deep/75 sm:text-base md:text-lg"
-            >
-              {t("hero.subheadPrefix")}{" "}
-              <span className="font-bold" style={{ color: "hsl(var(--green))" }}>{t("hero.brand")}</span>{" "}
-              {t("hero.subheadSuffix")}
-            </motion.p>
-          </div>
+        {/* Wordmark */}
+        <motion.img
+          variants={rise}
+          src={wordmarkAsset.url}
+          alt={isAr ? "TKLH تِكله" : "TKLH Tklh"}
+          className="mt-6 h-20 w-auto select-none sm:h-24 md:h-28 lg:h-32"
+          draggable={false}
+        />
 
-          {/* ---- Rotating wheel "تِكله لـ ..." ---- */}
-          <motion.div
-            variants={rise}
-            className="relative flex flex-col items-center justify-center gap-2 lg:order-first"
+        {/* Rotating line — "تِكله لـ …" as a refined 3D drum on one baseline */}
+        <motion.div
+          variants={rise}
+          className="mt-7 flex items-center justify-center gap-2.5 sm:gap-3.5"
+        >
+          <span className="font-display shrink-0 text-xl font-black text-primary-deep/55 sm:text-2xl md:text-3xl">
+            {t("hero.forPrefix")}
+          </span>
+
+          <span
+            className="relative block h-[2.6rem] w-[11.5rem] overflow-hidden sm:h-[3.6rem] sm:w-[14rem] md:h-[4.2rem] md:w-[17rem]"
+            style={{
+              perspective: "760px",
+              WebkitMaskImage: "linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent)",
+              maskImage: "linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent)",
+            }}
           >
-            <span className="font-display text-xl font-black text-primary-deep/70 sm:text-2xl md:text-3xl">
-              {t("hero.forPrefix")}
-            </span>
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.span
+                key={word}
+                initial={{ rotateX: -82, y: "-100%", opacity: 0 }}
+                animate={{ rotateX: 0, y: "0%", opacity: 1 }}
+                exit={{ rotateX: 78, y: "100%", opacity: 0 }}
+                transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+                className="font-display absolute inset-0 flex items-center justify-start whitespace-nowrap text-[1.6rem] font-black sm:text-4xl md:text-5xl"
+                style={{
+                  transformOrigin: "center center -50px",
+                  transformStyle: "preserve-3d",
+                  backgroundImage:
+                    "linear-gradient(100deg, hsl(var(--primary-deep)) 10%, hsl(var(--gold)) 52%, hsl(var(--primary-deep)) 92%)",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  color: "transparent",
+                }}
+              >
+                {word}
+              </motion.span>
+            </AnimatePresence>
+          </span>
 
-            <span
-              className="relative inline-flex w-full max-w-md items-center justify-center overflow-hidden py-2"
+          <AnimatePresence mode="wait">
+            <WordSeal key={`seal-${word}`} label={word} />
+          </AnimatePresence>
+        </motion.div>
+
+        {/* Gold hairline that redraws with every word */}
+        <motion.span
+          key={`rule-${word}`}
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: 1 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-1 block h-px w-40 origin-center sm:w-56"
+          style={{ background: `linear-gradient(90deg, transparent, ${gold}, transparent)` }}
+          aria-hidden
+        />
+
+        {/* Headline */}
+        <motion.h1
+          variants={rise}
+          className="font-display mt-6 max-w-3xl text-balance text-2xl font-black leading-snug tracking-[-0.005em] sm:text-3xl md:text-4xl lg:text-[2.75rem]"
+          style={{ color: "#163726", fontFeatureSettings: '"kern","liga","calt","dlig"' }}
+        >
+          {t("hero.slogan")}
+        </motion.h1>
+
+        {/* Sub-headline */}
+        <motion.p
+          variants={rise}
+          className="font-tagline mx-auto mt-4 max-w-xl text-balance text-sm leading-relaxed text-primary-deep/70 sm:text-base"
+        >
+          {t("hero.subheadPrefix")}{" "}
+          <span className="font-bold" style={{ color: "hsl(var(--green))" }}>{t("hero.brand")}</span>{" "}
+          {t("hero.subheadSuffix")}
+        </motion.p>
+
+        {/* Service chips — highlights what we cover without visual clutter */}
+        <motion.ul
+          variants={rise}
+          className="mt-7 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5"
+        >
+          {(["groom", "bride", "hall", "photographer", "planner"] as const).map((k, i) => (
+            <motion.li
+              key={k}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 + i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -2 }}
+              className="rounded-full border px-3.5 py-1.5 text-[11px] font-bold sm:px-4 sm:text-xs"
               style={{
-                perspective: "700px",
-                WebkitMaskImage:
-                  "linear-gradient(to bottom, transparent, #000 26%, #000 74%, transparent)",
-                maskImage:
-                  "linear-gradient(to bottom, transparent, #000 26%, #000 74%, transparent)",
+                borderColor: "hsl(var(--primary-deep) / 0.12)",
+                color: "hsl(var(--primary-deep) / 0.78)",
+                background: "hsl(var(--cream) / 0.75)",
+                backdropFilter: "blur(6px)",
               }}
             >
-              {/* fixed drum height so nothing jumps */}
-              <span className="block h-[5.5rem] w-full sm:h-[6.5rem]" />
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.span
-                  key={word}
-                  initial={{ rotateX: -78, y: "-95%", opacity: 0, scale: 0.9 }}
-                  animate={{ rotateX: 0, y: "0%", opacity: 1, scale: 1 }}
-                  exit={{ rotateX: 74, y: "95%", opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-display absolute inset-x-0 mx-auto flex items-center justify-center rounded-[1.75rem] border px-6 py-3 text-2xl font-black sm:text-4xl md:text-5xl"
-                  style={{
-                    transformOrigin: "center center -60px",
-                    transformStyle: "preserve-3d",
-                    color: "hsl(var(--primary-deep))",
-                    borderColor: "hsl(var(--gold) / 0.5)",
-                    background:
-                      "linear-gradient(135deg, hsl(var(--gold) / 0.24), hsl(var(--cream) / 0.5))",
-                    boxShadow:
-                      "0 22px 48px -26px hsl(var(--primary-deep) / 0.55), inset 0 1px 0 hsl(var(--cream) / 0.8)",
-                    backdropFilter: "blur(10px)",
-                  }}
-                >
-                  {word}
-                </motion.span>
-              </AnimatePresence>
-            </span>
+              {t(`hero.cards.${k}.label`)}
+            </motion.li>
+          ))}
+        </motion.ul>
 
-            <span className="relative mx-auto block h-0 w-full max-w-md">
-              <AnimatePresence mode="wait">
-                <WordSeal key={`seal-${word}`} label={word} isAr={isAr} />
-              </AnimatePresence>
-            </span>
-          </motion.div>
-
-
-        </div>
 
         {/* === CTA === */}
-        <motion.div variants={rise} className="mt-10 flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
+        <motion.div variants={rise} className="mt-9 flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
           <motion.a
             href="/planner"
             whileHover={{ y: -3 }}
