@@ -430,7 +430,7 @@ export const Hero = () => {
           </motion.a>
 
           <motion.a
-            href="/partner"
+            href="/vendor"
             whileHover={{ y: -3 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 280, damping: 20 }}
