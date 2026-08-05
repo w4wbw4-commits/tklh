@@ -20,6 +20,7 @@ const Auth = lazy(() => import("./pages/Auth.tsx"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword.tsx"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword.tsx"));
 const Vendor = lazy(() => import("./pages/Vendor.tsx"));
+const JoinVendor = lazy(() => import("./pages/JoinVendor.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const Checkout = lazy(() => import("./pages/Checkout.tsx"));
 const Success = lazy(() => import("./pages/Success.tsx"));
