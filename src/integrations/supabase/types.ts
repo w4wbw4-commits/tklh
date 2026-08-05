@@ -1014,6 +1014,57 @@ export type Database = {
         }
         Relationships: []
       }
+      vendor_applications: {
+        Row: {
+          city: string | null
+          created_at: string
+          email: string
+          entity_type: Database["public"]["Enums"]["applicant_entity_type"]
+          full_name: string
+          id: string
+          notes: string | null
+          phone: string
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          service_type: Database["public"]["Enums"]["vendor_category"]
+          status: Database["public"]["Enums"]["vendor_application_status"]
+          updated_at: string
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string
+          email: string
+          entity_type: Database["public"]["Enums"]["applicant_entity_type"]
+          full_name: string
+          id?: string
+          notes?: string | null
+          phone: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          service_type: Database["public"]["Enums"]["vendor_category"]
+          status?: Database["public"]["Enums"]["vendor_application_status"]
+          updated_at?: string
+        }
+        Update: {
+          city?: string | null
+          created_at?: string
+          email?: string
+          entity_type?: Database["public"]["Enums"]["applicant_entity_type"]
+          full_name?: string
+          id?: string
+          notes?: string | null
+          phone?: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          service_type?: Database["public"]["Enums"]["vendor_category"]
+          status?: Database["public"]["Enums"]["vendor_application_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       vendor_availability: {
         Row: {
           booking_id: string | null
@@ -1546,6 +1597,7 @@ export type Database = {
     }
     Enums: {
       app_role: "customer" | "vendor" | "admin"
+      applicant_entity_type: "company" | "individual"
       approval_status: "pending_approval" | "approved" | "rejected"
       availability_status: "blocked" | "booked" | "pending"
       booking_status:
@@ -1596,6 +1648,7 @@ export type Database = {
       report_target: "review" | "reply"
       rsvp_status: "pending" | "confirmed" | "declined"
       terms_scope: "booking" | "vendor_onboarding"
+      vendor_application_status: "new" | "contacted" | "approved" | "rejected"
       vendor_category:
         | "hall"
         | "catering"
@@ -1731,6 +1784,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["customer", "vendor", "admin"],
+      applicant_entity_type: ["company", "individual"],
       approval_status: ["pending_approval", "approved", "rejected"],
       availability_status: ["blocked", "booked", "pending"],
       booking_status: [
@@ -1786,6 +1840,7 @@ export const Constants = {
       report_target: ["review", "reply"],
       rsvp_status: ["pending", "confirmed", "declined"],
       terms_scope: ["booking", "vendor_onboarding"],
+      vendor_application_status: ["new", "contacted", "approved", "rejected"],
       vendor_category: [
         "hall",
         "catering",
