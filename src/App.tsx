@@ -103,6 +103,7 @@ const AppRoutes = () => {
                       <Route path="/forgot-password" element={<ForgotPassword />} />
                       <Route path="/reset-password" element={<ResetPassword />} />
                       <Route path="/vendor" element={<Vendor />} />
+                      <Route path="/join-vendor" element={<JoinVendor />} />
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/checkout/:bookingId" element={<Checkout />} />
                       <Route path="/invoice/:bookingId" element={<Invoice />} />
