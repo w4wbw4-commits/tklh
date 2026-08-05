@@ -421,18 +421,15 @@ export const Hero = () => {
           </motion.a>
 
           <motion.a
-            href="#speed"
-            whileHover={{ y: -3 }}
+            href="/partner"
+            whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 280, damping: 20 }}
-            className="inline-flex w-full items-center justify-center rounded-full border px-8 py-4 text-sm font-bold backdrop-blur sm:w-auto sm:text-base"
-            style={{
-              borderColor: "hsl(var(--primary-deep) / 0.22)",
-              color: "hsl(var(--primary-deep))",
-              backgroundColor: "hsl(var(--cream) / 0.6)",
-            }}
+            className="inline-flex items-center justify-center gap-1.5 text-sm font-semibold underline-offset-4 transition-all hover:underline sm:text-base"
+            style={{ color: "hsl(var(--primary-deep))" }}
           >
             {t("hero.secondary")}
+            <Arrow className="h-3.5 w-3.5" />
           </motion.a>
         </motion.div>
       </motion.div>
