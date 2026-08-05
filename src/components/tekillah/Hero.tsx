@@ -274,7 +274,7 @@ const WordSeal = ({ label, isAr }: { label: string; isAr: boolean }) => (
     exit={{ scale: 0.9, rotate: 4, opacity: 0 }}
     transition={{ type: "spring", stiffness: 320, damping: 16 }}
     className="pointer-events-none absolute hidden h-14 w-14 place-items-center sm:grid"
-    style={{ top: -30, [isAr ? "right" : "left"]: -18 }}
+    style={{ top: -34, [isAr ? "right" : "left"]: -30 }}
     aria-hidden
   >
     <svg viewBox="0 0 64 64" className="h-full w-full">
