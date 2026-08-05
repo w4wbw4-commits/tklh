@@ -77,7 +77,7 @@ export const InvitationDialog = ({ open, onOpenChange, event }: Props) => {
           <TabsList className="grid w-full grid-cols-2 rounded-full bg-secondary/60">
             <TabsTrigger value="template" className="rounded-full">{t("customer.invitation.template")}</TabsTrigger>
             <TabsTrigger value="ai" className="rounded-full">
-              <Sparkles className="me-1 h-3.5 w-3.5" /> {t("customer.invitation.ai")}
+              {t("customer.invitation.ai")}
             </TabsTrigger>
           </TabsList>
 
