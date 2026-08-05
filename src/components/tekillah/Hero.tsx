@@ -274,7 +274,7 @@ const WordSeal = ({ label, isAr }: { label: string; isAr: boolean }) => (
     exit={{ scale: 0.9, rotate: 4, opacity: 0 }}
     transition={{ type: "spring", stiffness: 320, damping: 16 }}
     className="pointer-events-none absolute hidden h-14 w-14 place-items-center sm:grid"
-    style={{ top: -26, [isAr ? "right" : "left"]: -22 }}
+    style={{ top: -30, [isAr ? "right" : "left"]: -18 }}
     aria-hidden
   >
     <svg viewBox="0 0 64 64" className="h-full w-full">
@@ -340,7 +340,7 @@ export const Hero = () => {
       >
         <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-12">
           {/* ---- Text column (right in RTL) ---- */}
-          <div className="flex flex-col items-center text-center lg:items-end lg:text-right">
+          <div className="flex flex-col items-center text-center">
             <motion.h1
               variants={rise}
               className="font-display mx-auto w-full max-w-4xl text-balance px-4 text-2xl font-black leading-tight tracking-[-0.005em] text-primary-deep sm:px-6 sm:text-3xl md:text-4xl md:leading-snug lg:text-5xl xl:text-6xl"
@@ -366,7 +366,7 @@ export const Hero = () => {
             {/* Rotating "تِكله لـ ..." line with wax seal */}
             <motion.div
               variants={rise}
-              className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 pt-2 lg:justify-end"
+              className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 pt-2"
             >
               <span className="font-display text-lg font-black text-primary-deep/80 sm:text-2xl md:text-3xl">
                 {t("hero.forPrefix")}
