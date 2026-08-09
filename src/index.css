@@ -491,26 +491,11 @@
     letter-spacing: 0.005em;
   }
 
-  @keyframes floaty {
-    0%,100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
-  .floaty { animation: floaty 6s ease-in-out infinite; }
-  .floaty-slow { animation: floaty 9s ease-in-out infinite; }
-
-  @keyframes glow-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--green) / 0), 0 12px 40px -12px hsl(var(--green) / 0.25); }
-    50% { box-shadow: 0 0 28px 4px hsl(var(--green) / 0.18), 0 12px 40px -12px hsl(var(--green) / 0.35); }
-  }
-  .glow-pulse { animation: glow-pulse 3.4s ease-in-out infinite; }
-
-  /* shake-soft — subtle stress wobble for problem cards */
-  @keyframes shake-soft {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-2px) rotate(-0.3deg); }
-    75% { transform: translateX(2px) rotate(0.3deg); }
-  }
-  .shake-soft { animation: shake-soft 4s ease-in-out infinite; }
+  /* Motion language: fade + 10–15px rise only. No bounce, spin, pulse, parallax. */
+  .floaty { animation: none; }
+  .floaty-slow { animation: none; }
+  .glow-pulse { animation: none; }
+  .shake-soft { animation: none; }
 
   /* dash-flow — animated dashed SVG strokes for flow diagrams */
   @keyframes dash-flow {
@@ -525,86 +510,40 @@
   }
   .fade-in-slow { animation: fade-in-slow 1.6s ease-out both; }
 
-  /* Najdi geometric pattern — subtle background overlay */
-  .bg-najdi-pattern {
-    background-image:
-      radial-gradient(circle at 20% 30%, hsl(var(--gold) / 0.08) 0, transparent 1.5px),
-      radial-gradient(circle at 80% 70%, hsl(var(--gold) / 0.08) 0, transparent 1.5px),
-      linear-gradient(45deg, transparent 48%, hsl(var(--gold) / 0.04) 49%, hsl(var(--gold) / 0.04) 51%, transparent 52%),
-      linear-gradient(-45deg, transparent 48%, hsl(var(--gold) / 0.04) 49%, hsl(var(--gold) / 0.04) 51%, transparent 52%);
-    background-size: 60px 60px, 60px 60px, 24px 24px, 24px 24px;
-  }
-  .bg-najdi-pattern-dark {
-    background-image:
-      radial-gradient(circle at 20% 30%, hsl(var(--gold) / 0.18) 0, transparent 1.5px),
-      radial-gradient(circle at 80% 70%, hsl(var(--gold) / 0.18) 0, transparent 1.5px),
-      linear-gradient(45deg, transparent 48%, hsl(var(--gold) / 0.10) 49%, hsl(var(--gold) / 0.10) 51%, transparent 52%);
-    background-size: 80px 80px, 80px 80px, 28px 28px;
-  }
-
-  /* Gold gradient text — for premium headings */
+  /* Flat replacements for the retired pattern/gradient helpers */
+  .bg-najdi-pattern { background-image: none; }
+  .bg-najdi-pattern-dark { background-image: none; }
   .text-gold-gradient {
-    background: linear-gradient(135deg, hsl(38 70% 48%) 0%, hsl(42 80% 62%) 50%, hsl(38 70% 48%) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    color: hsl(var(--gold));
+    -webkit-text-fill-color: hsl(var(--gold));
   }
+  .hover\:gold-pulse:hover { animation: none; }
+  .gold-shimmer { background: hsl(var(--gold) / 0.5); animation: none; }
 
-  /* Gold pulse — for the partner CTA */
-  @keyframes gold-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--gold) / 0.5), 0 6px 20px -6px hsl(var(--gold) / 0.4); }
-    50% { box-shadow: 0 0 0 10px hsl(var(--gold) / 0), 0 10px 30px -8px hsl(var(--gold) / 0.55); }
-  }
-  .hover\:gold-pulse:hover { animation: gold-pulse 1.6s ease-in-out infinite; }
-
-  /* Gold shimmer — for premium dividers / accents */
-  @keyframes gold-shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-  .gold-shimmer {
-    background: linear-gradient(90deg, hsl(var(--gold) / 0.2) 0%, hsl(var(--gold)) 50%, hsl(var(--gold) / 0.2) 100%);
-    background-size: 200% 100%;
-    animation: gold-shimmer 3.5s linear infinite;
-  }
-
-  /* Hover lift — gentle elevation for interactive surfaces */
+  /* Hover lift — a single hairline shift, no puffy elevation */
   .hover-lift {
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .hover-lift:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-card-hover);
-  }
+  .hover-lift:hover { transform: translateY(-2px); }
 
-  /* Press feedback — small scale-down on active for tactile feel */
-  .press-tactile {
-    transition: transform 0.15s ease-out;
-  }
-  .press-tactile:active {
-    transform: scale(0.97);
-  }
+  .press-tactile { transition: transform 0.15s ease-out; }
+  .press-tactile:active { transform: scale(0.98); }
 
-  /* Underline reveal — animated underline for inline links */
-  .link-reveal {
-    position: relative;
-    display: inline-block;
-  }
+  /* Underline reveal — gold thread */
+  .link-reveal { position: relative; display: inline-block; }
   .link-reveal::after {
     content: "";
     position: absolute;
     inset-inline: 0;
     bottom: -2px;
-    height: 2px;
-    background: linear-gradient(90deg, hsl(var(--green)), hsl(var(--gold)));
+    height: 1px;
+    background: hsl(var(--gold));
     transform: scaleX(0);
     transform-origin: right;
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .link-reveal:hover::after { transform: scaleX(1); transform-origin: left; }
+
 }
 
 /* Smooth scroll + accessibility — global behaviour outside @layer */
