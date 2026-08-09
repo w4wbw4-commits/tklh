@@ -131,7 +131,7 @@ export const Navbar = () => {
             <Button
               asChild
               size="sm"
-              className="h-9 rounded-full px-3 text-[12.5px] font-bold shadow-sm hover:opacity-90 sm:h-9 sm:px-4 sm:text-[13px]"
+              className="hidden h-9 rounded-full px-3 text-[12.5px] font-bold shadow-sm hover:opacity-90 sm:inline-flex sm:h-9 sm:px-4 sm:text-[13px]"
               style={{ backgroundColor: "hsl(var(--gold))", color: "#163726" }}
             >
               <Link to="/planner">
@@ -146,7 +146,7 @@ export const Navbar = () => {
               size="sm"
               asChild
               aria-label={t("nav.myDashboard")}
-              className="h-9 w-9 rounded-full p-0 text-[hsl(var(--cream))] hover:bg-white/10 sm:h-9 sm:w-auto sm:px-3 sm:text-xs"
+              className="hidden h-9 w-9 rounded-full p-0 text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex sm:h-9 sm:w-auto sm:px-3 sm:text-xs"
             >
               <Link to="/dashboard">
                 <LayoutDashboard className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
@@ -159,7 +159,7 @@ export const Navbar = () => {
                 size="sm"
                 asChild
                 aria-label={t("nav.admin")}
-                className="h-9 w-9 rounded-full bg-primary-foreground p-0 text-primary hover:bg-primary-foreground/90 sm:w-auto sm:px-3"
+                className="hidden h-9 w-9 rounded-full bg-primary-foreground p-0 text-primary hover:bg-primary-foreground/90 sm:inline-flex sm:w-auto sm:px-3"
               >
                 <Link to="/admin">
                   <ShieldCheck className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
@@ -174,7 +174,7 @@ export const Navbar = () => {
               type="button"
               onClick={toggleLang}
               aria-label={isAr ? "Switch to English" : "التبديل إلى العربية"}
-              className="inline-flex h-9 items-center gap-1 rounded-full border px-2.5 text-[11px] font-semibold uppercase tracking-wide transition hover:bg-white/10"
+              className="hidden h-9 items-center gap-1 rounded-full border px-2.5 sm:inline-flex text-[11px] font-semibold uppercase tracking-wide transition hover:bg-white/10"
               style={{ borderColor: "hsl(var(--gold) / 0.5)", color: "hsl(var(--cream))" }}
             >
               <Globe className="h-3.5 w-3.5" />
