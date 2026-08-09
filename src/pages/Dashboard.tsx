@@ -17,6 +17,8 @@ import { GuestManager } from "@/components/tekillah/customer/GuestManager";
 import { EventDayMode } from "@/components/tekillah/customer/EventDayMode";
 import { PaymentsPanel } from "@/components/tekillah/customer/PaymentsPanel";
 import { CreateEventDialog } from "@/components/tekillah/customer/CreateEventDialog";
+import { EventCommandHeader } from "@/components/tekillah/customer/EventCommandHeader";
+import chairMark from "@/assets/tklh-chair-mark.png.asset.json";
 import type { EventRow } from "@/components/tekillah/customer/types";
 import { useTranslation } from "react-i18next";
 import { fmtDate } from "@/i18n/format";
