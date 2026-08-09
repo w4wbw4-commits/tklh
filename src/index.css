@@ -96,7 +96,7 @@
     --surface: 42 42% 91%;
     --cream: 42 42% 91%;
     --foreground: 151 43% 15%;          /* #163726 velvet ink */
-    --text-muted: 35 8% 34%;            /* warm neutral */
+    --text-muted: 27 23% 18%;           /* #3A2E24 warm dark brown */
 
     /* Greens */
     --green: 151 43% 15%;               /* #163726 */
@@ -104,12 +104,13 @@
     --green-mid: 151 43% 15%;
     --green-light: 151 43% 15%;
 
-    /* Antique gold — hairlines, numerals, kickers. Never a fill. */
-    --gold: 151 43% 15%;                /* retired → deep green */
-    --gold-soft: 151 43% 15%;
+    /* Antique gold — hairlines, numerals, seals only. Never a fill. */
+    --gold: 39 32% 48%;                 /* #A08553 */
+    --gold-soft: 39 30% 60%;
     --wine: 348 33% 21%;                /* #46232A */
-    --brown: 35 8% 34%;                 /* warm neutral secondary text */
-    --brown-soft: 35 8% 42%;
+    --brown: 27 23% 18%;                /* #3A2E24 secondary text on cream */
+    --brown-soft: 27 18% 30%;
+
 
     --problem: 348 33% 21%;
     --problem-soft: 42 42% 91%;
