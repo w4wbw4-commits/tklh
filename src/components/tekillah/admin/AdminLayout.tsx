@@ -85,7 +85,7 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
             const isActive = active === key;
             const count = badges[key] ?? 0;
             const dotColor =
-              tone === "danger" ? "bg-destructive" : tone === "warning" ? "bg-gold" : "bg-primary-foreground/30";
+              tone === "danger" ? "bg-destructive" : tone === "warning" ? "bg-primary-foreground" : "bg-primary-foreground/30";
             return (
               <button
                 key={key}
@@ -123,7 +123,7 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
           <Button
             asChild
             variant="secondary"
-            className="w-full justify-start border-0 bg-primary-foreground/10 text-primary-foreground hover:bg-gold/20 hover:text-gold"
+            className="w-full justify-start border-0 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground"
           >
             <Link to="/partner">
               <Building2 className="ms-0 me-2 h-4 w-4" />
@@ -165,7 +165,7 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
             <span className="text-[10px] font-bold text-gold">{t("admin.kicker", { defaultValue: "مسؤول" })}</span>
           </Link>
           <div className="flex items-center gap-1">
-            <Button asChild size="sm" variant="ghost" className="text-primary-foreground hover:bg-gold/20 hover:text-gold">
+            <Button asChild size="sm" variant="ghost" className="text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground">
               <Link to="/partner">
                 <Building2 className="h-4 w-4" />
               </Link>

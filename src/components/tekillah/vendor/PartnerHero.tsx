@@ -108,7 +108,7 @@ export const PartnerHero = ({ onCtaClick, isAuthenticated }: PartnerHeroProps) =
               <Button
                 size="lg"
                 onClick={onCtaClick}
-                className="h-14 flex-1 rounded-full border-2 border-gold bg-gold px-8 text-base font-bold text-primary-deep shadow-[0_8px_24px_-6px_hsl(var(--gold)/0.55)] transition-all hover:scale-[1.02] hover:bg-gold sm:flex-none sm:px-10"
+                className="h-14 flex-1 rounded-full border-2 border-primary bg-primary px-8 text-base font-bold text-primary-foreground shadow-[0_8px_24px_-6px_hsl(var(--gold)/0.55)] transition-all hover:scale-[1.02] hover:bg-primary/90 sm:flex-none sm:px-10"
               >
                 <UserPlus className="me-2 h-5 w-5" />
                 {isRtl ? "سجل كمزود خدمة" : "Register as Vendor"}
