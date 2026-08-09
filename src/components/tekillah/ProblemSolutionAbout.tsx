@@ -182,7 +182,7 @@ const SpeedSection = () => {
                   <img
                     src={sealLogo.url}
                     alt=""
-                    className="h-6 w-6 select-none object-contain"
+                    className="h-6 w-auto select-none object-contain"
                     draggable={false}
                   />
                 </motion.span>
