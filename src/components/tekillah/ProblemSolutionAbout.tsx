@@ -61,14 +61,14 @@ const DESKTOP: Geo = {
     [374, 76],
   ],
   tradCards: [
-    [858, 56],
-    [732, 240],
-    [622, 16],
-    [491, 240],
-    [374, 16],
+    [846, 46],
+    [688, 246],
+    [622, 14],
+    [455, 246],
+    [374, 14],
   ],
-  tradTag: [566, 292],
-  tekTag: [566, 334],
+  tradTag: [560, 300],
+  tekTag: [560, 340],
   tek: "M930 258 C 926 316, 910 374, 860 376 L 152 376",
   tekNodes: [
     [730, 376],
@@ -342,7 +342,7 @@ const JourneyMap = ({ geo, id }: { geo: Geo; id: string }) => {
               alt=""
               aria-hidden
               draggable={false}
-              className="w-[70%] select-none object-contain"
+              className="h-[70%] w-[70%] select-none object-contain"
             />
           </motion.span>
 
