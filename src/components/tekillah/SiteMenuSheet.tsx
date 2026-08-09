@@ -59,7 +59,6 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
   const sectionLinks: NavLinkItem[] = [
     { type: "route", href: "/", icon: Home, labelKey: "nav.home", fallback: { ar: "الرئيسية", en: "Home" } },
     { type: "route", href: "/about", icon: Info, labelKey: "nav.about", fallback: { ar: "تعرف على تِكله", en: "About TKLH" } },
-    { type: "route", href: "/planner", icon: Sparkles, labelKey: "nav.plan", fallback: { ar: "خطط ليلتك", en: "Plan your night" } },
     ...(isPrimaryAdmin
       ? [{ type: "route" as const, href: "/packages", icon: FileText, labelKey: "nav.packages", fallback: { ar: "الباقات", en: "Packages" } }]
       : [{ type: "route" as const, href: "/packages", icon: FileText, labelKey: "nav.packages", fallback: { ar: "الباقات", en: "Packages" }, disabled: true, badge: { ar: "قريباً", en: "Soon" } }]),
