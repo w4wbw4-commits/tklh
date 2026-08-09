@@ -205,7 +205,15 @@
         "label": "Split over 12 months",
         "of": "Month",
         "total": "80,000 {{currency}}",
-        "per": "6,667"
+        "per": "6,667",
+        "total_label": "Event total",
+        "first": "First payment",
+        "firstNote": "On booking",
+        "next": "Next payment",
+        "nextNote": "In 30 days",
+        "rest": "Remaining",
+        "restNote": "10 monthly payments",
+        "paidOf": "2 of 12 paid"
       },
       "payLabel": "Supported soon"
     }
