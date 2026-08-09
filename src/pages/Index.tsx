@@ -7,7 +7,6 @@ import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
 import { LazyVisible } from "@/components/tekillah/LazyVisible";
 import { Preloader } from "@/components/tekillah/Preloader";
 import { SEO } from "@/components/SEO";
-import { TrustStatsStrip } from "@/components/tekillah/TrustStatsStrip";
 
 
 
@@ -46,10 +45,11 @@ const OccasionsSection = lazyWithRetry(() =>
 const DashboardPreview = lazyWithRetry(() =>
   import("@/components/tekillah/DashboardPreview").then((m) => ({ default: m.DashboardPreview })),
 );
-// The payment-methods strip and the old "upcoming features" block are gone:
-// everything unshipped now lives once, in the roadmap.
-const RoadmapSection = lazyWithRetry(() =>
-  import("@/components/tekillah/RoadmapSection").then((m) => ({ default: m.RoadmapSection })),
+const PaymentLogosStrip = lazyWithRetry(() =>
+  import("@/components/tekillah/PaymentLogosStrip").then((m) => ({ default: m.PaymentLogosStrip })),
+);
+const UpcomingFeatures = lazyWithRetry(() =>
+  import("@/components/tekillah/UpcomingFeatures").then((m) => ({ default: m.UpcomingFeatures })),
 );
 const Mission = lazyWithRetry(() =>
   import("@/components/tekillah/Mission").then((m) => ({ default: m.Mission })),
@@ -79,8 +79,6 @@ const Index = () => {
       <Navbar />
       <Hero />
 
-      {/* Real numbers only — sits between the hero and the comparison. */}
-      <TrustStatsStrip />
 
       <LazyVisible minHeight="50vh" fallback={<SectionSkeleton minHeight="50vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="50vh" />}>
@@ -99,9 +97,14 @@ const Index = () => {
           <DashboardPreview />
         </Suspense>
       </LazyVisible>
+      <LazyVisible minHeight="20vh" fallback={<SectionSkeleton minHeight="20vh" />}>
+        <Suspense fallback={<SectionSkeleton minHeight="20vh" />}>
+          <PaymentLogosStrip />
+        </Suspense>
+      </LazyVisible>
       <LazyVisible minHeight="50vh" fallback={<SectionSkeleton minHeight="50vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="50vh" />}>
-          <RoadmapSection />
+          <UpcomingFeatures />
         </Suspense>
       </LazyVisible>
 

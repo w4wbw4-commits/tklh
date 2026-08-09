@@ -86,6 +86,9 @@ export const StepDetails = ({
               <SelectItem key={c} value={c} disabled={c !== "riyadh"}>
                 <span className="flex items-center gap-2">
                   <span>{t(`cities.${c}`)}</span>
+                  {c !== "riyadh" && (
+                    <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-arabic text-muted-foreground">قريبًا</span>
+                  )}
                 </span>
               </SelectItem>
             ))}</SelectContent>

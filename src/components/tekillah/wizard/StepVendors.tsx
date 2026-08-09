@@ -3,7 +3,6 @@ import { RiyalSymbol } from "../RiyalSymbol";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { MiniSeal } from "../WaxSeal";
 import {
   Loader2,
   Check,
@@ -538,7 +537,7 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
                                         <span className="font-arabic text-sm font-semibold text-foreground">
                                           {v.business_name}
                                         </span>
-                                        {v.verified && <MiniSeal size={17} title={t("seal.verified")} />}
+                                        {v.verified && <BadgeCheck className="h-3.5 w-3.5 text-primary" />}
                                         {vendorMatches && (
                                           <Badge className="ms-1 bg-primary text-primary-foreground hover:bg-primary/90">
                                             <Sparkles className="me-1 h-3 w-3" />

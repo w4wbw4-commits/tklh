@@ -61,9 +61,6 @@ export const DashboardPreview = () => {
           {/* Top bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border bg-gradient-beige px-6 py-5 sm:px-8">
             <div>
-              <span className="mb-2 inline-flex items-center rounded-full border border-gold/40 bg-cream/80 px-2.5 py-0.5 font-arabic text-[10px] font-bold text-primary-deep sm:text-[11px]">
-                {t("dashboardPreview.previewChip")}
-              </span>
               <div className="font-arabic text-lg font-semibold">
                 {t("dashboardPreview.eventTitle")}
               </div>

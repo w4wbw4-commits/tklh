@@ -1,10 +1,9 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, ArrowRight, Receipt } from "lucide-react";
+import { CheckCircle2, ArrowLeft, ArrowRight, Sparkles, Receipt } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
-import { StampedSeal } from "@/components/tekillah/WaxSeal";
 
 const Success = () => {
   const { t, i18n } = useTranslation();
@@ -40,8 +39,15 @@ const Success = () => {
       </header>
 
       <main className="relative z-10 mx-auto flex min-h-[calc(100vh-65px)] max-w-2xl flex-col items-center justify-center px-6 py-12 text-center">
-        {/* The booking is "stamped" — the wax seal replaces the generic tick. */}
-        <StampedSeal label={t("seal.stamped")} size={112} />
+        <motion.div
+          initial={{ scale: 0, rotate: -15 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ type: "spring", stiffness: 180, damping: 14 }}
+          className="relative grid h-24 w-24 place-items-center rounded-full bg-gradient-to-br from-primary to-primary/60 text-primary-foreground shadow-luxury"
+        >
+          <CheckCircle2 className="h-12 w-12" />
+          <Sparkles className="absolute -end-2 -top-2 h-6 w-6 text-primary/80" />
+        </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 16 }}

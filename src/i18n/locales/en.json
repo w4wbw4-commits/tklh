@@ -66,8 +66,7 @@
         "noteReady": "Confirmed",
         "noteLive": "Setup complete"
       }
-    },
-    "previewChip": "Preview — this is how your board looks"
+    }
   },
   "upcoming": {
     "kicker": "Coming soon",
@@ -1669,11 +1668,9 @@
     "aria": "Occasions supported by Tklh",
     "items": {
       "wedding": "Weddings",
-      "engagement": "Engagement & Milkah",
-      "graduation": "Graduation",
-      "kids": "Kids parties",
-      "hospitality": "Hospitality",
-      "events": "Major events"
+      "engagement": "Engagements & Milkah",
+      "graduation": "Graduations",
+      "events": "Major Events"
     }
   },
   "payments": {
@@ -1689,64 +1686,5 @@
       "visa": "Visa",
       "mastercard": "Mastercard"
     }
-  },
-  "trust": {
-    "aria": "Tklh real numbers",
-    "badge": "Our numbers, no fluff",
-    "halls": {
-      "label": "Registered venues"
-    },
-    "vendors": {
-      "label": "Service providers",
-      "chips": [
-        "Planners",
-        "Photographers",
-        "Bands",
-        "Restaurants",
-        "Hospitality"
-      ]
-    },
-    "note": "Clients who needed someone to handle it — and Tklh handled it."
-  },
-  "roadmap": {
-    "badge": "What's next?",
-    "title": "What's next?",
-    "subtitle": "A clear ambition, shipped step by step.",
-    "soon": "Soon",
-    "aria": "Tklh roadmap",
-    "items": {
-      "installments": {
-        "title": "Split your night's cost",
-        "desc": "Flexible payment plans with licensed financing partners."
-      },
-      "invitations": {
-        "title": "Digital invitations",
-        "desc": "Design your invite and share it with your guests."
-      },
-      "payments": {
-        "title": "Online payments",
-        "desc": "Multiple Saudi payment methods inside the platform."
-      }
-    }
-  },
-  "heroWidget": {
-    "aria": "Quick planner",
-    "title": "Start in 5 minutes",
-    "type": "Occasion type",
-    "city": "City",
-    "cityPlaceholder": "Choose a city",
-    "guests": "Guests",
-    "budget": "Approx. budget",
-    "cta": "Plan & book",
-    "sar": "SAR"
-  },
-  "seal": {
-    "line": "TKLH · EVENT PLANNING",
-    "stamped": "Stamped ✓",
-    "verified": "Verified provider",
-    "startWith": "Start planning:"
-  },
-  "imageSlot": {
-    "label": "Tklh image slot"
   }
 }

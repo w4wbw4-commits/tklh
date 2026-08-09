@@ -12,8 +12,6 @@ import {
 import { Reveal } from "./Reveal";
 import { AnimatedCounter } from "./AnimatedCounter";
 import { ArabicPattern } from "./ArabicPattern";
-import { WaxSeal } from "./WaxSeal";
-import { ImageSlot } from "./ImageSlot";
 
 const TILE_ICONS = [Calculator, Filter, CalendarCheck, Gem] as const;
 
@@ -66,17 +64,12 @@ const SpeedSection = () => {
                 <p className="mt-1 font-arabic text-xs text-foreground/55">
                   {t("speed.traditional.desc")}
                 </p>
-                {/* The legacy path crawls forward, then stalls — it never arrives. */}
                 <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-foreground/10">
-                  <motion.div
-                    initial={{ width: "0%" }}
-                    whileInView={{ width: "38%" }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 3.4, ease: "linear" }}
-                    className="h-full rounded-full"
+                  <div
+                    className="h-full w-full rounded-full"
                     style={{
                       background:
-                        "repeating-linear-gradient(90deg, hsl(var(--foreground) / 0.3) 0 8px, transparent 8px 14px)",
+                        "repeating-linear-gradient(90deg, hsl(var(--foreground) / 0.25) 0 8px, transparent 8px 14px)",
                     }}
                   />
                 </div>
@@ -108,26 +101,14 @@ const SpeedSection = () => {
                 <p className="mt-1 font-arabic text-xs font-bold text-green/80">
                   {t("speed.tekillah.desc")}
                 </p>
-                {/* Tklh's path completes fast and lands with a stamped seal. */}
-                <div className="mt-4 flex items-center gap-2">
-                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-green/10">
-                    <motion.div
-                      initial={{ width: "0%" }}
-                      whileInView={{ width: "100%" }}
-                      viewport={{ once: true, margin: "-50px" }}
-                      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-                      className="h-full rounded-full bg-gradient-to-l from-green via-gold to-gold shadow-[0_0_14px_hsl(var(--gold)/0.6)]"
-                    />
-                  </div>
-                  <motion.span
-                    initial={{ scale: 1.9, opacity: 0, rotate: -16 }}
-                    whileInView={{ scale: [1.9, 0.9, 1], opacity: [0, 1, 1], rotate: [-16, -4, -7] }}
+                <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-green/10">
+                  <motion.div
+                    initial={{ width: "0%" }}
+                    whileInView={{ width: "100%" }}
                     viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.55, delay: 1.0, times: [0, 0.6, 1], ease: [0.2, 0.9, 0.2, 1] }}
-                    className="shrink-0"
-                  >
-                    <WaxSeal category="brand" size={26} interactive={false} title={t("seal.stamped")} />
-                  </motion.span>
+                    transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                    className="h-full rounded-full bg-gradient-to-l from-green via-gold to-gold shadow-[0_0_14px_hsl(var(--gold)/0.6)]"
+                  />
                 </div>
                 <ul className="mt-4 space-y-1.5 font-arabic text-xs text-foreground/80">
                   {tekPoints.map((item, i) => (
@@ -141,13 +122,6 @@ const SpeedSection = () => {
             </div>
           </Reveal>
         </div>
-
-        {/* Reserved comparison imagery */}
-        <Reveal delay={0.16}>
-          <div className="mt-6">
-            <ImageSlot ratio="32/9" />
-          </div>
-        </Reveal>
 
         {/* Cascade connector */}
         <Reveal delay={0.2}>
