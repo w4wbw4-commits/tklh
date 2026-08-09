@@ -51,10 +51,10 @@ export const DashboardPreview = () => {
   return (
     <section
       id="dashboard"
-      className="px-5 py-14 sm:px-8 sm:py-18"
+      className="px-5 py-10 sm:px-8 sm:py-14"
       style={{ borderTop: "1px solid hsl(var(--green) / 0.35)" }}
     >
-      <div className="mx-auto grid max-w-6xl items-center gap-8 md:grid-cols-[0.95fr_1.05fr] md:gap-12">
+      <div className="mx-auto grid max-w-6xl items-start gap-8 md:grid-cols-[0.95fr_1.05fr] md:gap-12">
         {/* Text + callouts */}
         <motion.div
           initial={{ opacity: 0, y: 14 }}

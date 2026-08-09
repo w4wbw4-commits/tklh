@@ -88,7 +88,7 @@ export const UpcomingFeatures = () => {
           </p>
         </motion.div>
 
-        <div className="mt-10 grid gap-5 lg:grid-cols-2">
+        <div className="mt-10 grid items-start gap-5 lg:grid-cols-2">
           {/* 01 — Installments: 12-year split, compact timeline */}
           <motion.article {...card(0)}>
             <div className="flex items-start justify-between gap-4">
