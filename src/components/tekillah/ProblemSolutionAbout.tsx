@@ -10,6 +10,8 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
+import sealLogo from "@/assets/tklh-logo-transparent.png.asset.json";
+
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const HAIR = "1px solid hsl(var(--green) / 0.18)";
@@ -74,7 +76,7 @@ const SpeedSection = () => {
                 {t("speed.traditional.desc")}
               </p>
 
-              {/* wandering dashed thread that stalls before the end */}
+              {/* zigzag thread that climbs up and down until it reaches the goal */}
               <svg
                 viewBox="0 0 320 40"
                 className="mt-7 h-10 w-full"
@@ -82,16 +84,27 @@ const SpeedSection = () => {
                 aria-hidden
               >
                 <motion.path
-                  d="M4 30 C 40 4, 62 36, 96 18 S 150 34, 178 12 C 200 -2, 214 30, 240 24"
+                  d="M4 32 L44 8 L84 32 L124 8 L164 32 L204 8 L244 32 L284 8 L312 20"
                   stroke="hsl(var(--brown) / 0.45)"
                   strokeWidth="1.5"
                   strokeDasharray="5 6"
                   initial={{ pathLength: 0 }}
-                  whileInView={{ pathLength: 0.82 }}
+                  whileInView={{ pathLength: 1 }}
                   viewport={once}
-                  transition={{ duration: 1.4, ease: "linear" }}
+                  transition={{ duration: 1.6, ease: "linear" }}
+                />
+                <motion.circle
+                  cx="313"
+                  cy="20"
+                  r="3"
+                  fill="hsl(var(--brown) / 0.5)"
+                  initial={{ opacity: 0, scale: 0.4 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={once}
+                  transition={{ duration: 0.35, ease: EASE, delay: 1.6 }}
                 />
               </svg>
+
 
               {/* paper scraps, stacked untidily */}
               <div className="mt-6 space-y-3">
@@ -153,20 +166,27 @@ const SpeedSection = () => {
                   className="h-px flex-1 origin-left"
                   style={{ background: "hsl(var(--green) / 0.55)" }}
                 />
-                {/* miniature wax seal — a single quiet press */}
+                {/* miniature seal — the official Tklh mark, pressed once */}
                 <motion.span
                   initial={{ opacity: 0, scale: 1.35 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={once}
                   transition={{ duration: 0.45, ease: EASE, delay: 1.15 }}
-                  className="grid h-9 w-9 shrink-0 place-items-center rounded-full"
-                  style={{ backgroundColor: INK }}
+                  className="grid h-10 w-10 shrink-0 place-items-center rounded-full"
+                  style={{
+                    backgroundColor: "hsl(var(--cream))",
+                    border: "1px solid hsl(var(--green) / 0.4)",
+                  }}
                   aria-hidden
                 >
-                  <span className="font-wordmark text-[11px]" style={{ color: "hsl(var(--cream))" }}>
-                    TK
-                  </span>
+                  <img
+                    src={sealLogo.url}
+                    alt=""
+                    className="h-6 w-6 select-none object-contain"
+                    draggable={false}
+                  />
                 </motion.span>
+
               </div>
 
               {/* three clean steps, ticked in sequence */}
