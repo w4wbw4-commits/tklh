@@ -18,7 +18,6 @@ import {
   ShieldCheck,
   Globe,
   Phone,
-  FileText,
   Building2,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
@@ -61,9 +60,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
     { type: "route", href: "/", icon: Home, labelKey: "nav.home", fallback: { ar: "الرئيسية", en: "Home" } },
     { type: "route", href: "/about", icon: Info, labelKey: "nav.about", fallback: { ar: "تعرف على تِكله", en: "About TKLH" } },
     { type: "route", href: "/planner", icon: Sparkles, labelKey: "nav.plan", fallback: { ar: "خطط ليلتك", en: "Plan your night" } },
-    ...(isPrimaryAdmin
-      ? [{ type: "route" as const, href: "/packages", icon: FileText, labelKey: "nav.packages", fallback: { ar: "الباقات", en: "Packages" } }]
-      : [{ type: "route" as const, href: "/packages", icon: FileText, labelKey: "nav.packages", fallback: { ar: "الباقات", en: "Packages" }, disabled: true, badge: { ar: "قريباً", en: "Soon" } }]),
+    // Packages stays out of the menu until it ships.
     { type: "anchor", href: "https://wa.me/966530466460?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D9%85%D8%B9%20%D8%AA%D9%90%D9%83%D9%84%D9%87", icon: Phone, labelKey: "nav.contact", fallback: { ar: "تواصل معنا", en: "Contact" } },
   ];
 
@@ -72,8 +69,14 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
       ? [{ type: "route" as const, href: "/dashboard", icon: LayoutDashboard, labelKey: "nav.myDashboard", fallback: { ar: "لوحتي", en: "My Dashboard" } }]
       : []),
     { type: "route", href: "/vendor", icon: Building2, labelKey: "nav.joinAsVendor", fallback: { ar: "انضم كمزود خدمة", en: "Join as Vendor" } },
+    // Role switching lives here now instead of a floating panel — the floating
+    // slot is reserved for WhatsApp.
     ...(isPrimaryAdmin
-      ? [{ type: "route" as const, href: "/admin", icon: ShieldCheck, labelKey: "nav.admin", fallback: { ar: "الإدارة", en: "Admin" } }]
+      ? [
+          { type: "route" as const, href: "/admin", icon: ShieldCheck, labelKey: "nav.admin", fallback: { ar: "الإدارة", en: "Admin" } },
+          { type: "route" as const, href: "/partner", icon: Building2, labelKey: "nav.partnerConsole", fallback: { ar: "لوحة الشريك", en: "Partner Console" } },
+          { type: "route" as const, href: "/", icon: Home, labelKey: "nav.publicSite", fallback: { ar: "الموقع العام", en: "Public site" } },
+        ]
       : []),
   ];
 
