@@ -61,7 +61,7 @@ export const OccasionsSection = () => {
                   transition={{ duration: 0.7, ease: EASE, delay: i * 0.1 }}
                   className="flex items-center gap-3"
                 >
-                  <Icon className="h-6 w-6 shrink-0 text-gold" strokeWidth={1.2} />
+                  <Icon className="h-6 w-6 shrink-0 text-wine" strokeWidth={1.2} />
                   <span className={`text-[15px] font-bold text-green sm:text-base ${ar}`}>
                     {t(`occasions.items.${o.key}`)}
                   </span>
@@ -99,16 +99,10 @@ export const OccasionsSection = () => {
                 }
               >
                 <div className="flex items-baseline gap-1.5">
-                  <span
-                    className="font-display text-5xl font-black leading-none tabular-nums sm:text-6xl"
-                    style={{ color: "hsl(var(--gold))" }}
-                  >
+                  <span className="font-display text-5xl font-black leading-none tabular-nums text-wine sm:text-6xl">
                     <AnimatedCounter value={item.value} />
                   </span>
-                  <span
-                    className="font-display text-3xl font-black leading-none sm:text-4xl"
-                    style={{ color: "hsl(var(--gold))" }}
-                  >
+                  <span className="font-display text-3xl font-black leading-none text-wine sm:text-4xl">
                     +
                   </span>
                 </div>
