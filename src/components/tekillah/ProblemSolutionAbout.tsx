@@ -38,34 +38,68 @@ const TradColumn = () => {
 
   return (
     <div className="relative">
-      <div className="flex items-baseline gap-2.5">
-        <span
-          className="whitespace-nowrap px-2.5 py-1 text-[11px] font-bold sm:text-[12px]"
-          style={{
-            color: "hsl(var(--brown) / 0.9)",
-            border: "1px dashed hsl(var(--brown) / 0.4)",
-            borderRadius: 999,
-          }}
-        >
-          {t("speed.traditional.chip")}
-        </span>
-      </div>
+      <span
+        className="inline-block whitespace-nowrap px-3 py-1 text-[12px] font-bold sm:text-[12.5px]"
+        style={{
+          color: "hsl(var(--brown) / 0.9)",
+          border: "1px dashed hsl(var(--brown) / 0.45)",
+          borderRadius: 999,
+        }}
+      >
+        {t("speed.traditional.chip")}
+      </span>
+
       <p
-        className="font-display mt-3 text-2xl font-black leading-none sm:text-3xl"
-        style={{ color: "hsl(var(--brown) / 0.85)" }}
+        className="font-display mt-3.5 text-[26px] font-black leading-tight sm:text-3xl"
+        style={{ color: "hsl(var(--brown) / 0.9)" }}
       >
         {t("speed.traditional.value")}
       </p>
-      <p className="mt-1.5 text-[12.5px] font-semibold sm:text-[13px]" style={{ color: "hsl(var(--brown) / 0.7)" }}>
+      <p className="mt-2 text-[13.5px] font-bold sm:text-[13px]" style={{ color: "hsl(var(--brown) / 0.75)" }}>
         {t("speed.journey.tradTag")}
       </p>
-
-      <p className="mt-1.5 text-[12px] font-semibold sm:text-[12.5px]" style={{ color: "hsl(var(--brown) / 0.55)" }}>
+      <p className="mt-1.5 text-[13px] leading-relaxed sm:text-[12.5px]" style={{ color: "hsl(var(--brown) / 0.6)" }}>
         {t("speed.traditional.desc")}
       </p>
 
-      {/* zigzag road with the chaos scattered above / below along it */}
-      <div className="relative mt-7">
+      {/* MOBILE: one clear vertical dashed rail, one station per row */}
+      <ol className="relative mt-6 space-y-3 ps-6 sm:hidden">
+        <span
+          className="pointer-events-none absolute inset-y-1 start-[7px] w-px"
+          style={{ borderInlineStart: "2px dashed hsl(var(--brown) / 0.35)" }}
+          aria-hidden
+        />
+        {stations.map((s, i) => (
+          <motion.li
+            key={i}
+            initial={{ opacity: reduce ? 1 : 0, x: reduce ? 0 : 8 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={once}
+            transition={{ duration: T(0.35), ease: S_EASE, delay: T(0.1 + i * 0.09) }}
+            className="relative flex items-center gap-2.5"
+          >
+            <span
+              className="absolute -start-6 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full"
+              style={{ backgroundColor: "hsl(var(--brown) / 0.45)" }}
+              aria-hidden
+            />
+            <span
+              className="w-full px-3 py-2 text-[13.5px] font-semibold leading-snug"
+              style={{
+                color: "hsl(var(--brown) / 0.9)",
+                border: "1px solid hsl(var(--brown) / 0.24)",
+                backgroundColor: "hsl(var(--cream))",
+                borderRadius: 4,
+              }}
+            >
+              {s}
+            </span>
+          </motion.li>
+        ))}
+      </ol>
+
+      {/* DESKTOP: zigzag road with the chaos scattered above / below along it */}
+      <div className="relative mt-7 hidden sm:block">
         <svg
           viewBox="0 0 400 120"
           preserveAspectRatio="none"
@@ -110,7 +144,7 @@ const TradColumn = () => {
                 whileInView={{ opacity: 1, y: 0, rotate: CARD_TILTS[i] }}
                 viewport={once}
                 transition={{ duration: T(0.4), ease: S_EASE, delay: T(0.25 + i * 0.12) }}
-                className="inline-block px-2 py-1.5 text-[11px] leading-snug sm:text-[12px]"
+                className="inline-block px-2 py-1.5 text-[12px] leading-snug"
                 style={{
                   color: "hsl(var(--brown) / 0.85)",
                   border: "1px solid hsl(var(--brown) / 0.26)",
@@ -125,7 +159,6 @@ const TradColumn = () => {
           ))}
         </ul>
       </div>
-
     </div>
   );
 };
@@ -139,7 +172,7 @@ const TekColumn = () => {
   return (
     <div className="relative">
       <span
-        className="inline-block whitespace-nowrap px-2.5 py-1 text-[11px] font-bold sm:text-[12px]"
+        className="inline-block whitespace-nowrap px-3 py-1 text-[12px] font-bold sm:text-[12.5px]"
         style={{
           color: "hsl(var(--cream))",
           backgroundColor: INK,
@@ -148,22 +181,25 @@ const TekColumn = () => {
       >
         {t("speed.tekillah.chip")}
       </span>
-      <p className="font-display mt-3 text-2xl font-black leading-none text-green sm:text-3xl">
+      <p className="font-display mt-3.5 text-[26px] font-black leading-tight text-green sm:text-3xl">
         {t("speed.tekillah.prefix")} 10 {t("speed.tekillah.unit")}
       </p>
-      <p className="mt-1.5 text-[12.5px] font-black sm:text-[13px]" style={{ color: INK }}>
+      <p className="mt-2 text-[13.5px] font-black sm:text-[13px]" style={{ color: INK }}>
         {t("speed.journey.tekTag")}
+      </p>
+      <p className="mt-1.5 text-[13px] leading-relaxed sm:text-[12.5px]" style={{ color: "hsl(var(--brown) / 0.8)" }}>
+        {t("speed.journey.sit")}
       </p>
 
       {/* one straight green road that arrives at the official chair (far side) */}
-      <div className="mt-7 flex items-center gap-3 pb-7">
+      <div className="mt-6 flex items-center gap-3 pb-8 sm:mt-7 sm:pb-7">
         <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: INK }} aria-hidden />
         <motion.span
           initial={{ scaleX: reduce ? 1 : 0 }}
           whileInView={{ scaleX: 1 }}
           viewport={once}
           transition={{ duration: T(0.7), ease: S_EASE, delay: T(0.1) }}
-          className="h-[2px] flex-1 origin-right"
+          className="h-[2.5px] flex-1 origin-center"
           style={{ backgroundColor: INK }}
           aria-hidden
         />
@@ -200,13 +236,9 @@ const TekColumn = () => {
           </motion.span>
         </div>
       </div>
-      <p className="mt-1 text-[12px] font-semibold sm:text-[12.5px]" style={{ color: "hsl(var(--brown) / 0.8)" }}>
-        {t("speed.journey.sit")}
-      </p>
-
 
       {/* three clean steps */}
-      <ul className="mt-4 space-y-3.5">
+      <ul className="mt-2 space-y-3.5">
         {steps.map((s, i) => (
           <li key={i} className="flex items-start gap-2.5">
             <motion.span
@@ -214,7 +246,7 @@ const TekColumn = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={once}
               transition={{ duration: T(0.3), ease: S_EASE, delay: T(0.5 + i * 0.14) }}
-              className="mt-[3px] grid h-[19px] w-[19px] shrink-0 place-items-center rounded-full sm:h-5 sm:w-5"
+              className="mt-[3px] grid h-5 w-5 shrink-0 place-items-center rounded-full"
               style={{ backgroundColor: "hsl(var(--cream))", border: `1.6px solid ${INK}` }}
               aria-hidden
             >
@@ -227,7 +259,7 @@ const TekColumn = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={once}
               transition={{ duration: T(0.35), ease: S_EASE, delay: T(0.55 + i * 0.14) }}
-              className="text-[13px] font-semibold leading-snug sm:text-[14.5px]"
+              className="text-[14px] font-semibold leading-relaxed sm:text-[14.5px]"
               style={{ color: INK }}
             >
               {s}
@@ -238,6 +270,7 @@ const TekColumn = () => {
     </div>
   );
 };
+
 
 const SpeedSection = () => {
   const { t } = useTranslation();
@@ -251,7 +284,7 @@ const SpeedSection = () => {
       <div className="relative z-10 mx-auto max-w-5xl">
         <Reveal>
           <div className="text-center">
-            <h2 className="font-display mx-auto max-w-2xl text-balance text-2xl font-black leading-[1.45] text-green sm:text-4xl">
+            <h2 className="font-display mx-auto max-w-2xl text-balance text-[22px] font-black leading-[1.5] text-green sm:text-4xl sm:leading-[1.45]">
               {t("speed.title1")} {t("speed.title2")}
             </h2>
           </div>
