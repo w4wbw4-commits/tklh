@@ -74,10 +74,8 @@ export const Hero = () => {
           draggable={false}
         />
 
-        {/* Editorial signature */}
-        <motion.span variants={rise} className="kicker mt-6">
-          TKLH · EVENT PLANNING
-        </motion.span>
+
+
 
         {/* Rotating line — "تِكله لـ …" */}
         <motion.div
