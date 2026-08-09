@@ -133,60 +133,64 @@ const Dashboard = () => {
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <div className="mb-8">
-            <h1 className="font-arabic text-3xl font-semibold text-foreground sm:text-4xl">
-              {activeEvent ? activeEvent.title : t("customer.noEventTitle")}
-            </h1>
-            <p className="mt-2 text-foreground/70">
-              {activeEvent ? t("customer.withEventSubtitle") : t("customer.noEventSubtitle")}
-            </p>
-          </div>
-
           {!activeEvent ? (
-            <div className="rounded-3xl border border-dashed border-border bg-card p-12 text-center shadow-card">
-              <div className="mx-auto mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <LayoutDashboard className="h-6 w-6" />
-              </div>
-              <h2 className="font-arabic text-xl font-semibold">{t("customer.noneTitle")}</h2>
-              <p className="mt-2 text-sm text-foreground/65">{t("customer.noneDesc")}</p>
-              <Button onClick={() => setCreateOpen(true)}
-                className="mt-6 rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
+            <div
+              className="rounded-3xl p-10 text-center sm:p-14"
+              style={{ border: "1px solid hsl(var(--green) / 0.2)", backgroundColor: "hsl(var(--cream))" }}
+            >
+              <img
+                src={chairMark.url}
+                alt=""
+                aria-hidden
+                className="mx-auto mb-5 h-16 w-16 object-contain opacity-30"
+                draggable={false}
+              />
+              <h2 className="font-arabic text-xl font-bold text-primary">{t("customer.noneTitle")}</h2>
+              <p className="mt-2 text-sm text-[hsl(var(--brown))]">{t("customer.noneDesc")}</p>
+              <Button onClick={() => setCreateOpen(true)} className="mt-6 rounded-full">
                 <Plus className="me-1 h-4 w-4" /> {t("customer.createBtn")}
               </Button>
             </div>
           ) : (
-            <Tabs value={tab} onValueChange={setTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 rounded-2xl bg-card p-1 shadow-card sm:grid-cols-6">
-                <TabsTrigger value="overview" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  <LayoutDashboard className="h-4 w-4" /> {t("customer.tabs.overview")}
-                </TabsTrigger>
-                <TabsTrigger value="timeline" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  <Map className="h-4 w-4" /> {t("customer.tabs.timeline")}
-                </TabsTrigger>
-                <TabsTrigger value="bookings" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  <ListChecks className="h-4 w-4" /> {t("customer.tabs.bookings")}
-                </TabsTrigger>
-                <TabsTrigger value="guests" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  <Users className="h-4 w-4" /> {t("customer.tabs.guests")}
-                </TabsTrigger>
-                <TabsTrigger value="payments" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  <Receipt className="h-4 w-4" /> {t("customer.tabs.payments")}
-                </TabsTrigger>
-                <TabsTrigger value="day" className="rounded-xl gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  <Radio className="h-4 w-4" /> {t("customer.tabs.day")}
-                </TabsTrigger>
-              </TabsList>
+            <div className="space-y-8">
+              <EventCommandHeader
+                event={activeEvent}
+                userName={
+                  (user.user_metadata?.full_name as string | undefined) ??
+                  user.email?.split("@")[0] ??
+                  null
+                }
+                onOpenTab={setTab}
+              />
 
-              <div className="mt-8">
-                <TabsContent value="overview"><EventOverview event={activeEvent} /></TabsContent>
-                <TabsContent value="timeline"><EventTimeline event={activeEvent} /></TabsContent>
-                <TabsContent value="bookings"><BookingsTimeline event={activeEvent} /></TabsContent>
-                <TabsContent value="guests"><GuestManager event={activeEvent} /></TabsContent>
-                <TabsContent value="payments"><PaymentsPanel event={activeEvent} /></TabsContent>
-                <TabsContent value="day"><EventDayMode event={activeEvent} /></TabsContent>
-              </div>
-            </Tabs>
+              <Tabs value={tab} onValueChange={setTab} className="w-full">
+                <TabsList className="grid h-auto w-full grid-cols-2 gap-1 rounded-2xl p-1 sm:grid-cols-6">
+                  {[
+                    { v: "overview", Icon: LayoutDashboard },
+                    { v: "timeline", Icon: Map },
+                    { v: "bookings", Icon: ListChecks },
+                    { v: "guests", Icon: Users },
+                    { v: "payments", Icon: Receipt },
+                    { v: "day", Icon: Radio },
+                  ].map(({ v, Icon }) => (
+                    <TabsTrigger key={v} value={v} className="gap-2 rounded-xl py-2">
+                      <Icon className="h-4 w-4" strokeWidth={1.6} /> {t(`customer.tabs.${v}`)}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+
+                <div className="mt-8">
+                  <TabsContent value="overview"><EventOverview event={activeEvent} /></TabsContent>
+                  <TabsContent value="timeline"><EventTimeline event={activeEvent} /></TabsContent>
+                  <TabsContent value="bookings"><BookingsTimeline event={activeEvent} /></TabsContent>
+                  <TabsContent value="guests"><GuestManager event={activeEvent} /></TabsContent>
+                  <TabsContent value="payments"><PaymentsPanel event={activeEvent} /></TabsContent>
+                  <TabsContent value="day"><EventDayMode event={activeEvent} /></TabsContent>
+                </div>
+              </Tabs>
+            </div>
           )}
+
         </motion.div>
       </main>
 
