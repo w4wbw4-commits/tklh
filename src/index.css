@@ -603,3 +603,12 @@ html {
     display: none;
   }
 }
+
+/* Payment chip — wine appears once on the page, as this hover accent */
+.pay-chip {
+  transition: border-color 220ms ease, background-color 220ms ease;
+}
+.pay-chip:hover {
+  border-color: hsl(var(--wine));
+  background-color: hsl(var(--wine) / 0.35);
+}
