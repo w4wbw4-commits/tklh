@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
-import { Globe, LayoutDashboard, ShieldCheck } from "lucide-react";
+import { Globe, LayoutDashboard, ShieldCheck, CalendarCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -123,6 +123,23 @@ export const Navbar = () => {
 
           </nav>
           <div className="flex items-center gap-1 sm:gap-2">
+            {/* Primary CTA — compact pill in the top corner. */}
+            <Button
+              size="sm"
+              asChild
+              className="h-9 rounded-full border px-3 text-xs font-semibold sm:px-4 sm:text-sm"
+              style={{
+                background: "transparent",
+                borderColor: "hsl(var(--gold) / 0.65)",
+                color: "hsl(var(--cream))",
+              }}
+            >
+              <Link to="/planner">
+                <CalendarCheck className="h-3.5 w-3.5 sm:me-1.5" />
+                <span>{t("common.planAndBook")}</span>
+              </Link>
+            </Button>
+
             {/* Follow-up plan — icon-only on mobile, labelled on desktop. */}
             <Button
               variant="ghost"
