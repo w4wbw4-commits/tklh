@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { WhatsAppFloating } from "./WhatsAppFloating";
 import { Button } from "@/components/ui/button";
-import { Globe, LayoutDashboard, ShieldCheck } from "lucide-react";
+import { LayoutDashboard, ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -44,10 +44,6 @@ export const Navbar = () => {
     sessionStorage.setItem(key, "1");
     toast.success(t("nav.adminWelcome"), { duration: 6000 });
   }, [isPrimaryAdmin, t]);
-
-  const toggleLang = () => {
-    i18n.changeLanguage(isAr ? "en" : "ar");
-  };
 
   // Packages is hidden from navigation until the offering is live — a nav item
   // that only says "soon" is noise.

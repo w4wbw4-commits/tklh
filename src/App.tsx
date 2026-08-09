@@ -14,7 +14,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 // libraries (recharts ~221KB, xlsx ~184KB, jspdf ~165KB) only download when
 // the user actually navigates to a partner/admin page.
 import Index from "./pages/Index.tsx";
-import { RoleSwitcher } from "./components/tekillah/RoleSwitcher";
+import { WhatsAppFloatingButton } from "./components/tekillah/WhatsAppFloatingButton";
 
 const Auth = lazy(() => import("./pages/Auth.tsx"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword.tsx"));
@@ -135,7 +135,7 @@ const AppRoutes = () => {
                       <Route path="*" element={<NotFound />} />
                     </Routes>
                   </Suspense>
-                  <RoleSwitcher />
+                  <WhatsAppFloatingButton />
                 </TooltipProvider>
               </RouteAwareTheme>
             </AuthProvider>
