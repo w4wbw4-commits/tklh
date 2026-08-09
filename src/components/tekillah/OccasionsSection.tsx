@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
-// OccasionsSection — "more than weddings" strip merged with the trust bar
-// (two animated counters + a symbolic customers cluster, never a count).
-// Localized via i18n (AR/EN).
+// OccasionsSection — cream editorial band: a quiet row of line icons, then a
+// single trust row (numbers in antique gold, separated by 1px gold rules).
+// No cards, no counts for customers.
 // ---------------------------------------------------------------------------
 import { motion } from "framer-motion";
 import {
@@ -9,12 +9,12 @@ import {
   Crown,
   GraduationCap,
   PartyPopper,
-  Building2,
-  Users,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
 import { AnimatedCounter } from "./AnimatedCounter";
+
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 const OCCASIONS = [
   { icon: HeartHandshake, key: "wedding" },
@@ -22,7 +22,6 @@ const OCCASIONS = [
   { icon: GraduationCap,  key: "graduation" },
   { icon: PartyPopper,    key: "events" },
 ] as const;
-
 
 export const OccasionsSection = () => {
   const { t, i18n } = useTranslation();
@@ -34,36 +33,37 @@ export const OccasionsSection = () => {
       id="occasions"
       aria-label={t("occasions.aria")}
       dir={isAr ? "rtl" : "ltr"}
-      className="relative overflow-hidden bg-hero-warm px-6 py-14 sm:px-8 sm:py-20"
+      className="relative px-5 py-20 sm:px-8 sm:py-28"
+      style={{ borderTop: "1px solid hsl(var(--gold) / 0.45)" }}
     >
-      <div className="relative mx-auto max-w-6xl">
+      <div className="relative mx-auto max-w-5xl">
         <Reveal>
-          <div className="text-center">
-            <h2 className={`mt-5 text-balance text-2xl font-black leading-[1.5] text-green sm:text-3xl md:text-4xl ${ar}`}>
-              {t("occasions.titlePrefix")}{" "}
-              <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-1 leading-[1.5] text-transparent">
-                {t("occasions.titleHighlight")}
-              </span>
+          <div>
+            <span className="kicker">TKLH · EVENT PLANNING</span>
+            {/* asymmetry: the title runs long, the icon row sits under it */}
+            <h2
+              className={`font-display mt-5 max-w-2xl text-balance text-2xl font-black leading-[1.4] text-green sm:text-4xl md:text-5xl ${ar}`}
+            >
+              {t("occasions.titlePrefix")} {t("occasions.titleHighlight")}
             </h2>
           </div>
         </Reveal>
 
-        <Reveal delay={0.1}>
-          <div className="mx-auto mt-9 flex flex-wrap items-start justify-center gap-5 sm:gap-10">
+        <Reveal delay={0.12}>
+          <div className="mt-12 flex flex-wrap items-center gap-x-12 gap-y-8 sm:gap-x-20">
             {OCCASIONS.map((o, i) => {
               const Icon = o.icon;
               return (
                 <motion.div
                   key={i}
-                  whileHover={{ y: -4 }}
-                  transition={{ type: "spring", stiffness: 240, damping: 18 }}
-                  className="group flex flex-col items-center gap-2.5"
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.7, ease: EASE, delay: i * 0.1 }}
+                  className="flex items-center gap-3"
                 >
-                  <div className="relative grid h-16 w-16 place-items-center rounded-full border border-gold/35 bg-cream/80 text-gold shadow-soft transition-all duration-500 group-hover:border-gold/70 group-hover:bg-cream group-hover:shadow-[0_18px_40px_-15px_hsl(var(--gold)/0.55)] sm:h-20 sm:w-20">
-                    <Icon className="h-6 w-6 sm:h-8 sm:w-8" strokeWidth={1.7} />
-                    <div className="pointer-events-none absolute inset-0 rounded-full bg-gold/0 opacity-0 blur-xl transition-all duration-700 group-hover:bg-gold/30 group-hover:opacity-100" />
-                  </div>
-                  <span className={`text-xs font-bold text-foreground/80 sm:text-sm ${ar}`}>
+                  <Icon className="h-6 w-6 shrink-0 text-gold" strokeWidth={1.2} />
+                  <span className={`text-[15px] font-bold text-green sm:text-base ${ar}`}>
                     {t(`occasions.items.${o.key}`)}
                   </span>
                 </motion.div>
@@ -72,71 +72,53 @@ export const OccasionsSection = () => {
           </div>
         </Reveal>
 
-        {/* ── Merged trust band ─────────────────────────────────────────── */}
-        <Reveal delay={0.15}>
+        {/* ── Trust row: two numerals, one gold rule between them ─────────── */}
+        <Reveal delay={0.2}>
           <div
             aria-label={t("trust.aria")}
-            className="mt-12 grid gap-5 sm:mt-16 sm:gap-6 md:grid-cols-2"
+            className="mt-16 grid gap-10 py-10 sm:mt-20 sm:grid-cols-2 sm:gap-0"
+            style={{
+              borderTop: "1px solid hsl(var(--gold) / 0.45)",
+              borderBottom: "1px solid hsl(var(--gold) / 0.45)",
+            }}
           >
-            {/* Halls */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative overflow-hidden rounded-[2rem] border border-gold/30 bg-gradient-to-br from-cream via-cream to-gold/10 p-7 shadow-card backdrop-blur-sm sm:p-9"
-            >
-              <div className="pointer-events-none absolute -end-10 -top-10 h-40 w-40 rounded-full bg-gold/10 blur-3xl" />
-              <div className="relative flex items-start gap-5">
-                <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-green text-cream shadow-lg shadow-green/20 ring-1 ring-green/20">
-                  <Building2 className="h-6 w-6" strokeWidth={1.8} />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-4xl font-black tabular-nums text-green sm:text-5xl">
-                      <AnimatedCounter value={100} />
-                    </span>
-                    <span className="text-3xl font-black text-gold sm:text-4xl">+</span>
-                  </div>
-                  <p className={`mt-1 text-base font-bold text-green/90 ${ar}`}>
-                    {t("trust.halls.label")}
-                  </p>
-                  <p className={`mt-2 text-sm leading-relaxed text-foreground/60 ${ar}`}>
-                    {t("trust.halls.desc")}
-                  </p>
+            {[
+              { value: 100, label: t("trust.halls.label"), desc: t("trust.halls.desc") },
+              { value: 80, label: t("trust.providers.label"), desc: t("trust.providers.desc") },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.75, ease: EASE, delay: i * 0.14 }}
+                className={i === 1 ? "sm:ps-14" : "sm:pe-14"}
+                style={
+                  i === 1
+                    ? { borderInlineStart: "1px solid hsl(var(--gold) / 0.45)" }
+                    : undefined
+                }
+              >
+                <div className="flex items-baseline gap-1.5">
+                  <span
+                    className="font-display text-5xl font-black leading-none tabular-nums sm:text-6xl"
+                    style={{ color: "hsl(var(--gold))" }}
+                  >
+                    <AnimatedCounter value={item.value} />
+                  </span>
+                  <span
+                    className="font-display text-3xl font-black leading-none sm:text-4xl"
+                    style={{ color: "hsl(var(--gold))" }}
+                  >
+                    +
+                  </span>
                 </div>
-              </div>
-            </motion.div>
-
-            {/* Providers */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative overflow-hidden rounded-[2rem] border border-gold/30 bg-gradient-to-br from-cream via-cream to-gold/10 p-7 shadow-card backdrop-blur-sm sm:p-9"
-            >
-              <div className="pointer-events-none absolute -end-10 -top-10 h-40 w-40 rounded-full bg-gold/10 blur-3xl" />
-              <div className="relative flex items-start gap-5">
-                <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-green text-cream shadow-lg shadow-green/20 ring-1 ring-green/20">
-                  <Users className="h-6 w-6" strokeWidth={1.8} />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-4xl font-black tabular-nums text-green sm:text-5xl">
-                      <AnimatedCounter value={80} />
-                    </span>
-                    <span className="text-3xl font-black text-gold sm:text-4xl">+</span>
-                  </div>
-                  <p className={`mt-1 text-base font-bold text-green/90 ${ar}`}>
-                    {t("trust.providers.label")}
-                  </p>
-                  <p className={`mt-2 text-sm leading-relaxed text-foreground/60 ${ar}`}>
-                    {t("trust.providers.desc")}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+                <p className={`mt-4 text-base font-bold text-green ${ar}`}>{item.label}</p>
+                <p className={`mt-2 max-w-sm text-[15px] leading-[1.9] text-[hsl(var(--brown))] ${ar}`}>
+                  {item.desc}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </Reveal>
       </div>
