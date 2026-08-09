@@ -136,7 +136,7 @@ export const Navbar = () => {
             >
               <Link to="/planner">
                 <CalendarCheck className="h-3.5 w-3.5 sm:me-1.5" />
-                <span>{t("whatsapp.planAndBook")}</span>
+                <span>{t("common.planAndBook")}</span>
               </Link>
             </Button>
 
