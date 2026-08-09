@@ -166,24 +166,26 @@ const SpeedSection = () => {
                   className="h-px flex-1 origin-left"
                   style={{ background: "hsl(var(--green) / 0.55)" }}
                 />
-                {/* miniature seal — the official Tklh mark, pressed once */}
+                {/* official Tklh chair mark, pressed once — larger and clearer */}
                 <motion.span
-                  initial={{ opacity: 0, scale: 1.35 }}
+                  initial={{ opacity: 0, scale: 1.25 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={once}
-                  transition={{ duration: 0.45, ease: EASE, delay: 1.15 }}
-                  className="grid h-10 w-10 shrink-0 place-items-center rounded-full"
+                  transition={{ duration: 0.5, ease: EASE, delay: 1.15 }}
+                  className="grid h-14 w-14 shrink-0 place-items-center rounded-full shadow-sm"
                   style={{
                     backgroundColor: "hsl(var(--cream))",
-                    border: "1px solid hsl(var(--green) / 0.4)",
+                    border: "1.5px solid hsl(var(--green) / 0.45)",
+                    boxShadow: "0 0 0 4px hsl(var(--green) / 0.06)",
                   }}
                   aria-hidden
                 >
                   <img
                     src={sealLogo.url}
                     alt=""
-                    className="h-6 w-auto select-none object-contain"
+                    className="h-10 w-auto select-none object-contain"
                     draggable={false}
+                    style={{ filter: "drop-shadow(0 1px 0 hsl(var(--green) / 0.08))" }}
                   />
                 </motion.span>
 
