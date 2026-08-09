@@ -80,16 +80,17 @@ const Dashboard = () => {
     setLoadingEvents(false);
   };
 
-  useEffect(() => { if (user) loadEvents(); /* eslint-disable-next-line */ }, [user]);
+  useEffect(() => { if (user) loadEvents(); else setLoadingEvents(false); /* eslint-disable-next-line */ }, [user]);
 
-  if (authLoading || loadingEvents) {
+  if (authLoading || (user && loadingEvents)) {
     return (
       <div className="grid min-h-screen place-items-center bg-gradient-soft">
         <Loader2 className="h-6 w-6 animate-spin text-primary" />
       </div>
     );
   }
-  if (!user) return null;
+  if (!user) return <GuestDashboard />;
+
 
   return (
     <div className="min-h-screen bg-gradient-soft">
