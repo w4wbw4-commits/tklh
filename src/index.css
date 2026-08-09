@@ -451,19 +451,14 @@
     text-wrap: balance;
   }
   .glass {
-    background: hsl(var(--cream) / 0.55);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border: 1px solid hsl(var(--border) / 0.7);
+    background: hsl(var(--cream));
+    border: 1px solid hsl(var(--gold) / 0.45);
   }
   .glass-warm {
-    background: linear-gradient(135deg, hsl(var(--surface) / 0.85), hsl(var(--cream) / 0.7));
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid hsl(var(--border));
-    box-shadow: 0 4px 20px -8px hsl(var(--green) / 0.08);
+    background: hsl(var(--cream));
+    border: 1px solid hsl(var(--gold) / 0.45);
   }
-  .bg-hero-warm { background-image: var(--gradient-hero); }
+  .bg-hero-warm { background-color: hsl(var(--cream)); }
   .text-gold { color: hsl(var(--gold)); }
   .bg-gold { background-color: hsl(var(--gold)); }
   .bg-gold-soft { background-color: hsl(var(--gold-soft)); }
@@ -472,12 +467,9 @@
   .shadow-luxury { box-shadow: var(--shadow-luxury); }
   .shadow-soft { box-shadow: var(--shadow-soft); }
   .shadow-card { box-shadow: var(--shadow-card); }
-  .text-shadow-hero {
-    text-shadow: 0 2px 18px hsl(var(--cream) / 0.85), 0 1px 2px hsl(var(--green) / 0.18);
-  }
-  .text-shadow-soft {
-    text-shadow: 0 1px 10px hsl(var(--cream) / 0.7);
-  }
+  .text-shadow-hero { text-shadow: none; }
+  .text-shadow-soft { text-shadow: none; }
+
 
   .font-display {
     font-family: 'Thmanyah Serif Display', 'Thmanyah Sans', 'Tajawal', system-ui, serif;
