@@ -63,7 +63,7 @@ export const Preloader = () => {
     >
       <div className="flex flex-col items-center gap-4 animate-[splashBreath_2.4s_ease-in-out_infinite]">
         <img
-          src={logoAsset.url}
+          src={logoAsset}
           alt="TKLH تِكله"
           className="h-24 w-auto sm:h-28 object-contain select-none"
           draggable={false}
