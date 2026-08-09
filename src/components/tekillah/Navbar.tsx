@@ -123,19 +123,17 @@ export const Navbar = () => {
 
           </nav>
           <div className="flex items-center gap-1.5 sm:gap-2">
-            {user && (
-              <Button
-                variant="ghost"
-                size="sm"
-                asChild
-                className="hidden rounded-full text-xs text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex"
-              >
-                <Link to="/dashboard">
-                  <LayoutDashboard className="me-1 h-3.5 w-3.5" />
-                  {t("nav.myDashboard")}
-                </Link>
-              </Button>
-            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="hidden rounded-full text-xs text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex"
+            >
+              <Link to="/dashboard">
+                <LayoutDashboard className="me-1 h-3.5 w-3.5" />
+                {t("nav.myDashboard")}
+              </Link>
+            </Button>
             {isPrimaryAdmin && (
               <Button
                 size="sm"
