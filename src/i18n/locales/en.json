@@ -181,6 +181,22 @@
         "title": "Invitations with a Signature of Their Own",
         "desc": "Because you're one of a kind — stand out with us. Design and share your invitations with a wide range of luxury templates, crafted to reflect your personal style."
       }
+    },
+    "demo": {
+      "oneplace": "Every payment method in one place — pick, pay, done. No scattering, no bank transfers.",
+      "invite": {
+        "eyebrow": "Invitation",
+        "names": "Sarah & Abdullah",
+        "line": "request the pleasure of your company",
+        "date": "Friday · 12 July 2026",
+        "venue": "Al Masa Hall · Riyadh",
+        "rsvp": "RSVP"
+      },
+      "inst": {
+        "label": "Split it into 4 payments",
+        "of": "Payment"
+      },
+      "payLabel": "Supported soon"
     }
   },
   "common": {
