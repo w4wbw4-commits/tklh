@@ -2,9 +2,11 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import type { LucideIcon } from "lucide-react";
+import chairMark from "@/assets/tklh-chair-mark.png.asset.json";
 
 interface EmptyStateProps {
-  icon: LucideIcon;
+  /** Kept for API compatibility — the official chair mark is used instead. */
+  icon?: LucideIcon;
   title: string;
   description?: string;
   cta?: { label: string; to?: string; onClick?: () => void };
@@ -15,7 +17,7 @@ interface EmptyStateProps {
  * Branded, animated empty-state used across customer + vendor + admin dashboards.
  * Keeps the product feeling intentional even when data is sparse.
  */
-export const EmptyState = ({ icon: Icon, title, description, cta, className }: EmptyStateProps) => {
+export const EmptyState = ({ title, description, cta, className }: EmptyStateProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -31,9 +33,13 @@ export const EmptyState = ({ icon: Icon, title, description, cta, className }: E
       <div className="pointer-events-none absolute -bottom-20 -left-12 h-44 w-44 rounded-full bg-secondary/40 blur-3xl" aria-hidden />
 
       <div className="relative mx-auto flex max-w-md flex-col items-center">
-        <div className="grid h-16 w-16 place-items-center rounded-2xl bg-primary/10 text-primary shadow-soft ring-1 ring-primary/15">
-          <Icon className="h-7 w-7" strokeWidth={1.6} />
-        </div>
+        <img
+          src={chairMark.url}
+          alt=""
+          aria-hidden
+          className="h-16 w-16 select-none object-contain opacity-30"
+          draggable={false}
+        />
         <h3 className="mt-5 font-arabic text-lg font-semibold text-foreground sm:text-xl">{title}</h3>
         {description && (
           <p className="mt-2 text-sm leading-relaxed text-foreground/65 sm:text-[15px]">{description}</p>
