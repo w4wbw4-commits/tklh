@@ -158,19 +158,8 @@ const Dashboard = () => {
             </div>
           ) : (
             <Tabs value={tab} onValueChange={setTab} className="w-full">
-              {/* Command strip always visible — the anchor of the page */}
-              <EventCommandHeader
-                event={activeEvent}
-                userName={
-                  (user.user_metadata?.full_name as string | undefined) ??
-                  user.email?.split("@")[0] ??
-                  null
-                }
-                onOpenTab={setTab}
-              />
-
-              {/* Section switcher: "نظرة عامة" is a real tab like the rest */}
-              <div className="sticky top-[4.25rem] z-20 -mx-4 mt-6 bg-background/80 px-4 py-2 backdrop-blur-md sm:mx-0 sm:px-0">
+              {/* Section switcher on top — everything below it swaps */}
+              <div className="sticky top-[4.25rem] z-20 -mx-4 bg-background/80 px-4 py-2 backdrop-blur-md sm:mx-0 sm:px-0">
                 <TabsList className="grid h-auto w-full grid-cols-3 gap-1 rounded-2xl p-1 sm:grid-cols-6">
                   {[
                     { v: "overview", Icon: LayoutGrid },
@@ -193,13 +182,27 @@ const Dashboard = () => {
               </div>
 
               <div className="mt-6 sm:mt-8">
-                <TabsContent value="overview" className="mt-0"><EventOverview event={activeEvent} /></TabsContent>
+                <TabsContent value="overview" className="mt-0">
+                  <div className="space-y-6 sm:space-y-8">
+                    <EventCommandHeader
+                      event={activeEvent}
+                      userName={
+                        (user.user_metadata?.full_name as string | undefined) ??
+                        user.email?.split("@")[0] ??
+                        null
+                      }
+                      onOpenTab={setTab}
+                    />
+                    <EventOverview event={activeEvent} />
+                  </div>
+                </TabsContent>
                 <TabsContent value="timeline" className="mt-0"><EventTimeline event={activeEvent} /></TabsContent>
                 <TabsContent value="bookings" className="mt-0"><BookingsTimeline event={activeEvent} /></TabsContent>
                 <TabsContent value="guests" className="mt-0"><GuestManager event={activeEvent} /></TabsContent>
                 <TabsContent value="payments" className="mt-0"><PaymentsPanel event={activeEvent} /></TabsContent>
                 <TabsContent value="day" className="mt-0"><EventDayMode event={activeEvent} /></TabsContent>
               </div>
+
             </Tabs>
           )}
 
