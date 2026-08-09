@@ -10,6 +10,8 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
+import sealLogo from "@/assets/tklh-logo-transparent.png.asset.json";
+
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const HAIR = "1px solid hsl(var(--green) / 0.18)";
