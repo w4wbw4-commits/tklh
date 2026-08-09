@@ -48,7 +48,7 @@ export const UpcomingFeatures = () => {
   return (
     <section
       dir={dir}
-      className="relative overflow-hidden px-4 py-10 sm:px-8 sm:py-14"
+      className="relative overflow-hidden px-4 py-14 sm:px-8 sm:py-20"
       style={{ backgroundColor: "hsl(var(--green-deep))", color: "hsl(var(--cream))" }}
     >
       <span
@@ -62,63 +62,120 @@ export const UpcomingFeatures = () => {
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-4xl">
+      <div className="relative mx-auto w-full max-w-7xl">
         <motion.div
           {...reveal(0)}
-          className="rounded-2xl p-5 sm:p-7"
+          className="rounded-3xl p-6 sm:p-10"
           style={{ border: creamHair, backgroundColor: "hsl(var(--green) / 0.55)" }}
         >
           {/* Header */}
-          <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 className="font-display max-w-md text-balance text-lg font-black leading-[1.35] sm:text-xl">
+              <h2 className="font-display max-w-2xl text-balance text-2xl font-black leading-[1.3] sm:text-3xl">
                 {t("upcoming.title")}
               </h2>
-              <p className="mt-2 max-w-md text-[12px] leading-[1.7] text-[hsl(var(--cream)/0.72)]">
+              <p className="mt-3 max-w-xl text-sm leading-[1.8] text-[hsl(var(--cream)/0.75)]">
                 {t("upcoming.subtitle")}
               </p>
             </div>
             <div
-              className="hidden h-px w-16 sm:block"
+              className="hidden h-px w-28 sm:block"
               style={{ backgroundColor: "hsl(var(--gold) / 0.5)" }}
               aria-hidden
             />
           </div>
 
           {/* Bento grid */}
-          <div className="grid gap-4 lg:grid-cols-3">
+          <div className="grid gap-5 lg:grid-cols-3">
             {/* 01 — Installments */}
             <motion.div
               {...reveal(0.1)}
-              className="relative flex flex-col rounded-xl p-4"
+              className="relative flex flex-col rounded-2xl p-5 sm:p-6"
               style={{ border: creamHair, backgroundColor: "hsl(var(--green) / 0.35)" }}
             >
               <div className="flex items-start justify-between gap-2">
                 <Num n="01" />
                 <Badge />
               </div>
-              <h3 className="font-display mt-2 text-[14px] font-black leading-snug">
+              <h3 className="font-display mt-3 text-lg font-black leading-snug">
                 {t("upcoming.items.installments.title")}
               </h3>
-              <p className="mt-1 text-[11px] leading-[1.65] text-[hsl(var(--cream)/0.72)]">
+              <p className="mt-2 text-[13px] leading-[1.75] text-[hsl(var(--cream)/0.72)]">
                 {t("upcoming.items.installments.desc")}
               </p>
 
-              <div className="mt-4 flex flex-1 flex-col justify-end">
+              <div className="mt-5 flex flex-1 flex-col justify-end gap-3">
+                {/* Total */}
                 <div
-                  className="flex items-center justify-between rounded-lg px-3 py-2"
+                  className="flex items-center justify-between rounded-xl px-4 py-3"
                   style={{ backgroundColor: "hsl(var(--cream))", color: "hsl(var(--green))" }}
                 >
-                  <span className="text-[10px] font-bold uppercase tracking-[0.12em]">
-                    {t("upcoming.demo.inst.label")}
+                  <span className="text-[10px] font-bold uppercase tracking-[0.14em]">
+                    {t("upcoming.demo.inst.total_label")}
                   </span>
-                  <span className="font-display text-[12px] font-black tabular-nums">
+                  <span className="font-display text-base font-black tabular-nums">
                     {t("upcoming.demo.inst.total", { currency: t("common.currency") })}
                   </span>
                 </div>
-                <div className="mt-2 flex items-center justify-between">
+
+                {/* Schedule: first / next / rest */}
+                <ul className="space-y-2">
+                  {[
+                    { k: "first", state: "paid" as const },
+                    { k: "next", state: "next" as const },
+                    { k: "rest", state: "later" as const },
+                  ].map(({ k, state }) => (
+                    <li
+                      key={k}
+                      className="flex items-center gap-3 rounded-xl px-3 py-2.5"
+                      style={{
+                        border:
+                          state === "next"
+                            ? goldHair
+                            : creamHair,
+                        backgroundColor:
+                          state === "next" ? "hsl(var(--gold) / 0.1)" : "transparent",
+                      }}
+                    >
+                      <span
+                        className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-[10px] font-black"
+                        style={{
+                          border: state === "later" ? creamHair : goldHair,
+                          backgroundColor:
+                            state === "paid" ? "hsl(var(--gold))" : "transparent",
+                          color:
+                            state === "paid"
+                              ? "hsl(var(--green-deep))"
+                              : state === "next"
+                                ? GOLD
+                                : "hsl(var(--cream) / 0.6)",
+                        }}
+                        aria-hidden
+                      >
+                        {state === "paid" ? "✓" : state === "next" ? "•" : "…"}
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-[12px] font-bold leading-tight">
+                          {t(`upcoming.demo.inst.${k}`)}
+                        </span>
+                        <span className="block text-[10px] leading-tight text-[hsl(var(--cream)/0.6)]">
+                          {t(`upcoming.demo.inst.${k}Note`)}
+                        </span>
+                      </span>
+                      <span
+                        className="font-display shrink-0 text-[12px] font-black tabular-nums"
+                        style={{ color: state === "later" ? "hsl(var(--cream)/0.6)" : GOLD }}
+                      >
+                        {t("upcoming.demo.inst.per")} {t("common.currency")}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* 12-month progress */}
+                <div className="flex items-center justify-between gap-3">
                   <span className="text-[10px] text-[hsl(var(--cream)/0.7)]">
-                    {t("upcoming.demo.inst.per")} {t("common.currency")}/{t("upcoming.demo.inst.of")}
+                    {t("upcoming.demo.inst.paidOf")}
                   </span>
                   <div className="flex gap-1" aria-hidden>
                     {Array.from({ length: 12 }).map((_, i) => (
@@ -127,9 +184,7 @@ export const UpcomingFeatures = () => {
                         className="h-1.5 w-1.5 rounded-full"
                         style={{
                           backgroundColor:
-                            i < 3
-                              ? "hsl(var(--gold))"
-                              : "hsl(var(--cream) / 0.25)",
+                            i < 2 ? "hsl(var(--gold))" : "hsl(var(--cream) / 0.25)",
                         }}
                       />
                     ))}
@@ -137,6 +192,7 @@ export const UpcomingFeatures = () => {
                 </div>
               </div>
             </motion.div>
+
 
             {/* 02 — Invitations */}
             <motion.div
