@@ -64,11 +64,12 @@ const SpeedSection = () => {
                 {t("speed.traditional.chip")}
               </span>
               <div
-                className="font-display mt-4 text-4xl font-black leading-[1.15] sm:text-6xl"
-                style={{ color: "hsl(var(--brown) / 0.55)" }}
+                className="font-display mt-4 pb-1 text-4xl font-black leading-[1.45] sm:text-6xl"
+                style={{ color: "hsl(var(--brown) / 0.8)" }}
               >
                 {t("speed.traditional.value")}
               </div>
+
               <p className="mt-3 text-[15px]" style={{ color: "hsl(var(--brown) / 0.7)" }}>
                 {t("speed.traditional.desc")}
               </p>
