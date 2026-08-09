@@ -13,7 +13,6 @@ import {
   Menu,
   Home,
   Info,
-  Sparkles,
   LayoutDashboard,
   ShieldCheck,
   Globe,
