@@ -4,15 +4,17 @@ import { useTranslation } from "react-i18next";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * UpcomingFeatures — "on the way" roadmap as three editorial cards.
- * Each card shows the feature itself instead of an abstract progress bar:
- * an installment split, a real invitation card mock, and the named payment
- * methods (text wordmarks — no logo images) that live in one place.
+ * UpcomingFeatures — the single dark velvet band of the page (#0E2119) that
+ * breaks the cream rhythm. Gold (#A08553) appears only as 1px hairlines,
+ * numerals and the small seal; never as a fill. Wine (#46232A) shows up once,
+ * on the payments card hover accent.
  */
 
 const PAY = ["mada", "applepay", "visa", "mastercard", "tabby", "tamara"] as const;
 
-const hairline = "1px solid hsl(var(--green) / 0.18)";
+const GOLD = "hsl(var(--gold))";
+const goldHair = "1px solid hsl(var(--gold) / 0.42)";
+const creamHair = "1px solid hsl(var(--cream) / 0.14)";
 
 export const UpcomingFeatures = () => {
   const { t, i18n } = useTranslation();
@@ -21,35 +23,70 @@ export const UpcomingFeatures = () => {
 
   const Badge = () => (
     <span
-      className="inline-flex shrink-0 rounded-full px-3 py-1 text-[11px] font-bold tracking-wide"
-      style={{ backgroundColor: "hsl(var(--green))", color: "hsl(var(--cream))" }}
+      className="inline-flex shrink-0 rounded-full px-3 py-1 text-[10.5px] font-bold uppercase tracking-[0.18em]"
+      style={{ border: goldHair, color: GOLD }}
     >
       {t("upcoming.badge")}
     </span>
   );
 
+  /** Small gold ordinal — numerals are one of the few sanctioned gold uses. */
+  const Num = ({ n }: { n: string }) => (
+    <span
+      className="font-display block text-[11px] font-black tracking-[0.28em] tabular-nums"
+      style={{ color: GOLD }}
+    >
+      {n}
+    </span>
+  );
+
   const card = (i: number) => ({
-    initial: { opacity: 0, y: 14 },
+    initial: { opacity: 0, y: 16 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, margin: "-60px" },
     transition: { duration: 0.7, ease: EASE, delay: i * 0.1 },
-    className: "flex flex-col rounded-xl p-6 sm:p-7",
-    style: { border: hairline, backgroundColor: "hsl(var(--cream))" },
+    className: "relative flex flex-col rounded-xl p-6 sm:p-7",
+    style: {
+      border: creamHair,
+      backgroundColor: "hsl(var(--green) / 0.55)",
+      color: "hsl(var(--cream))",
+    },
   });
 
   return (
-    <section dir={dir} className="px-5 py-20 sm:px-8 sm:py-28" style={{ borderTop: hairline }}>
-      <div className="mx-auto max-w-5xl">
+    <section
+      dir={dir}
+      className="relative overflow-hidden px-5 py-20 sm:px-8 sm:py-28"
+      style={{ backgroundColor: "hsl(var(--green-deep))", color: "hsl(var(--cream))" }}
+    >
+      {/* top + bottom gold hairlines frame the dark band */}
+      <span
+        className="pointer-events-none absolute inset-x-0 top-0 h-px"
+        style={{ backgroundColor: "hsl(var(--gold) / 0.55)" }}
+        aria-hidden
+      />
+      <span
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px"
+        style={{ backgroundColor: "hsl(var(--gold) / 0.35)" }}
+        aria-hidden
+      />
+
+      <div className="relative mx-auto max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.75, ease: EASE }}
         >
-          <h2 className="font-display mt-5 max-w-xl text-balance text-2xl font-black leading-[1.4] text-green sm:text-4xl">
+          <h2 className="font-display max-w-xl text-balance text-2xl font-black leading-[1.4] sm:text-4xl">
             {t("upcoming.title")}
           </h2>
-          <p className="mt-4 max-w-lg text-[15px] leading-[1.95] text-[hsl(var(--brown))]">
+          <div
+            className="mt-6 h-px w-24"
+            style={{ backgroundColor: "hsl(var(--gold) / 0.6)" }}
+            aria-hidden
+          />
+          <p className="mt-6 max-w-lg text-[15px] leading-[1.95] text-[hsl(var(--cream)/0.72)]">
             {t("upcoming.subtitle")}
           </p>
         </motion.div>
@@ -58,15 +95,21 @@ export const UpcomingFeatures = () => {
           {/* 01 — Installments: show the split, not a progress bar */}
           <motion.article {...card(0)}>
             <div className="flex items-start justify-between gap-4">
-              <h3 className="font-display text-lg font-black leading-snug text-green sm:text-xl">
-                {t("upcoming.items.installments.title")}
-              </h3>
+              <div className="min-w-0">
+                <Num n="01" />
+                <h3 className="font-display mt-2 text-lg font-black leading-snug sm:text-xl">
+                  {t("upcoming.items.installments.title")}
+                </h3>
+              </div>
               <Badge />
             </div>
-            <p className="mt-3 text-[14.5px] leading-[1.9] text-[hsl(var(--brown))]">
+            <p className="mt-3 text-[14.5px] leading-[1.9] text-[hsl(var(--cream)/0.72)]">
               {t("upcoming.items.installments.desc")}
             </p>
-            <p className="mt-6 text-[12px] font-bold uppercase tracking-[0.14em] text-[hsl(var(--green)/0.6)]">
+            <p
+              className="mt-6 text-[11px] font-bold uppercase tracking-[0.18em]"
+              style={{ color: "hsl(var(--gold) / 0.9)" }}
+            >
               {t("upcoming.demo.inst.label")}
             </p>
             <div className="mt-3 grid grid-cols-4 gap-2">
@@ -75,9 +118,9 @@ export const UpcomingFeatures = () => {
                   key={n}
                   className="rounded-lg px-2 py-3 text-center"
                   style={{
-                    border: hairline,
-                    backgroundColor: n === 1 ? "hsl(var(--green))" : "transparent",
-                    color: n === 1 ? "hsl(var(--cream))" : "hsl(var(--green))",
+                    border: n === 1 ? goldHair : creamHair,
+                    backgroundColor: n === 1 ? "hsl(var(--cream))" : "transparent",
+                    color: n === 1 ? "hsl(var(--green))" : "hsl(var(--cream) / 0.8)",
                   }}
                 >
                   <span className="block text-[10px] font-bold opacity-70">
@@ -91,43 +134,56 @@ export const UpcomingFeatures = () => {
             </div>
           </motion.article>
 
-          {/* 02 — Invitations: an actual invitation card */}
+          {/* 02 — Invitations: an actual invitation card, cream on velvet */}
           <motion.article {...card(1)}>
             <div className="flex items-start justify-between gap-4">
-              <h3 className="font-display text-lg font-black leading-snug text-green sm:text-xl">
-                {t("upcoming.items.invitations.title")}
-              </h3>
+              <div className="min-w-0">
+                <Num n="02" />
+                <h3 className="font-display mt-2 text-lg font-black leading-snug sm:text-xl">
+                  {t("upcoming.items.invitations.title")}
+                </h3>
+              </div>
               <Badge />
             </div>
-            <p className="mt-3 text-[14.5px] leading-[1.9] text-[hsl(var(--brown))]">
+            <p className="mt-3 text-[14.5px] leading-[1.9] text-[hsl(var(--cream)/0.72)]">
               {t("upcoming.items.invitations.desc")}
             </p>
             <motion.div
-              whileHover={{ y: -4, rotate: isRtl ? 0.6 : -0.6 }}
+              whileHover={{ y: -5, rotate: isRtl ? 0.7 : -0.7 }}
               transition={{ duration: 0.35, ease: EASE }}
-              className="mt-6 rounded-lg p-6 text-center"
-              style={{ backgroundColor: "hsl(var(--green))", color: "hsl(var(--cream))" }}
+              className="mt-6 rounded-lg p-5 text-center"
+              style={{
+                backgroundColor: "hsl(var(--cream))",
+                color: "hsl(var(--green))",
+                border: goldHair,
+              }}
             >
-              <div
-                className="rounded-md px-4 py-6"
-                style={{ border: "1px solid hsl(var(--cream) / 0.35)" }}
-              >
-                <span className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-70">
+              <div className="rounded-md px-4 py-6" style={{ border: goldHair }}>
+                <span
+                  className="text-[10px] font-bold uppercase tracking-[0.3em]"
+                  style={{ color: GOLD }}
+                >
                   {t("upcoming.demo.invite.eyebrow")}
                 </span>
-                <p className="mt-3 text-[12px] opacity-80">{t("upcoming.demo.invite.line")}</p>
+                <p className="mt-3 text-[12px] text-[hsl(var(--brown))]">
+                  {t("upcoming.demo.invite.line")}
+                </p>
                 <p className="font-display mt-2 text-xl font-black sm:text-2xl">
                   {t("upcoming.demo.invite.names")}
                 </p>
                 <div
                   className="mx-auto mt-4 h-px w-16"
-                  style={{ backgroundColor: "hsl(var(--cream) / 0.4)" }}
+                  style={{ backgroundColor: "hsl(var(--gold) / 0.7)" }}
                 />
-                <p className="mt-4 text-[12.5px] opacity-90">{t("upcoming.demo.invite.date")}</p>
-                <p className="text-[12.5px] opacity-75">{t("upcoming.demo.invite.venue")}</p>
+                <p className="mt-4 text-[12.5px] text-[hsl(var(--brown))]">
+                  {t("upcoming.demo.invite.date")}
+                </p>
+                <p className="text-[12.5px] text-[hsl(var(--brown-soft))]">
+                  {t("upcoming.demo.invite.venue")}
+                </p>
                 <span
                   className="mt-5 inline-flex rounded-full px-4 py-1.5 text-[11px] font-bold"
-                  style={{ backgroundColor: "hsl(var(--cream))", color: "hsl(var(--green))" }}
+                  style={{ backgroundColor: "hsl(var(--green))", color: "hsl(var(--cream))" }}
                 >
                   {t("upcoming.demo.invite.rsvp")}
                 </span>
@@ -136,20 +192,20 @@ export const UpcomingFeatures = () => {
           </motion.article>
 
           {/* 03 — Payment methods: names, all in one place */}
-          <motion.article {...card(2)} className="flex flex-col rounded-xl p-6 sm:p-7 lg:col-span-2">
+          <motion.article {...card(2)} className="relative flex flex-col rounded-xl p-6 sm:p-7 lg:col-span-2">
             <div className="flex items-start justify-between gap-4">
-              <h3 className="font-display text-lg font-black leading-snug text-green sm:text-xl">
-                {t("payments.label")}
-              </h3>
+              <div className="min-w-0">
+                <Num n="03" />
+                <h3 className="font-display mt-2 text-lg font-black leading-snug sm:text-xl">
+                  {t("payments.label")}
+                </h3>
+              </div>
               <Badge />
             </div>
-            <p className="mt-3 max-w-2xl text-[14.5px] leading-[1.9] text-[hsl(var(--brown))]">
+            <p className="mt-3 max-w-2xl text-[14.5px] leading-[1.9] text-[hsl(var(--cream)/0.72)]">
               {t("upcoming.demo.oneplace")}
             </p>
-            <div
-              className="mt-6 flex flex-wrap items-center gap-2.5"
-              aria-label={t("payments.aria")}
-            >
+            <div className="mt-6 flex flex-wrap items-center gap-2.5" aria-label={t("payments.aria")}>
               {PAY.map((key, j) => (
                 <motion.span
                   key={key}
@@ -157,14 +213,18 @@ export const UpcomingFeatures = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ duration: 0.45, ease: EASE, delay: j * 0.06 }}
-                  className="font-display inline-flex items-center rounded-full px-4 py-2 text-[13.5px] font-black text-green"
-                  style={{ border: hairline, backgroundColor: "hsl(var(--green) / 0.05)" }}
+                  whileHover={{ y: -2 }}
+                  className="pay-chip font-display inline-flex items-center rounded-full px-4 py-2 text-[13.5px] font-black"
+                  style={{ border: creamHair, color: "hsl(var(--cream))" }}
                 >
                   {t(`payments.providers.${key}`)}
                 </motion.span>
               ))}
             </div>
-            <p className="mt-4 text-[12px] font-bold text-[hsl(var(--green)/0.55)]">
+            <p
+              className="mt-5 text-[11.5px] font-bold uppercase tracking-[0.16em]"
+              style={{ color: "hsl(var(--gold) / 0.85)" }}
+            >
               {t("upcoming.demo.payLabel")}
             </p>
           </motion.article>
