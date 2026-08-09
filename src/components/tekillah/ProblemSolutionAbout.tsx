@@ -10,7 +10,7 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
-import sealLogo from "@/assets/tklh-logo-transparent.png.asset.json";
+import sealLogo from "@/assets/tklh-chair-mark.png.asset.json";
 
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -182,7 +182,7 @@ const SpeedSection = () => {
                   <img
                     src={sealLogo.url}
                     alt=""
-                    className="h-6 w-6 select-none object-contain"
+                    className="h-6 w-auto select-none object-contain"
                     draggable={false}
                   />
                 </motion.span>
