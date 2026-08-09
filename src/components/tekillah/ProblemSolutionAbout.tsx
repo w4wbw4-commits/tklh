@@ -145,7 +145,7 @@ const SpeedSection = () => {
         {/* Reserved comparison imagery */}
         <Reveal delay={0.16}>
           <div className="mt-6">
-            <ImageSlot ratio="21/9" />
+            <ImageSlot ratio="32/9" />
           </div>
         </Reveal>
 
