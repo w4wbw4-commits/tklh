@@ -383,45 +383,67 @@
     @apply w-full mx-auto px-4 sm:px-6 lg:px-8;
   }
   .label-badge {
-    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary text-secondary-foreground text-sm font-bold border border-border;
+    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary text-secondary-foreground text-sm font-bold border border-gold/40;
   }
   .card-tk {
-    @apply bg-surface border border-border rounded-2xl p-6 md:p-8 transition-all duration-500 hover:-translate-y-1;
-    box-shadow: var(--shadow-card);
+    @apply bg-surface border border-gold/35 rounded-md p-6 md:p-8 transition-all duration-700;
+    box-shadow: none;
   }
   .card-tk:hover {
-    border-color: hsl(var(--green));
-    box-shadow: var(--shadow-card-hover);
+    border-color: hsl(var(--gold) / 0.7);
   }
   .icon-chip {
-    @apply inline-flex items-center justify-center w-14 h-14 rounded-2xl;
-    background-color: hsl(var(--green-light));
+    @apply inline-flex items-center justify-center w-14 h-14;
     color: hsl(var(--green));
   }
   .icon-chip-gold {
-    @apply inline-flex items-center justify-center w-14 h-14 rounded-2xl;
-    color: hsl(var(--green));
-    background: linear-gradient(135deg, hsl(var(--gold-soft)), hsl(var(--gold) / 0.4));
+    @apply inline-flex items-center justify-center w-14 h-14;
+    color: hsl(var(--gold));
   }
-  /* Najdi Gold — premium card outline with gradient gold border */
   .card-najdi {
-    @apply relative rounded-2xl bg-surface p-6 md:p-8 transition-all duration-500 hover:-translate-y-1;
-    box-shadow: var(--shadow-card);
-    border: 1px solid hsl(var(--gold) / 0.35);
-    background-image:
-      linear-gradient(hsl(var(--surface)), hsl(var(--surface))),
-      linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-soft)) 50%, hsl(var(--gold)) 100%);
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
+    @apply relative rounded-md bg-surface p-6 md:p-8 transition-all duration-700;
+    border: 1px solid hsl(var(--gold) / 0.45);
   }
   .card-najdi:hover {
-    box-shadow: 0 16px 50px -16px hsl(var(--gold) / 0.35), var(--shadow-card-hover);
+    border-color: hsl(var(--gold) / 0.8);
   }
-  /* Premium hairline gold divider */
+  /* Gold thread — 1px hairline divider */
   .divider-gold {
     height: 1px;
-    background: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.6), transparent);
+    background: hsl(var(--gold) / 0.5);
   }
+
+  /* ===== Invitation materials =============================================
+     Paper: felt, not seen (2–3% grain over the cream ground).
+     Velvet: the deep-green panels, with a soft vignette toward the edges. */
+  .bg-paper {
+    background-color: hsl(var(--cream));
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    background-blend-mode: multiply;
+    background-size: 160px 160px;
+  }
+  .bg-paper::before { content: none; }
+
+  .bg-velvet {
+    background-color: hsl(var(--green));
+    position: relative;
+  }
+  .bg-velvet::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(120% 100% at 50% 40%, transparent 45%, hsl(var(--green-deep)) 100%);
+  }
+
+  /* Editorial signature above every section title */
+  .kicker {
+    @apply inline-block text-[11px] font-semibold uppercase sm:text-xs;
+    color: hsl(var(--gold));
+    letter-spacing: 0.34em;
+  }
+  .hairline-gold { border-color: hsl(var(--gold) / 0.45); }
+
 }
 
 @layer utilities {
