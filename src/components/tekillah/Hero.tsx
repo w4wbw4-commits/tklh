@@ -4,6 +4,9 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import wordmarkAsset from "@/assets/tklh-logo-official.png.asset.json";
+import { HeroPlannerWidget } from "./HeroPlannerWidget";
+import { ImageSlot } from "./ImageSlot";
+
 
 
 
