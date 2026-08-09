@@ -29,8 +29,15 @@ export const Mission = () => {
         style={{ border: "1px solid hsl(var(--green) / 0.18)", borderRadius: 6 }}
       >
         <motion.div {...reveal} transition={{ duration: 0.75, ease: EASE }}>
+          <img
+            src={chairMark.url}
+            alt=""
+            aria-hidden
+            className="mx-auto mb-6 h-16 w-16 object-contain opacity-80 sm:h-20 sm:w-20"
+            draggable={false}
+          />
           <h2
-            className={`font-display mt-6 text-balance text-2xl font-black leading-[1.4] sm:text-4xl md:text-5xl ${ar}`}
+            className={`font-display text-balance text-2xl font-black leading-[1.4] sm:text-4xl md:text-5xl ${ar}`}
             style={{ color: "hsl(var(--green))" }}
           >
             {t("mission.title")}
