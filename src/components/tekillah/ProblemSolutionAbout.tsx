@@ -60,70 +60,72 @@ const TradColumn = () => {
         {t("speed.journey.tradTag")}
       </p>
 
-      {/* dashed wandering rail + tilted scraps */}
-      <div className="relative mt-6 ps-7 sm:ps-9">
-        <svg
-          viewBox="0 0 40 320"
-          preserveAspectRatio="none"
-          className="absolute inset-y-0 start-0 h-full w-8 sm:w-10"
-          fill="none"
-          aria-hidden
-        >
-          <defs>
-            <linearGradient id="cmp-dry" x1="0" y1="0" x2="0" y2="320" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="hsl(var(--brown))" stopOpacity="0.5" />
-              <stop offset="0.78" stopColor="hsl(var(--brown))" stopOpacity="0.4" />
-              <stop offset="1" stopColor="hsl(var(--brown))" stopOpacity="0.04" />
-            </linearGradient>
-          </defs>
-          <motion.path
-            d="M20 4 C 34 40, 6 62, 20 98 C 34 134, 6 156, 20 192 C 34 228, 6 250, 20 286 C 26 300, 24 310, 21 318"
-            stroke="url(#cmp-dry)"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeDasharray="6 6"
-            initial={{ pathLength: reduce ? 1 : 0 }}
-            whileInView={{ pathLength: 1 }}
-            viewport={once}
-            transition={{ duration: T(1.5), ease: "linear" }}
-          />
-        </svg>
+      <p className="mt-1.5 text-[12px] font-semibold sm:text-[12.5px]" style={{ color: "hsl(var(--brown) / 0.55)" }}>
+        {t("speed.traditional.desc")}
+      </p>
 
-        <ul className="relative space-y-2.5">
-          {stations.map((s, i) => (
-            <li key={i} className="flex">
-              <motion.span
-                initial={{ opacity: reduce ? 1 : 0, x: reduce ? 0 : 10, rotate: CARD_TILTS[i] }}
-                whileInView={{ opacity: 1, x: 0, rotate: CARD_TILTS[i] }}
-                viewport={once}
-                transition={{ duration: T(0.4), ease: S_EASE, delay: T(0.15 + i * 0.12) }}
-                className="inline-block px-3 py-2 text-[12.5px] leading-snug sm:text-[13.5px]"
-                style={{
-                  color: "hsl(var(--brown) / 0.85)",
-                  border: "1px solid hsl(var(--brown) / 0.26)",
-                  backgroundColor: "hsl(var(--cream))",
-                  borderRadius: 3,
-                  boxShadow: "2px 2px 0 hsl(var(--brown) / 0.1)",
-                }}
-              >
-                {s}
-              </motion.span>
-            </li>
-          ))}
-        </ul>
-
-        {/* the road dries out — never arrives */}
-        <motion.p
+      {/* zigzag road that dries out before arriving */}
+      <svg
+        viewBox="0 0 400 44"
+        preserveAspectRatio="none"
+        className="mt-6 h-11 w-full"
+        fill="none"
+        aria-hidden
+      >
+        <defs>
+          <linearGradient id="cmp-dry" x1="400" y1="0" x2="0" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="hsl(var(--brown))" stopOpacity="0.55" />
+            <stop offset="0.72" stopColor="hsl(var(--brown))" stopOpacity="0.42" />
+            <stop offset="1" stopColor="hsl(var(--brown))" stopOpacity="0.05" />
+          </linearGradient>
+        </defs>
+        <motion.path
+          d="M394 30 L344 10 L294 34 L244 10 L194 34 L144 10 L94 34 L44 14 L8 30"
+          stroke="url(#cmp-dry)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeDasharray="7 7"
+          initial={{ pathLength: reduce ? 1 : 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={once}
+          transition={{ duration: T(1.6), ease: "linear" }}
+        />
+        <motion.circle
+          cx="394"
+          cy="30"
+          r="4"
+          fill="hsl(var(--brown) / 0.5)"
           initial={{ opacity: reduce ? 1 : 0 }}
           whileInView={{ opacity: 1 }}
           viewport={once}
-          transition={{ duration: T(0.5), delay: T(0.9) }}
-          className="mt-5 text-[12px] font-semibold sm:text-[12.5px]"
-          style={{ color: "hsl(var(--brown) / 0.5)" }}
-        >
-          {t("speed.traditional.desc")}
-        </motion.p>
-      </div>
+          transition={{ duration: T(0.3) }}
+        />
+      </svg>
+
+      {/* tilted paper scraps */}
+      <ul className="mt-3 space-y-2.5">
+        {stations.map((s, i) => (
+          <li key={i} className="flex">
+            <motion.span
+              initial={{ opacity: reduce ? 1 : 0, x: reduce ? 0 : 10, rotate: CARD_TILTS[i] }}
+              whileInView={{ opacity: 1, x: 0, rotate: CARD_TILTS[i] }}
+              viewport={once}
+              transition={{ duration: T(0.4), ease: S_EASE, delay: T(0.25 + i * 0.12) }}
+              className="inline-block px-3 py-2 text-[12.5px] leading-snug sm:text-[13.5px]"
+              style={{
+                color: "hsl(var(--brown) / 0.85)",
+                border: "1px solid hsl(var(--brown) / 0.26)",
+                backgroundColor: "hsl(var(--cream))",
+                borderRadius: 3,
+                boxShadow: "2px 2px 0 hsl(var(--brown) / 0.1)",
+              }}
+            >
+              {s}
+            </motion.span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
@@ -153,98 +155,84 @@ const TekColumn = () => {
         {t("speed.journey.tekTag")}
       </p>
 
-      {/* one straight green rail + three ticks */}
-      <div className="mt-6 ps-7 sm:ps-9">
-        <div className="relative">
+      {/* one straight green road that arrives at the official chair */}
+      <div className="mt-6 flex items-center gap-3">
+        <div className="relative shrink-0">
           <motion.span
-            initial={{ scaleY: reduce ? 1 : 0 }}
-            whileInView={{ scaleY: 1 }}
+            initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 1.15 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={once}
-            transition={{ duration: T(0.6), ease: S_EASE, delay: T(0.1) }}
-            className="absolute top-[10px] bottom-[10px] w-[2px] origin-top"
-            style={{ backgroundColor: INK, insetInlineStart: "-1.2rem" }}
-            aria-hidden
-          />
-        <ul className="relative space-y-4">
-          {steps.map((s, i) => (
-            <li key={i} className="relative">
-              <motion.span
-                initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={once}
-                transition={{ duration: T(0.3), ease: S_EASE, delay: T(0.45 + i * 0.14) }}
-                className="absolute top-[2px] grid h-[18px] w-[18px] place-items-center rounded-full sm:h-5 sm:w-5"
-                style={{
-                  insetInlineStart: "-1.75rem",
-                  backgroundColor: "hsl(var(--cream))",
-                  border: `1.6px solid ${INK}`,
-                  marginInlineStart: "0.28rem",
-                }}
-                aria-hidden
-              >
-                <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none">
-                  <path d="M2.5 6.4 L5 8.8 L9.5 3.6" stroke={INK} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </motion.span>
-              <motion.p
-                initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 6 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={once}
-                transition={{ duration: T(0.35), ease: S_EASE, delay: T(0.5 + i * 0.14) }}
-                className="text-[13px] font-semibold leading-snug sm:text-[14.5px]"
-                style={{ color: INK }}
-              >
-                {s}
-              </motion.p>
-            </li>
-          ))}
-        </ul>
+            transition={{ duration: T(0.45), ease: S_EASE, delay: T(0.55) }}
+            className="grid h-16 w-16 place-items-center rounded-full sm:h-[72px] sm:w-[72px]"
+            style={{
+              backgroundColor: "hsl(var(--cream))",
+              border: "1.5px solid hsl(var(--green) / 0.45)",
+              boxShadow: "0 0 0 5px hsl(var(--green) / 0.06)",
+            }}
+          >
+            <img
+              src={sealLogo.url}
+              alt=""
+              aria-hidden
+              draggable={false}
+              className="h-[68%] w-[68%] select-none object-contain"
+            />
+          </motion.span>
+          <motion.span
+            initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 1.5 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={once}
+            transition={{ duration: T(0.3), ease: S_EASE, delay: T(0.8) }}
+            className="absolute -bottom-1 end-full me-[-12px] whitespace-nowrap px-2 py-[3px] text-[10px] font-black"
+            style={{ color: "hsl(var(--cream))", backgroundColor: INK, borderRadius: 999 }}
+          >
+            {t("speed.journey.seal")}
+          </motion.span>
         </div>
-
-        {/* destination: official chair + pressed seal */}
-        <div className="mt-7 flex items-center gap-4">
-          <div className="relative shrink-0">
-            <motion.span
-              initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 1.15 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={once}
-              transition={{ duration: T(0.45), ease: S_EASE, delay: T(0.95) }}
-              className="grid h-[74px] w-[74px] place-items-center rounded-full sm:h-[86px] sm:w-[86px]"
-              style={{
-                backgroundColor: "hsl(var(--cream))",
-                border: "1.5px solid hsl(var(--green) / 0.45)",
-                boxShadow: "0 0 0 5px hsl(var(--green) / 0.06)",
-              }}
-            >
-              <img
-                src={sealLogo.url}
-                alt=""
-                aria-hidden
-                draggable={false}
-                className="h-[68%] w-[68%] select-none object-contain"
-              />
-            </motion.span>
-            <motion.span
-              initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 1.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={once}
-              transition={{ duration: T(0.3), ease: S_EASE, delay: T(1.15) }}
-              className="absolute -bottom-1 end-full me-[-14px] whitespace-nowrap px-2 py-1 text-[10.5px] font-black"
-              style={{ color: "hsl(var(--cream))", backgroundColor: INK, borderRadius: 999 }}
-            >
-              {t("speed.journey.seal")}
-            </motion.span>
-          </div>
-          <div className="min-w-0">
-            <p className="font-display text-lg font-black leading-tight text-green sm:text-xl">
-              {t("speed.journey.goal")}
-            </p>
-            <p className="mt-1 text-[12.5px] font-semibold leading-snug sm:text-[13px]" style={{ color: "hsl(var(--brown) / 0.8)" }}>
-              {t("speed.journey.sit")}
-            </p>
-          </div>
-        </div>
+        <motion.span
+          initial={{ scaleX: reduce ? 1 : 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={once}
+          transition={{ duration: T(0.7), ease: S_EASE, delay: T(0.1) }}
+          className="h-[2px] flex-1 origin-right"
+          style={{ backgroundColor: INK }}
+          aria-hidden
+        />
       </div>
+      <p className="mt-2 text-[12px] font-semibold sm:text-[12.5px]" style={{ color: "hsl(var(--brown) / 0.8)" }}>
+        {t("speed.journey.sit")}
+      </p>
+
+      {/* three clean steps */}
+      <ul className="mt-4 space-y-3.5">
+        {steps.map((s, i) => (
+          <li key={i} className="flex items-start gap-2.5">
+            <motion.span
+              initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={once}
+              transition={{ duration: T(0.3), ease: S_EASE, delay: T(0.5 + i * 0.14) }}
+              className="mt-[3px] grid h-[19px] w-[19px] shrink-0 place-items-center rounded-full sm:h-5 sm:w-5"
+              style={{ backgroundColor: "hsl(var(--cream))", border: `1.6px solid ${INK}` }}
+              aria-hidden
+            >
+              <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none">
+                <path d="M2.5 6.4 L5 8.8 L9.5 3.6" stroke={INK} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </motion.span>
+            <motion.p
+              initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 6 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={once}
+              transition={{ duration: T(0.35), ease: S_EASE, delay: T(0.55 + i * 0.14) }}
+              className="text-[13px] font-semibold leading-snug sm:text-[14.5px]"
+              style={{ color: INK }}
+            >
+              {s}
+            </motion.p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
