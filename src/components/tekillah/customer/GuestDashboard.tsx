@@ -56,31 +56,20 @@ export const GuestDashboard = () => {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
+      <main className="mx-auto max-w-6xl px-5 py-4 sm:px-6 sm:py-12">
         {/* The six real tabs — clickable, same visitor state on each */}
         <Tabs value={tab} onValueChange={setTab} className="w-full">
-          <TabsList className="flex h-auto w-full gap-1 overflow-x-auto rounded-2xl p-1 sm:grid sm:grid-cols-6">
+          <TabsList className="scroll-row h-auto w-full gap-1 rounded-2xl p-1 sm:grid sm:grid-cols-6">
             {tabs.map(({ v, Icon }) => (
-              <TabsTrigger key={v} value={v} className="shrink-0 gap-2 rounded-xl py-2">
+              <TabsTrigger key={v} value={v} className="shrink-0 gap-2 rounded-xl px-3 py-2.5">
                 <Icon className="h-4 w-4" strokeWidth={1.6} /> {t(`customer.tabs.${v}`)}
               </TabsTrigger>
             ))}
           </TabsList>
         </Tabs>
 
-        {/* Faint metric frames — structure without fake data */}
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {[0, 1, 2, 3].map((i) => (
-            <div key={i} className="rounded-2xl px-4 py-5" style={hairline}>
-              <div className="h-2 w-16 rounded-full" style={{ backgroundColor: "hsl(var(--green) / 0.12)" }} />
-              <div className="mt-3 h-5 w-10 rounded-md" style={{ backgroundColor: "hsl(var(--green) / 0.08)" }} />
-            </div>
-          ))}
-        </div>
-
-
-        {/* The emptiness is the message */}
-        <section className="mt-10 rounded-3xl px-6 py-16 text-center sm:px-12 sm:py-24"
+        {/* The emptiness is the message — fits in the first screen on mobile */}
+        <section className="mt-4 rounded-3xl px-5 py-8 text-center sm:mt-10 sm:px-12 sm:py-24"
           style={{ ...hairline, backgroundColor: "hsl(var(--cream))" }}>
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -92,11 +81,11 @@ export const GuestDashboard = () => {
               src={chairMark.url}
               alt=""
               aria-hidden
-              className="mx-auto h-40 w-40 object-contain sm:h-56 sm:w-56"
+              className="mx-auto h-auto w-[45vw] max-w-[200px] object-contain sm:w-56 sm:max-w-none"
               draggable={false}
             />
             <div
-              className="mx-auto mt-3 h-3 w-32 rounded-full blur-md sm:w-44"
+              className="mx-auto mt-3 h-3 w-28 rounded-full blur-md sm:w-44"
               style={{ backgroundColor: "hsl(var(--green) / 0.18)" }}
             />
           </motion.div>
@@ -105,7 +94,7 @@ export const GuestDashboard = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
-            className="mt-10 font-arabic text-3xl font-bold leading-tight text-primary sm:text-5xl"
+            className="mx-auto mt-5 max-w-[19ch] font-arabic text-2xl font-bold leading-tight text-primary sm:mt-10 sm:max-w-none sm:text-5xl"
           >
             {t("customer.guest.title")}
           </motion.h1>
@@ -113,7 +102,7 @@ export const GuestDashboard = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
-            className="mx-auto mt-4 max-w-xl font-arabic text-base text-[hsl(var(--brown))] sm:text-lg"
+            className="mx-auto mt-3 max-w-xl font-arabic text-[15px] leading-[1.85] text-[hsl(var(--brown))] sm:mt-4 sm:text-lg"
           >
             {t("customer.guest.subtitle")}
           </motion.p>
@@ -122,9 +111,9 @@ export const GuestDashboard = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.68, ease: "easeOut" }}
-            className="mt-10 flex flex-col items-center gap-4"
+            className="mt-6 flex flex-col items-center gap-3 sm:mt-10 sm:gap-4"
           >
-            <Button asChild size="lg" className="rounded-full px-8 text-base">
+            <Button asChild size="lg" className="w-full rounded-full px-8 text-base sm:w-auto">
               <Link to="/planner">
                 {t("customer.guest.cta")}
                 <ArrowRight className="ms-2 h-5 w-5 rtl:rotate-180" />
@@ -132,12 +121,22 @@ export const GuestDashboard = () => {
             </Button>
             <Link
               to="/auth?redirect=/dashboard"
-              className="text-sm text-[hsl(var(--brown))] underline-offset-4 hover:text-primary hover:underline"
+              className="inline-flex items-center text-[15px] text-[hsl(var(--brown))] underline-offset-4 hover:text-primary hover:underline"
             >
               {t("customer.guest.haveAccount")}
             </Link>
           </motion.div>
         </section>
+
+        {/* Faint metric frames — structure without fake data */}
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:mt-8 sm:grid-cols-4">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="rounded-2xl px-4 py-5" style={hairline}>
+              <div className="h-2 w-16 rounded-full" style={{ backgroundColor: "hsl(var(--green) / 0.12)" }} />
+              <div className="mt-3 h-5 w-10 rounded-md" style={{ backgroundColor: "hsl(var(--green) / 0.08)" }} />
+            </div>
+          ))}
+        </div>
       </main>
     </div>
   );

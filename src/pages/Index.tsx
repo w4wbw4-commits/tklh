@@ -6,6 +6,7 @@ import { Hero } from "@/components/tekillah/Hero";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
 import { LazyVisible } from "@/components/tekillah/LazyVisible";
 import { Preloader } from "@/components/tekillah/Preloader";
+import { WhatsAppFab } from "@/components/tekillah/WhatsAppFab";
 import { SEO } from "@/components/SEO";
 
 
@@ -113,6 +114,7 @@ const Index = () => {
           <Footer />
         </Suspense>
       </LazyVisible>
+      <WhatsAppFab />
     </main>
   );
 };

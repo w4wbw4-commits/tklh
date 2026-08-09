@@ -613,3 +613,91 @@ html {
   border-color: hsl(var(--wine));
   background-color: hsl(var(--wine) / 0.35);
 }
+
+/* ==========================================================================
+   Mobile-first hardening — audited at 375px / 768px / 1440px.
+   Mobile is the primary edition, not a shrunken desktop.
+   These rules live outside @layer so they win over Tailwind utilities.
+   ========================================================================== */
+
+html, body { max-width: 100%; overflow-x: hidden; }
+img, svg, video, canvas { max-width: 100%; }
+
+@media (max-width: 640px) {
+  html { scroll-padding-top: 72px; }
+
+  /* Body copy floor — never below 15px */
+  p, li { font-size: max(15px, 1em); }
+
+  /* Form fields: comfortable + no iOS auto-zoom (needs >= 16px) */
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    font-size: 16px !important;
+    min-height: 48px;
+  }
+  textarea { min-height: 104px; }
+
+  /* Touch targets — 44px minimum, 8px minimum gap */
+  button:not([data-slot="tiny"]),
+  a[role="button"],
+  [role="tab"] { min-height: 44px; }
+
+  /* Section rhythm — roughly 60% of the desktop vertical spacing */
+  section.py-20 { padding-top: 3.75rem; padding-bottom: 3.75rem; }
+  section.py-24 { padding-top: 4rem; padding-bottom: 4rem; }
+  section.py-28 { padding-top: 4.25rem; padding-bottom: 4.25rem; }
+
+  /* Safe area for iPhone home indicator + the floating WhatsApp button */
+  footer { padding-bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* Intentional horizontal rows: keep momentum scrolling + snap, hide bars */
+.scroll-row {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scroll-row::-webkit-scrollbar { display: none; }
+.scroll-row > * { scroll-snap-align: start; }
+
+/* Data tables become stacked cards on mobile — no horizontal table scroll */
+@media (max-width: 640px) {
+  .stack-table { display: block; width: 100%; }
+  .stack-table thead { display: none; }
+  .stack-table tbody, .stack-table tr, .stack-table td { display: block; width: 100%; }
+  .stack-table tr {
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.9rem;
+    padding: 0.5rem 0.85rem;
+    margin-bottom: 0.6rem;
+  }
+  .stack-table td {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 0 !important;
+    border: 0 !important;
+    text-align: start;
+  }
+  .stack-table td::before {
+    content: attr(data-label);
+    color: hsl(var(--muted-foreground));
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .stack-table td[data-label=""]::before { content: none; }
+}
+
+/* Reduced motion: no movement at all, and no transforms left mid-flight */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -104,16 +104,16 @@ const PartnerSalesPage = () => {
       </div>
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="stack-table w-full text-sm">
             <thead className="border-b border-border bg-muted/60"><tr className="text-right text-xs font-black text-foreground/70"><th className="p-4">التاريخ</th><th className="p-4">الضيوف</th><th className="p-4">المبلغ</th><th className="p-4">الحالة</th></tr></thead>
             <tbody>
               {bookings.length === 0 && <tr><td colSpan={4} className="p-10 text-center text-muted-foreground">لا توجد مبيعات بعد.</td></tr>}
               {bookings.slice(0, 50).map((b) => (
                 <tr key={b.id} className="border-b border-border last:border-0 hover:bg-muted/40">
-                  <td className="p-4 text-muted-foreground">{new Date(b.event_date).toLocaleDateString("ar-SA")}</td>
-                  <td className="p-4 text-muted-foreground">{b.guest_count || 0}</td>
-                  <td className="p-4 font-black">{fmt(Number(b.total_price ?? 0))} </td>
-                  <td className="p-4"><span className="rounded-full bg-muted px-2 py-1 text-[10px] font-black text-foreground/70">{b.status}</span></td>
+                  <td data-label="التاريخ" className="p-4 text-muted-foreground">{new Date(b.event_date).toLocaleDateString("ar-SA")}</td>
+                  <td data-label="الضيوف" className="p-4 text-muted-foreground">{b.guest_count || 0}</td>
+                  <td data-label="المبلغ" className="p-4 font-black">{fmt(Number(b.total_price ?? 0))} </td>
+                  <td data-label="الحالة" className="p-4"><span className="rounded-full bg-muted px-2 py-1 text-[10px] font-black text-foreground/70">{b.status}</span></td>
                 </tr>
               ))}
             </tbody>

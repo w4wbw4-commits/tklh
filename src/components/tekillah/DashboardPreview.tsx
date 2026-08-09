@@ -69,8 +69,9 @@ export const DashboardPreview = () => {
       style={{ borderTop: "1px solid hsl(var(--green) / 0.35)" }}
     >
       <div className="mx-auto grid max-w-6xl items-start gap-8 md:grid-cols-[0.95fr_1.05fr] md:gap-12">
-        {/* Text + callouts */}
+        {/* Text + callouts — on mobile the live snapshot leads, so this drops below */}
         <motion.div
+          className="order-2 md:order-1"
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
@@ -80,7 +81,7 @@ export const DashboardPreview = () => {
           <h2 className="font-display mt-4 text-balance text-2xl font-black leading-[1.35] text-green sm:text-3xl">
             {t("dashboardPreview.title")}
           </h2>
-          <p className="mt-3 max-w-md text-[14px] leading-[1.85] text-[hsl(var(--brown))]">
+          <p className="mt-3 max-w-md text-[15px] leading-[1.85] text-[hsl(var(--brown))]">
             {t("dashboardPreview.subtitle")}
           </p>
 
@@ -94,12 +95,20 @@ export const DashboardPreview = () => {
                 transition={{ duration: 0.55, ease: EASE, delay: 0.15 + i * 0.18 }}
                 className="flex items-center gap-3"
               >
+                {/* numbered on mobile, hairline pointer on larger screens */}
                 <span
-                  className="h-px w-8 shrink-0"
+                  className="shrink-0 text-[12px] font-black tabular-nums sm:hidden"
+                  style={{ color: i === 1 ? WINE : "hsl(var(--green) / 0.6)" }}
+                  aria-hidden
+                >
+                  {`0${i + 1}`}
+                </span>
+                <span
+                  className="hidden h-px w-8 shrink-0 sm:block"
                   style={{ backgroundColor: i === 1 ? WINE : "hsl(var(--green) / 0.45)" }}
                   aria-hidden
                 />
-                <span className="text-[13.5px] font-bold text-primary">{line}</span>
+                <span className="text-[15px] font-bold text-primary sm:text-[13.5px]">{line}</span>
               </motion.li>
             ))}
           </ul>
@@ -107,7 +116,7 @@ export const DashboardPreview = () => {
           <div className="mt-7">
             <Link
               to="/planner"
-              className="inline-flex items-center rounded-full px-5 py-2.5 text-[13px] font-bold transition-opacity hover:opacity-90"
+              className="inline-flex w-full items-center justify-center rounded-full px-5 py-3.5 text-[15px] font-bold transition-opacity hover:opacity-90 sm:w-auto sm:py-2.5 sm:text-[13px]"
               style={{ backgroundColor: "hsl(var(--green))", color: "hsl(var(--cream))" }}
             >
               {t("dashboardPreview.snapshot.cta")}
@@ -115,8 +124,9 @@ export const DashboardPreview = () => {
           </div>
         </motion.div>
 
-        {/* The snapshot — timeline-first */}
+        {/* The snapshot — timeline-first, and first in the mobile reading order */}
         <motion.div
+          className="order-1 md:order-2"
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}

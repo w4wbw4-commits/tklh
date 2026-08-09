@@ -63,7 +63,7 @@ export const Hero = () => {
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative z-10 mx-auto flex min-h-[80vh] max-w-4xl flex-col items-center justify-center px-5 pt-20 pb-16 text-center sm:px-8"
+        className="relative z-10 mx-auto flex min-h-[78svh] max-w-4xl flex-col items-center justify-center px-5 pb-14 pt-24 text-center sm:min-h-[80vh] sm:px-8 sm:pb-16 sm:pt-20"
       >
         {/* Wordmark */}
         <motion.img

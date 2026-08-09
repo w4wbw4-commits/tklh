@@ -105,7 +105,8 @@ const SpeedSection = () => {
               </svg>
 
 
-              {/* paper scraps, stacked untidily */}
+              {/* paper scraps, stacked untidily — fewer on mobile so the
+                  section stays short on a 375px screen */}
               <div className="mt-6 space-y-3">
                 {scraps.map((s, i) => (
                   <motion.div
@@ -114,7 +115,7 @@ const SpeedSection = () => {
                     whileInView={{ opacity: 1, y: 0, rotate: s.rotate }}
                     viewport={once}
                     transition={{ duration: 0.7, ease: EASE, delay: 0.15 * i }}
-                    className="max-w-[19rem] px-4 py-3 text-[15px]"
+                    className={`max-w-[19rem] px-4 py-3 text-[15px] ${i >= 3 ? "hidden sm:block" : ""}`}
                     style={{
                       marginInlineStart: s.x,
                       marginBlockStart: s.y,
@@ -133,7 +134,10 @@ const SpeedSection = () => {
 
           {/* ---- Order side --------------------------------------------- */}
           <Reveal delay={0.15}>
-            <div className="md:ps-12" style={{ borderInlineStart: HAIR }}>
+            <div
+              className="border-t pt-12 md:border-t-0 md:pt-0 md:ps-12 md:[border-inline-start:1px_solid_hsl(var(--green)/0.18)]"
+              style={{ borderColor: "hsl(var(--green) / 0.18)" }}
+            >
               <span
                 className="text-[13px] font-semibold uppercase tracking-[0.24em]"
                 style={{ color: INK }}
@@ -332,24 +336,35 @@ const BehindSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={once}
                 transition={{ duration: 0.7, ease: EASE, delay: i * 0.1 }}
-                className="flex items-start gap-5 py-7 sm:gap-10"
+                className="py-7"
                 style={{ borderTop: HAIR }}
               >
-                <span
-                  className="font-display shrink-0 text-3xl font-black leading-none tabular-nums sm:text-5xl"
-                  style={{ color: INK }}
-                >
-                  {`0${i + 1}`}
-                </span>
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-display text-lg font-black leading-snug text-green sm:text-2xl">
-                    {tile.title}
-                  </h3>
-                  <p className="mt-2 max-w-xl text-[15px] leading-[1.9]" style={{ color: "hsl(var(--brown))" }}>
-                    {tile.desc}
-                  </p>
+                {/* Mobile: number + title on top, drawing beneath.
+                    Desktop: single row with the drawing on the far side. */}
+                <div className="flex items-start gap-4 sm:gap-10">
+                  <span
+                    className="font-display shrink-0 text-3xl font-black leading-none tabular-nums sm:text-5xl"
+                    style={{ color: INK }}
+                  >
+                    {`0${i + 1}`}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-display text-lg font-black leading-snug text-green sm:text-2xl">
+                      {tile.title}
+                    </h3>
+                    <p className="mt-2 max-w-xl text-[15px] leading-[1.9]" style={{ color: "hsl(var(--brown))" }}>
+                      {tile.desc}
+                    </p>
+                  </div>
+                  <div className="hidden shrink-0 sm:block" style={{ color: FADED }}>
+                    <Sketch />
+                  </div>
                 </div>
-                <div className="hidden shrink-0 sm:block" style={{ color: FADED }}>
+                <div
+                  className="mt-5 flex max-h-[34vh] justify-center sm:hidden"
+                  style={{ color: FADED }}
+                  aria-hidden
+                >
                   <Sketch />
                 </div>
               </motion.div>

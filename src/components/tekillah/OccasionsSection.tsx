@@ -91,12 +91,12 @@ export const OccasionsSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.75, ease: EASE, delay: i * 0.14 }}
-                className={i === 1 ? "sm:ps-14" : "sm:pe-14"}
-                style={
+                className={
                   i === 1
-                    ? { borderInlineStart: "1px solid hsl(var(--gold) / 0.45)" }
-                    : undefined
+                    ? "border-t pt-10 sm:border-t-0 sm:border-s sm:ps-14 sm:pt-0"
+                    : "sm:pe-14"
                 }
+                style={i === 1 ? { borderColor: "hsl(var(--gold) / 0.45)" } : undefined}
               >
                 <div className="flex items-baseline gap-1.5">
                   <span className="font-display text-5xl font-black leading-none tabular-nums text-wine sm:text-6xl">
