@@ -100,54 +100,112 @@ export const DashboardPreview = () => {
               </span>
             </div>
 
-            <div>
-              {timeline.map((row, i) => (
-                <motion.div
-                  key={row.key}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, ease: EASE, delay: i * 0.1 }}
-                  className="flex items-center justify-between gap-4 py-4"
-                  style={{ borderTop: "1px solid hsl(var(--gold) / 0.32)" }}
-                >
-                  <div className="flex min-w-0 items-center gap-4">
+            {/* Real vertical timeline: continuous rail + animated progress fill */}
+            <div className="relative ps-9">
+              <div
+                className="absolute top-3 bottom-3 w-px"
+                style={{
+                  insetInlineStart: "13px",
+                  backgroundColor: "hsl(var(--green) / 0.18)",
+                }}
+              />
+              <motion.div
+                className="absolute top-3 w-px origin-top"
+                style={{ insetInlineStart: "13px", backgroundColor: "hsl(var(--green))" }}
+                initial={{ height: 0 }}
+                whileInView={{ height: `${(activeIndex / (timeline.length - 1)) * 100 * 0.86}%` }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.1, ease: EASE, delay: 0.25 }}
+              />
+
+              {timeline.map((row, i) => {
+                const isOpen = i === openIndex;
+                const reached = i <= activeIndex;
+                return (
+                  <motion.button
+                    key={row.key}
+                    type="button"
+                    onClick={() => setOpenIndex(i)}
+                    aria-expanded={isOpen}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, ease: EASE, delay: i * 0.1 }}
+                    className="group relative block w-full py-4 text-start"
+                  >
+                    {/* Node on the rail */}
                     <span
-                      className="font-display shrink-0 text-sm font-black tabular-nums"
-                      style={{ color: "hsl(var(--gold))" }}
+                      className="absolute grid h-[15px] w-[15px] place-items-center rounded-full transition-all duration-300"
+                      style={{
+                        insetInlineStart: "-29px",
+                        top: "22px",
+                        backgroundColor: reached ? "hsl(var(--green))" : "hsl(var(--cream))",
+                        border: `1px solid hsl(var(--green) / ${reached ? 1 : 0.35})`,
+                        boxShadow: isOpen ? "0 0 0 4px hsl(var(--green) / 0.14)" : "none",
+                      }}
                     >
-                      {`0${i + 1}`}
+                      {row.status === "done" && (
+                        <svg viewBox="0 0 10 10" className="h-[7px] w-[7px]" aria-hidden>
+                          <path
+                            d="M1 5.2 3.6 8 9 2"
+                            fill="none"
+                            stroke="hsl(var(--cream))"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      )}
                     </span>
-                    <div className="min-w-0">
-                      <div
-                        className="font-display truncate text-[15px] font-bold"
-                        style={{
-                          color:
-                            row.status === "todo"
-                              ? "hsl(var(--brown) / 0.65)"
-                              : "hsl(var(--green))",
-                        }}
-                      >
-                        {row.label}
-                      </div>
-                      {row.status === "active" && (
+
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex min-w-0 items-center gap-3">
                         <span
-                          className="mt-1.5 inline-flex rounded-full px-2.5 py-0.5 text-[12px] font-bold"
+                          className="font-display shrink-0 text-sm font-black tabular-nums"
+                          style={{ color: reached ? "hsl(var(--green))" : "hsl(var(--green) / 0.4)" }}
+                        >
+                          {`0${i + 1}`}
+                        </span>
+                        <span
+                          className="font-display truncate text-[15px] font-bold transition-colors"
                           style={{
-                            backgroundColor: "hsl(var(--green))",
-                            color: "hsl(var(--cream))",
+                            color:
+                              row.status === "todo"
+                                ? "hsl(var(--brown) / 0.7)"
+                                : "hsl(var(--green))",
                           }}
                         >
-                          {t("dashboardPreview.needsAction")}
+                          {row.label}
                         </span>
-                      )}
+                        {row.status === "active" && (
+                          <span
+                            className="shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-bold"
+                            style={{
+                              backgroundColor: "hsl(var(--green))",
+                              color: "hsl(var(--cream))",
+                            }}
+                          >
+                            {t("dashboardPreview.needsAction")}
+                          </span>
+                        )}
+                      </div>
+                      <span className="shrink-0 text-[13px] text-[hsl(var(--brown))]">
+                        {row.time}
+                      </span>
                     </div>
-                  </div>
-                  <span className="shrink-0 text-[13px] text-[hsl(var(--brown))]">{row.time}</span>
-                </motion.div>
-              ))}
+
+                    {/* Interactive detail: a thin underline that grows on the open step */}
+                    <motion.span
+                      className="mt-3 block h-px origin-left"
+                      style={{ backgroundColor: "hsl(var(--green) / 0.35)" }}
+                      animate={{ scaleX: isOpen ? 1 : 0, opacity: isOpen ? 1 : 0 }}
+                      transition={{ duration: 0.45, ease: EASE }}
+                    />
+                  </motion.button>
+                );
+              })}
             </div>
           </div>
+
         </motion.div>
       </div>
     </section>
