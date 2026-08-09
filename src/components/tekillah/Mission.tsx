@@ -28,7 +28,6 @@ export const Mission = () => {
         style={{ border: "1px solid hsl(var(--green) / 0.18)", borderRadius: 6 }}
       >
         <motion.div {...reveal} transition={{ duration: 0.75, ease: EASE }}>
-          <span className="kicker">TKLH · EVENT PLANNING</span>
           <h2
             className={`font-display mt-6 text-balance text-2xl font-black leading-[1.4] sm:text-4xl md:text-5xl ${ar}`}
             style={{ color: "hsl(var(--green))" }}

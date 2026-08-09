@@ -45,7 +45,6 @@ const SpeedSection = () => {
       <div className="relative z-10 mx-auto max-w-5xl">
         <Reveal>
           <div className="text-center">
-            <span className="kicker">TKLH · EVENT PLANNING</span>
             <h2 className="font-display mx-auto mt-5 max-w-2xl text-balance text-2xl font-black leading-[1.45] text-green sm:text-4xl">
               {t("speed.title1")} {t("speed.title2")}
             </h2>
@@ -317,7 +316,6 @@ const BehindSection = () => {
       <div className="mx-auto max-w-4xl">
         <Reveal>
           <div>
-            <span className="kicker">TKLH · EVENT PLANNING</span>
             <h2 className="font-display mt-5 max-w-xl text-balance text-2xl font-black leading-[1.4] text-green sm:text-4xl">
               {t("speed.connector")}
             </h2>

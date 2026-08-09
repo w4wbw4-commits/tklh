@@ -46,7 +46,6 @@ export const UpcomingFeatures = () => {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.75, ease: EASE }}
         >
-          <span className="kicker">TKLH · ROADMAP</span>
           <h2 className="font-display mt-5 max-w-xl text-balance text-2xl font-black leading-[1.4] text-green sm:text-4xl">
             {t("upcoming.title")}
           </h2>

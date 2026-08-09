@@ -39,7 +39,6 @@ export const OccasionsSection = () => {
       <div className="relative mx-auto max-w-5xl">
         <Reveal>
           <div>
-            <span className="kicker">TKLH · EVENT PLANNING</span>
             {/* asymmetry: the title runs long, the icon row sits under it */}
             <h2
               className={`font-display mt-5 max-w-2xl text-balance text-2xl font-black leading-[1.4] text-green sm:text-4xl md:text-5xl ${ar}`}
