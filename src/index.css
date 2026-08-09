@@ -643,6 +643,24 @@ img, svg, video, canvas { max-width: 100%; }
   a[role="button"],
   [role="tab"] { min-height: 44px; }
 
+  /* Link-shaped controls (CTAs, footer/nav links, icon links) also reach 44px */
+  footer a,
+  header a,
+  nav a,
+  li > a,
+  a[class*="inline-flex"],
+  a[class*="rounded-full"] {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  footer a[aria-label],
+  a[aria-label][class*="rounded-full"]:empty {
+    min-width: 44px;
+    justify-content: center;
+  }
+
+
   /* Section rhythm — roughly 60% of the desktop vertical spacing */
   section.py-20 { padding-top: 3.75rem; padding-bottom: 3.75rem; }
   section.py-24 { padding-top: 4rem; padding-bottom: 4rem; }
