@@ -18,6 +18,8 @@ import { EventDayMode } from "@/components/tekillah/customer/EventDayMode";
 import { PaymentsPanel } from "@/components/tekillah/customer/PaymentsPanel";
 import { CreateEventDialog } from "@/components/tekillah/customer/CreateEventDialog";
 import { EventCommandHeader } from "@/components/tekillah/customer/EventCommandHeader";
+import { GuestDashboard } from "@/components/tekillah/customer/GuestDashboard";
+
 import chairMark from "@/assets/tklh-chair-mark.png.asset.json";
 import type { EventRow } from "@/components/tekillah/customer/types";
 import { useTranslation } from "react-i18next";
@@ -35,11 +37,8 @@ const Dashboard = () => {
   const [tab, setTab] = useState("overview");
   const [createOpen, setCreateOpen] = useState(false);
 
-  useEffect(() => {
-    if (!authLoading && !user) {
-      navigate("/auth?redirect=/dashboard", { replace: true });
-    }
-  }, [user, authLoading, navigate]);
+  // Visitors are welcome: no redirect — they get the guest dashboard below.
+
 
 
 
@@ -83,16 +82,17 @@ const Dashboard = () => {
     setLoadingEvents(false);
   };
 
-  useEffect(() => { if (user) loadEvents(); /* eslint-disable-next-line */ }, [user]);
+  useEffect(() => { if (user) loadEvents(); else setLoadingEvents(false); /* eslint-disable-next-line */ }, [user]);
 
-  if (authLoading || loadingEvents) {
+  if (authLoading || (user && loadingEvents)) {
     return (
       <div className="grid min-h-screen place-items-center bg-gradient-soft">
         <Loader2 className="h-6 w-6 animate-spin text-primary" />
       </div>
     );
   }
-  if (!user) return null;
+  if (!user) return <GuestDashboard />;
+
 
   return (
     <div className="min-h-screen bg-gradient-soft">

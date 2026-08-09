@@ -1066,6 +1066,13 @@
         "emptyTitle": "Nothing for you right now — Tklh has the rest",
         "emptyDesc": "The moment something needs your call, it shows up here."
       }
+    },
+    "guest": {
+      "signIn": "Sign in",
+      "title": "Your seat is ready — we've got you, TKLH!",
+      "subtitle": "Book your event now — we've got you, TKLH",
+      "cta": "Plan & book",
+      "haveAccount": "Already have an account? Sign in"
     }
   },
   "categories": {
