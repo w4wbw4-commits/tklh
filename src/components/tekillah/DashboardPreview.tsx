@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
@@ -20,6 +20,11 @@ const TIMELINE: { key: StepKey; status: "done" | "active" | "todo" }[] = [
  */
 export const DashboardPreview = () => {
   const { t } = useTranslation();
+  // Interactive: which step the visitor is inspecting. Defaults to the active one.
+  const [openIndex, setOpenIndex] = useState(
+    Math.max(0, TIMELINE.findIndex((r) => r.status === "active")),
+  );
+
 
   const timeline = useMemo(
     () =>
