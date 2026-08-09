@@ -16,7 +16,7 @@ export const Logo = ({ className = "" }: { className?: string }) => {
       aria-label="TKLH تِكله — Event Planning Platform"
     >
       <img
-        src={logoAsset.url}
+        src={logoAsset}
         alt="TKLH تِكله"
         className="h-10 w-auto sm:h-12 object-contain select-none"
         draggable={false}
