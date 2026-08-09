@@ -284,7 +284,7 @@ const SpeedSection = () => {
       <div className="relative z-10 mx-auto max-w-5xl">
         <Reveal>
           <div className="text-center">
-            <h2 className="font-display mx-auto max-w-2xl text-balance text-2xl font-black leading-[1.45] text-green sm:text-4xl">
+            <h2 className="font-display mx-auto max-w-2xl text-balance text-[22px] font-black leading-[1.5] text-green sm:text-4xl sm:leading-[1.45]">
               {t("speed.title1")} {t("speed.title2")}
             </h2>
           </div>
