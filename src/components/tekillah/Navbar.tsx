@@ -125,48 +125,67 @@ export const Navbar = () => {
             })}
 
           </nav>
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
+            {/* Primary CTA — the header's job on mobile: one clear action. */}
+            <Button
+              asChild
+              size="sm"
+              className="h-9 rounded-full px-3 text-[12.5px] font-bold shadow-sm hover:opacity-90 sm:h-9 sm:px-4 sm:text-[13px]"
+              style={{ backgroundColor: "hsl(var(--gold))", color: "#163726" }}
+            >
+              <Link to="/planner">
+                <CalendarCheck className="me-1 h-4 w-4" />
+                {t("nav.planBook")}
+              </Link>
+            </Button>
+
+            {/* Follow-up plan — icon-only on mobile, labelled on desktop. */}
             <Button
               variant="ghost"
               size="sm"
               asChild
-              className="hidden rounded-full text-xs text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex"
+              aria-label={t("nav.myDashboard")}
+              className="h-9 w-9 rounded-full p-0 text-[hsl(var(--cream))] hover:bg-white/10 sm:h-9 sm:w-auto sm:px-3 sm:text-xs"
             >
               <Link to="/dashboard">
-                <LayoutDashboard className="me-1 h-3.5 w-3.5" />
-                {t("nav.myDashboard")}
+                <LayoutDashboard className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
+                <span className="hidden sm:inline">{t("nav.myDashboard")}</span>
               </Link>
             </Button>
+
             {isPrimaryAdmin && (
               <Button
                 size="sm"
                 asChild
-                className="rounded-full bg-primary-foreground text-primary hover:bg-primary-foreground/90"
+                aria-label={t("nav.admin")}
+                className="h-9 w-9 rounded-full bg-primary-foreground p-0 text-primary hover:bg-primary-foreground/90 sm:w-auto sm:px-3"
               >
                 <Link to="/admin">
-                  <ShieldCheck className="me-1 h-3.5 w-3.5" />
-                  {t("nav.admin")}
+                  <ShieldCheck className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
+                  <span className="hidden sm:inline">{t("nav.admin")}</span>
                 </Link>
               </Button>
             )}
-            {/* Compact AR/EN language toggle — always visible in the header.
+
+            {/* Compact AR/EN language toggle — visible on every breakpoint.
                 Uses i18next changeLanguage; persistence + dir flip handled in src/i18n/index.ts. */}
             <button
               type="button"
               onClick={toggleLang}
               aria-label={isAr ? "Switch to English" : "التبديل إلى العربية"}
-              className="hidden items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide transition hover:bg-white/10 sm:inline-flex"
+              className="inline-flex h-9 items-center gap-1 rounded-full border px-2.5 text-[11px] font-semibold uppercase tracking-wide transition hover:bg-white/10"
               style={{ borderColor: "hsl(var(--gold) / 0.5)", color: "hsl(var(--cream))" }}
             >
               <Globe className="h-3.5 w-3.5" />
               <span>{isAr ? "EN" : "ع"}</span>
             </button>
+
             {/* Hamburger pinned at the very END of the cluster — in RTL this
                 renders at the far-right (start edge), which is where the user
                 expects the primary menu in Arabic. Visible on every breakpoint. */}
             <SiteMenuSheet isPrimaryAdmin={isPrimaryAdmin} />
-
           </div>
+
         </div>
       </div>
     </motion.header>
