@@ -136,7 +136,7 @@ const Dashboard = () => {
       </header>
 
 
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           {!activeEvent ? (
             <div
@@ -157,43 +157,52 @@ const Dashboard = () => {
               </Button>
             </div>
           ) : (
-            <div className="space-y-8">
-              {/* Full tab bar sits at the top of the dashboard page */}
-              <Tabs value={tab} onValueChange={setTab} className="w-full">
-                <TabsList className="grid h-auto w-full grid-cols-2 gap-1 rounded-2xl p-1 sm:grid-cols-5">
+            <Tabs value={tab} onValueChange={setTab} className="w-full">
+              {/* Command strip always visible — the anchor of the page */}
+              <EventCommandHeader
+                event={activeEvent}
+                userName={
+                  (user.user_metadata?.full_name as string | undefined) ??
+                  user.email?.split("@")[0] ??
+                  null
+                }
+                onOpenTab={setTab}
+              />
+
+              {/* Section switcher: "نظرة عامة" is a real tab like the rest */}
+              <div className="sticky top-[4.25rem] z-20 -mx-4 mt-6 bg-background/80 px-4 py-2 backdrop-blur-md sm:mx-0 sm:px-0">
+                <TabsList className="grid h-auto w-full grid-cols-3 gap-1 rounded-2xl p-1 sm:grid-cols-6">
                   {[
+                    { v: "overview", Icon: LayoutGrid },
                     { v: "timeline", Icon: Map },
                     { v: "bookings", Icon: ListChecks },
                     { v: "guests", Icon: Users },
                     { v: "payments", Icon: Receipt },
                     { v: "day", Icon: Radio },
                   ].map(({ v, Icon }) => (
-                    <TabsTrigger key={v} value={v} className="gap-2 rounded-xl py-2">
-                      <Icon className="h-4 w-4" strokeWidth={1.6} /> {t(`customer.tabs.${v}`)}
+                    <TabsTrigger
+                      key={v}
+                      value={v}
+                      className="flex-col gap-1 rounded-xl px-1 py-2 text-[11px] sm:flex-row sm:gap-2 sm:text-sm"
+                    >
+                      <Icon className="h-4 w-4 shrink-0" strokeWidth={1.6} />
+                      <span className="truncate">{t(`customer.tabs.${v}`)}</span>
                     </TabsTrigger>
                   ))}
                 </TabsList>
+              </div>
 
-                <div className="mt-8 space-y-8">
-                  <EventCommandHeader
-                    event={activeEvent}
-                    userName={
-                      (user.user_metadata?.full_name as string | undefined) ??
-                      user.email?.split("@")[0] ??
-                      null
-                    }
-                    onOpenTab={setTab}
-                  />
+              <div className="mt-6 sm:mt-8">
+                <TabsContent value="overview" className="mt-0"><EventOverview event={activeEvent} /></TabsContent>
+                <TabsContent value="timeline" className="mt-0"><EventTimeline event={activeEvent} /></TabsContent>
+                <TabsContent value="bookings" className="mt-0"><BookingsTimeline event={activeEvent} /></TabsContent>
+                <TabsContent value="guests" className="mt-0"><GuestManager event={activeEvent} /></TabsContent>
+                <TabsContent value="payments" className="mt-0"><PaymentsPanel event={activeEvent} /></TabsContent>
+                <TabsContent value="day" className="mt-0"><EventDayMode event={activeEvent} /></TabsContent>
+              </div>
+            </Tabs>
+          )}
 
-                  <EventOverview event={activeEvent} />
-
-                  <TabsContent value="timeline"><EventTimeline event={activeEvent} /></TabsContent>
-                  <TabsContent value="bookings"><BookingsTimeline event={activeEvent} /></TabsContent>
-                  <TabsContent value="guests"><GuestManager event={activeEvent} /></TabsContent>
-                  <TabsContent value="payments"><PaymentsPanel event={activeEvent} /></TabsContent>
-                  <TabsContent value="day"><EventDayMode event={activeEvent} /></TabsContent>
-                </div>
-              </Tabs>
             </div>
           )}
 
