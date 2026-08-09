@@ -1,7 +1,8 @@
 // ---------------------------------------------------------------------------
-// DashboardPreview — a compact, floating snapshot of the real customer
-// dashboard. It keeps the idea (readiness ring + vendor rows + budget) but
-// stays small so it does not dominate the page.
+// DashboardPreview — a compact snapshot of the real customer dashboard.
+// The card is now built around a vertical timeline so the section reads as
+// "your event journey" at a glance. Readiness ring + budget bar stay as quiet
+// summary hints so the card still feels like a dashboard, not a static list.
 // ---------------------------------------------------------------------------
 
 import { motion } from "framer-motion";
@@ -12,18 +13,21 @@ import chairMark from "@/assets/tklh-chair-mark.png.asset.json";
 const EASE = [0.22, 1, 0.36, 1] as const;
 const hairline = "1px solid hsl(var(--green) / 0.22)";
 const WINE = "hsl(var(--wine))";
+const GOLD = "hsl(var(--gold))";
+const GREEN = "hsl(var(--green))";
+const CREAM = "hsl(var(--cream))";
 
 const READINESS = 68;
 
 const Ring = () => {
-  const r = 32;
+  const r = 28;
   const c = 2 * Math.PI * r;
   return (
-    <div className="relative grid h-16 w-16 shrink-0 place-items-center">
+    <div className="relative grid h-14 w-14 shrink-0 place-items-center">
       <svg viewBox="0 0 100 100" className="h-full w-full -rotate-90">
-        <circle cx="50" cy="50" r={r} fill="none" stroke="hsl(var(--green) / 0.14)" strokeWidth="7" />
+        <circle cx="50" cy="50" r={r} fill="none" stroke="hsl(var(--green) / 0.14)" strokeWidth="6" />
         <motion.circle
-          cx="50" cy="50" r={r} fill="none" stroke="hsl(var(--green))" strokeWidth="7"
+          cx="50" cy="50" r={r} fill="none" stroke="hsl(var(--green))" strokeWidth="6"
           strokeLinecap="round" strokeDasharray={c}
           initial={{ strokeDashoffset: c }}
           whileInView={{ strokeDashoffset: c - (c * READINESS) / 100 }}
@@ -31,7 +35,7 @@ const Ring = () => {
           transition={{ duration: 1.2, ease: EASE }}
         />
       </svg>
-      <span className="font-display absolute text-base font-black text-primary tabular-nums">
+      <span className="font-display absolute text-sm font-black text-primary tabular-nums">
         {READINESS}%
       </span>
     </div>
@@ -39,14 +43,24 @@ const Ring = () => {
 };
 
 export const DashboardPreview = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language?.startsWith("ar");
   const callouts = t("dashboardPreview.snapshot.callouts", { returnObjects: true }) as string[];
 
-  const rows: [string, string, boolean][] = [
-    [t("dashboardPreview.vendors.venue.name"), t("dashboardPreview.confirmed"), true],
-    [t("dashboardPreview.vendors.catering.name"), t("dashboardPreview.needsAction"), false],
-    [t("dashboardPreview.vendors.photography.name"), t("dashboardPreview.confirmed"), true],
+  const timeline = [
+    { key: "venue", state: "done" as const },
+    { key: "catering", state: "active" as const },
+    { key: "photography", state: "wait" as const },
+    { key: "florals", state: "later" as const },
+    { key: "night", state: "future" as const },
   ];
+
+  const stateDot = (state: string) => {
+    if (state === "done") return { bg: GREEN, border: GREEN, icon: "✓", color: CREAM };
+    if (state === "active") return { bg: "transparent", border: GOLD, icon: "•", color: GOLD };
+    if (state === "wait") return { bg: "transparent", border: WINE, icon: "!", color: WINE };
+    return { bg: "transparent", border: "hsl(var(--green) / 0.25)", icon: "", color: "hsl(var(--green) / 0.35)" };
+  };
 
   return (
     <section
@@ -101,7 +115,7 @@ export const DashboardPreview = () => {
           </div>
         </motion.div>
 
-        {/* The snapshot */}
+        {/* The snapshot — timeline-first */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -109,55 +123,83 @@ export const DashboardPreview = () => {
           transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
         >
           <div
-            className="relative overflow-hidden rounded-xl p-4 sm:p-5"
+            className="relative overflow-hidden rounded-2xl p-5 sm:p-6"
             style={{ border: hairline, backgroundColor: "hsl(var(--cream))" }}
           >
             <img
               src={chairMark.url}
               alt=""
               aria-hidden
-              className="pointer-events-none absolute -top-2 end-0 h-20 w-20 object-contain opacity-[0.05]"
+              className="pointer-events-none absolute -top-2 end-0 h-24 w-24 object-contain opacity-[0.04]"
               draggable={false}
             />
+
+            {/* Card header */}
             <div className="relative flex items-center justify-between gap-4">
               <div className="min-w-0">
                 <span className="text-[9px] font-bold uppercase tracking-[0.22em] text-primary/55">
                   {t("dashboardPreview.demo.eventTitle")}
                 </span>
-                <p className="font-display mt-1.5 text-base font-black leading-snug text-primary sm:text-lg">
+                <p className="font-display mt-1 text-lg font-black leading-snug text-primary sm:text-xl">
                   {t("customer.command.countdownLabel", { days: "94" })}
                 </p>
-                <p className="mt-1 text-[11.5px] text-[hsl(var(--brown))]">
+                <p className="mt-0.5 text-[11px] text-[hsl(var(--brown))]">
                   {t("customer.command.readiness")}
                 </p>
               </div>
               <Ring />
             </div>
 
-            {/* Vendor rows */}
-            <div className="mt-4">
-              {rows.map(([name, status, ok]) => (
-                <div
-                  key={name}
-                  className="flex items-center justify-between gap-3 py-2"
-                  style={{ borderTop: hairline }}
-                >
-                  <span className="truncate text-[12.5px] font-bold text-primary">{name}</span>
-                  <span
-                    className="shrink-0 rounded-full px-2 py-0.5 text-[10.5px] font-bold"
-                    style={
-                      ok
-                        ? { backgroundColor: "hsl(var(--green))", color: "hsl(var(--cream))" }
-                        : { border: `1px solid ${WINE}`, color: WINE }
-                    }
-                  >
-                    {status}
-                  </span>
-                </div>
-              ))}
+            {/* Timeline */}
+            <div className="relative mt-5">
+              <div
+                className="absolute top-2 bottom-2 w-px"
+                style={{ backgroundColor: "hsl(var(--green) / 0.18)", [isRtl ? "right" : "left"]: "11px" }}
+                aria-hidden
+              />
+              <ul className="space-y-0">
+                {timeline.map(({ key, state }, i) => {
+                  const label = t(`dashboardPreview.timeline.${key}.label`);
+                  const time = t(`dashboardPreview.timeline.${key}.time`);
+                  const dot = stateDot(state);
+                  return (
+                    <motion.li
+                      key={key}
+                      initial={{ opacity: 0, x: isRtl ? 16 : -16 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: "-40px" }}
+                      transition={{ duration: 0.5, ease: EASE, delay: 0.2 + i * 0.1 }}
+                      className="relative flex items-start gap-3 py-2.5"
+                    >
+                      <span
+                        className="relative z-10 grid h-6 w-6 shrink-0 place-items-center rounded-full text-[10px] font-black"
+                        style={{
+                          border: `1.5px solid ${dot.border}`,
+                          backgroundColor: dot.bg,
+                          color: dot.color,
+                        }}
+                        aria-hidden
+                      >
+                        {dot.icon}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center justify-between gap-1">
+                          <span className="text-[12.5px] font-bold text-primary">{label}</span>
+                          <span
+                            className="text-[10px] font-bold tabular-nums"
+                            style={{ color: state === "active" ? WINE : "hsl(var(--brown))" }}
+                          >
+                            {time}
+                          </span>
+                        </div>
+                      </div>
+                    </motion.li>
+                  );
+                })}
+              </ul>
             </div>
 
-            {/* Budget bar */}
+            {/* Budget hint */}
             <div className="mt-4 pt-3" style={{ borderTop: hairline }}>
               <div className="flex items-center justify-between text-[11.5px] font-bold text-primary">
                 <span>{t("dashboardPreview.demo.budget")}</span>
@@ -187,3 +229,4 @@ export const DashboardPreview = () => {
     </section>
   );
 };
+
