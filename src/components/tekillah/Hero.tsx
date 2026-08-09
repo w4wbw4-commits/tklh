@@ -68,9 +68,9 @@ export const Hero = () => {
         {/* Wordmark */}
         <motion.img
           variants={rise}
-          src={wordmarkAsset.url}
+          src={wordmarkAsset}
           alt={isAr ? "TKLH تِكله" : "TKLH Tklh"}
-          className="mt-6 h-20 w-auto select-none sm:h-24 md:h-28 lg:h-32"
+          className="mt-6 h-20 w-auto select-none sm:h-24 md:h-24 lg:h-28"
           draggable={false}
         />
 
