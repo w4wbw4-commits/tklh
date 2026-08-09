@@ -144,14 +144,14 @@ export const EventCommandHeader = ({
         bookingsTotal: b.length,
         bookingsConfirmed: b.filter((x) => x.status === "confirmed" || x.status === "completed").length,
         paid: b.reduce((s, x) => s + Number(x.paid_amount ?? 0), 0),
-        total: b.reduce((s, x) => s + Number(x.total_price ?? 0), 0) || Number(event.budget ?? 0),
+        total: b.reduce((s, x) => s + Number(x.total_price ?? 0), 0) || Number(event.total_budget ?? 0),
         milestonesTotal: m.length,
         milestonesDone: m.filter((x) => x.status === "done").length,
         needs: m.filter((x) => x.status === "in_progress").slice(0, 3)
           .map((x) => ({ id: x.id, title: x.title, due: x.due_date })),
       });
     })();
-  }, [event.id, event.guest_count, event.budget]);
+  }, [event.id, event.guest_count, event.total_budget]);
 
   const days = useMemo(() => {
     const diff = new Date(event.event_date).getTime() - Date.now();
