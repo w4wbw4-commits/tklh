@@ -154,16 +154,17 @@ const TekColumn = () => {
       </p>
 
       {/* one straight green rail + three ticks */}
-      <div className="relative mt-6 ps-7 sm:ps-9">
-        <motion.span
-          initial={{ scaleY: reduce ? 1 : 0 }}
-          whileInView={{ scaleY: 1 }}
-          viewport={once}
-          transition={{ duration: T(0.6), ease: S_EASE, delay: T(0.1) }}
-          className="absolute inset-y-1 start-[13px] w-[2px] origin-top sm:start-[17px]"
-          style={{ backgroundColor: INK }}
-          aria-hidden
-        />
+      <div className="mt-6 ps-7 sm:ps-9">
+        <div className="relative">
+          <motion.span
+            initial={{ scaleY: reduce ? 1 : 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={once}
+            transition={{ duration: T(0.6), ease: S_EASE, delay: T(0.1) }}
+            className="absolute top-[10px] bottom-[10px] w-[2px] origin-top"
+            style={{ backgroundColor: INK, insetInlineStart: "-1.2rem" }}
+            aria-hidden
+          />
         <ul className="relative space-y-4">
           {steps.map((s, i) => (
             <li key={i} className="relative">
@@ -198,9 +199,10 @@ const TekColumn = () => {
             </li>
           ))}
         </ul>
+        </div>
 
         {/* destination: official chair + pressed seal */}
-        <div className="mt-6 flex items-center gap-3.5">
+        <div className="mt-7 flex items-center gap-4">
           <div className="relative shrink-0">
             <motion.span
               initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 1.15 }}
@@ -227,7 +229,7 @@ const TekColumn = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={once}
               transition={{ duration: T(0.3), ease: S_EASE, delay: T(1.15) }}
-              className="absolute -bottom-1 start-full ms-[-16px] whitespace-nowrap px-2 py-1 text-[10.5px] font-black"
+              className="absolute -bottom-1 end-full me-[-14px] whitespace-nowrap px-2 py-1 text-[10.5px] font-black"
               style={{ color: "hsl(var(--cream))", backgroundColor: INK, borderRadius: 999 }}
             >
               {t("speed.journey.seal")}
