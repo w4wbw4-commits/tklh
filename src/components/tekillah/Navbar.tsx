@@ -79,9 +79,6 @@ export const Navbar = () => {
         >
           <div className="flex shrink-0 items-center gap-2">
             <Logo />
-            <span className="hidden sm:inline-flex">
-              <WhatsAppFloating />
-            </span>
           </div>
 
 
