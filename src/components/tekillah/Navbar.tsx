@@ -83,38 +83,13 @@ export const Navbar = () => {
               const cls =
                 "relative rounded-full px-4 py-2 text-sm font-medium transition-all after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all hover:after:w-1/2";
               const linkStyle = { color: "#A7CAA1" } as const;
-              const disabledCls =
-                "relative flex cursor-not-allowed items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium opacity-70";
-              const disabledStyle = { color: "rgba(167, 202, 161, 0.55)" } as const;
-              const badge = "badge" in item && item.badge ? (isAr ? item.badge.ar : item.badge.en) : null;
-              if ("disabled" in item && item.disabled) {
-                return (
-                  <span key={item.href} aria-disabled="true" className={disabledCls} style={disabledStyle}>
-                    {label}
-                    {badge && (
-                      <span
-                        className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
-                        style={{ background: "rgba(167, 202, 161, 0.18)", color: "#A7CAA1" }}
-                      >
-                        {badge}
-                      </span>
-                    )}
-                  </span>
-                );
-              }
-              if (item.type === "route") {
-                return (
-                  <Link key={item.href} to={item.href} className={cls} style={linkStyle}>
-                    {label}
-                  </Link>
-                );
-              }
               return (
-                <a key={item.href} href={item.href} className={cls} style={linkStyle}>
+                <Link key={item.href} to={item.href} className={cls} style={linkStyle}>
                   {label}
-                </a>
+                </Link>
               );
             })}
+
 
           </nav>
           <div className="flex items-center gap-1.5 sm:gap-2">
