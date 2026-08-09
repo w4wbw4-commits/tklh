@@ -1783,7 +1783,22 @@
         "desc": "Every service you want, at the price that suits you — exactly as you envision."
       }
     ],
-    "ariaLabel": "Time comparison between the traditional way and Tklh"
+    "ariaLabel": "Time comparison between the traditional way and Tklh",
+    "journey": {
+      "start": "Planning an event?",
+      "goal": "Your night",
+      "tradTag": "6 weeks · lost time, high stress",
+      "tekTag": "Under 10 minutes · and you're done",
+      "seal": "Sealed ✓",
+      "sit": "Sit back and relax — we handle the rest",
+      "stations": [
+        "Missed calls",
+        "Drives in the midday heat",
+        "Unclear prices",
+        "Clashing schedules",
+        "Unguaranteed bookings"
+      ]
+    }
   },
   "aboutPage": {
     "seoTitle": "About Tklh — Our Identity & Digital Facilities",
@@ -1860,7 +1875,7 @@
     "aria": "Trust bar",
     "halls": {
       "label": "Registered venues",
-      "desc": "Venues . Resorts . Farms . and more!\u00a0"
+      "desc": "Venues . Resorts . Farms . and more! "
     },
     "providers": {
       "label": "Service providers",
