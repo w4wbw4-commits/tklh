@@ -43,7 +43,8 @@ const Ring = () => {
 };
 
 export const DashboardPreview = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.language?.startsWith("ar");
   const callouts = t("dashboardPreview.snapshot.callouts", { returnObjects: true }) as string[];
 
   const timeline = [
