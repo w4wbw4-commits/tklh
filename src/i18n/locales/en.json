@@ -1696,8 +1696,6 @@
     "providers": {
       "label": "Service providers",
       "desc": "Planners · Photographers · Bands · Catering · Hospitality"
-    },
-    "verified": "Verified",
-    "trusted": "Curated"
+    }
   }
 }
