@@ -115,7 +115,7 @@ const VendorPage = () => {
               variant="ghost"
               size="sm"
               asChild
-              className="rounded-full text-foreground/75 hover:text-gold"
+              className="rounded-full text-foreground/75 hover:text-primary"
             >
               <Link to="/" aria-label={t("common.main")}>
                 <Home className="me-1.5 h-4 w-4" />
@@ -141,7 +141,7 @@ const VendorPage = () => {
                 setTab("profile");
                 dashboardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
               }}
-              className="rounded-full border border-gold/50 bg-primary-deep text-gold shadow-[0_4px_14px_-4px_hsl(var(--green)/0.45)] transition-all hover:scale-[1.03] hover:bg-primary-deep"
+              className="rounded-full border border-gold/50 bg-primary-deep text-primary-foreground shadow-[0_4px_14px_-4px_hsl(var(--green)/0.45)] transition-all hover:scale-[1.03] hover:bg-primary-deep"
             >
               <LayoutDashboard className="me-1.5 h-4 w-4" />
               {isAuthed && vendor

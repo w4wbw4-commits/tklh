@@ -71,7 +71,7 @@ export const Footer = () => {
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                   aria-label={label}
-                  className="transition-colors duration-500 hover:text-gold"
+                  className="transition-colors duration-500 hover:opacity-70"
                   style={{ color: creamSoft }}
                 >
                   <Icon className="h-[18px] w-[18px]" />
@@ -80,7 +80,7 @@ export const Footer = () => {
             </div>
             <ul className="mt-6 space-y-2 text-[15px]" style={{ color: creamSoft }}>
               <li>
-                <a href="mailto:Call@tklh.sa" className="inline-flex items-center gap-2 hover:text-gold" dir="ltr">
+                <a href="mailto:Call@tklh.sa" className="inline-flex items-center gap-2 hover:opacity-70" dir="ltr">
                   Call@tklh.sa
                 </a>
               </li>
@@ -89,7 +89,7 @@ export const Footer = () => {
                   href="https://wa.me/966530466460?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D9%85%D8%B9%20%D8%AA%D9%90%D9%83%D9%84%D9%87"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 hover:text-gold"
+                  className="inline-flex items-center gap-2 hover:opacity-70"
                   dir="ltr"
                 >
                   +966 53 046 6460
@@ -101,29 +101,29 @@ export const Footer = () => {
           <div className="md:px-8" style={{ borderInlineStart: rule }}>
             <div className="kicker">{t("footer.platform")}</div>
             <ul className="mt-5 space-y-2.5 text-[15px]" style={{ color: creamSoft }}>
-              <li><Link to="/about" className="hover:text-gold">{t("footer.aboutLink")}</Link></li>
-              <li><Link to="/planner" className="hover:text-gold">{t("footer.wizard")}</Link></li>
-              <li><Link to="/dashboard" className="hover:text-gold">{t("nav.myDashboard")}</Link></li>
+              <li><Link to="/about" className="hover:opacity-70">{t("footer.aboutLink")}</Link></li>
+              <li><Link to="/planner" className="hover:opacity-70">{t("footer.wizard")}</Link></li>
+              <li><Link to="/dashboard" className="hover:opacity-70">{t("nav.myDashboard")}</Link></li>
             </ul>
           </div>
 
           <div className="md:px-8" style={{ borderInlineStart: rule }}>
             <div className="kicker">{t("footer.company")}</div>
             <ul className="mt-5 space-y-2.5 text-[15px]" style={{ color: creamSoft }}>
-              <li><a href="#" className="hover:text-gold">{t("footer.aboutUs")}</a></li>
+              <li><a href="#" className="hover:opacity-70">{t("footer.aboutUs")}</a></li>
               <li>
-                <Link to="/vendor" className="inline-flex items-center gap-1.5 font-bold text-gold hover:underline">
+                <Link to="/vendor" className="inline-flex items-center gap-1.5 font-bold text-primary-foreground hover:underline">
                   {t("footer.joinVendor")}
                   <ArrowRight className="h-3 w-3 rtl:rotate-180" />
                 </Link>
               </li>
-              <li><a href="#" className="hover:text-gold">{t("footer.contact")}</a></li>
+              <li><a href="#" className="hover:opacity-70">{t("footer.contact")}</a></li>
               {user && (
                 <li>
                   <button
                     type="button"
                     onClick={handleSignOut}
-                    className="inline-flex items-center gap-1.5 transition-colors hover:text-gold"
+                    className="inline-flex items-center gap-1.5 transition-colors hover:opacity-70"
                     style={{ color: creamSoft }}
                   >
                     <LogOut className="h-3.5 w-3.5" />
@@ -137,9 +137,9 @@ export const Footer = () => {
           <div className="md:px-8" style={{ borderInlineStart: rule }}>
             <div className="kicker">{t("footer.legal")}</div>
             <ul className="mt-5 space-y-2.5 text-[15px]" style={{ color: creamSoft }}>
-              <li><Link to="/terms-of-service" className="hover:text-gold">{t("footer.terms")}</Link></li>
-              <li><Link to="/privacy-policy" className="hover:text-gold">{t("footer.privacy")}</Link></li>
-              <li><Link to="/refund-policy" className="hover:text-gold">{t("footer.refund")}</Link></li>
+              <li><Link to="/terms-of-service" className="hover:opacity-70">{t("footer.terms")}</Link></li>
+              <li><Link to="/privacy-policy" className="hover:opacity-70">{t("footer.privacy")}</Link></li>
+              <li><Link to="/refund-policy" className="hover:opacity-70">{t("footer.refund")}</Link></li>
             </ul>
           </div>
         </div>
@@ -173,9 +173,9 @@ export const Footer = () => {
         >
           <span>© {new Date().getFullYear()} TKLH. {t("footer.rights")}</span>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
-            <Link to="/terms-of-service" className="hover:text-gold">{t("footer.terms")}</Link>
-            <Link to="/privacy-policy" className="hover:text-gold">{t("footer.privacy")}</Link>
-            <Link to="/refund-policy" className="hover:text-gold">{t("footer.refund")}</Link>
+            <Link to="/terms-of-service" className="hover:opacity-70">{t("footer.terms")}</Link>
+            <Link to="/privacy-policy" className="hover:opacity-70">{t("footer.privacy")}</Link>
+            <Link to="/refund-policy" className="hover:opacity-70">{t("footer.refund")}</Link>
             <span className="font-arabic">{t("footer.madeIn")}</span>
           </div>
         </div>

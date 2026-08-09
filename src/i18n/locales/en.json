@@ -66,6 +66,105 @@
         "noteReady": "Confirmed",
         "noteLive": "Setup complete"
       }
+    },
+    "demo": {
+      "badge": "Preview — this is how your dashboard looks",
+      "cta": "Plan, book and get your dashboard →",
+      "eventTitle": "Engagement · 12/07/2026",
+      "stats": {
+        "guests": "Expected guests",
+        "bookings": "Confirmed bookings",
+        "paid": "Budget paid"
+      },
+      "tabs": {
+        "overview": "Overview",
+        "timeline": "Timeline",
+        "vendors": "Vendors",
+        "guests": "Guests",
+        "invoices": "Invoices",
+        "day": "Event day"
+      },
+      "captions": {
+        "overview": "Your event summary, in numbers — moment by moment.",
+        "timeline": "Every task and its date — what's done, what's left.",
+        "vendors": "Each vendor's status without calling anyone.",
+        "guests": "Guests, invitations and RSVPs in one place.",
+        "invoices": "Your payments and budget, fully transparent.",
+        "day": "Your big day, minute by minute."
+      },
+      "rows": {
+        "timeline": [
+          [
+            "Venue booked",
+            "Done"
+          ],
+          [
+            "Catering confirmed",
+            "In progress"
+          ],
+          [
+            "Photography",
+            "Pending"
+          ]
+        ],
+        "vendors": [
+          [
+            "Al-Masa Hall",
+            "Confirmed"
+          ],
+          [
+            "Gourmet Catering",
+            "Awaiting payment"
+          ],
+          [
+            "Studio Noor",
+            "Confirmed"
+          ]
+        ],
+        "guests": [
+          [
+            "Invitations sent",
+            "240"
+          ],
+          [
+            "RSVP confirmed",
+            "175"
+          ],
+          [
+            "Awaiting reply",
+            "65"
+          ]
+        ],
+        "invoices": [
+          [
+            "Venue payment",
+            "Paid"
+          ],
+          [
+            "Catering payment",
+            "Due soon"
+          ],
+          [
+            "Photography",
+            "Scheduled"
+          ]
+        ],
+        "day": [
+          [
+            "4:00 PM",
+            "Guest reception"
+          ],
+          [
+            "6:30 PM",
+            "Grand entrance"
+          ],
+          [
+            "8:00 PM",
+            "Dinner"
+          ]
+        ]
+      },
+      "budget": "Budget"
     }
   },
   "upcoming": {

@@ -120,7 +120,7 @@ const CardMediaCarousel = ({
               <span
                 key={i}
                 className={`h-1.5 rounded-full transition-all ${
-                  i === active ? "w-5 bg-gold" : "w-1.5 bg-cream/70"
+                  i === active ? "w-5 bg-cream" : "w-1.5 bg-cream/70"
                 }`}
               />
             ))}
@@ -199,11 +199,11 @@ export const PlatformPackages = () => {
           className="mb-14 text-center"
         >
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/60 px-5 py-1.5 backdrop-blur-sm">
-            <span className="h-1 w-1 rounded-full bg-gold shadow-[0_0_8px_hsl(var(--gold))]" />
-            <span className="font-arabic text-[11px] font-bold tracking-[0.2em] text-gold">
+            <span className="h-1 w-1 rounded-full bg-cream shadow-[0_0_8px_hsl(var(--gold))]" />
+            <span className="font-arabic text-[11px] font-bold tracking-[0.2em] text-cream">
               {t("platformPackages.sectionKicker")}
             </span>
-            <span className="h-1 w-1 rounded-full bg-gold shadow-[0_0_8px_hsl(var(--gold))]" />
+            <span className="h-1 w-1 rounded-full bg-cream shadow-[0_0_8px_hsl(var(--gold))]" />
           </div>
 
           <h2 className="mb-5 bg-gradient-to-b from-[hsl(35_45%_40%)] via-gold to-[hsl(35_45%_40%)] bg-clip-text font-display text-4xl font-black leading-[2.4] text-transparent pt-6 pb-8 md:text-5xl [text-box-trim:none] [-webkit-text-box-trim:none]" style={{ overflow: 'visible' }}>
@@ -338,14 +338,14 @@ export const PlatformPackages = () => {
                   {/* Price block */}
                   <div className="relative border-y border-gold/10 py-6">
                     <div className="flex flex-col items-center">
-                      <span className="mb-1 font-arabic text-[10px] font-bold uppercase tracking-[0.2em] text-gold">
+                      <span className="mb-1 font-arabic text-[10px] font-bold uppercase tracking-[0.2em] text-cream">
                         {t("platformPackages.from")}
                       </span>
                       <div className="flex items-baseline gap-2 font-arabic tabular-nums">
                         <span className="text-4xl font-black text-green">
                           {fmtNumber(Number(p.price))}
                         </span>
-                        <span className="text-sm font-bold text-gold"><RiyalSymbol /></span>
+                        <span className="text-sm font-bold text-cream"><RiyalSymbol /></span>
                       </div>
                     </div>
                   </div>
@@ -418,7 +418,7 @@ export const PlatformPackages = () => {
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-green via-green/40 to-transparent" />
                     {/* Top kicker */}
                     <div className="absolute right-5 top-5 flex items-center gap-2 rounded-full border border-cream/30 bg-cream/10 px-4 py-1.5 backdrop-blur-md">
-                      <span className="h-1.5 w-1.5 rounded-full bg-gold shadow-[0_0_8px_hsl(var(--gold))]" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-cream shadow-[0_0_8px_hsl(var(--gold))]" />
                       <span className="font-arabic text-[11px] font-bold tracking-[0.2em] text-cream">
                         {t("platformPackages.sectionKicker")}
                       </span>
@@ -429,8 +429,8 @@ export const PlatformPackages = () => {
                         {aName}
                       </h3>
                       <div className="mt-3 flex items-center gap-3">
-                        <div className="h-px w-12 bg-gold/80" />
-                        <span className="font-arabic text-sm font-medium italic text-gold">
+                        <div className="h-px w-12 bg-cream/80" />
+                        <span className="font-arabic text-sm font-medium italic text-cream">
                           {t("platformPackages.editorialTagline", "تجربة عرس استثنائية بعناية تكله")}
                         </span>
                       </div>
@@ -515,7 +515,7 @@ export const PlatformPackages = () => {
                       key={i}
                       className="flex flex-col items-center gap-1 rounded-xl border border-gold/15 bg-cream/40 p-3 text-center sm:p-4"
                     >
-                      <span className="font-arabic text-xl text-gold">{b.icon}</span>
+                      <span className="font-arabic text-xl text-cream">{b.icon}</span>
                       <span className="font-arabic text-xs font-bold text-green sm:text-sm">{b.title}</span>
                       <span className="font-arabic text-[10px] text-green/60 sm:text-xs">{b.sub}</span>
                     </div>
@@ -527,14 +527,14 @@ export const PlatformPackages = () => {
               <div className="sticky bottom-0 border-t border-gold/20 bg-gradient-to-t from-cream via-cream to-cream/95 px-6 py-5 backdrop-blur-md sm:px-8">
                 <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
                   <div className="flex flex-col items-center sm:items-start">
-                    <span className="font-arabic text-[11px] font-bold uppercase tracking-[0.2em] text-gold">
+                    <span className="font-arabic text-[11px] font-bold uppercase tracking-[0.2em] text-cream">
                       {t("platformPackages.from")}
                     </span>
                     <div className="flex items-baseline gap-2 font-arabic tabular-nums">
                       <span className="text-3xl font-black leading-none text-green sm:text-4xl">
                         {fmtNumber(Number(active.price))}
                       </span>
-                      <span className="text-base font-bold text-gold"><RiyalSymbol /></span>
+                      <span className="text-base font-bold text-cream"><RiyalSymbol /></span>
                     </div>
                   </div>
                   <button

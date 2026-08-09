@@ -113,7 +113,7 @@ const JoinVendor = () => {
       <header className="sticky top-0 z-30 border-b border-gold/20 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3 sm:px-6">
           <Logo />
-          <Button variant="ghost" size="sm" asChild className="rounded-full text-foreground/70 hover:text-gold">
+          <Button variant="ghost" size="sm" asChild className="rounded-full text-foreground/70 hover:text-primary">
             <Link to="/">
               <Home className="me-1.5 h-4 w-4" />
               <span className="hidden sm:inline">{t("common.main", { defaultValue: "الرئيسية" })}</span>
@@ -159,7 +159,7 @@ const JoinVendor = () => {
             </div>
 
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Button onClick={() => navigate("/")} className="rounded-full bg-primary-deep px-6 text-gold hover:bg-primary-deep/90">
+              <Button onClick={() => navigate("/")} className="rounded-full bg-primary-deep px-6 text-primary-foreground hover:bg-primary-deep/90">
                 {label("العودة للرئيسية", "Back to home")}
               </Button>
               <Button variant="outline" asChild className="rounded-full border-gold/50 px-6">
@@ -303,7 +303,7 @@ const JoinVendor = () => {
               <Button
                 onClick={submit}
                 disabled={submitting}
-                className="h-12 w-full rounded-full bg-primary-deep text-base text-gold hover:bg-primary-deep/90"
+                className="h-12 w-full rounded-full bg-primary-deep text-base text-primary-foreground hover:bg-primary-deep/90"
               >
                 {submitting ? <Loader2 className="me-2 h-4 w-4 animate-spin" /> : null}
                 {label("إرسال الطلب", "Submit application")}

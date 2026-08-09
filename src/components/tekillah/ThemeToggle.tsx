@@ -30,7 +30,7 @@ export const ThemeToggle = forwardRef<HTMLButtonElement, { className?: string }>
         aria-label={label}
         title={label}
         onClick={() => setTheme(isDark ? "light" : "dark")}
-        className={`relative rounded-full text-foreground/80 hover:text-gold ${className}`}
+        className={`relative rounded-full text-foreground/80 hover:text-primary ${className}`}
       >
         {/* Cross-fade so the swap feels native */}
         <Sun

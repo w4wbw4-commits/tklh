@@ -106,14 +106,14 @@ export const RoleSwitcher = () => {
                     onClick={() => setOpen(false)}
                     className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
                       active
-                        ? "bg-primary-deep text-gold shadow-md"
+                        ? "bg-primary-deep text-primary-foreground shadow-md"
                         : "text-foreground/75 hover:bg-muted"
                     }`}
                   >
                     <span
                       className={`grid h-8 w-8 place-items-center rounded-lg ${
                         active
-                          ? "bg-gold text-primary-deep"
+                          ? "bg-primary-foreground text-primary-deep"
                           : "bg-muted text-primary-deep"
                       }`}
                     >
@@ -142,7 +142,7 @@ export const RoleSwitcher = () => {
         type="button"
         onClick={() => setOpen((v) => !v)}
         whileTap={{ scale: 0.94 }}
-        className="flex items-center gap-2 rounded-full border border-gold/50 bg-primary-deep px-4 py-3 text-gold shadow-[0_10px_24px_-6px_hsl(var(--green)/0.55)] transition-transform"
+        className="flex items-center gap-2 rounded-full border border-gold/50 bg-primary-deep px-4 py-3 text-primary-foreground shadow-[0_10px_24px_-6px_hsl(var(--green)/0.55)] transition-transform"
         aria-expanded={open}
         aria-label={isAr ? "تبديل الأدوار" : "Switch role"}
       >

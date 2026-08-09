@@ -60,7 +60,7 @@ export const PartnerFloatingCTA = () => {
               aria-label={label}
               className="flex flex-col items-center gap-2 rounded-xl px-3 py-4 text-gold transition-all hover:scale-[1.04]"
             >
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-gold text-primary-deep shadow-md">
+              <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary-foreground text-primary-deep shadow-md">
                 <Building2 className="h-5 w-5" />
               </span>
               <span
@@ -87,7 +87,7 @@ export const PartnerFloatingCTA = () => {
           <Link
             to={href}
             aria-label={label}
-            className="flex items-center gap-2 rounded-full border border-gold/50 bg-primary-deep px-4 py-3 text-gold shadow-[0_8px_24px_-6px_hsl(var(--green)/0.5)] transition-transform active:scale-95"
+            className="flex items-center gap-2 rounded-full border border-gold/50 bg-primary-deep px-4 py-3 text-primary-foreground shadow-[0_8px_24px_-6px_hsl(var(--green)/0.5)] transition-transform active:scale-95"
           >
             <Building2 className="h-4 w-4" />
             <span className="text-xs font-bold">{label}</span>
