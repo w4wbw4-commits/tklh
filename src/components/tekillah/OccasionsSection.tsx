@@ -11,8 +11,8 @@ import {
   PartyPopper,
   Building2,
   Users,
-  Cake,
-  Plus,
+  ShieldCheck,
+  Star,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
@@ -25,15 +25,6 @@ const OCCASIONS = [
   { icon: PartyPopper,    key: "events" },
 ] as const;
 
-const AVATAR_ICONS = [HeartHandshake, Crown, GraduationCap, PartyPopper, Cake] as const;
-
-const AVATAR_STYLES = [
-  "bg-green text-cream",
-  "bg-cream text-green",
-  "bg-green/80 text-cream",
-  "bg-cream text-green",
-  "bg-green text-cream",
-] as const;
 
 export const OccasionsSection = () => {
   const { t, i18n } = useTranslation();
@@ -87,81 +78,87 @@ export const OccasionsSection = () => {
         <Reveal delay={0.15}>
           <div
             aria-label={t("trust.aria")}
-            className="mt-12 overflow-hidden rounded-[2rem] border border-gold/30 bg-cream/70 shadow-card backdrop-blur-sm sm:mt-16"
+            className="mt-12 grid gap-5 sm:mt-16 sm:gap-6 md:grid-cols-2"
           >
-            <div className="grid divide-gold/20 md:grid-cols-[1fr_1fr_1.35fr] md:divide-x md:rtl:divide-x-reverse">
-              {/* Halls */}
-              <div className="flex items-center gap-4 px-6 py-7 sm:px-8">
-                <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-gold/40 bg-gold/15 text-gold">
-                  <Building2 className="h-5 w-5" strokeWidth={1.8} />
+            {/* Halls */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative overflow-hidden rounded-[2rem] border border-gold/30 bg-gradient-to-br from-cream via-cream to-gold/10 p-7 shadow-card backdrop-blur-sm sm:p-9"
+            >
+              <div className="pointer-events-none absolute -end-10 -top-10 h-40 w-40 rounded-full bg-gold/10 blur-3xl" />
+              <div className="relative flex items-start gap-5">
+                <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-green text-cream shadow-lg shadow-green/20 ring-1 ring-green/20">
+                  <Building2 className="h-6 w-6" strokeWidth={1.8} />
                 </span>
-                <div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-black tabular-nums text-green sm:text-4xl">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-4xl font-black tabular-nums text-green sm:text-5xl">
                       <AnimatedCounter value={100} />
                     </span>
-                    <span className="text-2xl font-black text-gold sm:text-3xl">+</span>
+                    <span className="text-3xl font-black text-gold sm:text-4xl">+</span>
                   </div>
-                  <p className={`mt-1 text-sm font-bold text-green/85 ${ar}`}>
+                  <p className={`mt-1 text-base font-bold text-green/90 ${ar}`}>
                     {t("trust.halls.label")}
+                  </p>
+                  <p className={`mt-2 text-sm leading-relaxed text-foreground/60 ${ar}`}>
+                    {t("trust.halls.desc")}
                   </p>
                 </div>
               </div>
-
-              {/* Providers */}
-              <div className="flex items-start gap-4 border-t border-gold/20 px-6 py-7 sm:px-8 md:border-t-0">
-                <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-gold/40 bg-gold/15 text-gold">
-                  <Users className="h-5 w-5" strokeWidth={1.8} />
+              <div className="relative mt-5 flex flex-wrap gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-green/10 px-3 py-1 text-xs font-bold text-green">
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  {t("trust.verified")}
                 </span>
-                <div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-black tabular-nums text-green sm:text-4xl">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-bold text-gold">
+                  <Star className="h-3.5 w-3.5" />
+                  {t("trust.trusted")}
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Providers */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative overflow-hidden rounded-[2rem] border border-gold/30 bg-gradient-to-br from-cream via-cream to-gold/10 p-7 shadow-card backdrop-blur-sm sm:p-9"
+            >
+              <div className="pointer-events-none absolute -end-10 -top-10 h-40 w-40 rounded-full bg-gold/10 blur-3xl" />
+              <div className="relative flex items-start gap-5">
+                <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-green text-cream shadow-lg shadow-green/20 ring-1 ring-green/20">
+                  <Users className="h-6 w-6" strokeWidth={1.8} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-4xl font-black tabular-nums text-green sm:text-5xl">
                       <AnimatedCounter value={80} />
                     </span>
-                    <span className="text-2xl font-black text-gold sm:text-3xl">+</span>
+                    <span className="text-3xl font-black text-gold sm:text-4xl">+</span>
                   </div>
-                  <p className={`mt-1 text-sm font-bold text-green/85 ${ar}`}>
+                  <p className={`mt-1 text-base font-bold text-green/90 ${ar}`}>
                     {t("trust.providers.label")}
                   </p>
-                  <p className={`mt-1 text-xs leading-relaxed text-foreground/60 ${ar}`}>
+                  <p className={`mt-2 text-sm leading-relaxed text-foreground/60 ${ar}`}>
                     {t("trust.providers.desc")}
                   </p>
                 </div>
               </div>
-
-              {/* Customers — symbolic only */}
-              <div className="flex flex-col justify-center gap-3.5 border-t border-gold/20 bg-green/[0.04] px-6 py-7 sm:px-8 md:border-t-0">
-                <div
-                  aria-hidden
-                  className={`flex items-center ${isAr ? "flex-row-reverse justify-end" : ""}`}
-                >
-                  {AVATAR_ICONS.map((Icon, i) => (
-                    <motion.span
-                      key={i}
-                      initial={{ opacity: 0, scale: 0.7, y: 8 }}
-                      whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-60px" }}
-                      transition={{ duration: 0.45, delay: i * 0.09, ease: [0.22, 1, 0.36, 1] }}
-                      className={`-ms-3 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-cream shadow-soft first:ms-0 ${AVATAR_STYLES[i]}`}
-                    >
-                      <Icon style={{ width: 18, height: 18 }} strokeWidth={1.8} />
-                    </motion.span>
-                  ))}
-                  <motion.span
-                    initial={{ opacity: 0, scale: 0.7, y: 8 }}
-                    whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-60px" }}
-                    transition={{ duration: 0.45, delay: AVATAR_ICONS.length * 0.09, ease: [0.22, 1, 0.36, 1] }}
-                    className="-ms-3 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-cream bg-gold/25 text-green shadow-soft"
-                  >
-                    <Plus className="h-4 w-4" strokeWidth={2.6} />
-                  </motion.span>
-                </div>
-                <p className={`text-sm font-bold leading-[1.9] text-green/90 sm:text-base ${ar}`}>
-                  {t("trust.customers.label")}
-                </p>
+              <div className="relative mt-5 flex flex-wrap gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-green/10 px-3 py-1 text-xs font-bold text-green">
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  {t("trust.verified")}
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-bold text-gold">
+                  <Star className="h-3.5 w-3.5" />
+                  {t("trust.trusted")}
+                </span>
               </div>
-            </div>
+            </motion.div>
           </div>
         </Reveal>
       </div>
