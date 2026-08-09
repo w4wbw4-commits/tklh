@@ -50,9 +50,6 @@ export const OccasionsSection = () => {
       <div className="relative mx-auto max-w-6xl">
         <Reveal>
           <div className="text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-xs font-bold text-foreground backdrop-blur sm:text-sm">
-              {t("occasions.badge")}
-            </span>
             <h2 className={`mt-5 text-balance text-2xl font-black leading-[1.5] text-green sm:text-3xl md:text-4xl ${ar}`}>
               {t("occasions.titlePrefix")}{" "}
               <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text pb-1 leading-[1.5] text-transparent">
