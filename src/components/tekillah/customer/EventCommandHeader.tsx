@@ -39,7 +39,7 @@ const Ring = ({ value, label }: { value: number; label: string }) => {
   const r = 42;
   const c = 2 * Math.PI * r;
   return (
-    <div className="relative grid h-[122px] w-[122px] shrink-0 place-items-center">
+    <div className="relative grid h-24 w-24 shrink-0 place-items-center sm:h-[122px] sm:w-[122px]">
       <svg viewBox="0 0 100 100" className="h-full w-full -rotate-90">
         <circle cx="50" cy="50" r={r} fill="none" stroke="hsl(var(--green) / 0.14)" strokeWidth="5" />
         <motion.circle
@@ -215,7 +215,7 @@ export const EventCommandHeader = ({
       </motion.section>
 
       {/* Metrics */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <Metric
           label={t("customer.command.metrics.guests")}
           value={`${fmtNumber(c.guestsConfirmed)} / ${fmtNumber(c.guestsTotal)}`}

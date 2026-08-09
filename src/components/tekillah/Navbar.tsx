@@ -152,7 +152,7 @@ export const Navbar = () => {
               type="button"
               onClick={toggleLang}
               aria-label={isAr ? "Switch to English" : "التبديل إلى العربية"}
-              className="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide transition hover:bg-white/10"
+              className="hidden items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide transition hover:bg-white/10 sm:inline-flex"
               style={{ borderColor: "hsl(var(--gold) / 0.5)", color: "hsl(var(--cream))" }}
             >
               <Globe className="h-3.5 w-3.5" />
