@@ -155,20 +155,7 @@ const Dashboard = () => {
             </div>
           ) : (
             <div className="space-y-8">
-              <EventCommandHeader
-                event={activeEvent}
-                userName={
-                  (user.user_metadata?.full_name as string | undefined) ??
-                  user.email?.split("@")[0] ??
-                  null
-                }
-                onOpenTab={setTab}
-              />
-
-              {/* Overview always lives at the top */}
-              <EventOverview event={activeEvent} />
-
-              {/* Full tab bar controls the detailed sections below */}
+              {/* Full tab bar sits at the top of the dashboard page */}
               <Tabs value={tab} onValueChange={setTab} className="w-full">
                 <TabsList className="grid h-auto w-full grid-cols-2 gap-1 rounded-2xl p-1 sm:grid-cols-5">
                   {[
@@ -184,7 +171,19 @@ const Dashboard = () => {
                   ))}
                 </TabsList>
 
-                <div className="mt-8">
+                <div className="mt-8 space-y-8">
+                  <EventCommandHeader
+                    event={activeEvent}
+                    userName={
+                      (user.user_metadata?.full_name as string | undefined) ??
+                      user.email?.split("@")[0] ??
+                      null
+                    }
+                    onOpenTab={setTab}
+                  />
+
+                  <EventOverview event={activeEvent} />
+
                   <TabsContent value="timeline"><EventTimeline event={activeEvent} /></TabsContent>
                   <TabsContent value="bookings"><BookingsTimeline event={activeEvent} /></TabsContent>
                   <TabsContent value="guests"><GuestManager event={activeEvent} /></TabsContent>
