@@ -173,24 +173,24 @@ export const UpcomingFeatures = () => {
                     {t("upcoming.demo.inst.total", { currency: t("common.currency") })}
                   </span>
                 </div>
-                <div className="mt-3 flex flex-col gap-1.5">
+                <div className="mt-3 flex flex-col gap-1">
                   {Array.from({ length: 12 }, (_, idx) => {
                     const n = idx + 1;
                     const active = n === 1;
                     return (
                       <div
                         key={n}
-                        className="flex items-center justify-between rounded-md px-2.5 py-1.5"
+                        className="flex items-center justify-between rounded-md px-2 py-1"
                         style={{
                           border: active ? goldHair : creamHair,
                           backgroundColor: active ? "hsl(var(--cream))" : "transparent",
                           color: active ? "hsl(var(--green))" : "hsl(var(--cream) / 0.78)",
                         }}
                       >
-                        <span className="text-[11px] font-bold opacity-80">
+                        <span className="text-[10px] font-bold opacity-80">
                           {n} {t("upcoming.demo.inst.of")}
                         </span>
-                        <span className="font-display text-[12px] font-black tabular-nums">
+                        <span className="font-display text-[11px] font-black tabular-nums">
                           {t("upcoming.demo.inst.per")}
                         </span>
                       </div>
