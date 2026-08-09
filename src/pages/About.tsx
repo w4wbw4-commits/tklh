@@ -1,42 +1,37 @@
 // ---------------------------------------------------------------------------
 // /about — "عن منصة تِكله"
-// Premium standalone page detailing platform identity and digital facilities.
-// Uses the project's semantic tokens (green / gold / cream) and the same
-// motion + Arabic-pattern language as the home page so it feels native.
+// Rebuilt in the "luxury invitation" language: paper cream, velvet green,
+// antique-gold hairlines, official chair mark (never drawn in code), no
+// sparkle icons, mobile-first spacing and type.
 // ---------------------------------------------------------------------------
 import { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
-  Sparkles,
-  CalendarCheck,
-  LayoutDashboard,
-  ShieldCheck,
-  ArrowLeft,
-  ArrowRight,
-  Check,
-} from "lucide-react";
+import { CalendarCheck, LayoutDashboard, ShieldCheck, Check } from "lucide-react";
 import { Navbar } from "@/components/tekillah/Navbar";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
-import { ArabicPattern } from "@/components/tekillah/ArabicPattern";
 import { Reveal } from "@/components/tekillah/Reveal";
 import { SEO } from "@/components/SEO";
+import chairMark from "@/assets/tklh-chair-mark.png.asset.json";
 
 const Footer = lazy(() =>
   import("@/components/tekillah/Footer").then((m) => ({ default: m.Footer })),
 );
 
 const FACILITY_ICONS = [CalendarCheck, LayoutDashboard, ShieldCheck] as const;
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 interface FacilityI18n { title: string; desc: string; points: string[] }
 
 const About = () => {
   const { t, i18n } = useTranslation();
-  const isAr = i18n.language === "ar";
+  const isAr = i18n.language?.startsWith("ar");
+  const ar = isAr ? "font-arabic" : "";
   const facilities = t("aboutPage.facilities", { returnObjects: true }) as FacilityI18n[];
+
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-paper" dir={isAr ? "rtl" : "ltr"}>
       <SEO
         title={t("aboutPage.seoTitle")}
         description={t("aboutPage.seoDesc")}
@@ -45,38 +40,48 @@ const About = () => {
       <ScrollProgress />
       <Navbar />
 
-      {/* ──────────────── Hero ──────────────── */}
-      <section className="relative overflow-hidden bg-hero-warm px-6 pb-16 pt-36 sm:px-8 sm:pb-20 sm:pt-44">
-        <ArabicPattern opacity={0.05} />
+      {/* ──────────────── Hero — invitation card ──────────────── */}
+      <section className="bg-paper px-5 pb-14 pt-28 sm:px-8 sm:pb-20 sm:pt-40">
         <div
-          aria-hidden
-          className="pointer-events-none absolute -top-32 left-1/2 h-[460px] w-[460px] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
-          style={{ background: "radial-gradient(circle, hsl(var(--gold)/0.35), transparent 70%)" }}
-        />
-
-        <div className="relative mx-auto max-w-4xl text-center">
+          className="mx-auto max-w-3xl px-5 py-12 text-center sm:px-12 sm:py-16"
+          style={{ border: "1px solid hsl(var(--gold) / 0.45)", borderRadius: 6 }}
+        >
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
-              <Sparkles className="h-4 w-4 text-gold" strokeWidth={2} />
-              {t("aboutPage.heroBadge")}
-            </span>
+            <img
+              src={chairMark.url}
+              alt=""
+              aria-hidden
+              className="mx-auto mb-6 h-14 w-14 object-contain opacity-85 sm:h-20 sm:w-20"
+              draggable={false}
+            />
 
-            <h1 className="mt-6 font-arabic text-5xl font-black leading-[1.3] text-green md:text-6xl lg:text-7xl">
+            <p
+              className={`text-[11px] font-bold uppercase tracking-[0.28em] sm:text-xs ${ar}`}
+              style={{ color: "hsl(var(--gold))" }}
+            >
+              {t("aboutPage.heroBadge")}
+            </p>
+
+            <h1
+              className={`mt-4 text-balance font-display text-3xl font-black leading-[1.35] sm:text-5xl md:text-6xl ${ar}`}
+              style={{ color: "hsl(var(--green))" }}
+            >
               {t("aboutPage.heroTitlePart1")}{" "}
-              <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text leading-[1.3] text-transparent">
-                {t("aboutPage.heroTitlePart2")}
-              </span>
+              <span style={{ color: "hsl(var(--wine))" }}>{t("aboutPage.heroTitlePart2")}</span>
             </h1>
 
-            <div className="mx-auto mt-6 flex items-center justify-center gap-3">
-              <span className="h-px w-16 bg-gold/60" />
-              <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-              <span className="h-px w-16 bg-gold/60" />
+            <div className="mx-auto mt-7 flex items-center justify-center gap-3" aria-hidden>
+              <span className="h-px w-12 sm:w-20" style={{ background: "hsl(var(--gold) / 0.5)" }} />
+              <span className="h-1 w-1 rounded-full" style={{ background: "hsl(var(--gold))" }} />
+              <span className="h-px w-12 sm:w-20" style={{ background: "hsl(var(--gold) / 0.5)" }} />
             </div>
 
-            <p className="mx-auto mt-8 max-w-3xl font-arabic text-lg leading-[2] text-foreground/85 sm:text-xl md:text-2xl">
+            <p
+              className={`mx-auto mt-7 max-w-2xl text-[15px] leading-[2.05] sm:text-lg md:text-xl ${ar}`}
+              style={{ color: "hsl(var(--brown))" }}
+            >
               {t("aboutPage.heroIntro")}{" "}
-              <span className="font-black text-green">
+              <span className="font-bold" style={{ color: "hsl(var(--green))" }}>
                 {t("aboutPage.heroIntroHighlight")}
               </span>
             </p>
@@ -84,84 +89,104 @@ const About = () => {
         </div>
       </section>
 
-
       {/* ──────────────── Facilities ──────────────── */}
-      <section
-        id="facilities"
-        className="relative overflow-hidden bg-background px-6 py-20 sm:px-8 sm:py-24"
-      >
-        <ArabicPattern opacity={0.035} />
-
-        <div className="relative mx-auto max-w-6xl">
+      <section id="facilities" className="bg-paper px-5 pb-20 sm:px-8 sm:pb-28">
+        <div className="mx-auto max-w-6xl">
           <Reveal>
             <div className="text-center">
-              <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-cream/80 px-4 py-1.5 text-sm font-bold text-foreground backdrop-blur">
-                <Sparkles className="h-4 w-4 text-gold" strokeWidth={2} />
+              <p
+                className={`text-[11px] font-bold uppercase tracking-[0.28em] sm:text-xs ${ar}`}
+                style={{ color: "hsl(var(--gold))" }}
+              >
                 {t("aboutPage.facilitiesBadge")}
-              </span>
-              <h2 className="mt-5 font-arabic text-4xl font-black leading-[1.4] text-green md:text-5xl">
+              </p>
+              <h2
+                className={`mt-3 text-balance font-display text-2xl font-black leading-[1.4] sm:text-4xl ${ar}`}
+                style={{ color: "hsl(var(--green))" }}
+              >
                 {t("aboutPage.facilitiesTitlePart1")}{" "}
-                <span className="inline-block bg-gradient-to-l from-green to-gold bg-clip-text leading-[1.4] text-transparent">
+                <span style={{ color: "hsl(var(--gold))" }}>
                   {t("aboutPage.facilitiesTitlePart2")}
                 </span>
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl font-arabic leading-[1.95] text-foreground/65 sm:text-lg">
+              <p
+                className={`mx-auto mt-4 max-w-2xl text-[15px] leading-[1.95] sm:text-base ${ar}`}
+                style={{ color: "hsl(var(--brown-soft))" }}
+              >
                 {t("aboutPage.facilitiesSubtitle")}
               </p>
             </div>
           </Reveal>
 
-
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 md:grid-cols-3">
             {facilities.map((f, i) => {
               const Icon = FACILITY_ICONS[i] ?? CalendarCheck;
               return (
-                <Reveal key={i} delay={0.08 + i * 0.1}>
+                <Reveal key={i} delay={0.06 + i * 0.08}>
                   <motion.article
-                    whileHover={{ y: -8 }}
-                    transition={{ type: "spring", stiffness: 220, damping: 18 }}
-                    className="group relative h-full overflow-hidden rounded-3xl border-2 border-gold/25 bg-cream/80 p-7 shadow-card backdrop-blur-md transition-all duration-500 hover:border-gold/70 hover:bg-cream hover:shadow-[0_25px_60px_-20px_hsl(var(--gold)/0.45)]"
+                    whileHover={{ y: -4 }}
+                    transition={{ duration: 0.4, ease: EASE }}
+                    className="group h-full px-5 py-6 sm:px-6 sm:py-7"
+                    style={{
+                      border: "1px solid hsl(var(--gold) / 0.4)",
+                      borderRadius: 6,
+                      background: "hsl(var(--cream))",
+                    }}
                   >
-                    <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold/15 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+                    <div className="flex items-center justify-between gap-3">
+                      <span
+                        className="inline-flex h-11 w-11 items-center justify-center"
+                        style={{
+                          border: "1px solid hsl(var(--gold) / 0.45)",
+                          borderRadius: 4,
+                          color: "hsl(var(--gold))",
+                        }}
+                      >
+                        <Icon className="h-5 w-5" strokeWidth={1.6} />
+                      </span>
+                      <span
+                        className="font-display text-sm font-black tabular-nums"
+                        style={{ color: "hsl(var(--gold) / 0.7)" }}
+                      >
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+
+                    <h3
+                      className={`mt-5 font-display text-lg font-black leading-snug sm:text-xl ${ar}`}
+                      style={{ color: "hsl(var(--green))" }}
+                    >
+                      {f.title}
+                    </h3>
+                    <p
+                      className={`mt-2.5 text-[14px] leading-[1.9] ${ar}`}
+                      style={{ color: "hsl(var(--brown-soft))" }}
+                    >
+                      {f.desc}
+                    </p>
+
                     <div
+                      className="mt-5 h-px w-full"
+                      style={{ background: "hsl(var(--gold) / 0.35)" }}
                       aria-hidden
-                      className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full opacity-50 blur-3xl"
-                      style={{ background: "radial-gradient(circle, hsl(var(--gold)/0.45), transparent 70%)" }}
                     />
 
-                    <div className="relative">
-                      <span className="absolute left-1 top-1 font-wordmark text-xs font-black text-gold/60">
-                        ٠{i + 1}
-                      </span>
-
-                      <motion.span
-                        whileHover={{ rotate: -6, scale: 1.08 }}
-                        transition={{ type: "spring", stiffness: 240, damping: 14 }}
-                        className="inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/40 bg-gradient-to-br from-gold/25 to-gold/5 text-gold shadow-soft"
-                      >
-                        <Icon className="h-6 w-6" strokeWidth={1.8} />
-                      </motion.span>
-
-                      <h3 className="mt-5 font-arabic text-xl font-black text-green sm:text-2xl">
-                        {f.title}
-                      </h3>
-                      <p className="mt-3 font-arabic text-[15px] leading-[1.9] text-foreground/75">
-                        {f.desc}
-                      </p>
-
-                      <div className="mt-5 h-px w-full bg-gradient-to-l from-transparent via-gold/40 to-transparent" />
-
-                      <ul className="mt-5 space-y-2.5">
-                        {f.points.map((p, j) => (
-                          <li key={j} className="flex items-center gap-2 font-arabic text-sm text-foreground/80">
-                            <Check className="h-4 w-4 shrink-0 text-gold" strokeWidth={2.6} />
-                            <span>{p}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      <div className="mt-6 h-0.5 w-12 rounded-full bg-gradient-to-l from-green to-gold transition-all duration-500 group-hover:w-24" />
-                    </div>
+                    <ul className="mt-4 space-y-2.5">
+                      {f.points.map((p, j) => (
+                        <li
+                          key={j}
+                          className={`flex items-center gap-2 text-[13.5px] ${ar}`}
+                          style={{ color: "hsl(var(--brown))" }}
+                        >
+                          <Check
+                            className="h-3.5 w-3.5 shrink-0"
+                            strokeWidth={2.6}
+                            style={{ color: "hsl(var(--gold))" }}
+                          />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </motion.article>
                 </Reveal>
               );
@@ -169,27 +194,34 @@ const About = () => {
           </div>
 
           {/* CTA */}
-          <Reveal delay={0.3}>
-            <div className="mt-16 flex flex-col items-center gap-4 text-center">
-              <p className="font-arabic text-lg font-bold text-green sm:text-xl">
+          <Reveal delay={0.2}>
+            <div className="mt-14 text-center sm:mt-20">
+              <p
+                className={`font-display text-lg font-black sm:text-2xl ${ar}`}
+                style={{ color: "hsl(var(--green))" }}
+              >
                 {t("aboutPage.ctaTitle")}
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-3">
+              <div className="mt-6 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
                 <Link
                   to="/planner"
-                  className="group inline-flex items-center gap-2 rounded-full border-2 border-gold bg-green px-8 py-3.5 font-arabic text-base font-bold text-primary-foreground shadow-deep transition-all hover:-translate-y-0.5 hover:bg-green-mid hover:shadow-[0_25px_70px_-20px_hsl(var(--gold)/0.55)]"
+                  className={`inline-flex min-h-[48px] items-center justify-center px-8 text-[15px] font-bold transition-colors ${ar}`}
+                  style={{
+                    background: "hsl(var(--green))",
+                    color: "hsl(var(--cream))",
+                    borderRadius: 4,
+                  }}
                 >
-                  <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
                   {t("aboutPage.ctaPlan")}
-                  {isAr ? (
-                    <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-                  ) : (
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  )}
                 </Link>
                 <Link
                   to="/packages"
-                  className="inline-flex items-center justify-center rounded-full border border-green/30 bg-cream/80 px-7 py-3.5 font-arabic text-base font-bold text-green backdrop-blur transition-colors hover:bg-cream"
+                  className={`inline-flex min-h-[48px] items-center justify-center px-8 text-[15px] font-bold transition-colors ${ar}`}
+                  style={{
+                    border: "1px solid hsl(var(--green) / 0.35)",
+                    color: "hsl(var(--green))",
+                    borderRadius: 4,
+                  }}
                 >
                   {t("aboutPage.ctaPackages")}
                 </Link>
@@ -198,7 +230,6 @@ const About = () => {
           </Reveal>
         </div>
       </section>
-
 
       <Suspense fallback={<div className="min-h-[30vh]" aria-hidden />}>
         <Footer />
