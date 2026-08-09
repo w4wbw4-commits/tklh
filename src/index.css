@@ -465,6 +465,7 @@
   }
   .bg-hero-warm { background-color: hsl(var(--cream)); }
   .text-gold { color: hsl(var(--gold)); }
+  .text-wine { color: hsl(var(--wine)); }
   .bg-gold { background-color: hsl(var(--gold)); }
   .bg-gold-soft { background-color: hsl(var(--gold-soft)); }
   .border-gold { border-color: hsl(var(--gold)); }
