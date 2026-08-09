@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
 import {
-  LogOut, LayoutDashboard, Map, Users, Receipt, Radio, Loader2, Plus, ListChecks,
+  LogOut, Map, Users, Receipt, Radio, Loader2, Plus, ListChecks,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -165,10 +165,13 @@ const Dashboard = () => {
                 onOpenTab={setTab}
               />
 
+              {/* Overview always lives at the top */}
+              <EventOverview event={activeEvent} />
+
+              {/* Full tab bar controls the detailed sections below */}
               <Tabs value={tab} onValueChange={setTab} className="w-full">
-                <TabsList className="grid h-auto w-full grid-cols-2 gap-1 rounded-2xl p-1 sm:grid-cols-6">
+                <TabsList className="grid h-auto w-full grid-cols-2 gap-1 rounded-2xl p-1 sm:grid-cols-5">
                   {[
-                    { v: "overview", Icon: LayoutDashboard },
                     { v: "timeline", Icon: Map },
                     { v: "bookings", Icon: ListChecks },
                     { v: "guests", Icon: Users },
@@ -182,7 +185,6 @@ const Dashboard = () => {
                 </TabsList>
 
                 <div className="mt-8">
-                  <TabsContent value="overview"><EventOverview event={activeEvent} /></TabsContent>
                   <TabsContent value="timeline"><EventTimeline event={activeEvent} /></TabsContent>
                   <TabsContent value="bookings"><BookingsTimeline event={activeEvent} /></TabsContent>
                   <TabsContent value="guests"><GuestManager event={activeEvent} /></TabsContent>
