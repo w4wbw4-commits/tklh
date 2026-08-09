@@ -155,8 +155,18 @@ const TekColumn = () => {
         {t("speed.journey.tekTag")}
       </p>
 
-      {/* one straight green road that arrives at the official chair */}
-      <div className="mt-6 flex items-center gap-3">
+      {/* one straight green road that arrives at the official chair (far side) */}
+      <div className="mt-7 flex items-center gap-3 pb-7">
+        <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: INK }} aria-hidden />
+        <motion.span
+          initial={{ scaleX: reduce ? 1 : 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={once}
+          transition={{ duration: T(0.7), ease: S_EASE, delay: T(0.1) }}
+          className="h-[2px] flex-1 origin-right"
+          style={{ backgroundColor: INK }}
+          aria-hidden
+        />
         <div className="relative shrink-0">
           <motion.span
             initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 1.15 }}
@@ -179,29 +189,21 @@ const TekColumn = () => {
             />
           </motion.span>
           <motion.span
-            initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 1.5 }}
+            initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 1.4 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={once}
             transition={{ duration: T(0.3), ease: S_EASE, delay: T(0.8) }}
-            className="absolute -bottom-1 end-full me-[-12px] whitespace-nowrap px-2 py-[3px] text-[10px] font-black"
+            className="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-[3px] text-[10px] font-black"
             style={{ color: "hsl(var(--cream))", backgroundColor: INK, borderRadius: 999 }}
           >
             {t("speed.journey.seal")}
           </motion.span>
         </div>
-        <motion.span
-          initial={{ scaleX: reduce ? 1 : 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={once}
-          transition={{ duration: T(0.7), ease: S_EASE, delay: T(0.1) }}
-          className="h-[2px] flex-1 origin-right"
-          style={{ backgroundColor: INK }}
-          aria-hidden
-        />
       </div>
-      <p className="mt-2 text-[12px] font-semibold sm:text-[12.5px]" style={{ color: "hsl(var(--brown) / 0.8)" }}>
+      <p className="mt-1 text-[12px] font-semibold sm:text-[12.5px]" style={{ color: "hsl(var(--brown) / 0.8)" }}>
         {t("speed.journey.sit")}
       </p>
+
 
       {/* three clean steps */}
       <ul className="mt-4 space-y-3.5">
