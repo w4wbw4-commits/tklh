@@ -13,16 +13,20 @@ const categoryIcons: Record<string, typeof Building2> = {
   dj: Music2, decor: Flower2, cars: Car,
 };
 
+const GREEN = "hsl(var(--green))";
+const CREAM = "hsl(var(--cream))";
+const WINE = "hsl(var(--wine))";
+
 export const EventDayMode = ({ event }: { event: EventRow }) => {
   const { t } = useTranslation();
   const [bookings, setBookings] = useState<BookingWithVendor[]>([]);
   const [progress, setProgress] = useState<Record<string, number>>({});
 
   const liveStatuses = [
-    { label: t("customer.day.live1"), classes: "bg-secondary text-foreground/65" },
-    { label: t("customer.day.live2"), classes: "bg-amber-100 text-amber-700" },
-    { label: t("customer.day.live3"), classes: "bg-primary/10 text-primary" },
-    { label: t("customer.day.live4"), classes: "bg-primary/15 text-primary" },
+    { label: t("customer.day.live1"), bg: "hsl(var(--secondary))", text: "hsl(var(--foreground) / 0.7)" },
+    { label: t("customer.day.live2"), bg: "hsl(var(--gold) / 0.12)", text: "hsl(var(--green))" },
+    { label: t("customer.day.live3"), bg: "hsl(var(--green) / 0.10)", text: GREEN },
+    { label: t("customer.day.live4"), bg: GREEN, text: CREAM },
   ];
 
   useEffect(() => {
@@ -52,11 +56,14 @@ export const EventDayMode = ({ event }: { event: EventRow }) => {
   return (
     <div className="space-y-6">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-        className="overflow-hidden rounded-3xl bg-gradient-olive p-6 text-primary-foreground shadow-luxury sm:p-8">
+        className="overflow-hidden rounded-3xl p-6 text-primary-foreground shadow-luxury sm:p-8"
+        style={{ backgroundColor: GREEN }}>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <motion.span animate={{ scale: [1, 1.4, 1], opacity: [1, 0.5, 1] }}
-              transition={{ repeat: Infinity, duration: 1.5 }} className="h-3 w-3 rounded-full bg-red-500" />
+              transition={{ repeat: Infinity, duration: 1.5 }}
+              className="h-3 w-3 rounded-full"
+              style={{ backgroundColor: WINE }} />
             <div>
               <div className="text-[10px] uppercase tracking-[0.3em] text-primary-foreground/70">
                 {t("customer.day.kicker")}
@@ -64,7 +71,8 @@ export const EventDayMode = ({ event }: { event: EventRow }) => {
               <h3 className="font-arabic text-xl font-semibold sm:text-2xl">{t("customer.day.title")}</h3>
             </div>
           </div>
-          <div className="inline-flex items-center gap-1 rounded-full bg-primary-foreground/10 px-3 py-1.5 text-xs">
+          <div className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs"
+            style={{ backgroundColor: "hsl(var(--cream) / 0.12)", color: CREAM }}>
             <Radio className="h-3.5 w-3.5" /> {t("customer.day.live")}
           </div>
         </div>
@@ -96,7 +104,8 @@ export const EventDayMode = ({ event }: { event: EventRow }) => {
                           transition={{ duration: 0.6 }} className="h-full bg-primary" />
                       </div>
                     </div>
-                    <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${status.classes}`}>
+                    <span className="rounded-full px-2.5 py-1 text-[11px] font-medium"
+                      style={{ backgroundColor: status.bg, color: status.text }}>
                       {status.label}
                     </span>
                   </div>
