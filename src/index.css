@@ -88,94 +88,93 @@
 
 @layer base {
   :root {
-    /* Brand surfaces — off-white */
-    --background: 60 20% 97%;           /* #f8f8f3 off-white */
-    --surface: 60 22% 96%;              /* #f5f5ee */
-    --cream: 60 30% 98%;                /* #fafaf5 */
-    --foreground: 151 43% 12%;          /* #163726 deep olive ink */
-    --text-muted: 151 15% 35%;
+    /* ===== TKLH — Invitation palette. FIVE colors only. =====
+       Velvet green #163726 · Deeper green #0E2119 · Paper cream #F1EBDD
+       Antique gold #A08553 (details only) · Deep wine #46232A (max twice)
+       Warm brown #3A2E24 (secondary text on cream)                     */
+    --background: 42 42% 91%;           /* #F1EBDD paper cream */
+    --surface: 42 42% 91%;
+    --cream: 42 42% 91%;
+    --foreground: 151 43% 15%;          /* #163726 velvet ink */
+    --text-muted: 27 23% 18%;           /* #3A2E24 warm brown */
 
-    /* Greens — brand identity #163726 */
+    /* Greens */
     --green: 151 43% 15%;               /* #163726 */
-    --green-mid: 151 30% 30%;
-    --green-light: 111 28% 71%;         /* #A7CAA1 sage accent */
+    --green-deep: 155 41% 9%;           /* #0E2119 */
+    --green-mid: 151 43% 15%;
+    --green-light: 151 43% 15%;
 
-    /* Sage — signature accent #A7CAA1 (replaces gold) */
-    --gold: 111 28% 71%;                /* #A7CAA1 */
-    --gold-soft: 111 30% 85%;
-    /* Antique brown — kept for sketch tonality */
-    --brown: 151 25% 25%;
-    --brown-soft: 111 20% 55%;
+    /* Antique gold — hairlines, numerals, kickers. Never a fill. */
+    --gold: 39 32% 48%;                 /* #A08553 */
+    --gold-soft: 39 32% 48%;
+    --wine: 348 33% 21%;                /* #46232A */
+    --brown: 27 23% 18%;                /* #3A2E24 */
+    --brown-soft: 27 23% 18%;
 
-    /* Problem / warm terracotta */
-    --problem: 14 65% 48%;
-    --problem-soft: 18 70% 88%;
+    --problem: 348 33% 21%;
+    --problem-soft: 42 42% 91%;
 
-    /* Cards & popovers */
-    --card: 60 25% 97%;
-    --card-foreground: 151 43% 13%;
-    --popover: 60 30% 98%;
-    --popover-foreground: 151 43% 13%;
+    --card: 42 42% 91%;
+    --card-foreground: 151 43% 15%;
+    --popover: 42 42% 91%;
+    --popover-foreground: 151 43% 15%;
 
-    /* Primary — premium dark green #163726 */
     --primary: 151 43% 15%;
-    --primary-foreground: 60 30% 98%;   /* off-white */
-    --primary-glow: 111 28% 71%;        /* sage glow */
-    --primary-deep: 151 45% 11%;
+    --primary-foreground: 42 42% 91%;
+    --primary-glow: 39 32% 48%;
+    --primary-deep: 151 43% 15%;
 
-    /* Secondary — sage #A7CAA1 */
-    --secondary: 111 28% 71%;
+    --secondary: 42 30% 87%;
     --secondary-foreground: 151 43% 15%;
 
-    --muted: 60 22% 94%;
-    --muted-foreground: 151 15% 35%;
+    --muted: 42 30% 87%;
+    --muted-foreground: 27 23% 18%;
 
-    --accent: 111 28% 71%;              /* #A7CAA1 */
-    --accent-foreground: 151 43% 15%;
+    --accent: 39 32% 48%;
+    --accent-foreground: 42 42% 91%;
 
-    --destructive: 0 75% 45%;
-    --destructive-foreground: 60 30% 98%;
-    --success: 140 41% 32%;
-    --success-foreground: 60 30% 98%;
+    --destructive: 348 33% 21%;
+    --destructive-foreground: 42 42% 91%;
+    --success: 151 43% 15%;
+    --success-foreground: 42 42% 91%;
 
-    --border: 111 18% 82%;
-    --input: 111 15% 84%;
+    --border: 39 32% 48%;
+    --input: 27 12% 72%;
     --ring: 151 43% 15%;
 
-    --radius: 1rem;
+    --radius: 0.5rem;
 
-    /* Gradients — warm + olive blend */
-    --gradient-hero: radial-gradient(ellipse at top right, hsl(var(--gold-soft) / 0.35), transparent 55%), radial-gradient(ellipse at bottom left, hsl(var(--green-light) / 0.5), transparent 55%);
-    --gradient-soft: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--surface)) 100%);
-    --gradient-olive: linear-gradient(135deg, hsl(var(--green)) 0%, hsl(var(--green-mid)) 100%);
-    --gradient-beige: linear-gradient(135deg, hsl(var(--surface)) 0%, hsl(var(--cream)) 100%);
-    --gradient-gold: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-soft)) 100%);
+    /* No gradients anywhere — these remain as flat fallbacks for legacy use. */
+    --gradient-hero: none;
+    --gradient-soft: none;
+    --gradient-olive: none;
+    --gradient-beige: none;
+    --gradient-gold: none;
 
-    /* Shadows */
-    --shadow-luxury: 0 20px 60px -20px hsl(var(--green) / 0.35);
-    --shadow-soft: 0 8px 30px -10px hsl(var(--green) / 0.18);
-    --shadow-card: 0 4px 20px -8px hsl(var(--green) / 0.12);
-    --shadow-card-hover: 0 12px 40px -12px hsl(var(--green) / 0.25);
+    /* Shadows — one short, quiet shadow only. */
+    --shadow-luxury: 0 2px 0 0 hsl(var(--green) / 0.10);
+    --shadow-soft: 0 1px 0 0 hsl(var(--green) / 0.08);
+    --shadow-card: none;
+    --shadow-card-hover: 0 2px 0 0 hsl(var(--gold) / 0.35);
 
-    /* Motion */
+    /* Motion — slow and confident */
     --ease-luxury: cubic-bezier(0.22, 1, 0.36, 1);
-    --transition-smooth: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    --transition-smooth: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 
     /* Sidebar */
-    --sidebar-background: 44 22% 92%;
-    --sidebar-foreground: 100 38% 14%;
+    --sidebar-background: 42 42% 91%;
+    --sidebar-foreground: 151 43% 15%;
     --sidebar-primary: 151 43% 15%;
-    --sidebar-primary-foreground: 44 38% 97%;
-    --sidebar-accent: 92 38% 83%;
+    --sidebar-primary-foreground: 42 42% 91%;
+    --sidebar-accent: 42 30% 87%;
     --sidebar-accent-foreground: 151 43% 15%;
-    --sidebar-border: 42 18% 80%;
+    --sidebar-border: 39 32% 48%;
     --sidebar-ring: 151 43% 15%;
 
-    /* Health indicator tokens — Deep Emerald (#043927) for positive states.
-       Used by the BudgetHealthIndicator and any future "good signal" UI. */
-    --health-emerald: 158 89% 9%;        /* #043927 */
-    --health-emerald-light: 158 55% 45%; /* readable on dark mode */
+    --health-emerald: 151 43% 15%;
+    --health-emerald-light: 39 32% 48%;
   }
+
 
   .dark {
     /* === Dark palette — refined for clarity & eye-comfort ===
