@@ -49,18 +49,13 @@ export const Navbar = () => {
     i18n.changeLanguage(isAr ? "en" : "ar");
   };
 
+  // Packages is hidden from navigation until the offering is live — a nav item
+  // that only says "soon" is noise.
   const navItems = [
     { key: "home", href: "/", type: "route" as const },
     { key: "about", href: "/about", type: "route" as const, labelOverride: t("nav.aboutFull") },
-    {
-      key: "packages",
-      href: "/packages",
-      type: "route" as const,
-      labelOverride: t("nav.packages"),
-      disabled: !isPrimaryAdmin,
-      badge: { ar: "قريباً", en: "Soon" },
-    },
   ];
+
 
 
   return (
