@@ -154,7 +154,7 @@ export const DashboardPreview = () => {
             <div className="relative mt-5">
               <div
                 className="absolute top-2 bottom-2 w-px"
-                style={{ backgroundColor: "hsl(var(--green) / 0.18)", [isRtl() ? "right" : "left"]: "11px" }}
+                style={{ backgroundColor: "hsl(var(--green) / 0.18)", [isRtl ? "right" : "left"]: "11px" }}
                 aria-hidden
               />
               <ul className="space-y-0">
@@ -165,7 +165,7 @@ export const DashboardPreview = () => {
                   return (
                     <motion.li
                       key={key}
-                      initial={{ opacity: 0, x: isRtl() ? 16 : -16 }}
+                      initial={{ opacity: 0, x: isRtl ? 16 : -16 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true, margin: "-40px" }}
                       transition={{ duration: 0.5, ease: EASE, delay: 0.2 + i * 0.1 }}
