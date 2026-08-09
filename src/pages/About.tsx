@@ -67,7 +67,7 @@ const About = () => {
               style={{ color: "hsl(var(--green))" }}
             >
               {t("aboutPage.heroTitlePart1")}{" "}
-              <span style={{ color: "hsl(var(--wine))" }}>{t("aboutPage.heroTitlePart2")}</span>
+              <span style={{ color: "hsl(var(--green))" }}>{t("aboutPage.heroTitlePart2")}</span>
             </h1>
 
             <div className="mx-auto mt-7 flex items-center justify-center gap-3" aria-hidden>
