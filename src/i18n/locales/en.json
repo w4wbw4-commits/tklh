@@ -202,8 +202,8 @@
         "rsvp": "RSVP"
       },
       "inst": {
-        "label": "Split over 12 years",
-        "of": "Year",
+        "label": "Split over 12 months",
+        "of": "Month",
         "total": "80,000 {{currency}}",
         "per": "6,667"
       },
