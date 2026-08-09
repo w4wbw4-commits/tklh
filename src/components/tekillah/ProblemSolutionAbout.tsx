@@ -196,7 +196,7 @@ const TekColumn = () => {
             className="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap px-2 py-[3px] text-[10px] font-black"
             style={{ color: "hsl(var(--cream))", backgroundColor: INK, borderRadius: 999 }}
           >
-            {t("speed.journey.seal")}
+            ✓
           </motion.span>
         </div>
       </div>
