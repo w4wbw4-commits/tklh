@@ -96,20 +96,20 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-soft">
-      <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-4">
+      <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3">
             <Logo />
-            <span className="hidden text-xs uppercase tracking-[0.2em] text-primary sm:inline">
+            <span className="hidden truncate text-xs tracking-[0.18em] text-primary/70 md:inline">
               {t("customer.kicker")}
             </span>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {events.length > 0 && (
               <select
                 value={activeEvent?.id ?? ""}
                 onChange={(e) => setActiveEvent(events.find((ev) => ev.id === e.target.value) ?? null)}
-                className="rounded-full border border-border bg-card px-3 py-2 text-sm text-foreground shadow-card focus:outline-none focus:ring-2 focus:ring-primary/30"
+                className="max-w-[9.5rem] truncate rounded-full border border-border bg-card px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 sm:max-w-none sm:text-sm"
               >
                 {events.map((ev) => (
                   <option key={ev.id} value={ev.id}>
@@ -120,18 +120,21 @@ const Dashboard = () => {
             )}
             <Button size="sm" onClick={() => setCreateOpen(true)}
               className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
-              <Plus className="me-1 h-4 w-4" /> {t("customer.newEvent")}
+              <Plus className="h-4 w-4 sm:me-1" />
+              <span className="hidden sm:inline">{t("customer.newEvent")}</span>
             </Button>
-            <Button variant="ghost" size="sm" asChild className="rounded-full">
+            <Button variant="ghost" size="sm" asChild className="hidden rounded-full sm:inline-flex">
               <Link to="/">{t("common.home")}</Link>
             </Button>
             <Button variant="ghost" size="sm" onClick={() => signOut().then(() => navigate("/"))}
               className="rounded-full text-destructive hover:bg-destructive/10">
-              <LogOut className="me-1 h-4 w-4" /> {t("common.logout")}
+              <LogOut className="h-4 w-4 sm:me-1" />
+              <span className="hidden sm:inline">{t("common.logout")}</span>
             </Button>
           </div>
         </div>
       </header>
+
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
