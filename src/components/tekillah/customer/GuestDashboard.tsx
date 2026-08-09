@@ -57,18 +57,8 @@ export const GuestDashboard = () => {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
-        {/* Faint metric frames — structure without fake data */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {[0, 1, 2, 3].map((i) => (
-            <div key={i} className="rounded-2xl px-4 py-5" style={hairline}>
-              <div className="h-2 w-16 rounded-full" style={{ backgroundColor: "hsl(var(--green) / 0.12)" }} />
-              <div className="mt-3 h-5 w-10 rounded-md" style={{ backgroundColor: "hsl(var(--green) / 0.08)" }} />
-            </div>
-          ))}
-        </div>
-
         {/* The six real tabs — clickable, same visitor state on each */}
-        <Tabs value={tab} onValueChange={setTab} className="mt-8 w-full">
+        <Tabs value={tab} onValueChange={setTab} className="w-full">
           <TabsList className="flex h-auto w-full gap-1 overflow-x-auto rounded-2xl p-1 sm:grid sm:grid-cols-6">
             {tabs.map(({ v, Icon }) => (
               <TabsTrigger key={v} value={v} className="shrink-0 gap-2 rounded-xl py-2">
@@ -77,6 +67,17 @@ export const GuestDashboard = () => {
             ))}
           </TabsList>
         </Tabs>
+
+        {/* Faint metric frames — structure without fake data */}
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="rounded-2xl px-4 py-5" style={hairline}>
+              <div className="h-2 w-16 rounded-full" style={{ backgroundColor: "hsl(var(--green) / 0.12)" }} />
+              <div className="mt-3 h-5 w-10 rounded-md" style={{ backgroundColor: "hsl(var(--green) / 0.08)" }} />
+            </div>
+          ))}
+        </div>
+
 
         {/* The emptiness is the message */}
         <section className="mt-10 rounded-3xl px-6 py-16 text-center sm:px-12 sm:py-24"
