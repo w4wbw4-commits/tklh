@@ -202,8 +202,10 @@
         "rsvp": "RSVP"
       },
       "inst": {
-        "label": "Split it into 4 payments",
-        "of": "Payment"
+        "label": "Split over 12 years",
+        "of": "Year",
+        "total": "80,000 {{currency}}",
+        "per": "6,667"
       },
       "payLabel": "Supported soon"
     }
