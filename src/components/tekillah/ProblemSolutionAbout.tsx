@@ -199,7 +199,7 @@ const TekColumn = () => {
           whileInView={{ scaleX: 1 }}
           viewport={once}
           transition={{ duration: T(0.7), ease: S_EASE, delay: T(0.1) }}
-          className="h-[2px] flex-1 origin-right"
+          className="h-[2.5px] flex-1 origin-center"
           style={{ backgroundColor: INK }}
           aria-hidden
         />
