@@ -1,13 +1,10 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import {
-  CheckCircle2,
-  Clock,
-  AlertCircle,
-} from "lucide-react";
 
 type StepKey = "venue" | "catering" | "photography" | "florals" | "night";
+
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 const TIMELINE: { key: StepKey; status: "done" | "active" | "todo" }[] = [
   { key: "venue", status: "done" },
@@ -17,6 +14,10 @@ const TIMELINE: { key: StepKey; status: "done" | "active" | "todo" }[] = [
   { key: "night", status: "todo" },
 ];
 
+/**
+ * DashboardPreview — split screen: editorial text on one side, the panel
+ * inside a 1px gold frame on the other. No browser mock-up, no soft shadows.
+ */
 export const DashboardPreview = () => {
   const { t } = useTranslation();
 
@@ -31,99 +32,115 @@ export const DashboardPreview = () => {
   );
 
   return (
-    <section id="dashboard" className="py-24 sm:py-32">
-      <div className="mx-auto max-w-6xl px-6">
+    <section
+      id="dashboard"
+      className="px-5 py-20 sm:px-8 sm:py-28"
+      style={{ borderTop: "1px solid hsl(var(--gold) / 0.45)" }}
+    >
+      <div className="mx-auto grid max-w-6xl items-start gap-12 md:grid-cols-[0.85fr_1.15fr] md:gap-16">
+        {/* Text side */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mx-auto max-w-2xl text-center"
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.75, ease: EASE }}
+          className="md:sticky md:top-28"
         >
-          <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-primary sm:text-xs sm:tracking-[0.24em]">
-            {t("dashboardPreview.kicker")}
-          </span>
-          <h2 className="mt-4 font-arabic text-balance text-2xl font-semibold leading-[1.45] sm:text-4xl md:text-5xl">
+          <span className="kicker">TKLH · EVENT PLANNING</span>
+          <h2 className="font-display mt-5 text-balance text-2xl font-black leading-[1.4] text-green sm:text-4xl">
             {t("dashboardPreview.title")}
           </h2>
-          <p className="mt-4 text-muted-foreground sm:text-lg">
+          <p className="mt-5 max-w-md text-[15px] leading-[1.95] text-[hsl(var(--brown))] sm:text-base">
             {t("dashboardPreview.subtitle")}
           </p>
+          <span
+            className="mt-7 inline-flex items-center rounded-full px-4 py-1.5 text-[13px] font-bold"
+            style={{
+              border: "1px solid hsl(var(--gold) / 0.55)",
+              color: "hsl(var(--gold))",
+            }}
+          >
+            {t("dashboardPreview.kicker")}
+          </span>
         </motion.div>
 
+        {/* Panel side — gold hairline frame */}
         <motion.div
-          initial={{ opacity: 0, y: 32 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-14 overflow-hidden rounded-3xl border border-border bg-card shadow-luxury"
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: EASE, delay: 0.15 }}
+          className="rounded-md"
+          style={{ border: "1px solid hsl(var(--gold) / 0.5)" }}
         >
-          {/* Top bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border bg-gradient-beige px-6 py-5 sm:px-8">
-            <div>
-              <div className="font-arabic text-lg font-semibold">
-                {t("dashboardPreview.eventTitle")}
-              </div>
-              <div className="mt-1 text-sm text-muted-foreground" dir="ltr">
-                {t("dashboardPreview.eventMeta")}
-              </div>
+          <div
+            className="flex flex-wrap items-baseline justify-between gap-3 px-6 py-5 sm:px-8"
+            style={{ borderBottom: "1px solid hsl(var(--gold) / 0.4)" }}
+          >
+            <div className="font-display text-lg font-black text-green">
+              {t("dashboardPreview.eventTitle")}
+            </div>
+            <div className="text-[13px] text-[hsl(var(--brown))]" dir="ltr">
+              {t("dashboardPreview.eventMeta")}
             </div>
           </div>
 
-          <div className="p-6 sm:p-8">
-            <div className="mb-6 flex items-center justify-between">
-              <h3 className="font-arabic text-lg font-semibold">
+          <div className="px-6 py-6 sm:px-8 sm:py-8">
+            <div className="mb-6 flex items-baseline justify-between">
+              <h3 className="font-display text-base font-black text-green">
                 {t("dashboardPreview.timelineTitle")}
               </h3>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-[13px] text-[hsl(var(--brown))]">
                 {t("dashboardPreview.timeRemaining")}
               </span>
             </div>
 
-            <div className="relative space-y-5 ps-6">
-              <div className="absolute end-auto start-[10px] top-2 bottom-2 w-px bg-border" />
-              {timeline.map((row, i) => {
-                const Icon =
-                  row.status === "done"
-                    ? CheckCircle2
-                    : row.status === "active"
-                    ? Clock
-                    : AlertCircle;
-                const color =
-                  row.status === "done"
-                    ? "text-primary bg-primary/10"
-                    : row.status === "active"
-                    ? "text-primary-deep bg-secondary"
-                    : "text-muted-foreground bg-muted";
-
-                return (
-                  <motion.div
-                    key={row.key}
-                    initial={{ opacity: 0, x: -8 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.08 }}
-                    className="relative flex items-start gap-4"
-                  >
-                    <div
-                      className={`absolute -start-6 grid h-5 w-5 place-items-center rounded-full ring-4 ring-card ${color}`}
+            <div>
+              {timeline.map((row, i) => (
+                <motion.div
+                  key={row.key}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: EASE, delay: i * 0.1 }}
+                  className="flex items-center justify-between gap-4 py-4"
+                  style={{ borderTop: "1px solid hsl(var(--gold) / 0.32)" }}
+                >
+                  <div className="flex min-w-0 items-center gap-4">
+                    <span
+                      className="font-display shrink-0 text-sm font-black tabular-nums"
+                      style={{ color: "hsl(var(--gold))" }}
                     >
-                      <Icon className="h-3 w-3" />
-                    </div>
-                    <div className="flex-1 rounded-xl border border-border bg-card p-4">
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="font-arabic text-sm font-semibold">{row.label}</div>
-                        <span className="text-xs text-muted-foreground">{row.time}</span>
+                      {`0${i + 1}`}
+                    </span>
+                    <div className="min-w-0">
+                      <div
+                        className="font-display truncate text-[15px] font-bold"
+                        style={{
+                          color:
+                            row.status === "todo"
+                              ? "hsl(var(--brown) / 0.65)"
+                              : "hsl(var(--green))",
+                        }}
+                      >
+                        {row.label}
                       </div>
                       {row.status === "active" && (
-                        <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-primary-deep">
+                        <span
+                          className="mt-1.5 inline-flex rounded-full px-2.5 py-0.5 text-[12px] font-bold"
+                          style={{
+                            backgroundColor: "hsl(var(--green))",
+                            color: "hsl(var(--cream))",
+                          }}
+                        >
                           {t("dashboardPreview.needsAction")}
-                        </div>
+                        </span>
                       )}
                     </div>
-                  </motion.div>
-                );
-              })}
+                  </div>
+                  <span className="shrink-0 text-[13px] text-[hsl(var(--brown))]">{row.time}</span>
+                </motion.div>
+              ))}
             </div>
           </div>
         </motion.div>

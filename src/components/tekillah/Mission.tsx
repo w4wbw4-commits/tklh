@@ -1,19 +1,18 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import {
-  SketchIconRings,
-} from "./SketchArt";
+
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Mission — "رسالتنا للمجتمع"
- * Closing emotional beat before the footer. Decorative sketch icons drift
- * in the corners while the content stays untouched in the center.
+ * Mission — the site's SECOND and final dark moment. One big centered
+ * statement on velvet green, generous emptiness, gold closing line.
  */
 export const Mission = () => {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language?.startsWith("ar");
+  const ar = isAr ? "font-arabic" : "";
   const reveal = {
-    initial: { opacity: 0, y: 24 },
+    initial: { opacity: 0, y: 14 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, margin: "-80px" },
   };
@@ -22,28 +21,14 @@ export const Mission = () => {
     <section
       id="mission"
       dir={isAr ? "rtl" : "ltr"}
-      className="relative overflow-hidden py-24 sm:py-32"
+      className="bg-velvet relative overflow-hidden px-5 py-24 sm:px-8 sm:py-36"
     >
-      {/* Layered warm gradient background */}
-      <div
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            "radial-gradient(ellipse at top right, hsl(var(--gold) / 0.18), transparent 55%), radial-gradient(ellipse at bottom left, hsl(var(--primary) / 0.12), transparent 55%), linear-gradient(180deg, hsl(var(--background)), hsl(var(--secondary) / 0.6))",
-        }}
-      />
-
-      <div className="relative mx-auto max-w-4xl px-6 text-center">
-        <motion.div {...reveal} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
-          <div className="mx-auto mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-gold to-gold/60 shadow-luxury">
-            <SketchIconRings className="h-10 w-14" />
-          </div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-background/70 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-primary backdrop-blur sm:text-xs sm:tracking-[0.24em]">
-            {t("mission.kicker")}
-          </span>
+      <div className="relative z-10 mx-auto max-w-3xl text-center">
+        <motion.div {...reveal} transition={{ duration: 0.75, ease: EASE }}>
+          <span className="kicker">TKLH · EVENT PLANNING</span>
           <h2
-            className="mt-5 font-wordmark text-balance text-2xl font-bold leading-[1.45] sm:text-4xl md:text-5xl"
-            style={{ color: "hsl(var(--primary-deep))" }}
+            className={`font-display mt-6 text-balance text-2xl font-black leading-[1.4] sm:text-4xl md:text-5xl ${ar}`}
+            style={{ color: "hsl(var(--cream))" }}
           >
             {t("mission.title")}
           </h2>
@@ -51,33 +36,47 @@ export const Mission = () => {
 
         <motion.div
           {...reveal}
-          transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10 rounded-3xl border border-primary/15 bg-background/70 p-8 shadow-card backdrop-blur md:p-12"
+          transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
+          className="mt-12"
         >
-          <p className={`text-xl leading-[2] text-foreground/85 sm:text-2xl ${isAr ? "font-arabic" : ""}`}>
+          <p
+            className={`text-lg leading-[2.1] sm:text-xl ${ar}`}
+            style={{ color: "hsl(var(--cream) / 0.85)" }}
+          >
             {t("mission.p1")}
             <br />
             {t("mission.p2Prefix")}
-            <span className="font-bold text-primary-deep">{t("mission.p2Highlight")}</span>
+            <span className="font-bold" style={{ color: "hsl(var(--cream))" }}>
+              {t("mission.p2Highlight")}
+            </span>
             {t("mission.p2Suffix")}
           </p>
 
-          <div className="mx-auto my-8 h-px w-24 bg-gradient-to-r from-transparent via-gold to-transparent" />
-
-          <p className={`text-xl leading-[2] text-foreground/85 sm:text-2xl ${isAr ? "font-arabic" : ""}`}>
-            {t("mission.p3Prefix")}
-            <span className="font-bold text-primary-deep">{t("mission.p3Highlight")}</span>
-            {t("mission.p3Suffix")}
-          </p>
+          <div
+            className="mx-auto my-10 h-px w-24"
+            style={{ background: "hsl(var(--gold) / 0.6)" }}
+          />
 
           <p
-            className="font-display mt-7 text-balance text-lg font-bold leading-[1.5] text-gold sm:text-2xl md:text-3xl"
+            className={`text-lg leading-[2.1] sm:text-xl ${ar}`}
+            style={{ color: "hsl(var(--cream) / 0.85)" }}
           >
-            {t("mission.tagline")}
+            {t("mission.p3Prefix")}
+            <span className="font-bold" style={{ color: "hsl(var(--cream))" }}>
+              {t("mission.p3Highlight")}
+            </span>
+            {t("mission.p3Suffix")}
           </p>
-
         </motion.div>
 
+        <motion.p
+          {...reveal}
+          transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
+          className={`font-display mt-14 text-balance text-xl font-black leading-[1.5] sm:text-3xl md:text-4xl ${ar}`}
+          style={{ color: "hsl(var(--gold))" }}
+        >
+          {t("mission.tagline")}
+        </motion.p>
       </div>
     </section>
   );
