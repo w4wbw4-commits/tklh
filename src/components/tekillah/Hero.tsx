@@ -2,7 +2,7 @@ import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import wordmarkAsset from "@/assets/tklh-logo-official.png.asset.json";
+import wordmarkAsset from "/tklh-logo.png";
 
 
 
