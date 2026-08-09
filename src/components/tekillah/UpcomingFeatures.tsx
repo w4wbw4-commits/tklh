@@ -88,9 +88,9 @@ export const UpcomingFeatures = () => {
           </p>
         </motion.div>
 
-        <div className="mt-8 grid items-start gap-4 lg:grid-cols-2">
-          {/* Left column — Invitations */}
-          <motion.article {...card(0)}>
+        <div className="mt-8 grid items-stretch gap-4 lg:grid-cols-2">
+          {/* Left column — Invitations (tall portrait card, matches right stack height) */}
+          <motion.article {...card(0)} className={`${card(0).className} h-full`}>
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <Num n="02" />
@@ -103,48 +103,77 @@ export const UpcomingFeatures = () => {
             <p className="mt-2 text-[12.5px] leading-[1.7] text-[hsl(var(--cream)/0.72)]">
               {t("upcoming.items.invitations.desc")}
             </p>
-            <motion.div
-              whileHover={{ y: -3, rotate: isRtl ? 0.5 : -0.5 }}
-              transition={{ duration: 0.35, ease: EASE }}
-              className="mt-4 rounded-lg p-3 text-center"
-              style={{
-                backgroundColor: "hsl(var(--cream))",
-                color: "hsl(var(--green))",
-                border: goldHair,
-              }}
-            >
-              <div className="rounded-md px-3 py-3.5" style={{ border: goldHair }}>
-                <span
-                  className="text-[9px] font-bold uppercase tracking-[0.3em]"
-                  style={{ color: GOLD }}
-                >
-                  {t("upcoming.demo.invite.eyebrow")}
-                </span>
-                <p className="mt-1.5 text-[10px] text-[hsl(var(--brown))]">
-                  {t("upcoming.demo.invite.line")}
-                </p>
-                <p className="font-display mt-1 text-base font-black sm:text-lg">
-                  {t("upcoming.demo.invite.names")}
-                </p>
+
+            {/* modern e-invite: portrait, arched frame, hairline rule, wax-free monogram seal */}
+            <div className="mt-4 flex flex-1 items-stretch justify-center">
+              <motion.div
+                whileHover={{ y: -4, rotate: isRtl ? 0.4 : -0.4 }}
+                transition={{ duration: 0.35, ease: EASE }}
+                className="relative flex w-full max-w-[280px] flex-col overflow-hidden p-2.5"
+                style={{
+                  backgroundColor: "hsl(var(--cream))",
+                  color: "hsl(var(--green))",
+                  border: goldHair,
+                  borderRadius: "160px 160px 14px 14px",
+                }}
+              >
                 <div
-                  className="mx-auto mt-2 h-px w-12"
-                  style={{ backgroundColor: "hsl(var(--gold) / 0.7)" }}
-                />
-                <p className="mt-2 text-[10px] text-[hsl(var(--brown))]">
-                  {t("upcoming.demo.invite.date")}
-                </p>
-                <p className="text-[10px] text-[hsl(var(--brown-soft))]">
-                  {t("upcoming.demo.invite.venue")}
-                </p>
-                <span
-                  className="mt-3 inline-flex rounded-full px-2.5 py-0.5 text-[10px] font-bold"
-                  style={{ backgroundColor: "hsl(var(--green))", color: "hsl(var(--cream))" }}
+                  className="flex flex-1 flex-col items-center justify-between px-4 pb-5 pt-8 text-center"
+                  style={{ border: goldHair, borderRadius: "150px 150px 10px 10px" }}
                 >
-                  {t("upcoming.demo.invite.rsvp")}
-                </span>
-              </div>
-            </motion.div>
+                  <div>
+                    <span
+                      className="text-[9px] font-bold uppercase tracking-[0.34em]"
+                      style={{ color: GOLD }}
+                    >
+                      {t("upcoming.demo.invite.eyebrow")}
+                    </span>
+                    <p className="mt-3 text-[10px] tracking-[0.12em] text-[hsl(var(--brown))]">
+                      {t("upcoming.demo.invite.line")}
+                    </p>
+                  </div>
+
+                  <div className="my-4">
+                    <p className="font-display text-lg font-black leading-tight sm:text-xl">
+                      {t("upcoming.demo.invite.names")}
+                    </p>
+                    <div className="mt-3 flex items-center justify-center gap-2" aria-hidden>
+                      <span
+                        className="h-px w-10"
+                        style={{ backgroundColor: "hsl(var(--gold) / 0.7)" }}
+                      />
+                      <span
+                        className="inline-flex h-5 w-5 items-center justify-center rounded-full text-[8px] font-black"
+                        style={{ border: goldHair, color: GOLD }}
+                      >
+                        ✦
+                      </span>
+                      <span
+                        className="h-px w-10"
+                        style={{ backgroundColor: "hsl(var(--gold) / 0.7)" }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="w-full">
+                    <p className="text-[10px] font-bold tracking-[0.08em] text-[hsl(var(--brown))]">
+                      {t("upcoming.demo.invite.date")}
+                    </p>
+                    <p className="mt-0.5 text-[10px] text-[hsl(var(--brown-soft))]">
+                      {t("upcoming.demo.invite.venue")}
+                    </p>
+                    <span
+                      className="mt-4 inline-flex rounded-full px-3.5 py-1 text-[10px] font-bold"
+                      style={{ backgroundColor: "hsl(var(--green))", color: "hsl(var(--cream))" }}
+                    >
+                      {t("upcoming.demo.invite.rsvp")}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </motion.article>
+
 
           {/* Right column — Installments stacked + Payments square below */}
           <div className="flex flex-col gap-4">
