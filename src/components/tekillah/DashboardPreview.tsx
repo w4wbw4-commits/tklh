@@ -24,6 +24,8 @@ export const DashboardPreview = () => {
   const [openIndex, setOpenIndex] = useState(
     Math.max(0, TIMELINE.findIndex((r) => r.status === "active")),
   );
+  const activeIndex = Math.max(0, TIMELINE.findIndex((r) => r.status === "active"));
+
 
 
   const timeline = useMemo(
