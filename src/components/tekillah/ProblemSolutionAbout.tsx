@@ -35,6 +35,7 @@ interface Geo {
   trad: string;
   tradNodes: Pt[];
   tradCards: Pt[];
+  tradEnd: Pt;
   tradTag: Pt;
   tekTag: Pt;
   tek: string;
@@ -67,6 +68,7 @@ const DESKTOP: Geo = {
     [455, 246],
     [374, 14],
   ],
+  tradEnd: [190, 138],
   tradTag: [560, 300],
   tekTag: [560, 340],
   tek: "M930 258 C 926 316, 910 374, 860 376 L 152 376",
@@ -107,6 +109,7 @@ const MOBILE: Geo = {
     [250, 370],
     [104, 450],
   ],
+  tradEnd: [188, 502],
   tradTag: [180, 548],
   tekTag: [180, 596],
   tek: "M180 640 L 180 928",
@@ -156,11 +159,11 @@ const JourneyMap = ({ geo, id }: { geo: Geo; id: string }) => {
             gradientUnits="userSpaceOnUse"
             x1={geo.start[0]}
             y1={geo.start[1]}
-            x2={geo.tradNodes[geo.tradNodes.length - 1][0]}
-            y2={geo.tradNodes[geo.tradNodes.length - 1][1]}
+            x2={geo.tradEnd[0]}
+            y2={geo.tradEnd[1]}
           >
             <stop offset="0" stopColor="hsl(var(--brown))" stopOpacity="0.5" />
-            <stop offset="0.72" stopColor="hsl(var(--brown))" stopOpacity="0.42" />
+            <stop offset="0.82" stopColor="hsl(var(--brown))" stopOpacity="0.45" />
             <stop offset="1" stopColor="hsl(var(--brown))" stopOpacity="0.05" />
           </linearGradient>
         </defs>
