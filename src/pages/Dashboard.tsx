@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
 import {
-  LogOut, Map, Users, Receipt, Radio, Loader2, Plus, ListChecks,
+  LogOut, Map, Users, Receipt, Radio, Loader2, Plus, ListChecks, LayoutGrid,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -96,20 +96,20 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-soft">
-      <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-4">
+      <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3">
             <Logo />
-            <span className="hidden text-xs uppercase tracking-[0.2em] text-primary sm:inline">
+            <span className="hidden truncate text-xs tracking-[0.18em] text-primary/70 md:inline">
               {t("customer.kicker")}
             </span>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {events.length > 0 && (
               <select
                 value={activeEvent?.id ?? ""}
                 onChange={(e) => setActiveEvent(events.find((ev) => ev.id === e.target.value) ?? null)}
-                className="rounded-full border border-border bg-card px-3 py-2 text-sm text-foreground shadow-card focus:outline-none focus:ring-2 focus:ring-primary/30"
+                className="max-w-[9.5rem] truncate rounded-full border border-border bg-card px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 sm:max-w-none sm:text-sm"
               >
                 {events.map((ev) => (
                   <option key={ev.id} value={ev.id}>
@@ -120,20 +120,23 @@ const Dashboard = () => {
             )}
             <Button size="sm" onClick={() => setCreateOpen(true)}
               className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
-              <Plus className="me-1 h-4 w-4" /> {t("customer.newEvent")}
+              <Plus className="h-4 w-4 sm:me-1" />
+              <span className="hidden sm:inline">{t("customer.newEvent")}</span>
             </Button>
-            <Button variant="ghost" size="sm" asChild className="rounded-full">
+            <Button variant="ghost" size="sm" asChild className="hidden rounded-full sm:inline-flex">
               <Link to="/">{t("common.home")}</Link>
             </Button>
             <Button variant="ghost" size="sm" onClick={() => signOut().then(() => navigate("/"))}
               className="rounded-full text-destructive hover:bg-destructive/10">
-              <LogOut className="me-1 h-4 w-4" /> {t("common.logout")}
+              <LogOut className="h-4 w-4 sm:me-1" />
+              <span className="hidden sm:inline">{t("common.logout")}</span>
             </Button>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
+
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           {!activeEvent ? (
             <div
@@ -154,45 +157,53 @@ const Dashboard = () => {
               </Button>
             </div>
           ) : (
-            <div className="space-y-8">
-              {/* Full tab bar sits at the top of the dashboard page */}
-              <Tabs value={tab} onValueChange={setTab} className="w-full">
-                <TabsList className="grid h-auto w-full grid-cols-2 gap-1 rounded-2xl p-1 sm:grid-cols-5">
+            <Tabs value={tab} onValueChange={setTab} className="w-full">
+              {/* Command strip always visible — the anchor of the page */}
+              <EventCommandHeader
+                event={activeEvent}
+                userName={
+                  (user.user_metadata?.full_name as string | undefined) ??
+                  user.email?.split("@")[0] ??
+                  null
+                }
+                onOpenTab={setTab}
+              />
+
+              {/* Section switcher: "نظرة عامة" is a real tab like the rest */}
+              <div className="sticky top-[4.25rem] z-20 -mx-4 mt-6 bg-background/80 px-4 py-2 backdrop-blur-md sm:mx-0 sm:px-0">
+                <TabsList className="grid h-auto w-full grid-cols-3 gap-1 rounded-2xl p-1 sm:grid-cols-6">
                   {[
+                    { v: "overview", Icon: LayoutGrid },
                     { v: "timeline", Icon: Map },
                     { v: "bookings", Icon: ListChecks },
                     { v: "guests", Icon: Users },
                     { v: "payments", Icon: Receipt },
                     { v: "day", Icon: Radio },
                   ].map(({ v, Icon }) => (
-                    <TabsTrigger key={v} value={v} className="gap-2 rounded-xl py-2">
-                      <Icon className="h-4 w-4" strokeWidth={1.6} /> {t(`customer.tabs.${v}`)}
+                    <TabsTrigger
+                      key={v}
+                      value={v}
+                      className="flex-col gap-1 rounded-xl px-1 py-2 text-[11px] sm:flex-row sm:gap-2 sm:text-sm"
+                    >
+                      <Icon className="h-4 w-4 shrink-0" strokeWidth={1.6} />
+                      <span className="truncate">{t(`customer.tabs.${v}`)}</span>
                     </TabsTrigger>
                   ))}
                 </TabsList>
+              </div>
 
-                <div className="mt-8 space-y-8">
-                  <EventCommandHeader
-                    event={activeEvent}
-                    userName={
-                      (user.user_metadata?.full_name as string | undefined) ??
-                      user.email?.split("@")[0] ??
-                      null
-                    }
-                    onOpenTab={setTab}
-                  />
-
-                  <EventOverview event={activeEvent} />
-
-                  <TabsContent value="timeline"><EventTimeline event={activeEvent} /></TabsContent>
-                  <TabsContent value="bookings"><BookingsTimeline event={activeEvent} /></TabsContent>
-                  <TabsContent value="guests"><GuestManager event={activeEvent} /></TabsContent>
-                  <TabsContent value="payments"><PaymentsPanel event={activeEvent} /></TabsContent>
-                  <TabsContent value="day"><EventDayMode event={activeEvent} /></TabsContent>
-                </div>
-              </Tabs>
-            </div>
+              <div className="mt-6 sm:mt-8">
+                <TabsContent value="overview" className="mt-0"><EventOverview event={activeEvent} /></TabsContent>
+                <TabsContent value="timeline" className="mt-0"><EventTimeline event={activeEvent} /></TabsContent>
+                <TabsContent value="bookings" className="mt-0"><BookingsTimeline event={activeEvent} /></TabsContent>
+                <TabsContent value="guests" className="mt-0"><GuestManager event={activeEvent} /></TabsContent>
+                <TabsContent value="payments" className="mt-0"><PaymentsPanel event={activeEvent} /></TabsContent>
+                <TabsContent value="day" className="mt-0"><EventDayMode event={activeEvent} /></TabsContent>
+              </div>
+            </Tabs>
           )}
+
+
 
         </motion.div>
       </main>
