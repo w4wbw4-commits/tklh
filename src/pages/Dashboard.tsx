@@ -20,7 +20,7 @@ import { CreateEventDialog } from "@/components/tekillah/customer/CreateEventDia
 import { EventCommandHeader } from "@/components/tekillah/customer/EventCommandHeader";
 import { GuestDashboard } from "@/components/tekillah/customer/GuestDashboard";
 
-import chairMark from "@/assets/tklh-chair-mark.png.asset.json";
+import chairMark from "/tklh-chair-mark.png";
 import type { EventRow } from "@/components/tekillah/customer/types";
 import { useTranslation } from "react-i18next";
 import { fmtDate } from "@/i18n/format";
@@ -144,7 +144,7 @@ const Dashboard = () => {
               style={{ border: "1px solid hsl(var(--green) / 0.2)", backgroundColor: "hsl(var(--cream))" }}
             >
               <img
-                src={chairMark.url}
+                src={chairMark}
                 alt=""
                 aria-hidden
                 className="mx-auto mb-5 h-16 w-16 object-contain opacity-30"

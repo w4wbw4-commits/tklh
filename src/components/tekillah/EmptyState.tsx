@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import type { LucideIcon } from "lucide-react";
-import chairMark from "@/assets/tklh-chair-mark.png.asset.json";
+import chairMark from "/tklh-chair-mark.png";
 
 interface EmptyStateProps {
   /** Kept for API compatibility — the official chair mark is used instead. */
@@ -34,7 +34,7 @@ export const EmptyState = ({ title, description, cta, className }: EmptyStatePro
 
       <div className="relative mx-auto flex max-w-md flex-col items-center">
         <img
-          src={chairMark.url}
+          src={chairMark}
           alt=""
           aria-hidden
           className="h-16 w-16 select-none object-contain opacity-30"
