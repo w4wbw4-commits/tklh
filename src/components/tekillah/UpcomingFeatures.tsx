@@ -48,7 +48,7 @@ export const UpcomingFeatures = () => {
   return (
     <section
       dir={dir}
-      className="relative overflow-hidden px-4 py-14 sm:px-8 sm:py-20"
+      className="relative overflow-hidden px-4 py-10 sm:px-8 sm:py-20"
       style={{ backgroundColor: "hsl(var(--green-deep))", color: "hsl(var(--cream))" }}
     >
       <span
@@ -65,16 +65,16 @@ export const UpcomingFeatures = () => {
       <div className="relative mx-auto w-full max-w-7xl">
         <motion.div
           {...reveal(0)}
-          className="rounded-3xl p-6 sm:p-10"
+          className="rounded-3xl p-4 sm:p-10"
           style={{ border: creamHair, backgroundColor: "hsl(var(--green) / 0.55)" }}
         >
           {/* Header */}
-          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mb-5 flex flex-col sm:mb-8 gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 className="font-display max-w-2xl text-balance text-2xl font-black leading-[1.3] sm:text-3xl">
                 {t("upcoming.title")}
               </h2>
-              <p className="mt-3 max-w-xl text-sm leading-[1.8] text-[hsl(var(--cream)/0.75)]">
+              <p className="mt-3 hidden max-w-xl text-sm leading-[1.8] text-[hsl(var(--cream)/0.75)] sm:block">
                 {t("upcoming.subtitle")}
               </p>
             </div>
@@ -86,11 +86,11 @@ export const UpcomingFeatures = () => {
           </div>
 
           {/* Bento grid */}
-          <div className="grid gap-5 lg:grid-cols-3">
+          <div className="grid gap-3 sm:gap-5 lg:grid-cols-3">
             {/* 01 — Installments */}
             <motion.div
               {...reveal(0.1)}
-              className="relative flex flex-col rounded-2xl p-5 sm:p-6"
+              className="relative flex flex-col rounded-2xl p-4 sm:p-6"
               style={{ border: creamHair, backgroundColor: "hsl(var(--green) / 0.35)" }}
             >
               <div className="flex items-start justify-between gap-2">
@@ -100,7 +100,7 @@ export const UpcomingFeatures = () => {
               <h3 className="font-display mt-3 text-lg font-black leading-snug">
                 {t("upcoming.items.installments.title")}
               </h3>
-              <p className="mt-2 text-[13px] leading-[1.75] text-[hsl(var(--cream)/0.72)]">
+              <p className="mt-2 hidden text-[13px] leading-[1.75] text-[hsl(var(--cream)/0.72)] sm:block">
                 {t("upcoming.items.installments.desc")}
               </p>
 
@@ -119,7 +119,7 @@ export const UpcomingFeatures = () => {
                 </div>
 
                 {/* Schedule: first / next / rest */}
-                <ul className="space-y-2">
+                <ul className="hidden space-y-2 sm:block">
                   {[
                     { k: "first", state: "paid" as const },
                     { k: "next", state: "next" as const },
@@ -173,7 +173,7 @@ export const UpcomingFeatures = () => {
                 </ul>
 
                 {/* 12-month progress */}
-                <div className="flex items-center justify-between gap-3">
+                <div className="hidden items-center justify-between gap-3 sm:flex">
                   <span className="text-[10px] text-[hsl(var(--cream)/0.7)]">
                     {t("upcoming.demo.inst.paidOf")}
                   </span>
@@ -197,7 +197,7 @@ export const UpcomingFeatures = () => {
             {/* 02 — Invitations */}
             <motion.div
               {...reveal(0.2)}
-              className="relative flex flex-col rounded-2xl p-5 sm:p-6"
+              className="relative flex flex-col rounded-2xl p-4 sm:p-6"
               style={{ border: creamHair, backgroundColor: "hsl(var(--green) / 0.35)" }}
             >
               <div className="flex items-start justify-between gap-2">
@@ -207,11 +207,11 @@ export const UpcomingFeatures = () => {
               <h3 className="font-display mt-3 text-lg font-black leading-snug">
                 {t("upcoming.items.invitations.title")}
               </h3>
-              <p className="mt-2 text-[13px] leading-[1.75] text-[hsl(var(--cream)/0.72)]">
+              <p className="mt-2 hidden text-[13px] leading-[1.75] text-[hsl(var(--cream)/0.72)] sm:block">
                 {t("upcoming.items.invitations.desc")}
               </p>
 
-              <div className="mt-5 flex flex-1 items-end justify-center">
+              <div className="mt-5 hidden flex-1 items-end justify-center sm:flex">
                 <div
                   className="w-full max-w-[230px] overflow-hidden rounded-t-[110px] px-5 pb-5 pt-8 text-center"
                   style={{ backgroundColor: "hsl(var(--cream))", color: "hsl(var(--green))" }}
@@ -245,7 +245,7 @@ export const UpcomingFeatures = () => {
             {/* 03 — Payments */}
             <motion.div
               {...reveal(0.3)}
-              className="relative flex flex-col rounded-2xl p-5 sm:p-6"
+              className="relative flex flex-col rounded-2xl p-4 sm:p-6"
               style={{ border: creamHair, backgroundColor: "hsl(var(--green) / 0.35)" }}
             >
               <div className="flex items-start justify-between gap-2">
@@ -255,7 +255,7 @@ export const UpcomingFeatures = () => {
               <h3 className="font-display mt-3 text-lg font-black leading-snug">
                 {t("payments.label")}
               </h3>
-              <p className="mt-2 text-[13px] leading-[1.75] text-[hsl(var(--cream)/0.72)]">
+              <p className="mt-2 hidden text-[13px] leading-[1.75] text-[hsl(var(--cream)/0.72)] sm:block">
                 {t("upcoming.demo.oneplace")}
               </p>
 
@@ -267,7 +267,7 @@ export const UpcomingFeatures = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-40px" }}
                     transition={{ duration: 0.35, ease: EASE, delay: 0.35 + j * 0.04 }}
-                    className="pay-chip font-display flex items-center justify-center rounded-lg px-2 py-3 text-center text-[11px] font-black"
+                    className={`pay-chip font-display flex items-center justify-center rounded-lg px-2 py-3 text-center text-[11px] font-black ${j > 3 ? "hidden sm:flex" : ""}`}
                     style={{ border: creamHair, color: "hsl(var(--cream))" }}
                   >
                     {t(`payments.providers.${key}`)}
