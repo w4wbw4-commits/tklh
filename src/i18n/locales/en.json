@@ -1690,14 +1690,14 @@
   "trust": {
     "aria": "Trust bar",
     "halls": {
-      "label": "Registered venues"
+      "label": "Registered venues",
+      "desc": "Wedding, engagement, and event venues available to book"
     },
     "providers": {
       "label": "Service providers",
       "desc": "Planners · Photographers · Bands · Catering · Hospitality"
     },
-    "customers": {
-      "label": "More than one client needed someone to handle it all — and Tklh became their answer"
-    }
+    "verified": "Verified",
+    "trusted": "Curated"
   }
 }
