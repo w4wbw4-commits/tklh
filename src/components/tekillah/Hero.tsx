@@ -2,7 +2,7 @@ import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import wordmarkAsset from "@/assets/tklh-logo-official.png.asset.json";
+import wordmarkAsset from "/tklh-logo.png";
 
 
 
@@ -68,9 +68,9 @@ export const Hero = () => {
         {/* Wordmark */}
         <motion.img
           variants={rise}
-          src={wordmarkAsset.url}
+          src={wordmarkAsset}
           alt={isAr ? "TKLH تِكله" : "TKLH Tklh"}
-          className="mt-6 h-20 w-auto select-none sm:h-24 md:h-28 lg:h-32"
+          className="mt-6 h-20 w-auto select-none sm:h-24 md:h-24 lg:h-28"
           draggable={false}
         />
 

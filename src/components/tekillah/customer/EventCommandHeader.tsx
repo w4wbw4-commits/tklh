@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { fmtNumber, fmtDate } from "@/i18n/format";
-import chairMark from "@/assets/tklh-chair-mark.png.asset.json";
+import chairMark from "/tklh-chair-mark.png";
 import type { EventRow } from "./types";
 
 /**
@@ -182,7 +182,7 @@ export const EventCommandHeader = ({
       >
         {/* Official chair mark — file only, never redrawn */}
         <img
-          src={chairMark.url}
+          src={chairMark}
           alt=""
           aria-hidden
           className="pointer-events-none absolute -top-4 end-2 h-40 w-40 select-none object-contain opacity-[0.05]"
@@ -267,7 +267,7 @@ export const EventCommandHeader = ({
         {c.needs.length === 0 ? (
           <div className="mt-5 flex items-center gap-4">
             <img
-              src={chairMark.url}
+              src={chairMark}
               alt=""
               aria-hidden
               className="h-12 w-12 shrink-0 object-contain opacity-25"

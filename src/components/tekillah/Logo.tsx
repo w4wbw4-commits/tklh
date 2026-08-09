@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import logoAsset from "@/assets/tklh-logo-official.png.asset.json";
+import logoAsset from "/tklh-logo-light.png";
 
 /**
  * Brand Logo — official TKLH / تِكله lockup (Arabic wordmark + Latin "Tklh"
@@ -16,7 +16,7 @@ export const Logo = ({ className = "" }: { className?: string }) => {
       aria-label="TKLH تِكله — Event Planning Platform"
     >
       <img
-        src={logoAsset.url}
+        src={logoAsset}
         alt="TKLH تِكله"
         className="h-10 w-auto sm:h-12 object-contain select-none"
         draggable={false}

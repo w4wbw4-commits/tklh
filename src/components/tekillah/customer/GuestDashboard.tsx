@@ -9,7 +9,7 @@ import { Button as UIButton } from "@/components/ui/button";
 import {
   LayoutDashboard, Map, Users, Receipt, Radio, ListChecks, ArrowRight,
 } from "lucide-react";
-import chairMark from "@/assets/tklh-chair-mark.png.asset.json";
+import chairMark from "/tklh-chair-mark.png";
 
 /**
  * GuestDashboard — the visitor mode of /dashboard.
@@ -78,7 +78,7 @@ export const GuestDashboard = () => {
             className="mx-auto w-fit"
           >
             <img
-              src={chairMark.url}
+              src={chairMark}
               alt=""
               aria-hidden
               className="mx-auto h-auto w-[45vw] max-w-[200px] object-contain sm:w-56 sm:max-w-none"

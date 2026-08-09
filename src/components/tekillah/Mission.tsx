@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import chairMark from "@/assets/tklh-chair-mark.png.asset.json";
+import chairMark from "/tklh-chair-mark.png";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -55,7 +55,7 @@ const ChairMedallion = () => {
         transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
       >
         <img
-          src={chairMark.url}
+          src={chairMark}
           alt=""
           aria-hidden
           draggable={false}
@@ -91,7 +91,7 @@ export const Mission = () => {
       className="bg-paper relative overflow-hidden px-5 py-24 sm:px-8 sm:py-36"
     >
       <img
-        src={chairMark.url}
+        src={chairMark}
         alt=""
         aria-hidden
         draggable={false}

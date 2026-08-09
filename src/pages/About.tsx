@@ -13,7 +13,7 @@ import { Navbar } from "@/components/tekillah/Navbar";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
 import { Reveal } from "@/components/tekillah/Reveal";
 import { SEO } from "@/components/SEO";
-import chairMark from "@/assets/tklh-chair-mark.png.asset.json";
+import chairMark from "/tklh-chair-mark.png";
 
 const Footer = lazy(() =>
   import("@/components/tekillah/Footer").then((m) => ({ default: m.Footer })),
@@ -48,7 +48,7 @@ const About = () => {
         >
           <Reveal>
             <img
-              src={chairMark.url}
+              src={chairMark}
               alt=""
               aria-hidden
               className="mx-auto mb-6 h-14 w-14 object-contain opacity-85 sm:h-20 sm:w-20"

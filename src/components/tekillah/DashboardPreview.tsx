@@ -8,7 +8,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import chairMark from "@/assets/tklh-chair-mark.png.asset.json";
+import chairMark from "/tklh-chair-mark.png";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const hairline = "1px solid hsl(var(--green) / 0.22)";
@@ -137,7 +137,7 @@ export const DashboardPreview = () => {
             style={{ border: hairline, backgroundColor: "hsl(var(--cream))" }}
           >
             <img
-              src={chairMark.url}
+              src={chairMark}
               alt=""
               aria-hidden
               className="pointer-events-none absolute -top-2 end-0 h-24 w-24 object-contain opacity-[0.04]"

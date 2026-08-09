@@ -10,7 +10,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
-import sealLogo from "@/assets/tklh-chair-mark.png.asset.json";
+import sealLogo from "/tklh-chair-mark.png";
 
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -217,7 +217,7 @@ const TekColumn = () => {
             }}
           >
             <img
-              src={sealLogo.url}
+              src={sealLogo}
               alt=""
               aria-hidden
               draggable={false}
