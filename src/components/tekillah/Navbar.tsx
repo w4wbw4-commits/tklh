@@ -2,9 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
-import { WhatsAppFloating } from "./WhatsAppFloating";
 import { Button } from "@/components/ui/button";
-import { CalendarCheck, Globe, LayoutDashboard, ShieldCheck } from "lucide-react";
+import { Globe, LayoutDashboard, ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -80,9 +79,6 @@ export const Navbar = () => {
         >
           <div className="flex shrink-0 items-center gap-2">
             <Logo />
-            <span className="hidden sm:inline-flex">
-              <WhatsAppFloating />
-            </span>
           </div>
 
 
@@ -127,19 +123,6 @@ export const Navbar = () => {
 
           </nav>
           <div className="flex items-center gap-1 sm:gap-2">
-            {/* Primary CTA — the header's job on mobile: one clear action. */}
-            <Button
-              asChild
-              size="sm"
-              className="hidden h-9 rounded-full px-3 text-[12.5px] font-bold shadow-sm hover:opacity-90 sm:inline-flex sm:h-9 sm:px-4 sm:text-[13px]"
-              style={{ backgroundColor: "hsl(var(--gold))", color: "#163726" }}
-            >
-              <Link to="/planner">
-                <CalendarCheck className="me-1 h-4 w-4" />
-                {t("nav.planBook")}
-              </Link>
-            </Button>
-
             {/* Follow-up plan — icon-only on mobile, labelled on desktop. */}
             <Button
               variant="ghost"
