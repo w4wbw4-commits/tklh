@@ -167,7 +167,7 @@
       "budget": "Budget"
     },
     "snapshot": {
-      "badge": "Preview — this is your dashboard",
+      "badge": "",
       "cta": "Plan & Book your event now!",
       "callouts": [
         "Your readiness — live percentage",
