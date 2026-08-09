@@ -92,15 +92,15 @@ export const Hero = () => {
           </span>
 
           <span className="relative inline-flex flex-col items-center pb-1">
-            <span className="relative block overflow-hidden py-0.5">
-              <AnimatePresence mode="popLayout" initial={false}>
+            <span className="relative flex h-[2.35rem] items-center overflow-hidden sm:h-[2.9rem] md:h-[3.4rem]">
+              <AnimatePresence mode="wait" initial={false}>
                 <motion.span
                   key={word}
-                  initial={{ y: "60%", opacity: 0 }}
+                  initial={{ y: "45%", opacity: 0 }}
                   animate={{ y: "0%", opacity: 1 }}
-                  exit={{ y: "-60%", opacity: 0 }}
-                  transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                  className="font-display block whitespace-nowrap text-2xl font-black leading-[1.15] tracking-tight sm:text-3xl md:text-4xl"
+                  exit={{ y: "-45%", opacity: 0 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="font-display block whitespace-nowrap text-2xl font-black leading-none tracking-tight sm:text-3xl md:text-4xl"
                   style={{ color: "#163726" }}
                 >
                   {word}
@@ -108,13 +108,14 @@ export const Hero = () => {
               </AnimatePresence>
             </span>
 
-            {/* gold thread underline */}
+            {/* hairline underline */}
             <span
               className="mt-1 block h-px w-full"
-              style={{ background: "hsl(var(--gold))" }}
+              style={{ background: "hsl(var(--green) / 0.35)" }}
               aria-hidden
             />
           </span>
+
         </motion.div>
 
         {/* Headline */}
