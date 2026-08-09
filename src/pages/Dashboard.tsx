@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
 import {
-  LogOut, LayoutDashboard, Map, Users, Receipt, Radio, Loader2, Plus, ListChecks,
+  LogOut, Map, Users, Receipt, Radio, Loader2, Plus, ListChecks,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
