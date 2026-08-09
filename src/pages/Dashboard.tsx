@@ -35,11 +35,8 @@ const Dashboard = () => {
   const [tab, setTab] = useState("overview");
   const [createOpen, setCreateOpen] = useState(false);
 
-  useEffect(() => {
-    if (!authLoading && !user) {
-      navigate("/auth?redirect=/dashboard", { replace: true });
-    }
-  }, [user, authLoading, navigate]);
+  // Visitors are welcome: no redirect — they get the guest dashboard below.
+
 
 
 
