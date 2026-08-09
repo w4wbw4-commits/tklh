@@ -1574,7 +1574,7 @@
   "speed": {
     "badge": "The difference that gives you peace of mind",
     "title1": "From 6 weeks of chaos",
-    "title2": "to 5 minutes and you're done",
+    "title2": "to under 10 minutes and you're done",
     "traditional": {
       "chip": "The Traditional Way",
       "value": "6 Weeks",
@@ -1593,9 +1593,10 @@
         "Choose your budget and guest count",
         "Smart recommendations, curated vendors",
         "Book everything in a click, at a clear price"
-      ]
+      ],
+      "prefix": "Under"
     },
-    "connector": "What's behind those 5 minutes?",
+    "connector": "What's behind those 10 minutes?",
     "tiles": [
       {
         "title": "Plan Intelligently",

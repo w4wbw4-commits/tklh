@@ -21,14 +21,17 @@ export const Mission = () => {
     <section
       id="mission"
       dir={isAr ? "rtl" : "ltr"}
-      className="bg-velvet relative overflow-hidden px-5 py-24 sm:px-8 sm:py-36"
+      className="bg-paper relative overflow-hidden px-5 py-24 sm:px-8 sm:py-36"
     >
-      <div className="relative z-10 mx-auto max-w-3xl text-center">
+      <div
+        className="relative z-10 mx-auto max-w-3xl px-6 py-14 text-center sm:px-12 sm:py-20"
+        style={{ border: "1px solid hsl(var(--green) / 0.18)", borderRadius: 6 }}
+      >
         <motion.div {...reveal} transition={{ duration: 0.75, ease: EASE }}>
           <span className="kicker">TKLH · EVENT PLANNING</span>
           <h2
             className={`font-display mt-6 text-balance text-2xl font-black leading-[1.4] sm:text-4xl md:text-5xl ${ar}`}
-            style={{ color: "hsl(var(--cream))" }}
+            style={{ color: "hsl(var(--green))" }}
           >
             {t("mission.title")}
           </h2>
@@ -41,12 +44,12 @@ export const Mission = () => {
         >
           <p
             className={`text-lg leading-[2.1] sm:text-xl ${ar}`}
-            style={{ color: "hsl(var(--cream) / 0.85)" }}
+            style={{ color: "hsl(var(--brown))" }}
           >
             {t("mission.p1")}
             <br />
             {t("mission.p2Prefix")}
-            <span className="font-bold" style={{ color: "hsl(var(--cream))" }}>
+            <span className="font-bold" style={{ color: "hsl(var(--green))" }}>
               {t("mission.p2Highlight")}
             </span>
             {t("mission.p2Suffix")}
@@ -54,15 +57,15 @@ export const Mission = () => {
 
           <div
             className="mx-auto my-10 h-px w-24"
-            style={{ background: "hsl(var(--gold) / 0.6)" }}
+            style={{ background: "hsl(var(--green) / 0.2)" }}
           />
 
           <p
             className={`text-lg leading-[2.1] sm:text-xl ${ar}`}
-            style={{ color: "hsl(var(--cream) / 0.85)" }}
+            style={{ color: "hsl(var(--brown))" }}
           >
             {t("mission.p3Prefix")}
-            <span className="font-bold" style={{ color: "hsl(var(--cream))" }}>
+            <span className="font-bold" style={{ color: "hsl(var(--green))" }}>
               {t("mission.p3Highlight")}
             </span>
             {t("mission.p3Suffix")}
@@ -73,11 +76,12 @@ export const Mission = () => {
           {...reveal}
           transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
           className={`font-display mt-14 text-balance text-xl font-black leading-[1.5] sm:text-3xl md:text-4xl ${ar}`}
-          style={{ color: "hsl(var(--gold))" }}
+          style={{ color: "hsl(var(--green))" }}
         >
           {t("mission.tagline")}
         </motion.p>
       </div>
     </section>
+
   );
 };
