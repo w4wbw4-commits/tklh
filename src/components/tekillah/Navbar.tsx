@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { WhatsAppFloating } from "./WhatsAppFloating";
 import { Button } from "@/components/ui/button";
-import { Globe, LayoutDashboard, ShieldCheck } from "lucide-react";
+import { CalendarCheck, Globe, LayoutDashboard, ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
