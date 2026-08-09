@@ -78,12 +78,13 @@ export const Navbar = () => {
             borderColor: scrolled ? "hsl(var(--gold) / 0.55)" : "hsl(var(--gold) / 0.28)",
           }}
         >
-          <div className="flex min-w-0 items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <Logo />
             <span className="hidden sm:inline-flex">
               <WhatsAppFloating />
             </span>
           </div>
+
 
           <nav className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => {
