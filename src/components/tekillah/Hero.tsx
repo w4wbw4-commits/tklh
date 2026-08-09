@@ -291,24 +291,12 @@ export const Hero = () => {
       className="relative w-full overflow-hidden scroll-smooth"
       style={{ backgroundColor: "hsl(var(--cream))" }}
     >
-      {/* === Soft warm glow === */}
-      <div className="pointer-events-none absolute inset-0">
-        <div
-          className="absolute -top-32 left-1/2 h-[520px] w-[860px] -translate-x-1/2 rounded-full opacity-25 blur-3xl"
-          style={{ background: "radial-gradient(circle, hsl(var(--gold) / 0.26), transparent 70%)" }}
-        />
-        <div
-          className="absolute bottom-0 left-0 h-[420px] w-[720px] rounded-full opacity-[0.14] blur-3xl"
-          style={{ background: "radial-gradient(circle, hsl(var(--primary-deep) / 0.5), transparent 70%)" }}
-        />
-      </div>
-
       {/* === Foreground — one calm, centered editorial column === */}
       <motion.div
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative z-10 mx-auto flex min-h-[80vh] max-w-4xl flex-col items-center justify-center px-5 pt-20 pb-12 text-center sm:px-8"
+        className="relative z-10 mx-auto flex min-h-[80vh] max-w-4xl flex-col items-center justify-center px-5 pt-20 pb-16 text-center sm:px-8"
       >
         {/* Wordmark */}
         <motion.img
@@ -319,7 +307,12 @@ export const Hero = () => {
           draggable={false}
         />
 
-        {/* Rotating line — "تِكله لـ …" : refined, compact, high-contrast */}
+        {/* Editorial signature */}
+        <motion.span variants={rise} className="kicker mt-6">
+          TKLH · EVENT PLANNING
+        </motion.span>
+
+        {/* Rotating line — "تِكله لـ …" */}
         <motion.div
           variants={rise}
           className="mt-5 flex flex-wrap items-baseline justify-center gap-x-2 gap-y-0.5 sm:gap-x-3"
@@ -331,48 +324,36 @@ export const Hero = () => {
             {t("hero.forPrefix")}
           </span>
 
-          <motion.span
-            layout
-            transition={{ type: "spring", stiffness: isMobile ? 280 : 220, damping: 24 }}
-            className="relative inline-flex flex-col items-center overflow-hidden pb-1"
-          >
+          <span className="relative inline-flex flex-col items-center pb-1">
             <span className="relative block overflow-hidden py-0.5">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
                   key={word}
-                  initial={{ y: "115%", opacity: 0, filter: "blur(5px)" }}
-                  animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
-                  exit={{ y: "-115%", opacity: 0, filter: "blur(5px)" }}
-                  transition={{ duration: isMobile ? 0.4 : 0.52, ease: [0.19, 1, 0.22, 1] }}
-                  className="font-display block whitespace-nowrap text-2xl font-black leading-[1.1] tracking-tight sm:text-3xl md:text-4xl"
-                  style={{
-                    color: "#163726",
-                    textShadow: "0 1px 0 hsl(var(--cream)), 0 0 28px hsl(var(--gold) / 0.18)",
-                  }}
+                  initial={{ y: "60%", opacity: 0 }}
+                  animate={{ y: "0%", opacity: 1 }}
+                  exit={{ y: "-60%", opacity: 0 }}
+                  transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                  className="font-display block whitespace-nowrap text-2xl font-black leading-[1.15] tracking-tight sm:text-3xl md:text-4xl"
+                  style={{ color: "#163726" }}
                 >
                   {word}
                 </motion.span>
               </AnimatePresence>
             </span>
 
-            {/* refined gold underline */}
-            <motion.span
-              key={`rule-${word}`}
-              initial={{ scaleX: 0, opacity: 0 }}
-              animate={{ scaleX: 1, opacity: 1 }}
-              transition={{ duration: isMobile ? 0.45 : 0.58, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-0.5 block h-[2px] w-[92%] origin-center rounded-full"
-              style={{ background: `linear-gradient(90deg, transparent, ${gold}, transparent)` }}
+            {/* gold thread underline */}
+            <span
+              className="mt-1 block h-px w-full"
+              style={{ background: "hsl(var(--gold))" }}
               aria-hidden
             />
-          </motion.span>
+          </span>
         </motion.div>
-
 
         {/* Headline */}
         <motion.h1
           variants={rise}
-          className="font-display mt-6 max-w-3xl text-balance text-2xl font-black leading-snug tracking-[-0.005em] sm:text-3xl md:text-4xl lg:text-[2.75rem]"
+          className="font-display mt-7 max-w-3xl text-balance text-2xl font-black leading-snug tracking-[-0.005em] sm:text-3xl md:text-4xl lg:text-[2.75rem]"
           style={{ color: "#163726", fontFeatureSettings: '"kern","liga","calt","dlig"' }}
         >
           {t("hero.slogan")}
@@ -381,56 +362,43 @@ export const Hero = () => {
         {/* Sub-headline */}
         <motion.p
           variants={rise}
-          className="font-tagline mx-auto mt-4 max-w-xl text-balance text-sm leading-relaxed text-primary-deep/70 sm:text-base"
+          className="font-tagline mx-auto mt-5 max-w-xl text-balance text-[15px] leading-[1.95] sm:text-base"
+          style={{ color: "hsl(var(--brown))" }}
         >
           {t("hero.subheadPrefix")}{" "}
           <span className="font-bold" style={{ color: "hsl(var(--green))" }}>{t("hero.brand")}</span>{" "}
           {t("hero.subheadSuffix")}
         </motion.p>
 
-
-
         {/* === CTA === */}
-        <motion.div variants={rise} className="mt-9 flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
-          <motion.a
+        <motion.div variants={rise} className="mt-10 flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
             href="/planner"
-            whileHover={{ y: -3 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 280, damping: 20 }}
-            className="group relative inline-flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-full px-8 py-4 text-sm font-black shadow-[0_20px_44px_-18px_rgba(22,55,38,0.55)] sm:w-auto sm:text-base"
-            style={{ backgroundColor: "#163726", color: "#A7CAA1" }}
-          >
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 -skew-x-12 opacity-0 transition-all duration-700 group-hover:left-[110%] group-hover:opacity-100"
-              style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent)" }}
-            />
-            <span className="relative">{t("hero.ctaTitle")}</span>
-            <Arrow className="relative h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1" />
-          </motion.a>
-
-          <motion.a
-            href="/vendor"
-            whileHover={{ y: -3 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 280, damping: 20 }}
-            className="group relative inline-flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-full border px-8 py-4 text-sm font-black sm:w-auto sm:text-base"
+            className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full px-8 py-4 text-sm font-black transition-colors duration-500 sm:w-auto sm:text-base"
             style={{
-              borderColor: "hsl(var(--primary-deep) / 0.35)",
-              color: "hsl(var(--primary-deep))",
-              backgroundColor: "hsl(var(--cream) / 0.5)",
+              backgroundColor: "hsl(var(--green))",
+              color: "hsl(var(--cream))",
+              boxShadow: "0 2px 0 0 hsl(var(--gold) / 0.55)",
             }}
           >
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-0 -translate-x-full transition-transform duration-700 group-hover:translate-x-0"
-              style={{ background: "linear-gradient(90deg, transparent, rgba(22,55,38,0.08), transparent)" }}
-            />
-            <span className="relative">{t("hero.secondary")}</span>
-            <Arrow className="relative h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1" />
-          </motion.a>
+            <span>{t("hero.ctaTitle")}</span>
+            <Arrow className="h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1" />
+          </a>
+
+          <a
+            href="/vendor"
+            className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full px-8 py-4 text-sm font-black transition-colors duration-500 sm:w-auto sm:text-base"
+            style={{
+              border: "1px solid hsl(var(--gold) / 0.6)",
+              color: "hsl(var(--green))",
+            }}
+          >
+            <span>{t("hero.secondary")}</span>
+            <Arrow className="h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1" />
+          </a>
         </motion.div>
       </motion.div>
     </section>
   );
 };
+
