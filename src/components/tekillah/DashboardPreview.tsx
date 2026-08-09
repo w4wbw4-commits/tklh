@@ -230,6 +230,3 @@ export const DashboardPreview = () => {
   );
 };
 
-function isRtl() {
-  return document.documentElement.dir === "rtl";
-}
