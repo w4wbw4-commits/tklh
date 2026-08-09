@@ -11,8 +11,6 @@ import {
   PartyPopper,
   Building2,
   Users,
-  ShieldCheck,
-  Star,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
@@ -108,16 +106,20 @@ export const OccasionsSection = () => {
                   </p>
                 </div>
               </div>
-              <div className="relative mt-5 flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-green/10 px-3 py-1 text-xs font-bold text-green">
-                  <ShieldCheck className="h-3.5 w-3.5" />
-                  {t("trust.verified")}
-                </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-bold text-gold">
-                  <Star className="h-3.5 w-3.5" />
-                  {t("trust.trusted")}
-                </span>
-              </div>
+              <svg
+                aria-hidden
+                className="pointer-events-none absolute -bottom-4 -end-4 h-28 w-28 text-green/10 transition-transform duration-500 group-hover:scale-105 group-hover:text-green/[0.14] sm:h-32 sm:w-32"
+                viewBox="0 0 120 120"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M35 92h50M42 92V72a8 8 0 0 1 8-8h20a8 8 0 0 1 8 8v20M38 64h44M40 64V46a10 10 0 0 1 10-10h20a10 10 0 0 1 10 10v18M35 38a5 5 0 0 1 5-5h40a5 5 0 0 1 5 5" />
+                <path d="M48 33V26h24v7" opacity="0.6" />
+                <path d="M42 92c-4 0-7-3-7-7M85 92c4 0 7-3 7-7" opacity="0.5" />
+              </svg>
             </motion.div>
 
             {/* Providers */}
@@ -148,16 +150,20 @@ export const OccasionsSection = () => {
                   </p>
                 </div>
               </div>
-              <div className="relative mt-5 flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-green/10 px-3 py-1 text-xs font-bold text-green">
-                  <ShieldCheck className="h-3.5 w-3.5" />
-                  {t("trust.verified")}
-                </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-bold text-gold">
-                  <Star className="h-3.5 w-3.5" />
-                  {t("trust.trusted")}
-                </span>
-              </div>
+              <svg
+                aria-hidden
+                className="pointer-events-none absolute -bottom-4 -end-4 h-28 w-28 text-green/10 transition-transform duration-500 group-hover:scale-105 group-hover:text-green/[0.14] sm:h-32 sm:w-32"
+                viewBox="0 0 120 120"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M35 92h50M42 92V72a8 8 0 0 1 8-8h20a8 8 0 0 1 8 8v20M38 64h44M40 64V46a10 10 0 0 1 10-10h20a10 10 0 0 1 10 10v18M35 38a5 5 0 0 1 5-5h40a5 5 0 0 1 5 5" />
+                <path d="M48 33V26h24v7" opacity="0.6" />
+                <path d="M42 92c-4 0-7-3-7-7M85 92c4 0 7-3 7-7" opacity="0.5" />
+              </svg>
             </motion.div>
           </div>
         </Reveal>
