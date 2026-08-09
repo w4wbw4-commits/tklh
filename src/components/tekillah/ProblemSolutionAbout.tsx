@@ -246,28 +246,36 @@ const JourneyMap = ({ geo, id }: { geo: Geo; id: string }) => {
 
       {/* ---- five pain stations, as tilted paper scraps ---------------------- */}
       {stations.map((s, i) => (
-        <motion.div
+        <div
           key={i}
-          initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 10, rotate: CARD_TILTS[i] }}
-          whileInView={
-            reduce
-              ? { opacity: 1, y: 0, rotate: CARD_TILTS[i] }
-              : { opacity: 1, y: 0, rotate: [CARD_TILTS[i] * 2, CARD_TILTS[i] - 1.5, CARD_TILTS[i]] }
-          }
-          viewport={once}
-          transition={{ duration: T(0.5), ease: EASE, delay: T(0.55 + i * 0.68) }}
-          className="absolute w-[8.5rem] -translate-x-1/2 -translate-y-1/2 px-2.5 py-1.5 text-center text-[11.5px] leading-snug sm:w-[9.5rem] sm:px-3 sm:py-2 sm:text-[13px]"
-          style={{
-            ...pos(geo.tradCards[i]),
-            color: "hsl(var(--brown) / 0.85)",
-            border: "1px solid hsl(var(--brown) / 0.28)",
-            backgroundColor: "hsl(var(--cream))",
-            borderRadius: 3,
-            boxShadow: "2px 2px 0 hsl(var(--brown) / 0.12)",
-          }}
+          className="absolute -translate-x-1/2 -translate-y-1/2"
+          style={pos(geo.tradCards[i])}
         >
-          {s}
-        </motion.div>
+          <motion.div
+            initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 10, rotate: CARD_TILTS[i] }}
+            whileInView={
+              reduce
+                ? { opacity: 1, y: 0, rotate: CARD_TILTS[i] }
+                : {
+                    opacity: 1,
+                    y: 0,
+                    rotate: [CARD_TILTS[i] * 2, CARD_TILTS[i] - 1.5, CARD_TILTS[i]],
+                  }
+            }
+            viewport={once}
+            transition={{ duration: T(0.5), ease: EASE, delay: T(0.55 + i * 0.68) }}
+            className="w-[8rem] px-2.5 py-1.5 text-center text-[11.5px] leading-snug sm:w-[9.5rem] sm:px-3 sm:py-2 sm:text-[13px]"
+            style={{
+              color: "hsl(var(--brown) / 0.85)",
+              border: "1px solid hsl(var(--brown) / 0.28)",
+              backgroundColor: "hsl(var(--cream))",
+              borderRadius: 3,
+              boxShadow: "2px 2px 0 hsl(var(--brown) / 0.12)",
+            }}
+          >
+            {s}
+          </motion.div>
+        </div>
       ))}
 
       {/* ---- floating tags --------------------------------------------------- */}
@@ -294,19 +302,24 @@ const JourneyMap = ({ geo, id }: { geo: Geo; id: string }) => {
 
       {/* ---- three clean steps ---------------------------------------------- */}
       {steps.map((s, i) => (
-        <motion.span
+        <div
           key={i}
-          initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 6 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={once}
-          transition={{ duration: T(0.4), ease: EASE, delay: T(TEK_AT + 0.4 + i * 0.3) }}
-          className={`absolute block w-[9rem] text-[11.5px] font-semibold leading-snug sm:w-[10.5rem] sm:text-[13px] ${
-            geo.labelAlign === "center" ? "-translate-x-1/2 text-center" : "text-start"
-          } -translate-y-1/2`}
-          style={{ ...pos(geo.tekLabels[i]), color: INK }}
+          className={`absolute -translate-y-1/2 ${geo.labelAlign === "center" ? "-translate-x-1/2" : ""}`}
+          style={pos(geo.tekLabels[i])}
         >
-          {s}
-        </motion.span>
+          <motion.span
+            initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={once}
+            transition={{ duration: T(0.4), ease: EASE, delay: T(TEK_AT + 0.4 + i * 0.3) }}
+            className={`block w-[8.5rem] text-[11.5px] font-semibold leading-snug sm:w-[10.5rem] sm:text-[13px] ${
+              geo.labelAlign === "center" ? "text-center" : "text-start"
+            }`}
+            style={{ color: INK }}
+          >
+            {s}
+          </motion.span>
+        </div>
       ))}
 
       {/* ---- destination: goal word + official chair + seal + closing line -- */}
