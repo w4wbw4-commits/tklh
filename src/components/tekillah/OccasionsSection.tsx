@@ -11,8 +11,8 @@ import {
   PartyPopper,
   Building2,
   Users,
-  Cake,
-  Plus,
+  ShieldCheck,
+  Star,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
