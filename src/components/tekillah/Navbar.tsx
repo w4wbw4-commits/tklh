@@ -118,18 +118,9 @@ export const Navbar = () => {
                 </Link>
               </Button>
             )}
-            {/* Compact AR/EN language toggle — always visible in the header.
-                Uses i18next changeLanguage; persistence + dir flip handled in src/i18n/index.ts. */}
-            <button
-              type="button"
-              onClick={toggleLang}
-              aria-label={isAr ? "Switch to English" : "التبديل إلى العربية"}
-              className="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide transition hover:bg-white/10"
-              style={{ borderColor: "rgba(167, 202, 161, 0.35)", color: "#A7CAA1" }}
-            >
-              <Globe className="h-3.5 w-3.5" />
-              <span>{isAr ? "EN" : "ع"}</span>
-            </button>
+            {/* AR/EN toggle temporarily hidden from the header while the English
+                copy is being finalised. The switch still lives in the side menu. */}
+
             {/* Hamburger pinned at the very END of the cluster — in RTL this
                 renders at the far-right (start edge), which is where the user
                 expects the primary menu in Arabic. Visible on every breakpoint. */}
