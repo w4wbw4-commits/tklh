@@ -204,8 +204,8 @@
       "inst": {
         "label": "Split over 12 months",
         "of": "Month",
-        "total": "80,000 {{currency}}",
-        "per": "6,667",
+        "total": "50,000 {{currency}}",
+        "per": "4,167",
         "total_label": "Event total",
         "first": "First payment",
         "firstNote": "On booking",
