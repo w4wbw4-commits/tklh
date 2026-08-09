@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import chairMark from "@/assets/tklh-chair-mark.png.asset.json";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
