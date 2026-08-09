@@ -64,68 +64,68 @@ const TradColumn = () => {
         {t("speed.traditional.desc")}
       </p>
 
-      {/* zigzag road that dries out before arriving */}
-      <svg
-        viewBox="0 0 400 44"
-        preserveAspectRatio="none"
-        className="mt-6 h-11 w-full"
-        fill="none"
-        aria-hidden
-      >
-        <defs>
-          <linearGradient id="cmp-dry" x1="400" y1="0" x2="0" y2="0" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stopColor="hsl(var(--brown))" stopOpacity="0.55" />
-            <stop offset="0.72" stopColor="hsl(var(--brown))" stopOpacity="0.42" />
-            <stop offset="1" stopColor="hsl(var(--brown))" stopOpacity="0.05" />
-          </linearGradient>
-        </defs>
-        <motion.path
-          d="M394 30 L344 10 L294 34 L244 10 L194 34 L144 10 L94 34 L44 14 L8 30"
-          stroke="url(#cmp-dry)"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeDasharray="7 7"
-          initial={{ pathLength: reduce ? 1 : 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={once}
-          transition={{ duration: T(1.6), ease: "linear" }}
-        />
-        <motion.circle
-          cx="394"
-          cy="30"
-          r="4"
-          fill="hsl(var(--brown) / 0.5)"
-          initial={{ opacity: reduce ? 1 : 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={once}
-          transition={{ duration: T(0.3) }}
-        />
-      </svg>
+      {/* zigzag road with the chaos scattered above / below along it */}
+      <div className="relative mt-7">
+        <svg
+          viewBox="0 0 400 120"
+          preserveAspectRatio="none"
+          className="pointer-events-none absolute inset-0 h-full w-full"
+          fill="none"
+          aria-hidden
+        >
+          <defs>
+            <linearGradient id="cmp-dry" x1="400" y1="0" x2="0" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="hsl(var(--brown))" stopOpacity="0.55" />
+              <stop offset="0.72" stopColor="hsl(var(--brown))" stopOpacity="0.4" />
+              <stop offset="1" stopColor="hsl(var(--brown))" stopOpacity="0.05" />
+            </linearGradient>
+          </defs>
+          <motion.path
+            d="M394 60 L340 24 L286 96 L232 24 L178 96 L124 24 L70 96 L20 66"
+            stroke="url(#cmp-dry)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeDasharray="7 7"
+            vectorEffect="non-scaling-stroke"
+            initial={{ pathLength: reduce ? 1 : 0 }}
+            whileInView={{ pathLength: 1 }}
+            viewport={once}
+            transition={{ duration: T(1.6), ease: "linear" }}
+          />
+        </svg>
 
-      {/* tilted paper scraps */}
-      <ul className="mt-3 space-y-2.5">
-        {stations.map((s, i) => (
-          <li key={i} className="flex">
-            <motion.span
-              initial={{ opacity: reduce ? 1 : 0, x: reduce ? 0 : 10, rotate: CARD_TILTS[i] }}
-              whileInView={{ opacity: 1, x: 0, rotate: CARD_TILTS[i] }}
-              viewport={once}
-              transition={{ duration: T(0.4), ease: S_EASE, delay: T(0.25 + i * 0.12) }}
-              className="inline-block px-3 py-2 text-[12.5px] leading-snug sm:text-[13.5px]"
+        <ul className="relative flex flex-wrap justify-between gap-x-1.5 gap-y-3 py-2">
+          {stations.map((s, i) => (
+            <li
+              key={i}
+              className="flex flex-1 basis-[30%]"
               style={{
-                color: "hsl(var(--brown) / 0.85)",
-                border: "1px solid hsl(var(--brown) / 0.26)",
-                backgroundColor: "hsl(var(--cream))",
-                borderRadius: 3,
-                boxShadow: "2px 2px 0 hsl(var(--brown) / 0.1)",
+                alignItems: i % 2 === 0 ? "flex-start" : "flex-end",
+                minHeight: 108,
               }}
             >
-              {s}
-            </motion.span>
-          </li>
-        ))}
-      </ul>
+              <motion.span
+                initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : i % 2 === 0 ? -8 : 8, rotate: CARD_TILTS[i] }}
+                whileInView={{ opacity: 1, y: 0, rotate: CARD_TILTS[i] }}
+                viewport={once}
+                transition={{ duration: T(0.4), ease: S_EASE, delay: T(0.25 + i * 0.12) }}
+                className="inline-block px-2 py-1.5 text-[11px] leading-snug sm:text-[12px]"
+                style={{
+                  color: "hsl(var(--brown) / 0.85)",
+                  border: "1px solid hsl(var(--brown) / 0.26)",
+                  backgroundColor: "hsl(var(--cream))",
+                  borderRadius: 3,
+                  boxShadow: "2px 2px 0 hsl(var(--brown) / 0.1)",
+                }}
+              >
+                {s}
+              </motion.span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
     </div>
   );
 };
