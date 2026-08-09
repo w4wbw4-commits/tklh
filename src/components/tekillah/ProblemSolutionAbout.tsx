@@ -21,375 +21,228 @@ const FADED = "hsl(var(--green) / 0.35)";
 const once = { once: true, margin: "-70px" } as const;
 
 // ============================================================================
-// Journey map — one start, two roads, one destination (the official chair).
-// The traditional road wanders, stumbles at five stations and dries out before
-// arriving. The Tklh road is one clean green stroke that reaches the chair and
-// presses a seal. Timing itself tells the story: ~4s vs ~1.2s.
+// Direct comparison — two columns, same story, scanned in one second.
+// Right (RTL first): the traditional road — a dashed wandering line with five
+// tilted paper scraps that dries out. Left: the Tklh road — one straight green
+// stroke, three ticks, the official chair and a pressed seal.
 // ============================================================================
-type Pt = [number, number];
+const S_EASE = EASE;
 
-interface Geo {
-  w: number;
-  h: number;
-  start: Pt;
-  trad: string;
-  tradNodes: Pt[];
-  tradCards: Pt[];
-  tradEnd: Pt;
-  tradTag: Pt;
-  tekTag: Pt;
-  tek: string;
-  tekNodes: Pt[];
-  tekLabels: Pt[];
-  labelAlign: "center" | "start";
-  chair: Pt;
-  goal: Pt;
-  sit: Pt;
-  chairSize: number;
-}
+const CARD_TILTS = [-2.6, 2.2, -1.8, 2.6, -2.2];
 
-const DESKTOP: Geo = {
-  w: 1000,
-  h: 500,
-  start: [930, 258],
-  trad:
-    "M930 258 C 926 190, 908 122, 858 118 C 808 114, 782 182, 732 184 C 682 186, 672 80, 622 76 C 572 72, 546 184, 491 184 C 436 184, 424 76, 374 76 C 324 76, 308 172, 258 174 C 226 175, 206 158, 190 138",
-  tradNodes: [
-    [858, 118],
-    [732, 184],
-    [622, 76],
-    [491, 184],
-    [374, 76],
-  ],
-  tradCards: [
-    [846, 46],
-    [688, 246],
-    [622, 14],
-    [455, 246],
-    [374, 14],
-  ],
-  tradEnd: [190, 138],
-  tradTag: [560, 300],
-  tekTag: [560, 340],
-  tek: "M930 258 C 926 316, 910 374, 860 376 L 152 376",
-  tekNodes: [
-    [730, 376],
-    [520, 376],
-    [320, 376],
-  ],
-  tekLabels: [
-    [730, 428],
-    [520, 428],
-    [320, 428],
-  ],
-  labelAlign: "center",
-  chair: [86, 376],
-  goal: [86, 300],
-  sit: [86, 452],
-  chairSize: 92,
-};
-
-const MOBILE: Geo = {
-  w: 360,
-  h: 1100,
-  start: [180, 30],
-  trad:
-    "M180 30 C 180 72, 252 84, 252 122 C 252 158, 96 162, 96 202 C 96 242, 252 246, 252 286 C 252 326, 96 330, 96 370 C 96 410, 212 414, 214 450 C 216 472, 202 488, 188 502",
-  tradNodes: [
-    [252, 122],
-    [96, 202],
-    [252, 286],
-    [96, 370],
-    [214, 450],
-  ],
-  tradCards: [
-    [108, 122],
-    [250, 202],
-    [108, 286],
-    [250, 370],
-    [104, 450],
-  ],
-  tradEnd: [188, 502],
-  tradTag: [180, 548],
-  tekTag: [180, 596],
-  tek: "M180 640 L 180 928",
-  tekNodes: [
-    [180, 700],
-    [180, 780],
-    [180, 860],
-  ],
-  tekLabels: [
-    [200, 700],
-    [200, 780],
-    [200, 860],
-  ],
-  labelAlign: "start",
-  chair: [180, 1010],
-  goal: [180, 956],
-  sit: [180, 1074],
-  chairSize: 84,
-};
-
-// choreography (seconds)
-const TRAD_DUR = 4;
-const TEK_AT = TRAD_DUR + 0.5;
-const TEK_DUR = 1.2;
-
-const CARD_TILTS = [-3.4, 2.6, -2, 3.2, -2.8];
-
-const JourneyMap = ({ geo, id }: { geo: Geo; id: string }) => {
+const TradColumn = () => {
   const { t } = useTranslation();
   const reduce = useReducedMotion();
   const stations = t("speed.journey.stations", { returnObjects: true }) as string[];
-  const steps = t("speed.tekillah.points", { returnObjects: true }) as string[];
-  const pos = (p: Pt) => ({ left: `${(p[0] / geo.w) * 100}%`, top: `${(p[1] / geo.h) * 100}%` });
   const T = (d: number) => (reduce ? 0 : d);
 
   return (
-    <div className="relative w-full" style={{ aspectRatio: `${geo.w} / ${geo.h}` }}>
-      <svg
-        viewBox={`0 0 ${geo.w} ${geo.h}`}
-        className="absolute inset-0 h-full w-full"
-        fill="none"
-        aria-hidden
-      >
-        <defs>
-          <linearGradient
-            id={`${id}-dry`}
-            gradientUnits="userSpaceOnUse"
-            x1={geo.start[0]}
-            y1={geo.start[1]}
-            x2={geo.tradEnd[0]}
-            y2={geo.tradEnd[1]}
-          >
-            <stop offset="0" stopColor="hsl(var(--brown))" stopOpacity="0.5" />
-            <stop offset="0.82" stopColor="hsl(var(--brown))" stopOpacity="0.45" />
-            <stop offset="1" stopColor="hsl(var(--brown))" stopOpacity="0.05" />
-          </linearGradient>
-        </defs>
-
-        {/* --- traditional road: one continuous dashed meander that dries out */}
-        <motion.path
-          d={geo.trad}
-          stroke={`url(#${id}-dry)`}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeDasharray="7 7"
-          initial={{ pathLength: reduce ? 1 : 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={once}
-          transition={{ duration: T(TRAD_DUR), ease: "linear" }}
-        />
-        {geo.tradNodes.map((n, i) => (
-          <motion.circle
-            key={i}
-            cx={n[0]}
-            cy={n[1]}
-            r="5"
-            fill="hsl(var(--cream))"
-            stroke="hsl(var(--brown) / 0.5)"
-            strokeWidth="1.6"
-            initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 0.4 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={once}
-            transition={{ duration: T(0.3), ease: EASE, delay: T(0.5 + i * 0.68) }}
-          />
-        ))}
-
-        {/* --- Tklh road: one clean stroke straight to the chair */}
-        <motion.path
-          d={geo.tek}
-          stroke={INK}
-          strokeWidth="2.4"
-          strokeLinecap="round"
-          initial={{ pathLength: reduce ? 1 : 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={once}
-          transition={{ duration: T(TEK_DUR), ease: EASE, delay: T(TEK_AT) }}
-        />
-        {geo.tekNodes.map((n, i) => (
-          <motion.g
-            key={i}
-            initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 0.5 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={once}
-            transition={{ duration: T(0.3), ease: EASE, delay: T(TEK_AT + 0.35 + i * 0.3) }}
-            style={{ transformOrigin: `${n[0]}px ${n[1]}px` }}
-          >
-            <circle cx={n[0]} cy={n[1]} r="9" fill="hsl(var(--cream))" stroke={INK} strokeWidth="1.6" />
-            <path
-              d={`M${n[0] - 4.2} ${n[1] + 0.4} L${n[0] - 1.2} ${n[1] + 3.4} L${n[0] + 4.4} ${n[1] - 3.2}`}
-              stroke={INK}
-              strokeWidth="1.9"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </motion.g>
-        ))}
-      </svg>
-
-      {/* ---- start capsule -------------------------------------------------- */}
-      <div className="absolute -translate-x-1/2 -translate-y-1/2" style={pos(geo.start)}>
-        <motion.span
-          initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={once}
-          transition={{ duration: T(0.5), ease: EASE }}
-          className="block whitespace-nowrap px-3.5 py-2 text-[12px] font-bold sm:text-[13px]"
+    <div className="relative">
+      <div className="flex items-baseline gap-2.5">
+        <span
+          className="whitespace-nowrap px-2.5 py-1 text-[11px] font-bold sm:text-[12px]"
           style={{
-            color: INK,
-            border: "1.5px solid hsl(var(--green) / 0.5)",
-            backgroundColor: "hsl(var(--cream))",
+            color: "hsl(var(--brown) / 0.9)",
+            border: "1px dashed hsl(var(--brown) / 0.4)",
             borderRadius: 999,
           }}
         >
-          {t("speed.journey.start")}
-        </motion.span>
+          {t("speed.traditional.chip")}
+        </span>
       </div>
-
-      {/* ---- five pain stations, as tilted paper scraps ---------------------- */}
-      {stations.map((s, i) => (
-        <div
-          key={i}
-          className="absolute -translate-x-1/2 -translate-y-1/2"
-          style={pos(geo.tradCards[i])}
-        >
-          <motion.div
-            initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 10, rotate: CARD_TILTS[i] }}
-            whileInView={
-              reduce
-                ? { opacity: 1, y: 0, rotate: CARD_TILTS[i] }
-                : {
-                    opacity: 1,
-                    y: 0,
-                    rotate: [CARD_TILTS[i] * 2, CARD_TILTS[i] - 1.5, CARD_TILTS[i]],
-                  }
-            }
-            viewport={once}
-            transition={{ duration: T(0.5), ease: EASE, delay: T(0.55 + i * 0.68) }}
-            className="w-[8rem] px-2.5 py-1.5 text-center text-[11.5px] leading-snug sm:w-[9.5rem] sm:px-3 sm:py-2 sm:text-[13px]"
-            style={{
-              color: "hsl(var(--brown) / 0.85)",
-              border: "1px solid hsl(var(--brown) / 0.28)",
-              backgroundColor: "hsl(var(--cream))",
-              borderRadius: 3,
-              boxShadow: "2px 2px 0 hsl(var(--brown) / 0.12)",
-            }}
-          >
-            {s}
-          </motion.div>
-        </div>
-      ))}
-
-      {/* ---- floating tags --------------------------------------------------- */}
-      <motion.span
-        initial={{ opacity: reduce ? 1 : 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={once}
-        transition={{ duration: T(0.5), delay: T(TRAD_DUR - 0.4) }}
-        className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[11.5px] font-semibold sm:text-[13px]"
-        style={{ ...pos(geo.tradTag), color: "hsl(var(--brown) / 0.75)" }}
+      <p
+        className="font-display mt-3 text-2xl font-black leading-none sm:text-3xl"
+        style={{ color: "hsl(var(--brown) / 0.85)" }}
       >
+        {t("speed.traditional.value")}
+      </p>
+      <p className="mt-1.5 text-[12.5px] font-semibold sm:text-[13px]" style={{ color: "hsl(var(--brown) / 0.7)" }}>
         {t("speed.journey.tradTag")}
-      </motion.span>
-      <motion.span
-        initial={{ opacity: reduce ? 1 : 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={once}
-        transition={{ duration: T(0.5), delay: T(TEK_AT) }}
-        className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[12px] font-black sm:text-[14px]"
-        style={{ ...pos(geo.tekTag), color: INK }}
-      >
-        {t("speed.journey.tekTag")}
-      </motion.span>
+      </p>
 
-      {/* ---- three clean steps ---------------------------------------------- */}
-      {steps.map((s, i) => (
-        <div
-          key={i}
-          className={`absolute -translate-y-1/2 ${geo.labelAlign === "center" ? "-translate-x-1/2" : ""}`}
-          style={pos(geo.tekLabels[i])}
+      {/* dashed wandering rail + tilted scraps */}
+      <div className="relative mt-6 ps-7 sm:ps-9">
+        <svg
+          viewBox="0 0 40 320"
+          preserveAspectRatio="none"
+          className="absolute inset-y-0 start-0 h-full w-8 sm:w-10"
+          fill="none"
+          aria-hidden
         >
-          <motion.span
-            initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 6 }}
-            whileInView={{ opacity: 1, y: 0 }}
+          <defs>
+            <linearGradient id="cmp-dry" x1="0" y1="0" x2="0" y2="320" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="hsl(var(--brown))" stopOpacity="0.5" />
+              <stop offset="0.78" stopColor="hsl(var(--brown))" stopOpacity="0.4" />
+              <stop offset="1" stopColor="hsl(var(--brown))" stopOpacity="0.04" />
+            </linearGradient>
+          </defs>
+          <motion.path
+            d="M20 4 C 34 40, 6 62, 20 98 C 34 134, 6 156, 20 192 C 34 228, 6 250, 20 286 C 26 300, 24 310, 21 318"
+            stroke="url(#cmp-dry)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeDasharray="6 6"
+            initial={{ pathLength: reduce ? 1 : 0 }}
+            whileInView={{ pathLength: 1 }}
             viewport={once}
-            transition={{ duration: T(0.4), ease: EASE, delay: T(TEK_AT + 0.4 + i * 0.3) }}
-            className={`block w-[8.5rem] text-[11.5px] font-semibold leading-snug sm:w-[10.5rem] sm:text-[13px] ${
-              geo.labelAlign === "center" ? "text-center" : "text-start"
-            }`}
-            style={{ color: INK }}
-          >
-            {s}
-          </motion.span>
-        </div>
-      ))}
+            transition={{ duration: T(1.5), ease: "linear" }}
+          />
+        </svg>
 
-      {/* ---- destination: goal word + official chair + seal + closing line -- */}
-      <motion.span
-        initial={{ opacity: reduce ? 1 : 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={once}
-        transition={{ duration: T(0.5), delay: T(TEK_AT + TEK_DUR - 0.2) }}
-        className="font-display absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-base font-black sm:text-xl"
-        style={{ ...pos(geo.goal), color: INK }}
+        <ul className="relative space-y-2.5">
+          {stations.map((s, i) => (
+            <li key={i} className="flex">
+              <motion.span
+                initial={{ opacity: reduce ? 1 : 0, x: reduce ? 0 : 10, rotate: CARD_TILTS[i] }}
+                whileInView={{ opacity: 1, x: 0, rotate: CARD_TILTS[i] }}
+                viewport={once}
+                transition={{ duration: T(0.4), ease: S_EASE, delay: T(0.15 + i * 0.12) }}
+                className="inline-block px-3 py-2 text-[12.5px] leading-snug sm:text-[13.5px]"
+                style={{
+                  color: "hsl(var(--brown) / 0.85)",
+                  border: "1px solid hsl(var(--brown) / 0.26)",
+                  backgroundColor: "hsl(var(--cream))",
+                  borderRadius: 3,
+                  boxShadow: "2px 2px 0 hsl(var(--brown) / 0.1)",
+                }}
+              >
+                {s}
+              </motion.span>
+            </li>
+          ))}
+        </ul>
+
+        {/* the road dries out — never arrives */}
+        <motion.p
+          initial={{ opacity: reduce ? 1 : 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={once}
+          transition={{ duration: T(0.5), delay: T(0.9) }}
+          className="mt-5 text-[12px] font-semibold sm:text-[12.5px]"
+          style={{ color: "hsl(var(--brown) / 0.5)" }}
+        >
+          {t("speed.traditional.desc")}
+        </motion.p>
+      </div>
+    </div>
+  );
+};
+
+const TekColumn = () => {
+  const { t } = useTranslation();
+  const reduce = useReducedMotion();
+  const steps = t("speed.tekillah.points", { returnObjects: true }) as string[];
+  const T = (d: number) => (reduce ? 0 : d);
+
+  return (
+    <div className="relative">
+      <span
+        className="inline-block whitespace-nowrap px-2.5 py-1 text-[11px] font-bold sm:text-[12px]"
+        style={{
+          color: "hsl(var(--cream))",
+          backgroundColor: INK,
+          borderRadius: 999,
+        }}
       >
-        {t("speed.journey.goal")}
-      </motion.span>
+        {t("speed.tekillah.chip")}
+      </span>
+      <p className="font-display mt-3 text-2xl font-black leading-none text-green sm:text-3xl">
+        {t("speed.tekillah.prefix")} 10 {t("speed.tekillah.unit")}
+      </p>
+      <p className="mt-1.5 text-[12.5px] font-black sm:text-[13px]" style={{ color: INK }}>
+        {t("speed.journey.tekTag")}
+      </p>
 
-      <div className="absolute -translate-x-1/2 -translate-y-1/2" style={pos(geo.chair)}>
-        <div className="relative">
-          <motion.span
-            initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 1.2 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={once}
-            transition={{ duration: T(0.5), ease: EASE, delay: T(TEK_AT + TEK_DUR - 0.1) }}
-            className="grid place-items-center rounded-full"
-            style={{
-              height: geo.chairSize,
-              width: geo.chairSize,
-              backgroundColor: "hsl(var(--cream))",
-              border: "1.5px solid hsl(var(--green) / 0.45)",
-              boxShadow: "0 0 0 5px hsl(var(--green) / 0.06)",
-            }}
-          >
-            <img
-              src={sealLogo.url}
-              alt=""
-              aria-hidden
-              draggable={false}
-              className="h-[70%] w-[70%] select-none object-contain"
-            />
-          </motion.span>
+      {/* one straight green rail + three ticks */}
+      <div className="relative mt-6 ps-7 sm:ps-9">
+        <motion.span
+          initial={{ scaleY: reduce ? 1 : 0 }}
+          whileInView={{ scaleY: 1 }}
+          viewport={once}
+          transition={{ duration: T(0.6), ease: S_EASE, delay: T(0.1) }}
+          className="absolute inset-y-1 start-[13px] w-[2px] origin-top sm:start-[17px]"
+          style={{ backgroundColor: INK }}
+          aria-hidden
+        />
+        <ul className="relative space-y-4">
+          {steps.map((s, i) => (
+            <li key={i} className="relative">
+              <motion.span
+                initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={once}
+                transition={{ duration: T(0.3), ease: S_EASE, delay: T(0.45 + i * 0.14) }}
+                className="absolute top-[2px] grid h-[18px] w-[18px] place-items-center rounded-full sm:h-5 sm:w-5"
+                style={{
+                  insetInlineStart: "-1.75rem",
+                  backgroundColor: "hsl(var(--cream))",
+                  border: `1.6px solid ${INK}`,
+                  marginInlineStart: "0.28rem",
+                }}
+                aria-hidden
+              >
+                <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none">
+                  <path d="M2.5 6.4 L5 8.8 L9.5 3.6" stroke={INK} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </motion.span>
+              <motion.p
+                initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 6 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={once}
+                transition={{ duration: T(0.35), ease: S_EASE, delay: T(0.5 + i * 0.14) }}
+                className="text-[13px] font-semibold leading-snug sm:text-[14.5px]"
+                style={{ color: INK }}
+              >
+                {s}
+              </motion.p>
+            </li>
+          ))}
+        </ul>
 
-          {/* pressed wax seal */}
-          <motion.span
-            initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 1.6 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={once}
-            transition={{ duration: T(0.35), ease: EASE, delay: T(TEK_AT + TEK_DUR + 0.15) }}
-            className="absolute -bottom-2 start-full ms-[-14px] whitespace-nowrap px-2 py-1 text-[10.5px] font-black sm:text-[11.5px]"
-            style={{
-              color: "hsl(var(--cream))",
-              backgroundColor: INK,
-              borderRadius: 999,
-            }}
-          >
-            {t("speed.journey.seal")}
-          </motion.span>
+        {/* destination: official chair + pressed seal */}
+        <div className="mt-6 flex items-center gap-3.5">
+          <div className="relative shrink-0">
+            <motion.span
+              initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 1.15 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={once}
+              transition={{ duration: T(0.45), ease: S_EASE, delay: T(0.95) }}
+              className="grid h-[74px] w-[74px] place-items-center rounded-full sm:h-[86px] sm:w-[86px]"
+              style={{
+                backgroundColor: "hsl(var(--cream))",
+                border: "1.5px solid hsl(var(--green) / 0.45)",
+                boxShadow: "0 0 0 5px hsl(var(--green) / 0.06)",
+              }}
+            >
+              <img
+                src={sealLogo.url}
+                alt=""
+                aria-hidden
+                draggable={false}
+                className="h-[68%] w-[68%] select-none object-contain"
+              />
+            </motion.span>
+            <motion.span
+              initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 1.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={once}
+              transition={{ duration: T(0.3), ease: S_EASE, delay: T(1.15) }}
+              className="absolute -bottom-1 start-full ms-[-16px] whitespace-nowrap px-2 py-1 text-[10.5px] font-black"
+              style={{ color: "hsl(var(--cream))", backgroundColor: INK, borderRadius: 999 }}
+            >
+              {t("speed.journey.seal")}
+            </motion.span>
+          </div>
+          <div className="min-w-0">
+            <p className="font-display text-lg font-black leading-tight text-green sm:text-xl">
+              {t("speed.journey.goal")}
+            </p>
+            <p className="mt-1 text-[12.5px] font-semibold leading-snug sm:text-[13px]" style={{ color: "hsl(var(--brown) / 0.8)" }}>
+              {t("speed.journey.sit")}
+            </p>
+          </div>
         </div>
       </div>
-
-      <motion.span
-        initial={{ opacity: reduce ? 1 : 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={once}
-        transition={{ duration: T(0.5), delay: T(TEK_AT + TEK_DUR + 0.3) }}
-        className="absolute w-[11rem] -translate-x-1/2 -translate-y-1/2 text-center text-[11.5px] font-semibold leading-snug sm:w-[13rem] sm:text-[13px]"
-        style={{ ...pos(geo.sit), color: "hsl(var(--brown) / 0.8)" }}
-      >
-        {t("speed.journey.sit")}
-      </motion.span>
     </div>
   );
 };
@@ -401,7 +254,7 @@ const SpeedSection = () => {
     <section
       id="speed"
       aria-label={t("speed.ariaLabel")}
-      className="bg-paper relative overflow-hidden px-5 py-20 sm:px-8 sm:py-28"
+      className="bg-paper relative overflow-hidden px-5 py-16 sm:px-8 sm:py-24"
     >
       <div className="relative z-10 mx-auto max-w-5xl">
         <Reveal>
@@ -412,12 +265,17 @@ const SpeedSection = () => {
           </div>
         </Reveal>
 
-        <div className="mt-10 sm:mt-14" style={{ borderTop: HAIR, paddingTop: "2.5rem" }}>
-          <div className="hidden md:block">
-            <JourneyMap geo={DESKTOP} id="journey-d" />
-          </div>
-          <div className="md:hidden">
-            <JourneyMap geo={MOBILE} id="journey-m" />
+        <div className="mt-9 sm:mt-12" style={{ borderTop: HAIR, paddingTop: "2rem" }}>
+          <div className="grid gap-10 md:grid-cols-2 md:gap-12">
+            <TradColumn />
+            <div
+              className="md:ps-12"
+              style={{ borderTop: HAIR, paddingTop: "2rem" }}
+            >
+              <div className="md:border-t-0 md:pt-0">
+                <TekColumn />
+              </div>
+            </div>
           </div>
         </div>
       </div>
