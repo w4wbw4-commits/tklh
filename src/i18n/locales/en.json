@@ -1686,5 +1686,18 @@
       "visa": "Visa",
       "mastercard": "Mastercard"
     }
+  },
+  "trust": {
+    "aria": "Trust bar",
+    "halls": {
+      "label": "Registered venues"
+    },
+    "providers": {
+      "label": "Service providers",
+      "desc": "Planners · Photographers · Bands · Catering · Hospitality"
+    },
+    "customers": {
+      "label": "Clients who needed someone to handle it all — and Tklh became their answer"
+    }
   }
 }
