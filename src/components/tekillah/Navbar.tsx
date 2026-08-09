@@ -72,10 +72,10 @@ export const Navbar = () => {
     >
       <div className={`mx-auto px-4 transition-all duration-500 ${scrolled ? "mt-2 max-w-6xl" : "mt-4 max-w-6xl"}`}>
         <div
-          className={`flex items-center justify-between rounded-full px-4 py-2.5 transition-all duration-500 border shadow-soft`}
+          className={`flex items-center justify-between rounded-full px-4 py-2.5 transition-all duration-500 border`}
           style={{
             background: "#163726",
-            borderColor: "rgba(160, 208, 158, 0.22)",
+            borderColor: scrolled ? "hsl(var(--gold) / 0.55)" : "hsl(var(--gold) / 0.28)",
           }}
         >
           <div className="flex items-center gap-2">
@@ -87,10 +87,10 @@ export const Navbar = () => {
               const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
               const cls =
                 "relative rounded-full px-4 py-2 text-sm font-medium transition-all after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all hover:after:w-1/2";
-              const linkStyle = { color: "#A7CAA1" } as const;
+              const linkStyle = { color: "hsl(var(--cream) / 0.86)" } as const;
               const disabledCls =
                 "relative flex cursor-not-allowed items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium opacity-70";
-              const disabledStyle = { color: "rgba(167, 202, 161, 0.55)" } as const;
+              const disabledStyle = { color: "hsl(var(--cream) / 0.45)" } as const;
               const badge = "badge" in item && item.badge ? (isAr ? item.badge.ar : item.badge.en) : null;
               if ("disabled" in item && item.disabled) {
                 return (
@@ -99,7 +99,7 @@ export const Navbar = () => {
                     {badge && (
                       <span
                         className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
-                        style={{ background: "rgba(167, 202, 161, 0.18)", color: "#A7CAA1" }}
+                        style={{ border: "1px solid hsl(var(--gold) / 0.5)", color: "hsl(var(--gold))" }}
                       >
                         {badge}
                       </span>
@@ -128,7 +128,7 @@ export const Navbar = () => {
                 variant="ghost"
                 size="sm"
                 asChild
-                className="hidden rounded-full text-xs text-[#A7CAA1] hover:bg-primary-foreground/10 hover:text-[#c8e0c4] sm:inline-flex"
+                className="hidden rounded-full text-xs text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex"
               >
                 <Link to="/dashboard">
                   <LayoutDashboard className="me-1 h-3.5 w-3.5" />
@@ -155,7 +155,7 @@ export const Navbar = () => {
               onClick={toggleLang}
               aria-label={isAr ? "Switch to English" : "التبديل إلى العربية"}
               className="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide transition hover:bg-white/10"
-              style={{ borderColor: "rgba(167, 202, 161, 0.35)", color: "#A7CAA1" }}
+              style={{ borderColor: "hsl(var(--gold) / 0.5)", color: "hsl(var(--cream))" }}
             >
               <Globe className="h-3.5 w-3.5" />
               <span>{isAr ? "EN" : "ع"}</span>
