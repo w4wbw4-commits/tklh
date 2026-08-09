@@ -106,7 +106,7 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
                         ? "bg-primary text-primary-foreground"
                         : tone === "danger"
                           ? "bg-destructive text-destructive-foreground"
-                          : "bg-gold text-primary-deep"
+                          : "bg-primary-foreground text-primary-deep"
                     }`}
                   >
                     {count}
@@ -197,7 +197,7 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
                 {count > 0 && (
                   <Badge
                     className={`px-1 py-0 text-[9px] ${
-                      isActive ? "bg-primary-foreground text-primary" : "bg-gold text-primary-deep"
+                      isActive ? "bg-primary-foreground text-primary" : "bg-primary-foreground text-primary-deep"
                     }`}
                   >
                     {count}

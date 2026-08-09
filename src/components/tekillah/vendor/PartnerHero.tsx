@@ -42,7 +42,7 @@ export const PartnerHero = ({ onCtaClick, isAuthenticated }: PartnerHeroProps) =
           className="mx-auto max-w-3xl text-center"
         >
           {/* Premium Partner Badge */}
-          <span className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-primary-deep/90 px-5 py-2 text-xs font-bold uppercase tracking-[0.3em] text-gold shadow-[0_4px_20px_-4px_hsl(var(--gold)/0.4)] backdrop-blur">
+          <span className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-primary-deep/90 px-5 py-2 text-xs font-bold uppercase tracking-[0.3em] text-primary-foreground shadow-[0_4px_20px_-4px_hsl(var(--gold)/0.4)] backdrop-blur">
             <Crown className="h-3.5 w-3.5" strokeWidth={1.8} />
             {t("vendor.partnerHero.badge", { defaultValue: isRtl ? "بوابة الشركاء الحصرية" : "Exclusive Partner Portal" })}
           </span>
@@ -69,7 +69,7 @@ export const PartnerHero = ({ onCtaClick, isAuthenticated }: PartnerHeroProps) =
             >
               <div className="pointer-events-none absolute -top-12 -end-12 h-32 w-32 rounded-full bg-gold/25 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
               <div className="relative">
-                <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/30 bg-gradient-to-br from-primary-deep to-primary text-gold">
+                <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/30 bg-gradient-to-br from-primary-deep to-primary text-primary-foreground">
                   <b.icon className="h-6 w-6" strokeWidth={1.5} />
                 </div>
                 <h3
@@ -97,7 +97,7 @@ export const PartnerHero = ({ onCtaClick, isAuthenticated }: PartnerHeroProps) =
             <Button
               size="lg"
               onClick={onCtaClick}
-              className="h-14 rounded-full bg-primary-deep px-12 text-base text-gold shadow-luxury hover:bg-primary"
+              className="h-14 rounded-full bg-primary-deep px-12 text-base text-primary-foreground shadow-luxury hover:bg-primary"
             >
               <Sparkles className="me-2 h-4 w-4" />
               {t("vendor.partnerHero.ctaAuthed", { defaultValue: isRtl ? "أكمل ملف قاعتك" : "Complete your profile" })}
@@ -118,7 +118,7 @@ export const PartnerHero = ({ onCtaClick, isAuthenticated }: PartnerHeroProps) =
                 asChild
                 size="lg"
                 variant="outline"
-                className="h-14 flex-1 rounded-full border-2 border-primary-deep bg-transparent px-8 text-base font-bold text-primary-deep transition-all hover:bg-primary-deep hover:text-gold sm:flex-none sm:px-10"
+                className="h-14 flex-1 rounded-full border-2 border-primary-deep bg-transparent px-8 text-base font-bold text-primary-deep transition-all hover:bg-primary-deep hover:text-primary-foreground sm:flex-none sm:px-10"
               >
                 <Link to="/auth?redirect=/partner&role=vendor">
                   <LogIn className="me-2 h-5 w-5" />

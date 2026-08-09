@@ -68,7 +68,7 @@ export const Preloader = () => {
           className="h-24 w-auto sm:h-28 object-contain select-none"
           draggable={false}
         />
-        <span className="font-tagline text-lg font-medium tracking-wide text-gold sm:text-xl">
+        <span className="font-tagline text-lg font-medium tracking-wide text-cream sm:text-xl">
           {t("preloader.slogan")}
         </span>
       </div>

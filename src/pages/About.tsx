@@ -177,7 +177,7 @@ const About = () => {
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <Link
                   to="/planner"
-                  className="group inline-flex items-center gap-2 rounded-full border-2 border-gold bg-green px-8 py-3.5 font-arabic text-base font-bold text-gold shadow-deep transition-all hover:-translate-y-0.5 hover:bg-green-mid hover:shadow-[0_25px_70px_-20px_hsl(var(--gold)/0.55)]"
+                  className="group inline-flex items-center gap-2 rounded-full border-2 border-gold bg-green px-8 py-3.5 font-arabic text-base font-bold text-primary-foreground shadow-deep transition-all hover:-translate-y-0.5 hover:bg-green-mid hover:shadow-[0_25px_70px_-20px_hsl(var(--gold)/0.55)]"
                 >
                   <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
                   {t("aboutPage.ctaPlan")}
