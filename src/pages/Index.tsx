@@ -48,9 +48,13 @@ const DashboardPreview = lazyWithRetry(() =>
 const PaymentLogosStrip = lazyWithRetry(() =>
   import("@/components/tekillah/PaymentLogosStrip").then((m) => ({ default: m.PaymentLogosStrip })),
 );
+const TrustStrip = lazyWithRetry(() =>
+  import("@/components/tekillah/TrustStrip").then((m) => ({ default: m.TrustStrip })),
+);
 const UpcomingFeatures = lazyWithRetry(() =>
   import("@/components/tekillah/UpcomingFeatures").then((m) => ({ default: m.UpcomingFeatures })),
 );
+
 const Mission = lazyWithRetry(() =>
   import("@/components/tekillah/Mission").then((m) => ({ default: m.Mission })),
 );
