@@ -164,20 +164,27 @@ const SpeedSection = () => {
                   className="h-px flex-1 origin-left"
                   style={{ background: "hsl(var(--green) / 0.55)" }}
                 />
-                {/* miniature wax seal — a single quiet press */}
+                {/* miniature seal — the official Tklh mark, pressed once */}
                 <motion.span
                   initial={{ opacity: 0, scale: 1.35 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={once}
                   transition={{ duration: 0.45, ease: EASE, delay: 1.15 }}
-                  className="grid h-9 w-9 shrink-0 place-items-center rounded-full"
-                  style={{ backgroundColor: INK }}
+                  className="grid h-10 w-10 shrink-0 place-items-center rounded-full"
+                  style={{
+                    backgroundColor: "hsl(var(--cream))",
+                    border: "1px solid hsl(var(--green) / 0.4)",
+                  }}
                   aria-hidden
                 >
-                  <span className="font-wordmark text-[11px]" style={{ color: "hsl(var(--cream))" }}>
-                    TK
-                  </span>
+                  <img
+                    src={sealLogo.url}
+                    alt=""
+                    className="h-6 w-6 select-none object-contain"
+                    draggable={false}
+                  />
                 </motion.span>
+
               </div>
 
               {/* three clean steps, ticked in sequence */}
