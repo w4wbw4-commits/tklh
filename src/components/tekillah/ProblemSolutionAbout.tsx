@@ -269,13 +269,12 @@ const SpeedSection = () => {
           <div className="grid gap-10 md:grid-cols-2 md:gap-12">
             <TradColumn />
             <div
-              className="md:ps-12"
-              style={{ borderTop: HAIR, paddingTop: "2rem" }}
+              className="border-t pt-8 md:border-t-0 md:border-s md:pt-0 md:ps-12"
+              style={{ borderColor: "hsl(var(--green) / 0.18)" }}
             >
-              <div className="md:border-t-0 md:pt-0">
-                <TekColumn />
-              </div>
+              <TekColumn />
             </div>
+
           </div>
         </div>
       </div>
