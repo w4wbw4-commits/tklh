@@ -25,15 +25,6 @@ const OCCASIONS = [
   { icon: PartyPopper,    key: "events" },
 ] as const;
 
-const AVATAR_ICONS = [HeartHandshake, Crown, GraduationCap, PartyPopper, Cake] as const;
-
-const AVATAR_STYLES = [
-  "bg-green text-cream",
-  "bg-cream text-green",
-  "bg-green/80 text-cream",
-  "bg-cream text-green",
-  "bg-green text-cream",
-] as const;
 
 export const OccasionsSection = () => {
   const { t, i18n } = useTranslation();
