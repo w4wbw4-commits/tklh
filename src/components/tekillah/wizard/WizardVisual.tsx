@@ -22,9 +22,10 @@ const visuals: Array<{ Scene: Scene; captionKey: string }> = [
   { Scene: WizardSceneDetails, captionKey: "wizard.visuals.step1Caption" },
   { Scene: WizardSceneServices, captionKey: "wizard.visuals.step2Caption" },
   { Scene: WizardSceneVision, captionKey: "wizard.visuals.step3Caption" },
-  { Scene: WizardSceneBudget, captionKey: "wizard.visuals.step4Caption" },
   { Scene: WizardSceneVendors, captionKey: "wizard.visuals.step5Caption" },
+  { Scene: WizardSceneFinal, captionKey: "wizard.visuals.finalCaption" },
 ];
+
 
 interface Props {
   step: number;
