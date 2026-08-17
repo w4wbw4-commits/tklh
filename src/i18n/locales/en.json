@@ -389,12 +389,12 @@
   },
   "wizard": {
     "kicker": "Smart planning wizard",
-    "title": "Start planning your night in 4 steps",
+    "title": "Plan it in just 5 steps",
     "step1": "Event details",
     "step2": "Choose services",
     "step3": "Describe your vision",
-    "step4": "Budget",
-    "step5": "Vendors",
+    "step4": "Choose Providers",
+    "step5": "Confirm Request",
     "finish": "Finish planning",
     "confirmBooking": "Confirm booking",
     "eventCreated": "Event created successfully",
@@ -467,12 +467,14 @@
       "cateringDesc": "Delicious cuisine",
       "photography": "Photography",
       "photographyDesc": "Unforgettable moments",
-      "dj": "DJ & Sound",
-      "djDesc": "A standout atmosphere",
       "decor": "Decor & styling",
       "decorDesc": "A luxurious touch",
       "cars": "Cars",
-      "carsDesc": "Arrive in style"
+      "carsDesc": "Arrive in style",
+      "band": "Live Band",
+      "bandDesc": "Zaffa & live performance",
+      "audio": "Audio Systems",
+      "audioDesc": "Speakers, mics, engineer"
     },
     "vision": {
       "title": "Describe your vision for the event",

@@ -13,7 +13,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { StepDetails } from "./wizard/StepDetails";
 import { StepServices } from "./wizard/StepServices";
-import { StepVision } from "./wizard/StepVision";
+import { StepVision, type VisionBlocks, type VisionBlockGroup } from "./wizard/StepVision";
+import { StepProviders, type ProviderPick } from "./wizard/StepProviders";
+import type { ProviderCategory, VisionPrefs } from "./wizard/mockProviders";
+
 import { StepBudget } from "./wizard/StepBudget";
 import { StepVendors, type VendorPick } from "./wizard/StepVendors";
 import { StepPackageDetail } from "./wizard/StepPackageDetail";
@@ -69,6 +72,40 @@ export const PlanningWizard = () => {
   const [selectedChips, setSelectedChips] = useState<string[]>([]);
   const toggleChip = (chip: string) =>
     setSelectedChips((s) => (s.includes(chip) ? s.filter((x) => x !== chip) : [...s, chip]));
+
+  // Vision building blocks (one choice per group) — feed the provider ranking.
+  const [visionBlocks, setVisionBlocks] = useState<VisionBlocks>({
+    dinner: null, photo: null, mood: null,
+  });
+  const setVisionBlock = (group: VisionBlockGroup, value: string | null) =>
+    setVisionBlocks((b) => ({ ...b, [group]: value }));
+
+  const visionPrefs: VisionPrefs = useMemo(
+    () => ({ ...visionBlocks, text: vision }),
+    [visionBlocks, vision],
+  );
+
+  const visionChipsSummary = useMemo(
+    () => [visionBlocks.dinner, visionBlocks.photo, visionBlocks.mood]
+      .filter(Boolean)
+      .map((v) => String(v)),
+    [visionBlocks],
+  );
+
+  // Step 3 — Provider picks (one provider per category)
+  const [providerPicks, setProviderPicks] = useState<Record<string, ProviderPick>>({});
+  const setProviderPick = (category: ProviderCategory, pick: ProviderPick | null) =>
+    setProviderPicks((p) => {
+      const copy = { ...p };
+      if (pick) copy[category] = pick;
+      else delete copy[category];
+      return copy;
+    });
+  const providersTotal = useMemo(
+    () => Object.values(providerPicks).reduce((s, p) => s + p.total, 0),
+    [providerPicks],
+  );
+
 
   // Step 3 — Budget
   const [budgetMode, setBudgetMode] = useState<BudgetMode>(null);
@@ -277,12 +314,16 @@ export const PlanningWizard = () => {
     } else if (step === 1) {
       if (selected.length === 0) miss.push(isAr ? "خدمة واحدة على الأقل" : "At least one service");
     } else if (step === 2) {
-      if (vision.trim().length === 0 && selectedChips.length === 0) {
-        miss.push(isAr ? "رؤيتك أو طابع الحفل" : "Vision or theme");
+      if (vision.trim().length === 0 && visionChipsSummary.length === 0) {
+        miss.push(isAr ? "رؤيتك أو لبنات رؤيتك" : "Vision or building blocks");
+      }
+    } else if (step === 3) {
+      if (Object.keys(providerPicks).length === 0) {
+        miss.push(isAr ? "مزود واحد على الأقل" : "At least one provider");
       }
     }
     return miss;
-  }, [step, city, eventType, date, men, women, selected, vision, selectedChips, isAr]);
+  }, [step, city, eventType, date, men, women, selected, vision, visionChipsSummary, providerPicks, isAr]);
 
   const canProceed = missingFields.length === 0;
 
@@ -300,7 +341,7 @@ export const PlanningWizard = () => {
       );
       return;
     }
-    setStep((s) => Math.min(s + 1, 3));
+    setStep((s) => Math.min(s + 1, 4));
     requestAnimationFrame(scrollFormIntoView);
   };
   const prev = () => {
@@ -366,19 +407,20 @@ export const PlanningWizard = () => {
       if (date) lines.push(`• ${dateLabel}: ${date}${endDate ? ` → ${endDate}` : ""}`);
       lines.push(`• ${guestsLabel}: ${men + women} (${menLabel} ${men} / ${womenLabel} ${women})`);
       if (selected.length) lines.push(`• ${servicesLabel}: ${selected.map((s) => t(`wizard.services.${s}`, { defaultValue: s })).join(sep)}`);
-      if (selectedChips.length) lines.push(`• ${themeLabel}: ${selectedChips.join(sep)}`);
+      if (visionChipsSummary.length) lines.push(`• ${themeLabel}: ${visionChipsSummary.join(sep)}`);
       if (vision.trim()) lines.push(`• ${isAr ? "الرؤية" : "Vision"}: ${vision.trim()}`);
       if (packageSelection) {
         lines.push("");
         lines.push(`📦 ${isAr ? "الباقة المختارة" : "Selected package"}: ${packageSelection.name} — ${packageSelection.price.toLocaleString(isAr ? "ar-SA" : "en-US")} ${isAr ? "ر.س" : "SAR"}`);
       } else {
-        const pickEntries = Object.values(picks);
+        const pickEntries = Object.values(providerPicks);
         if (pickEntries.length) {
           lines.push("");
-          lines.push(`✅ ${isAr ? "الموردون المختارون" : "Selected vendors"} (${pickEntries.length}):`);
+          lines.push(`✅ ${isAr ? "المزودون المختارون" : "Selected providers"} (${pickEntries.length}):`);
           pickEntries.forEach((p) => {
-            lines.push(`   - ${t(`wizard.services.${p.category}`, { defaultValue: p.category })}`);
+            lines.push(`   - ${t(`wizard.services.${p.category}`, { defaultValue: p.category })}: ${isAr ? p.name : p.name_en} — ${p.total.toLocaleString(isAr ? "ar-SA" : "en-US")} ${isAr ? "ر.س" : "SAR"}`);
           });
+          lines.push(`   ${isAr ? "الإجمالي" : "Total"}: ${providersTotal.toLocaleString(isAr ? "ar-SA" : "en-US")} ${isAr ? "ر.س" : "SAR"}`);
         }
       }
       const waMessage = encodeURIComponent(lines.join("\n"));
@@ -402,6 +444,7 @@ export const PlanningWizard = () => {
     t("wizard.step1"),
     t("wizard.step2"),
     t("wizard.step3"),
+    t("wizard.step4"),
     isAr ? "تأكيد الطلب" : "Confirm Request",
   ];
 
@@ -532,12 +575,23 @@ export const PlanningWizard = () => {
               {step === 2 && (
                 <StepVision
                   vision={vision} setVision={setVision}
-                  selectedChips={selectedChips} toggleChip={toggleChip}
+                  blocks={visionBlocks} setBlock={setVisionBlock}
                 />
               )}
               {step === 3 && (
+                <StepProviders
+                  categories={selected}
+                  guests={men + women}
+                  date={date}
+                  setDate={setDate}
+                  prefs={visionPrefs}
+                  picks={providerPicks}
+                  setPick={setProviderPick}
+                />
+              )}
+              {step === 4 && (
                 <motion.div
-                  key="step-3-confirm"
+                  key="step-4-confirm"
                   initial={{ opacity: 0, x: -24 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 24 }}
@@ -560,16 +614,40 @@ export const PlanningWizard = () => {
                     <SummaryRow label={isAr ? "تاريخ النهاية" : "End date"} value={endDate || "—"} valueDir="ltr" />
                     <SummaryRow label={isAr ? "عدد الرجال" : "Men"} value={String(men)} />
                     <SummaryRow label={isAr ? "عدد النساء" : "Women"} value={String(women)} />
-                    <SummaryRow
-                      label={isAr ? "الخدمات" : "Services"}
-                      value={selected.length ? selected.map((s) => t(`wizard.services.${s}`, { defaultValue: s })).join("، ") : "—"}
-                    />
-                    {(vision || selectedChips.length > 0) && (
+                    {(vision || visionChipsSummary.length > 0) && (
                       <SummaryRow
                         label={isAr ? "الرؤية / الطابع" : "Vision / theme"}
-                        value={[vision, selectedChips.join("، ")].filter(Boolean).join(" — ")}
+                        value={[vision, visionChipsSummary.join("، ")].filter(Boolean).join(" — ")}
                       />
                     )}
+                  </div>
+
+                  {/* Per-category provider summary */}
+                  <div className="mt-5 space-y-2 rounded-2xl border border-primary/20 bg-card p-5">
+                    <h4 className="font-arabic text-sm font-semibold text-foreground">
+                      {isAr ? "مزودوك المختارون" : "Your selected providers"}
+                    </h4>
+                    {Object.values(providerPicks).length === 0 ? (
+                      <p className="font-arabic text-sm text-foreground/65">
+                        {isAr ? "لم تختر مزودين بعد." : "No providers selected yet."}
+                      </p>
+                    ) : (
+                      Object.values(providerPicks).map((p) => (
+                        <SummaryRow
+                          key={p.category}
+                          label={t(`wizard.services.${p.category}`, { defaultValue: p.category })}
+                          value={`${isAr ? p.name : p.name_en} — ${p.total.toLocaleString(isAr ? "ar-SA" : "en-US")}`}
+                        />
+                      ))
+                    )}
+                    <div className="flex items-center justify-between pt-2">
+                      <span className="font-arabic text-sm font-semibold text-foreground">
+                        {isAr ? "الإجمالي النهائي" : "Final total"}
+                      </span>
+                      <span className="font-arabic text-xl font-bold text-primary">
+                        {providersTotal.toLocaleString(isAr ? "ar-SA" : "en-US")} {isAr ? "ر.س" : "SAR"}
+                      </span>
+                    </div>
                   </div>
 
                   <p className="mt-5 rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-foreground/80 font-arabic">
@@ -580,6 +658,8 @@ export const PlanningWizard = () => {
                 </motion.div>
               )}
             </AnimatePresence>
+
+
             </div>
 
             <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border bg-secondary/30 px-4 py-4 sm:px-10">
@@ -593,7 +673,7 @@ export const PlanningWizard = () => {
                 <PrevIcon className="me-2 h-4 w-4" />
                 {t("common.previous")}
               </Button>
-              {step < 3 ? (
+              {step < 4 ? (
                 <div className="flex flex-col items-end gap-1">
                   <Button
                     onClick={next}
