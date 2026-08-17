@@ -70,6 +70,40 @@ export const PlanningWizard = () => {
   const toggleChip = (chip: string) =>
     setSelectedChips((s) => (s.includes(chip) ? s.filter((x) => x !== chip) : [...s, chip]));
 
+  // Vision building blocks (one choice per group) — feed the provider ranking.
+  const [visionBlocks, setVisionBlocks] = useState<VisionBlocks>({
+    dinner: null, photo: null, mood: null,
+  });
+  const setVisionBlock = (group: VisionBlockGroup, value: string | null) =>
+    setVisionBlocks((b) => ({ ...b, [group]: value }));
+
+  const visionPrefs: VisionPrefs = useMemo(
+    () => ({ ...visionBlocks, text: vision }),
+    [visionBlocks, vision],
+  );
+
+  const visionChipsSummary = useMemo(
+    () => [visionBlocks.dinner, visionBlocks.photo, visionBlocks.mood]
+      .filter(Boolean)
+      .map((v) => String(v)),
+    [visionBlocks],
+  );
+
+  // Step 3 — Provider picks (one provider per category)
+  const [providerPicks, setProviderPicks] = useState<Record<string, ProviderPick>>({});
+  const setProviderPick = (category: ProviderCategory, pick: ProviderPick | null) =>
+    setProviderPicks((p) => {
+      const copy = { ...p };
+      if (pick) copy[category] = pick;
+      else delete copy[category];
+      return copy;
+    });
+  const providersTotal = useMemo(
+    () => Object.values(providerPicks).reduce((s, p) => s + p.total, 0),
+    [providerPicks],
+  );
+
+
   // Step 3 — Budget
   const [budgetMode, setBudgetMode] = useState<BudgetMode>(null);
   const [budget, setBudget] = useState(80000);
