@@ -115,7 +115,7 @@ export const DashboardPreview = () => {
 
           <div className="mt-7">
             <Link
-              to="/planner"
+              to="/dashboard"
               className="inline-flex w-full items-center justify-center rounded-full px-5 py-3.5 text-[15px] font-bold transition-opacity hover:opacity-90 sm:w-auto sm:py-2.5 sm:text-[13px]"
               style={{ backgroundColor: "hsl(var(--green))", color: "hsl(var(--cream))" }}
             >
