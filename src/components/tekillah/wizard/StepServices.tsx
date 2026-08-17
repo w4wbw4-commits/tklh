@@ -1,13 +1,14 @@
 import { motion } from "framer-motion";
-import { Building2, UtensilsCrossed, Camera, Music2, Flower2, Car, Check } from "lucide-react";
+import { Building2, UtensilsCrossed, Camera, Drum, Speaker, Flower2, Car, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const services = [
   { id: "hall", icon: Building2 },
   { id: "catering", icon: UtensilsCrossed },
   { id: "photography", icon: Camera },
-  { id: "dj", icon: Music2 },
   { id: "decor", icon: Flower2 },
+  { id: "band", icon: Drum },
+  { id: "audio", icon: Speaker },
   { id: "cars", icon: Car },
 ];
 
@@ -41,7 +42,7 @@ export const StepServices = ({ selected, toggleService }: Props) => {
               whileHover={{ y: -3 }}
               whileTap={{ scale: 0.98 }}
               className={`group relative overflow-hidden rounded-2xl border p-5 text-start transition-all ${
-                isOn ? "border-primary bg-primary/5 shadow-soft" : "border-border bg-card hover:border-primary/40"
+                isOn ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/40"
               }`}
             >
               {isOn && (
