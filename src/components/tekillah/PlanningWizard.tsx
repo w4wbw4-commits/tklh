@@ -614,6 +614,8 @@ export const PlanningWizard = () => {
                   </p>
                 </motion.div>
               )}
+            </AnimatePresence>
+
 
             </div>
 
