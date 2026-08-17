@@ -314,12 +314,16 @@ export const PlanningWizard = () => {
     } else if (step === 1) {
       if (selected.length === 0) miss.push(isAr ? "خدمة واحدة على الأقل" : "At least one service");
     } else if (step === 2) {
-      if (vision.trim().length === 0 && selectedChips.length === 0) {
-        miss.push(isAr ? "رؤيتك أو طابع الحفل" : "Vision or theme");
+      if (vision.trim().length === 0 && visionChipsSummary.length === 0) {
+        miss.push(isAr ? "رؤيتك أو لبنات رؤيتك" : "Vision or building blocks");
+      }
+    } else if (step === 3) {
+      if (Object.keys(providerPicks).length === 0) {
+        miss.push(isAr ? "مزود واحد على الأقل" : "At least one provider");
       }
     }
     return miss;
-  }, [step, city, eventType, date, men, women, selected, vision, selectedChips, isAr]);
+  }, [step, city, eventType, date, men, women, selected, vision, visionChipsSummary, providerPicks, isAr]);
 
   const canProceed = missingFields.length === 0;
 
@@ -337,7 +341,7 @@ export const PlanningWizard = () => {
       );
       return;
     }
-    setStep((s) => Math.min(s + 1, 3));
+    setStep((s) => Math.min(s + 1, 4));
     requestAnimationFrame(scrollFormIntoView);
   };
   const prev = () => {
@@ -403,19 +407,20 @@ export const PlanningWizard = () => {
       if (date) lines.push(`• ${dateLabel}: ${date}${endDate ? ` → ${endDate}` : ""}`);
       lines.push(`• ${guestsLabel}: ${men + women} (${menLabel} ${men} / ${womenLabel} ${women})`);
       if (selected.length) lines.push(`• ${servicesLabel}: ${selected.map((s) => t(`wizard.services.${s}`, { defaultValue: s })).join(sep)}`);
-      if (selectedChips.length) lines.push(`• ${themeLabel}: ${selectedChips.join(sep)}`);
+      if (visionChipsSummary.length) lines.push(`• ${themeLabel}: ${visionChipsSummary.join(sep)}`);
       if (vision.trim()) lines.push(`• ${isAr ? "الرؤية" : "Vision"}: ${vision.trim()}`);
       if (packageSelection) {
         lines.push("");
         lines.push(`📦 ${isAr ? "الباقة المختارة" : "Selected package"}: ${packageSelection.name} — ${packageSelection.price.toLocaleString(isAr ? "ar-SA" : "en-US")} ${isAr ? "ر.س" : "SAR"}`);
       } else {
-        const pickEntries = Object.values(picks);
+        const pickEntries = Object.values(providerPicks);
         if (pickEntries.length) {
           lines.push("");
-          lines.push(`✅ ${isAr ? "الموردون المختارون" : "Selected vendors"} (${pickEntries.length}):`);
+          lines.push(`✅ ${isAr ? "المزودون المختارون" : "Selected providers"} (${pickEntries.length}):`);
           pickEntries.forEach((p) => {
-            lines.push(`   - ${t(`wizard.services.${p.category}`, { defaultValue: p.category })}`);
+            lines.push(`   - ${t(`wizard.services.${p.category}`, { defaultValue: p.category })}: ${isAr ? p.name : p.name_en} — ${p.total.toLocaleString(isAr ? "ar-SA" : "en-US")} ${isAr ? "ر.س" : "SAR"}`);
           });
+          lines.push(`   ${isAr ? "الإجمالي" : "Total"}: ${providersTotal.toLocaleString(isAr ? "ar-SA" : "en-US")} ${isAr ? "ر.س" : "SAR"}`);
         }
       }
       const waMessage = encodeURIComponent(lines.join("\n"));
@@ -439,6 +444,7 @@ export const PlanningWizard = () => {
     t("wizard.step1"),
     t("wizard.step2"),
     t("wizard.step3"),
+    t("wizard.step4"),
     isAr ? "تأكيد الطلب" : "Confirm Request",
   ];
 
@@ -667,7 +673,7 @@ export const PlanningWizard = () => {
                 <PrevIcon className="me-2 h-4 w-4" />
                 {t("common.previous")}
               </Button>
-              {step < 3 ? (
+              {step < 4 ? (
                 <div className="flex flex-col items-end gap-1">
                   <Button
                     onClick={next}
