@@ -27,7 +27,7 @@ const SERVICES: { value: ServiceType; ar: string; en: string }[] = [
   { value: "hall", ar: "قاعات ومواقع", en: "Halls & venues" },
   { value: "catering", ar: "ضيافة وتقديم طعام", en: "Catering" },
   { value: "photography", ar: "تصوير", en: "Photography" },
-  { value: "dj", ar: "صوتيات وDJ", en: "Sound & DJ" },
+  { value: "dj", ar: "الصوتيات", en: "Audio systems" },
   { value: "decor", ar: "تنسيق وديكور", en: "Decor & styling" },
   { value: "cars", ar: "سيارات وتنقل", en: "Cars & transport" },
 ];
