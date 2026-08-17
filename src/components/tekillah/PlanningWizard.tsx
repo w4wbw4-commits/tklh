@@ -532,12 +532,23 @@ export const PlanningWizard = () => {
               {step === 2 && (
                 <StepVision
                   vision={vision} setVision={setVision}
-                  selectedChips={selectedChips} toggleChip={toggleChip}
+                  blocks={visionBlocks} setBlock={setVisionBlock}
                 />
               )}
               {step === 3 && (
+                <StepProviders
+                  categories={selected}
+                  guests={men + women}
+                  date={date}
+                  setDate={setDate}
+                  prefs={visionPrefs}
+                  picks={providerPicks}
+                  setPick={setProviderPick}
+                />
+              )}
+              {step === 4 && (
                 <motion.div
-                  key="step-3-confirm"
+                  key="step-4-confirm"
                   initial={{ opacity: 0, x: -24 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 24 }}
@@ -560,16 +571,40 @@ export const PlanningWizard = () => {
                     <SummaryRow label={isAr ? "تاريخ النهاية" : "End date"} value={endDate || "—"} valueDir="ltr" />
                     <SummaryRow label={isAr ? "عدد الرجال" : "Men"} value={String(men)} />
                     <SummaryRow label={isAr ? "عدد النساء" : "Women"} value={String(women)} />
-                    <SummaryRow
-                      label={isAr ? "الخدمات" : "Services"}
-                      value={selected.length ? selected.map((s) => t(`wizard.services.${s}`, { defaultValue: s })).join("، ") : "—"}
-                    />
-                    {(vision || selectedChips.length > 0) && (
+                    {(vision || visionChipsSummary.length > 0) && (
                       <SummaryRow
                         label={isAr ? "الرؤية / الطابع" : "Vision / theme"}
-                        value={[vision, selectedChips.join("، ")].filter(Boolean).join(" — ")}
+                        value={[vision, visionChipsSummary.join("، ")].filter(Boolean).join(" — ")}
                       />
                     )}
+                  </div>
+
+                  {/* Per-category provider summary */}
+                  <div className="mt-5 space-y-2 rounded-2xl border border-primary/20 bg-card p-5">
+                    <h4 className="font-arabic text-sm font-semibold text-foreground">
+                      {isAr ? "مزودوك المختارون" : "Your selected providers"}
+                    </h4>
+                    {Object.values(providerPicks).length === 0 ? (
+                      <p className="font-arabic text-sm text-foreground/65">
+                        {isAr ? "لم تختر مزودين بعد." : "No providers selected yet."}
+                      </p>
+                    ) : (
+                      Object.values(providerPicks).map((p) => (
+                        <SummaryRow
+                          key={p.category}
+                          label={t(`wizard.services.${p.category}`, { defaultValue: p.category })}
+                          value={`${isAr ? p.name : p.name_en} — ${p.total.toLocaleString(isAr ? "ar-SA" : "en-US")}`}
+                        />
+                      ))
+                    )}
+                    <div className="flex items-center justify-between pt-2">
+                      <span className="font-arabic text-sm font-semibold text-foreground">
+                        {isAr ? "الإجمالي النهائي" : "Final total"}
+                      </span>
+                      <span className="font-arabic text-xl font-bold text-primary">
+                        {providersTotal.toLocaleString(isAr ? "ar-SA" : "en-US")} {isAr ? "ر.س" : "SAR"}
+                      </span>
+                    </div>
                   </div>
 
                   <p className="mt-5 rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm text-foreground/80 font-arabic">
@@ -579,7 +614,7 @@ export const PlanningWizard = () => {
                   </p>
                 </motion.div>
               )}
-            </AnimatePresence>
+
             </div>
 
             <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border bg-secondary/30 px-4 py-4 sm:px-10">
