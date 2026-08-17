@@ -49,11 +49,11 @@ export const Footer = () => {
 
   return (
     <footer className="bg-velvet relative" style={{ color: cream }}>
-      <div className="relative z-10 mx-auto max-w-6xl px-6 py-16">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-5 md:gap-0">
-          <div className="md:col-span-2 md:pe-10">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-5 py-12 sm:px-6 sm:py-16">
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 md:grid-cols-5 md:gap-0">
+          <div className="col-span-2 md:col-span-2 md:pe-10">
             <Logo />
-            <p className="mt-4 max-w-sm text-[15px] leading-[1.9]" style={{ color: creamSoft }}>
+            <p className="mt-4 max-w-sm text-[14px] leading-[1.9] sm:text-[15px]" style={{ color: creamSoft }}>
               {t("footer.about")}
             </p>
             <div className="mt-6 flex items-center gap-5">
@@ -98,18 +98,18 @@ export const Footer = () => {
             </ul>
           </div>
 
-          <div className="md:px-8" style={{ borderInlineStart: rule }}>
+          <div className="md:px-8 md:[border-inline-start:1px_solid_hsl(var(--gold)/0.4)]">
             <div className="kicker">{t("footer.platform")}</div>
-            <ul className="mt-5 space-y-2.5 text-[15px]" style={{ color: creamSoft }}>
+            <ul className="mt-4 space-y-2.5 text-[14px] sm:mt-5 sm:text-[15px]" style={{ color: creamSoft }}>
               <li><Link to="/about" className="hover:opacity-70">{t("footer.aboutLink")}</Link></li>
               <li><Link to="/planner" className="hover:opacity-70">{t("footer.wizard")}</Link></li>
               <li><Link to="/dashboard" className="hover:opacity-70">{t("nav.myDashboard")}</Link></li>
             </ul>
           </div>
 
-          <div className="md:px-8" style={{ borderInlineStart: rule }}>
+          <div className="md:px-8 md:[border-inline-start:1px_solid_hsl(var(--gold)/0.4)]">
             <div className="kicker">{t("footer.company")}</div>
-            <ul className="mt-5 space-y-2.5 text-[15px]" style={{ color: creamSoft }}>
+            <ul className="mt-4 space-y-2.5 text-[14px] sm:mt-5 sm:text-[15px]" style={{ color: creamSoft }}>
               <li><a href="#" className="hover:opacity-70">{t("footer.aboutUs")}</a></li>
               <li>
                 <Link to="/vendor" className="inline-flex items-center gap-1.5 font-bold text-primary-foreground hover:underline">
@@ -134,9 +134,9 @@ export const Footer = () => {
             </ul>
           </div>
 
-          <div className="md:px-8" style={{ borderInlineStart: rule }}>
+          <div className="md:px-8 md:[border-inline-start:1px_solid_hsl(var(--gold)/0.4)]">
             <div className="kicker">{t("footer.legal")}</div>
-            <ul className="mt-5 space-y-2.5 text-[15px]" style={{ color: creamSoft }}>
+            <ul className="mt-4 space-y-2.5 text-[14px] sm:mt-5 sm:text-[15px]" style={{ color: creamSoft }}>
               <li><Link to="/terms-of-service" className="hover:opacity-70">{t("footer.terms")}</Link></li>
               <li><Link to="/privacy-policy" className="hover:opacity-70">{t("footer.privacy")}</Link></li>
               <li><Link to="/refund-policy" className="hover:opacity-70">{t("footer.refund")}</Link></li>
@@ -147,7 +147,7 @@ export const Footer = () => {
         {/* Partner Portal callout — visible on every page via Footer */}
         <Link
           to="/vendor"
-          className="mt-14 flex flex-col items-start justify-between gap-4 rounded-md p-6 transition-colors duration-500 sm:flex-row sm:items-center"
+          className="mt-10 flex flex-col items-start justify-between gap-4 rounded-md p-5 sm:mt-14 sm:p-6 transition-colors duration-500 sm:flex-row sm:items-center"
           style={{ border: "1px solid hsl(var(--gold) / 0.5)" }}
         >
           <div>
@@ -168,11 +168,11 @@ export const Footer = () => {
         </Link>
 
         <div
-          className="mt-14 flex flex-col items-center justify-between gap-3 pt-7 text-[13px] sm:flex-row"
+          className="mt-10 flex flex-col items-center justify-between gap-3 pt-6 text-center text-[12px] sm:mt-14 sm:pt-7 sm:text-start sm:text-[13px] sm:flex-row"
           style={{ borderTop: rule, color: creamSoft }}
         >
           <span>© {new Date().getFullYear()} TKLH. {t("footer.rights")}</span>
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 sm:justify-start sm:gap-x-5">
             <Link to="/terms-of-service" className="hover:opacity-70">{t("footer.terms")}</Link>
             <Link to="/privacy-policy" className="hover:opacity-70">{t("footer.privacy")}</Link>
             <Link to="/refund-policy" className="hover:opacity-70">{t("footer.refund")}</Link>
