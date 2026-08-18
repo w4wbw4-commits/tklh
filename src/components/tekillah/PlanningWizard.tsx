@@ -480,6 +480,20 @@ export const PlanningWizard = () => {
           </h2>
         </motion.div>
 
+        <AnimatePresence>
+          {searching && (
+            <AiSearchingOverlay
+              key="ai-searching"
+              onDone={() => {
+                setSearching(false);
+                setStep(3);
+                requestAnimationFrame(scrollFormIntoView);
+              }}
+            />
+          )}
+        </AnimatePresence>
+
+
         {/* Mobile-only visual header */}
         <div className="mx-auto mt-10 max-w-3xl lg:hidden">
           <WizardVisual step={step} variant="header" />
