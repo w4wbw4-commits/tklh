@@ -16,6 +16,8 @@ import { StepServices } from "./wizard/StepServices";
 import { StepVision, type VisionBlocks, type VisionBlockGroup } from "./wizard/StepVision";
 import { StepProviders, type ProviderPick } from "./wizard/StepProviders";
 import type { ProviderCategory, VisionPrefs } from "./wizard/mockProviders";
+import { AiSearchingOverlay } from "./wizard/AiSearchingOverlay";
+
 
 import { StepBudget } from "./wizard/StepBudget";
 import { StepVendors, type VendorPick } from "./wizard/StepVendors";
