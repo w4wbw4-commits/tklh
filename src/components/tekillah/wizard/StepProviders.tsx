@@ -97,6 +97,35 @@ export const StepProviders = ({ categories, guests, date, setDate, prefs, picks,
     });
   };
 
+  // --- Ready-made packages layer -----------------------------------------
+  const manualRef = useRef<HTMLDivElement>(null);
+  const [presetKey, setPresetKey] = useState<string | null>(null);
+
+  const applyPreset = (preset: PackagePreset) => {
+    const { members } = resolvePreset(preset, activeCategories, guests, dateKey);
+    activeCategories.forEach((c) => setPick(c, null));
+    members
+      .filter((m) => m.available)
+      .forEach((m) =>
+        setPick(m.category, {
+          category: m.category,
+          id: m.provider.id,
+          name: m.provider.name,
+          name_en: m.provider.name_en,
+          total: m.total,
+        }),
+      );
+    setPresetKey(preset.key);
+    setOpen(activeCategories.slice(0, 1));
+    requestAnimationFrame(() => {
+      const el = manualRef.current;
+      if (!el) return;
+      const target = window.scrollY + el.getBoundingClientRect().top - 110;
+      window.scrollTo({ top: target, behavior: "smooth" });
+    });
+  };
+
+
   return (
     <motion.div
       key="step-providers"
