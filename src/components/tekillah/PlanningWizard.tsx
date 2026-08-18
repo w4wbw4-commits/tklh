@@ -334,6 +334,10 @@ export const PlanningWizard = () => {
     return (isAr ? "المطلوب: " : "Required: ") + missingFields.join(isAr ? "، " : ", ");
   }, [canProceed, missingFields, isAr]);
 
+  // Shown between the vision step and the provider marketplace so the customer
+  // feels their written vision actually triggered a search.
+  const [searching, setSearching] = useState(false);
+
   const next = () => {
     if (!canProceed) {
       toast.error(
@@ -343,9 +347,14 @@ export const PlanningWizard = () => {
       );
       return;
     }
+    if (step === 2) {
+      setSearching(true);
+      return;
+    }
     setStep((s) => Math.min(s + 1, 4));
     requestAnimationFrame(scrollFormIntoView);
   };
+
   const prev = () => {
     setStep((s) => Math.max(s - 1, 0));
     requestAnimationFrame(scrollFormIntoView);
