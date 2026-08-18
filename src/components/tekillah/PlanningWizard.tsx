@@ -16,6 +16,8 @@ import { StepServices } from "./wizard/StepServices";
 import { StepVision, type VisionBlocks, type VisionBlockGroup } from "./wizard/StepVision";
 import { StepProviders, type ProviderPick } from "./wizard/StepProviders";
 import type { ProviderCategory, VisionPrefs } from "./wizard/mockProviders";
+import { AiSearchingOverlay } from "./wizard/AiSearchingOverlay";
+
 
 import { StepBudget } from "./wizard/StepBudget";
 import { StepVendors, type VendorPick } from "./wizard/StepVendors";
@@ -332,6 +334,10 @@ export const PlanningWizard = () => {
     return (isAr ? "المطلوب: " : "Required: ") + missingFields.join(isAr ? "، " : ", ");
   }, [canProceed, missingFields, isAr]);
 
+  // Shown between the vision step and the provider marketplace so the customer
+  // feels their written vision actually triggered a search.
+  const [searching, setSearching] = useState(false);
+
   const next = () => {
     if (!canProceed) {
       toast.error(
@@ -341,9 +347,14 @@ export const PlanningWizard = () => {
       );
       return;
     }
+    if (step === 2) {
+      setSearching(true);
+      return;
+    }
     setStep((s) => Math.min(s + 1, 4));
     requestAnimationFrame(scrollFormIntoView);
   };
+
   const prev = () => {
     setStep((s) => Math.max(s - 1, 0));
     requestAnimationFrame(scrollFormIntoView);
@@ -468,6 +479,20 @@ export const PlanningWizard = () => {
             {t("wizard.title")}
           </h2>
         </motion.div>
+
+        <AnimatePresence>
+          {searching && (
+            <AiSearchingOverlay
+              key="ai-searching"
+              onDone={() => {
+                setSearching(false);
+                setStep(3);
+                requestAnimationFrame(scrollFormIntoView);
+              }}
+            />
+          )}
+        </AnimatePresence>
+
 
         {/* Mobile-only visual header */}
         <div className="mx-auto mt-10 max-w-3xl lg:hidden">

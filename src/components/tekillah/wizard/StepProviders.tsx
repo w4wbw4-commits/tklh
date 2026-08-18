@@ -1,9 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Check, CalendarClock, ChevronDown, Wand2, Coins, Crown } from "lucide-react";
+import { Check, CalendarClock, ChevronDown, Wand2, Coins, Crown, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import RiyalSymbol from "@/components/tekillah/RiyalSymbol";
+import { PackageShowcase } from "./PackageShowcase";
+import { resolvePreset, type PackagePreset } from "./packagePresets";
 import {
   MOCK_PROVIDERS,
   PROVIDER_CATEGORIES,
@@ -20,6 +22,7 @@ import {
   type VenueType,
   type VisionPrefs,
 } from "./mockProviders";
+
 
 export interface ProviderPick {
   category: ProviderCategory;
@@ -94,6 +97,35 @@ export const StepProviders = ({ categories, guests, date, setDate, prefs, picks,
     });
   };
 
+  // --- Ready-made packages layer -----------------------------------------
+  const manualRef = useRef<HTMLDivElement>(null);
+  const [presetKey, setPresetKey] = useState<string | null>(null);
+
+  const applyPreset = (preset: PackagePreset) => {
+    const { members } = resolvePreset(preset, activeCategories, guests, dateKey);
+    activeCategories.forEach((c) => setPick(c, null));
+    members
+      .filter((m) => m.available)
+      .forEach((m) =>
+        setPick(m.category, {
+          category: m.category,
+          id: m.provider.id,
+          name: m.provider.name,
+          name_en: m.provider.name_en,
+          total: m.total,
+        }),
+      );
+    setPresetKey(preset.key);
+    setOpen(activeCategories.slice(0, 1));
+    requestAnimationFrame(() => {
+      const el = manualRef.current;
+      if (!el) return;
+      const target = window.scrollY + el.getBoundingClientRect().top - 110;
+      window.scrollTo({ top: target, behavior: "smooth" });
+    });
+  };
+
+
   return (
     <motion.div
       key="step-providers"
@@ -122,6 +154,24 @@ export const StepProviders = ({ categories, guests, date, setDate, prefs, picks,
         </div>
       </div>
 
+      <PackageShowcase
+        activeCategories={activeCategories}
+        guests={guests}
+        dateKey={dateKey}
+        prefs={prefs}
+        selectedKey={presetKey}
+        onSelect={applyPreset}
+      />
+
+      <div ref={manualRef} className="mt-10 scroll-mt-28">
+        <div className="mb-4 flex items-center gap-2 rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3">
+          <ArrowDown className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.7} />
+          <span className="font-arabic text-[13px] font-medium text-foreground/85">
+            {isAr ? "أو خصص باقتك يدويًا من هنا" : "Or build your package manually below"}
+          </span>
+        </div>
+      </div>
+
       <h3 className="font-arabic text-2xl font-semibold text-foreground">
         {isAr ? "اختر مزوديك" : "Choose your providers"}
       </h3>
@@ -130,6 +180,7 @@ export const StepProviders = ({ categories, guests, date, setDate, prefs, picks,
           ? "كل مزود متاح بتاريخك يظهر لك — مرتّب بحيث الأنسب لرؤيتك أولًا."
           : "Every provider available on your date is shown — sorted so the best fit for your vision comes first."}
       </p>
+
 
       {/* Quick shortcuts */}
       <div className="mt-5 flex flex-wrap gap-2">
