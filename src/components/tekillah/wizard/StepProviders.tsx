@@ -1,9 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Check, CalendarClock, ChevronDown, Wand2, Coins, Crown } from "lucide-react";
+import { Check, CalendarClock, ChevronDown, Wand2, Coins, Crown, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import RiyalSymbol from "@/components/tekillah/RiyalSymbol";
+import { PackageShowcase } from "./PackageShowcase";
+import { resolvePreset, type PackagePreset } from "./packagePresets";
 import {
   MOCK_PROVIDERS,
   PROVIDER_CATEGORIES,
@@ -20,6 +22,7 @@ import {
   type VenueType,
   type VisionPrefs,
 } from "./mockProviders";
+
 
 export interface ProviderPick {
   category: ProviderCategory;
