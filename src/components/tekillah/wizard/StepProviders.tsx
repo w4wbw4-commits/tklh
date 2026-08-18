@@ -154,6 +154,24 @@ export const StepProviders = ({ categories, guests, date, setDate, prefs, picks,
         </div>
       </div>
 
+      <PackageShowcase
+        activeCategories={activeCategories}
+        guests={guests}
+        dateKey={dateKey}
+        prefs={prefs}
+        selectedKey={presetKey}
+        onSelect={applyPreset}
+      />
+
+      <div ref={manualRef} className="mt-10 scroll-mt-28">
+        <div className="mb-4 flex items-center gap-2 rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3">
+          <ArrowDown className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.7} />
+          <span className="font-arabic text-[13px] font-medium text-foreground/85">
+            {isAr ? "أو خصص باقتك يدويًا من هنا" : "Or build your package manually below"}
+          </span>
+        </div>
+      </div>
+
       <h3 className="font-arabic text-2xl font-semibold text-foreground">
         {isAr ? "اختر مزوديك" : "Choose your providers"}
       </h3>
@@ -162,6 +180,7 @@ export const StepProviders = ({ categories, guests, date, setDate, prefs, picks,
           ? "كل مزود متاح بتاريخك يظهر لك — مرتّب بحيث الأنسب لرؤيتك أولًا."
           : "Every provider available on your date is shown — sorted so the best fit for your vision comes first."}
       </p>
+
 
       {/* Quick shortcuts */}
       <div className="mt-5 flex flex-wrap gap-2">
