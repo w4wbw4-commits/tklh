@@ -259,7 +259,7 @@ const PanelMarket = () => {
                   style={{ background: `hsl(var(${tint}) / 0.12)`, color: `hsl(var(${tint}))` }}
                   aria-hidden
                 >
-                  <span className="block h-[18px] w-[18px]">{CAT_ICONS[c.i]}</span>
+                  <span className="block h-[18px] w-[18px] [&>svg]:h-full [&>svg]:w-full">{CAT_ICONS[c.i]}</span>
                 </span>
                 <span
                   className="text-[10px] font-bold leading-tight"
