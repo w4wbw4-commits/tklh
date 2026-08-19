@@ -69,7 +69,7 @@ Deno.serve(async (req) => {
     if (!supabaseUrl || !serviceRoleKey) throw new Error("Missing backend configuration");
 
     const body = await req.json().catch(() => null) as
-      | { action?: string; phone?: string; code?: string; displayName?: string }
+      | { action?: string; phone?: string; code?: string; displayName?: string; contactEmail?: string }
       | null;
     if (!body?.action || !body?.phone) return json({ error: "Missing required fields" }, 400);
 
