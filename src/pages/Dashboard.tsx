@@ -36,8 +36,10 @@ const Dashboard = () => {
   const [loadingEvents, setLoadingEvents] = useState(true);
   const [tab, setTab] = useState("overview");
   const [createOpen, setCreateOpen] = useState(false);
+  const [profileName, setProfileName] = useState<string | null>(null);
 
   // Visitors are welcome: no redirect — they get the guest dashboard below.
+
 
 
 
