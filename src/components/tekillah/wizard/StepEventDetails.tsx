@@ -28,6 +28,9 @@ const ICONS: Record<EventTypeKey, typeof Heart> = {
   wedding: Heart, malka: Crown, conference: Presentation, birthday: Cake, newborn: Baby,
 };
 
+/** The only city Tklh can serve today — everything else shows a "soon" tag. */
+const OPEN_CITY = "Riyadh";
+
 interface Props {
   eventType: EventTypeKey | "";
   setEventType: (v: EventTypeKey) => void;
@@ -36,19 +39,26 @@ interface Props {
   endDate: string; setEndDate: (v: string) => void;
   flexibleDate: boolean; setFlexibleDate: (v: boolean) => void;
   guests: number; setGuests: (v: number) => void;
+  menGuests: number; setMenGuests: (v: number) => void;
+  womenGuests: number; setWomenGuests: (v: number) => void;
+  splitGuests: boolean; setSplitGuests: (v: boolean) => void;
   budgetBand: string; setBudgetBand: (v: string) => void;
 }
 
 export const StepEventDetails = ({
   eventType, setEventType, city, setCity, date, setDate, endDate, setEndDate,
-  flexibleDate, setFlexibleDate, guests, setGuests, budgetBand, setBudgetBand,
+  flexibleDate, setFlexibleDate, guests, setGuests,
+  menGuests, setMenGuests, womenGuests, setWomenGuests, splitGuests, setSplitGuests,
+  budgetBand, setBudgetBand,
 }: Props) => {
   const { i18n } = useTranslation();
   const isAr = i18n.language?.startsWith("ar");
   const locale = isAr ? arLocale : enUS;
   const def = EVENT_TYPES.find((e) => e.key === eventType);
+  const canSplit = eventType === "wedding" || eventType === "malka";
   const selectedDate = isoToDate(date);
   const selectedEndDate = isoToDate(endDate);
+
 
   return (
     <motion.div
