@@ -15,7 +15,6 @@ import {
   Info,
   LayoutDashboard,
   ShieldCheck,
-  Globe,
   Phone,
   FileText,
   Building2,
