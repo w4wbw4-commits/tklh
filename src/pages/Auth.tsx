@@ -11,7 +11,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { ArrowRight, CheckCircle2, Loader2, Phone, MessageSquareLock, Pencil } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, Phone, MessageSquareLock, Pencil, UserRound, Mail } from "lucide-react";
 import { Logo } from "@/components/tekillah/Logo";
 import { SEO } from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
