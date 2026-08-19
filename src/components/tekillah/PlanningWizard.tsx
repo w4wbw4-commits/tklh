@@ -25,6 +25,7 @@ import {
   CATEGORIES, EVENT_TYPES, BUDGET_BANDS, labelOf, type EventTypeKey,
 } from "./wizard/journeyData";
 import { SAUDI_CITIES } from "./vendor/saudiPlaces";
+import { fmtDate } from "@/i18n/format";
 
 /**
  * Tklh planning journey — 4 steps, one single destination.
@@ -117,7 +118,7 @@ export const PlanningWizard = () => {
   const summary = useMemo(() => {
     const out: string[] = [];
     if (eventDef) out.push(isAr ? eventDef.ar : eventDef.en);
-    if (date) out.push(endDate ? `${date} → ${endDate}` : date);
+    if (date) out.push(endDate ? `${fmtDate(date)} → ${fmtDate(endDate)}` : fmtDate(date));
     if (cityLabel) out.push(cityLabel);
     if (guests > 0) out.push(isAr ? `${guests} ضيف` : `${guests} guests`);
     if (selected.length && eventType) {
