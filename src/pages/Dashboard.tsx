@@ -190,7 +190,7 @@ const Dashboard = () => {
 
               <div className="mt-6 sm:mt-8">
                 <TabsContent value="overview" className="mt-0">
-                  <div className="space-y-6 sm:space-y-8">
+                  <div className="space-y-5 sm:space-y-6">
                     <EventCommandHeader
                       event={activeEvent}
                       userName={
@@ -202,9 +202,10 @@ const Dashboard = () => {
                       onOpenTab={setTab}
                     />
 
-                    <EventOverview event={activeEvent} />
+                    <OverviewSummary event={activeEvent} onOpenTab={setTab} />
                   </div>
                 </TabsContent>
+
                 <TabsContent value="timeline" className="mt-0"><EventTimeline event={activeEvent} /></TabsContent>
                 <TabsContent value="bookings" className="mt-0"><BookingsTimeline event={activeEvent} /></TabsContent>
                 <TabsContent value="guests" className="mt-0"><GuestManager event={activeEvent} /></TabsContent>
