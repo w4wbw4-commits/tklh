@@ -11,6 +11,7 @@ import {
   Inbox,
   Receipt,
   ListChecks,
+  ClipboardList,
   Star,
   PackageOpen,
   Flag,
