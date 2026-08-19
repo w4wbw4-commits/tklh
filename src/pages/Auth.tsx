@@ -380,7 +380,7 @@ const Auth = () => {
                     )}
                   </Button>
                 </motion.form>
-              ) : (
+              ) : stage === "otp" ? (
                 <motion.div
                   key="otp-form"
                   initial={{ opacity: 0, y: 8 }}
