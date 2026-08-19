@@ -1063,7 +1063,7 @@
       "readiness": "جاهزية مناسبتك",
       "countdownLabel": "باقي {{days}} يوم على ليلتك",
       "countdownToday": "اليوم ليلتك.. نتمناها تعدي على خير",
-      "countdownPast": "عدّت ليلتك بسلام",
+      "countdownPast": "",
       "metrics": {
         "guests": "الضيوف",
         "guestsSub": "{{confirmed}} مؤكد من {{total}}",
