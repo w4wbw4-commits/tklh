@@ -46,6 +46,11 @@ export const PlanningWizard = () => {
   const [endDate, setEndDate] = useState("");
   const [flexibleDate, setFlexibleDate] = useState(false);
   const [guests, setGuests] = useState(0);
+  const [menGuests, setMenGuests] = useState(0);
+  const [womenGuests, setWomenGuests] = useState(0);
+  const [splitGuests, setSplitGuests] = useState(false);
+  const totalGuests = splitGuests ? menGuests + womenGuests : guests;
+
   const [budgetBand, setBudgetBand] = useState("");
 
   // Step 2
