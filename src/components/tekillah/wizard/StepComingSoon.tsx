@@ -200,7 +200,27 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
                 ? "وصلتنا بياناتك! فريق تكله بيتواصل معك خلال أقل من 24 ساعة، ويجهّز لك كل اللي تحتاجه."
                 : "We got your details! The Tklh team will reach out within less than 24 hours and prepare everything you need."}
             </p>
+
+            {waLink && (
+              <>
+                <a
+                  href={waLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 font-arabic text-sm font-bold text-[#0b2d1b] transition hover:brightness-105"
+                >
+                  <WhatsAppGlyph className="h-4 w-4" />
+                  {isAr ? "سرّع التواصل عبر الواتس" : "Speed things up on WhatsApp"}
+                </a>
+                <p className="mt-2 font-arabic text-[11.5px] leading-relaxed text-foreground/60">
+                  {isAr
+                    ? "الرسالة جاهزة بكل تفاصيلك — بس اضغط إرسال."
+                    : "Your message is ready with all your details — just hit send."}
+                </p>
+              </>
+            )}
           </motion.div>
+
         ) : (
           <div className="mt-7 w-full max-w-md space-y-3 rounded-2xl border border-border bg-card/90 p-4 text-start sm:p-5">
             {/* Prominent pledge — sits above the fields so it reads as the CTA itself */}
