@@ -1065,8 +1065,9 @@
       "live4": "Ready for the event"
     },
     "command": {
-      "welcome": "Hey {{name}} — everything's under control",
-      "welcomeGuest": "Welcome — everything's under control",
+      "welcome": "Welcome {{name}} — Tklh is here for you",
+      "welcomeGuest": "Welcome — Tklh is here for you",
+
       "readiness": "Event readiness",
       "countdownLabel": "{{days}} days to your night",
       "countdownToday": "Today is the day — enjoy every moment",
