@@ -75,8 +75,29 @@ const PanelOverview = () => {
 
   return (
     <PanelFrame screen={t("speed.behind.p1.screen")} tag={t("speed.behind.sample")}>
-      <div className="flex h-full flex-col gap-3.5">
+      <div className="flex h-full flex-col gap-3">
+        {/* greeting + planning progress, same as the real dashboard header */}
+        <div className="flex items-center justify-between gap-3">
+          <p className="font-display text-[14px] font-black" style={{ color: INK }}>
+            {t("speed.behind.p1.greet")}
+          </p>
+          <span className="text-[10.5px] font-bold" style={{ color: "hsl(var(--gold))" }}>
+            {t("speed.behind.p1.progressL")} · {t("speed.behind.p1.progressV")}
+          </span>
+        </div>
+        <div
+          className="h-1.5 w-full overflow-hidden rounded-full"
+          style={{ background: "hsl(var(--green) / 0.12)" }}
+          aria-hidden
+        >
+          <span
+            className="block h-full rounded-full"
+            style={{ width: "65%", background: "hsl(var(--green))" }}
+          />
+        </div>
+
         <div className="flex flex-wrap gap-2">
+
           {tags.map((x) => (
             <span
               key={x}
