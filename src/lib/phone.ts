@@ -44,21 +44,35 @@ const invokeOtp = async <T>(body: Record<string, unknown>): Promise<T> => {
 export const requestOtp = async (phoneE164: string): Promise<{ devCode?: string }> =>
   invokeOtp<{ ok: true; devCode?: string }>({ action: "send", phone: phoneE164 });
 
+export interface VerifyOtpResult {
+  userId: string;
+  email: string;
+  password: string;
+  /** True when the account still lacks a real name or a contact email. */
+  needsProfile: boolean;
+  displayName: string | null;
+  contactEmail: string | null;
+}
+
 /**
  * Verify the code server-side. On success the server provisions the account and
- * returns single-use credentials for the immediate sign-in.
+ * returns single-use credentials for the immediate sign-in, plus whether the
+ * profile (name + email) still has to be collected.
  */
 export const verifyOtpAndGetCredentials = async (
   phoneE164: string,
   code: string,
-  displayName?: string,
-): Promise<{ userId: string; email: string; password: string }> =>
-  invokeOtp<{ ok: true; userId: string; email: string; password: string }>({
+  displayName?: string | null,
+  contactEmail?: string | null,
+): Promise<VerifyOtpResult> =>
+  invokeOtp<{ ok: true } & VerifyOtpResult>({
     action: "verify",
     phone: phoneE164,
     code: code.trim(),
-    displayName: displayName ?? phoneE164,
+    ...(displayName ? { displayName } : {}),
+    ...(contactEmail ? { contactEmail } : {}),
   });
+
 
 // Synthetic email mapping is not secret — it is derived from the phone number
 // and is also validated server-side.
