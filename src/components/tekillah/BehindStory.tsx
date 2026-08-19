@@ -84,9 +84,9 @@ export const BehindStory = () => {
               style={{ borderTop: i === 0 ? HAIR : undefined, borderBottom: HAIR }}
             >
               <div className="flex items-center gap-4 py-7 sm:gap-6 sm:py-9">
-                <div className="shrink-0 text-green/80 transition-colors group-hover:text-green">
-                  <StepIcon index={i} />
-                </div>
+                <span className="font-display shrink-0 text-3xl font-black leading-none tabular-nums text-green sm:text-5xl">
+                  {step.n}
+                </span>
 
                 <div className="min-w-0 flex-1 text-right">
                   <h3 className="font-display text-lg font-black leading-snug text-green sm:text-xl">
@@ -97,9 +97,9 @@ export const BehindStory = () => {
                   </p>
                 </div>
 
-                <span className="font-display shrink-0 text-3xl font-black leading-none tabular-nums text-green sm:text-5xl">
-                  {step.n}
-                </span>
+                <div className="shrink-0 text-green/80 transition-colors group-hover:text-green">
+                  <StepIcon index={i} />
+                </div>
               </div>
             </div>
           ))}
