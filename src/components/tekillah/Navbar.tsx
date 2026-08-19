@@ -48,18 +48,12 @@ export const Navbar = () => {
     i18n.changeLanguage(isAr ? "en" : "ar");
   };
 
+  // One product, one journey — the old "Packages" entry is gone for good.
   const navItems = [
     { key: "home", href: "/", type: "route" as const },
     { key: "about", href: "/about", type: "route" as const, labelOverride: t("nav.aboutFull") },
-    {
-      key: "packages",
-      href: "/packages",
-      type: "route" as const,
-      labelOverride: t("nav.packages"),
-      disabled: !isPrimaryAdmin,
-      badge: { ar: "قريباً", en: "Soon" },
-    },
   ];
+
 
 
   return (
