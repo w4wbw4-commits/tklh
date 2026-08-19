@@ -36,8 +36,10 @@ const Dashboard = () => {
   const [loadingEvents, setLoadingEvents] = useState(true);
   const [tab, setTab] = useState("overview");
   const [createOpen, setCreateOpen] = useState(false);
+  const [profileName, setProfileName] = useState<string | null>(null);
 
   // Visitors are welcome: no redirect — they get the guest dashboard below.
+
 
 
 
@@ -73,16 +75,21 @@ const Dashboard = () => {
   const loadEvents = async () => {
     if (!user) return;
     setLoadingEvents(true);
-    const { data } = await supabase
-      .from("events").select("*").eq("customer_id", user.id)
-      .order("event_date", { ascending: true });
+    const [{ data }, { data: profile }] = await Promise.all([
+      supabase
+        .from("events").select("*").eq("customer_id", user.id)
+        .order("event_date", { ascending: true }),
+      supabase.from("profiles").select("display_name").eq("user_id", user.id).maybeSingle(),
+    ]);
     const list = (data ?? []) as EventRow[];
     setEvents(list);
     setActiveEvent((prev) => list.find((e) => e.id === prev?.id) ?? list[0] ?? null);
+    setProfileName(profile?.display_name ?? null);
     setLoadingEvents(false);
   };
 
   useEffect(() => { if (user) loadEvents(); else setLoadingEvents(false); /* eslint-disable-next-line */ }, [user]);
+
 
   if (authLoading || (user && loadingEvents)) {
     return (
@@ -187,12 +194,14 @@ const Dashboard = () => {
                     <EventCommandHeader
                       event={activeEvent}
                       userName={
+                        profileName ??
                         (user.user_metadata?.full_name as string | undefined) ??
                         user.email?.split("@")[0] ??
                         null
                       }
                       onOpenTab={setTab}
                     />
+
                     <EventOverview event={activeEvent} />
                   </div>
                 </TabsContent>
