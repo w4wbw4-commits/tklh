@@ -620,7 +620,11 @@ html {
    These rules live outside @layer so they win over Tailwind utilities.
    ========================================================================== */
 
-html, body { max-width: 100%; overflow-x: hidden; }
+/* overflow-x: clip keeps horizontal bleed contained without turning body into a
+   scroll container (which would break position: sticky inside the page). */
+html { max-width: 100%; overflow-x: hidden; }
+body { max-width: 100%; overflow-x: clip; }
+
 img, svg, video, canvas { max-width: 100%; }
 
 @media (max-width: 640px) {

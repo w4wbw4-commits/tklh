@@ -10,6 +10,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
+import { BehindStory } from "./BehindStory";
 import sealLogo from "/tklh-chair-mark.png";
 
 
@@ -389,80 +390,9 @@ const ToggleSketch = () => (
   </svg>
 );
 
-const SKETCHES = [BudgetSketch, VendorSketch, BookSketch, ToggleSketch];
-
-// ============================================================================
-// Editorial list — "وش وراء الـ10 دقائق؟"
-// ============================================================================
-const BehindSection = () => {
-  const { t } = useTranslation();
-  const tiles = t("speed.tiles", { returnObjects: true }) as { title: string; desc: string }[];
-
-  return (
-    <section className="relative px-5 py-20 sm:px-8 sm:py-28">
-      <div className="mx-auto max-w-4xl">
-        <Reveal>
-          <div>
-            <h2 className="font-display mt-5 max-w-xl text-balance text-2xl font-black leading-[1.4] text-green sm:text-4xl">
-              {t("speed.connector")}
-            </h2>
-          </div>
-        </Reveal>
-
-        <div className="mt-12">
-          {tiles.map((tile, i) => {
-            const Sketch = SKETCHES[i % SKETCHES.length];
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={once}
-                transition={{ duration: 0.7, ease: EASE, delay: i * 0.1 }}
-                className="py-7"
-                style={{ borderTop: HAIR }}
-              >
-                {/* Mobile: number + title on top, drawing beneath.
-                    Desktop: single row with the drawing on the far side. */}
-                <div className="flex items-start gap-4 sm:gap-10">
-                  <span
-                    className="font-display shrink-0 text-3xl font-black leading-none tabular-nums sm:text-5xl"
-                    style={{ color: INK }}
-                  >
-                    {`0${i + 1}`}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-display text-lg font-black leading-snug text-green sm:text-2xl">
-                      {tile.title}
-                    </h3>
-                    <p className="mt-2 max-w-xl text-[15px] leading-[1.9]" style={{ color: "hsl(var(--brown))" }}>
-                      {tile.desc}
-                    </p>
-                  </div>
-                  <div className="hidden shrink-0 sm:block" style={{ color: FADED }}>
-                    <Sketch />
-                  </div>
-                </div>
-                <div
-                  className="mt-5 flex max-h-[34vh] justify-center sm:hidden"
-                  style={{ color: FADED }}
-                  aria-hidden
-                >
-                  <Sketch />
-                </div>
-              </motion.div>
-            );
-          })}
-          <div style={{ borderTop: HAIR }} />
-        </div>
-      </div>
-    </section>
-  );
-};
-
 export const ProblemSolutionAbout = () => (
   <>
     <SpeedSection />
-    <BehindSection />
+    <BehindStory />
   </>
 );

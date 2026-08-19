@@ -1825,6 +1825,127 @@
         "Clashing schedules",
         "Unguaranteed bookings"
       ]
+    },
+    "behind": {
+      "title": "What's behind the 10 minutes?",
+      "sample": "Illustrative example",
+      "sampleNoPrice": "Illustrative example — no prices",
+      "steps": [
+        {
+          "n": "01",
+          "title": "Plan smart",
+          "desc": "Your whole occasion in one place — details, vendors and the timeline, step by step."
+        },
+        {
+          "n": "02",
+          "title": "Tklh marketplace",
+          "desc": "Every available vendor shown and ordered for you — an open market, not limited bundles."
+        },
+        {
+          "n": "03",
+          "title": "Book in a blink",
+          "desc": "Pick your budget band and the booking is done — no complexity, no phone calls."
+        },
+        {
+          "n": "04",
+          "title": "Sit back, we've got you",
+          "desc": "Your booking reached us. From this moment on, every detail is on us."
+        }
+      ],
+      "p1": {
+        "screen": "Your occasion dashboard",
+        "tags": [
+          "Wedding",
+          "200 guests",
+          "March 2026"
+        ],
+        "stages": [
+          "Planning",
+          "Choosing vendors",
+          "Booking",
+          "The big night"
+        ],
+        "stats": [
+          {
+            "v": "6",
+            "l": "services picked"
+          },
+          {
+            "v": "75–100k",
+            "l": "budget"
+          },
+          {
+            "v": "42",
+            "l": "days left"
+          }
+        ]
+      },
+      "p2": {
+        "screen": "Choose your vendors",
+        "filters": [
+          "Venue",
+          "Hospitality",
+          "Photography",
+          "Band"
+        ],
+        "best": "✨ Best fit for you",
+        "vendors": [
+          {
+            "n": "Al Masa Hall",
+            "t": "Wedding halls"
+          },
+          {
+            "n": "Horizon International Hotel",
+            "t": "Hotel ballroom"
+          },
+          {
+            "n": "Light Studio",
+            "t": "Photo & video"
+          },
+          {
+            "n": "Al Asayel Hospitality",
+            "t": "Hospitality & coffee"
+          },
+          {
+            "n": "Rose Scent Styling",
+            "t": "Styling & decor"
+          },
+          {
+            "n": "Al Samar Band",
+            "t": "Band & audio"
+          }
+        ]
+      },
+      "p3": {
+        "screen": "Book now",
+        "title": "Set your budget, and Tklh handles it",
+        "bands": [
+          "Under 50k",
+          "50–75k",
+          "75–100k",
+          "Over 100k"
+        ],
+        "rows": [
+          {
+            "k": "Occasion",
+            "v": "Wedding — Aug 19"
+          },
+          {
+            "k": "Services",
+            "v": "6 selected"
+          },
+          {
+            "k": "Budget",
+            "v": "50–75k"
+          }
+        ],
+        "cta": "Confirm & book"
+      },
+      "p4": {
+        "screen": "Booked",
+        "title": "Sit back, we've got you",
+        "line": "Your booking reached us, and our team follows every detail from this moment until the big night."
+      }
     }
   },
   "aboutPage": {
