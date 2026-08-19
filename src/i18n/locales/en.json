@@ -1067,7 +1067,6 @@
     "command": {
       "welcome": "Welcome {{name}} — Tklh is here for you",
       "welcomeGuest": "Welcome — Tklh is here for you",
-
       "readiness": "Event readiness",
       "countdownLabel": "{{days}} days to your night",
       "countdownToday": "Today is the day — enjoy every moment",
@@ -1082,14 +1081,9 @@
         "budgetSub": "{{rest}} remaining",
         "actions": "Needs you",
         "actionsSub": "waiting on your decision",
-        "actionsNone": "Nothing pending"
-      },
-      "needs": {
-        "title": "What needs you now",
-        "subtitle": "Items waiting only on your decision — we handle the rest.",
-        "action": "Open",
-        "emptyTitle": "Nothing for you right now — Tklh has the rest",
-        "emptyDesc": "The moment something needs your call, it shows up here."
+        "actionsNone": "Nothing pending",
+        "plan": "Plan",
+        "planSub": "{{done}} of {{total}} steps done"
       }
     },
     "guest": {
@@ -1098,6 +1092,24 @@
       "subtitle": "Book your event now — we've got you, TKLH",
       "cta": "Plan & book",
       "haveAccount": "Already have an account? Sign in"
+    },
+    "summary": {
+      "viewAll": "Details",
+      "timeline": {
+        "title": "Mini timeline",
+        "empty": "Your timeline is being prepared — it will show up here."
+      },
+      "team": {
+        "title": "The Tklh team is ready",
+        "desc": "Reach us any time — a question, a change or a new arrangement. We are with you step by step.",
+        "cta": "Contact us",
+        "waMessage": "Hi, I have a question about my event: {{title}}",
+        "invites": "Guests & invitations"
+      },
+      "vendors": {
+        "title": "Your vendors at a glance",
+        "empty": "No bookings yet — we are lining up the best vendors for you."
+      }
     }
   },
   "categories": {
