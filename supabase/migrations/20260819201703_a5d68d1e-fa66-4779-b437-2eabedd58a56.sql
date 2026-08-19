@@ -1,0 +1,1 @@
+DELETE FROM public.planner_interest WHERE phone = '0554430196';
