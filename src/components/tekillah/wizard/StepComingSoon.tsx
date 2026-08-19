@@ -121,6 +121,20 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
           </motion.div>
         ) : (
           <div className="mt-7 w-full max-w-md space-y-3 rounded-2xl border border-border bg-card/90 p-4 text-start sm:p-5">
+            {/* Prominent pledge — sits above the fields so it reads as the CTA itself */}
+            <div className="rounded-xl border border-primary/30 bg-primary/[0.07] p-3.5 text-center sm:p-4">
+              <p className="font-arabic text-[15px] font-bold leading-relaxed text-primary sm:text-base">
+                {isAr
+                  ? "سجّل بياناتك، وحنا لك تكله"
+                  : "Register your details — Tklh takes it from here"}
+              </p>
+              <p className="mt-1.5 font-arabic text-[12.5px] leading-relaxed text-foreground/75">
+                {isAr
+                  ? "نجهّز لك كل شي، وبنتواصل معك خلال أقل من 24 ساعة."
+                  : "We prepare everything and reach out within less than 24 hours."}
+              </p>
+            </div>
+
             <div className="space-y-1.5">
               <Label className="font-arabic text-foreground">{isAr ? "الاسم" : "Name"}</Label>
               <Input
@@ -141,11 +155,7 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
                 className="h-12 rounded-xl tabular-nums"
               />
             </div>
-            <p className="font-arabic text-[12.5px] leading-relaxed text-foreground/75">
-              {isAr
-                ? "سجّل بياناتك، وحنا لك تكله — نجهّز لك كل شي، وبنتواصل معك خلال أقل من 24 ساعة."
-                : "Register your details and Tklh takes it from here — we prepare everything and reach out within less than 24 hours."}
-            </p>
+
             <Button
               onClick={submit}
               disabled={saving}

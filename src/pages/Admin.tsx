@@ -22,6 +22,7 @@ import { AdminModerationQueue } from "@/components/tekillah/admin/AdminModeratio
 import { AdminVerificationQueue } from "@/components/tekillah/admin/AdminVerificationQueue";
 import { AdminGrandControl } from "@/components/tekillah/admin/AdminGrandControl";
 import { AdminLeadsPanel } from "@/components/tekillah/admin/AdminLeadsPanel";
+import { AdminPlannerInterest } from "@/components/tekillah/admin/AdminPlannerInterest";
 import { AdminLateAlerts } from "@/components/tekillah/admin/AdminLateAlerts";
 import { AdminIncidentReports } from "@/components/tekillah/admin/AdminIncidentReports";
 import { AdminAddVendorDialog } from "@/components/tekillah/admin/AdminAddVendorDialog";
@@ -183,6 +184,7 @@ const Admin = () => {
       case "late":         return <AdminLateAlerts />;
       case "incidents":    return <AdminIncidentReports />;
       case "leads":        return <AdminLeadsPanel />;
+      case "interest":     return <AdminPlannerInterest />;
       case "reviews":      return <AdminReviewsPanel />;
       case "packages":     return <AdminPackagesPanel />;
       case "moderation":   return <AdminModerationQueue />;
