@@ -87,13 +87,14 @@ export const PlanningWizard = () => {
       if (!date) miss.push(isAr ? "التاريخ" : "Date");
       if (eventDef?.dateMode === "range" && !endDate) miss.push(isAr ? "تاريخ النهاية" : "End date");
       if (!city) miss.push(isAr ? "المدينة" : "City");
-      if (guests <= 0) miss.push(isAr ? "عدد الضيوف" : "Guest count");
+      if (totalGuests <= 0) miss.push(isAr ? "عدد الضيوف" : "Guest count");
       if (!budgetBand) miss.push(isAr ? "الميزانية" : "Budget");
     } else if (step === 1) {
       if (selected.length === 0) miss.push(isAr ? "خدمة واحدة على الأقل" : "At least one service");
     }
     return miss;
-  }, [step, eventType, date, endDate, city, guests, budgetBand, selected, eventDef, isAr]);
+  }, [step, eventType, date, endDate, city, totalGuests, budgetBand, selected, eventDef, isAr]);
+
 
   const canProceed = missing.length === 0;
   const nextHint = canProceed
