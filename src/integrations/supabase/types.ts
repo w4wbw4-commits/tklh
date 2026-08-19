@@ -195,6 +195,7 @@ export type Database = {
       customer_leads: {
         Row: {
           booking_id: string | null
+          contact_email: string | null
           created_at: string
           display_name: string | null
           event_id: string | null
@@ -209,6 +210,7 @@ export type Database = {
         }
         Insert: {
           booking_id?: string | null
+          contact_email?: string | null
           created_at?: string
           display_name?: string | null
           event_id?: string | null
@@ -223,6 +225,7 @@ export type Database = {
         }
         Update: {
           booking_id?: string | null
+          contact_email?: string | null
           created_at?: string
           display_name?: string | null
           event_id?: string | null
@@ -797,6 +800,7 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          contact_email: string | null
           created_at: string
           display_name: string | null
           id: string
@@ -806,6 +810,7 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
+          contact_email?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
@@ -815,6 +820,7 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
+          contact_email?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
