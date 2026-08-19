@@ -126,7 +126,15 @@ export const PlanningWizard = () => {
     if (eventDef) out.push(isAr ? eventDef.ar : eventDef.en);
     if (date) out.push(endDate ? `${fmtDate(date)} → ${fmtDate(endDate)}` : fmtDate(date));
     if (cityLabel) out.push(cityLabel);
-    if (guests > 0) out.push(isAr ? `${guests} ضيف` : `${guests} guests`);
+    if (totalGuests > 0) {
+      out.push(
+        splitGuests
+          ? (isAr
+              ? `${menGuests} رجال · ${womenGuests} نساء`
+              : `${menGuests} men · ${womenGuests} women`)
+          : (isAr ? `${totalGuests} ضيف` : `${totalGuests} guests`),
+      );
+    }
     if (selected.length && eventType) {
       out.push(
         CATEGORIES[eventType as EventTypeKey]
@@ -137,16 +145,20 @@ export const PlanningWizard = () => {
     }
     if (budgetBand) out.push(labelOf(BUDGET_BANDS, budgetBand, !!isAr));
     return out;
-  }, [eventDef, date, endDate, cityLabel, guests, selected, eventType, budgetBand, isAr]);
+  }, [eventDef, date, endDate, cityLabel, totalGuests, splitGuests, menGuests, womenGuests, selected, eventType, budgetBand, isAr]);
 
   const payload = useMemo(
     () => ({
-      eventType, city, date, endDate, flexibleDate, guests, budgetBand,
+      eventType, city, date, endDate, flexibleDate,
+      guests: totalGuests, menGuests: splitGuests ? menGuests : null,
+      womenGuests: splitGuests ? womenGuests : null,
+      budgetBand,
       services: selected, visionPath, vision, visionBlocks: blocks,
       language: i18n.language,
     }),
-    [eventType, city, date, endDate, flexibleDate, guests, budgetBand, selected, visionPath, vision, blocks, i18n.language],
+    [eventType, city, date, endDate, flexibleDate, totalGuests, splitGuests, menGuests, womenGuests, budgetBand, selected, visionPath, vision, blocks, i18n.language],
   );
+
 
   const stepLabels = [
     isAr ? "تفاصيل المناسبة" : "Event details",
