@@ -46,6 +46,11 @@ export const PlanningWizard = () => {
   const [endDate, setEndDate] = useState("");
   const [flexibleDate, setFlexibleDate] = useState(false);
   const [guests, setGuests] = useState(0);
+  const [menGuests, setMenGuests] = useState(0);
+  const [womenGuests, setWomenGuests] = useState(0);
+  const [splitGuests, setSplitGuests] = useState(false);
+  const totalGuests = splitGuests ? menGuests + womenGuests : guests;
+
   const [budgetBand, setBudgetBand] = useState("");
 
   // Step 2
@@ -82,13 +87,14 @@ export const PlanningWizard = () => {
       if (!date) miss.push(isAr ? "التاريخ" : "Date");
       if (eventDef?.dateMode === "range" && !endDate) miss.push(isAr ? "تاريخ النهاية" : "End date");
       if (!city) miss.push(isAr ? "المدينة" : "City");
-      if (guests <= 0) miss.push(isAr ? "عدد الضيوف" : "Guest count");
+      if (totalGuests <= 0) miss.push(isAr ? "عدد الضيوف" : "Guest count");
       if (!budgetBand) miss.push(isAr ? "الميزانية" : "Budget");
     } else if (step === 1) {
       if (selected.length === 0) miss.push(isAr ? "خدمة واحدة على الأقل" : "At least one service");
     }
     return miss;
-  }, [step, eventType, date, endDate, city, guests, budgetBand, selected, eventDef, isAr]);
+  }, [step, eventType, date, endDate, city, totalGuests, budgetBand, selected, eventDef, isAr]);
+
 
   const canProceed = missing.length === 0;
   const nextHint = canProceed
@@ -120,7 +126,15 @@ export const PlanningWizard = () => {
     if (eventDef) out.push(isAr ? eventDef.ar : eventDef.en);
     if (date) out.push(endDate ? `${fmtDate(date)} → ${fmtDate(endDate)}` : fmtDate(date));
     if (cityLabel) out.push(cityLabel);
-    if (guests > 0) out.push(isAr ? `${guests} ضيف` : `${guests} guests`);
+    if (totalGuests > 0) {
+      out.push(
+        splitGuests
+          ? (isAr
+              ? `${menGuests} رجال · ${womenGuests} نساء`
+              : `${menGuests} men · ${womenGuests} women`)
+          : (isAr ? `${totalGuests} ضيف` : `${totalGuests} guests`),
+      );
+    }
     if (selected.length && eventType) {
       out.push(
         CATEGORIES[eventType as EventTypeKey]
@@ -131,16 +145,20 @@ export const PlanningWizard = () => {
     }
     if (budgetBand) out.push(labelOf(BUDGET_BANDS, budgetBand, !!isAr));
     return out;
-  }, [eventDef, date, endDate, cityLabel, guests, selected, eventType, budgetBand, isAr]);
+  }, [eventDef, date, endDate, cityLabel, totalGuests, splitGuests, menGuests, womenGuests, selected, eventType, budgetBand, isAr]);
 
   const payload = useMemo(
     () => ({
-      eventType, city, date, endDate, flexibleDate, guests, budgetBand,
+      eventType, city, date, endDate, flexibleDate,
+      guests: totalGuests, menGuests: splitGuests ? menGuests : null,
+      womenGuests: splitGuests ? womenGuests : null,
+      budgetBand,
       services: selected, visionPath, vision, visionBlocks: blocks,
       language: i18n.language,
     }),
-    [eventType, city, date, endDate, flexibleDate, guests, budgetBand, selected, visionPath, vision, blocks, i18n.language],
+    [eventType, city, date, endDate, flexibleDate, totalGuests, splitGuests, menGuests, womenGuests, budgetBand, selected, visionPath, vision, blocks, i18n.language],
   );
+
 
   const stepLabels = [
     isAr ? "تفاصيل المناسبة" : "Event details",
@@ -245,14 +263,22 @@ export const PlanningWizard = () => {
               <AnimatePresence mode="wait">
                 {step === 0 && (
                   <StepEventDetails
-                    eventType={eventType} setEventType={(v) => { setEventType(v); setSelected([]); setEndDate(""); }}
+                    eventType={eventType}
+                    setEventType={(v) => {
+                      setEventType(v); setSelected([]); setEndDate("");
+                      setSplitGuests(v === "wedding" || v === "malka");
+                    }}
                     city={city} setCity={setCity}
                     date={date} setDate={setDate}
                     endDate={endDate} setEndDate={setEndDate}
                     flexibleDate={flexibleDate} setFlexibleDate={setFlexibleDate}
                     guests={guests} setGuests={setGuests}
+                    menGuests={menGuests} setMenGuests={setMenGuests}
+                    womenGuests={womenGuests} setWomenGuests={setWomenGuests}
+                    splitGuests={splitGuests} setSplitGuests={setSplitGuests}
                     budgetBand={budgetBand} setBudgetBand={setBudgetBand}
                   />
+
                 )}
                 {step === 1 && eventType && (
                   <StepJourneyServices

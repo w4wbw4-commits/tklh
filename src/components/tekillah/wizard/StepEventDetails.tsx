@@ -28,6 +28,9 @@ const ICONS: Record<EventTypeKey, typeof Heart> = {
   wedding: Heart, malka: Crown, conference: Presentation, birthday: Cake, newborn: Baby,
 };
 
+/** The only city Tklh can serve today — everything else shows a "soon" tag. */
+const OPEN_CITY = "Riyadh";
+
 interface Props {
   eventType: EventTypeKey | "";
   setEventType: (v: EventTypeKey) => void;
@@ -36,19 +39,26 @@ interface Props {
   endDate: string; setEndDate: (v: string) => void;
   flexibleDate: boolean; setFlexibleDate: (v: boolean) => void;
   guests: number; setGuests: (v: number) => void;
+  menGuests: number; setMenGuests: (v: number) => void;
+  womenGuests: number; setWomenGuests: (v: number) => void;
+  splitGuests: boolean; setSplitGuests: (v: boolean) => void;
   budgetBand: string; setBudgetBand: (v: string) => void;
 }
 
 export const StepEventDetails = ({
   eventType, setEventType, city, setCity, date, setDate, endDate, setEndDate,
-  flexibleDate, setFlexibleDate, guests, setGuests, budgetBand, setBudgetBand,
+  flexibleDate, setFlexibleDate, guests, setGuests,
+  menGuests, setMenGuests, womenGuests, setWomenGuests, splitGuests, setSplitGuests,
+  budgetBand, setBudgetBand,
 }: Props) => {
   const { i18n } = useTranslation();
   const isAr = i18n.language?.startsWith("ar");
   const locale = isAr ? arLocale : enUS;
   const def = EVENT_TYPES.find((e) => e.key === eventType);
+  const canSplit = eventType === "wedding" || eventType === "malka";
   const selectedDate = isoToDate(date);
   const selectedEndDate = isoToDate(endDate);
+
 
   return (
     <motion.div
@@ -173,7 +183,8 @@ export const StepEventDetails = ({
               </AnimatePresence>
             </div>
 
-            {/* City */}
+            {/* City — Riyadh is the only city we can serve today; the rest
+                stay visible but disabled with their own "soon" tag. */}
             <div className="space-y-2">
               <Label className="font-arabic text-foreground">{isAr ? "المدينة" : "City"}</Label>
               <Select value={city} onValueChange={setCity}>
@@ -181,27 +192,84 @@ export const StepEventDetails = ({
                   <SelectValue placeholder={isAr ? "اختر مدينتك" : "Choose your city"} />
                 </SelectTrigger>
                 <SelectContent className="max-h-72">
-                  {SAUDI_CITIES.map((c) => (
-                    <SelectItem key={c.en} value={c.en} className="font-arabic">
-                      {isAr ? c.ar : c.en}
-                    </SelectItem>
-                  ))}
+                  {SAUDI_CITIES.map((c) => {
+                    const open = c.en === OPEN_CITY;
+                    return (
+                      <SelectItem
+                        key={c.en}
+                        value={c.en}
+                        disabled={!open}
+                        className="font-arabic"
+                      >
+                        <span className="flex items-center gap-2">
+                          {isAr ? c.ar : c.en}
+                          {!open && (
+                            <span className="rounded-full border border-primary/30 px-1.5 py-0.5 text-[10px] text-primary/70">
+                              {isAr ? "قريبًا" : "Soon"}
+                            </span>
+                          )}
+                        </span>
+                      </SelectItem>
+                    );
+                  })}
                 </SelectContent>
               </Select>
             </div>
 
-            {/* Guests */}
-            <div className="space-y-2 rounded-2xl bg-secondary/50 p-3">
-              <Label className="font-arabic text-foreground">{isAr ? "عدد الضيوف" : "Guest count"}</Label>
-              <NumberStepper
-                value={guests}
-                onChange={setGuests}
-                min={0}
-                max={5000}
-                step={10}
-                ariaLabel={isAr ? "عدد الضيوف" : "Guest count"}
-              />
+            {/* Guests — wedding & malka usually split into two sections */}
+            <div className="space-y-3 rounded-2xl bg-secondary/50 p-3">
+              {splitGuests ? (
+                <>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label className="font-arabic text-foreground">{isAr ? "عدد الرجال" : "Men"}</Label>
+                      <NumberStepper
+                        value={menGuests} onChange={setMenGuests} min={0} max={5000} step={10}
+                        ariaLabel={isAr ? "عدد الرجال" : "Men count"}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="font-arabic text-foreground">{isAr ? "عدد النساء" : "Women"}</Label>
+                      <NumberStepper
+                        value={womenGuests} onChange={setWomenGuests} min={0} max={5000} step={10}
+                        ariaLabel={isAr ? "عدد النساء" : "Women count"}
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSplitGuests(false)}
+                    className="font-arabic text-[12.5px] text-primary underline underline-offset-4"
+                  >
+                    {isAr
+                      ? "ما تحدد التوزيع بعد؟ أدخل عدد الضيوف الإجمالي فقط"
+                      : "Not sure about the split? Enter the total guest count only"}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Label className="font-arabic text-foreground">{isAr ? "عدد الضيوف" : "Guest count"}</Label>
+                  <NumberStepper
+                    value={guests}
+                    onChange={setGuests}
+                    min={0}
+                    max={5000}
+                    step={10}
+                    ariaLabel={isAr ? "عدد الضيوف" : "Guest count"}
+                  />
+                  {canSplit && (
+                    <button
+                      type="button"
+                      onClick={() => setSplitGuests(true)}
+                      className="font-arabic text-[12.5px] text-primary underline underline-offset-4"
+                    >
+                      {isAr ? "تعرف التوزيع؟ أدخل عدد الرجال والنساء" : "Know the split? Enter men and women"}
+                    </button>
+                  )}
+                </>
+              )}
             </div>
+
 
             {/* Budget bands */}
             <div className="space-y-3">
