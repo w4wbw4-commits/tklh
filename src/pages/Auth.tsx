@@ -470,6 +470,68 @@ const Auth = () => {
                     )}
                   </div>
                 </motion.div>
+              ) : (
+                <motion.form
+                  key="profile-form"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.25 }}
+                  onSubmit={handleSaveProfile}
+                  className="space-y-5"
+                >
+                  <div className="space-y-2">
+                    <Label htmlFor="full-name">{t("auth.phone.nameLabel")}</Label>
+                    <div className="relative">
+                      <UserRound className="pointer-events-none absolute inset-y-0 start-3 my-auto h-4 w-4 text-foreground/40" />
+                      <Input
+                        id="full-name"
+                        value={fullName}
+                        autoComplete="name"
+                        onChange={(e) => { setProfileError(null); setFullName(e.target.value); }}
+                        placeholder={t("auth.phone.namePlaceholder")}
+                        className="ps-9 text-base"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="contact-email">{t("auth.phone.emailLabel")}</Label>
+                    <div className="relative">
+                      <Mail className="pointer-events-none absolute inset-y-0 start-3 my-auto h-4 w-4 text-foreground/40" />
+                      <Input
+                        id="contact-email"
+                        dir="ltr"
+                        type="email"
+                        inputMode="email"
+                        autoComplete="email"
+                        value={contactEmail}
+                        onChange={(e) => { setProfileError(null); setContactEmail(e.target.value); }}
+                        placeholder={t("auth.phone.emailPlaceholder")}
+                        className="ps-9 text-base"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="min-h-5 text-center text-xs">
+                    {profileError && <span className="text-destructive">{profileError}</span>}
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={submitting}
+                    className="h-11 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    {submitting ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <>
+                        {t("auth.phone.saveProfile")}
+                        <ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" />
+                      </>
+                    )}
+                  </Button>
+                </motion.form>
               )}
             </AnimatePresence>
 
