@@ -7,6 +7,7 @@ interface UpsertArgs {
   userId: string;
   phone: string;            // already E.164 +966...
   displayName?: string | null;
+  contactEmail?: string | null;
   status?: LeadStatus;
   source?: string;
   eventId?: string | null;
@@ -20,7 +21,7 @@ interface UpsertArgs {
  * non-blocking from the user's perspective.
  */
 export const upsertCustomerLead = async ({
-  userId, phone, displayName, status = "verified", source = "phone_otp",
+  userId, phone, displayName, contactEmail, status = "verified", source = "phone_otp",
   eventId = null, bookingId = null,
 }: UpsertArgs) => {
   // First try to find an existing lead row for this user+phone
@@ -42,6 +43,7 @@ export const upsertCustomerLead = async ({
       .update({
         status: finalStatus,
         display_name: displayName ?? undefined,
+        contact_email: contactEmail ?? undefined,
         event_id: eventId ?? undefined,
         booking_id: bookingId ?? undefined,
         source,
@@ -57,6 +59,7 @@ export const upsertCustomerLead = async ({
       user_id: userId,
       phone,
       display_name: displayName ?? null,
+      contact_email: contactEmail ?? null,
       status,
       source,
       event_id: eventId,
