@@ -704,6 +704,30 @@ export type Database = {
         }
         Relationships: []
       }
+      planner_interest: {
+        Row: {
+          created_at: string
+          details: Json
+          full_name: string
+          id: string
+          phone: string
+        }
+        Insert: {
+          created_at?: string
+          details?: Json
+          full_name: string
+          id?: string
+          phone: string
+        }
+        Update: {
+          created_at?: string
+          details?: Json
+          full_name?: string
+          id?: string
+          phone?: string
+        }
+        Relationships: []
+      }
       platform_packages: {
         Row: {
           created_at: string
