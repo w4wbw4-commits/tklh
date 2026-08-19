@@ -142,18 +142,35 @@ const Auth = () => {
     try {
       // The code is validated on the server; it also returns single-use
       // credentials for the immediate sign-in.
-      const { userId, email, password } = await verifyOtpAndGetCredentials(phoneE164, code, phoneE164);
+      const { userId, email, password, needsProfile, displayName, contactEmail: savedEmail } =
+        await verifyOtpAndGetCredentials(phoneE164, code);
       setOtpVerified(true);
+      if (needsProfile) holdForProfileRef.current = true;
 
       const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
       if (signInError || !signInData.user) throw signInError ?? new Error("Sign-in failed");
 
+      const uid = userId ?? signInData.user.id;
+      setSignedUserId(uid);
+
       upsertCustomerLead({
-        userId: userId ?? signInData.user.id,
+        userId: uid,
         phone: phoneE164,
+        displayName: displayName ?? undefined,
+        contactEmail: savedEmail ?? undefined,
         status: "verified",
         source: "phone_otp",
       });
+
+      // First-time user (or missing details): collect name + email before
+      // sending them into the app.
+      if (needsProfile) {
+        setFullName(displayName ?? "");
+        setContactEmail(savedEmail ?? "");
+        setProfileError(null);
+        setStage("profile");
+        return;
+      }
 
       const hasPendingPlan = isPendingPlanReady(loadPendingPlan());
       if (hasPendingPlan) setSavingPlan(true);
@@ -162,11 +179,63 @@ const Auth = () => {
       const dest = computeRedirect(email, phoneE164);
       setTimeout(() => navigate(dest, { replace: true }), 250);
     } catch {
+      holdForProfileRef.current = false;
       setOtpVerified(false);
       setOtpError(t("auth.phone.errors.codeInvalid"));
     } finally {
       setSubmitting(false);
       verifyInFlightRef.current = false;
+    }
+  };
+
+  const handleSaveProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!phoneE164) return;
+    const name = fullName.trim();
+    const mail = contactEmail.trim().toLowerCase();
+
+    if (name.length < 2) {
+      setProfileError(t("auth.phone.errors.nameRequired"));
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
+      setProfileError(t("auth.phone.errors.emailRequired"));
+      return;
+    }
+
+    setProfileError(null);
+    setSubmitting(true);
+    try {
+      const { data: sessionData } = await supabase.auth.getUser();
+      const uid = signedUserId ?? sessionData.user?.id;
+      if (!uid) throw new Error("No session");
+
+      const { error } = await supabase
+        .from("profiles")
+        .update({ display_name: name, contact_email: mail, phone: phoneE164 })
+        .eq("user_id", uid);
+      if (error) throw error;
+
+      await upsertCustomerLead({
+        userId: uid,
+        phone: phoneE164,
+        displayName: name,
+        contactEmail: mail,
+        status: "verified",
+        source: "phone_otp",
+      });
+
+      holdForProfileRef.current = false;
+      toast.success(t("auth.phone.profileSaved"));
+
+      const hasPendingPlan = isPendingPlanReady(loadPendingPlan());
+      if (hasPendingPlan) setSavingPlan(true);
+      const dest = computeRedirect(sessionData.user?.email ?? null, phoneE164);
+      setTimeout(() => navigate(dest, { replace: true }), 250);
+    } catch {
+      setProfileError(t("auth.phone.errors.profileFailed"));
+    } finally {
+      setSubmitting(false);
     }
   };
 
