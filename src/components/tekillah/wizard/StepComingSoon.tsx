@@ -8,6 +8,7 @@ import { Loader2, Check } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { toLatinDigits } from "@/i18n/format";
+import { buildWhatsappLink } from "@/lib/whatsapp";
 import { WaxSeal } from "./WaxSeal";
 import pkgClassic from "@/assets/packages/pkg-classic-luxury.jpg";
 import pkgHotel from "@/assets/packages/pkg-hotel.jpg";
@@ -21,6 +22,13 @@ interface Props {
   payload: Record<string, unknown>;
 }
 
+/** Minimal inline WhatsApp glyph — no extra dependency, inherits currentColor. */
+const WhatsAppGlyph = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+    <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.12-.41-2.14-1.32-.79-.71-1.32-1.58-1.47-1.88-.15-.3-.02-.47.13-.62.15-.15.35-.42.5-.62.13-.18.18-.3.28-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.2-.24-.58-.48-.5-.66-.5h-.56c-.2 0-.5.07-.77.37-.27.3-1.02 1-1.02 2.42s1.04 2.8 1.19 3c.15.2 2.05 3.28 5.06 4.47 2.5.99 2.87.85 3.39.8.52-.05 1.68-.68 1.92-1.35.24-.67.24-1.24.17-1.36-.07-.12-.27-.19-.57-.34zM12.04 21.5c-1.67 0-3.3-.44-4.73-1.28l-.34-.2-3.52.92.94-3.43-.22-.36a9.33 9.33 0 0 1-1.43-4.97c0-5.16 4.2-9.36 9.37-9.36 2.5 0 4.85.98 6.62 2.74a9.3 9.3 0 0 1 2.74 6.63c0 5.16-4.2 9.31-9.43 9.31zM12.05 1.5C5.8 1.5.72 6.58.72 12.82c0 2 .52 3.95 1.52 5.67L.5 24.5l6.16-1.61a11.25 11.25 0 0 0 5.39 1.37h.01c6.24 0 11.32-5.08 11.32-11.32 0-3.02-1.18-5.87-3.32-8.01A11.24 11.24 0 0 0 12.05 1.5z" />
+  </svg>
+);
+
 export const StepComingSoon = ({ summary, payload }: Props) => {
   const { i18n } = useTranslation();
   const isAr = i18n.language?.startsWith("ar");
@@ -28,6 +36,61 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
   const [phone, setPhone] = useState("");
   const [saving, setSaving] = useState(false);
   const [done, setDone] = useState(false);
+  const [waLink, setWaLink] = useState("");
+
+  /**
+   * Builds the concierge WhatsApp message: who registered, how to reach them,
+   * and every detail they picked in the wizard — so the Tklh team can start
+   * working before the first call. Free-text vision is included when written.
+   */
+  const buildMessage = (fullName: string, cleanPhone: string, ref: string) => {
+    const lines: string[] = [];
+    const vision = typeof payload.vision === "string" ? payload.vision.trim() : "";
+    const services = Array.isArray(payload.services) ? payload.services.length : 0;
+
+    if (isAr) {
+      lines.push("السلام عليكم تِكله 👋");
+      lines.push("سجّلت بياناتي عبر رحلة التخطيط وأبغى أسرّع التواصل:");
+      lines.push("");
+      lines.push(`• الاسم: ${fullName}`);
+      lines.push(`• الجوال: ${cleanPhone}`);
+      if (summary.length) {
+        lines.push("");
+        lines.push("تفاصيل المناسبة:");
+        summary.forEach((s) => lines.push(`• ${s}`));
+      }
+      if (services) lines.push(`• عدد الخدمات المختارة: ${services}`);
+      if (vision) {
+        lines.push("");
+        lines.push(`رؤيتي للمناسبة: ${vision}`);
+      }
+      if (ref) {
+        lines.push("");
+        lines.push(`رقم الطلب: ${ref}`);
+      }
+    } else {
+      lines.push("Hello Tklh 👋");
+      lines.push("I just registered through the planning journey and would like a faster follow-up:");
+      lines.push("");
+      lines.push(`• Name: ${fullName}`);
+      lines.push(`• Phone: ${cleanPhone}`);
+      if (summary.length) {
+        lines.push("");
+        lines.push("Event details:");
+        summary.forEach((s) => lines.push(`• ${s}`));
+      }
+      if (services) lines.push(`• Selected services: ${services}`);
+      if (vision) {
+        lines.push("");
+        lines.push(`My vision: ${vision}`);
+      }
+      if (ref) {
+        lines.push("");
+        lines.push(`Request ref: ${ref}`);
+      }
+    }
+    return lines.join("\n");
+  };
 
   const submit = async () => {
     const cleanPhone = toLatinDigits(phone).replace(/\D/g, "");
@@ -40,18 +103,37 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
       return;
     }
     setSaving(true);
-    const { error } = await supabase.from("planner_interest").insert({
-      full_name: name.trim(),
-      phone: cleanPhone,
-      details: payload as never,
-    });
+    const { data, error } = await supabase
+      .from("planner_interest")
+      .insert({
+        full_name: name.trim(),
+        phone: cleanPhone,
+        details: payload as never,
+      })
+      .select("id")
+      .single();
     setSaving(false);
     if (error) {
       toast.error(isAr ? "ما وصلت بياناتك، جرب مرة ثانية" : "Something went wrong, try again");
       return;
     }
+
+    // Data is saved first — WhatsApp is only an accelerator, never the record.
+    const ref = data?.id ? String(data.id).slice(0, 8).toUpperCase() : "";
+    const link = buildWhatsappLink({ message: buildMessage(name.trim(), cleanPhone, ref) });
+    setWaLink(link);
     setDone(true);
+
+    // Smart hand-off: try to open WhatsApp right away; if the browser blocks the
+    // programmatic window, the visible button below still does the job.
+    const win = window.open(link, "_blank", "noopener,noreferrer");
+    if (!win) {
+      toast.success(
+        isAr ? "تم التسجيل — اضغط زر الواتس لإكمال التواصل" : "Registered — tap the WhatsApp button to continue",
+      );
+    }
   };
+
 
   return (
     <motion.div
@@ -118,7 +200,27 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
                 ? "وصلتنا بياناتك! فريق تكله بيتواصل معك خلال أقل من 24 ساعة، ويجهّز لك كل اللي تحتاجه."
                 : "We got your details! The Tklh team will reach out within less than 24 hours and prepare everything you need."}
             </p>
+
+            {waLink && (
+              <>
+                <a
+                  href={waLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 font-arabic text-sm font-bold text-[#0b2d1b] transition hover:brightness-105"
+                >
+                  <WhatsAppGlyph className="h-4 w-4" />
+                  {isAr ? "سرّع التواصل عبر الواتس" : "Speed things up on WhatsApp"}
+                </a>
+                <p className="mt-2 font-arabic text-[11.5px] leading-relaxed text-foreground/60">
+                  {isAr
+                    ? "الرسالة جاهزة بكل تفاصيلك — بس اضغط إرسال."
+                    : "Your message is ready with all your details — just hit send."}
+                </p>
+              </>
+            )}
           </motion.div>
+
         ) : (
           <div className="mt-7 w-full max-w-md space-y-3 rounded-2xl border border-border bg-card/90 p-4 text-start sm:p-5">
             {/* Prominent pledge — sits above the fields so it reads as the CTA itself */}
