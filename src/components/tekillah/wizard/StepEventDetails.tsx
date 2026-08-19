@@ -243,7 +243,7 @@ const DateField = ({
   onSelect: (d?: Date) => void;
   labelAr: string; labelEn: string;
   isAr: boolean;
-  locale: Locale;
+  locale: typeof enUS;
   min: Date;
   disabled?: boolean;
 }) => (
