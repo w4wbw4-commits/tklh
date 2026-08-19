@@ -158,7 +158,7 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
         )}
 
         <p className="mt-4 font-arabic text-[11px] text-foreground/50">
-          {isAr ? "صورة تمثيلية" : "Representative image"}
+          {"\n"}
         </p>
       </div>
     </motion.div>
