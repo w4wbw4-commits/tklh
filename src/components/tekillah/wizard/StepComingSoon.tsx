@@ -64,10 +64,21 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
     >
       {/* Blurred package layout behind the seal — real content, softly out of focus */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="grid h-full grid-cols-2 gap-3 p-4 opacity-60 blur-[14px] sm:grid-cols-4">
+        {/* Real package-card shapes — image, title bar, choose button — then blurred. */}
+        <div className="grid h-full grid-cols-2 gap-3 p-4 opacity-70 blur-[14px] sm:grid-cols-4">
           {BACKDROP.map((src, i) => (
-            <div key={i} className="overflow-hidden rounded-2xl border border-border">
-              <img src={src} alt="" className="h-full w-full object-cover" />
+            <div
+              key={i}
+              className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card"
+            >
+              <div className="h-1/2 min-h-[86px] w-full overflow-hidden">
+                <img src={src} alt="" className="h-full w-full object-cover" />
+              </div>
+              <div className="flex flex-1 flex-col justify-center gap-2 p-3">
+                <span className="block h-2.5 w-4/5 rounded-full bg-primary/25" />
+                <span className="block h-2 w-3/5 rounded-full bg-primary/15" />
+                <span className="mt-1 block h-6 w-20 rounded-full border border-primary/40 bg-primary/20" />
+              </div>
             </div>
           ))}
         </div>
@@ -104,8 +115,8 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
             </span>
             <p className="mt-3 font-arabic text-sm font-semibold text-foreground">
               {isAr
-                ? "وصلتنا بياناتك! فريق تكله بيتواصل معك ويجهّز لك كل اللي تحتاجه."
-                : "We got your details! The Tklh team will reach out and prepare everything you need."}
+                ? "وصلتنا بياناتك! فريق تكله بيتواصل معك خلال أقل من 24 ساعة، ويجهّز لك كل اللي تحتاجه."
+                : "We got your details! The Tklh team will reach out within less than 24 hours and prepare everything you need."}
             </p>
           </motion.div>
         ) : (
@@ -130,6 +141,11 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
                 className="h-12 rounded-xl tabular-nums"
               />
             </div>
+            <p className="font-arabic text-[12.5px] leading-relaxed text-foreground/75">
+              {isAr
+                ? "سجّل بياناتك، وحنا لك تكله — نجهّز لك كل شي، وبنتواصل معك خلال أقل من 24 ساعة."
+                : "Register your details and Tklh takes it from here — we prepare everything and reach out within less than 24 hours."}
+            </p>
             <Button
               onClick={submit}
               disabled={saving}
