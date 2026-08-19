@@ -1,338 +1,108 @@
 // ---------------------------------------------------------------------------
-// "وش وراء الـ10 دقائق؟" — zigzag story.
-// All four panels stay open at once and alternate side to side (right/left)
-// as the visitor scrolls. Each panel mirrors a real screen from the product
-// with approximate numbers, and carries an explicit "illustrative example" tag.
-// Provider cards are intentionally anonymous (no names, no readable images) so
-// the shape reads as a real marketplace without looking AI-generated.
+// "وش وراء الـ10 دقائق؟" — quiet vertical list with hairline dividers.
+// Each step is a single open row: a line-art icon, title + description, and
+// a large step number. Clean, invitation-like, easy to scan.
 // ---------------------------------------------------------------------------
 
-import { motion, useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
-import sealLogo from "/tklh-chair-mark.png";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
+const INK = "#163726";
 const HAIR = "1px solid hsl(var(--green) / 0.16)";
-const INK = "hsl(var(--green))";
 
 type Step = { n: string; title: string; desc: string };
 
-/* ------------------------------------------------------------------ chrome */
+const StepIcon = ({ index }: { index: number }) => {
+  const stroke = { stroke: INK, strokeWidth: 1.5, fill: "none", strokeLinecap: "round" as const };
 
-const PanelFrame = ({
-  screen,
-  tag,
-  children,
-}: {
-  screen: string;
-  tag: string;
-  children: React.ReactNode;
-}) => (
-  <div
-    className="flex h-full w-full flex-col overflow-hidden rounded-[22px] bg-card"
-    style={{ border: HAIR, boxShadow: "0 18px 44px -30px hsl(var(--green) / 0.45)" }}
-  >
-    <div
-      className="flex items-center gap-2 px-4 py-2.5"
-      style={{ borderBottom: HAIR, background: "hsl(var(--green) / 0.04)" }}
-    >
-      <span className="flex gap-1.5" aria-hidden>
-        {[0, 1, 2].map((i) => (
-          <span
-            key={i}
-            className="block h-2 w-2 rounded-full"
-            style={{ background: "hsl(var(--green) / 0.28)" }}
-          />
-        ))}
-      </span>
-      <span className="truncate text-[12px] font-bold" style={{ color: "hsl(var(--green) / 0.75)" }}>
-        {screen}
-      </span>
-    </div>
-
-    <div className="min-h-0 flex-1 overflow-hidden p-4 sm:p-5">{children}</div>
-
-    <div className="px-4 pb-3">
-      <span
-        className="inline-block rounded-full px-2 py-0.5 text-[10.5px] font-bold"
-        style={{ border: "1px dashed hsl(var(--gold) / 0.55)", color: "hsl(var(--gold))" }}
-      >
-        {tag}
-      </span>
-    </div>
-  </div>
-);
-
-/* ------------------------------------------------------------------ panels */
-
-/** Mirrors the real customer dashboard: tiles + vertical mini-timeline. */
-const PanelOverview = () => {
-  const { t } = useTranslation();
-  const tags = t("speed.behind.p1.tags", { returnObjects: true }) as string[];
-  const stages = t("speed.behind.p1.stages", { returnObjects: true }) as string[];
-  const stats = t("speed.behind.p1.stats", { returnObjects: true }) as { v: string; l: string }[];
-
-  return (
-    <PanelFrame screen={t("speed.behind.p1.screen")} tag={t("speed.behind.sample")}>
-      <div className="flex h-full flex-col gap-3.5">
-        <div className="flex flex-wrap gap-2">
-          {tags.map((x) => (
-            <span
-              key={x}
-              className="rounded-full px-2.5 py-1 text-[11.5px] font-bold"
-              style={{ background: "hsl(var(--green) / 0.08)", color: INK }}
-            >
-              {x}
-            </span>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-3 gap-2">
-          {stats.map((s) => (
-            <div key={s.l} className="rounded-xl px-2 py-2.5 text-center" style={{ border: HAIR }}>
-              <p className="font-display text-[15px] font-black tabular-nums" style={{ color: INK }}>
-                {s.v}
-              </p>
-              <p className="mt-0.5 text-[10.5px] font-bold" style={{ color: "hsl(var(--brown) / 0.75)" }}>
-                {s.l}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* vertical mini-timeline, same language as the real dashboard */}
-        <div className="relative min-h-0 flex-1 ps-4">
-          <span
-            className="absolute bottom-2 top-2 w-px"
-            style={{ background: "hsl(var(--green) / 0.18)", insetInlineStart: "5px" }}
-            aria-hidden
-          />
-          <div className="flex h-full flex-col justify-between gap-1.5">
-            {stages.map((s, i) => {
-              const done = i < 2;
-              const current = i === 2;
-              return (
-                <div key={s} className="relative flex items-center gap-2.5">
-                  <span
-                    className="absolute grid h-[11px] w-[11px] place-items-center rounded-full text-[7px] font-black leading-none"
-                    style={{
-                      insetInlineStart: "-16px",
-                      background: done || current ? INK : "hsl(var(--green) / 0.14)",
-                      color: done || current ? "hsl(var(--cream))" : "transparent",
-                      outline: current ? "3px solid hsl(var(--gold) / 0.4)" : "none",
-                    }}
-                  >
-                    {done ? "✓" : ""}
-                  </span>
-                  <span
-                    className="text-[11.5px] font-bold"
-                    style={{ color: current ? INK : "hsl(var(--green) / 0.55)" }}
-                  >
-                    {s}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </PanelFrame>
-  );
+  switch (index) {
+    case 0:
+      // slider / smart control
+      return (
+        <svg viewBox="0 0 48 48" className="h-12 w-12 sm:h-14 sm:w-14" aria-hidden>
+          <rect x="6" y="10" width="36" height="28" rx="6" {...stroke} />
+          <line x1="10" y1="20" x2="38" y2="20" {...stroke} />
+          <line x1="10" y1="28" x2="38" y2="28" {...stroke} />
+          <circle cx="22" cy="28" r="3" {...stroke} />
+        </svg>
+      );
+    case 1:
+      // list with checkmark
+      return (
+        <svg viewBox="0 0 48 48" className="h-12 w-12 sm:h-14 sm:w-14" aria-hidden>
+          <rect x="6" y="8" width="36" height="32" rx="6" {...stroke} />
+          <line x1="14" y1="18" x2="30" y2="18" {...stroke} />
+          <line x1="14" y1="26" x2="26" y2="26" {...stroke} />
+          <path d="M28 30 l4 4 l8 -9" {...stroke} />
+        </svg>
+      );
+    case 2:
+      // checklist
+      return (
+        <svg viewBox="0 0 48 48" className="h-12 w-12 sm:h-14 sm:w-14" aria-hidden>
+          <line x1="16" y1="12" x2="40" y2="12" {...stroke} />
+          <line x1="16" y1="22" x2="40" y2="22" {...stroke} />
+          <line x1="16" y1="32" x2="40" y2="32" {...stroke} />
+          <path d="M8 13 l3 3 l5 -6" {...stroke} />
+          <path d="M8 23 l3 3 l5 -6" {...stroke} />
+          <path d="M8 33 l3 3 l5 -6" {...stroke} />
+        </svg>
+      );
+    case 3:
+      // stacked toggles
+      return (
+        <svg viewBox="0 0 48 48" className="h-12 w-12 sm:h-14 sm:w-14" aria-hidden>
+          <rect x="8" y="10" width="32" height="10" rx="5" {...stroke} />
+          <circle cx="16" cy="15" r="3" {...stroke} />
+          <rect x="8" y="24" width="32" height="10" rx="5" {...stroke} />
+          <circle cx="16" cy="29" r="3" {...stroke} />
+        </svg>
+      );
+    default:
+      return null;
+  }
 };
-
-/** Marketplace shape only — anonymous cards, no readable name or photo. */
-const PanelMarket = () => {
-  const { t } = useTranslation();
-  const filters = t("speed.behind.p2.filters", { returnObjects: true }) as string[];
-
-  return (
-    <PanelFrame screen={t("speed.behind.p2.screen")} tag={t("speed.behind.sampleNoPrice")}>
-      <div className="flex h-full flex-col gap-3">
-        <div className="flex flex-wrap gap-1.5">
-          {filters.map((f, i) => (
-            <span
-              key={f}
-              className="rounded-full px-2.5 py-1 text-[11px] font-bold"
-              style={
-                i === 0
-                  ? { background: INK, color: "hsl(var(--cream))" }
-                  : { border: HAIR, color: "hsl(var(--green) / 0.7)" }
-              }
-            >
-              {f}
-            </span>
-          ))}
-        </div>
-
-        <div className="grid min-h-0 flex-1 grid-cols-3 gap-2">
-          {[0, 1, 2, 3, 4, 5].map((i) => (
-            <div
-              key={i}
-              className="relative flex flex-col overflow-hidden rounded-xl"
-              style={{ border: HAIR }}
-            >
-              <div
-                className="h-[42px] w-full sm:h-[52px]"
-                style={{
-                  background:
-                    "repeating-linear-gradient(115deg, hsl(var(--green) / 0.16) 0 10px, hsl(var(--green) / 0.09) 10px 20px)",
-                }}
-                aria-hidden
-              />
-              {i === 1 && (
-                <span
-                  className="absolute end-1 top-1 rounded-full px-1.5 py-0.5 text-[8.5px] font-black"
-                  style={{ background: "hsl(var(--gold))", color: "hsl(var(--green))" }}
-                >
-                  {t("speed.behind.p2.best")}
-                </span>
-              )}
-              <div className="flex flex-1 flex-col justify-center gap-1.5 px-2 py-2" aria-hidden>
-                <span className="block h-2 w-4/5 rounded-full" style={{ background: "hsl(var(--green) / 0.22)" }} />
-                <span className="block h-1.5 w-3/5 rounded-full" style={{ background: "hsl(var(--green) / 0.13)" }} />
-                <span
-                  className="mt-0.5 block h-4 w-12 rounded-full"
-                  style={{ border: "1px solid hsl(var(--green) / 0.3)", background: "hsl(var(--green) / 0.07)" }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </PanelFrame>
-  );
-};
-
-const PanelBooking = () => {
-  const { t } = useTranslation();
-  const bands = t("speed.behind.p3.bands", { returnObjects: true }) as string[];
-  const rows = t("speed.behind.p3.rows", { returnObjects: true }) as { k: string; v: string }[];
-
-  return (
-    <PanelFrame screen={t("speed.behind.p3.screen")} tag={t("speed.behind.sample")}>
-      <div className="flex h-full flex-col justify-between gap-3">
-        <p className="font-display text-[15px] font-black leading-snug" style={{ color: INK }}>
-          {t("speed.behind.p3.title")}
-        </p>
-
-        <div className="flex flex-wrap gap-1.5">
-          {bands.map((b, i) => (
-            <span
-              key={b}
-              className="rounded-full px-2.5 py-1 text-[11px] font-bold"
-              style={
-                i === 1
-                  ? { background: INK, color: "hsl(var(--cream))" }
-                  : { border: HAIR, color: "hsl(var(--green) / 0.7)" }
-              }
-            >
-              {b}
-            </span>
-          ))}
-        </div>
-
-        <div className="rounded-xl px-3 py-2" style={{ border: HAIR }}>
-          {rows.map((r) => (
-            <div key={r.k} className="flex items-center justify-between gap-3 py-1 text-[11.5px]">
-              <span style={{ color: "hsl(var(--brown) / 0.75)" }}>{r.k}</span>
-              <span className="font-bold" style={{ color: INK }}>
-                {r.v}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        <div
-          className="grid h-11 place-items-center rounded-full text-[13px] font-black"
-          style={{ background: INK, color: "hsl(var(--cream))" }}
-        >
-          {t("speed.behind.p3.cta")}
-        </div>
-      </div>
-    </PanelFrame>
-  );
-};
-
-const PanelDone = () => {
-  const { t } = useTranslation();
-  return (
-    <PanelFrame screen={t("speed.behind.p4.screen")} tag={t("speed.behind.sample")}>
-      <div className="flex h-full flex-col items-center justify-center gap-3 text-center">
-        <img src={sealLogo} alt="" className="h-16 w-16 object-contain sm:h-20 sm:w-20" />
-        <p className="font-display text-[17px] font-black" style={{ color: INK }}>
-          {t("speed.behind.p4.title")}
-        </p>
-        <p className="max-w-[34ch] text-[12.5px] leading-[1.9]" style={{ color: "hsl(var(--brown))" }}>
-          {t("speed.behind.p4.line")}
-        </p>
-      </div>
-    </PanelFrame>
-  );
-};
-
-const PANELS = [PanelOverview, PanelMarket, PanelBooking, PanelDone];
-
-/* ----------------------------------------------------------------- section */
 
 export const BehindStory = () => {
   const { t } = useTranslation();
-  const reduce = useReducedMotion();
   const steps = t("speed.behind.steps", { returnObjects: true }) as Step[];
 
   return (
-    <section className="relative px-5 pt-16 sm:px-8 lg:pt-24">
-      <div className="mx-auto max-w-6xl">
+    <section className="relative bg-cream px-5 py-16 sm:px-8 lg:py-24">
+      <div className="mx-auto max-w-4xl">
         <Reveal>
-          <h2 className="font-display max-w-xl text-balance text-2xl font-black leading-[1.4] text-green sm:text-4xl">
+          <h2 className="font-display mb-10 text-right text-2xl font-black leading-[1.3] text-green sm:mb-14 sm:text-4xl">
             {t("speed.behind.title")}
           </h2>
         </Reveal>
 
-        {/* zigzag: every beat is an open card, alternating side to side */}
-        <div className="mt-8 flex flex-col gap-10 sm:mt-12 lg:gap-16">
-          {steps.map((step, i) => {
-            const P = PANELS[i % PANELS.length];
-            const flip = i % 2 === 1;
-            return (
-              <motion.div
-                key={step.n}
-                initial={reduce ? { opacity: 1 } : { opacity: 0, y: 26 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.7, ease: EASE }}
-                className="grid items-center gap-6 lg:grid-cols-2 lg:gap-14"
-              >
-                <div className={flip ? "lg:order-2" : "lg:order-1"}>
-                  <div className="flex items-start gap-4">
-                    <span
-                      className="font-display shrink-0 text-3xl font-black leading-none tabular-nums sm:text-4xl"
-                      style={{ color: "hsl(var(--gold))" }}
-                    >
-                      {step.n}
-                    </span>
-                    <div className="min-w-0">
-                      <h3 className="font-display text-xl font-black leading-snug text-green sm:text-2xl">
-                        {step.title}
-                      </h3>
-                      <p
-                        className="mt-2 max-w-md text-[14px] leading-[1.9]"
-                        style={{ color: "hsl(var(--brown))" }}
-                      >
-                        {step.desc}
-                      </p>
-                    </div>
-                  </div>
+        <div className="flex flex-col">
+          {steps.map((step, i) => (
+            <div
+              key={step.n}
+              className="group"
+              style={{ borderTop: i === 0 ? HAIR : undefined, borderBottom: HAIR }}
+            >
+              <div className="flex items-center gap-4 py-7 sm:gap-6 sm:py-9">
+                <div className="shrink-0 text-green/80 transition-colors group-hover:text-green">
+                  <StepIcon index={i} />
                 </div>
 
-                <div
-                  className={`h-[330px] w-full sm:h-[380px] ${flip ? "lg:order-1" : "lg:order-2"}`}
-                >
-                  <P />
+                <div className="min-w-0 flex-1 text-right">
+                  <h3 className="font-display text-lg font-black leading-snug text-green sm:text-xl">
+                    {step.title}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-[1.8] text-brown sm:text-[15px]">
+                    {step.desc}
+                  </p>
                 </div>
-              </motion.div>
-            );
-          })}
+
+                <span className="font-display shrink-0 text-3xl font-black leading-none tabular-nums text-green sm:text-5xl">
+                  {step.n}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
