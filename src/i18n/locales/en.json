@@ -1878,7 +1878,10 @@
             "v": "42",
             "l": "days left"
           }
-        ]
+        ],
+        "greet": "Hey, Omar",
+        "progressL": "Planning progress",
+        "progressV": "65%"
       },
       "p2": {
         "screen": "Choose your vendors",
@@ -1914,7 +1917,35 @@
             "n": "Al Samar Band",
             "t": "Band & audio"
           }
-        ]
+        ],
+        "title": "Verified service providers",
+        "cats": [
+          {
+            "l": "Venues & hotels",
+            "i": "venue"
+          },
+          {
+            "l": "Photographers",
+            "i": "photo"
+          },
+          {
+            "l": "Stylists & decor",
+            "i": "decor"
+          },
+          {
+            "l": "Hospitality & coffee",
+            "i": "coffee"
+          },
+          {
+            "l": "Band & audio",
+            "i": "band"
+          },
+          {
+            "l": "Invitations & reception",
+            "i": "invite"
+          }
+        ],
+        "verified": "Verified"
       },
       "p3": {
         "screen": "Book now",
