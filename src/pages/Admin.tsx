@@ -183,6 +183,7 @@ const Admin = () => {
       case "late":         return <AdminLateAlerts />;
       case "incidents":    return <AdminIncidentReports />;
       case "leads":        return <AdminLeadsPanel />;
+      case "interest":     return <AdminPlannerInterest />;
       case "reviews":      return <AdminReviewsPanel />;
       case "packages":     return <AdminPackagesPanel />;
       case "moderation":   return <AdminModerationQueue />;
