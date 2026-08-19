@@ -245,14 +245,22 @@ export const PlanningWizard = () => {
               <AnimatePresence mode="wait">
                 {step === 0 && (
                   <StepEventDetails
-                    eventType={eventType} setEventType={(v) => { setEventType(v); setSelected([]); setEndDate(""); }}
+                    eventType={eventType}
+                    setEventType={(v) => {
+                      setEventType(v); setSelected([]); setEndDate("");
+                      setSplitGuests(v === "wedding" || v === "malka");
+                    }}
                     city={city} setCity={setCity}
                     date={date} setDate={setDate}
                     endDate={endDate} setEndDate={setEndDate}
                     flexibleDate={flexibleDate} setFlexibleDate={setFlexibleDate}
                     guests={guests} setGuests={setGuests}
+                    menGuests={menGuests} setMenGuests={setMenGuests}
+                    womenGuests={womenGuests} setWomenGuests={setWomenGuests}
+                    splitGuests={splitGuests} setSplitGuests={setSplitGuests}
                     budgetBand={budgetBand} setBudgetBand={setBudgetBand}
                   />
+
                 )}
                 {step === 1 && eventType && (
                   <StepJourneyServices
