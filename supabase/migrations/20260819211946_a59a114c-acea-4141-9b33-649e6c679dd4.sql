@@ -1,0 +1,1 @@
+DELETE FROM public.planner_interest WHERE full_name = 'audit test' AND phone = '+966500000001';

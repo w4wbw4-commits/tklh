@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
-import { Globe, LayoutDashboard, ShieldCheck, CalendarCheck } from "lucide-react";
+import { LayoutDashboard, ShieldCheck, CalendarCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -145,18 +145,9 @@ export const Navbar = () => {
               </Button>
             )}
 
-            {/* Compact AR/EN language toggle — visible on every breakpoint.
-                Uses i18next changeLanguage; persistence + dir flip handled in src/i18n/index.ts. */}
-            <button
-              type="button"
-              onClick={toggleLang}
-              aria-label={isAr ? "Switch to English" : "التبديل إلى العربية"}
-              className="hidden h-9 items-center gap-1 rounded-full border px-2.5 sm:inline-flex text-[11px] font-semibold uppercase tracking-wide transition hover:bg-white/10"
-              style={{ borderColor: "hsl(var(--gold) / 0.5)", color: "hsl(var(--cream))" }}
-            >
-              <Globe className="h-3.5 w-3.5" />
-              <span>{isAr ? "EN" : "ع"}</span>
-            </button>
+            {/* Language toggle intentionally hidden until the full English
+                version ships — a visitor should never see a non-working control. */}
+
 
             {/* Hamburger pinned at the very END of the cluster — in RTL this
                 renders at the far-right (start edge), which is where the user
