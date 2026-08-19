@@ -304,15 +304,27 @@ const Auth = () => {
         >
           <div className="mb-8 text-center">
             <div className="mx-auto mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-              {stage === "phone" ? <Phone className="h-6 w-6" /> : <MessageSquareLock className="h-6 w-6" />}
+              {stage === "phone" ? (
+                <Phone className="h-6 w-6" />
+              ) : stage === "otp" ? (
+                <MessageSquareLock className="h-6 w-6" />
+              ) : (
+                <UserRound className="h-6 w-6" />
+              )}
             </div>
             <h1 className="font-arabic text-2xl font-semibold text-foreground sm:text-3xl">
-              {stage === "phone" ? t("auth.phone.title") : t("auth.phone.otpTitle")}
+              {stage === "phone"
+                ? t("auth.phone.title")
+                : stage === "otp"
+                  ? t("auth.phone.otpTitle")
+                  : t("auth.phone.profileTitle")}
             </h1>
             <p className="mt-2 text-sm text-foreground/65">
               {stage === "phone"
                 ? t("auth.phone.subtitle")
-                : t("auth.phone.otpSubtitle", { phone: phoneE164 })}
+                : stage === "otp"
+                  ? t("auth.phone.otpSubtitle", { phone: phoneE164 })
+                  : t("auth.phone.profileSubtitle")}
             </p>
           </div>
 
