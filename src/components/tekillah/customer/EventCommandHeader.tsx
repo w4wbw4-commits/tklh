@@ -214,99 +214,49 @@ export const EventCommandHeader = ({
         </div>
       </motion.section>
 
-      {/* Metrics */}
+      {/* Metrics — every tile is a doorway into its own tab */}
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-        <Metric
-          label={t("customer.command.metrics.guests")}
-          value={`${fmtNumber(c.guestsConfirmed)} / ${fmtNumber(c.guestsTotal)}`}
-          sub={t("customer.command.metrics.guestsSub", {
-            confirmed: fmtNumber(c.guestsConfirmed), total: fmtNumber(c.guestsTotal),
-          })}
-          ratio={c.guestsTotal ? c.guestsConfirmed / c.guestsTotal : 0}
-        />
-        <Metric
-          label={t("customer.command.metrics.bookings")}
-          value={`${fmtNumber(c.bookingsConfirmed)} / ${fmtNumber(Math.max(c.bookingsTotal, c.bookingsConfirmed))}`}
-          sub={t("customer.command.metrics.bookingsSub", {
-            confirmed: fmtNumber(c.bookingsConfirmed), total: fmtNumber(c.bookingsTotal),
-          })}
-          ratio={c.bookingsTotal ? c.bookingsConfirmed / c.bookingsTotal : 0}
-          seal={c.bookingsConfirmed > 0}
-        />
-        <Metric
-          label={t("customer.command.metrics.budget")}
-          value={`${fmtNumber(c.paid)} ${cur}`}
-          sub={t("customer.command.metrics.budgetSub", { rest: `${fmtNumber(rest)} ${cur}` })}
-          ratio={c.total ? c.paid / c.total : 0}
-        />
-        <Metric
-          alert={c.needs.length > 0}
-          label={t("customer.command.metrics.actions")}
-          value={c.needs.length ? fmtNumber(c.needs.length) : "—"}
-          sub={c.needs.length
-            ? t("customer.command.metrics.actionsSub")
-            : t("customer.command.metrics.actionsNone")}
-        />
+        <button type="button" onClick={() => onOpenTab("guests")} className="text-start">
+          <Metric
+            label={t("customer.command.metrics.guests")}
+            value={`${fmtNumber(c.guestsConfirmed)} / ${fmtNumber(c.guestsTotal)}`}
+            sub={t("customer.command.metrics.guestsSub", {
+              confirmed: fmtNumber(c.guestsConfirmed), total: fmtNumber(c.guestsTotal),
+            })}
+            ratio={c.guestsTotal ? c.guestsConfirmed / c.guestsTotal : 0}
+          />
+        </button>
+        <button type="button" onClick={() => onOpenTab("bookings")} className="text-start">
+          <Metric
+            label={t("customer.command.metrics.bookings")}
+            value={`${fmtNumber(c.bookingsConfirmed)} / ${fmtNumber(Math.max(c.bookingsTotal, c.bookingsConfirmed))}`}
+            sub={t("customer.command.metrics.bookingsSub", {
+              confirmed: fmtNumber(c.bookingsConfirmed), total: fmtNumber(c.bookingsTotal),
+            })}
+            ratio={c.bookingsTotal ? c.bookingsConfirmed / c.bookingsTotal : 0}
+            seal={c.bookingsConfirmed > 0}
+          />
+        </button>
+        <button type="button" onClick={() => onOpenTab("payments")} className="text-start">
+          <Metric
+            label={t("customer.command.metrics.budget")}
+            value={`${fmtNumber(c.paid)} ${cur}`}
+            sub={t("customer.command.metrics.budgetSub", { rest: `${fmtNumber(rest)} ${cur}` })}
+            ratio={c.total ? c.paid / c.total : 0}
+          />
+        </button>
+        <button type="button" onClick={() => onOpenTab("timeline")} className="text-start">
+          <Metric
+            label={t("customer.command.metrics.plan")}
+            value={`${fmtNumber(c.milestonesDone)} / ${fmtNumber(c.milestonesTotal)}`}
+            sub={t("customer.command.metrics.planSub", {
+              done: fmtNumber(c.milestonesDone), total: fmtNumber(c.milestonesTotal),
+            })}
+            ratio={c.milestonesTotal ? c.milestonesDone / c.milestonesTotal : 0}
+          />
+        </button>
       </div>
-
-      {/* What needs you now */}
-      <motion.section
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}
-        className="rounded-3xl p-6 sm:p-7"
-        style={{ border: hairline, backgroundColor: "hsl(var(--green) / 0.04)" }}
-      >
-        <h2 className="font-arabic text-lg font-bold text-primary sm:text-xl">
-          {t("customer.command.needs.title")}
-        </h2>
-        <p className="mt-1.5 text-[13.5px] text-[hsl(var(--brown))]">
-          {t("customer.command.needs.subtitle")}
-        </p>
-
-        {c.needs.length === 0 ? (
-          <div className="mt-5 flex items-center gap-4">
-            <img
-              src={chairMark}
-              alt=""
-              aria-hidden
-              className="h-12 w-12 shrink-0 object-contain opacity-25"
-              draggable={false}
-            />
-            <div>
-              <p className="font-arabic text-[15px] font-bold text-primary">
-                {t("customer.command.needs.emptyTitle")}
-              </p>
-              <p className="mt-1 text-[13px] text-[hsl(var(--brown))]">
-                {t("customer.command.needs.emptyDesc")}
-              </p>
-            </div>
-          </div>
-        ) : (
-          <ul className="mt-5 space-y-0">
-            {c.needs.map((n) => (
-              <li
-                key={n.id}
-                className="flex flex-wrap items-center justify-between gap-3 py-3.5"
-                style={{ borderTop: hairline }}
-              >
-                <span className="min-w-0">
-                  <span className="block truncate text-[14.5px] font-bold text-primary">{n.title}</span>
-                  {n.due && (
-                    <span className="mt-0.5 block text-[12px]" style={{ color: WINE }}>
-                      {fmtDate(n.due)}
-                    </span>
-                  )}
-                </span>
-                <Button size="sm" variant="outline" className="rounded-full"
-                  onClick={() => onOpenTab("timeline")}>
-                  {t("customer.command.needs.action")}
-                </Button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </motion.section>
     </div>
   );
 };
+
