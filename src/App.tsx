@@ -15,6 +15,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 // the user actually navigates to a partner/admin page.
 import Index from "./pages/Index.tsx";
 import { RoleSwitcher } from "./components/tekillah/RoleSwitcher";
+import { AppErrorBoundary } from "./components/tekillah/AppErrorBoundary";
 
 const Auth = lazy(() => import("./pages/Auth.tsx"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword.tsx"));
@@ -146,6 +147,10 @@ const AppRoutes = () => {
   );
 };
 
-const App = () => <AppRoutes />;
+const App = () => (
+  <AppErrorBoundary>
+    <AppRoutes />
+  </AppErrorBoundary>
+);
 
 export default App;
