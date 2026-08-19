@@ -60,10 +60,19 @@ const Auth = () => {
   const [otpError, setOtpError] = useState<string | null>(null);
   const [otpVerified, setOtpVerified] = useState(false);
   const [savingPlan, setSavingPlan] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [profileError, setProfileError] = useState<string | null>(null);
+  const [signedUserId, setSignedUserId] = useState<string | null>(null);
   const verifyInFlightRef = useRef(false);
+  // Set once the first-time profile step is required, so the auto-redirect
+  // effect doesn't skip it after the session is established.
+  const holdForProfileRef = useRef(false);
 
   useEffect(() => {
-    if (!authLoading && user) navigate(computeRedirect(), { replace: true });
+    if (!authLoading && user && !holdForProfileRef.current) {
+      navigate(computeRedirect(), { replace: true });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, authLoading, navigate]);
 
