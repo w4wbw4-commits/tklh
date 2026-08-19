@@ -194,12 +194,14 @@ const Dashboard = () => {
                     <EventCommandHeader
                       event={activeEvent}
                       userName={
+                        profileName ??
                         (user.user_metadata?.full_name as string | undefined) ??
                         user.email?.split("@")[0] ??
                         null
                       }
                       onOpenTab={setTab}
                     />
+
                     <EventOverview event={activeEvent} />
                   </div>
                 </TabsContent>
