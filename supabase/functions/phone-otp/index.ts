@@ -155,18 +155,40 @@ Deno.serve(async (req) => {
       .eq("id", challenge.id);
 
     const password = randomPassword();
-    const displayName = body.displayName ?? phone;
 
     const { data: usersData, error: listError } = await admin.auth.admin.listUsers();
     if (listError) throw listError;
     let user = usersData.users.find((entry) => entry.email?.toLowerCase() === email.toLowerCase()) ?? null;
+
+    // Existing profile (if any) decides whether the client must collect
+    // name + email before continuing.
+    let existingName: string | null = null;
+    let existingEmail: string | null = null;
+    if (user) {
+      const { data: profile } = await admin
+        .from("profiles")
+        .select("display_name, contact_email")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      existingName = profile?.display_name ?? null;
+      existingEmail = profile?.contact_email ?? null;
+    }
+
+    const cleanName = typeof body.displayName === "string" ? body.displayName.trim() : "";
+    const nameFromClient = cleanName && cleanName !== phone ? cleanName.slice(0, 120) : null;
+    const nameIsReal = existingName && existingName !== phone ? existingName : null;
+    const finalName = nameFromClient ?? nameIsReal;
+
+    const cleanEmail = typeof body.contactEmail === "string" ? body.contactEmail.trim().toLowerCase() : "";
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail) ? cleanEmail.slice(0, 255) : null;
+    const finalEmail = emailValid ?? existingEmail;
 
     if (!user) {
       const { data: created, error: createError } = await admin.auth.admin.createUser({
         email,
         password,
         email_confirm: true,
-        user_metadata: { phone, display_name: displayName },
+        user_metadata: { phone, display_name: finalName ?? phone, contact_email: finalEmail },
       });
       if (createError) throw createError;
       user = created.user;
@@ -174,17 +196,34 @@ Deno.serve(async (req) => {
       const { data: updated, error: updateError } = await admin.auth.admin.updateUserById(user.id, {
         password,
         ...(user.email_confirmed_at ? {} : { email_confirm: true }),
-        user_metadata: { ...(user.user_metadata ?? {}), phone, display_name: displayName },
+        user_metadata: {
+          ...(user.user_metadata ?? {}),
+          phone,
+          ...(finalName ? { display_name: finalName } : {}),
+          ...(finalEmail ? { contact_email: finalEmail } : {}),
+        },
       });
       if (updateError) throw updateError;
       user = updated.user ?? user;
     }
     if (!user) throw new Error("Unable to prepare auth user");
 
-    await admin.from("profiles").upsert({ user_id: user.id, phone, display_name: displayName }, { onConflict: "user_id" });
+    await admin.from("profiles").upsert(
+      {
+        user_id: user.id,
+        phone,
+        display_name: finalName ?? phone,
+        ...(finalEmail ? { contact_email: finalEmail } : {}),
+      },
+      { onConflict: "user_id" },
+    );
     await admin.from("user_roles").upsert({ user_id: user.id, role: "customer" }, { onConflict: "user_id,role" });
 
-    return json({ ok: true, userId: user.id, email, password });
+    // The browser shows the "complete your profile" step whenever we still
+    // lack a real name or a contact email for this account.
+    const needsProfile = !finalName || !finalEmail;
+
+    return json({ ok: true, userId: user.id, email, password, needsProfile, displayName: finalName, contactEmail: finalEmail });
   } catch (error) {
     console.error("phone-otp failed:", error);
     return json({ error: "Unexpected error" }, 500);
