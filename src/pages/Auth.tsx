@@ -26,7 +26,7 @@ import {
 import { upsertCustomerLead } from "@/lib/leads";
 import { isPendingPlanReady, loadPendingPlan } from "@/lib/pendingPlan";
 
-type Stage = "phone" | "otp";
+type Stage = "phone" | "otp" | "profile";
 
 const Auth = () => {
   const { t } = useTranslation();
