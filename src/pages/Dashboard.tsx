@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { EventOverview } from "@/components/tekillah/customer/EventOverview";
+import { OverviewSummary } from "@/components/tekillah/customer/OverviewSummary";
 import { EventTimeline } from "@/components/tekillah/customer/EventTimeline";
 import { BookingsTimeline } from "@/components/tekillah/customer/BookingsTimeline";
 import { GuestManager } from "@/components/tekillah/customer/GuestManager";
