@@ -627,6 +627,27 @@ body { max-width: 100%; overflow-x: clip; }
 
 img, svg, video, canvas { max-width: 100%; }
 
+/* Buttery scrolling on touch devices: momentum scrolling, GPU-composited
+   animated layers, and lighter blur (backdrop-filter is the main jank source
+   on mobile Safari/Chrome). */
+@media (max-width: 767px) {
+  html, body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+  }
+
+  /* Heavy glass effects get toned down so scrolling stays at 60fps */
+  [class*="backdrop-blur"] {
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+  }
+
+  /* Promote transform/opacity animations to their own layer */
+  [data-framer-motion], .will-animate {
+    will-change: transform, opacity;
+  }
+}
+
 @media (max-width: 640px) {
   html { scroll-padding-top: 72px; }
 

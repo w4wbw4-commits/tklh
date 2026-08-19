@@ -103,23 +103,30 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
       return;
     }
     setSaving(true);
-    const { data, error } = await supabase
-      .from("planner_interest")
-      .insert({
-        full_name: name.trim(),
-        phone: cleanPhone,
-        details: payload as never,
-      })
-      .select("id")
-      .single();
+    // No `.select()` here on purpose: the public insert policy grants INSERT only,
+    // so asking PostgREST to return the row would fail the RLS read check.
+    const { error } = await supabase.from("planner_interest").insert({
+      full_name: name.trim(),
+      phone: cleanPhone,
+      details: payload as never,
+    });
     setSaving(false);
     if (error) {
-      toast.error(isAr ? "ما وصلت بياناتك، جرب مرة ثانية" : "Something went wrong, try again");
-      return;
+      const rate = /rate_limited/i.test(error.message);
+      toast.error(
+        rate
+          ? isAr
+            ? "سجّلنا طلبك مسبقاً — تواصل معنا مباشرة على الواتس"
+            : "You already submitted recently — reach us on WhatsApp"
+          : isAr
+            ? "ما وصلت بياناتك، جرب مرة ثانية"
+            : "Something went wrong, try again",
+      );
+      if (!rate) return;
     }
 
     // Data is saved first — WhatsApp is only an accelerator, never the record.
-    const ref = data?.id ? String(data.id).slice(0, 8).toUpperCase() : "";
+    const ref = cleanPhone.slice(-4);
     const link = buildWhatsappLink({ message: buildMessage(name.trim(), cleanPhone, ref) });
     setWaLink(link);
     setDone(true);
