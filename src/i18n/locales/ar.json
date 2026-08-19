@@ -656,8 +656,19 @@
         "sendFailed": "تعذر إرسال الرمز. حاول مجدداً.",
         "codeLength": "الرمز يجب أن يكون 6 أرقام.",
         "codeInvalid": "الرمز غير صحيح أو انتهت صلاحيته.",
-        "authFailed": "تعذر تسجيل دخولك. حاول مرة أخرى."
-      }
+        "authFailed": "تعذر تسجيل دخولك. حاول مرة أخرى.",
+        "nameRequired": "الاسم مطلوب (حرفان على الأقل).",
+        "emailRequired": "أدخل بريداً إلكترونياً صحيحاً.",
+        "profileFailed": "تعذر حفظ بياناتك. حاول مجدداً."
+      },
+      "profileTitle": "أكمل بياناتك",
+      "profileSubtitle": "نحتاج اسمك وبريدك الإلكتروني مرة واحدة فقط لتوثيق حسابك.",
+      "nameLabel": "الاسم الكامل",
+      "namePlaceholder": "مثال: عبدالله العتيبي",
+      "emailLabel": "البريد الإلكتروني",
+      "emailPlaceholder": "name@example.com",
+      "saveProfile": "حفظ ومتابعة",
+      "profileSaved": "تم حفظ بياناتك"
     }
   },
   "whatsapp": {

@@ -11,7 +11,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { ArrowRight, CheckCircle2, Loader2, Phone, MessageSquareLock, Pencil } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, Phone, MessageSquareLock, Pencil, UserRound, Mail } from "lucide-react";
 import { Logo } from "@/components/tekillah/Logo";
 import { SEO } from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,7 +26,7 @@ import {
 import { upsertCustomerLead } from "@/lib/leads";
 import { isPendingPlanReady, loadPendingPlan } from "@/lib/pendingPlan";
 
-type Stage = "phone" | "otp";
+type Stage = "phone" | "otp" | "profile";
 
 const Auth = () => {
   const { t } = useTranslation();
@@ -60,10 +60,19 @@ const Auth = () => {
   const [otpError, setOtpError] = useState<string | null>(null);
   const [otpVerified, setOtpVerified] = useState(false);
   const [savingPlan, setSavingPlan] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [profileError, setProfileError] = useState<string | null>(null);
+  const [signedUserId, setSignedUserId] = useState<string | null>(null);
   const verifyInFlightRef = useRef(false);
+  // Set once the first-time profile step is required, so the auto-redirect
+  // effect doesn't skip it after the session is established.
+  const holdForProfileRef = useRef(false);
 
   useEffect(() => {
-    if (!authLoading && user) navigate(computeRedirect(), { replace: true });
+    if (!authLoading && user && !holdForProfileRef.current) {
+      navigate(computeRedirect(), { replace: true });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, authLoading, navigate]);
 
@@ -133,18 +142,35 @@ const Auth = () => {
     try {
       // The code is validated on the server; it also returns single-use
       // credentials for the immediate sign-in.
-      const { userId, email, password } = await verifyOtpAndGetCredentials(phoneE164, code, phoneE164);
+      const { userId, email, password, needsProfile, displayName, contactEmail: savedEmail } =
+        await verifyOtpAndGetCredentials(phoneE164, code);
       setOtpVerified(true);
+      if (needsProfile) holdForProfileRef.current = true;
 
       const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
       if (signInError || !signInData.user) throw signInError ?? new Error("Sign-in failed");
 
+      const uid = userId ?? signInData.user.id;
+      setSignedUserId(uid);
+
       upsertCustomerLead({
-        userId: userId ?? signInData.user.id,
+        userId: uid,
         phone: phoneE164,
+        displayName: displayName ?? undefined,
+        contactEmail: savedEmail ?? undefined,
         status: "verified",
         source: "phone_otp",
       });
+
+      // First-time user (or missing details): collect name + email before
+      // sending them into the app.
+      if (needsProfile) {
+        setFullName(displayName ?? "");
+        setContactEmail(savedEmail ?? "");
+        setProfileError(null);
+        setStage("profile");
+        return;
+      }
 
       const hasPendingPlan = isPendingPlanReady(loadPendingPlan());
       if (hasPendingPlan) setSavingPlan(true);
@@ -153,11 +179,63 @@ const Auth = () => {
       const dest = computeRedirect(email, phoneE164);
       setTimeout(() => navigate(dest, { replace: true }), 250);
     } catch {
+      holdForProfileRef.current = false;
       setOtpVerified(false);
       setOtpError(t("auth.phone.errors.codeInvalid"));
     } finally {
       setSubmitting(false);
       verifyInFlightRef.current = false;
+    }
+  };
+
+  const handleSaveProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!phoneE164) return;
+    const name = fullName.trim();
+    const mail = contactEmail.trim().toLowerCase();
+
+    if (name.length < 2) {
+      setProfileError(t("auth.phone.errors.nameRequired"));
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
+      setProfileError(t("auth.phone.errors.emailRequired"));
+      return;
+    }
+
+    setProfileError(null);
+    setSubmitting(true);
+    try {
+      const { data: sessionData } = await supabase.auth.getUser();
+      const uid = signedUserId ?? sessionData.user?.id;
+      if (!uid) throw new Error("No session");
+
+      const { error } = await supabase
+        .from("profiles")
+        .update({ display_name: name, contact_email: mail, phone: phoneE164 })
+        .eq("user_id", uid);
+      if (error) throw error;
+
+      await upsertCustomerLead({
+        userId: uid,
+        phone: phoneE164,
+        displayName: name,
+        contactEmail: mail,
+        status: "verified",
+        source: "phone_otp",
+      });
+
+      holdForProfileRef.current = false;
+      toast.success(t("auth.phone.profileSaved"));
+
+      const hasPendingPlan = isPendingPlanReady(loadPendingPlan());
+      if (hasPendingPlan) setSavingPlan(true);
+      const dest = computeRedirect(sessionData.user?.email ?? null, phoneE164);
+      setTimeout(() => navigate(dest, { replace: true }), 250);
+    } catch {
+      setProfileError(t("auth.phone.errors.profileFailed"));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -226,15 +304,27 @@ const Auth = () => {
         >
           <div className="mb-8 text-center">
             <div className="mx-auto mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-              {stage === "phone" ? <Phone className="h-6 w-6" /> : <MessageSquareLock className="h-6 w-6" />}
+              {stage === "phone" ? (
+                <Phone className="h-6 w-6" />
+              ) : stage === "otp" ? (
+                <MessageSquareLock className="h-6 w-6" />
+              ) : (
+                <UserRound className="h-6 w-6" />
+              )}
             </div>
             <h1 className="font-arabic text-2xl font-semibold text-foreground sm:text-3xl">
-              {stage === "phone" ? t("auth.phone.title") : t("auth.phone.otpTitle")}
+              {stage === "phone"
+                ? t("auth.phone.title")
+                : stage === "otp"
+                  ? t("auth.phone.otpTitle")
+                  : t("auth.phone.profileTitle")}
             </h1>
             <p className="mt-2 text-sm text-foreground/65">
               {stage === "phone"
                 ? t("auth.phone.subtitle")
-                : t("auth.phone.otpSubtitle", { phone: phoneE164 })}
+                : stage === "otp"
+                  ? t("auth.phone.otpSubtitle", { phone: phoneE164 })
+                  : t("auth.phone.profileSubtitle")}
             </p>
           </div>
 
@@ -290,7 +380,7 @@ const Auth = () => {
                     )}
                   </Button>
                 </motion.form>
-              ) : (
+              ) : stage === "otp" ? (
                 <motion.div
                   key="otp-form"
                   initial={{ opacity: 0, y: 8 }}
@@ -380,6 +470,68 @@ const Auth = () => {
                     )}
                   </div>
                 </motion.div>
+              ) : (
+                <motion.form
+                  key="profile-form"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.25 }}
+                  onSubmit={handleSaveProfile}
+                  className="space-y-5"
+                >
+                  <div className="space-y-2">
+                    <Label htmlFor="full-name">{t("auth.phone.nameLabel")}</Label>
+                    <div className="relative">
+                      <UserRound className="pointer-events-none absolute inset-y-0 start-3 my-auto h-4 w-4 text-foreground/40" />
+                      <Input
+                        id="full-name"
+                        value={fullName}
+                        autoComplete="name"
+                        onChange={(e) => { setProfileError(null); setFullName(e.target.value); }}
+                        placeholder={t("auth.phone.namePlaceholder")}
+                        className="ps-9 text-base"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="contact-email">{t("auth.phone.emailLabel")}</Label>
+                    <div className="relative">
+                      <Mail className="pointer-events-none absolute inset-y-0 start-3 my-auto h-4 w-4 text-foreground/40" />
+                      <Input
+                        id="contact-email"
+                        dir="ltr"
+                        type="email"
+                        inputMode="email"
+                        autoComplete="email"
+                        value={contactEmail}
+                        onChange={(e) => { setProfileError(null); setContactEmail(e.target.value); }}
+                        placeholder={t("auth.phone.emailPlaceholder")}
+                        className="ps-9 text-base"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="min-h-5 text-center text-xs">
+                    {profileError && <span className="text-destructive">{profileError}</span>}
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={submitting}
+                    className="h-11 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    {submitting ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <>
+                        {t("auth.phone.saveProfile")}
+                        <ArrowRight className="ms-2 h-4 w-4 rtl:rotate-180" />
+                      </>
+                    )}
+                  </Button>
+                </motion.form>
               )}
             </AnimatePresence>
 

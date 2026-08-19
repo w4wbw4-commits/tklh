@@ -652,8 +652,19 @@
         "sendFailed": "Could not send the code. Please try again.",
         "codeLength": "The code must be 6 digits.",
         "codeInvalid": "The code is incorrect or expired.",
-        "authFailed": "We couldn't sign you in. Please try again."
-      }
+        "authFailed": "We couldn't sign you in. Please try again.",
+        "nameRequired": "Please enter your full name.",
+        "emailRequired": "Please enter a valid email address.",
+        "profileFailed": "Could not save your details. Please try again."
+      },
+      "profileTitle": "Complete your details",
+      "profileSubtitle": "We just need your name and email once to finish your account.",
+      "nameLabel": "Full name",
+      "namePlaceholder": "e.g. Abdullah Alotaibi",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "name@example.com",
+      "saveProfile": "Save and continue",
+      "profileSaved": "Your details were saved"
     }
   },
   "whatsapp": {
