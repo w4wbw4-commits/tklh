@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Loader2, Inbox, Phone as PhoneIcon, MessageSquare, BadgeCheck, ChevronDown } from "lucide-react";
+import { Loader2, Inbox, Phone as PhoneIcon, MessageSquare, BadgeCheck, ChevronDown, Mail } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +19,7 @@ interface LeadRow {
   id: string;
   phone: string;
   display_name: string | null;
+  contact_email: string | null;
   status: LeadStatus;
   source: string;
   event_id: string | null;
@@ -47,7 +48,7 @@ export const AdminLeadsPanel = () => {
     setLoading(true);
     const query = supabase
       .from("customer_leads")
-      .select("id, phone, display_name, status, source, event_id, booking_id, created_at, notes")
+      .select("id, phone, display_name, contact_email, status, source, event_id, booking_id, created_at, notes")
       .order("created_at", { ascending: false })
       .limit(200);
     const { data, error } = filter === "all"
@@ -138,6 +139,12 @@ export const AdminLeadsPanel = () => {
                       {t(`admin.leads.status.${lead.status}`)}
                     </Badge>
                   </div>
+                  {lead.contact_email && (
+                    <div dir="ltr" className="mt-1 flex items-center gap-1 text-xs text-foreground/70">
+                      <Mail className="h-3 w-3" />
+                      <span>{lead.contact_email}</span>
+                    </div>
+                  )}
                   <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-foreground/55">
                     <span>{t("admin.leads.created")}: {fmtDate(lead.created_at)}</span>
                     <span>·</span>
