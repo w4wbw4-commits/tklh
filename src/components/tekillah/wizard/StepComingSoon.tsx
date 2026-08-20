@@ -188,8 +188,8 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
 
         <p className="mt-4 max-w-xl font-arabic text-sm leading-relaxed text-foreground/80">
           {isAr
-            ? "إحنا الحين في مرحلة بناء وتجهيز شبكة مزودي الخدمة بعناية، عشان أول ما نطلق لك تكون الخيارات فعلاً تستاهل ثقتك."
-            : "We're building and preparing our provider network carefully, so when we launch, the options truly deserve your trust."}
+            ? "حياك! حنا الحين في مرحلة بناء وتجهيز شبكة مزودي الخدمة بعناية، وقريباً تقدر تختار كل مزود وأي تفاصيل مثل ما خططت وأكثر."
+            : "Welcome! We're currently building and carefully preparing our provider network, and soon you'll be able to choose every provider and detail just as you planned — and more."}
         </p>
 
         {done ? (
@@ -276,8 +276,10 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
           </div>
         )}
 
-        <p className="mt-4 font-arabic text-[11px] text-foreground/50">
-          {"\n"}
+        <p className="mt-4 max-w-md font-arabic text-[12px] leading-relaxed text-foreground/60">
+          {isAr
+            ? "تِكله — منصة سعودية تشيل عنك هم التخطيط، وتخليك ترتاح من أي هم. ثقة ووضوح وضمان من أول خطوة ليوم مناسبتك."
+            : "Tklh — a Saudi platform that takes the planning burden off your shoulders so you can relax. Trust, clarity, and guarantee from the first step to your event day."}
         </p>
       </div>
     </motion.div>
