@@ -41,8 +41,12 @@ export const Navbar = () => {
     }
     welcomedRef.current = true;
     sessionStorage.setItem(key, "1");
-    toast.success(t("nav.adminWelcome"), { duration: 6000 });
-  }, [isPrimaryAdmin, t]);
+    const adminName =
+      (user?.user_metadata?.full_name as string | undefined)?.trim() ||
+      user?.email?.split("@")[0] ||
+      (isAr ? "مدير" : "admin");
+    toast.success(t("nav.adminWelcome", { name: adminName }), { duration: 6000 });
+  }, [isPrimaryAdmin, t, user, isAr]);
 
   const toggleLang = () => {
     i18n.changeLanguage(isAr ? "en" : "ar");
