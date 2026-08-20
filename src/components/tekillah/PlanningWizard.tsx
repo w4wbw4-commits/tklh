@@ -324,8 +324,8 @@ export const PlanningWizard = () => {
                     <span className="font-arabic text-[11px] font-medium text-foreground/60">{nextHint}</span>
                   )}
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
