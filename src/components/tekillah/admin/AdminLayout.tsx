@@ -206,7 +206,7 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
         </header>
 
         {/* Mobile horizontal nav (scrolls) */}
-        <nav className="sticky top-[64px] z-10 flex gap-1 overflow-x-auto border-b border-border bg-card px-3 py-2 md:hidden">
+        <nav className="sticky top-[64px] z-10 flex gap-1 overflow-x-auto border-b border-border bg-cream px-3 py-2 md:hidden">
           {adminNav.map(({ key, labelKey, fallback, Icon }) => {
             const isActive = active === key;
             const count = badges[key] ?? 0;
@@ -218,7 +218,7 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
                 className={`flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
                   isActive
                     ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-foreground/70 hover:bg-muted/70"
+                    : "bg-background text-foreground/70 hover:bg-muted"
                 }`}
               >
                 <Icon className="h-3.5 w-3.5" />
@@ -226,7 +226,7 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
                 {count > 0 && (
                   <Badge
                     className={`px-1 py-0 text-[9px] ${
-                      isActive ? "bg-primary-foreground text-primary" : "bg-primary-foreground text-primary-deep"
+                      isActive ? "bg-primary-foreground text-primary" : "bg-primary text-primary-foreground"
                     }`}
                   >
                     {count}
@@ -240,11 +240,11 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
         <main className="flex-1 p-5 md:p-8">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
             <div>
-              <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-black text-primary-deep">
+              <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-black text-foreground">
                 <Sparkles className="h-3 w-3" />
                 {t(`${currentLabelKey(active)}`, { defaultValue: currentFallback(active) })}
               </span>
-              <h1 className="font-arabic text-2xl font-black text-primary-deep md:text-3xl">
+              <h1 className="font-arabic text-2xl font-black text-foreground md:text-3xl">
                 {t("admin.title", { defaultValue: "لوحة التحكم" })}
               </h1>
               <p className="mt-1 text-sm text-foreground/65">
