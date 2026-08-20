@@ -103,14 +103,14 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
             if (items.length === 0) return null;
             return (
               <div key={sec.key} className="space-y-0.5">
-                <div className="px-3 pb-1 font-arabic text-[10px] font-black uppercase tracking-wider text-primary-foreground/45">
+                <div className="px-3 pb-1 font-arabic text-[10px] font-black uppercase tracking-wider text-foreground/40">
                   {sec.ar}
                 </div>
                 {items.map(({ key, labelKey, fallback, Icon, tone }) => {
                   const isActive = active === key;
                   const count = badges[key] ?? 0;
                   const dotColor =
-                    tone === "danger" ? "bg-destructive" : tone === "warning" ? "bg-primary-foreground" : "bg-primary-foreground/30";
+                    tone === "danger" ? "bg-destructive" : tone === "warning" ? "bg-primary" : "bg-foreground/30";
                   return (
                     <button
                       key={key}
@@ -118,20 +118,20 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
                       onClick={() => onChange(key)}
                       className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all ${
                         isActive
-                          ? "bg-primary-foreground text-primary shadow-sm"
-                          : "text-primary-foreground/75 hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                          ? "bg-primary text-primary-foreground shadow-sm"
+                          : "text-foreground/75 hover:bg-muted hover:text-foreground"
                       }`}
                     >
-                      <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-primary" : "text-gold/80 group-hover:text-gold"}`} />
+                      <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-primary-foreground" : "text-gold/80 group-hover:text-gold"}`} />
                       <span className="flex-1 text-start">{t(labelKey, { defaultValue: fallback })}</span>
                       {count > 0 ? (
                         <Badge
                           className={`min-w-[20px] justify-center px-1.5 py-0 text-[10px] ${
                             isActive
-                              ? "bg-primary text-primary-foreground"
+                              ? "bg-primary-foreground text-primary"
                               : tone === "danger"
                                 ? "bg-destructive text-destructive-foreground"
-                                : "bg-primary-foreground text-primary-deep"
+                                : "bg-primary text-primary-foreground"
                           }`}
                         >
                           {count}
