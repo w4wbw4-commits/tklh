@@ -177,7 +177,7 @@ export const StepProviders = ({ categories, guests, date, setDate, prefs, picks,
       </h3>
       <p className="mt-2 text-sm text-foreground/70">
         {isAr
-          ? "كل مزود متاح بتاريخك يظهر لك — مرتّب بحيث الأنسب لرؤيتك أولًا."
+          ? "كل مزود متاح بتاريخك يظهر لك، والأنسب لك أولًا."
           : "Every provider available on your date is shown — sorted so the best fit for your vision comes first."}
       </p>
 
@@ -186,8 +186,8 @@ export const StepProviders = ({ categories, guests, date, setDate, prefs, picks,
       <div className="mt-5 flex flex-wrap gap-2">
         {([
           { mode: "best" as const, icon: Wand2, ar: "اختر لي الأنسب تلقائيًا", en: "Auto-pick best fit" },
-          { mode: "cheap" as const, icon: Coins, ar: "الأقرب للاقتصادي", en: "Most economical" },
-          { mode: "luxe" as const, icon: Crown, ar: "الأفخم بالكامل", en: "Most luxurious" },
+          { mode: "cheap" as const, icon: Coins, ar: "الأقل سعرًا", en: "Most economical" },
+          { mode: "luxe" as const, icon: Crown, ar: "الأعلى سعرًا", en: "Most luxurious" },
         ]).map((s) => (
           <button
             key={s.mode}
@@ -343,7 +343,7 @@ export const StepProviders = ({ categories, guests, date, setDate, prefs, picks,
                                 </div>
                                 <div className="mt-2 inline-block rounded-full border border-border px-2 py-0.5 font-arabic text-[10px] text-foreground/50">
                                   {isAr
-                                    ? "بيانات تجريبية — تُستبدل بمزودين حقيقيين"
+                                    ? "بيانات تجريبية، تُستبدل بمزودين حقيقيين"
                                     : "Demo data — to be replaced by real providers"}
                                 </div>
                               </div>

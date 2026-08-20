@@ -30,11 +30,11 @@ const GROUPS: Array<{
     ],
   },
   {
-    group: "mood", labelAr: "الأجواء العامة", labelEn: "Overall mood",
+    group: "mood", labelAr: "الأجواء", labelEn: "Overall mood",
     options: [
-      { value: "classic", ar: "كلاسيكي فخم", en: "Classic & grand" },
-      { value: "modern", ar: "عصري بسيط", en: "Modern & simple" },
-      { value: "heritage", ar: "تراثي", en: "Heritage" },
+      { value: "classic", ar: "راقي ومميز", en: "Classic & grand" },
+      { value: "modern", ar: "مودرن وسادة", en: "Modern & simple" },
+      { value: "heritage", ar: "بسيط ويواجه", en: "Heritage" },
     ],
   },
 ];
@@ -146,7 +146,7 @@ export const StepVisionPaths = ({
 
             <div className="space-y-5">
               <h4 className="font-arabic text-base font-semibold text-foreground">
-                {isAr ? "لبنات رؤيتك" : "Your vision building blocks"}
+                {isAr ? "أو اختر من هذي" : "Your vision building blocks"}
               </h4>
               {GROUPS.map((g) => (
                 <div key={g.group} className="space-y-2">

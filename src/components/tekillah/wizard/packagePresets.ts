@@ -36,9 +36,9 @@ export interface PackagePreset {
 export const PACKAGE_PRESETS: PackagePreset[] = [
   {
     key: "classic-luxury",
-    name: "الفاخرة الكلاسيكية",
+    name: "الكبيرة",
     name_en: "Classic Luxury",
-    tagline: "لمن يبي فخامة بلا حدود",
+    tagline: "لمن ما يبي يحسب حساب لشي",
     tagline_en: "For those who want luxury without limits",
     image: pkgClassicImg,
     members: {
@@ -70,9 +70,9 @@ export const PACKAGE_PRESETS: PackagePreset[] = [
   },
   {
     key: "modern-elegant",
-    name: "العصرية الأنيقة",
+    name: "الهادية",
     name_en: "Modern Elegant",
-    tagline: "أناقة هادئة بروح هذا الزمن",
+    tagline: "تنسيق بسيط ومريح",
     tagline_en: "Quiet elegance with a contemporary spirit",
     image: pkgModernImg,
     members: {
@@ -104,9 +104,9 @@ export const PACKAGE_PRESETS: PackagePreset[] = [
   },
   {
     key: "smart-economy",
-    name: "الاقتصادية الذكية",
+    name: "الاقتصادية",
     name_en: "Smart Economy",
-    tagline: "كل الأساسيات بذكاء وبأقل تكلفة",
+    tagline: "كل الأساسيات بأقل تكلفة",
     tagline_en: "All the essentials, smartly, at the lowest cost",
     image: pkgEconomyImg,
     members: {
@@ -121,9 +121,9 @@ export const PACKAGE_PRESETS: PackagePreset[] = [
   },
   {
     key: "authentic-heritage",
-    name: "التراثية الأصيلة",
+    name: "التراثية",
     name_en: "Authentic Heritage",
-    tagline: "الطابع الأصيل بروح عصرية",
+    tagline: "طابع نجدي بلمسة حديثة",
     tagline_en: "Authentic character with a modern soul",
     image: pkgHeritageImg,
     members: {

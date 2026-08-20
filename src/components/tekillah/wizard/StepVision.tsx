@@ -34,17 +34,17 @@ const GROUPS: Array<{
     options: [
       { value: "photo_only", ar: "صور فقط", en: "Photos only" },
       { value: "photo_video_hall", ar: "صور وفيديو للقاعة", en: "Photo & video (hall)" },
-      { value: "cinematic_full", ar: "من البيت للزفة للقاعة (سينمائي)", en: "Home → zaffa → hall (cinematic)" },
+      { value: "cinematic_full", ar: "من البيت للزفة للقاعة", en: "Home → zaffa → hall (cinematic)" },
     ],
   },
   {
     group: "mood",
-    labelAr: "الأجواء العامة",
+    labelAr: "الأجواء",
     labelEn: "Overall mood",
     options: [
-      { value: "classic", ar: "كلاسيكي فخم", en: "Classic & grand" },
-      { value: "modern", ar: "عصري بسيط", en: "Modern & simple" },
-      { value: "heritage", ar: "تراثي", en: "Heritage" },
+      { value: "classic", ar: "راقي ومميز", en: "Classic & grand" },
+      { value: "modern", ar: "مودرن وسادة", en: "Modern & simple" },
+      { value: "heritage", ar: "بسيط ويواجه", en: "Heritage" },
     ],
   },
 ];
@@ -89,7 +89,7 @@ export const StepVision = ({ vision, setVision, blocks, setBlock }: Props) => {
       {/* لبنات رؤيتك — one choice per group, feeds the provider ranking engine */}
       <div className="mt-8 space-y-6">
         <h4 className="font-arabic text-base font-semibold text-foreground">
-          {isAr ? "لبنات رؤيتك" : "Your vision building blocks"}
+          {isAr ? "أو اختر من هذي" : "Your vision building blocks"}
         </h4>
         {GROUPS.map((g) => (
           <div key={g.group} className="space-y-2">
