@@ -81,7 +81,7 @@ export const AdminNotificationsBell = ({ onOpenSignups, className }: Props) => {
           size="sm"
           variant="ghost"
           aria-label="الإشعارات"
-          className={`relative text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground ${className ?? ""}`}
+          className={`relative text-foreground hover:bg-muted hover:text-foreground ${className ?? ""}`}
         >
           <Bell className="h-4 w-4" />
           {unread > 0 && (

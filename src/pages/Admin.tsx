@@ -141,12 +141,12 @@ const Admin = () => {
   };
 
   if (authLoading || isAdmin === null) {
-    return <div className="grid min-h-screen place-items-center bg-gradient-soft"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
+    return <div className="grid min-h-screen place-items-center bg-background"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
   }
 
   if (!isAdmin) {
     return (
-      <div className="grid min-h-screen place-items-center bg-gradient-soft p-6">
+      <div className="grid min-h-screen place-items-center bg-background p-6">
         <div className="max-w-md rounded-3xl border border-border bg-card p-8 text-center shadow-card">
           <ShieldAlert className="mx-auto h-10 w-10 text-destructive" />
           <h1 className="mt-4 font-arabic text-xl font-semibold">{t("admin.deniedTitle")}</h1>
@@ -410,7 +410,7 @@ const Kpi = ({
         {label}
       </div>
       <div className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ${
-        highlight ? "bg-gradient-olive text-primary-foreground" : "bg-secondary/70 text-primary-deep"
+        highlight ? "bg-primary text-primary-foreground" : "bg-secondary/70 text-foreground"
       }`}>
         <Icon className="h-4 w-4" />
       </div>
@@ -440,15 +440,15 @@ const Spinner = () => (
 );
 
 const statusBadge = (s: string) => {
-  if (s === "held") return "bg-gradient-olive text-primary-foreground border border-primary-deep/30";
-  if (s === "released") return "bg-emerald-600 text-white border border-emerald-700/40";
-  if (s === "refunded") return "bg-amber-500 text-white border border-amber-600/40";
+  if (s === "held") return "bg-primary text-primary-foreground border border-primary/30";
+  if (s === "released") return "bg-green-deep text-primary-foreground border border-green-deep/30";
+  if (s === "refunded") return "bg-gold text-primary-foreground border border-gold/30";
   return "bg-destructive text-destructive-foreground border border-destructive/40";
 };
 const bookingBadge = (s: string) => {
-  if (s === "confirmed") return "bg-gradient-olive text-primary-foreground border border-primary-deep/30";
-  if (s === "pending") return "bg-amber-500 text-white border border-amber-600/40";
-  if (s === "completed") return "bg-emerald-600 text-white border border-emerald-700/40";
+  if (s === "confirmed") return "bg-primary text-primary-foreground border border-primary/30";
+  if (s === "pending") return "bg-gold text-primary-foreground border border-gold/30";
+  if (s === "completed") return "bg-green-deep text-primary-foreground border border-green-deep/30";
   return "bg-destructive text-destructive-foreground border border-destructive/40";
 };
 

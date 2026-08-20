@@ -62,19 +62,15 @@ const RouteFallback = () => (
 );
 
 /**
- * RouteAwareTheme — forces light mode on every page except /admin.
- * The admin dashboard keeps the dark palette for contrast and a distinct
- * "operations" feel. This wrapper lives inside BrowserRouter so it can read
- * the current route via useLocation.
+ * RouteAwareTheme — keeps the whole site in the light brand palette.
+ * Admin dashboard now shares the same warm cream + velvet green identity.
  */
 const RouteAwareTheme = ({ children }: { children: React.ReactNode }) => {
-  const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith("/admin");
   return (
     <ThemeProvider
       attribute="class"
       defaultTheme="light"
-      forcedTheme={isAdminRoute ? "dark" : "light"}
+      forcedTheme="light"
       enableSystem={false}
       storageKey="tekillah-theme"
     >
