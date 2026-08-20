@@ -14,7 +14,7 @@ const GROUPS: Array<{
   options: Array<{ value: string; ar: string; en: string }>;
 }> = [
   {
-    group: "venue", labelAr: "المكان", labelEn: "Venue",
+    group: "venue", labelAr: "مكان", labelEn: "Venue",
     options: [
       { value: "hall", ar: "قاعة", en: "Hall" },
       { value: "resort", ar: "منتجع", en: "Resort" },
@@ -22,7 +22,7 @@ const GROUPS: Array<{
     ],
   },
   {
-    group: "dinner", labelAr: "العشاء", labelEn: "Dinner",
+    group: "dinner", labelAr: "عشاء", labelEn: "Dinner",
     options: [
       { value: "seated_buffet", ar: "قعود مع بوفيه مفتوح", en: "Seated with open buffet" },
       { value: "lamb_feast", ar: "ذبائح خرفان كاملة", en: "Whole lamb feast" },
@@ -30,7 +30,7 @@ const GROUPS: Array<{
     ],
   },
   {
-    group: "photo", labelAr: "التصوير", labelEn: "Photography",
+    group: "photo", labelAr: "تصوير", labelEn: "Photography",
     options: [
       { value: "photo_only", ar: "صور فقط", en: "Photos only" },
       { value: "photo_video_hall", ar: "صور وفيديو للقاعة", en: "Photo & video (hall)" },
@@ -38,7 +38,7 @@ const GROUPS: Array<{
     ],
   },
   {
-    group: "mood", labelAr: "الأجواء", labelEn: "Overall mood",
+    group: "mood", labelAr: "أجواء", labelEn: "Overall mood",
     options: [
       { value: "classic", ar: "راقي ومميز", en: "Classic & grand" },
       { value: "modern", ar: "مودرن وسادة", en: "Modern & simple" },
