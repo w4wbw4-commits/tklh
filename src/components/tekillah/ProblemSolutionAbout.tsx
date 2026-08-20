@@ -10,6 +10,8 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { BehindStory } from "./BehindStory";
+import sealLogo from "@/assets/tklh-chair.png";
+
 
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -84,15 +86,12 @@ const SpeedSection = () => {
         {/* Paired rows */}
         <ul className="mt-5 space-y-2.5 sm:mt-7 sm:space-y-3">
           {rows.map((r, i) => (
-            <motion.li
-              key={i}
-              initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={once}
-              transition={{ duration: T(0.28), ease: S_EASE, delay: T(0.05) }}
-              className="grid grid-cols-2 items-stretch gap-3 sm:gap-6"
-            >
-              <div
+            <li key={i} className="grid grid-cols-2 items-stretch gap-3 sm:gap-6">
+              <motion.div
+                initial={{ opacity: reduce ? 1 : 0, x: reduce ? 0 : 10, rotate: reduce ? 0 : -1.4 }}
+                whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+                viewport={once}
+                transition={{ duration: T(0.4), ease: S_EASE, delay: T(0.06 * i) }}
                 className="flex items-center px-3 py-2.5 text-[13px] font-semibold sm:text-[14.5px]"
                 style={{
                   color: "hsl(var(--brown) / 0.9)",
@@ -100,11 +99,16 @@ const SpeedSection = () => {
                   backgroundColor: "hsl(var(--cream))",
                   borderRadius: 4,
                   lineHeight: 1.8,
+                  boxShadow: "2px 2px 0 hsl(var(--brown) / 0.1)",
                 }}
               >
                 {r.trad}
-              </div>
-              <div
+              </motion.div>
+              <motion.div
+                initial={{ opacity: reduce ? 1 : 0, x: reduce ? 0 : -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={once}
+                transition={{ duration: T(0.4), ease: S_EASE, delay: T(0.1 + 0.06 * i) }}
                 className="flex items-center gap-2 px-3 py-2.5 text-[13px] font-semibold sm:text-[14.5px]"
                 style={{
                   color: INK,
@@ -114,14 +118,79 @@ const SpeedSection = () => {
                   lineHeight: 1.8,
                 }}
               >
-                <svg viewBox="0 0 12 12" className="h-3 w-3 shrink-0" fill="none" aria-hidden>
+                <motion.svg
+                  viewBox="0 0 12 12"
+                  className="h-3 w-3 shrink-0"
+                  fill="none"
+                  aria-hidden
+                  initial={{ scale: reduce ? 1 : 0.4, opacity: reduce ? 1 : 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={once}
+                  transition={{ duration: T(0.3), ease: S_EASE, delay: T(0.2 + 0.06 * i) }}
+                >
                   <path d="M2.5 6.4 L5 8.8 L9.5 3.6" stroke={INK} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                </motion.svg>
                 <span>{r.tek}</span>
-              </div>
-            </motion.li>
+              </motion.div>
+            </li>
           ))}
         </ul>
+
+        {/* Animated rails: a drying dashed road vs. one straight green stroke */}
+        <div className="mt-6 grid grid-cols-2 items-center gap-3 sm:mt-8 sm:gap-6" aria-hidden>
+          <svg viewBox="0 0 200 24" preserveAspectRatio="none" className="h-6 w-full" fill="none">
+            <defs>
+              <linearGradient id="cmp-dry" x1="200" y1="0" x2="0" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stopColor="hsl(var(--brown))" stopOpacity="0.55" />
+                <stop offset="0.72" stopColor="hsl(var(--brown))" stopOpacity="0.4" />
+                <stop offset="1" stopColor="hsl(var(--brown))" stopOpacity="0.05" />
+              </linearGradient>
+            </defs>
+            <motion.path
+              d="M196 12 L166 4 L136 20 L106 4 L76 20 L46 4 L16 16"
+              stroke="url(#cmp-dry)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeDasharray="7 7"
+              vectorEffect="non-scaling-stroke"
+              initial={{ pathLength: reduce ? 1 : 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={once}
+              transition={{ duration: T(1.1), ease: "linear" }}
+            />
+          </svg>
+          <div className="flex items-center gap-2">
+            <motion.span
+              initial={{ scaleX: reduce ? 1 : 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={once}
+              transition={{ duration: T(0.6), ease: S_EASE }}
+              className="h-[2.5px] flex-1 origin-right"
+              style={{ backgroundColor: INK }}
+            />
+            <motion.span
+              initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 1.2 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={once}
+              transition={{ duration: T(0.35), ease: S_EASE, delay: T(0.45) }}
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-full sm:h-14 sm:w-14"
+              style={{
+                backgroundColor: "hsl(var(--cream))",
+                border: "1.5px solid hsl(var(--green) / 0.45)",
+                boxShadow: "0 0 0 5px hsl(var(--green) / 0.06)",
+              }}
+            >
+              <img
+                src={sealLogo}
+                alt=""
+                draggable={false}
+                className="h-[68%] w-[68%] select-none object-contain"
+              />
+            </motion.span>
+          </div>
+        </div>
+
 
         {/* The two numbers, once */}
         <div
