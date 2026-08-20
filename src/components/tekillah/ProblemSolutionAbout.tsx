@@ -9,15 +9,13 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Reveal } from "./Reveal";
 import { BehindStory } from "./BehindStory";
-import sealLogo from "/tklh-chair-mark.png";
 
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const HAIR = "1px solid hsl(var(--green) / 0.18)";
 const INK = "hsl(var(--green))";
-const FADED = "hsl(var(--green) / 0.35)";
+
 
 const once = { once: true, margin: "-70px" } as const;
 
