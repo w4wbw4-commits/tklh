@@ -10,6 +10,8 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { BehindStory } from "./BehindStory";
+import sealLogo from "@/assets/tklh-chair.png";
+
 
 
 const EASE = [0.22, 1, 0.36, 1] as const;
