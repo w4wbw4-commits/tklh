@@ -441,14 +441,14 @@ const Spinner = () => (
 
 const statusBadge = (s: string) => {
   if (s === "held") return "bg-primary text-primary-foreground border border-primary/30";
-  if (s === "released") return "bg-green text-primary-foreground border border-green/30";
+  if (s === "released") return "bg-green-deep text-primary-foreground border border-green-deep/30";
   if (s === "refunded") return "bg-gold text-primary-foreground border border-gold/30";
   return "bg-destructive text-destructive-foreground border border-destructive/40";
 };
 const bookingBadge = (s: string) => {
   if (s === "confirmed") return "bg-primary text-primary-foreground border border-primary/30";
   if (s === "pending") return "bg-gold text-primary-foreground border border-gold/30";
-  if (s === "completed") return "bg-green text-primary-foreground border border-green/30";
+  if (s === "completed") return "bg-green-deep text-primary-foreground border border-green-deep/30";
   return "bg-destructive text-destructive-foreground border border-destructive/40";
 };
 
