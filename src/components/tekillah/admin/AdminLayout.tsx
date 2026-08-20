@@ -79,16 +79,16 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
   };
 
   return (
-    <div dir="rtl" className="flex min-h-screen w-full bg-muted/30">
+    <div dir="rtl" className="flex min-h-screen w-full bg-background">
       {/* Desktop sidebar */}
-      <aside className="sticky top-0 hidden h-screen w-64 flex-col bg-primary p-5 text-primary-foreground md:flex">
+      <aside className="sticky top-0 hidden h-screen w-64 flex-col border-s border-border bg-cream p-5 text-foreground md:flex">
         <div className="mb-6 flex items-center gap-2">
           <Link to="/" className="flex min-w-0 flex-1 items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-full bg-primary-foreground ring-2 ring-gold/60 text-xl font-black text-primary-deep">
+            <span className="grid h-10 w-10 place-items-center rounded-full bg-primary ring-2 ring-gold/40 text-xl font-black text-primary-foreground">
               ت
             </span>
             <div className="leading-tight">
-              <div className="font-arabic text-lg font-black">تِكله</div>
+              <div className="font-arabic text-lg font-black text-foreground">تِكله</div>
               <div className="mt-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-gold">
                 <ShieldCheck className="h-3 w-3" /> {t("admin.kicker", { defaultValue: "لوحة المسؤول" })}
               </div>
