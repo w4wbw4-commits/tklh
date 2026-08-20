@@ -19,23 +19,23 @@ export interface EventTypeDef {
 
 export const EVENT_TYPES: EventTypeDef[] = [
   {
-    key: "wedding", ar: "الزواج", en: "Wedding", dateMode: "single",
+    key: "wedding", ar: "زواج", en: "Wedding", dateMode: "single",
     dateHintAr: "ليلة العمر وحدة، اختر تاريخها", dateHintEn: "One night of a lifetime — pick its date",
   },
   {
-    key: "malka", ar: "الملكة", en: "Malka", wine: true, dateMode: "single",
+    key: "malka", ar: "ملكة", en: "Malka", wine: true, dateMode: "single",
     dateHintAr: "اختر تاريخ عقد الملكة", dateHintEn: "Pick your Malka date",
   },
   {
-    key: "conference", ar: "المؤتمرات والفعاليات", en: "Conferences & events", dateMode: "range",
+    key: "conference", ar: "مؤتمرات وفعاليات", en: "Conferences & events", dateMode: "range",
     dateHintAr: "اختر أيام الفعالية من - إلى", dateHintEn: "Pick your event days (from - to)",
   },
   {
-    key: "birthday", ar: "أعياد الميلاد", en: "Birthdays", dateMode: "single",
+    key: "birthday", ar: "أعياد ميلاد", en: "Birthdays", dateMode: "single",
     dateHintAr: "اختر تاريخ الحفلة", dateHintEn: "Pick the party date",
   },
   {
-    key: "newborn", ar: "احتفال المولود", en: "Newborn celebration", dateMode: "single",
+    key: "newborn", ar: "احتفال مولود", en: "Newborn celebration", dateMode: "single",
     dateHintAr: "اختر تاريخ الاحتفال", dateHintEn: "Pick the celebration date",
   },
 ];
