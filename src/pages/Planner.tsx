@@ -1,14 +1,16 @@
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import { Navbar } from "@/components/tekillah/Navbar";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
 import { SEO } from "@/components/SEO";
+import { lazyWithRetry } from "@/lib/lazyWithRetry";
 
-const PlanningWizard = lazy(() =>
+const PlanningWizard = lazyWithRetry(() =>
   import("@/components/tekillah/PlanningWizard").then((m) => ({ default: m.PlanningWizard })),
 );
-const Footer = lazy(() =>
+const Footer = lazyWithRetry(() =>
   import("@/components/tekillah/Footer").then((m) => ({ default: m.Footer })),
 );
+
 
 const Planner = () => {
   return (
