@@ -72,9 +72,6 @@ export const StepEventDetails = ({
       <h3 className="font-arabic text-2xl font-semibold text-foreground">
         {isAr ? "تفاصيل مناسبتك" : "Your event details"}
       </h3>
-      <p className="mt-1 font-arabic text-sm text-foreground/70">
-        {isAr ? "ابدأ من نوع المناسبة، وبعدها نكمل معك الباقي." : "Start with the event type, then we'll fill in the rest."}
-      </p>
 
       {/* === Event type stamps === */}
       <div className="mt-6">
@@ -125,7 +122,7 @@ export const StepEventDetails = ({
             {/* Date */}
             <div className="space-y-2">
               <Label className="font-arabic text-foreground">
-                {isAr ? def.dateHintAr : def.dateHintEn}
+                {isAr ? (def.dateMode === "range" ? "التواريخ" : "التاريخ") : (def.dateMode === "range" ? "Dates" : "Date")}
               </Label>
               <div className={cn("grid gap-2", def.dateMode === "range" ? "sm:grid-cols-2" : "")}>
                 <DateField
@@ -153,7 +150,12 @@ export const StepEventDetails = ({
                   />
                 )}
               </div>
-              
+
+              <p className="font-arabic text-[13px] text-foreground/70">
+                {isAr
+                  ? "نبحث لك عن الأنسب في الأيام القريبة من تاريخك، وفريق تكله يرجع لك بأفضل خيار متاح."
+                  : "We'll look for the best fit near your date, and the Tklh team gets back to you with the best available option."}
+              </p>
 
               <div className="flex items-center gap-3 rounded-2xl border border-border bg-secondary/40 p-3">
                 <Switch
@@ -166,21 +168,6 @@ export const StepEventDetails = ({
                   {isAr ? "مرن حول هذا التاريخ" : "Flexible around this date"}
                 </Label>
               </div>
-              <AnimatePresence>
-                {flexibleDate && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.45 }}
-                    className="font-arabic text-[13px] text-foreground/70"
-                  >
-                    {isAr
-                      ? "نبحث لك عن الأنسب في الأيام القريبة من تاريخك، وفريق تكله يرجع لك بأفضل خيار متاح."
-                      : "We'll look for the best fit near your date, and the Tklh team gets back to you with the best available option."}
-                  </motion.p>
-                )}
-              </AnimatePresence>
             </div>
 
             {/* City — Riyadh is the only city we can serve today; the rest
