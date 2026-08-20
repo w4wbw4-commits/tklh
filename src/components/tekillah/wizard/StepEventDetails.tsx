@@ -151,22 +151,23 @@ export const StepEventDetails = ({
                 )}
               </div>
 
-              <p className="font-arabic text-[13px] text-foreground/70">
-                {isAr
-                  ? "نبحث لك عن الأنسب في الأيام القريبة من تاريخك، وفريق تكله يرجع لك بأفضل خيار متاح."
-                  : "We'll look for the best fit near your date, and the Tklh team gets back to you with the best available option."}
-              </p>
-
-              <div className="flex items-center gap-3 rounded-2xl border border-border bg-secondary/40 p-3">
-                <Switch
-                  id="flex-date"
-                  checked={flexibleDate}
-                  onCheckedChange={setFlexibleDate}
-                  aria-label={isAr ? "مرن حول هذا التاريخ" : "Flexible around this date"}
-                />
-                <Label htmlFor="flex-date" className="font-arabic text-sm text-foreground">
-                  {isAr ? "مرن حول هذا التاريخ" : "Flexible around this date"}
-                </Label>
+              <div className="rounded-2xl border border-border bg-secondary/40 p-3">
+                <div className="flex items-center gap-3">
+                  <Switch
+                    id="flex-date"
+                    checked={flexibleDate}
+                    onCheckedChange={setFlexibleDate}
+                    aria-label={isAr ? "مرن حول هذا التاريخ" : "Flexible around this date"}
+                  />
+                  <Label htmlFor="flex-date" className="font-arabic text-sm text-foreground">
+                    {isAr ? "مرن حول هذا التاريخ" : "Flexible around this date"}
+                  </Label>
+                </div>
+                <p className="mt-2 font-arabic text-[13px] text-foreground/70">
+                  {isAr
+                    ? "نبحث لك عن الأنسب في الأيام القريبة من تاريخك، وفريق تكله يرجع لك بأفضل خيار متاح."
+                    : "We'll look for the best fit near your date, and the Tklh team gets back to you with the best available option."}
+                </p>
               </div>
             </div>
 
