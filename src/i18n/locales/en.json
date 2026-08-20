@@ -1789,7 +1789,8 @@
         "Smart recommendations, curated vendors",
         "Book everything in a click, at a clear price"
       ],
-      "prefix": "Under"
+      "prefix": "Under",
+      "value": "10 minutes"
     },
     "connector": "What's behind those 10 minutes?",
     "tiles": [
@@ -1834,12 +1835,12 @@
         {
           "n": "01",
           "title": "Plan smart",
-          "desc": "A platform that helps you organize your occasion and choose your options intelligently\u00a0"
+          "desc": "A platform that helps you organize your occasion and choose your options intelligently "
         },
         {
           "n": "02",
           "title": "Vendors you trust",
-          "desc": "We picked the best vendors in Saudi\u00a0"
+          "desc": "We picked the best vendors in Saudi "
         },
         {
           "n": "03",
@@ -1977,7 +1978,29 @@
         "title": "Sit back, we've got you",
         "line": "Your booking reached us, and our team follows every detail from this moment until the big night."
       }
-    }
+    },
+    "rows": [
+      {
+        "trad": "Missed calls",
+        "tek": "Pick from your phone"
+      },
+      {
+        "trad": "Drives in the midday heat",
+        "tek": "Everything from where you are"
+      },
+      {
+        "trad": "Unclear pricing",
+        "tek": "Your budget split item by item"
+      },
+      {
+        "trad": "Scheduling mess",
+        "tek": "One timeline for every date"
+      },
+      {
+        "trad": "Unguaranteed bookings",
+        "tek": "A coordinator follows up on confirmation"
+      }
+    ]
   },
   "aboutPage": {
     "seoTitle": "About Tklh — Our Identity & Digital Facilities",

@@ -119,8 +119,17 @@ export const Hero = () => {
         {/* Headline */}
         <motion.h1
           variants={rise}
-          className="font-display mt-7 max-w-3xl text-balance text-2xl font-black leading-snug tracking-[-0.005em] sm:text-3xl md:text-4xl lg:text-[2.75rem]"
-          style={{ color: "#163726", fontFeatureSettings: '"kern","liga","calt","dlig"' }}
+          className="font-display mt-7 font-black tracking-[-0.005em]"
+          style={{
+            color: "#163726",
+            fontFeatureSettings: '"kern","liga","calt","dlig"',
+            fontSize: "clamp(2rem, 5.5vw, 4.25rem)",
+            lineHeight: 1.3,
+            maxWidth: "20ch",
+            marginInline: "auto",
+            textWrap: "balance",
+            paddingBlock: "0.08em",
+          }}
         >
           {t("hero.slogan")}
         </motion.h1>
@@ -128,13 +137,20 @@ export const Hero = () => {
         {/* Sub-headline */}
         <motion.p
           variants={rise}
-          className="font-tagline mx-auto mt-5 max-w-xl text-balance text-[15px] leading-[1.95] sm:text-base"
-          style={{ color: "hsl(var(--brown))" }}
+          className="font-tagline mt-5 text-[15px] sm:text-base"
+          style={{
+            color: "hsl(var(--brown))",
+            lineHeight: 1.8,
+            maxWidth: "44ch",
+            marginInline: "auto",
+            textWrap: "pretty",
+          }}
         >
           {t("hero.subheadPrefix")}{" "}
           <span className="font-bold" style={{ color: "hsl(var(--green))" }}>{t("hero.brand")}</span>{" "}
           {t("hero.subheadSuffix")}
         </motion.p>
+
 
         {/* === CTA === */}
         <motion.div variants={rise} className="mt-10 flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
