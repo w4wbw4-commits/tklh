@@ -141,12 +141,12 @@ const Admin = () => {
   };
 
   if (authLoading || isAdmin === null) {
-    return <div className="grid min-h-screen place-items-center bg-gradient-soft"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
+    return <div className="grid min-h-screen place-items-center bg-background"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
   }
 
   if (!isAdmin) {
     return (
-      <div className="grid min-h-screen place-items-center bg-gradient-soft p-6">
+      <div className="grid min-h-screen place-items-center bg-background p-6">
         <div className="max-w-md rounded-3xl border border-border bg-card p-8 text-center shadow-card">
           <ShieldAlert className="mx-auto h-10 w-10 text-destructive" />
           <h1 className="mt-4 font-arabic text-xl font-semibold">{t("admin.deniedTitle")}</h1>
