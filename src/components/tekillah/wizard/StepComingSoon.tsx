@@ -183,13 +183,11 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
 
         <WaxSeal size={128} className="mt-5" />
         <p className="mt-3 font-arabic text-2xl font-bold text-primary">
-          {isAr ? "قريبًا" : "Coming soon"}
+          {"\n"}
         </p>
 
         <p className="mt-4 max-w-xl font-arabic text-sm leading-relaxed text-foreground/80">
-          {isAr
-            ? "حياك! حنا الحين في مرحلة بناء وتجهيز شبكة مزودي الخدمة بعناية، وقريباً تقدر تختار كل مزود وأي تفاصيل مثل ما خططت وأكثر."
-            : "Welcome! We're currently building and carefully preparing our provider network, and soon you'll be able to choose every provider and detail just as you planned — and more."}
+          {"\n"}
         </p>
 
         {done ? (
