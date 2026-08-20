@@ -153,7 +153,7 @@ export const StepEventDetails = ({
                   />
                 )}
               </div>
-              <p className="text-[11px] text-foreground/55" dir="ltr">DD/MM/YYYY</p>
+              
 
               <div className="flex items-center gap-3 rounded-2xl border border-border bg-secondary/40 p-3">
                 <Switch
