@@ -410,7 +410,7 @@ const Kpi = ({
         {label}
       </div>
       <div className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ${
-        highlight ? "bg-gradient-olive text-primary-foreground" : "bg-secondary/70 text-primary-deep"
+        highlight ? "bg-primary text-primary-foreground" : "bg-secondary/70 text-foreground"
       }`}>
         <Icon className="h-4 w-4" />
       </div>
