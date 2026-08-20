@@ -706,25 +706,37 @@ export type Database = {
       }
       planner_interest: {
         Row: {
+          admin_notes: string | null
+          contacted_at: string | null
           created_at: string
           details: Json
           full_name: string
           id: string
           phone: string
+          status: Database["public"]["Enums"]["planner_interest_status"]
+          updated_at: string
         }
         Insert: {
+          admin_notes?: string | null
+          contacted_at?: string | null
           created_at?: string
           details?: Json
           full_name: string
           id?: string
           phone: string
+          status?: Database["public"]["Enums"]["planner_interest_status"]
+          updated_at?: string
         }
         Update: {
+          admin_notes?: string | null
+          contacted_at?: string | null
           created_at?: string
           details?: Json
           full_name?: string
           id?: string
           phone?: string
+          status?: Database["public"]["Enums"]["planner_interest_status"]
+          updated_at?: string
         }
         Relationships: []
       }
@@ -1671,6 +1683,12 @@ export type Database = {
         | "mock"
       payment_status: "held" | "released" | "refunded" | "failed"
       payout_status: "requested" | "approved" | "paid" | "rejected"
+      planner_interest_status:
+        | "new"
+        | "contacted"
+        | "awaiting_reply"
+        | "converted"
+        | "lost"
       portfolio_media_type: "image" | "video"
       pricing_rule_type: "weekend" | "weekday" | "seasonal"
       report_reason: "inappropriate" | "spam" | "harassment" | "other"
@@ -1863,6 +1881,13 @@ export const Constants = {
       ],
       payment_status: ["held", "released", "refunded", "failed"],
       payout_status: ["requested", "approved", "paid", "rejected"],
+      planner_interest_status: [
+        "new",
+        "contacted",
+        "awaiting_reply",
+        "converted",
+        "lost",
+      ],
       portfolio_media_type: ["image", "video"],
       pricing_rule_type: ["weekend", "weekday", "seasonal"],
       report_reason: ["inappropriate", "spam", "harassment", "other"],

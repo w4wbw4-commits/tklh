@@ -5,11 +5,8 @@ import { ShieldCheck, Building2, Home, ChevronUp, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
+import { isAllowlistedAdmin } from "@/lib/admins";
 
-const PRIMARY_ADMIN_PHONES = ["+966554430196", "+966544057854"];
-const PRIMARY_ADMIN_EMAILS = PRIMARY_ADMIN_PHONES.map(
-  (p) => `${p.replace("+", "")}@phone.tekillah.app`,
-);
 
 /**
  * RoleSwitcher — floating quick-switch panel visible only to admins.
@@ -30,10 +27,7 @@ export const RoleSwitcher = () => {
       setIsAdmin(false);
       return;
     }
-    const allowlisted =
-      (user.email && PRIMARY_ADMIN_EMAILS.includes(user.email)) ||
-      (user.phone && PRIMARY_ADMIN_PHONES.includes(user.phone));
-    if (allowlisted) {
+    if (isAllowlistedAdmin(user)) {
       setIsAdmin(true);
       return;
     }
