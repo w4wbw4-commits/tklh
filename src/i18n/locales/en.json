@@ -388,13 +388,13 @@
     "aboutLink": "About Tklh"
   },
   "wizard": {
-    "kicker": "Smart planning wizard",
-    "title": "Plan it in just 5 steps",
+    "kicker": "",
+    "title": "Plan your event in 4 steps",
     "step1": "Event details",
     "step2": "Choose services",
-    "step3": "Describe your vision",
-    "step4": "Choose Providers",
-    "step5": "Confirm Request",
+    "step3": "Write your vision",
+    "step4": "Confirm request",
+    "step5": "",
     "finish": "Finish planning",
     "confirmBooking": "Confirm booking",
     "eventCreated": "Event created successfully",

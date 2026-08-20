@@ -61,7 +61,7 @@ export const PlanningWizard = () => {
   // Step 3
   const [visionPath, setVisionPath] = useState<VisionPath>("team");
   const [vision, setVision] = useState("");
-  const [blocks, setBlocks] = useState<VisionBlocks>({ dinner: null, photo: null, mood: null });
+  const [blocks, setBlocks] = useState<VisionBlocks>({ venue: null, dinner: null, photo: null, mood: null });
   const setBlock = (g: VisionBlockGroup, v: string | null) =>
     setBlocks((b) => ({ ...b, [g]: v }));
 
@@ -181,10 +181,7 @@ export const PlanningWizard = () => {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
-          <span className="text-xs font-medium uppercase tracking-[0.3em] text-[hsl(var(--gold))]">
-            {t("wizard.kicker")}
-          </span>
-          <h2 className="mt-4 font-arabic text-balance text-3xl font-semibold text-foreground sm:text-5xl">
+          <h2 className="font-arabic text-balance text-3xl font-semibold text-foreground sm:text-5xl">
             {t("wizard.title")}
           </h2>
         </motion.div>

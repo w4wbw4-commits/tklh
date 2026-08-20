@@ -6,13 +6,21 @@ import { cn } from "@/lib/utils";
 import { Users, Hand } from "lucide-react";
 
 export type VisionPath = "team" | "self";
-export type VisionBlockGroup = "dinner" | "photo" | "mood";
-export interface VisionBlocks { dinner: string | null; photo: string | null; mood: string | null }
+export type VisionBlockGroup = "venue" | "dinner" | "photo" | "mood";
+export interface VisionBlocks { venue: string | null; dinner: string | null; photo: string | null; mood: string | null }
 
 const GROUPS: Array<{
   group: VisionBlockGroup; labelAr: string; labelEn: string;
   options: Array<{ value: string; ar: string; en: string }>;
 }> = [
+  {
+    group: "venue", labelAr: "المكان", labelEn: "Venue",
+    options: [
+      { value: "hall", ar: "قاعة", en: "Hall" },
+      { value: "resort", ar: "منتجع", en: "Resort" },
+      { value: "resthouse", ar: "استراحة", en: "Rest house" },
+    ],
+  },
   {
     group: "dinner", labelAr: "العشاء", labelEn: "Dinner",
     options: [
@@ -69,11 +77,8 @@ export const StepVisionPaths = ({
       className="p-4 sm:p-8"
     >
       <h3 className="font-arabic text-2xl font-semibold text-foreground">
-        {isAr ? "ارسم رؤيتك" : "Sketch your vision"}
+        {isAr ? "اكتب رؤيتك" : "Write your vision"}
       </h3>
-      <p className="mt-1 font-arabic text-sm text-foreground/70">
-        {isAr ? "خلّ فريق تكله يختار لك، أو ابنِ اختياراتك بنفسك." : "Let the Tklh team choose for you, or build it yourself."}
-      </p>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
         <button
@@ -134,7 +139,7 @@ export const StepVisionPaths = ({
           >
             <div className="space-y-2">
               <Label className="font-arabic text-base font-semibold text-foreground">
-                {isAr ? "وش تتخيل لمناسبتك؟" : "What do you imagine?"}
+                {isAr ? "كيف تتخيل مناسبتك؟" : "How do you imagine your event?"}
               </Label>
               <Textarea
                 value={vision}
@@ -146,7 +151,7 @@ export const StepVisionPaths = ({
 
             <div className="space-y-5">
               <h4 className="font-arabic text-base font-semibold text-foreground">
-                {isAr ? "أو اختر من هذي" : "Your vision building blocks"}
+                {isAr ? "خيارات ممكن تساعدك" : "Options that might help"}
               </h4>
               {GROUPS.map((g) => (
                 <div key={g.group} className="space-y-2">
