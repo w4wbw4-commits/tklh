@@ -147,11 +147,11 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
           })}
         </nav>
 
-        <div className="mt-6 space-y-2 border-t border-primary-foreground/15 pt-5">
+        <div className="mt-6 space-y-2 border-t border-border pt-5">
           <Button
             asChild
-            variant="secondary"
-            className="w-full justify-start border-0 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground"
+            variant="outline"
+            className="w-full justify-start border-primary/20 bg-background text-foreground hover:bg-muted hover:text-foreground"
           >
             <Link to="/partner">
               <Building2 className="ms-0 me-2 h-4 w-4" />
@@ -161,19 +161,19 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
           <Button
             asChild
             variant="ghost"
-            className="w-full justify-start text-primary-foreground/80 hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            className="w-full justify-start text-foreground/80 hover:bg-muted hover:text-foreground"
           >
             <Link to="/">
               <Home className="me-2 h-4 w-4" />
               {t("common.home", { defaultValue: "الرئيسية" })}
             </Link>
           </Button>
-          <div className="truncate text-[11px] text-primary-foreground/55" title={user?.email ?? ""}>
+          <div className="truncate text-[11px] text-foreground/55" title={user?.email ?? ""}>
             {user?.email}
           </div>
           <Button
-            variant="secondary"
-            className="w-full border-0 bg-primary-foreground/10 text-primary-foreground hover:bg-destructive/40"
+            variant="outline"
+            className="w-full border-destructive/30 text-foreground hover:bg-destructive/10 hover:text-destructive"
             onClick={logout}
           >
             <LogOut className="me-2 h-4 w-4" />
@@ -184,22 +184,22 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
 
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Mobile top bar */}
-        <header className="sticky top-0 z-20 flex items-center justify-between border-b-2 border-gold/40 bg-primary p-4 text-primary-foreground md:hidden">
+        <header className="sticky top-0 z-20 flex items-center justify-between border-b-2 border-gold/40 bg-cream p-4 text-foreground md:hidden">
           <Link to="/" className="flex items-center gap-2">
-            <span className="grid h-8 w-8 place-items-center rounded-full bg-primary-foreground font-black text-primary-deep ring-1 ring-gold/60">
+            <span className="grid h-8 w-8 place-items-center rounded-full bg-primary font-black text-primary-foreground ring-1 ring-gold/40">
               ت
             </span>
-            <span className="font-arabic font-black">تِكله</span>
+            <span className="font-arabic font-black text-foreground">تِكله</span>
             <span className="text-[10px] font-bold text-gold">{t("admin.kicker", { defaultValue: "مسؤول" })}</span>
           </Link>
           <div className="flex items-center gap-1">
             <AdminNotificationsBell onOpenSignups={() => onChange("interest")} />
-            <Button asChild size="sm" variant="ghost" className="text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground">
+            <Button asChild size="sm" variant="ghost" className="text-foreground hover:bg-muted hover:text-foreground">
               <Link to="/partner">
                 <Building2 className="h-4 w-4" />
               </Link>
             </Button>
-            <Button size="sm" variant="ghost" onClick={logout} className="text-primary-foreground hover:bg-destructive/30">
+            <Button size="sm" variant="ghost" onClick={logout} className="text-foreground hover:bg-destructive/10 hover:text-destructive">
               <LogOut className="h-4 w-4" />
             </Button>
           </div>
