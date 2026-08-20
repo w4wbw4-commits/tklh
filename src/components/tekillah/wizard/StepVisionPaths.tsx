@@ -103,7 +103,7 @@ export const StepVisionPaths = ({
 
         <button
           type="button"
-          onClick={() => { setPath("self"); onPickSelfPath(); }}
+          onClick={() => setPath("self")}
           aria-pressed={path === "self"}
           className={cn(
             "rounded-2xl border p-4 text-start transition-all duration-500",
