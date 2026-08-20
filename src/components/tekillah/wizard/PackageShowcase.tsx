@@ -71,7 +71,7 @@ export const PackageShowcase = ({
       </h4>
       <p className="mt-1.5 font-arabic text-sm text-foreground/70">
         {isAr
-          ? "تركيبات جاهزة محسوبة من نفس المزودين — اختر واحدة وعدّل عليها كيف ما تبي."
+          ? "تركيبات جاهزة من نفس المزودين. اختر واحدة وعدّل عليها كيف ما تبي."
           : "Ready-made combinations built from the same providers — pick one and tweak it freely."}
       </p>
 
@@ -159,7 +159,7 @@ export const PackageShowcase = ({
                     {active && <Check className="h-3.5 w-3.5" />}
                     {active
                       ? isAr ? "مختارة" : "Selected"
-                      : isAr ? "اختر هذي الباقة" : "Choose this package"}
+                      : isAr ? "كمّل بهذي الباقة" : "Choose this package"}
                     {!active && <Arrow className="h-3.5 w-3.5" />}
                   </button>
                 </div>

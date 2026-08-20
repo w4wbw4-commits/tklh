@@ -153,7 +153,7 @@ export const StepEventDetails = ({
                   />
                 )}
               </div>
-              <p className="text-[11px] text-foreground/55" dir="ltr">DD/MM/YYYY</p>
+              
 
               <div className="flex items-center gap-3 rounded-2xl border border-border bg-secondary/40 p-3">
                 <Switch
@@ -328,7 +328,9 @@ const DateField = ({
       >
         <CalendarIcon className="me-2 h-4 w-4 opacity-70" />
         <span className="me-2 font-arabic text-xs text-foreground/60">{isAr ? labelAr : labelEn}</span>
-        <span dir="ltr" className="tabular-nums">{value ? format(value, DISPLAY) : "DD/MM/YYYY"}</span>
+        <span dir={value ? "ltr" : "rtl"} className="tabular-nums font-arabic">
+          {value ? format(value, DISPLAY) : (isAr ? "يوم/شهر/سنة" : "DD/MM/YYYY")}
+        </span>
       </Button>
     </PopoverTrigger>
     <PopoverContent className="w-auto p-0" align="start">
