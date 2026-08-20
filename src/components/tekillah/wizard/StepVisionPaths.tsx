@@ -9,7 +9,7 @@ export type VisionPath = "team" | "self";
 export type VisionBlockGroup = "venue" | "dinner" | "photo" | "mood";
 export interface VisionBlocks { venue: string | null; dinner: string | null; photo: string | null; mood: string | null }
 
-const GROUPS: Array<{
+export const VISION_GROUPS: Array<{
   group: VisionBlockGroup; labelAr: string; labelEn: string;
   options: Array<{ value: string; ar: string; en: string }>;
 }> = [
@@ -46,6 +46,8 @@ const GROUPS: Array<{
     ],
   },
 ];
+
+const GROUPS = VISION_GROUPS;
 
 interface Props {
   path: VisionPath;

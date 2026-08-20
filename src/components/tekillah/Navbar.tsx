@@ -8,11 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { SiteMenuSheet } from "./SiteMenuSheet";
-
-
-// Primary admin allowlist — phone +966554430196 (synthetic email used by phone-OTP login).
-const PRIMARY_ADMIN_EMAIL = "966554430196@phone.tekillah.app";
-const PRIMARY_ADMIN_PHONE = "+966554430196";
+import { isAllowlistedAdmin } from "@/lib/admins";
 
 export const Navbar = () => {
   const { t, i18n } = useTranslation();
@@ -28,8 +24,7 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const isPrimaryAdmin =
-    !!user && (user.email === PRIMARY_ADMIN_EMAIL || user.phone === PRIMARY_ADMIN_PHONE);
+  const isPrimaryAdmin = isAllowlistedAdmin(user);
 
   // Diagnostic welcome toast — fires once per session for the primary admin.
   useEffect(() => {

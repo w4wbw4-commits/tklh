@@ -8,13 +8,11 @@ import {
   Briefcase,
   AlertTriangle,
   AlertOctagon,
-  Inbox,
   Receipt,
   ListChecks,
   ClipboardList,
   Star,
   PackageOpen,
-  Flag,
   LogOut,
   Sparkles,
   Building2,
@@ -23,6 +21,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { AdminNotificationsBell } from "./AdminNotificationsBell";
 
 export interface AdminNavItem {
   key: string;
@@ -31,22 +30,35 @@ export interface AdminNavItem {
   Icon: typeof ShieldCheck;
   badge?: number;
   tone?: "default" | "warning" | "danger";
+  /** Sidebar section — duplicated tabs were merged into single destinations. */
+  section: "clients" | "vendors" | "ops" | "money" | "content";
 }
 
+export const adminSections: Array<{ key: AdminNavItem["section"]; ar: string }> = [
+  { key: "clients", ar: "العملاء" },
+  { key: "vendors", ar: "المزودون" },
+  { key: "ops", ar: "التشغيل" },
+  { key: "money", ar: "المالية" },
+  { key: "content", ar: "المحتوى" },
+];
+
 export const adminNav: AdminNavItem[] = [
-  { key: "verification", labelKey: "admin.tabVerification", fallback: "التحقق", Icon: ShieldCheck },
-  { key: "applications", labelKey: "admin.tabApplications", fallback: "طلبات الانضمام", Icon: UserPlus, tone: "warning" },
-  { key: "pending", labelKey: "admin.tabPending", fallback: "الحجوزات المعلقة", Icon: Hourglass, tone: "warning" },
-  { key: "vendors", labelKey: "admin.tabVendors", fallback: "المزودون", Icon: Briefcase },
-  { key: "late", labelKey: "admin.tabLate", fallback: "تنبيهات التأخر", Icon: AlertTriangle, tone: "danger" },
-  { key: "incidents", labelKey: "admin.tabIncidents", fallback: "البلاغات", Icon: AlertOctagon },
-  { key: "leads", labelKey: "admin.tabLeads", fallback: "العملاء المحتملون", Icon: Inbox },
-  { key: "interest", labelKey: "admin.tabInterest", fallback: "تسجيلات رحلة التخطيط", Icon: ClipboardList, tone: "warning" },
-  { key: "payments", labelKey: "admin.tabPayments", fallback: "المدفوعات", Icon: Receipt },
-  { key: "bookings", labelKey: "admin.tabBookings", fallback: "الحجوزات", Icon: ListChecks },
-  { key: "reviews", labelKey: "admin.tabReviews", fallback: "التقييمات", Icon: Star },
-  { key: "packages", labelKey: "admin.tabPackages", fallback: "الباقات", Icon: PackageOpen },
-  { key: "moderation", labelKey: "admin.tabModeration", fallback: "الإشراف", Icon: Flag },
+  // العملاء — كل التسجيلات في مكان واحد (تسجيلات رحلة التخطيط + العملاء المحتملون)
+  { key: "interest", labelKey: "admin.tabInterest", fallback: "تسجيلات رحلة التخطيط", Icon: ClipboardList, tone: "warning", section: "clients" },
+  { key: "pending", labelKey: "admin.tabPending", fallback: "الحجوزات المعلقة", Icon: Hourglass, tone: "warning", section: "clients" },
+  // المزودون
+  { key: "applications", labelKey: "admin.tabApplications", fallback: "طلبات الانضمام", Icon: UserPlus, tone: "warning", section: "vendors" },
+  { key: "verification", labelKey: "admin.tabVerification", fallback: "التحقق", Icon: ShieldCheck, section: "vendors" },
+  { key: "vendors", labelKey: "admin.tabVendors", fallback: "المزودون", Icon: Briefcase, section: "vendors" },
+  // التشغيل
+  { key: "late", labelKey: "admin.tabLate", fallback: "تنبيهات التأخر", Icon: AlertTriangle, tone: "danger", section: "ops" },
+  { key: "incidents", labelKey: "admin.tabIncidents", fallback: "البلاغات", Icon: AlertOctagon, section: "ops" },
+  // المالية
+  { key: "payments", labelKey: "admin.tabPayments", fallback: "المدفوعات", Icon: Receipt, section: "money" },
+  { key: "bookings", labelKey: "admin.tabBookings", fallback: "الحجوزات", Icon: ListChecks, section: "money" },
+  // المحتوى — التقييمات والإشراف صارت شاشة واحدة
+  { key: "reviews", labelKey: "admin.tabReviews", fallback: "التقييمات والإشراف", Icon: Star, section: "content" },
+  { key: "packages", labelKey: "admin.tabPackages", fallback: "الباقات", Icon: PackageOpen, section: "content" },
 ];
 
 interface AdminLayoutProps {
@@ -70,53 +82,67 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
     <div dir="rtl" className="flex min-h-screen w-full bg-muted/30">
       {/* Desktop sidebar */}
       <aside className="sticky top-0 hidden h-screen w-64 flex-col bg-primary p-5 text-primary-foreground md:flex">
-        <Link to="/" className="mb-6 flex items-center gap-3">
-          <span className="grid h-10 w-10 place-items-center rounded-full bg-primary-foreground ring-2 ring-gold/60 text-xl font-black text-primary-deep">
-            ت
-          </span>
-          <div className="leading-tight">
-            <div className="font-arabic text-lg font-black">تِكله</div>
-            <div className="mt-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-gold">
-              <ShieldCheck className="h-3 w-3" /> {t("admin.kicker", { defaultValue: "لوحة المسؤول" })}
+        <div className="mb-6 flex items-center gap-2">
+          <Link to="/" className="flex min-w-0 flex-1 items-center gap-3">
+            <span className="grid h-10 w-10 place-items-center rounded-full bg-primary-foreground ring-2 ring-gold/60 text-xl font-black text-primary-deep">
+              ت
+            </span>
+            <div className="leading-tight">
+              <div className="font-arabic text-lg font-black">تِكله</div>
+              <div className="mt-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-gold">
+                <ShieldCheck className="h-3 w-3" /> {t("admin.kicker", { defaultValue: "لوحة المسؤول" })}
+              </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+          <AdminNotificationsBell onOpenSignups={() => onChange("interest")} />
+        </div>
 
-        <nav className="flex-1 space-y-0.5 overflow-y-auto pe-1">
-          {adminNav.map(({ key, labelKey, fallback, Icon, tone }) => {
-            const isActive = active === key;
-            const count = badges[key] ?? 0;
-            const dotColor =
-              tone === "danger" ? "bg-destructive" : tone === "warning" ? "bg-primary-foreground" : "bg-primary-foreground/30";
+        <nav className="flex-1 space-y-3 overflow-y-auto pe-1">
+          {adminSections.map((sec) => {
+            const items = adminNav.filter((n) => n.section === sec.key);
+            if (items.length === 0) return null;
             return (
-              <button
-                key={key}
-                type="button"
-                onClick={() => onChange(key)}
-                className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all ${
-                  isActive
-                    ? "bg-primary-foreground text-primary shadow-sm"
-                    : "text-primary-foreground/75 hover:bg-primary-foreground/10 hover:text-primary-foreground"
-                }`}
-              >
-                <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-primary" : "text-gold/80 group-hover:text-gold"}`} />
-                <span className="flex-1 text-start">{t(labelKey, { defaultValue: fallback })}</span>
-                {count > 0 ? (
-                  <Badge
-                    className={`min-w-[20px] justify-center px-1.5 py-0 text-[10px] ${
-                      isActive
-                        ? "bg-primary text-primary-foreground"
-                        : tone === "danger"
-                          ? "bg-destructive text-destructive-foreground"
-                          : "bg-primary-foreground text-primary-deep"
-                    }`}
-                  >
-                    {count}
-                  </Badge>
-                ) : tone && !isActive ? (
-                  <span className={`h-1.5 w-1.5 rounded-full ${dotColor}`} aria-hidden />
-                ) : null}
-              </button>
+              <div key={sec.key} className="space-y-0.5">
+                <div className="px-3 pb-1 font-arabic text-[10px] font-black uppercase tracking-wider text-primary-foreground/45">
+                  {sec.ar}
+                </div>
+                {items.map(({ key, labelKey, fallback, Icon, tone }) => {
+                  const isActive = active === key;
+                  const count = badges[key] ?? 0;
+                  const dotColor =
+                    tone === "danger" ? "bg-destructive" : tone === "warning" ? "bg-primary-foreground" : "bg-primary-foreground/30";
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => onChange(key)}
+                      className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold transition-all ${
+                        isActive
+                          ? "bg-primary-foreground text-primary shadow-sm"
+                          : "text-primary-foreground/75 hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                      }`}
+                    >
+                      <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-primary" : "text-gold/80 group-hover:text-gold"}`} />
+                      <span className="flex-1 text-start">{t(labelKey, { defaultValue: fallback })}</span>
+                      {count > 0 ? (
+                        <Badge
+                          className={`min-w-[20px] justify-center px-1.5 py-0 text-[10px] ${
+                            isActive
+                              ? "bg-primary text-primary-foreground"
+                              : tone === "danger"
+                                ? "bg-destructive text-destructive-foreground"
+                                : "bg-primary-foreground text-primary-deep"
+                          }`}
+                        >
+                          {count}
+                        </Badge>
+                      ) : tone && !isActive ? (
+                        <span className={`h-1.5 w-1.5 rounded-full ${dotColor}`} aria-hidden />
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
             );
           })}
         </nav>
@@ -167,6 +193,7 @@ export const AdminLayout = ({ active, onChange, badges = {}, headerAction, child
             <span className="text-[10px] font-bold text-gold">{t("admin.kicker", { defaultValue: "مسؤول" })}</span>
           </Link>
           <div className="flex items-center gap-1">
+            <AdminNotificationsBell onOpenSignups={() => onChange("interest")} />
             <Button asChild size="sm" variant="ghost" className="text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground">
               <Link to="/partner">
                 <Building2 className="h-4 w-4" />

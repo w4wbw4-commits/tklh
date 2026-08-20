@@ -21,8 +21,7 @@ import { AdminReviewsPanel } from "@/components/tekillah/admin/AdminReviewsPanel
 import { AdminModerationQueue } from "@/components/tekillah/admin/AdminModerationQueue";
 import { AdminVerificationQueue } from "@/components/tekillah/admin/AdminVerificationQueue";
 import { AdminGrandControl } from "@/components/tekillah/admin/AdminGrandControl";
-import { AdminLeadsPanel } from "@/components/tekillah/admin/AdminLeadsPanel";
-import { AdminPlannerInterest } from "@/components/tekillah/admin/AdminPlannerInterest";
+import { AdminSignups } from "@/components/tekillah/admin/AdminSignups";
 import { AdminLateAlerts } from "@/components/tekillah/admin/AdminLateAlerts";
 import { AdminIncidentReports } from "@/components/tekillah/admin/AdminIncidentReports";
 import { AdminAddVendorDialog } from "@/components/tekillah/admin/AdminAddVendorDialog";
@@ -32,13 +31,8 @@ import { AdminPendingBookings } from "@/components/tekillah/admin/AdminPendingBo
 import { AdminVendorApplications } from "@/components/tekillah/admin/AdminVendorApplications";
 import { AdminLayout } from "@/components/tekillah/admin/AdminLayout";
 import { EmptyState } from "@/components/tekillah/EmptyState";
+import { isAllowlistedAdmin } from "@/lib/admins";
 
-// Primary admin phones (allowlist) → synthetic emails used by phone-OTP login.
-// Combined with the user_roles 'admin' check (auto-granted via DB trigger).
-const PRIMARY_ADMIN_PHONES = ["+966554430196", "+966544057854"];
-const PRIMARY_ADMIN_EMAILS = PRIMARY_ADMIN_PHONES.map(
-  (p) => `${p.replace("+", "")}@phone.tekillah.app`,
-);
 
 interface PaymentRow {
   id: string;
@@ -73,7 +67,8 @@ const Admin = () => {
   const [bookings, setBookings] = useState<BookingRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [releasingId, setReleasingId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState("verification");
+  const [activeTab, setActiveTab] = useState("interest");
+  const [newSignups, setNewSignups] = useState(0);
   const [period, setPeriod] = useState<"all" | "month">("all");
 
   useEffect(() => {
@@ -85,10 +80,7 @@ const Admin = () => {
     (async () => {
       // Hardcoded phone allowlist OR admin role. The primary admin phone is
       // always granted access; other admins must have the 'admin' role.
-      const isPrimaryPhone =
-        (user.email && PRIMARY_ADMIN_EMAILS.includes(user.email)) ||
-        (user.phone && PRIMARY_ADMIN_PHONES.includes(user.phone));
-      if (isPrimaryPhone) {
+      if (isAllowlistedAdmin(user)) {
         setIsAdmin(true);
         // Best-effort self-heal: ensure the role row exists for RLS-protected writes.
         await supabase.from("user_roles").insert({ user_id: user.id, role: "admin" }).then(() => {}, () => {});
@@ -101,6 +93,14 @@ const Admin = () => {
 
   // Admin dashboard is rendered in dark mode via the route-aware ThemeProvider in App.tsx.
 
+
+  const loadSignupBadge = async () => {
+    const { count } = await supabase
+      .from("planner_interest")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "new");
+    setNewSignups(count ?? 0);
+  };
 
   const load = async () => {
     setLoading(true);
@@ -118,11 +118,13 @@ const Admin = () => {
   useEffect(() => {
     if (!isAdmin) return;
     load();
-    // realtime subscription on payments and bookings
+    void loadSignupBadge();
+    // realtime subscription on payments, bookings and planner signups
     const ch = supabase
       .channel("admin-realtime")
       .on("postgres_changes", { event: "*", schema: "public", table: "payments" }, load)
       .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, load)
+      .on("postgres_changes", { event: "*", schema: "public", table: "planner_interest" }, () => void loadSignupBadge())
       .subscribe();
     return () => { supabase.removeChannel(ch); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -183,11 +185,15 @@ const Admin = () => {
       case "vendors":      return <AdminVendorsPanel />;
       case "late":         return <AdminLateAlerts />;
       case "incidents":    return <AdminIncidentReports />;
-      case "leads":        return <AdminLeadsPanel />;
-      case "interest":     return <AdminPlannerInterest />;
-      case "reviews":      return <AdminReviewsPanel />;
+      case "interest":     return <AdminSignups />;
+      case "reviews":
+        return (
+          <div className="space-y-8">
+            <AdminReviewsPanel />
+            <AdminModerationQueue />
+          </div>
+        );
       case "packages":     return <AdminPackagesPanel />;
-      case "moderation":   return <AdminModerationQueue />;
       case "payments":
         if (loading) return <Spinner />;
         if (payments.length === 0)
@@ -284,7 +290,7 @@ const Admin = () => {
     <AdminLayout
         active={activeTab}
         onChange={setActiveTab}
-        badges={{ pending: pendingCount }}
+        badges={{ pending: pendingCount, interest: newSignups }}
         headerAction={user && <AdminAddVendorDialog adminUserId={user.id} onCreated={load} />}
       >
         {/* Period filter + Excel export */}
