@@ -54,11 +54,10 @@ interface Props {
   setVision: (v: string) => void;
   blocks: VisionBlocks;
   setBlock: (g: VisionBlockGroup, v: string | null) => void;
-  onPickSelfPath: () => void;
 }
 
 export const StepVisionPaths = ({
-  path, setPath, vision, setVision, blocks, setBlock, onPickSelfPath,
+  path, setPath, vision, setVision, blocks, setBlock,
 }: Props) => {
   const { i18n } = useTranslation();
   const isAr = i18n.language?.startsWith("ar");
