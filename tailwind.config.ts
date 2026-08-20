@@ -30,6 +30,7 @@ export default {
         "text-muted": "hsl(var(--text-muted))",
         green: {
           DEFAULT: "hsl(var(--green))",
+          deep: "hsl(var(--green-deep))",
           mid: "hsl(var(--green-mid))",
           light: "hsl(var(--green-light))",
         },
