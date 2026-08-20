@@ -298,18 +298,18 @@ export const PlanningWizard = () => {
               </AnimatePresence>
             </div>
 
-            {step < 3 && (
-              <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border bg-secondary/30 px-4 py-4 sm:px-8">
-                <Button
-                  variant="ghost"
-                  onClick={prev}
-                  disabled={step === 0}
-                  size="sm"
-                  className="min-h-[44px] rounded-full text-foreground"
-                >
-                  <PrevIcon className="me-2 h-4 w-4" />
-                  {t("common.previous")}
-                </Button>
+            <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border bg-secondary/30 px-4 py-4 sm:px-8">
+              <Button
+                variant="ghost"
+                onClick={prev}
+                disabled={step === 0}
+                size="sm"
+                className="min-h-[44px] rounded-full text-foreground"
+              >
+                <PrevIcon className="me-2 h-4 w-4" />
+                {step === 3 ? (isAr ? "رجوع للتعديل" : "Back to edit") : t("common.previous")}
+              </Button>
+              {step < 3 && (
                 <div className="flex flex-col items-end gap-1">
                   <Button
                     onClick={next}
