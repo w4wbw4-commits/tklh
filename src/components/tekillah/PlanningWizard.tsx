@@ -61,7 +61,7 @@ export const PlanningWizard = () => {
   // Step 3
   const [visionPath, setVisionPath] = useState<VisionPath>("team");
   const [vision, setVision] = useState("");
-  const [blocks, setBlocks] = useState<VisionBlocks>({ dinner: null, photo: null, mood: null });
+  const [blocks, setBlocks] = useState<VisionBlocks>({ venue: null, dinner: null, photo: null, mood: null });
   const setBlock = (g: VisionBlockGroup, v: string | null) =>
     setBlocks((b) => ({ ...b, [g]: v }));
 
