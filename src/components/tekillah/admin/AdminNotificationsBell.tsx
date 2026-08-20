@@ -48,8 +48,9 @@ export const AdminNotificationsBell = ({ onOpenSignups, className }: Props) => {
   useEffect(() => {
     if (!user) return;
     void load();
+    // Unique channel per mounted bell (sidebar + mobile bar both render one).
     const ch = supabase
-      .channel(`admin-bell-${user.id}`)
+      .channel(`admin-bell-${user.id}-${Math.random().toString(36).slice(2, 8)}`)
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${user.id}` },
