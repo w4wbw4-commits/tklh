@@ -6,13 +6,21 @@ import { cn } from "@/lib/utils";
 import { Users, Hand } from "lucide-react";
 
 export type VisionPath = "team" | "self";
-export type VisionBlockGroup = "dinner" | "photo" | "mood";
-export interface VisionBlocks { dinner: string | null; photo: string | null; mood: string | null }
+export type VisionBlockGroup = "venue" | "dinner" | "photo" | "mood";
+export interface VisionBlocks { venue: string | null; dinner: string | null; photo: string | null; mood: string | null }
 
 const GROUPS: Array<{
   group: VisionBlockGroup; labelAr: string; labelEn: string;
   options: Array<{ value: string; ar: string; en: string }>;
 }> = [
+  {
+    group: "venue", labelAr: "المكان", labelEn: "Venue",
+    options: [
+      { value: "hall", ar: "قاعة", en: "Hall" },
+      { value: "resort", ar: "منتجع", en: "Resort" },
+      { value: "resthouse", ar: "استراحة", en: "Rest house" },
+    ],
+  },
   {
     group: "dinner", labelAr: "العشاء", labelEn: "Dinner",
     options: [
