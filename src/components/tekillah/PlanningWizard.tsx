@@ -292,25 +292,24 @@ export const PlanningWizard = () => {
                     setVision={setVision}
                     blocks={blocks}
                     setBlock={setBlock}
-                    onPickSelfPath={goToFinal}
                   />
                 )}
                 {step === 3 && <StepComingSoon summary={summary} payload={payload} />}
               </AnimatePresence>
             </div>
 
-            {step < 3 && (
-              <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border bg-secondary/30 px-4 py-4 sm:px-8">
-                <Button
-                  variant="ghost"
-                  onClick={prev}
-                  disabled={step === 0}
-                  size="sm"
-                  className="min-h-[44px] rounded-full text-foreground"
-                >
-                  <PrevIcon className="me-2 h-4 w-4" />
-                  {t("common.previous")}
-                </Button>
+            <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border bg-secondary/30 px-4 py-4 sm:px-8">
+              <Button
+                variant="ghost"
+                onClick={prev}
+                disabled={step === 0}
+                size="sm"
+                className="min-h-[44px] rounded-full text-foreground"
+              >
+                <PrevIcon className="me-2 h-4 w-4" />
+                {step === 3 ? (isAr ? "رجوع للتعديل" : "Back to edit") : t("common.previous")}
+              </Button>
+              {step < 3 && (
                 <div className="flex flex-col items-end gap-1">
                   <Button
                     onClick={next}
@@ -325,8 +324,8 @@ export const PlanningWizard = () => {
                     <span className="font-arabic text-[11px] font-medium text-foreground/60">{nextHint}</span>
                   )}
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
