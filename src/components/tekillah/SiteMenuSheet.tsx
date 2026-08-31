@@ -82,15 +82,18 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
   };
 
 
+  const rowCls =
+    "group flex items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.15)] bg-[#fafaf7] px-4 py-3 text-sm font-medium text-[#163726] transition-all hover:border-[rgba(22,55,38,0.35)] hover:bg-[#f5f5f0] hover:text-[#163726]";
+  const disabledCls =
+    "flex items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.1)] bg-[#fafaf7]/60 px-4 py-3 text-sm font-medium text-[#163726]/60 cursor-not-allowed opacity-80";
+
   // Render a single row — mirrors the same look for anchor + Link variants.
   const renderItem = (item: NavLinkItem) => {
     const Icon = item.icon;
     const label = t(item.labelKey, { defaultValue: isAr ? item.fallback.ar : item.fallback.en });
-    const cls =
-      "group flex items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.15)] bg-[#fafaf7] px-4 py-3 text-sm font-medium text-[#163726] transition-all hover:border-[rgba(22,55,38,0.35)] hover:bg-[#f5f5f0] hover:text-[#163726]";
-    const disabledCls =
-      "flex items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.1)] bg-[#fafaf7]/60 px-4 py-3 text-sm font-medium text-[#163726]/60 cursor-not-allowed opacity-80";
+    const cls = rowCls;
     const inner = (
+
       <>
         <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl transition-colors ${item.disabled ? "bg-[rgba(22,55,38,0.08)] text-[#163726]/60" : "bg-[rgba(22,55,38,0.1)] text-[#163726] group-hover:bg-[rgba(22,55,38,0.18)] group-hover:text-[#163726]"}`}>
           <Icon className="h-4 w-4" />
