@@ -71,92 +71,100 @@ export const Navbar = () => {
             borderColor: scrolled ? "hsl(var(--gold) / 0.55)" : "hsl(var(--gold) / 0.28)",
           }}
         >
-          <div className="flex shrink-0 items-center gap-2">
-            <Logo />
+          {/* Start edge: hamburger menu. In RTL this sits on the right; in LTR on the left. */}
+          <div className="flex shrink-0 items-center">
+            <SiteMenuSheet isPrimaryAdmin={isPrimaryAdmin} />
           </div>
 
+          {/* Center cluster: logo, nav links, and action buttons. */}
+          <div className="flex min-w-0 flex-1 items-center justify-center gap-2">
+            <div className="flex shrink-0 items-center gap-2">
+              <Logo />
+            </div>
 
-          <nav className="hidden items-center gap-1 md:flex">
-            {navItems.map((item) => {
-              const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
-              const cls =
-                "relative rounded-full px-4 py-1 text-sm font-medium transition-all after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all hover:after:w-1/2";
+            <nav className="hidden items-center gap-1 md:flex">
+              {navItems.map((item) => {
+                const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
+                const cls =
+                  "relative rounded-full px-4 py-1 text-sm font-medium transition-all after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all hover:after:w-1/2";
 
-              const linkStyle = { color: "hsl(var(--cream) / 0.86)" } as const;
-              void 0;
+                const linkStyle = { color: "hsl(var(--cream) / 0.86)" } as const;
+                void 0;
 
-              if (item.type === "route") {
+                if (item.type === "route") {
+                  return (
+                    <Link key={item.href} to={item.href} className={cls} style={linkStyle}>
+                      {label}
+                    </Link>
+                  );
+                }
                 return (
-                  <Link key={item.href} to={item.href} className={cls} style={linkStyle}>
+                  <a key={item.href} href={item.href} className={cls} style={linkStyle}>
                     {label}
-                  </Link>
+                  </a>
                 );
-              }
-              return (
-                <a key={item.href} href={item.href} className={cls} style={linkStyle}>
-                  {label}
-                </a>
-              );
-            })}
+              })}
+            </nav>
 
-          </nav>
-          <div className="flex items-center gap-1 sm:gap-2">
-            {/* Primary CTA — compact pill in the top corner. */}
-            <Button
-              size="sm"
-              asChild
-              className="h-7 rounded-full border px-3 text-xs font-semibold sm:h-8 sm:px-4 sm:text-sm"
-              style={{
-                background: "transparent",
-                borderColor: "hsl(var(--gold) / 0.65)",
-                color: "hsl(var(--cream))",
-              }}
-            >
-              <Link to="/planner">
-                <CalendarCheck className="h-3.5 w-3.5 sm:me-1.5" />
-                <span>{t("common.planAndBook")}</span>
-              </Link>
-            </Button>
-
-
-            {/* Follow-up plan — icon-only on mobile, labelled on desktop. */}
-            <Button
-              variant="ghost"
-              size="sm"
-              asChild
-              aria-label={t("nav.myDashboard")}
-              className="hidden h-7 w-7 rounded-full p-0 text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex sm:h-8 sm:w-auto sm:px-3 sm:text-xs"
-            >
-              <Link to="/dashboard">
-                <LayoutDashboard className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
-                <span className="hidden sm:inline">{t("nav.myDashboard")}</span>
-              </Link>
-            </Button>
-
-
-            {isPrimaryAdmin && (
+            <div className="flex items-center gap-1 sm:gap-2">
+              {/* Primary CTA — compact pill in the top corner. */}
               <Button
                 size="sm"
                 asChild
-                aria-label={t("nav.admin")}
-                className="hidden h-7 w-7 rounded-full bg-primary-foreground p-0 text-primary hover:bg-primary-foreground/90 sm:inline-flex sm:h-8 sm:w-auto sm:px-3"
+                className="h-7 rounded-full border px-3 text-xs font-semibold sm:h-8 sm:px-4 sm:text-sm"
+                style={{
+                  background: "transparent",
+                  borderColor: "hsl(var(--gold) / 0.65)",
+                  color: "hsl(var(--cream))",
+                }}
               >
-                <Link to="/admin">
-                  <ShieldCheck className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
-                  <span className="hidden sm:inline">{t("nav.admin")}</span>
+                <Link to="/planner">
+                  <CalendarCheck className="h-3.5 w-3.5 sm:me-1.5" />
+                  <span>{t("common.planAndBook")}</span>
                 </Link>
               </Button>
-            )}
 
+              {/* Follow-up plan — icon-only on mobile, labelled on desktop. */}
+              <Button
+                variant="ghost"
+                size="sm"
+                asChild
+                aria-label={t("nav.myDashboard")}
+                className="hidden h-7 w-7 rounded-full p-0 text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex sm:h-8 sm:w-auto sm:px-3 sm:text-xs"
+              >
+                <Link to="/dashboard">
+                  <LayoutDashboard className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
+                  <span className="hidden sm:inline">{t("nav.myDashboard")}</span>
+                </Link>
+              </Button>
 
-            {/* Language toggle intentionally hidden until the full English
-                version ships — a visitor should never see a non-working control. */}
+              {isPrimaryAdmin && (
+                <Button
+                  size="sm"
+                  asChild
+                  aria-label={t("nav.admin")}
+                  className="hidden h-7 w-7 rounded-full bg-primary-foreground p-0 text-primary hover:bg-primary-foreground/90 sm:inline-flex sm:h-8 sm:w-auto sm:px-3"
+                >
+                  <Link to="/admin">
+                    <ShieldCheck className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
+                    <span className="hidden sm:inline">{t("nav.admin")}</span>
+                  </Link>
+                </Button>
+              )}
+            </div>
+          </div>
 
-
-            {/* Hamburger pinned at the very END of the cluster — in RTL this
-                renders at the far-right (start edge), which is where the user
-                expects the primary menu in Arabic. Visible on every breakpoint. */}
-            <SiteMenuSheet isPrimaryAdmin={isPrimaryAdmin} />
+          {/* End edge: language toggle. In RTL this sits on the left; in LTR on the right. */}
+          <div className="flex shrink-0 items-center">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleLang}
+              aria-label={isAr ? "Switch to English" : "التبديل للعربية"}
+              className="h-7 w-7 rounded-full p-0 text-[10px] font-bold text-[hsl(var(--cream))] hover:bg-white/10 sm:h-8 sm:w-8 sm:text-xs"
+            >
+              {isAr ? "EN" : "AR"}
+            </Button>
           </div>
 
         </div>
