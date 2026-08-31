@@ -18,7 +18,10 @@ import {
   Phone,
   FileText,
   Building2,
+  LogIn,
+  LogOut,
 } from "lucide-react";
+
 import { useAuth } from "@/hooks/useAuth";
 import { Logo } from "./Logo";
 
