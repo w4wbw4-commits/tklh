@@ -101,7 +101,7 @@ export const Navbar = () => {
             })}
 
           </nav>
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-1 sm:gap-2 rtl:flex-row-reverse">
             {/* Primary CTA — compact pill in the top corner. */}
             <Button
               size="sm"
