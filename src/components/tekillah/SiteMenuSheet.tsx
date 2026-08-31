@@ -52,9 +52,10 @@ interface Props {
  */
 export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
   const { t, i18n } = useTranslation();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const isAr = i18n.language === "ar";
   const [open, setOpen] = useState(false);
+
 
   // Section anchors — clicking them auto-closes the sheet so the user lands
   // on the section without an overlay covering it.
