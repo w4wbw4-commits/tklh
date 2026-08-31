@@ -272,8 +272,11 @@
     "aboutFull": "تعرف على تِكله",
     "packages": "الباقات",
     "comingSoon": "قريباً",
-    "planBook": "خطط واحجز"
+    "planBook": "خطط واحجز",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج"
   },
+
   "hero": {
     "tag": "تِكله",
     "titleA": "تِكله",
