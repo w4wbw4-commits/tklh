@@ -18,9 +18,10 @@ export const Logo = ({ className = "" }: { className?: string }) => {
       <img
         src={logoAsset}
         alt="TKLH تِكله"
-        className="h-10 w-auto sm:h-12 object-contain select-none"
+        className="h-8 w-auto sm:h-9 object-contain select-none"
         draggable={false}
       />
+
     </motion.div>
   );
 };
