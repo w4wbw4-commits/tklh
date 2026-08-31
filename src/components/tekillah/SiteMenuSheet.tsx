@@ -76,6 +76,12 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
   const close = () => setOpen(false);
   const toggleLang = () => i18n.changeLanguage(isAr ? "en" : "ar");
 
+  const handleSignOut = async () => {
+    close();
+    await signOut();
+  };
+
+
   // Render a single row — mirrors the same look for anchor + Link variants.
   const renderItem = (item: NavLinkItem) => {
     const Icon = item.icon;
