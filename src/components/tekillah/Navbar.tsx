@@ -64,7 +64,8 @@ export const Navbar = () => {
     >
       <div className={`mx-auto px-4 transition-all duration-500 ${scrolled ? "mt-2 max-w-6xl" : "mt-4 max-w-6xl"}`}>
         <div
-          className={`flex items-center justify-between gap-2 rounded-full px-3 py-2 transition-all duration-500 border sm:px-4 sm:py-2.5`}
+          className={`flex items-center justify-between gap-2 rounded-full px-3 py-1 transition-all duration-500 border sm:px-4 sm:py-1.5`}
+
           style={{
             background: "#163726",
             borderColor: scrolled ? "hsl(var(--gold) / 0.55)" : "hsl(var(--gold) / 0.28)",
@@ -79,7 +80,8 @@ export const Navbar = () => {
             {navItems.map((item) => {
               const label = ("labelOverride" in item && item.labelOverride) || t(`nav.${item.key}`);
               const cls =
-                "relative rounded-full px-4 py-2 text-sm font-medium transition-all after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all hover:after:w-1/2";
+                "relative rounded-full px-4 py-1 text-sm font-medium transition-all after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all hover:after:w-1/2";
+
               const linkStyle = { color: "hsl(var(--cream) / 0.86)" } as const;
               void 0;
 
@@ -103,7 +105,7 @@ export const Navbar = () => {
             <Button
               size="sm"
               asChild
-              className="h-9 rounded-full border px-3 text-xs font-semibold sm:px-4 sm:text-sm"
+              className="h-7 rounded-full border px-3 text-xs font-semibold sm:h-8 sm:px-4 sm:text-sm"
               style={{
                 background: "transparent",
                 borderColor: "hsl(var(--gold) / 0.65)",
@@ -116,13 +118,14 @@ export const Navbar = () => {
               </Link>
             </Button>
 
+
             {/* Follow-up plan — icon-only on mobile, labelled on desktop. */}
             <Button
               variant="ghost"
               size="sm"
               asChild
               aria-label={t("nav.myDashboard")}
-              className="hidden h-9 w-9 rounded-full p-0 text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex sm:h-9 sm:w-auto sm:px-3 sm:text-xs"
+              className="hidden h-7 w-7 rounded-full p-0 text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex sm:h-8 sm:w-auto sm:px-3 sm:text-xs"
             >
               <Link to="/dashboard">
                 <LayoutDashboard className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
@@ -130,12 +133,13 @@ export const Navbar = () => {
               </Link>
             </Button>
 
+
             {isPrimaryAdmin && (
               <Button
                 size="sm"
                 asChild
                 aria-label={t("nav.admin")}
-                className="hidden h-9 w-9 rounded-full bg-primary-foreground p-0 text-primary hover:bg-primary-foreground/90 sm:inline-flex sm:w-auto sm:px-3"
+                className="hidden h-7 w-7 rounded-full bg-primary-foreground p-0 text-primary hover:bg-primary-foreground/90 sm:inline-flex sm:h-8 sm:w-auto sm:px-3"
               >
                 <Link to="/admin">
                   <ShieldCheck className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
@@ -143,6 +147,7 @@ export const Navbar = () => {
                 </Link>
               </Button>
             )}
+
 
             {/* Language toggle intentionally hidden until the full English
                 version ships — a visitor should never see a non-working control. */}
