@@ -43,9 +43,6 @@ const ProblemSolutionAbout = lazyWithRetry(() =>
 const OccasionsSection = lazyWithRetry(() =>
   import("@/components/tekillah/OccasionsSection").then((m) => ({ default: m.OccasionsSection })),
 );
-const DashboardPreview = lazyWithRetry(() =>
-  import("@/components/tekillah/DashboardPreview").then((m) => ({ default: m.DashboardPreview })),
-);
 const UpcomingFeatures = lazyWithRetry(() =>
   import("@/components/tekillah/UpcomingFeatures").then((m) => ({ default: m.UpcomingFeatures })),
 );
@@ -89,12 +86,6 @@ const Index = () => {
       <LazyVisible minHeight="60vh" fallback={<SectionSkeleton minHeight="60vh" />}>
         <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
           <OccasionsSection />
-        </Suspense>
-      </LazyVisible>
-      <LazyVisible minHeight="60vh" fallback={<SectionSkeleton minHeight="60vh" />}>
-        <Suspense fallback={<SectionSkeleton minHeight="60vh" />}>
-          <DashboardPreview />
-
         </Suspense>
       </LazyVisible>
       <LazyVisible minHeight="50vh" fallback={<SectionSkeleton minHeight="50vh" />}>
