@@ -84,9 +84,9 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
 
 
   const rowCls =
-    "group flex items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.15)] bg-[#fafaf7] px-4 py-3 text-sm font-medium text-[#163726] transition-all hover:border-[rgba(22,55,38,0.35)] hover:bg-[#f5f5f0] hover:text-[#163726]";
+    "group flex w-full items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.15)] bg-[#fafaf7] px-4 py-3 text-sm font-medium text-[#163726] transition-all hover:border-[rgba(22,55,38,0.35)] hover:bg-[#f5f5f0] hover:text-[#163726]";
   const disabledCls =
-    "flex items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.1)] bg-[#fafaf7]/60 px-4 py-3 text-sm font-medium text-[#163726]/60 cursor-not-allowed opacity-80";
+    "flex w-full items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.1)] bg-[#fafaf7]/60 px-4 py-3 text-sm font-medium text-[#163726]/60 cursor-not-allowed opacity-80";
 
   // Render a single row — mirrors the same look for anchor + Link variants.
   const renderItem = (item: NavLinkItem) => {
