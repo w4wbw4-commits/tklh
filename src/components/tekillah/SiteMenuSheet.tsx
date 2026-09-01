@@ -174,11 +174,11 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
             </div>
             {accountLinks.map(renderItem)}
 
-            {/* Login / Logout — natural width, not stretched. */}
+            {/* Login / Logout — stretched to menu width. */}
             {user ? (
               <button
                 onClick={handleSignOut}
-                className={rowCls + " w-fit"}
+                className={rowCls}
               >
                 <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(22,55,38,0.1)] text-[#163726] transition-colors group-hover:bg-[rgba(22,55,38,0.18)] group-hover:text-[#163726]">
                   <LogOut className="h-4 w-4" />
@@ -186,7 +186,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
                 <span className="text-start">{t("nav.logout", { defaultValue: isAr ? "تسجيل الخروج" : "Sign out" })}</span>
               </button>
             ) : (
-              <Link to="/auth" onClick={close} className={rowCls + " w-fit"}>
+              <Link to="/auth" onClick={close} className={rowCls}>
                 <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(22,55,38,0.1)] text-[#163726] transition-colors group-hover:bg-[rgba(22,55,38,0.18)] group-hover:text-[#163726]">
                   <LogIn className="h-4 w-4" />
                 </span>
