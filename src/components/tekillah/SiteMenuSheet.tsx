@@ -20,6 +20,7 @@ import {
   Building2,
   LogIn,
   LogOut,
+  Languages,
 } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
@@ -173,30 +174,43 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
             </div>
             {accountLinks.map(renderItem)}
 
-            {/* Login / Logout */}
+            {/* Login / Logout — natural width, not stretched. */}
             {user ? (
               <button
                 onClick={handleSignOut}
-                className={rowCls}
+                className={rowCls + " w-fit"}
               >
                 <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(22,55,38,0.1)] text-[#163726] transition-colors group-hover:bg-[rgba(22,55,38,0.18)] group-hover:text-[#163726]">
                   <LogOut className="h-4 w-4" />
                 </span>
-                <span className="flex-1 text-start">{t("nav.logout", { defaultValue: isAr ? "تسجيل الخروج" : "Sign out" })}</span>
+                <span className="text-start">{t("nav.logout", { defaultValue: isAr ? "تسجيل الخروج" : "Sign out" })}</span>
               </button>
             ) : (
-              <Link to="/auth" onClick={close} className={rowCls}>
+              <Link to="/auth" onClick={close} className={rowCls + " w-fit"}>
                 <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(22,55,38,0.1)] text-[#163726] transition-colors group-hover:bg-[rgba(22,55,38,0.18)] group-hover:text-[#163726]">
                   <LogIn className="h-4 w-4" />
                 </span>
-                <span className="flex-1 text-start">{t("nav.login", { defaultValue: isAr ? "تسجيل الدخول" : "Sign in" })}</span>
+                <span className="text-start">{t("nav.login", { defaultValue: isAr ? "تسجيل الدخول" : "Sign in" })}</span>
               </Link>
             )}
 
           </div>
 
-
-          {/* Language toggle hidden until the English version is complete. */}
+          {/* Language toggle — switch between Arabic and English. */}
+          <div className="mt-6 space-y-1.5">
+            <div className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-wider text-[#163726]/60">
+              {t("nav.language", { defaultValue: isAr ? "اللغة" : "Language" })}
+            </div>
+            <button onClick={() => { toggleLang(); }} className={rowCls}>
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(22,55,38,0.1)] text-[#163726] transition-colors group-hover:bg-[rgba(22,55,38,0.18)] group-hover:text-[#163726]">
+                <Languages className="h-4 w-4" />
+              </span>
+              <span className="flex-1 text-start">{isAr ? "English" : "العربية"}</span>
+              <span className="rounded-full bg-[#163726] px-2 py-0.5 text-[10px] font-semibold text-[#fafaf7]">
+                {isAr ? "EN" : "ع"}
+              </span>
+            </button>
+          </div>
 
         </div>
       </SheetContent>
