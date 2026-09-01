@@ -145,6 +145,42 @@
 
     --radius: 0.5rem;
 
+    /* ===== Typography tokens (Cerimonia-inspired proportions) ===== */
+    --font-arabic: 'Tajawal', 'Thmanyah Sans', system-ui, sans-serif;
+    --font-latin: 'Inter', system-ui, sans-serif;
+
+    --fs-h1: clamp(2.125rem, 4.4vw, 3.75rem);   /* 34 → 60px */
+    --fs-h2: clamp(1.8125rem, 3.5vw, 3rem);     /* 29 → 48px */
+    --fs-h3: clamp(1.3125rem, 2vw, 1.8125rem);  /* 21 → 29px */
+    --fs-h4: clamp(1.125rem, 1.6vw, 1.375rem);
+    --fs-body: clamp(1.0625rem, 1.25vw, 1.375rem); /* 17 → 22px */
+    --fs-label: clamp(0.9375rem, 1vw, 1.125rem);   /* 15 → 18px */
+    --fs-button: clamp(1rem, 1.1vw, 1.1875rem);    /* 16 → 19px */
+    --fs-stat: clamp(2.625rem, 4.6vw, 4rem);       /* 42 → 64px */
+
+    --lh-display: 1.2;
+    --lh-heading: 1.25;
+    --lh-body: 1.85;
+
+    /* ===== Spacing scale (8px system) ===== */
+    --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+    --space-6: 24px; --space-8: 32px; --space-10: 40px; --space-12: 48px;
+    --space-16: 64px; --space-20: 80px; --space-24: 96px; --space-30: 120px;
+
+    /* ===== Layout tokens ===== */
+    --container-max: 1280px;
+    --measure-display: 900px;
+    --measure-body: 850px;
+    --hero-min: 720px;
+
+    /* ===== Buttons ===== */
+    --btn-h: 52px;
+    --btn-h-sm: 48px;
+    --btn-px: 32px;
+    --btn-radius: 28px;
+    --transition-btn: 240ms ease;
+
+
     /* No gradients anywhere — these remain as flat fallbacks for legacy use. */
     --gradient-hero: none;
     --gradient-soft: none;
