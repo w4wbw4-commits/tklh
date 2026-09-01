@@ -145,6 +145,42 @@
 
     --radius: 0.5rem;
 
+    /* ===== Typography tokens (Cerimonia-inspired proportions) ===== */
+    --font-arabic: 'Tajawal', 'Thmanyah Sans', system-ui, sans-serif;
+    --font-latin: 'Inter', system-ui, sans-serif;
+
+    --fs-h1: clamp(2.125rem, 4.4vw, 3.75rem);   /* 34 → 60px */
+    --fs-h2: clamp(1.8125rem, 3.5vw, 3rem);     /* 29 → 48px */
+    --fs-h3: clamp(1.3125rem, 2vw, 1.8125rem);  /* 21 → 29px */
+    --fs-h4: clamp(1.125rem, 1.6vw, 1.375rem);
+    --fs-body: clamp(1.0625rem, 1.25vw, 1.375rem); /* 17 → 22px */
+    --fs-label: clamp(0.9375rem, 1vw, 1.125rem);   /* 15 → 18px */
+    --fs-button: clamp(1rem, 1.1vw, 1.1875rem);    /* 16 → 19px */
+    --fs-stat: clamp(2.625rem, 4.6vw, 4rem);       /* 42 → 64px */
+
+    --lh-display: 1.2;
+    --lh-heading: 1.25;
+    --lh-body: 1.85;
+
+    /* ===== Spacing scale (8px system) ===== */
+    --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+    --space-6: 24px; --space-8: 32px; --space-10: 40px; --space-12: 48px;
+    --space-16: 64px; --space-20: 80px; --space-24: 96px; --space-30: 120px;
+
+    /* ===== Layout tokens ===== */
+    --container-max: 1280px;
+    --measure-display: 900px;
+    --measure-body: 850px;
+    --hero-min: 720px;
+
+    /* ===== Buttons ===== */
+    --btn-h: 52px;
+    --btn-h-sm: 48px;
+    --btn-px: 32px;
+    --btn-radius: 28px;
+    --transition-btn: 240ms ease;
+
+
     /* No gradients anywhere — these remain as flat fallbacks for legacy use. */
     --gradient-hero: none;
     --gradient-soft: none;
@@ -308,12 +344,12 @@
   }
 
   html {
-    font-family: 'SaudiRiyal', 'Thmanyah Sans', 'Tajawal', system-ui, sans-serif;
+    font-family: 'SaudiRiyal', var(--font-arabic);
     scroll-behavior: smooth;
   }
 
   html[dir="ltr"], html[lang="en"] {
-    font-family: 'SaudiRiyal', 'Inter', 'Thmanyah Sans', system-ui, sans-serif;
+    font-family: 'SaudiRiyal', var(--font-latin), 'Tajawal', system-ui, sans-serif;
   }
 
   /* English mode: premium Roman serif for all headings + brand titles.
@@ -341,33 +377,40 @@
 
   /* Arabic typography: prevent diacritic clipping */
   h1, h2, h3, h4, h5, h6 {
-    @apply tracking-tight text-balance;
-    line-height: 1.45;
-    padding-bottom: 0.08em;
-    font-weight: 700;
+    @apply text-balance;
+    font-family: var(--font-arabic);
+    letter-spacing: 0;
+    padding-bottom: 0.06em;
     overflow-wrap: break-word;
     word-break: normal;
   }
-  /* === Global fluid typography ===============================================
-     Applies a sane responsive scale to every heading & body element across
-     EVERY page (Landing, Packages, Planner, Dashboards, Admin, Vendor...)
-     without touching individual components. Per-component Tailwind classes
-     still win because utilities have higher specificity. */
-  h1 { @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl leading-tight md:leading-snug; }
-  h2 { @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight md:leading-snug; }
-  h3 { @apply text-lg sm:text-xl md:text-2xl leading-snug; }
-  h4 { @apply text-base sm:text-lg md:text-xl leading-snug; }
-  h5 { @apply text-sm sm:text-base md:text-lg leading-snug; }
-  h6 { @apply text-sm sm:text-base leading-snug; }
+  /* === Global fluid typographic scale =======================================
+     One token-driven scale for every page. Per-component Tailwind utilities
+     still win (higher specificity), so nothing existing breaks. */
+  h1 { font-size: var(--fs-h1); line-height: var(--lh-display); font-weight: 800; }
+  h2 { font-size: var(--fs-h2); line-height: var(--lh-heading); font-weight: 600; }
+  h3 { font-size: var(--fs-h3); line-height: 1.3; font-weight: 600; }
+  h4 { font-size: var(--fs-h4); line-height: 1.35; font-weight: 600; }
+  h5 { font-size: var(--fs-label); line-height: 1.4; font-weight: 600; }
+  h6 { font-size: var(--fs-label); line-height: 1.4; font-weight: 600; }
 
-  p, span, div, a, button, li {
+  p, li {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    font-weight: 400;
+  }
+  span, div, a, button {
     line-height: 1.7;
   }
-  /* Mobile read-comfort: tighten oversize body copy on narrow screens only.
-     Desktop sizes set via utilities (text-lg / text-xl) stay intact. */
-  @media (max-width: 639px) {
-    p { font-size: clamp(0.875rem, 3.6vw, 1rem); }
+
+  /* Latin numerals and Latin words stay upright & readable inside RTL text */
+  [dir="rtl"] .num, .num {
+    font-family: var(--font-latin);
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-variant-numeric: tabular-nums;
   }
+
 
   ::selection {
     background: hsl(var(--green) / 0.2);

@@ -12,11 +12,18 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
-        arabic: ['"Thmanyah Sans"', 'Tajawal', 'system-ui', 'sans-serif'],
-        display: ['"Thmanyah Serif Display"', '"Thmanyah Sans"', 'serif'],
-        serif: ['"Thmanyah Serif Display"', 'serif'],
+        sans: ['Tajawal', '"Thmanyah Sans"', 'system-ui', 'sans-serif'],
+        arabic: ['Tajawal', '"Thmanyah Sans"', 'system-ui', 'sans-serif'],
+        display: ['Tajawal', '"Thmanyah Serif Display"', 'system-ui', 'sans-serif'],
+        serif: ['Tajawal', '"Thmanyah Serif Display"', 'serif'],
+        latin: ['Inter', 'system-ui', 'sans-serif'],
+        numeric: ['Inter', 'system-ui', 'sans-serif'],
         cinzel: ['"Cinzel"', '"Thmanyah Serif Display"', 'serif'],
+      },
+      maxWidth: {
+        "container-tk": "var(--container-max)",
+        "measure-lg": "var(--measure-display)",
+        "measure": "var(--measure-body)",
       },
 
       colors: {
