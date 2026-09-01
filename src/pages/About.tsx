@@ -91,6 +91,10 @@ const About = () => {
         </div>
       </section>
 
+      {/* ──────────────── Speed / Behind story / Occasions (from home) ──────────────── */}
+      <ProblemSolutionAbout />
+      <OccasionsSection />
+
       {/* ──────────────── Facilities ──────────────── */}
       <section id="facilities" className="bg-paper px-5 pb-20 sm:px-8 sm:pb-28">
         <div className="mx-auto max-w-6xl">
