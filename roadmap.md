@@ -7,3 +7,4 @@
 - [x] Remove the gold border/frame from the Navbar primary CTA.
 - [x] Reduce Navbar height by ~25% on mobile only.
 - [x] Copy ProblemSolutionAbout and OccasionsSection content/style into the About page.
+- [x] Remove DashboardPreview section from homepage.
