@@ -156,7 +156,7 @@ export const Hero = () => {
         <motion.div variants={rise} className="mt-10 flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
           <a
             href="/planner"
-            className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full px-8 py-4 text-sm font-black transition-colors duration-500 sm:w-auto sm:text-base"
+            className="group inline-flex w-1/2 items-center justify-center gap-2.5 rounded-full px-8 py-4 text-sm font-black transition-colors duration-500 sm:w-auto sm:text-base"
             style={{
               backgroundColor: "hsl(var(--green))",
               color: "hsl(var(--cream))",
