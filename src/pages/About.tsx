@@ -12,6 +12,8 @@ import { CalendarCheck, LayoutDashboard, ShieldCheck, Check } from "lucide-react
 import { Navbar } from "@/components/tekillah/Navbar";
 import { ScrollProgress } from "@/components/tekillah/ScrollProgress";
 import { Reveal } from "@/components/tekillah/Reveal";
+import { ProblemSolutionAbout } from "@/components/tekillah/ProblemSolutionAbout";
+import { OccasionsSection } from "@/components/tekillah/OccasionsSection";
 import { SEO } from "@/components/SEO";
 import chairMark from "/tklh-chair-mark.png";
 
@@ -88,6 +90,10 @@ const About = () => {
           </Reveal>
         </div>
       </section>
+
+      {/* ──────────────── Speed / Behind story / Occasions (from home) ──────────────── */}
+      <ProblemSolutionAbout />
+      <OccasionsSection />
 
       {/* ──────────────── Facilities ──────────────── */}
       <section id="facilities" className="bg-paper px-5 pb-20 sm:px-8 sm:pb-28">
