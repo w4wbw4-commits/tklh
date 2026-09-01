@@ -21,7 +21,6 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const ADMIN_EMAIL = "966554430196@phone.tekillah.app";
 const EMAIL_DOMAIN = "@phone.tekillah.app";
 const OTP_TTL_MS = 5 * 60 * 1000;
 const MAX_VERIFY_ATTEMPTS = 5;
@@ -80,9 +79,6 @@ Deno.serve(async (req) => {
     if (!/^\+9665\d{8}$/.test(phone)) return json({ error: "Invalid phone format" }, 400);
 
     const email = phoneToEmail(phone);
-    if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-      return json({ error: "Forbidden" }, 403);
-    }
 
     const admin = createClient(supabaseUrl, serviceRoleKey, {
       auth: { persistSession: false, autoRefreshToken: false },
