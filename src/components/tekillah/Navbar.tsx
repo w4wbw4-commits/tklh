@@ -64,7 +64,7 @@ export const Navbar = () => {
     >
       <div className={`mx-auto px-4 transition-all duration-500 ${scrolled ? "mt-2 max-w-6xl" : "mt-4 max-w-6xl"}`}>
         <div
-          className={`flex items-center justify-between gap-2 rounded-full px-3 py-1 transition-all duration-500 border sm:px-4 sm:py-1.5 rtl:flex-row-reverse`}
+          className={`flex items-center justify-between gap-2 rounded-full border px-3 py-0.5 transition-all duration-500 sm:px-4 sm:py-1.5 rtl:flex-row-reverse`}
 
 
           style={{
@@ -73,7 +73,7 @@ export const Navbar = () => {
           }}
         >
           <div className="flex shrink-0 items-center gap-2">
-            <Logo />
+            <Logo className="[&_img]:!h-6 sm:[&_img]:!h-9" />
           </div>
 
 
@@ -106,10 +106,9 @@ export const Navbar = () => {
             <Button
               size="sm"
               asChild
-              className="h-7 rounded-full border px-3 text-xs font-semibold sm:h-8 sm:px-4 sm:text-sm"
+              className="h-8 rounded-full px-3 text-xs font-semibold !min-h-8 sm:h-8 sm:px-4 sm:text-sm"
               style={{
                 background: "transparent",
-                borderColor: "hsl(var(--gold) / 0.65)",
                 color: "hsl(var(--cream))",
               }}
             >
@@ -126,7 +125,7 @@ export const Navbar = () => {
               size="sm"
               asChild
               aria-label={t("nav.myDashboard")}
-              className="hidden h-7 w-7 rounded-full p-0 text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex sm:h-8 sm:w-auto sm:px-3 sm:text-xs"
+              className="hidden h-6 w-6 rounded-full p-0 text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex sm:h-8 sm:w-auto sm:px-3 sm:text-xs"
             >
               <Link to="/dashboard">
                 <LayoutDashboard className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
