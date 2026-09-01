@@ -166,19 +166,8 @@ export const Hero = () => {
             <span>{t("hero.ctaTitle")}</span>
             <Arrow className="h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1" />
           </a>
-
-          <a
-            href="/vendor"
-            className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full px-8 py-4 text-sm font-black transition-colors duration-500 sm:w-auto sm:text-base"
-            style={{
-              border: "1px solid hsl(var(--gold) / 0.6)",
-              color: "hsl(var(--green))",
-            }}
-          >
-            <span>{t("hero.secondary")}</span>
-            <Arrow className="h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1" />
-          </a>
         </motion.div>
+
       </motion.div>
     </section>
   );

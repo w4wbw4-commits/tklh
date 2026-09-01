@@ -18,7 +18,10 @@ import {
   Phone,
   FileText,
   Building2,
+  LogIn,
+  LogOut,
 } from "lucide-react";
+
 import { useAuth } from "@/hooks/useAuth";
 import { Logo } from "./Logo";
 
@@ -49,9 +52,10 @@ interface Props {
  */
 export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
   const { t, i18n } = useTranslation();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const isAr = i18n.language === "ar";
   const [open, setOpen] = useState(false);
+
 
   // Section anchors — clicking them auto-closes the sheet so the user lands
   // on the section without an overlay covering it.
@@ -72,15 +76,24 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
   const close = () => setOpen(false);
   const toggleLang = () => i18n.changeLanguage(isAr ? "en" : "ar");
 
+  const handleSignOut = async () => {
+    close();
+    await signOut();
+  };
+
+
+  const rowCls =
+    "group flex items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.15)] bg-[#fafaf7] px-4 py-3 text-sm font-medium text-[#163726] transition-all hover:border-[rgba(22,55,38,0.35)] hover:bg-[#f5f5f0] hover:text-[#163726]";
+  const disabledCls =
+    "flex items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.1)] bg-[#fafaf7]/60 px-4 py-3 text-sm font-medium text-[#163726]/60 cursor-not-allowed opacity-80";
+
   // Render a single row — mirrors the same look for anchor + Link variants.
   const renderItem = (item: NavLinkItem) => {
     const Icon = item.icon;
     const label = t(item.labelKey, { defaultValue: isAr ? item.fallback.ar : item.fallback.en });
-    const cls =
-      "group flex items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.15)] bg-[#fafaf7] px-4 py-3 text-sm font-medium text-[#163726] transition-all hover:border-[rgba(22,55,38,0.35)] hover:bg-[#f5f5f0] hover:text-[#163726]";
-    const disabledCls =
-      "flex items-center gap-3 rounded-2xl border border-[rgba(22,55,38,0.1)] bg-[#fafaf7]/60 px-4 py-3 text-sm font-medium text-[#163726]/60 cursor-not-allowed opacity-80";
+    const cls = rowCls;
     const inner = (
+
       <>
         <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl transition-colors ${item.disabled ? "bg-[rgba(22,55,38,0.08)] text-[#163726]/60" : "bg-[rgba(22,55,38,0.1)] text-[#163726] group-hover:bg-[rgba(22,55,38,0.18)] group-hover:text-[#163726]"}`}>
           <Icon className="h-4 w-4" />
@@ -159,7 +172,29 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
               {t("nav.account", { defaultValue: isAr ? "حسابي" : "Account" })}
             </div>
             {accountLinks.map(renderItem)}
+
+            {/* Login / Logout */}
+            {user ? (
+              <button
+                onClick={handleSignOut}
+                className={rowCls}
+              >
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(22,55,38,0.1)] text-[#163726] transition-colors group-hover:bg-[rgba(22,55,38,0.18)] group-hover:text-[#163726]">
+                  <LogOut className="h-4 w-4" />
+                </span>
+                <span className="flex-1 text-start">{t("nav.logout", { defaultValue: isAr ? "تسجيل الخروج" : "Sign out" })}</span>
+              </button>
+            ) : (
+              <Link to="/auth" onClick={close} className={rowCls}>
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-[rgba(22,55,38,0.1)] text-[#163726] transition-colors group-hover:bg-[rgba(22,55,38,0.18)] group-hover:text-[#163726]">
+                  <LogIn className="h-4 w-4" />
+                </span>
+                <span className="flex-1 text-start">{t("nav.login", { defaultValue: isAr ? "تسجيل الدخول" : "Sign in" })}</span>
+              </Link>
+            )}
+
           </div>
+
 
           {/* Language toggle hidden until the English version is complete. */}
 

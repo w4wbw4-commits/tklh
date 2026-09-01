@@ -271,8 +271,11 @@
     "aboutFull": "About Tklh",
     "packages": "Packages",
     "comingSoon": "Coming Soon",
-    "planBook": "Plan & Book"
+    "planBook": "Plan & Book",
+    "login": "Sign in",
+    "logout": "Sign out"
   },
+
   "hero": {
     "tag": "A luxury Saudi platform for planning your events",
     "titleA": "TKLH",

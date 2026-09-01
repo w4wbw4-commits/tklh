@@ -64,7 +64,8 @@ export const Navbar = () => {
     >
       <div className={`mx-auto px-4 transition-all duration-500 ${scrolled ? "mt-2 max-w-6xl" : "mt-4 max-w-6xl"}`}>
         <div
-          className={`flex items-center justify-between gap-2 rounded-full px-3 py-1 transition-all duration-500 border sm:px-4 sm:py-1.5`}
+          className={`flex items-center justify-between gap-2 rounded-full px-3 py-1 transition-all duration-500 border sm:px-4 sm:py-1.5 rtl:flex-row-reverse`}
+
 
           style={{
             background: "#163726",
@@ -100,7 +101,7 @@ export const Navbar = () => {
             })}
 
           </nav>
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-1 sm:gap-2 rtl:flex-row-reverse">
             {/* Primary CTA — compact pill in the top corner. */}
             <Button
               size="sm"
