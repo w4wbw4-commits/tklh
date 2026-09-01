@@ -5,4 +5,4 @@
 - [x] Remove the "Join as a service provider" secondary CTA from the Hero.
 - [x] Reduce Hero primary CTA width by 50% on mobile.
 - [x] Remove the gold border/frame from the Navbar primary CTA.
-- [ ] Reduce Navbar height by 25% on mobile only.
+- [x] Reduce Navbar height by ~25% on mobile only.
