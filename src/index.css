@@ -308,24 +308,24 @@
   }
 
   html {
-    font-family: 'SaudiRiyal', 'Thmanyah Sans', 'Tajawal', system-ui, sans-serif;
+    font-family: 'SaudiRiyal', 'Tajawal', system-ui, sans-serif;
     scroll-behavior: smooth;
+    letter-spacing: 0;
   }
 
   html[dir="ltr"], html[lang="en"] {
-    font-family: 'SaudiRiyal', 'Inter', 'Thmanyah Sans', system-ui, sans-serif;
+    font-family: 'SaudiRiyal', 'Inter', 'Tajawal', system-ui, sans-serif;
   }
 
-  /* English mode: premium Roman serif for all headings + brand titles.
-     Arabic keeps its custom serif display. */
+  /* English mode: Inter for headings + brand titles. */
   html[lang="en"] h1,
   html[lang="en"] h2,
   html[lang="en"] h3,
   html[lang="en"] h4,
   html[lang="en"] .font-arabic,
   html[lang="en"] .font-serif {
-    font-family: 'Cinzel', 'Thmanyah Serif Display', Georgia, serif !important;
-    letter-spacing: 0.01em;
+    font-family: 'Inter', 'Tajawal', system-ui, sans-serif !important;
+    letter-spacing: normal;
   }
 
   body {
