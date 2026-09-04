@@ -524,23 +524,51 @@
 
 
   .font-display {
-    font-family: 'Thmanyah Serif Display', 'Thmanyah Sans', 'Tajawal', system-ui, serif;
+    font-family: 'Tajawal', 'Inter', system-ui, sans-serif;
     font-feature-settings: "kern", "liga", "calt";
-    letter-spacing: 0.005em;
+    letter-spacing: 0;
   }
   .font-wordmark {
-    font-family: 'Thmanyah Serif Display', 'Thmanyah Sans', 'Tajawal', system-ui, serif;
+    font-family: 'Tajawal', 'Inter', system-ui, sans-serif;
     font-feature-settings: "kern", "liga", "calt";
-    font-weight: 900;
-    letter-spacing: -0.01em;
+    font-weight: 800;
+    letter-spacing: 0;
     color: inherit;
     -webkit-text-fill-color: currentColor;
   }
   .font-tagline {
-    font-family: 'Thmanyah Sans', 'Tajawal', system-ui, sans-serif;
+    font-family: 'Tajawal', system-ui, sans-serif;
     font-weight: 500;
     font-feature-settings: "kern", "liga";
-    letter-spacing: 0.005em;
+    letter-spacing: 0;
+  }
+
+  /* Large statistics — Inter, light and spacious, LTR-safe inside RTL text */
+  .stat-number {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 42px;
+    line-height: 1;
+    letter-spacing: -1px;
+    font-variant-numeric: lining-nums tabular-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline-block;
+  }
+  @media (min-width: 768px) {
+    .stat-number { font-size: 52px; letter-spacing: -1.5px; }
+  }
+  @media (min-width: 1024px) {
+    .stat-number { font-size: 64px; letter-spacing: -2px; }
+  }
+  .stat-label {
+    font-family: 'Tajawal', system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  @media (min-width: 1024px) {
+    .stat-label { font-size: 18px; }
   }
 
   /* Motion language: fade + 10–15px rise only. No bounce, spin, pulse, parallax. */
