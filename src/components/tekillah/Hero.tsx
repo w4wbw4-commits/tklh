@@ -123,7 +123,7 @@ export const Hero = () => {
           style={{
             color: "#163726",
             fontFeatureSettings: '"kern","liga","calt","dlig"',
-            fontSize: "clamp(2rem, 5.5vw, 4.25rem)",
+            fontSize: "clamp(1rem, 2.75vw, 2.125rem)",
             lineHeight: 1.3,
             maxWidth: "20ch",
             marginInline: "auto",
