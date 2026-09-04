@@ -98,15 +98,15 @@ export const OccasionsSection = () => {
                 }
                 style={i === 1 ? { borderColor: "hsl(var(--gold) / 0.45)" } : undefined}
               >
-                <div className="flex items-baseline gap-1.5">
-                  <span className="font-display text-5xl font-black leading-none tabular-nums text-wine sm:text-6xl">
+                <div className="flex items-baseline gap-1.5" dir="ltr" style={{ justifyContent: "flex-start" }}>
+                  <span className="stat-number text-wine">
                     <AnimatedCounter value={item.value} />
                   </span>
-                  <span className="font-display text-3xl font-black leading-none text-wine sm:text-4xl">
+                  <span className="stat-number text-wine" style={{ fontSize: "0.6em" }}>
                     +
                   </span>
                 </div>
-                <p className={`mt-4 text-base font-bold text-green ${ar}`}>{item.label}</p>
+                <p className={`stat-label mt-4 font-bold text-green ${ar}`}>{item.label}</p>
                 <p className={`mt-2 max-w-sm text-[15px] leading-[1.9] text-[hsl(var(--brown))] ${ar}`}>
                   {item.desc}
                 </p>
