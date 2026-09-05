@@ -143,16 +143,17 @@ export const WizardSceneDetails = ({ className, style }: Props) => {
         {/* date dots */}
         {[0, 1, 2].map((r) =>
           [0, 1, 2, 3].map((c) => (
-            <motion.circle key={`${r}-${c}`} cx={14 + c * 18} cy={36 + r * 12} r="1.6"
-              fill={olive} opacity="0.55"
+            <motion.circle key={`${r}-${c}`} cx={14 + c * 18} cy={36 + r * 12} r="2.4"
+              fill={olive} opacity="0.85"
               initial={{ opacity: 0 }}
-              animate={{ opacity: animate === "visible" ? 0.55 : 0 }}
+              animate={{ opacity: animate === "visible" ? 0.85 : 0 }}
               transition={{ delay: 1.6 + (r * 4 + c) * 0.04 }}
             />
           ))
         )}
         {/* highlighted day */}
-        <motion.circle cx="50" cy="48" r="6" fill={gold} fillOpacity="0.85"
+        <motion.circle cx="50" cy="48" r="8" fill={gold} fillOpacity="1"
+          stroke={olive} strokeWidth="1"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: animate === "visible" ? 1 : 0, opacity: animate === "visible" ? 1 : 0 }}
           transition={{ delay: 2.0, type: "spring", stiffness: 200 }}
