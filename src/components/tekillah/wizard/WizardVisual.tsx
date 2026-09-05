@@ -100,7 +100,7 @@ export const WizardVisual = ({ step, variant = "side" }: Props) => {
         >
           <div className="mb-1 flex items-center gap-2 sm:mb-2">
             <span className="h-px w-6 bg-primary-deep/60 sm:w-8" />
-            <span className="text-[9px] font-medium uppercase tracking-[0.3em] text-primary-deep/70 sm:text-[10px]">
+            <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-primary-deep sm:text-xs">
               {String(safeIndex + 1).padStart(2, "0")}
             </span>
           </div>
