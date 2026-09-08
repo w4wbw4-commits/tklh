@@ -35,7 +35,7 @@ export const EVENT_TYPES: EventTypeDef[] = [
     dateHintAr: "اختر تاريخ الحفلة", dateHintEn: "Pick the party date",
   },
   {
-    key: "newborn", ar: "احتفال مولود", en: "Newborn celebration", dateMode: "single",
+    key: "newborn", ar: "استقبال مولود", en: "Newborn celebration", dateMode: "single",
     dateHintAr: "اختر تاريخ الاحتفال", dateHintEn: "Pick the celebration date",
   },
 ];
