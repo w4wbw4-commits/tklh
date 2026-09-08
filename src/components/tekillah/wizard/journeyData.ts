@@ -31,7 +31,7 @@ export const EVENT_TYPES: EventTypeDef[] = [
     dateHintAr: "اختر أيام الفعالية من - إلى", dateHintEn: "Pick your event days (from - to)",
   },
   {
-    key: "birthday", ar: "أعياد ميلاد", en: "Birthdays", dateMode: "single",
+    key: "birthday", ar: "يوم ميلاد", en: "Birthdays", dateMode: "single",
     dateHintAr: "اختر تاريخ الحفلة", dateHintEn: "Pick the party date",
   },
   {
