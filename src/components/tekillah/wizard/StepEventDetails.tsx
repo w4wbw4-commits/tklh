@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { NumberStepper } from "@/components/tekillah/NumberStepper";
 import { SAUDI_CITIES } from "@/components/tekillah/vendor/saudiPlaces";
-import { EVENT_TYPES, BUDGET_BANDS, type EventTypeKey } from "./journeyData";
+import { EVENT_TYPES, type EventTypeKey } from "./journeyData";
 
 const ISO = "yyyy-MM-dd";
 const DISPLAY = "dd/MM/yyyy";
