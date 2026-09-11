@@ -23,12 +23,8 @@ export const EVENT_TYPES: EventTypeDef[] = [
     dateHintAr: "ليلة العمر وحدة، اختر تاريخها", dateHintEn: "One night of a lifetime — pick its date",
   },
   {
-    key: "engagement", ar: "خطوبة", en: "Engagement", dateMode: "single",
-    dateHintAr: "اختر تاريخ خطوبتك", dateHintEn: "Pick your engagement date",
-  },
-  {
-    key: "malka", ar: "ملكة", en: "Malka", wine: true, dateMode: "single",
-    dateHintAr: "اختر تاريخ عقد الملكة", dateHintEn: "Pick your Malka date",
+    key: "malka", ar: "خطوبة / ملكة", en: "Engagement / Malka", wine: true, dateMode: "single",
+    dateHintAr: "اختر تاريخ الخطوبة أو عقد الملكة", dateHintEn: "Pick your engagement or Malka date",
   },
   {
     key: "conference", ar: "مؤتمرات وفعاليات", en: "Conferences & events", dateMode: "range",
@@ -79,6 +75,8 @@ export const CATEGORIES: Record<EventTypeKey, CategoryDef[]> = {
     { key: "hospitality", ar: "ضيافة", en: "Hospitality", icon: "Coffee" },
     { key: "photography", ar: "تصوير", en: "Photography", icon: "Camera" },
     { key: "simple_decor", ar: "تنسيق بسيط", en: "Simple styling", icon: "Flower2" },
+    { key: "audio", ar: "صوتيات", en: "Audio", icon: "Speaker" },
+    { key: "cars", ar: "سيارات", en: "Cars", icon: "Car" },
   ],
   conference: [
     { key: "valet", ar: "فاليه", en: "Valet", icon: "Car" },
