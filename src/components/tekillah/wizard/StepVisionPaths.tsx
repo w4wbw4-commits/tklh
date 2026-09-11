@@ -153,6 +153,9 @@ export const StepVisionPaths = ({
               />
             </div>
 
+            <VisionReferences refs={visionRefs} setRefs={setVisionRefs} />
+
+
             <div className="space-y-5">
               <h4 className="font-arabic text-base font-semibold text-foreground">
                 {isAr ? "خيارات ممكن تساعدك" : "Options that might help"}
