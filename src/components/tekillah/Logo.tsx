@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import lightLogo from "/tklh-logo-light.png";
-import darkLogoAsset from "@/assets/tklh-logo-official.png.asset.json";
+import darkLogo from "/tklh-logo.png";
 
 /**
  * Brand Logo — official TKLH / تِكله lockup (Arabic wordmark + Latin "Tklh"
