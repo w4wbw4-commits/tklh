@@ -52,7 +52,7 @@ interface Props {
  * Direction-aware: opens from the start edge (right in RTL, left in LTR) so
  * it feels native to Arabic users.
  */
-export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
+export const SiteMenuSheet = ({ isPrimaryAdmin, triggerTheme = "green" }: Props) => {
   const { t, i18n } = useTranslation();
   const { user, signOut } = useAuth();
   const isAr = i18n.language === "ar";
