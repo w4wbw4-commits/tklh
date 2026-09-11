@@ -4,7 +4,7 @@
 // All numbers are written with Latin digits, phrased like the rest of the site.
 // ---------------------------------------------------------------------------
 
-export type EventTypeKey = "wedding" | "malka" | "conference" | "birthday" | "newborn" | "graduation" | "other";
+export type EventTypeKey = "wedding" | "engagement" | "malka" | "conference" | "birthday" | "newborn" | "graduation" | "other";
 
 export interface EventTypeDef {
   key: EventTypeKey;
