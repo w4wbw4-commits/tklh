@@ -4,7 +4,7 @@
 // All numbers are written with Latin digits, phrased like the rest of the site.
 // ---------------------------------------------------------------------------
 
-export type EventTypeKey = "wedding" | "malka" | "conference" | "birthday" | "newborn";
+export type EventTypeKey = "wedding" | "malka" | "conference" | "birthday" | "newborn" | "graduation" | "other";
 
 export interface EventTypeDef {
   key: EventTypeKey;
@@ -37,6 +37,14 @@ export const EVENT_TYPES: EventTypeDef[] = [
   {
     key: "newborn", ar: "استقبال مولود", en: "Newborn celebration", dateMode: "single",
     dateHintAr: "اختر تاريخ الاحتفال", dateHintEn: "Pick the celebration date",
+  },
+  {
+    key: "graduation", ar: "حفلات تخرج", en: "Graduation party", dateMode: "single",
+    dateHintAr: "اختر تاريخ حفل التخرج", dateHintEn: "Pick the graduation party date",
+  },
+  {
+    key: "other", ar: "أخرى", en: "Other", dateMode: "single",
+    dateHintAr: "اكتب نوع مناسبتك واختر تاريخها", dateHintEn: "Type your event and pick its date",
   },
 ];
 
