@@ -66,6 +66,14 @@ export const CATEGORIES: Record<EventTypeKey, CategoryDef[]> = {
     { key: "audio", ar: "صوتيات", en: "Audio", icon: "Speaker" },
     { key: "cars", ar: "سيارات", en: "Cars", icon: "Car" },
   ],
+  engagement: [
+    { key: "hall", ar: "قاعة أو صالة", en: "Hall or lounge", icon: "Building2" },
+    { key: "hospitality", ar: "ضيافة", en: "Hospitality", icon: "Coffee" },
+    { key: "photography", ar: "تصوير", en: "Photography", icon: "Camera" },
+    { key: "decor", ar: "تنسيق وديكور", en: "Styling & decor", icon: "Flower2" },
+    { key: "audio", ar: "صوتيات", en: "Audio", icon: "Speaker" },
+    { key: "cars", ar: "سيارات", en: "Cars", icon: "Car" },
+  ],
   malka: [
     { key: "malka_venue", ar: "قاعة أو صالة منزلية", en: "Hall or home majlis", icon: "Home" },
     { key: "hospitality", ar: "ضيافة", en: "Hospitality", icon: "Coffee" },
