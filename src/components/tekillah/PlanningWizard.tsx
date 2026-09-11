@@ -157,9 +157,10 @@ export const PlanningWizard = () => {
       guests: totalGuests, menGuests: splitGuests ? menGuests : null,
       womenGuests: splitGuests ? womenGuests : null,
       services: selected, visionPath, vision, visionBlocks: blocks,
+      visionRefs: visionRefs.map((r) => ({ kind: r.kind, url: r.url, name: r.name, tag: r.tag })),
       language: i18n.language,
     }),
-    [eventType, customEventName, city, date, endDate, flexibleDate, totalGuests, splitGuests, menGuests, womenGuests, selected, visionPath, vision, blocks, i18n.language],
+    [eventType, customEventName, city, date, endDate, flexibleDate, totalGuests, splitGuests, menGuests, womenGuests, selected, visionPath, vision, blocks, visionRefs, i18n.language],
   );
 
 
