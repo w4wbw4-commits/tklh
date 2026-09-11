@@ -179,7 +179,7 @@ export const StepEventDetails = ({
                   </div>
                   <p className="mt-2 font-arabic text-[13px] text-foreground/70">
                     {isAr
-                      ? "نبحث لك عن الأنسب في الأيام القريبة من تاريخك، وفريق تكله يرجع لك بأفضل خيار متاح."
+                      ? "نبحث لك عن  افضل الاسعار في الأيام القريبة من تاريخك."
                       : "We'll look for the best fit near your date, and the Tklh team gets back to you with the best available option."}
                   </p>
                 </div>
