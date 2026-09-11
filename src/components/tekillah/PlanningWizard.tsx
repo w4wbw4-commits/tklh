@@ -297,6 +297,8 @@ export const PlanningWizard = () => {
                     setVision={setVision}
                     blocks={blocks}
                     setBlock={setBlock}
+                    visionRefs={visionRefs}
+                    setVisionRefs={setVisionRefs}
                   />
                 )}
                 {step === 3 && <StepComingSoon summary={summary} payload={payload} />}
