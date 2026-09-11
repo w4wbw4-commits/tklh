@@ -45,7 +45,6 @@ interface Props {
   menGuests: number; setMenGuests: (v: number) => void;
   womenGuests: number; setWomenGuests: (v: number) => void;
   splitGuests: boolean; setSplitGuests: (v: boolean) => void;
-  budgetBand: string; setBudgetBand: (v: string) => void;
 }
 
 export const StepEventDetails = ({
@@ -53,7 +52,6 @@ export const StepEventDetails = ({
   city, setCity, date, setDate, endDate, setEndDate,
   flexibleDate, setFlexibleDate, guests, setGuests,
   menGuests, setMenGuests, womenGuests, setWomenGuests, splitGuests, setSplitGuests,
-  budgetBand, setBudgetBand,
 }: Props) => {
   const { i18n } = useTranslation();
   const isAr = i18n.language?.startsWith("ar");
@@ -274,32 +272,6 @@ export const StepEventDetails = ({
             </div>
 
 
-            {/* Budget bands */}
-            <div className="space-y-3">
-              <Label className="font-arabic text-base font-semibold text-foreground">
-                {isAr ? "حدد ميزانيتك، وحنا تكله لك." : "Set your budget — Tklh takes it from there."}
-              </Label>
-              <div className="flex flex-wrap gap-2">
-                {BUDGET_BANDS.map((b) => {
-                  const active = budgetBand === b.key;
-                  return (
-                    <button
-                      key={b.key}
-                      type="button"
-                      onClick={() => setBudgetBand(active ? "" : b.key)}
-                      className={cn(
-                        "min-h-[44px] rounded-full border px-4 py-2 font-arabic text-[13px] transition-all duration-500",
-                        active
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-primary/30 text-foreground/80 hover:border-primary/60",
-                      )}
-                    >
-                      {isAr ? b.ar : b.en}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -22,7 +22,7 @@ import { StepComingSoon } from "./wizard/StepComingSoon";
 import { MatchingOverlay } from "./wizard/MatchingOverlay";
 import { WizardVisual } from "./wizard/WizardVisual";
 import {
-  CATEGORIES, EVENT_TYPES, BUDGET_BANDS, labelOf, type EventTypeKey,
+  CATEGORIES, EVENT_TYPES, type EventTypeKey,
 } from "./wizard/journeyData";
 import { SAUDI_CITIES } from "./vendor/saudiPlaces";
 import { fmtDate } from "@/i18n/format";
