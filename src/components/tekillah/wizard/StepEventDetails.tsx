@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { format, parse, isValid } from "date-fns";
 import { ar as arLocale, enUS } from "date-fns/locale";
-import { CalendarIcon, Heart, Crown, Presentation, Cake, Baby, GraduationCap, Sparkles } from "lucide-react";
+import { CalendarIcon, Heart, Gem, Crown, Presentation, Cake, Baby, GraduationCap, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -26,7 +26,7 @@ const isoToDate = (iso: string): Date | undefined => {
 };
 
 const ICONS: Record<EventTypeKey, typeof Heart> = {
-  wedding: Heart, malka: Crown, conference: Presentation, birthday: Cake, newborn: Baby,
+  wedding: Heart, engagement: Gem, malka: Crown, conference: Presentation, birthday: Cake, newborn: Baby,
   graduation: GraduationCap, other: Sparkles,
 };
 
@@ -59,7 +59,7 @@ export const StepEventDetails = ({
   const isAr = i18n.language?.startsWith("ar");
   const locale = isAr ? arLocale : enUS;
   const def = EVENT_TYPES.find((e) => e.key === eventType);
-  const canSplit = eventType === "wedding" || eventType === "malka";
+  const canSplit = eventType === "wedding" || eventType === "engagement" || eventType === "malka";
   const selectedDate = isoToDate(date);
   const selectedEndDate = isoToDate(endDate);
 

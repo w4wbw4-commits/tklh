@@ -4,7 +4,7 @@
 // All numbers are written with Latin digits, phrased like the rest of the site.
 // ---------------------------------------------------------------------------
 
-export type EventTypeKey = "wedding" | "malka" | "conference" | "birthday" | "newborn" | "graduation" | "other";
+export type EventTypeKey = "wedding" | "engagement" | "malka" | "conference" | "birthday" | "newborn" | "graduation" | "other";
 
 export interface EventTypeDef {
   key: EventTypeKey;
@@ -21,6 +21,10 @@ export const EVENT_TYPES: EventTypeDef[] = [
   {
     key: "wedding", ar: "زواج", en: "Wedding", dateMode: "single",
     dateHintAr: "ليلة العمر وحدة، اختر تاريخها", dateHintEn: "One night of a lifetime — pick its date",
+  },
+  {
+    key: "engagement", ar: "خطوبة", en: "Engagement", dateMode: "single",
+    dateHintAr: "اختر تاريخ خطوبتك", dateHintEn: "Pick your engagement date",
   },
   {
     key: "malka", ar: "ملكة", en: "Malka", wine: true, dateMode: "single",
@@ -59,6 +63,14 @@ export const CATEGORIES: Record<EventTypeKey, CategoryDef[]> = {
     { key: "photography", ar: "تصوير", en: "Photography", icon: "Camera" },
     { key: "decor", ar: "تنسيق وديكور", en: "Styling & decor", icon: "Flower2" },
     { key: "band", ar: "فرقة", en: "Band", icon: "Drum" },
+    { key: "audio", ar: "صوتيات", en: "Audio", icon: "Speaker" },
+    { key: "cars", ar: "سيارات", en: "Cars", icon: "Car" },
+  ],
+  engagement: [
+    { key: "hall", ar: "قاعة أو صالة", en: "Hall or lounge", icon: "Building2" },
+    { key: "hospitality", ar: "ضيافة", en: "Hospitality", icon: "Coffee" },
+    { key: "photography", ar: "تصوير", en: "Photography", icon: "Camera" },
+    { key: "decor", ar: "تنسيق وديكور", en: "Styling & decor", icon: "Flower2" },
     { key: "audio", ar: "صوتيات", en: "Audio", icon: "Speaker" },
     { key: "cars", ar: "سيارات", en: "Cars", icon: "Car" },
   ],
