@@ -66,6 +66,7 @@ export const PlanningWizard = () => {
   const [blocks, setBlocks] = useState<VisionBlocks>({ venue: null, dinner: null, photo: null, mood: null });
   const setBlock = (g: VisionBlockGroup, v: string | null) =>
     setBlocks((b) => ({ ...b, [g]: v }));
+  const [visionRefs, setVisionRefs] = useState<VisionRef[]>([]);
 
   const formAnchorRef = useRef<HTMLDivElement>(null);
   const scrollFormIntoView = () => {
