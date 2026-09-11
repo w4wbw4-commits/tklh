@@ -174,7 +174,7 @@ export const StepEventDetails = ({
                       aria-label={isAr ? "مرن حول هذا التاريخ" : "Flexible around this date"}
                     />
                     <Label htmlFor="flex-date" className="font-arabic text-sm text-foreground">
-                      {isAr ? "مرن حول هذا التاريخ" : "Flexible around this date"}
+                      {isAr ? "افضل سعر حول هذا التاريخ" : "Flexible around this date"}
                     </Label>
                   </div>
                   <p className="mt-2 font-arabic text-[13px] text-foreground/70">
