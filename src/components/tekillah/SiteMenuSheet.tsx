@@ -38,6 +38,7 @@ interface NavLinkItem {
 
 interface Props {
   isPrimaryAdmin?: boolean;
+  triggerTheme?: "green" | "cream";
 }
 
 /**
@@ -51,7 +52,7 @@ interface Props {
  * Direction-aware: opens from the start edge (right in RTL, left in LTR) so
  * it feels native to Arabic users.
  */
-export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
+export const SiteMenuSheet = ({ isPrimaryAdmin, triggerTheme = "green" }: Props) => {
   const { t, i18n } = useTranslation();
   const { user, signOut } = useAuth();
   const isAr = i18n.language === "ar";
@@ -143,7 +144,11 @@ export const SiteMenuSheet = ({ isPrimaryAdmin }: Props) => {
           variant="ghost"
           size="sm"
           aria-label={t("nav.openMenu", { defaultValue: isAr ? "فتح القائمة" : "Open menu" })}
-          className="h-8 !min-h-8 rounded-full border border-[rgba(167,202,161,0.35)] bg-[#163726] text-[#A7CAA1] hover:border-[rgba(167,202,161,0.65)] hover:bg-[#1f4532] hover:text-[#A7CAA1]"
+          className={
+            triggerTheme === "cream"
+              ? "h-8 !min-h-8 rounded-full border border-[rgba(22,55,38,0.22)] bg-[#F1EBDD] text-[#163726] hover:border-[rgba(22,55,38,0.45)] hover:bg-[#e8e2d4] hover:text-[#163726]"
+              : "h-8 !min-h-8 rounded-full border border-[rgba(167,202,161,0.35)] bg-[#163726] text-[#A7CAA1] hover:border-[rgba(167,202,161,0.65)] hover:bg-[#1f4532] hover:text-[#A7CAA1]"
+          }
         >
           <Menu className="h-5 w-5" />
         </Button>

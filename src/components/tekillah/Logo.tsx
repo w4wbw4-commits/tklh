@@ -1,12 +1,20 @@
 import { motion } from "framer-motion";
-import logoAsset from "/tklh-logo-light.png";
+import lightLogo from "/tklh-logo-light.png";
+import darkLogo from "/tklh-logo.png";
 
 /**
  * Brand Logo — official TKLH / تِكله lockup (Arabic wordmark + Latin "Tklh"
  * + chair mark) rendered as a single image so every surface uses the exact
  * approved typography, color, and spacing.
  */
-export const Logo = ({ className = "" }: { className?: string }) => {
+export const Logo = ({
+  className = "",
+  variant = "light",
+}: {
+  className?: string;
+  variant?: "light" | "dark";
+}) => {
+  const src = variant === "dark" ? darkLogo : lightLogo;
   return (
     <motion.div
       initial={{ opacity: 0, y: -6 }}
@@ -16,12 +24,11 @@ export const Logo = ({ className = "" }: { className?: string }) => {
       aria-label="TKLH تِكله — Event Planning Platform"
     >
       <img
-        src={logoAsset}
+        src={src}
         alt="TKLH تِكله"
         className="h-8 w-auto sm:h-9 object-contain select-none"
         draggable={false}
       />
-
     </motion.div>
   );
 };

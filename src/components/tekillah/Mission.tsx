@@ -87,6 +87,7 @@ export const Mission = () => {
   return (
     <section
       id="mission"
+      data-navbar-theme="light"
       dir={isAr ? "rtl" : "ltr"}
       className="bg-paper relative overflow-hidden px-5 py-24 sm:px-8 sm:py-36"
     >

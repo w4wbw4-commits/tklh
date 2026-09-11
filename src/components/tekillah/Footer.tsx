@@ -48,7 +48,7 @@ export const Footer = () => {
   const rule = "1px solid hsl(var(--gold) / 0.4)";
 
   return (
-    <footer className="bg-velvet relative" style={{ color: cream }}>
+    <footer data-navbar-theme="dark" className="bg-velvet relative" style={{ color: cream }}>
       <div className="relative z-10 mx-auto w-full max-w-6xl px-5 py-12 sm:px-6 sm:py-16">
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 md:grid-cols-5 md:gap-0">
           <div className="col-span-2 md:col-span-2 md:pe-10">
