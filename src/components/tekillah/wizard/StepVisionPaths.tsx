@@ -57,10 +57,12 @@ interface Props {
   setVision: (v: string) => void;
   blocks: VisionBlocks;
   setBlock: (g: VisionBlockGroup, v: string | null) => void;
+  visionRefs: VisionRef[];
+  setVisionRefs: (r: VisionRef[]) => void;
 }
 
 export const StepVisionPaths = ({
-  path, setPath, vision, setVision, blocks, setBlock,
+  path, setPath, vision, setVision, blocks, setBlock, visionRefs, setVisionRefs,
 }: Props) => {
   const { i18n } = useTranslation();
   const isAr = i18n.language?.startsWith("ar");
