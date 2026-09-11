@@ -16,6 +16,52 @@ export const Navbar = () => {
   const isAr = i18n.language === "ar";
   const welcomedRef = useRef(false);
   const [scrolled, setScrolled] = useState(false);
+  const [navbarTheme, setNavbarTheme] = useState<"green" | "cream">("green");
+
+  // Detect which section is currently behind the fixed navbar and switch theme.
+  useEffect(() => {
+    const state = new Map<Element, IntersectionObserverEntry>();
+
+    const updateTheme = () => {
+      const intersecting = Array.from(state.values()).filter((e) => e.isIntersecting);
+      if (!intersecting.length) return;
+
+      const above = intersecting.filter((e) => e.boundingClientRect.top <= 0);
+      let active: IntersectionObserverEntry | undefined;
+      if (above.length) {
+        active = above.sort((a, b) => b.boundingClientRect.top - a.boundingClientRect.top)[0];
+      } else {
+        active = intersecting.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      }
+
+      const sectionTheme = active.target.getAttribute("data-navbar-theme");
+      if (sectionTheme === "dark") setNavbarTheme("cream");
+      else if (sectionTheme === "light") setNavbarTheme("green");
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => state.set(entry.target, entry));
+        updateTheme();
+      },
+      { threshold: Array.from({ length: 101 }, (_, i) => i / 100) },
+    );
+
+    const observeAll = () => {
+      document.querySelectorAll("[data-navbar-theme]").forEach((section) => {
+        if (!state.has(section)) io.observe(section);
+      });
+    };
+
+    observeAll();
+    const mo = new MutationObserver(observeAll);
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      io.disconnect();
+      mo.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
