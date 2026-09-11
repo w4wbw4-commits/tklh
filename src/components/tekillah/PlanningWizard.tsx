@@ -18,6 +18,7 @@ import {
   type VisionBlocks,
   type VisionBlockGroup,
 } from "./wizard/StepVisionPaths";
+import type { VisionRef } from "./wizard/VisionReferences";
 import { StepComingSoon } from "./wizard/StepComingSoon";
 import { MatchingOverlay } from "./wizard/MatchingOverlay";
 import { WizardVisual } from "./wizard/WizardVisual";
