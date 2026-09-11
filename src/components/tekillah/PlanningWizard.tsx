@@ -52,7 +52,7 @@ export const PlanningWizard = () => {
   const [splitGuests, setSplitGuests] = useState(false);
   const totalGuests = splitGuests ? menGuests + womenGuests : guests;
 
-  const [budgetBand, setBudgetBand] = useState("");
+  
 
   // Step 2
   const [selected, setSelected] = useState<string[]>([]);
@@ -91,7 +91,6 @@ export const PlanningWizard = () => {
       if (eventDef?.dateMode === "range" && !endDate) miss.push(isAr ? "تاريخ النهاية" : "End date");
       if (!city) miss.push(isAr ? "المدينة" : "City");
       if (totalGuests <= 0) miss.push(isAr ? "عدد الضيوف" : "Guest count");
-      if (!budgetBand) miss.push(isAr ? "الميزانية" : "Budget");
     } else if (step === 1) {
       if (selected.length === 0) miss.push(isAr ? "خدمة واحدة على الأقل" : "At least one service");
     }
@@ -146,9 +145,8 @@ export const PlanningWizard = () => {
           .join(isAr ? "، " : ", "),
       );
     }
-    if (budgetBand) out.push(labelOf(BUDGET_BANDS, budgetBand, !!isAr));
     return out;
-  }, [eventDef, customEventName, date, endDate, cityLabel, totalGuests, splitGuests, menGuests, womenGuests, selected, eventType, budgetBand, isAr]);
+  }, [eventDef, customEventName, date, endDate, cityLabel, totalGuests, splitGuests, menGuests, womenGuests, selected, eventType, isAr]);
 
   const payload = useMemo(
     () => ({
@@ -156,11 +154,10 @@ export const PlanningWizard = () => {
       city, date, endDate, flexibleDate,
       guests: totalGuests, menGuests: splitGuests ? menGuests : null,
       womenGuests: splitGuests ? womenGuests : null,
-      budgetBand,
       services: selected, visionPath, vision, visionBlocks: blocks,
       language: i18n.language,
     }),
-    [eventType, customEventName, city, date, endDate, flexibleDate, totalGuests, splitGuests, menGuests, womenGuests, budgetBand, selected, visionPath, vision, blocks, i18n.language],
+    [eventType, customEventName, city, date, endDate, flexibleDate, totalGuests, splitGuests, menGuests, womenGuests, selected, visionPath, vision, blocks, i18n.language],
   );
 
 
@@ -279,7 +276,6 @@ export const PlanningWizard = () => {
                     menGuests={menGuests} setMenGuests={setMenGuests}
                     womenGuests={womenGuests} setWomenGuests={setWomenGuests}
                     splitGuests={splitGuests} setSplitGuests={setSplitGuests}
-                    budgetBand={budgetBand} setBudgetBand={setBudgetBand}
                   />
 
                 )}
