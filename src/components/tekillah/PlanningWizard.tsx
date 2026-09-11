@@ -41,6 +41,7 @@ export const PlanningWizard = () => {
 
   // Step 1
   const [eventType, setEventType] = useState<EventTypeKey | "">("");
+  const [customEventName, setCustomEventName] = useState("");
   const [city, setCity] = useState("");
   const [date, setDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -84,6 +85,8 @@ export const PlanningWizard = () => {
     const miss: string[] = [];
     if (step === 0) {
       if (!eventType) miss.push(isAr ? "نوع المناسبة" : "Event type");
+      if (eventType === "other" && !customEventName.trim())
+        miss.push(isAr ? "اكتب نوع مناسبتك" : "Type your event type");
       if (!date) miss.push(isAr ? "التاريخ" : "Date");
       if (eventDef?.dateMode === "range" && !endDate) miss.push(isAr ? "تاريخ النهاية" : "End date");
       if (!city) miss.push(isAr ? "المدينة" : "City");
@@ -93,7 +96,7 @@ export const PlanningWizard = () => {
       if (selected.length === 0) miss.push(isAr ? "خدمة واحدة على الأقل" : "At least one service");
     }
     return miss;
-  }, [step, eventType, date, endDate, city, totalGuests, budgetBand, selected, eventDef, isAr]);
+  }, [step, eventType, customEventName, date, endDate, city, totalGuests, budgetBand, selected, eventDef, isAr]);
 
 
   const canProceed = missing.length === 0;
@@ -123,7 +126,7 @@ export const PlanningWizard = () => {
   // Summary shown above the wax seal on the final screen.
   const summary = useMemo(() => {
     const out: string[] = [];
-    if (eventDef) out.push(isAr ? eventDef.ar : eventDef.en);
+    if (eventDef) out.push(eventType === "other" && customEventName.trim() ? customEventName.trim() : (isAr ? eventDef.ar : eventDef.en));
     if (date) out.push(endDate ? `${fmtDate(date)} → ${fmtDate(endDate)}` : fmtDate(date));
     if (cityLabel) out.push(cityLabel);
     if (totalGuests > 0) {
@@ -145,18 +148,19 @@ export const PlanningWizard = () => {
     }
     if (budgetBand) out.push(labelOf(BUDGET_BANDS, budgetBand, !!isAr));
     return out;
-  }, [eventDef, date, endDate, cityLabel, totalGuests, splitGuests, menGuests, womenGuests, selected, eventType, budgetBand, isAr]);
+  }, [eventDef, customEventName, date, endDate, cityLabel, totalGuests, splitGuests, menGuests, womenGuests, selected, eventType, budgetBand, isAr]);
 
   const payload = useMemo(
     () => ({
-      eventType, city, date, endDate, flexibleDate,
+      eventType, customEventName: eventType === "other" ? customEventName.trim() : "",
+      city, date, endDate, flexibleDate,
       guests: totalGuests, menGuests: splitGuests ? menGuests : null,
       womenGuests: splitGuests ? womenGuests : null,
       budgetBand,
       services: selected, visionPath, vision, visionBlocks: blocks,
       language: i18n.language,
     }),
-    [eventType, city, date, endDate, flexibleDate, totalGuests, splitGuests, menGuests, womenGuests, budgetBand, selected, visionPath, vision, blocks, i18n.language],
+    [eventType, customEventName, city, date, endDate, flexibleDate, totalGuests, splitGuests, menGuests, womenGuests, budgetBand, selected, visionPath, vision, blocks, i18n.language],
   );
 
 
@@ -263,8 +267,10 @@ export const PlanningWizard = () => {
                     eventType={eventType}
                     setEventType={(v) => {
                       setEventType(v); setSelected([]); setEndDate("");
+                      if (v !== "other") setCustomEventName("");
                       setSplitGuests(v === "wedding" || v === "malka");
                     }}
+                    customEventName={customEventName} setCustomEventName={setCustomEventName}
                     city={city} setCity={setCity}
                     date={date} setDate={setDate}
                     endDate={endDate} setEndDate={setEndDate}
