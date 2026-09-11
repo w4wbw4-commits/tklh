@@ -14,7 +14,7 @@ export const Logo = ({
   className?: string;
   variant?: "light" | "dark";
 }) => {
-  const src = variant === "dark" ? darkLogoAsset.url : lightLogo;
+  const src = variant === "dark" ? darkLogo : lightLogo;
   return (
     <motion.div
       initial={{ opacity: 0, y: -6 }}
