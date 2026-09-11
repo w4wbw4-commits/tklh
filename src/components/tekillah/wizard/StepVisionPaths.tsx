@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { Users, Hand } from "lucide-react";
+import { VisionReferences, type VisionRef } from "./VisionReferences";
 
 export type VisionPath = "team" | "self";
 export type VisionBlockGroup = "venue" | "dinner" | "photo" | "mood";
