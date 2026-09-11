@@ -95,7 +95,7 @@ export const PlanningWizard = () => {
       if (selected.length === 0) miss.push(isAr ? "خدمة واحدة على الأقل" : "At least one service");
     }
     return miss;
-  }, [step, eventType, customEventName, date, endDate, city, totalGuests, budgetBand, selected, eventDef, isAr]);
+  }, [step, eventType, customEventName, date, endDate, city, totalGuests, selected, eventDef, isAr]);
 
 
   const canProceed = missing.length === 0;
