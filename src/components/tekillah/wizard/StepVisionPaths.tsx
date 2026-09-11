@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { Users, Hand } from "lucide-react";
+import { VisionReferences, type VisionRef } from "./VisionReferences";
 
 export type VisionPath = "team" | "self";
 export type VisionBlockGroup = "venue" | "dinner" | "photo" | "mood";
@@ -56,10 +57,12 @@ interface Props {
   setVision: (v: string) => void;
   blocks: VisionBlocks;
   setBlock: (g: VisionBlockGroup, v: string | null) => void;
+  visionRefs: VisionRef[];
+  setVisionRefs: (r: VisionRef[]) => void;
 }
 
 export const StepVisionPaths = ({
-  path, setPath, vision, setVision, blocks, setBlock,
+  path, setPath, vision, setVision, blocks, setBlock, visionRefs, setVisionRefs,
 }: Props) => {
   const { i18n } = useTranslation();
   const isAr = i18n.language?.startsWith("ar");
@@ -149,6 +152,9 @@ export const StepVisionPaths = ({
                 className="min-h-[150px] rounded-2xl border-border bg-card p-4 font-arabic text-base leading-relaxed text-foreground placeholder:text-foreground/40 focus-visible:ring-primary"
               />
             </div>
+
+            <VisionReferences refs={visionRefs} setRefs={setVisionRefs} />
+
 
             <div className="space-y-5">
               <h4 className="font-arabic text-base font-semibold text-foreground">

@@ -18,6 +18,7 @@ import {
   type VisionBlocks,
   type VisionBlockGroup,
 } from "./wizard/StepVisionPaths";
+import type { VisionRef } from "./wizard/VisionReferences";
 import { StepComingSoon } from "./wizard/StepComingSoon";
 import { MatchingOverlay } from "./wizard/MatchingOverlay";
 import { WizardVisual } from "./wizard/WizardVisual";
@@ -65,6 +66,7 @@ export const PlanningWizard = () => {
   const [blocks, setBlocks] = useState<VisionBlocks>({ venue: null, dinner: null, photo: null, mood: null });
   const setBlock = (g: VisionBlockGroup, v: string | null) =>
     setBlocks((b) => ({ ...b, [g]: v }));
+  const [visionRefs, setVisionRefs] = useState<VisionRef[]>([]);
 
   const formAnchorRef = useRef<HTMLDivElement>(null);
   const scrollFormIntoView = () => {
@@ -155,9 +157,10 @@ export const PlanningWizard = () => {
       guests: totalGuests, menGuests: splitGuests ? menGuests : null,
       womenGuests: splitGuests ? womenGuests : null,
       services: selected, visionPath, vision, visionBlocks: blocks,
+      visionRefs: visionRefs.map((r) => ({ kind: r.kind, url: r.url, name: r.name, tag: r.tag })),
       language: i18n.language,
     }),
-    [eventType, customEventName, city, date, endDate, flexibleDate, totalGuests, splitGuests, menGuests, womenGuests, selected, visionPath, vision, blocks, i18n.language],
+    [eventType, customEventName, city, date, endDate, flexibleDate, totalGuests, splitGuests, menGuests, womenGuests, selected, visionPath, vision, blocks, visionRefs, i18n.language],
   );
 
 
@@ -294,6 +297,8 @@ export const PlanningWizard = () => {
                     setVision={setVision}
                     blocks={blocks}
                     setBlock={setBlock}
+                    visionRefs={visionRefs}
+                    setVisionRefs={setVisionRefs}
                   />
                 )}
                 {step === 3 && <StepComingSoon summary={summary} payload={payload} />}
