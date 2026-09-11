@@ -124,7 +124,10 @@ export const Navbar = () => {
           }}
         >
           <div className="flex shrink-0 items-center gap-2">
-            <Logo className="[&_img]:!h-6 sm:[&_img]:!h-9" />
+            <Logo
+              variant={navbarTheme === "cream" ? "dark" : "light"}
+              className="[&_img]:!h-6 sm:[&_img]:!h-9"
+            />
           </div>
 
 
@@ -134,7 +137,9 @@ export const Navbar = () => {
               const cls =
                 "relative rounded-full px-4 py-1 text-sm font-medium transition-all after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all hover:after:w-1/2";
 
-              const linkStyle = { color: "hsl(var(--cream) / 0.86)" } as const;
+              const linkStyle = {
+                color: navbarTheme === "cream" ? "hsl(var(--green))" : "hsl(var(--cream) / 0.86)",
+              } as const;
               void 0;
 
               if (item.type === "route") {
@@ -160,7 +165,7 @@ export const Navbar = () => {
               className="h-8 rounded-full px-3 text-xs font-semibold !min-h-8 sm:h-8 sm:px-4 sm:text-sm"
               style={{
                 background: "transparent",
-                color: "hsl(var(--cream))",
+                color: navbarTheme === "cream" ? "hsl(var(--green))" : "hsl(var(--cream))",
               }}
             >
               <Link to="/planner">
@@ -176,7 +181,11 @@ export const Navbar = () => {
               size="sm"
               asChild
               aria-label={t("nav.myDashboard")}
-              className="hidden h-6 w-6 rounded-full p-0 text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex sm:h-8 sm:w-auto sm:px-3 sm:text-xs"
+              className={
+                navbarTheme === "cream"
+                  ? "hidden h-6 w-6 rounded-full p-0 text-[hsl(var(--green))] hover:bg-black/5 sm:inline-flex sm:h-8 sm:w-auto sm:px-3 sm:text-xs"
+                  : "hidden h-6 w-6 rounded-full p-0 text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex sm:h-8 sm:w-auto sm:px-3 sm:text-xs"
+              }
             >
               <Link to="/dashboard">
                 <LayoutDashboard className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
@@ -190,7 +199,11 @@ export const Navbar = () => {
                 size="sm"
                 asChild
                 aria-label={t("nav.admin")}
-                className="hidden h-7 w-7 rounded-full bg-primary-foreground p-0 text-primary hover:bg-primary-foreground/90 sm:inline-flex sm:h-8 sm:w-auto sm:px-3"
+                className={
+                  navbarTheme === "cream"
+                    ? "hidden h-7 w-7 rounded-full bg-[#163726] p-0 text-[#F1EBDD] hover:bg-[#163726]/90 sm:inline-flex sm:h-8 sm:w-auto sm:px-3"
+                    : "hidden h-7 w-7 rounded-full bg-primary-foreground p-0 text-primary hover:bg-primary-foreground/90 sm:inline-flex sm:h-8 sm:w-auto sm:px-3"
+                }
               >
                 <Link to="/admin">
                   <ShieldCheck className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
@@ -207,7 +220,7 @@ export const Navbar = () => {
             {/* Hamburger pinned at the very END of the cluster — in RTL this
                 renders at the far-right (start edge), which is where the user
                 expects the primary menu in Arabic. Visible on every breakpoint. */}
-            <SiteMenuSheet isPrimaryAdmin={isPrimaryAdmin} />
+            <SiteMenuSheet isPrimaryAdmin={isPrimaryAdmin} triggerTheme={navbarTheme === "cream" ? "cream" : "green"} />
           </div>
 
         </div>
