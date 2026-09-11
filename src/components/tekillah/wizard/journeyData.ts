@@ -4,7 +4,7 @@
 // All numbers are written with Latin digits, phrased like the rest of the site.
 // ---------------------------------------------------------------------------
 
-export type EventTypeKey = "wedding" | "malka" | "conference" | "birthday" | "newborn";
+export type EventTypeKey = "wedding" | "malka" | "conference" | "birthday" | "newborn" | "graduation" | "other";
 
 export interface EventTypeDef {
   key: EventTypeKey;
@@ -37,6 +37,14 @@ export const EVENT_TYPES: EventTypeDef[] = [
   {
     key: "newborn", ar: "استقبال مولود", en: "Newborn celebration", dateMode: "single",
     dateHintAr: "اختر تاريخ الاحتفال", dateHintEn: "Pick the celebration date",
+  },
+  {
+    key: "graduation", ar: "حفلات تخرج", en: "Graduation party", dateMode: "single",
+    dateHintAr: "اختر تاريخ حفل التخرج", dateHintEn: "Pick the graduation party date",
+  },
+  {
+    key: "other", ar: "أخرى", en: "Other", dateMode: "single",
+    dateHintAr: "اكتب نوع مناسبتك واختر تاريخها", dateHintEn: "Type your event and pick its date",
   },
 ];
 
@@ -84,6 +92,20 @@ export const CATEGORIES: Record<EventTypeKey, CategoryDef[]> = {
     { key: "photography", ar: "تصوير", en: "Photography", icon: "Camera" },
     { key: "balloons", ar: "بالونات وتنسيق", en: "Balloons & styling", icon: "PartyPopper" },
     { key: "gifts", ar: "هدايا ضيوف وتوزيعات", en: "Guest gifts & giveaways", icon: "Gift" },
+  ],
+  graduation: [
+    { key: "grad_decor", ar: "تنسيق وديكور التخرج", en: "Graduation styling & decor", icon: "GraduationCap" },
+    { key: "hospitality", ar: "ضيافة وحلويات", en: "Hospitality & sweets", icon: "Cake" },
+    { key: "photography", ar: "تصوير", en: "Photography", icon: "Camera" },
+    { key: "balloons", ar: "بالونات وتنسيق", en: "Balloons & styling", icon: "PartyPopper" },
+    { key: "gifts", ar: "هدايا وتوزيعات", en: "Gifts & giveaways", icon: "Gift" },
+  ],
+  other: [
+    { key: "hospitality", ar: "ضيافة", en: "Hospitality", icon: "Coffee" },
+    { key: "photography", ar: "تصوير", en: "Photography", icon: "Camera" },
+    { key: "decor", ar: "تنسيق وديكور", en: "Styling & decor", icon: "Flower2" },
+    { key: "audio", ar: "صوتيات", en: "Audio", icon: "Speaker" },
+    { key: "gifts", ar: "هدايا وتوزيعات", en: "Gifts & giveaways", icon: "Gift" },
   ],
 };
 

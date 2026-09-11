@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { format, parse, isValid } from "date-fns";
 import { ar as arLocale, enUS } from "date-fns/locale";
-import { CalendarIcon, Heart, Crown, Presentation, Cake, Baby } from "lucide-react";
+import { CalendarIcon, Heart, Crown, Presentation, Cake, Baby, GraduationCap, Sparkles } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -26,6 +27,7 @@ const isoToDate = (iso: string): Date | undefined => {
 
 const ICONS: Record<EventTypeKey, typeof Heart> = {
   wedding: Heart, malka: Crown, conference: Presentation, birthday: Cake, newborn: Baby,
+  graduation: GraduationCap, other: Sparkles,
 };
 
 /** The only city Tklh can serve today — everything else shows a "soon" tag. */
@@ -34,6 +36,7 @@ const OPEN_CITY = "Riyadh";
 interface Props {
   eventType: EventTypeKey | "";
   setEventType: (v: EventTypeKey) => void;
+  customEventName: string; setCustomEventName: (v: string) => void;
   city: string; setCity: (v: string) => void;
   date: string; setDate: (v: string) => void;
   endDate: string; setEndDate: (v: string) => void;
@@ -46,7 +49,8 @@ interface Props {
 }
 
 export const StepEventDetails = ({
-  eventType, setEventType, city, setCity, date, setDate, endDate, setEndDate,
+  eventType, setEventType, customEventName, setCustomEventName,
+  city, setCity, date, setDate, endDate, setEndDate,
   flexibleDate, setFlexibleDate, guests, setGuests,
   menGuests, setMenGuests, womenGuests, setWomenGuests, splitGuests, setSplitGuests,
   budgetBand, setBudgetBand,
@@ -106,6 +110,15 @@ export const StepEventDetails = ({
             );
           })}
         </div>
+        {eventType === "other" && (
+          <Input
+            value={customEventName}
+            onChange={(e) => setCustomEventName(e.target.value)}
+            placeholder={isAr ? "اكتب نوع مناسبتك" : "Type your event type"}
+            className="mt-3 h-12 rounded-xl font-arabic"
+            aria-label={isAr ? "نوع المناسبة" : "Event type"}
+          />
+        )}
       </div>
 
       {/* === Rest of the fields — revealed after a type is picked === */}
