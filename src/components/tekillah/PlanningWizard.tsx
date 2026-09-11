@@ -22,7 +22,7 @@ import { StepComingSoon } from "./wizard/StepComingSoon";
 import { MatchingOverlay } from "./wizard/MatchingOverlay";
 import { WizardVisual } from "./wizard/WizardVisual";
 import {
-  CATEGORIES, EVENT_TYPES, BUDGET_BANDS, labelOf, type EventTypeKey,
+  CATEGORIES, EVENT_TYPES, type EventTypeKey,
 } from "./wizard/journeyData";
 import { SAUDI_CITIES } from "./vendor/saudiPlaces";
 import { fmtDate } from "@/i18n/format";
@@ -52,7 +52,7 @@ export const PlanningWizard = () => {
   const [splitGuests, setSplitGuests] = useState(false);
   const totalGuests = splitGuests ? menGuests + womenGuests : guests;
 
-  const [budgetBand, setBudgetBand] = useState("");
+  
 
   // Step 2
   const [selected, setSelected] = useState<string[]>([]);
@@ -91,12 +91,11 @@ export const PlanningWizard = () => {
       if (eventDef?.dateMode === "range" && !endDate) miss.push(isAr ? "تاريخ النهاية" : "End date");
       if (!city) miss.push(isAr ? "المدينة" : "City");
       if (totalGuests <= 0) miss.push(isAr ? "عدد الضيوف" : "Guest count");
-      if (!budgetBand) miss.push(isAr ? "الميزانية" : "Budget");
     } else if (step === 1) {
       if (selected.length === 0) miss.push(isAr ? "خدمة واحدة على الأقل" : "At least one service");
     }
     return miss;
-  }, [step, eventType, customEventName, date, endDate, city, totalGuests, budgetBand, selected, eventDef, isAr]);
+  }, [step, eventType, customEventName, date, endDate, city, totalGuests, selected, eventDef, isAr]);
 
 
   const canProceed = missing.length === 0;
@@ -146,9 +145,8 @@ export const PlanningWizard = () => {
           .join(isAr ? "، " : ", "),
       );
     }
-    if (budgetBand) out.push(labelOf(BUDGET_BANDS, budgetBand, !!isAr));
     return out;
-  }, [eventDef, customEventName, date, endDate, cityLabel, totalGuests, splitGuests, menGuests, womenGuests, selected, eventType, budgetBand, isAr]);
+  }, [eventDef, customEventName, date, endDate, cityLabel, totalGuests, splitGuests, menGuests, womenGuests, selected, eventType, isAr]);
 
   const payload = useMemo(
     () => ({
@@ -156,11 +154,10 @@ export const PlanningWizard = () => {
       city, date, endDate, flexibleDate,
       guests: totalGuests, menGuests: splitGuests ? menGuests : null,
       womenGuests: splitGuests ? womenGuests : null,
-      budgetBand,
       services: selected, visionPath, vision, visionBlocks: blocks,
       language: i18n.language,
     }),
-    [eventType, customEventName, city, date, endDate, flexibleDate, totalGuests, splitGuests, menGuests, womenGuests, budgetBand, selected, visionPath, vision, blocks, i18n.language],
+    [eventType, customEventName, city, date, endDate, flexibleDate, totalGuests, splitGuests, menGuests, womenGuests, selected, visionPath, vision, blocks, i18n.language],
   );
 
 
@@ -279,7 +276,6 @@ export const PlanningWizard = () => {
                     menGuests={menGuests} setMenGuests={setMenGuests}
                     womenGuests={womenGuests} setWomenGuests={setWomenGuests}
                     splitGuests={splitGuests} setSplitGuests={setSplitGuests}
-                    budgetBand={budgetBand} setBudgetBand={setBudgetBand}
                   />
 
                 )}
