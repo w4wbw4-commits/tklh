@@ -38,6 +38,7 @@ interface NavLinkItem {
 
 interface Props {
   isPrimaryAdmin?: boolean;
+  triggerTheme?: "green" | "cream";
 }
 
 /**
