@@ -53,6 +53,7 @@ export const Hero = () => {
   return (
     <section
       id="home"
+      data-navbar-theme="light"
       dir={isAr ? "rtl" : "ltr"}
       lang={i18n.language}
       className="relative w-full overflow-hidden scroll-smooth"

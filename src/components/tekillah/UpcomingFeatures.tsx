@@ -47,6 +47,7 @@ export const UpcomingFeatures = () => {
 
   return (
     <section
+      data-navbar-theme="dark"
       dir={dir}
       className="relative overflow-hidden px-4 py-10 sm:px-8 sm:py-20"
       style={{ backgroundColor: "hsl(var(--green-deep))", color: "hsl(var(--cream))" }}

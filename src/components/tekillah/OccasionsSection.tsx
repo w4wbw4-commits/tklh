@@ -31,6 +31,7 @@ export const OccasionsSection = () => {
   return (
     <section
       id="occasions"
+      data-navbar-theme="light"
       aria-label={t("occasions.aria")}
       dir={isAr ? "rtl" : "ltr"}
       className="relative px-5 py-20 sm:px-8 sm:py-28"

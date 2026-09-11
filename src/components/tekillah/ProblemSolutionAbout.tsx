@@ -40,6 +40,7 @@ const SpeedSection = () => {
   return (
     <section
       id="speed"
+      data-navbar-theme="light"
       aria-label={t("speed.ariaLabel")}
       className="bg-paper relative overflow-hidden px-5 py-16 sm:px-8 sm:py-24"
     >
