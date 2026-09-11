@@ -25,7 +25,7 @@ export const VISION_GROUPS: Array<{
     group: "dinner", labelAr: "عشاء", labelEn: "Dinner",
     options: [
       { value: "seated_buffet", ar: "قعود مع بوفيه مفتوح", en: "Seated with open buffet" },
-      { value: "lamb_feast", ar: "ذبائح خرفان كاملة", en: "Whole lamb feast" },
+      { value: "lamb_feast", ar: "ذبائح ", en: "Whole lamb feast" },
       { value: "buffet_only", ar: "بوفيه فقط", en: "Buffet only" },
     ],
   },
