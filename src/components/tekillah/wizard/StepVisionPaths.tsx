@@ -18,7 +18,7 @@ export const VISION_GROUPS: Array<{
     options: [
       { value: "hall", ar: "قاعة", en: "Hall" },
       { value: "resort", ar: "منتجع", en: "Resort" },
-      { value: "resthouse", ar: "استراحة", en: "Rest house" },
+      { value: "resthouse", ar: "فنادق", en: "Rest house" },
     ],
   },
   {
