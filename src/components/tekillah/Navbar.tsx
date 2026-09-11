@@ -111,11 +111,16 @@ export const Navbar = () => {
       <div className={`mx-auto px-4 transition-all duration-500 ${scrolled ? "mt-2 max-w-6xl" : "mt-4 max-w-6xl"}`}>
         <div
           className={`flex items-center justify-between gap-2 rounded-full border px-3 py-0.5 transition-all duration-500 sm:px-4 sm:py-1.5 rtl:flex-row-reverse`}
-
-
           style={{
-            background: "#163726",
-            borderColor: scrolled ? "hsl(var(--gold) / 0.55)" : "hsl(var(--gold) / 0.28)",
+            background: navbarTheme === "cream" ? "hsl(var(--cream))" : "#163726",
+            borderColor:
+              navbarTheme === "cream"
+                ? scrolled
+                  ? "rgba(22, 55, 38, 0.35)"
+                  : "rgba(22, 55, 38, 0.18)"
+                : scrolled
+                  ? "hsl(var(--gold) / 0.55)"
+                  : "hsl(var(--gold) / 0.28)",
           }}
         >
           <div className="flex shrink-0 items-center gap-2">
