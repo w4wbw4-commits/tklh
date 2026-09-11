@@ -93,6 +93,20 @@ export const CATEGORIES: Record<EventTypeKey, CategoryDef[]> = {
     { key: "balloons", ar: "بالونات وتنسيق", en: "Balloons & styling", icon: "PartyPopper" },
     { key: "gifts", ar: "هدايا ضيوف وتوزيعات", en: "Guest gifts & giveaways", icon: "Gift" },
   ],
+  graduation: [
+    { key: "grad_decor", ar: "تنسيق وديكور التخرج", en: "Graduation styling & decor", icon: "GraduationCap" },
+    { key: "hospitality", ar: "ضيافة وحلويات", en: "Hospitality & sweets", icon: "Cake" },
+    { key: "photography", ar: "تصوير", en: "Photography", icon: "Camera" },
+    { key: "balloons", ar: "بالونات وتنسيق", en: "Balloons & styling", icon: "PartyPopper" },
+    { key: "gifts", ar: "هدايا وتوزيعات", en: "Gifts & giveaways", icon: "Gift" },
+  ],
+  other: [
+    { key: "hospitality", ar: "ضيافة", en: "Hospitality", icon: "Coffee" },
+    { key: "photography", ar: "تصوير", en: "Photography", icon: "Camera" },
+    { key: "decor", ar: "تنسيق وديكور", en: "Styling & decor", icon: "Flower2" },
+    { key: "audio", ar: "صوتيات", en: "Audio", icon: "Speaker" },
+    { key: "gifts", ar: "هدايا وتوزيعات", en: "Gifts & giveaways", icon: "Gift" },
+  ],
 };
 
 export interface BudgetBand { key: string; ar: string; en: string }
