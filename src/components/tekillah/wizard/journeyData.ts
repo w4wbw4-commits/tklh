@@ -23,6 +23,10 @@ export const EVENT_TYPES: EventTypeDef[] = [
     dateHintAr: "ليلة العمر وحدة، اختر تاريخها", dateHintEn: "One night of a lifetime — pick its date",
   },
   {
+    key: "engagement", ar: "خطوبة", en: "Engagement", dateMode: "single",
+    dateHintAr: "اختر تاريخ خطوبتك", dateHintEn: "Pick your engagement date",
+  },
+  {
     key: "malka", ar: "ملكة", en: "Malka", wine: true, dateMode: "single",
     dateHintAr: "اختر تاريخ عقد الملكة", dateHintEn: "Pick your Malka date",
   },
