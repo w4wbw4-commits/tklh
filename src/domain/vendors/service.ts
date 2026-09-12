@@ -193,7 +193,7 @@ export const listPublicVendorsForWizard = (categories: VendorCategory[] | string
     )
     .eq("active", true)
     .eq("approval_status", "approved")
-    .in("category", categories);
+    .in("category", categories as VendorCategory[]);
 
 // ---------------------------------------------------------------------------
 // Realtime helpers
