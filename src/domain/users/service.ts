@@ -77,8 +77,16 @@ export { isAllowlistedAdmin };
 
 // ---- Bulk profile lookups (admin/vendor screens) --------------------------
 
-export const listProfilesByIds = (userIds: string[], columns = "*") =>
-  db.from("profiles").select(columns).in("user_id", userIds);
+export type ProfileLookupRow = {
+  user_id: string;
+  display_name: string | null;
+  phone: string | null;
+};
+
+export const listProfilesByIds = async (userIds: string[], columns = "*") => {
+  const { data, error } = await db.from("profiles").select(columns).in("user_id", userIds);
+  return { data: (data ?? null) as unknown as ProfileLookupRow[] | null, error };
+};
 
 export const listPublicProfilesByIds = (userIds: string[]) =>
   db.from("public_profiles" as never).select("user_id, display_name").in("user_id", userIds);
