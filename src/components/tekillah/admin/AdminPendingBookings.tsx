@@ -15,7 +15,8 @@ import {
   Loader2, Inbox, Phone, MessageCircle, Package, Sparkles,
   Calendar, Users, ClipboardList, Bell,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { bookingsService, notificationsService } from "@/domain";
+import { db } from "@/domain/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -73,18 +74,7 @@ export const AdminPendingBookings = () => {
 
     // Pull all pending bookings + their vendor / package / event / customer
     // metadata in one round-trip.
-    const { data: rows, error } = await supabase
-      .from("bookings")
-      .select(`
-        id, status, total_price, paid_amount, event_id, vendor_id,
-        package_id, platform_package_id, event_date, customer_id,
-        vendor:vendors(business_name, category, phone, user_id),
-        package:packages(name),
-        platform_package:platform_packages(name),
-        event:events(title, city, guest_count)
-      `)
-      .eq("status", "pending")
-      .order("created_at", { ascending: false });
+    const { data: rows, error } = await bookingsService.listPendingWithDetails();
 
     if (error) {
       toast.error(error.message);
@@ -107,7 +97,7 @@ export const AdminPendingBookings = () => {
     // Lookup customer profiles in bulk
     const customerIds = Array.from(new Set(list.map((r) => r.customer_id)));
     const { data: profiles } = customerIds.length
-      ? await supabase
+      ? await db
           .from("profiles")
           .select("user_id, display_name, phone")
           .in("user_id", customerIds)
@@ -160,17 +150,13 @@ export const AdminPendingBookings = () => {
 
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel("admin-pending-bookings")
-      .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, load)
-      .on("postgres_changes", { event: "*", schema: "public", table: "payments" }, load)
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    const unsubscribe = bookingsService.subscribeAdminPending(load);
+    return () => { unsubscribe(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const remindVendor = async (vendorUserId: string, eventDate: string) => {
-    const { error } = await supabase.from("notifications").insert({
+    const { error } = await notificationsService.create({
       user_id: vendorUserId,
       type: "booking_request",
       title: t("admin.pending.reminderTitle"),
