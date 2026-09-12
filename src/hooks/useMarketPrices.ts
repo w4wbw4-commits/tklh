@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { packagesService } from "@/domain";
 import type { ServiceKey } from "@/components/tekillah/wizard/types";
 
 // Maps wizard service keys to vendor categories (1:1 here)
@@ -37,11 +37,7 @@ export const useMarketPrices = () => {
     let cancelled = false;
     (async () => {
       // Fetch active vendors with their basic packages joined.
-      const { data, error } = await supabase
-        .from("packages")
-        .select("price, tier, vendor:vendors_public!inner(category, active)")
-        .eq("tier", "basic")
-        .eq("active", true);
+      const { data, error } = await packagesService.listBasicTierPricesByCategory();
       if (cancelled) return;
       if (error) { setLoading(false); return; }
 

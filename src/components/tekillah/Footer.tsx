@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { usersService } from "@/domain";
 
 export const Footer = () => {
   const { t } = useTranslation();
@@ -32,9 +32,7 @@ export const Footer = () => {
 
   useEffect(() => {
     if (!user) { setIsAdmin(false); return; }
-    supabase.rpc("has_role", { _user_id: user.id, _role: "admin" }).then(({ data }) => {
-      setIsAdmin(!!data);
-    });
+    usersService.hasRole(user.id, "admin").then(setIsAdmin);
   }, [user]);
 
   const handleSignOut = async () => {
