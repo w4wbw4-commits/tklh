@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { ImagePlus, Video, X, Loader2, Save } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { vendorsService, storageService } from "@/domain";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -58,12 +58,7 @@ export const VendorPortfolioManager = ({ vendorId, userId }: Props) => {
   const load = async () => {
     if (!vendorId) return;
     setLoading(true);
-    const { data, error } = await supabase
-      .from("vendor_portfolio_items")
-      .select("*")
-      .eq("vendor_id", vendorId)
-      .order("sort_order", { ascending: true })
-      .order("created_at", { ascending: true });
+    const { data, error } = await vendorsService.listPortfolioItemsOrdered(vendorId);
     setLoading(false);
     if (error) {
       toast.error("تعذر تحميل المعرض");
@@ -99,17 +94,17 @@ export const VendorPortfolioManager = ({ vendorId, userId }: Props) => {
     }
     setUploading(true);
     const path = `${userId}/img-${Date.now()}-${sanitizeName(file.name)}`;
-    const { error: upErr } = await supabase.storage.from("vendor-portfolios").upload(path, file);
+    const { error: upErr } = await storageService.upload(storageService.BUCKETS.vendorPortfolios, path, file, false);
     if (upErr) {
       setUploading(false);
       toast.error("فشل الرفع: " + upErr.message);
       return;
     }
-    const { data: pub } = supabase.storage.from("vendor-portfolios").getPublicUrl(path);
-    const { error: insErr } = await supabase.from("vendor_portfolio_items").insert({
+    const publicUrl = storageService.publicUrl(storageService.BUCKETS.vendorPortfolios, path);
+    const { error: insErr } = await vendorsService.insertPortfolioItem({
       vendor_id: vendorId,
       media_type: "image",
-      url: pub.publicUrl,
+      url: publicUrl,
       sort_order: images.length,
     });
     setUploading(false);
@@ -151,19 +146,17 @@ export const VendorPortfolioManager = ({ vendorId, userId }: Props) => {
     }
     setUploading(true);
     const path = `${userId}/vid-${Date.now()}-${sanitizeName(file.name)}`;
-    const { error: upErr } = await supabase.storage
-      .from("vendor-portfolios")
-      .upload(path, file, { contentType: file.type });
+    const { error: upErr } = await storageService.upload(storageService.BUCKETS.vendorPortfolios, path, file, false);
     if (upErr) {
       setUploading(false);
       toast.error("فشل الرفع: " + upErr.message);
       return;
     }
-    const { data: pub } = supabase.storage.from("vendor-portfolios").getPublicUrl(path);
-    const { error: insErr } = await supabase.from("vendor_portfolio_items").insert({
+    const publicUrl = storageService.publicUrl(storageService.BUCKETS.vendorPortfolios, path);
+    const { error: insErr } = await vendorsService.insertPortfolioItem({
       vendor_id: vendorId,
       media_type: "video",
-      url: pub.publicUrl,
+      url: publicUrl,
       duration_seconds: duration,
       sort_order: videos.length,
     });
@@ -177,7 +170,7 @@ export const VendorPortfolioManager = ({ vendorId, userId }: Props) => {
   };
 
   const removeItem = async (item: PortfolioItem) => {
-    const { error } = await supabase.from("vendor_portfolio_items").delete().eq("id", item.id);
+    const { error } = await vendorsService.deletePortfolioItem(item.id);
     if (error) {
       toast.error("تعذر الحذف");
       return;
@@ -188,10 +181,7 @@ export const VendorPortfolioManager = ({ vendorId, userId }: Props) => {
 
   const saveCaption = async (item: PortfolioItem) => {
     const next = dirtyCaptions[item.id] ?? "";
-    const { error } = await supabase
-      .from("vendor_portfolio_items")
-      .update({ caption: next || null })
-      .eq("id", item.id);
+    const { error } = await vendorsService.updatePortfolioItemCaption(item.id, next || null);
     if (error) {
       toast.error("تعذر حفظ الوصف");
       return;

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Bell, Check, Inbox } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ar } from "date-fns/locale";
-import { supabase } from "@/integrations/supabase/client";
+import { notificationsService } from "@/domain";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -36,12 +36,7 @@ export const AdminNotificationsBell = ({ onOpenSignups, className }: Props) => {
 
   const load = async () => {
     if (!user) return;
-    const { data } = await supabase
-      .from("notifications")
-      .select("id, title, body, read, created_at")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(30);
+    const { data } = await notificationsService.listForUserFields(user.id, 30);
     setItems((data ?? []) as NotifRow[]);
   };
 
@@ -49,19 +44,10 @@ export const AdminNotificationsBell = ({ onOpenSignups, className }: Props) => {
     if (!user) return;
     void load();
     // Unique channel per mounted bell (sidebar + mobile bar both render one).
-    const ch = supabase
-      .channel(`admin-bell-${user.id}-${Math.random().toString(36).slice(2, 8)}`)
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${user.id}` },
-        (payload) => {
-          const row = payload.new as NotifRow;
-          toast.info(row.title, { description: row.body ?? undefined });
-          void load();
-        },
-      )
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    return notificationsService.subscribeUnique<NotifRow>(user.id, (row) => {
+      toast.info(row.title, { description: row.body ?? undefined });
+      void load();
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
 
@@ -70,7 +56,7 @@ export const AdminNotificationsBell = ({ onOpenSignups, className }: Props) => {
   const markAllRead = async () => {
     const ids = items.filter((i) => !i.read).map((i) => i.id);
     if (ids.length === 0) return;
-    await supabase.from("notifications").update({ read: true }).in("id", ids);
+    await notificationsService.markManyRead(ids);
     setItems((s) => s.map((i) => ({ ...i, read: true })));
   };
 

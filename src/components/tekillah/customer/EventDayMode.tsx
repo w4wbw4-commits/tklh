@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import {
   Phone, AlertTriangle, Building2, UtensilsCrossed, Camera, Music2, Flower2, Car, Radio,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { bookingsService } from "@/domain";
 import type { EventRow, BookingWithVendor } from "./types";
 import { useTranslation } from "react-i18next";
 import { ReportIncidentDialog } from "./ReportIncidentDialog";
@@ -31,9 +31,7 @@ export const EventDayMode = ({ event }: { event: EventRow }) => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase.from("bookings")
-        .select("*, vendor:vendors(business_name, category, city), package:packages(name, tier)")
-        .eq("event_id", event.id).eq("status", "confirmed");
+      const { data } = await bookingsService.listConfirmedForEventWithVendorTier(event.id);
       const list = (data ?? []) as unknown as BookingWithVendor[];
       setBookings(list);
       setProgress(Object.fromEntries(list.map((b) => [b.id, 0])));

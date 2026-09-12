@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, Eye, EyeOff, CalendarIcon, ShieldCheck, Briefcase, Pencil, Trash2 } from "lucide-react";
 import { format } from "date-fns";
-import { supabase } from "@/integrations/supabase/client";
+import { vendorsService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -55,11 +55,7 @@ export const AdminVendorsPanel = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("vendors")
-      .select("id, business_name, category, city, created_at, hidden, hidden_until")
-      .eq("approval_status", "approved")
-      .order("created_at", { ascending: false });
+    const { data, error } = await vendorsService.listApprovedVendorsBasic();
     if (error) {
       toast.error(error.message);
     } else {
@@ -70,11 +66,8 @@ export const AdminVendorsPanel = () => {
 
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel("admin-vendors-list")
-      .on("postgres_changes", { event: "*", schema: "public", table: "vendors" }, load)
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    const ch = vendorsService.subscribeToVendorsTable("admin-vendors-list", load);
+    return () => { vendorsService.unsubscribe(ch); };
   }, []);
 
   const grouped = useMemo(() => {
@@ -90,7 +83,7 @@ export const AdminVendorsPanel = () => {
     v.hidden && (!v.hidden_until || new Date(v.hidden_until).getTime() > Date.now());
 
   const setVisibility = async (id: string, payload: { hidden: boolean; hidden_until: string | null }) => {
-    const { error } = await supabase.from("vendors").update(payload).eq("id", id);
+    const { error } = await vendorsService.updateVendorVisibility(id, payload);
     if (error) { toast.error(error.message); return; }
     toast.success(t("admin.vendors.visibilityUpdated"));
     await load();
@@ -101,19 +94,10 @@ export const AdminVendorsPanel = () => {
   // cleared before the parent vendor row, otherwise FK constraints reject the
   // delete. Any failure is surfaced via toast and aborts the chain.
   const deleteVendor = async (id: string) => {
-    const steps: Array<[string, () => Promise<{ error: { message?: string } | null }>]> = [
-      ["media",        async () => await supabase.from("vendor_portfolio_items").delete().eq("vendor_id", id)],
-      ["availability", async () => await supabase.from("vendor_availability").delete().eq("vendor_id", id)],
-      ["packages",     async () => await supabase.from("packages").delete().eq("vendor_id", id)],
-      ["bookings",     async () => await supabase.from("bookings").delete().eq("vendor_id", id)],
-      ["vendor",       async () => await supabase.from("vendors").delete().eq("id", id)],
-    ];
-    for (const [label, run] of steps) {
-      const { error } = await run();
-      if (error) {
-        toast.error(`${label}: ${error.message ?? "error"}`);
-        throw error;
-      }
+    const failed = await vendorsService.deleteVendorCascade(id);
+    if (failed) {
+      toast.error(`${failed.label}: ${failed.error.message ?? "error"}`);
+      throw new Error(failed.error.message ?? "error");
     }
     toast.success(t("admin.vendors.deleted"));
     await load();

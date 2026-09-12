@@ -3,7 +3,7 @@ import {
   Loader2, ClipboardList, MessageSquare, RefreshCw, CalendarDays, MapPin, Users,
   Wallet, Sparkles, ListChecks, Phone, StickyNote, Check,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { leadsService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -98,11 +98,7 @@ export const AdminPlannerInterest = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("planner_interest")
-      .select("id, full_name, phone, details, status, admin_notes, contacted_at, created_at")
-      .order("created_at", { ascending: false })
-      .limit(200);
+    const { data, error } = await leadsService.listPlannerInterestForAdmin();
     if (error) {
       toast.error(error.message);
       setRows([]);
@@ -114,17 +110,13 @@ export const AdminPlannerInterest = () => {
 
   useEffect(() => {
     void load();
-    const ch = supabase
-      .channel("admin-planner-interest")
-      .on("postgres_changes", { event: "*", schema: "public", table: "planner_interest" }, () => void load())
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    return leadsService.subscribePlannerInterest(() => void load());
   }, []);
 
   const setStatus = async (id: string, status: InterestStatus) => {
     const stamp = status === "contacted" || status === "awaiting_reply" ? new Date().toISOString() : undefined;
     const patch = stamp ? { status, contacted_at: stamp } : { status };
-    const { error } = await supabase.from("planner_interest").update(patch).eq("id", id);
+    const { error } = await leadsService.updatePlannerInterestStatus(id, patch);
     if (error) { toast.error(error.message); return; }
     setRows((r) => r.map((x) => (x.id === id ? { ...x, status, contacted_at: stamp ?? x.contacted_at } : x)));
     toast.success("تم تحديث حالة المتابعة");
@@ -132,7 +124,7 @@ export const AdminPlannerInterest = () => {
 
   const saveNotes = async (id: string) => {
     const admin_notes = notesDraft[id] ?? "";
-    const { error } = await supabase.from("planner_interest").update({ admin_notes }).eq("id", id);
+    const { error } = await leadsService.updatePlannerInterestNotes(id, admin_notes);
     if (error) { toast.error(error.message); return; }
     setRows((r) => r.map((x) => (x.id === id ? { ...x, admin_notes } : x)));
     setNotesDraft((d) => { const n = { ...d }; delete n[id]; return n; });

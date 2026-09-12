@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Loader2, Save, ImagePlus, X, Film, Link2, Trash2, Play, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { vendorsService, storageService, authService } from "@/domain";
 import { ServiceTagsInput } from "@/components/tekillah/vendor/ServiceTagsInput";
 import { fmtNumber } from "@/i18n/format";
 
@@ -142,24 +142,14 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
     if (!open || !vendorId) return;
     (async () => {
       setLoading(true);
-      const [{ data }, { data: videoRows }, { data: priv }] = await Promise.all([
-        supabase
-          .from("vendors")
-          .select("id, user_id, business_name, category, bio, bio_en, city, region, region_en, district, district_en, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, portfolio_urls, extra_services, extra_services_en")
-          .eq("id", vendorId)
-          .maybeSingle(),
-        supabase
-          .from("vendor_portfolio_items")
-          .select("id, url, duration_seconds, caption")
-          .eq("vendor_id", vendorId)
-          .eq("media_type", "video")
-          .order("created_at", { ascending: false })
-          .limit(1),
+      const [{ data }, { data: videoRows }, priv] = await Promise.all([
+        vendorsService.getVendorEditFields(vendorId),
+        vendorsService.listLatestVideoPortfolioItem(vendorId),
         // Sensitive `phone` is column-revoked from authenticated; fetch via
         // SECURITY DEFINER RPC that allows admin or owner.
-        supabase.rpc("get_vendor_private", { _vendor_id: vendorId }),
+        vendorsService.getVendorPrivate(vendorId),
       ]);
-      const privRow = Array.isArray(priv) ? priv[0] : priv;
+      const privRow = priv;
       if (data && privRow) {
         (data as { phone?: string | null }).phone = privRow.phone ?? null;
       }
@@ -202,10 +192,10 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
     if (file.size > 5 * 1024 * 1024) { toast.error("Max 5 MB"); return; }
     setUploading(true);
     const path = `${vendor.user_id}/admin-${Date.now()}-${sanitize(file.name)}`;
-    const { error } = await supabase.storage.from("vendor-portfolios").upload(path, file);
+    const { error } = await storageService.upload(storageService.BUCKETS.vendorPortfolios, path, file);
     if (error) { setUploading(false); toast.error(error.message); return; }
-    const { data } = supabase.storage.from("vendor-portfolios").getPublicUrl(path);
-    setPortfolioUrls((prev) => [...prev, data.publicUrl]);
+    const publicUrl = storageService.publicUrl(storageService.BUCKETS.vendorPortfolios, path);
+    setPortfolioUrls((prev) => [...prev, publicUrl]);
     setUploading(false);
   };
 
@@ -240,7 +230,7 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
 
     const duration = await probeVideoDuration(file);
     const path = `${vendor.user_id}/promo-${Date.now()}-${sanitize(file.name)}`;
-    const { data: sessionData } = await supabase.auth.getSession();
+    const { data: sessionData } = await authService.getSession();
     const token = sessionData.session?.access_token;
     const apikey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
     const baseUrl = import.meta.env.VITE_SUPABASE_URL as string;
@@ -265,8 +255,8 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
         xhr.send(file);
       });
 
-      const { data: pub } = supabase.storage.from("vendor-portfolios").getPublicUrl(path);
-      await persistVideo(pub.publicUrl, duration > 0 ? duration : null);
+      const publicUrl = storageService.publicUrl(storageService.BUCKETS.vendorPortfolios, path);
+      await persistVideo(publicUrl, duration > 0 ? duration : null);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Upload failed");
     } finally {
@@ -290,23 +280,15 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
   const persistVideo = async (url: string, duration: number | null) => {
     if (!vendor) return;
     // Remove old video rows first so we always keep a single promo video.
-    await supabase
-      .from("vendor_portfolio_items")
-      .delete()
-      .eq("vendor_id", vendor.id)
-      .eq("media_type", "video");
+    await vendorsService.deletePortfolioVideosForVendor(vendor.id);
 
-    const { data, error } = await supabase
-      .from("vendor_portfolio_items")
-      .insert({
-        vendor_id: vendor.id,
-        url,
-        media_type: "video",
-        duration_seconds: duration,
-        sort_order: 0,
-      })
-      .select("id, url, duration_seconds, caption")
-      .maybeSingle();
+    const { data, error } = await vendorsService.insertPortfolioItemReturning({
+      vendor_id: vendor.id,
+      url,
+      media_type: "video",
+      duration_seconds: duration,
+      sort_order: 0,
+    });
 
     if (error) {
       toast.error(error.message);
@@ -319,10 +301,7 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
 
   const handleRemoveVideo = async () => {
     if (!vendor || !video) return;
-    const { error } = await supabase
-      .from("vendor_portfolio_items")
-      .delete()
-      .eq("id", video.id);
+    const { error } = await vendorsService.deletePortfolioItem(video.id);
     if (error) {
       toast.error(error.message);
       return;
@@ -340,30 +319,27 @@ export const AdminEditVendorDialog = ({ open, onOpenChange, vendorId, onSaved }:
     const startingPrice = Math.min(Number(weekdayPrice), Number(weekendPrice));
     if (!region.trim() || region.trim().length < 2) { toast.error("أدخل اسم المنطقة"); setSaving(false); return; }
     if (!district.trim() || district.trim().length < 2) { toast.error("أدخل اسم الحي"); setSaving(false); return; }
-    const { error } = await supabase
-      .from("vendors")
-      .update({
-        business_name: businessName.trim(),
-        bio: bio.trim() || null,
-        bio_en: bioEn.trim() || null,
-        city: city.trim() || null,
-        region: region.trim(),
-        region_en: regionEn.trim() || null,
-        district: district.trim(),
-        district_en: districtEn.trim() || null,
-        phone: phone.trim() || null,
-        weekday_price: Number(weekdayPrice) || 0,
-        weekend_price: Number(weekendPrice) || 0,
-        min_deposit: Number(minDeposit) || 0,
-        starting_price: startingPrice || 0,
-        men_capacity: isVenue && menCapacity !== "" ? Number(menCapacity) : null,
-        women_capacity: isVenue && womenCapacity !== "" ? Number(womenCapacity) : null,
-        portfolio_urls: portfolioUrls,
-        // Manual tags now apply to all categories. EN list shown for English locale visitors.
-        extra_services: extraServices,
-        extra_services_en: extraServicesEn,
-      })
-      .eq("id", vendor.id);
+    const { error } = await vendorsService.updateVendorFields(vendor.id, {
+      business_name: businessName.trim(),
+      bio: bio.trim() || null,
+      bio_en: bioEn.trim() || null,
+      city: city.trim() || null,
+      region: region.trim(),
+      region_en: regionEn.trim() || null,
+      district: district.trim(),
+      district_en: districtEn.trim() || null,
+      phone: phone.trim() || null,
+      weekday_price: Number(weekdayPrice) || 0,
+      weekend_price: Number(weekendPrice) || 0,
+      min_deposit: Number(minDeposit) || 0,
+      starting_price: startingPrice || 0,
+      men_capacity: isVenue && menCapacity !== "" ? Number(menCapacity) : null,
+      women_capacity: isVenue && womenCapacity !== "" ? Number(womenCapacity) : null,
+      portfolio_urls: portfolioUrls,
+      // Manual tags now apply to all categories. EN list shown for English locale visitors.
+      extra_services: extraServices,
+      extra_services_en: extraServicesEn,
+    });
     setSaving(false);
     if (error) { toast.error(error.message); return; }
     toast.success(t("admin.vendors.saved"));

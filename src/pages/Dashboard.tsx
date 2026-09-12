@@ -9,7 +9,7 @@ import {
   LogOut, Map, Users, Receipt, Radio, Loader2, Plus, ListChecks, LayoutGrid,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
+import { eventsService, usersService } from "@/domain";
 import { OverviewSummary } from "@/components/tekillah/customer/OverviewSummary";
 import { EventTimeline } from "@/components/tekillah/customer/EventTimeline";
 import { BookingsTimeline } from "@/components/tekillah/customer/BookingsTimeline";
@@ -76,10 +76,8 @@ const Dashboard = () => {
     if (!user) return;
     setLoadingEvents(true);
     const [{ data }, { data: profile }] = await Promise.all([
-      supabase
-        .from("events").select("*").eq("customer_id", user.id)
-        .order("event_date", { ascending: true }),
-      supabase.from("profiles").select("display_name").eq("user_id", user.id).maybeSingle(),
+      eventsService.listMyEvents(user.id),
+      usersService.getDisplayName(user.id),
     ]);
     const list = (data ?? []) as EventRow[];
     setEvents(list);
@@ -227,7 +225,7 @@ const Dashboard = () => {
         userId={user.id}
         onCreated={async (id) => {
           await loadEvents();
-          const { data } = await supabase.from("events").select("*").eq("id", id).maybeSingle();
+          const { data } = await eventsService.getEventById(id);
           if (data) setActiveEvent(data as EventRow);
         }}
       />

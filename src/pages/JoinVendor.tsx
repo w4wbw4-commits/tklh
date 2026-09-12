@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import {
   ArrowRight, Building2, CheckCircle2, Clock, Home, Loader2, PartyPopper, ShieldCheck, User,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { leadsService } from "@/domain";
 import { SEO } from "@/components/SEO";
 import { Logo } from "@/components/tekillah/Logo";
 import { Button } from "@/components/ui/button";
@@ -82,7 +82,7 @@ const JoinVendor = () => {
     }
 
     setSubmitting(true);
-    const { error } = await supabase.from("vendor_applications").insert({
+    const { error } = await leadsService.createVendorApplication({
       full_name: parsed.data.full_name,
       phone,
       email: parsed.data.email,

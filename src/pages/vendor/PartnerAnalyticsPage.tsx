@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { bookingsService } from "@/domain";
 import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { Card } from "@/components/ui/card";
@@ -19,7 +19,7 @@ const PartnerAnalyticsPage = () => {
   useEffect(() => {
     if (!vendor) return;
     (async () => {
-      const { data: rows } = await supabase.from("bookings").select("event_date, total_price, status").eq("vendor_id", vendor.id);
+      const { data: rows } = await bookingsService.listForVendorAnalytics(vendor.id);
       const all = (rows as Array<{ event_date: string; total_price: number | null; status: string }>) || [];
       const totalEarnings = all.filter((b) => ["confirmed", "completed"].includes(b.status)).reduce((s, b) => s + Number(b.total_price ?? 0), 0);
       const pendingPayments = all.filter((b) => b.status === "pending").reduce((s, b) => s + Number(b.total_price ?? 0), 0);

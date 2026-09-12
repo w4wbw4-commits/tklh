@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AlertTriangle, Phone, Loader2, Clock } from "lucide-react";
 import { motion } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
+import { bookingsService, usersService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { fmtDate, toLatinDigits } from "@/i18n/format";
@@ -37,15 +37,7 @@ export const AdminLateAlerts = () => {
     setLoading(true);
     const today = new Date().toISOString().slice(0, 10);
     // Confirmed bookings whose event date is today or in the past, no attendance yet
-    const { data } = await supabase
-      .from("bookings")
-      .select(
-        "id, event_date, attendance_confirmed_at, status, notes, customer_id, vendor:vendors(business_name, category, phone)",
-      )
-      .eq("status", "confirmed")
-      .is("attendance_confirmed_at", null)
-      .lte("event_date", today)
-      .order("event_date", { ascending: false });
+    const { data } = await bookingsService.listConfirmedAwaitingAttendance(today);
 
     const list = (data ?? []) as unknown as LateBooking[];
 
@@ -53,10 +45,7 @@ export const AdminLateAlerts = () => {
     const customerIds = Array.from(new Set(list.map((b) => b.customer_id)));
     let phoneByUser: Record<string, string | null> = {};
     if (customerIds.length > 0) {
-      const { data: profs } = await supabase
-        .from("profiles")
-        .select("user_id, phone")
-        .in("user_id", customerIds);
+      const { data: profs } = await usersService.listProfilesByIds(customerIds, "user_id, phone");
       phoneByUser = Object.fromEntries((profs ?? []).map((p) => [p.user_id, p.phone]));
     }
     setRows(list.map((b) => ({ ...b, customer_phone: phoneByUser[b.customer_id] ?? null })));
@@ -65,13 +54,7 @@ export const AdminLateAlerts = () => {
 
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel("admin-late-alerts")
-      .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, load)
-      .subscribe();
-    return () => {
-      supabase.removeChannel(ch);
-    };
+    return bookingsService.subscribeAllBookings(load);
   }, []);
 
   // Compute lateness based on local time vs event date midnight + threshold

@@ -7,7 +7,7 @@ import {
   Loader2, Plus, Save, Users, Users2, CalendarDays, CalendarRange, Wallet,
   ImagePlus, X, Film, Link2, Trash2, Play, Sparkles,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { vendorsService, storageService, authService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -169,14 +169,14 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
     }
     setImgUploading(true);
     const path = `${adminUserId}/new-vendor/${Date.now()}-${sanitizeName(file.name)}`;
-    const { error } = await supabase.storage.from("vendor-portfolios").upload(path, file);
+    const { error } = await storageService.upload(storageService.BUCKETS.vendorPortfolios, path, file);
     if (error) {
       setImgUploading(false);
       toast.error(error.message);
       return;
     }
-    const { data } = supabase.storage.from("vendor-portfolios").getPublicUrl(path);
-    setPortfolioUrls((prev) => [...prev, data.publicUrl]);
+    const publicUrl = storageService.publicUrl(storageService.BUCKETS.vendorPortfolios, path);
+    setPortfolioUrls((prev) => [...prev, publicUrl]);
     setImgUploading(false);
   };
 
@@ -200,7 +200,7 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
 
     const duration = await probeVideoDuration(file);
     const path = `${adminUserId}/new-vendor/promo-${Date.now()}-${sanitizeName(file.name)}`;
-    const { data: sessionData } = await supabase.auth.getSession();
+    const { data: sessionData } = await authService.getSession();
     const token = sessionData.session?.access_token;
     const apikey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
     const baseUrl = import.meta.env.VITE_SUPABASE_URL as string;
@@ -225,9 +225,9 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
         xhr.send(file);
       });
 
-      const { data: pub } = supabase.storage.from("vendor-portfolios").getPublicUrl(path);
+      const publicUrl = storageService.publicUrl(storageService.BUCKETS.vendorPortfolios, path);
       setVideo({
-        url: pub.publicUrl,
+        url: publicUrl,
         duration_seconds: duration > 0 ? duration : null,
         size_bytes: file.size,
         isFile: true,
@@ -314,11 +314,7 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
       reviewed_by: adminUserId,
     };
 
-    const { data: inserted, error } = await supabase
-      .from("vendors")
-      .insert(payload)
-      .select("id")
-      .maybeSingle();
+    const { data: inserted, error } = await vendorsService.insertVendor(payload);
 
     if (error || !inserted) {
       setSaving(false);
@@ -328,7 +324,7 @@ export const AdminAddVendorDialog = ({ adminUserId, onCreated }: Props) => {
 
     // Attach promo video (if any) to the new vendor.
     if (video) {
-      const { error: videoErr } = await supabase.from("vendor_portfolio_items").insert({
+      const { error: videoErr } = await vendorsService.insertPortfolioItem({
         vendor_id: inserted.id,
         url: video.url,
         media_type: "video",

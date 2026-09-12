@@ -24,7 +24,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Loader2, Plus, X, Image as ImageIcon, Video, Trash2, Star, Layers, Users } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { vendorsService, packagesService, storageService } from "@/domain";
 import { toast } from "sonner";
 import { fmtNumber } from "@/i18n/format";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -32,7 +32,6 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 
-const BUCKET = "platform-package-media";
 const MAX_IMAGES = 12;
 const MAX_FILE_BYTES = 25 * 1024 * 1024;
 
@@ -114,12 +113,7 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
   useEffect(() => {
     if (!open) return;
     (async () => {
-      const { data } = await supabase
-        .from("vendors")
-        .select("id, business_name, category, city")
-        .eq("approval_status", "approved")
-        .eq("active", true)
-        .order("business_name", { ascending: true });
+      const { data } = await vendorsService.listEligibleVendorsForPackages();
       setVendorPool((data ?? []) as EligibleVendor[]);
     })();
   }, [open]);
@@ -168,12 +162,9 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
     }
     const ext = sanitize(file.name.split(".").pop() ?? (kind === "image" ? "jpg" : "mp4"));
     const key = `${adminUserId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-    const { error } = await supabase.storage.from(BUCKET).upload(key, file, {
-      cacheControl: "3600", upsert: false, contentType: file.type,
-    });
+    const { error } = await storageService.upload(storageService.BUCKETS.platformPackageMedia, key, file, false);
     if (error) { toast.error(error.message); return null; }
-    const { data } = supabase.storage.from(BUCKET).getPublicUrl(key);
-    return data.publicUrl;
+    return storageService.publicUrl(storageService.BUCKETS.platformPackageMedia, key);
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -260,8 +251,8 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
     };
 
     const { error } = isEdit
-      ? await supabase.from("platform_packages").update(payload).eq("id", pkg!.id)
-      : await supabase.from("platform_packages").insert([{ ...payload, created_by: adminUserId }]);
+      ? await packagesService.updatePlatformPackage(pkg!.id, payload)
+      : await packagesService.insertPlatformPackage({ ...payload, created_by: adminUserId });
 
     setSaving(false);
     if (error) { toast.error(error.message); return; }
@@ -275,7 +266,7 @@ export const AdminPackageDialog = ({ open, onOpenChange, pkg, adminUserId, onSav
   const handleDelete = async () => {
     if (!pkg) return;
     setDeleting(true);
-    const { error } = await supabase.from("platform_packages").delete().eq("id", pkg.id);
+    const { error } = await packagesService.deletePlatformPackage(pkg.id);
     setDeleting(false);
     if (error) { toast.error(error.message); return; }
     toast.success(t("admin.packages.form.deleted"));

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, Star, MessageSquareText, TrendingUp } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { reviewsService } from "@/domain";
 import { ReviewsList } from "@/components/tekillah/reviews/ReviewsList";
 import { fmtRating, fmtNumber } from "@/i18n/format";
 
@@ -21,11 +21,7 @@ export const VendorReviews = ({ vendorId, vendorUserId }: { vendorId: string; ve
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const { data } = await supabase
-        .from("vendor_ratings_summary" as never)
-        .select("*")
-        .eq("vendor_id", vendorId)
-        .maybeSingle();
+      const { data } = await reviewsService.getRatingsSummary(vendorId);
       setSummary((data as Summary | null) ?? {
         avg_rating: 0, reviews_count: 0, avg_communication: 0, avg_punctuality: 0, avg_quality: 0,
       });

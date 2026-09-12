@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Loader2, Check } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { leadsService } from "@/domain";
 import { toLatinDigits } from "@/i18n/format";
 import { buildWhatsappLink } from "@/lib/whatsapp";
 import { WaxSeal } from "./WaxSeal";
@@ -105,10 +105,10 @@ export const StepComingSoon = ({ summary, payload }: Props) => {
     setSaving(true);
     // No `.select()` here on purpose: the public insert policy grants INSERT only,
     // so asking PostgREST to return the row would fail the RLS read check.
-    const { error } = await supabase.from("planner_interest").insert({
+    const { error } = await leadsService.submitPlannerInterest({
       full_name: name.trim(),
       phone: cleanPhone,
-      details: payload as never,
+      details: payload,
     });
     setSaving(false);
     if (error) {

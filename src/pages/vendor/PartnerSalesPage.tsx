@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { bookingsService } from "@/domain";
 import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { Card } from "@/components/ui/card";
@@ -21,7 +21,7 @@ const PartnerSalesPage = () => {
 
   const load = async () => {
     if (!vendor) return;
-    const { data } = await supabase.from("bookings").select("id, event_date, total_price, status, guest_count").eq("vendor_id", vendor.id).order("event_date", { ascending: false });
+    const { data } = await bookingsService.listForVendorSales(vendor.id);
     setBookings((data as Booking[]) || []);
   };
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [vendor]);

@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/integrations/supabase/client";
+import { eventsService } from "@/domain";
 import { useTranslation } from "react-i18next";
 
 const ISO = "yyyy-MM-dd";
@@ -58,14 +58,14 @@ export const CreateEventDialog = ({ open, onOpenChange, userId, onCreated }: Pro
     });
     if (!parsed.success) { toast.error(parsed.error.errors[0].message); return; }
     setSubmitting(true);
-    const { data, error } = await supabase.from("events").insert({
+    const { data, error } = await eventsService.createEventReturningId({
       customer_id: userId,
       title: parsed.data.title,
       event_date: parsed.data.event_date,
       city: parsed.data.city || null,
       guest_count: parsed.data.guest_count ?? 0,
       total_budget: parsed.data.total_budget ?? 0,
-    }).select("id").single();
+    });
     setSubmitting(false);
     if (error || !data) { toast.error(t("customer.create.createFailed")); return; }
     toast.success(t("customer.create.createSuccess"));

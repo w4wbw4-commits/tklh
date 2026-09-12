@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
+import { eventsService } from "@/domain";
 import type { EventRow, GuestRow, RsvpStatus } from "./types";
 import { InvitationDialog } from "./InvitationDialog";
 import { useTranslation } from "react-i18next";
@@ -31,8 +31,7 @@ export const GuestManager = ({ event }: { event: EventRow }) => {
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase.from("guests").select("*")
-      .eq("event_id", event.id).order("created_at", { ascending: false });
+    const { data } = await eventsService.listGuestsNewestFirst(event.id);
     setGuests((data ?? []) as GuestRow[]);
     setLoading(false);
   };
@@ -44,7 +43,7 @@ export const GuestManager = ({ event }: { event: EventRow }) => {
     const parsed = guestSchema.safeParse({ name, phone, seats });
     if (!parsed.success) { toast.error(parsed.error.errors[0].message); return; }
     setAdding(true);
-    const { error } = await supabase.from("guests").insert({
+    const { error } = await eventsService.addGuestSilent({
       event_id: event.id, customer_id: event.customer_id,
       name: parsed.data.name, phone: parsed.data.phone || null, seats: parsed.data.seats,
     });
@@ -56,13 +55,13 @@ export const GuestManager = ({ event }: { event: EventRow }) => {
   };
 
   const updateRsvp = async (id: string, rsvp_status: RsvpStatus) => {
-    const { error } = await supabase.from("guests").update({ rsvp_status }).eq("id", id);
+    const { error } = await eventsService.updateGuest(id, { rsvp_status });
     if (error) { toast.error(t("customer.guests.updateFailed")); return; }
     setGuests((prev) => prev.map((g) => (g.id === id ? { ...g, rsvp_status } : g)));
   };
 
   const removeGuest = async (id: string) => {
-    const { error } = await supabase.from("guests").delete().eq("id", id);
+    const { error } = await eventsService.removeGuest(id);
     if (error) { toast.error(t("customer.guests.deleteFailed")); return; }
     setGuests((prev) => prev.filter((g) => g.id !== id));
   };

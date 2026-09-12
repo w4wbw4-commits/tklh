@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { reviewsService } from "@/domain";
 import { useAuth } from "@/hooks/useAuth";
 
 type Reason = "inappropriate" | "spam" | "harassment" | "other";
@@ -31,7 +31,7 @@ export const ReportDialog = ({ open, onOpenChange, targetType, targetId }: Props
   const submit = async () => {
     if (!user) { toast.error(t("report.errors.mustLogin")); return; }
     setSaving(true);
-    const { error } = await supabase.from("content_reports").insert({
+    const { error } = await reviewsService.report({
       target_type: targetType,
       target_id: targetId,
       reporter_id: user.id,

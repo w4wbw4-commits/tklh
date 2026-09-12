@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, ShieldCheck, Trash2, ClipboardList, CheckCircle2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { reviewsService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -33,11 +33,7 @@ export const AdminModerationQueue = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("content_reports")
-      .select("*")
-      .eq("status", "pending")
-      .order("created_at", { ascending: false });
+    const { data } = await reviewsService.listPendingReports();
     const list = (data ?? []) as unknown as ReportRow[];
 
     // Hydrate target content
@@ -47,19 +43,14 @@ export const AdminModerationQueue = () => {
     const contextMap: Record<string, string | null> = {};
 
     if (reviewIds.length) {
-      const { data: revs } = await supabase
-        .from("reviews")
-        .select("id, comment, vendor:vendors(business_name)")
-        .in("id", reviewIds);
+      const { data: revs } = await reviewsService.getReviewsByIds(reviewIds);
       ((revs ?? []) as unknown as Array<{ id: string; comment: string | null; vendor: { business_name: string } | null }>).forEach((r) => {
         contentMap[r.id] = r.comment;
         contextMap[r.id] = r.vendor?.business_name ?? null;
       });
     }
     if (replyIds.length) {
-      const { data: reps } = await supabase
-        .from("review_replies")
-        .select("id, body, vendor_id");
+      const { data: reps } = await reviewsService.listAllReplyBodies();
       ((reps ?? []) as unknown as Array<{ id: string; body: string }>).forEach((r) => {
         contentMap[r.id] = r.body;
       });
@@ -75,25 +66,18 @@ export const AdminModerationQueue = () => {
 
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel("admin-reports")
-      .on("postgres_changes", { event: "*", schema: "public", table: "content_reports" }, load)
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    return reviewsService.subscribeReports(load);
   }, []);
 
   const approve = async (r: ReportRow) => {
     setBusy(r.id);
     // remove the flagged mark on the target and mark the report approved (kept)
     if (r.target_type === "review") {
-      await supabase.from("reviews").update({ flagged: false }).eq("id", r.target_id);
+      await reviewsService.updateFlag(r.target_id, false);
     } else {
-      await supabase.from("review_replies").update({ flagged: false }).eq("id", r.target_id);
+      await reviewsService.updateReplyFlag(r.target_id, false);
     }
-    const { error } = await supabase
-      .from("content_reports")
-      .update({ status: "approved", resolved_at: new Date().toISOString() })
-      .eq("id", r.id);
+    const { error } = await reviewsService.setReportStatus(r.id, "approved");
     setBusy(null);
     if (error) { toast.error(error.message); return; }
     toast.success(t("admin.moderation.approved"));
@@ -103,14 +87,11 @@ export const AdminModerationQueue = () => {
   const remove = async (r: ReportRow) => {
     setBusy(r.id);
     if (r.target_type === "review") {
-      await supabase.from("reviews").delete().eq("id", r.target_id);
+      await reviewsService.remove(r.target_id);
     } else {
-      await supabase.from("review_replies").delete().eq("id", r.target_id);
+      await reviewsService.removeReply(r.target_id);
     }
-    const { error } = await supabase
-      .from("content_reports")
-      .update({ status: "removed", resolved_at: new Date().toISOString() })
-      .eq("id", r.id);
+    const { error } = await reviewsService.setReportStatus(r.id, "removed");
     setBusy(null);
     if (error) { toast.error(error.message); return; }
     toast.success(t("admin.moderation.removed"));

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { bookingsService } from "@/domain";
 import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { Card } from "@/components/ui/card";
@@ -38,9 +38,7 @@ const PartnerChecklistsPage = () => {
     if (!vendor) return;
     (async () => {
       const today = new Date().toISOString().slice(0, 10);
-      const { data } = await supabase.from("bookings").select("id, event_date, vendor_id")
-        .eq("vendor_id", vendor.id).gte("event_date", today)
-        .in("status", ["pending", "confirmed"]).order("event_date");
+      const { data } = await bookingsService.listUpcomingForVendor(vendor.id, today);
       const list = (data as Booking[]) || [];
       setBookings(list);
       if (list[0] && !selected) setSelected(list[0].id);
@@ -51,12 +49,12 @@ const PartnerChecklistsPage = () => {
   useEffect(() => {
     if (!selected || !vendor) { setItems([]); return; }
     (async () => {
-      const { data } = await supabase.from("booking_checklists" as never).select("*").eq("booking_id", selected).order("category");
+      const { data } = await bookingsService.listChecklistsByCategory(selected);
       let list = ((data as unknown) as Item[]) || [];
       // Auto-seed defaults if empty
       if (list.length === 0) {
         const seeds = defaultItems.map((d) => ({ ...d, booking_id: selected, vendor_id: vendor.id, done: false }));
-        const { data: inserted } = await supabase.from("booking_checklists" as never).insert(seeds as never).select();
+        const { data: inserted } = await bookingsService.insertChecklists(seeds as never);
         list = ((inserted as unknown) as Item[]) || [];
       }
       setItems(list);
@@ -65,7 +63,7 @@ const PartnerChecklistsPage = () => {
 
   const toggle = async (item: Item) => {
     setItems(items.map((i) => (i.id === item.id ? { ...i, done: !i.done } : i)));
-    const { error } = await supabase.from("booking_checklists" as never).update({ done: !item.done } as never).eq("id", item.id);
+    const { error } = await bookingsService.setChecklistDone(item.id, !item.done);
     if (error) { toast.error(error.message); setItems(items); }
   };
 

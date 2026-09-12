@@ -9,7 +9,8 @@
 // Returns the first booking id so the caller can redirect to /checkout/:id.
 // ---------------------------------------------------------------------------
 
-import { supabase } from "@/integrations/supabase/client";
+
+import { eventsService, bookingsService, packagesService, vendorsService } from "@/domain";
 import type { PendingPlan } from "@/lib/pendingPlan";
 import type { TFunction } from "i18next";
 
@@ -45,7 +46,7 @@ export const finalisePlan = async ({
   const platformPackageId =
     plan.packageSelection?.kind === "admin" ? plan.packageSelection.key : null;
 
-  const { data: ev, error: evErr } = await supabase.from("events").insert({
+  const { data: ev, error: evErr } = await eventsService.createEventReturningId({
     customer_id: userId,
     title: plan.eventType
       ? t(`eventTypes.${plan.eventType}`)
@@ -57,7 +58,7 @@ export const finalisePlan = async ({
     theme: plan.selectedChips?.[0] || plan.packageSelection?.name || null,
     notes: composedNotes,
     platform_package_id: platformPackageId,
-  }).select("id").single();
+  });
 
   if (evErr || !ev) throw new Error(evErr?.message ?? "event_insert_failed");
 
@@ -72,22 +73,13 @@ export const finalisePlan = async ({
   }> = [];
 
   if (plan.packageSelection?.kind === "admin" && pickList.length === 0) {
-    const { data: pkgRow } = await supabase
-      .from("platform_packages")
-      .select("slots, eligible_vendor_ids, price")
-      .eq("id", plan.packageSelection.key)
-      .maybeSingle();
+    const { data: pkgRow } = await packagesService.getPlatformPackageSlots(plan.packageSelection.key);
 
     const slots = ((pkgRow?.slots as unknown as Array<{ category: string; count: number }>) ?? []);
     const eligibleIds = (pkgRow?.eligible_vendor_ids as string[] | null) ?? [];
 
     if (slots.length > 0 && eligibleIds.length > 0) {
-      const { data: vendorRows } = await supabase
-        .from("vendors_public")
-        .select("id, category")
-        .in("id", eligibleIds)
-        .eq("approval_status", "approved")
-        .eq("active", true);
+      const { data: vendorRows } = await vendorsService.listApprovedPublicVendorsByIds(eligibleIds);
 
       const used = new Set<string>();
       const slotPrice = slots.length > 0 ? Number(pkgRow?.price ?? 0) / slots.reduce((s, x) => s + x.count, 0) : 0;
@@ -128,10 +120,7 @@ export const finalisePlan = async ({
     return { eventId: ev.id, bookingIds: [] };
   }
 
-  const { data: createdBookings, error: bErr } = await supabase
-    .from("bookings")
-    .insert(bookingsToInsert)
-    .select("id");
+  const { data: createdBookings, error: bErr } = await bookingsService.createMany(bookingsToInsert);
 
   if (bErr || !createdBookings) {
     throw new Error(bErr?.message ?? "bookings_insert_failed");

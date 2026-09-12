@@ -23,7 +23,7 @@ import {
   CalendarDays,
   CalendarRange,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { vendorsService } from "@/domain";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { tierForBudget, type BudgetTier, type ServiceKey } from "./types";
@@ -146,26 +146,13 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
     setLoading(true);
 
     const [{ data: v }, { data: ratings }] = await Promise.all([
-      supabase
-        .from("vendors_public")
-        .select(
-          "id, business_name, bio, bio_en, category, city, region, region_en, district, district_en, starting_price, weekday_price, weekend_price, men_capacity, women_capacity, extra_services, extra_services_en, verified, portfolio_urls, packages(id, name, tier, price, description, active, approval_status)",
-        )
-        .eq("active", true)
-        .eq("approval_status", "approved")
-        .in("category", selectedServices),
-      supabase
-        .from("vendor_ratings_summary" as never)
-        .select("vendor_id, avg_rating, reviews_count, completed_bookings"),
+      vendorsService.listPublicVendorsForWizard(selectedServices),
+      vendorsService.listAllRatingsSummaries(),
     ]);
 
     const vendorIds = (v ?? []).map((row) => (row as { id: string }).id);
     const { data: portfolio } = vendorIds.length
-      ? await supabase
-          .from("vendor_portfolio_items")
-          .select("vendor_id, url, media_type, caption, sort_order")
-          .in("vendor_id", vendorIds)
-          .order("sort_order", { ascending: true })
+      ? await vendorsService.listPortfolioItemsForVendors(vendorIds)
       : { data: [] as RawPortfolioItem[] };
 
     const ratingMap = new Map<string, { avg: number; count: number; done: number }>();
@@ -262,14 +249,9 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
 
     // Live updates when admin approves vendors / packages or vendors edit their
     // portfolios — keeps the public catalog fresh without manual refresh.
-    const ch = supabase
-      .channel("public-vendors-listing")
-      .on("postgres_changes", { event: "*", schema: "public", table: "vendors" }, () => refetch())
-      .on("postgres_changes", { event: "*", schema: "public", table: "packages" }, () => refetch())
-      .on("postgres_changes", { event: "*", schema: "public", table: "vendor_portfolio_items" }, () => refetch())
-      .subscribe();
+    const ch = vendorsService.subscribeToPublicVendorsListing("public-vendors-listing", () => refetch());
     return () => {
-      supabase.removeChannel(ch);
+      vendorsService.unsubscribe(ch);
     };
   }, [refetch]);
 

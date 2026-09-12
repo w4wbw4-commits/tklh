@@ -6,7 +6,7 @@ import {
   Loader2, CheckCircle2, XCircle, Clock, FileText, Landmark, MapPin,
   ImagePlus, ExternalLink,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { vendorsService, storageService, authService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -46,22 +46,20 @@ export const AdminVerificationQueue = () => {
     // Sensitive PII columns (iban, phone, *_url) are revoked from the
     // authenticated role at the column level. Admins read them via the
     // SECURITY DEFINER RPC, which checks `has_role(..., 'admin')` server-side.
-    const { data: v } = await supabase.rpc("admin_list_pending_vendor_verifications");
+    const { data: v } = await vendorsService.listPendingVerifications();
     setVendors((v ?? []) as VendorPending[]);
     setLoading(false);
   };
 
   useEffect(() => {
     load();
-    const ch = supabase.channel("admin-verification-queue")
-      .on("postgres_changes", { event: "*", schema: "public", table: "vendors" }, load)
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    const ch = vendorsService.subscribeToVendorsTable("admin-verification-queue", load);
+    return () => { vendorsService.unsubscribe(ch); };
   }, []);
 
   const signedDocUrl = async (bucket: string, path: string | null) => {
     if (!path) return null;
-    const { data } = await supabase.storage.from(bucket).createSignedUrl(path, 60 * 10);
+    const { data } = await storageService.signedUrl(bucket as Parameters<typeof storageService.signedUrl>[0], path, 60 * 10);
     return data?.signedUrl ?? null;
   };
 
@@ -73,13 +71,13 @@ export const AdminVerificationQueue = () => {
 
   const approve = async (id: string) => {
     setBusyId(id);
-    const { data: u } = await supabase.auth.getUser();
-    const { error } = await supabase.from("vendors").update({
+    const { data: u } = await authService.getUser();
+    const { error } = await vendorsService.updateVendorStatus(id, {
       approval_status: "approved",
       rejection_reason: null,
       reviewed_at: new Date().toISOString(),
       reviewed_by: u?.user?.id,
-    }).eq("id", id);
+    });
     setBusyId(null);
     if (error) { toast.error(error.message); return; }
     toast.success(t("admin.verify.approvedToast"));
@@ -88,13 +86,13 @@ export const AdminVerificationQueue = () => {
   const reject = async (id: string, reason: string) => {
     if (!reason.trim()) { toast.error(t("admin.verify.reasonRequired")); return; }
     setBusyId(id);
-    const { data: u } = await supabase.auth.getUser();
-    const { error } = await supabase.from("vendors").update({
+    const { data: u } = await authService.getUser();
+    const { error } = await vendorsService.updateVendorStatus(id, {
       approval_status: "rejected",
       rejection_reason: reason.trim(),
       reviewed_at: new Date().toISOString(),
       reviewed_by: u?.user?.id,
-    }).eq("id", id);
+    });
     setBusyId(null);
     if (error) { toast.error(error.message); return; }
     toast.success(t("admin.verify.rejectedToast"));

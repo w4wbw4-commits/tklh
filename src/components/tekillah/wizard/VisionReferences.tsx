@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/integrations/supabase/client";
+import { storageService } from "@/domain";
 import { ImagePlus, Link2, Loader2, X, Film, Image as ImageIcon } from "lucide-react";
 
 export interface VisionRef {
@@ -67,16 +67,12 @@ export const VisionReferences = ({ refs, setRefs }: Props) => {
       }
       const ext = file.name.split(".").pop() ?? "bin";
       const path = `${new Date().toISOString().slice(0, 10)}/${newId()}.${ext}`;
-      const { error } = await supabase.storage.from("vision-refs").upload(path, file, {
-        cacheControl: "3600",
-        upsert: false,
-        contentType: file.type || undefined,
-      });
+      const { error } = await storageService.upload(storageService.BUCKETS.visionRefs, path, file, false);
       if (error) {
         toast.error(isAr ? "ما قدرنا نرفع الملف، جرب مرة ثانية" : "Upload failed, please try again");
         continue;
       }
-      const { data } = await supabase.storage.from("vision-refs").createSignedUrl(path, YEAR);
+      const { data } = await storageService.signedUrl(storageService.BUCKETS.visionRefs, path, YEAR);
       added.push({
         id: newId(),
         kind: "file",

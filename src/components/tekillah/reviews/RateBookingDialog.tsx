@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { reviewsService } from "@/domain";
 import { containsProfanity } from "@/lib/profanity";
 import { StarRating } from "./StarRating";
 
@@ -38,7 +38,7 @@ export const RateBookingDialog = ({ open, onOpenChange, bookingId, vendorId, cus
       return;
     }
     setSaving(true);
-    const { error } = await supabase.from("reviews").insert({
+    const { error } = await reviewsService.create({
       booking_id: bookingId,
       vendor_id: vendorId,
       customer_id: customerId,

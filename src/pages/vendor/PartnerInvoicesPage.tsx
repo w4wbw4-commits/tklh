@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { paymentsService } from "@/domain";
 import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
 import { StatusBanner } from "@/components/tekillah/vendor/StatusBanner";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
@@ -28,7 +28,7 @@ const PartnerInvoicesPage = () => {
 
   const load = async () => {
     if (!vendor) return;
-    const { data } = await supabase.from("vendor_invoices" as never).select("*").eq("vendor_id", vendor.id).order("issue_date", { ascending: false });
+    const { data } = await paymentsService.listVendorInvoices(vendor.id);
     setInvoices(((data as unknown) as Invoice[]) || []);
   };
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [vendor]);
@@ -43,12 +43,12 @@ const PartnerInvoicesPage = () => {
     if (!amt || amt <= 0) { toast.error("أدخل مبلغاً صحيحاً"); return; }
     const subtotal = +(amt / 1.15).toFixed(2);
     const vat = +(amt - subtotal).toFixed(2);
-    const { data: numData } = await supabase.rpc("generate_vendor_invoice_number" as never);
-    const { error } = await supabase.from("vendor_invoices" as never).insert({
+    const { data: numData } = await paymentsService.nextInvoiceNumber();
+    const { error } = await paymentsService.createVendorInvoice({
       vendor_id: vendor.id, invoice_number: numData as unknown as string,
       customer_name: form.customer_name || null, customer_phone: form.customer_phone || null,
       subtotal, vat_amount: vat, total: amt, notes: form.notes || null, source: "manual",
-    } as never);
+    });
     if (error) { toast.error(error.message); return; }
     toast.success("تم إصدار الفاتورة");
     setForm({ customer_name: "", customer_phone: "", amount: "", notes: "" });

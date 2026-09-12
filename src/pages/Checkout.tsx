@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
 import { TermsCheckbox } from "@/components/tekillah/TermsCheckbox";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
+import { bookingsService, paymentsService } from "@/domain";
 import { fmtNumber, fmtDate } from "@/i18n/format";
 import { recordTermsAcceptance } from "@/lib/terms";
 import type { Database } from "@/integrations/supabase/types";
@@ -59,12 +59,8 @@ const Checkout = () => {
     (async () => {
       setLoading(true);
       const [{ data: b }, { data: s }] = await Promise.all([
-        supabase
-          .from("bookings")
-          .select("*, vendor:vendors(business_name, category), package:packages(name)")
-          .eq("id", bookingId)
-          .maybeSingle(),
-        supabase.from("platform_settings_public").select("vat_percent, vat_number").maybeSingle(),
+        bookingsService.getByIdWithVendorAndPackage(bookingId),
+        paymentsService.getPublicSettings(),
       ]);
       const booking = b as unknown as Booking | null;
       setBooking(booking);
@@ -75,8 +71,7 @@ const Checkout = () => {
       }
       const amount = Number(booking?.total_price ?? 0);
       if (amount > 0) {
-        const { data: parts } = await supabase.rpc("compute_payment_split", { _amount: amount });
-        const row = Array.isArray(parts) ? parts[0] : parts;
+        const { split: row } = await paymentsService.computeSplit(amount);
         if (row) {
           setSplit({
             amount,
@@ -100,7 +95,7 @@ const Checkout = () => {
     }
     setSubmitting(true);
     await recordTermsAcceptance(user.id, "booking", booking.id);
-    const { error } = await supabase.from("payments").insert({
+    const { error } = await paymentsService.create({
       booking_id: booking.id,
       customer_id: user.id,
       vendor_id: booking.vendor_id,
@@ -115,10 +110,7 @@ const Checkout = () => {
     });
     if (!error) {
       // mark booking as paid_amount = amount (mock)
-      await supabase
-        .from("bookings")
-        .update({ paid_amount: split.amount })
-        .eq("id", booking.id);
+      await bookingsService.update(booking.id, { paid_amount: split.amount });
     }
     setSubmitting(false);
     if (error) {

@@ -8,7 +8,7 @@ import { EmptyState } from "@/components/tekillah/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { supabase } from "@/integrations/supabase/client";
+import { bookingsService, authService } from "@/domain";
 import { fmtDate, fmtNumber } from "@/i18n/format";
 
 interface BookingRow {
@@ -40,20 +40,15 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase.from("bookings")
-      .select("id, event_date, status, total_price, paid_amount, guest_count, customer_id, attendance_confirmed_at, package:packages(name)")
-      .eq("vendor_id", vendorId)
-      .order("event_date", { ascending: true });
+    const { data } = await bookingsService.listForVendorWithPackageAsc(vendorId);
     setList((data ?? []) as unknown as BookingRow[]);
     setLoading(false);
   };
 
   useEffect(() => {
     load();
-    const ch = supabase.channel(`vendor-bookings-${vendorId}`)
-      .on("postgres_changes", { event: "*", schema: "public", table: "bookings", filter: `vendor_id=eq.${vendorId}` }, load)
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    const unsubscribe = bookingsService.subscribeVendorBookings(vendorId, load);
+    return () => { unsubscribe(); };
     // eslint-disable-next-line
   }, [vendorId]);
 
@@ -68,7 +63,7 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
     setActing(id);
     // Optimistic update so the card moves between tabs immediately
     setList((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
-    const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
+    const { error } = await bookingsService.setStatus(id, status);
     setActing(null);
     if (error) {
       toast.error(error.message);
@@ -82,13 +77,11 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
   const confirmAttendance = async (b: BookingRow) => {
     if (!isToday(b.event_date)) return;
     setActing(b.id);
-    const { data: auth } = await supabase.auth.getUser();
-    const { error } = await supabase.from("bookings")
-      .update({
-        attendance_confirmed_at: new Date().toISOString(),
-        attendance_confirmed_by: auth?.user?.id ?? null,
-      })
-      .eq("id", b.id);
+    const { data: auth } = await authService.getUser();
+    const { error } = await bookingsService.update(b.id, {
+      attendance_confirmed_at: new Date().toISOString(),
+      attendance_confirmed_by: auth?.user?.id ?? null,
+    });
     setActing(null);
     if (error) { toast.error(t("vendor.bookings.attendanceFailed")); return; }
     toast.success(t("vendor.bookings.attendanceSaved"));

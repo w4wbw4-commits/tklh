@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, FileSearch, FileText, Flag, Users, Briefcase, CalendarCheck, ExternalLink } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { bookingsService, usersService, reviewsService, vendorsService, storageService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -28,7 +28,7 @@ interface FlaggedRow {
 
 const sign = async (bucket: string, path: string | null) => {
   if (!path) return null;
-  const { data } = await supabase.storage.from(bucket).createSignedUrl(path, 60 * 5);
+  const { data } = await storageService.signedUrl(bucket as never, path, 60 * 5);
   return data?.signedUrl ?? null;
 };
 
@@ -51,14 +51,14 @@ export const AdminGrandControl = ({ onJump }: { onJump?: (tab: string) => void }
       { data: flaggedReviews },
       { data: flaggedReplies },
     ] = await Promise.all([
-      supabase.from("user_roles").select("*", { count: "exact", head: true }).eq("role", "customer"),
-      supabase.from("user_roles").select("*", { count: "exact", head: true }).eq("role", "vendor"),
-      supabase.from("bookings").select("*", { count: "exact", head: true }).in("status", ["pending", "confirmed"]),
+      usersService.countUsersByRole("customer"),
+      usersService.countUsersByRole("vendor"),
+      bookingsService.countActive(),
       // Sensitive certificate URLs are revoked from `authenticated`; fetch
       // via the admin-only SECURITY DEFINER RPC.
-      supabase.rpc("admin_list_pending_vendor_docs"),
-      supabase.from("reviews").select("id, comment").eq("flagged", true).limit(10),
-      supabase.from("review_replies").select("id, body").eq("flagged", true).limit(10),
+      vendorsService.listPendingDocs(),
+      reviewsService.listFlaggedReviewsPreview(),
+      reviewsService.listFlaggedRepliesPreview(),
     ]);
 
     const flaggedList: FlaggedRow[] = [
@@ -84,14 +84,7 @@ export const AdminGrandControl = ({ onJump }: { onJump?: (tab: string) => void }
 
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel("admin-grand")
-      .on("postgres_changes", { event: "*", schema: "public", table: "vendors" }, load)
-      .on("postgres_changes", { event: "*", schema: "public", table: "reviews" }, load)
-      .on("postgres_changes", { event: "*", schema: "public", table: "review_replies" }, load)
-      .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, load)
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    return bookingsService.subscribeAdminGrandControl(load);
   }, []);
 
   const openDoc = async (bucket: string, path: string | null) => {

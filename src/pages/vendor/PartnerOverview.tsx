@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { RiyalSymbol } from "@/components/tekillah/RiyalSymbol";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { bookingsService } from "@/domain";
 import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
 import { StatusBanner } from "@/components/tekillah/vendor/StatusBanner";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
@@ -35,10 +35,7 @@ const PartnerOverview = () => {
   useEffect(() => {
     if (!vendor) return;
     (async () => {
-      const { data } = await supabase
-        .from("bookings")
-        .select("id, event_date, total_price, status")
-        .eq("vendor_id", vendor.id);
+      const { data } = await bookingsService.listForVendorOverview(vendor.id);
       setBookings((data as BookingLite[] | null) ?? []);
     })();
   }, [vendor]);

@@ -24,7 +24,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { supabase } from "@/integrations/supabase/client";
+import { packagesService } from "@/domain";
 import { useAuth } from "@/hooks/useAuth";
 import { fmtNumber } from "@/i18n/format";
 import { EmptyState } from "@/components/tekillah/EmptyState";
@@ -55,15 +55,8 @@ export const AdminPackagesPanel = () => {
   const load = async () => {
     setLoading(true);
     const [{ data: platformData }, { data: legacyData }] = await Promise.all([
-      supabase
-        .from("platform_packages")
-        .select("*")
-        .order("sort_order", { ascending: false })
-        .order("created_at", { ascending: false }),
-      supabase
-        .from("packages")
-        .select("id,name,price,vendor_id,created_at")
-        .order("created_at", { ascending: false }),
+      packagesService.listAllPlatformPackagesForAdmin(),
+      packagesService.listLegacyPackagesForAdmin(),
     ]);
     if (platformData) setItems(platformData as unknown as PlatformPackageRow[]);
     if (legacyData) setLegacy(legacyData as LegacyPackage[]);
@@ -72,12 +65,8 @@ export const AdminPackagesPanel = () => {
 
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel("admin-platform-packages")
-      .on("postgres_changes", { event: "*", schema: "public", table: "platform_packages" }, load)
-      .on("postgres_changes", { event: "*", schema: "public", table: "packages" }, load)
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    const ch = packagesService.subscribeToAdminPackagesTables("admin-platform-packages", load);
+    return () => { packagesService.unsubscribe(ch); };
   }, []);
 
   const openCreate = () => { setEditing(null); setDialogOpen(true); };
@@ -86,7 +75,7 @@ export const AdminPackagesPanel = () => {
   const confirmDeletePlatform = async () => {
     if (!pendingDelete) return;
     setDeletingId(pendingDelete.id);
-    const { error } = await supabase.from("platform_packages").delete().eq("id", pendingDelete.id);
+    const { error } = await packagesService.deletePlatformPackage(pendingDelete.id);
     setDeletingId(null);
     setPendingDelete(null);
     if (error) {
@@ -100,7 +89,7 @@ export const AdminPackagesPanel = () => {
   const confirmDeleteLegacy = async () => {
     if (!pendingLegacyDelete) return;
     setDeletingId(pendingLegacyDelete.id);
-    const { error } = await supabase.from("packages").delete().eq("id", pendingLegacyDelete.id);
+    const { error } = await packagesService.deleteVendorPackage(pendingLegacyDelete.id);
     setDeletingId(null);
     setPendingLegacyDelete(null);
     if (error) {
@@ -115,7 +104,7 @@ export const AdminPackagesPanel = () => {
     setPendingLegacyAll(false);
     const ids = legacy.map((l) => l.id);
     if (!ids.length) return;
-    const { error } = await supabase.from("packages").delete().in("id", ids);
+    const { error } = await packagesService.deleteVendorPackages(ids);
     if (error) {
       toast({ title: error.message, variant: "destructive" });
     } else {
