@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShieldCheck, Building2, Home, ChevronUp, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
+import { usersService } from "@/domain";
 import { useTranslation } from "react-i18next";
 import { isAllowlistedAdmin } from "@/lib/admins";
 
@@ -32,11 +32,7 @@ export const RoleSwitcher = () => {
       return;
     }
     (async () => {
-      const { data } = await supabase.rpc("has_role", {
-        _user_id: user.id,
-        _role: "admin",
-      });
-      setIsAdmin(Boolean(data));
+      setIsAdmin(await usersService.hasRole(user.id, "admin"));
     })();
   }, [user]);
 

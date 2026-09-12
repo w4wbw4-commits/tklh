@@ -32,9 +32,7 @@ export const Footer = () => {
 
   useEffect(() => {
     if (!user) { setIsAdmin(false); return; }
-    supabase.rpc("has_role", { _user_id: user.id, _role: "admin" }).then(({ data }) => {
-      setIsAdmin(!!data);
-    });
+    usersService.hasRole(user.id, "admin").then(setIsAdmin);
   }, [user]);
 
   const handleSignOut = async () => {
