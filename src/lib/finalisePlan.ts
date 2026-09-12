@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------
 
 
-import { eventsService, bookingsService } from "@/domain";
+import { eventsService, bookingsService, packagesService, vendorsService } from "@/domain";
 import type { PendingPlan } from "@/lib/pendingPlan";
 import type { TFunction } from "i18next";
 

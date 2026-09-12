@@ -272,3 +272,17 @@ export const listSummaryForEventAsc = (eventId: string) =>
     .select("id, status, total_price, vendor:vendors(business_name, category)")
     .eq("event_id", eventId)
     .order("created_at", { ascending: true });
+
+/** Subscribe to vendors + reviews + review_replies + bookings for the admin control tab. */
+export const subscribeAdminGrandControl = (onChange: () => void) => {
+  const channel = db
+    .channel("admin-grand")
+    .on("postgres_changes", { event: "*", schema: "public", table: "vendors" }, onChange)
+    .on("postgres_changes", { event: "*", schema: "public", table: "reviews" }, onChange)
+    .on("postgres_changes", { event: "*", schema: "public", table: "review_replies" }, onChange)
+    .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, onChange)
+    .subscribe();
+  return () => {
+    db.removeChannel(channel);
+  };
+};
