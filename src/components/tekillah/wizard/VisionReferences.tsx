@@ -45,11 +45,22 @@ export const VisionReferences = ({ refs, setRefs }: Props) => {
       ? crypto.randomUUID()
       : `${Date.now()}-${Math.random()}`;
 
+  const MAX_FILES = 5;
+  const MAX_LINKS = 2;
+  const fileCount = refs.filter((r) => r.kind === "file").length;
+  const linkCount = refs.filter((r) => r.kind === "link").length;
+
   const handleFiles = async (files: FileList | null) => {
     if (!files?.length) return;
+    const remaining = MAX_FILES - refs.filter((r) => r.kind === "file").length;
+    if (remaining <= 0) {
+      toast.error(isAr ? "تقدر تضيف ٥ صور أو فيديو كحد أقصى" : "You can add up to 5 photos or videos");
+      if (fileInput.current) fileInput.current.value = "";
+      return;
+    }
     setUploading(true);
     const added: VisionRef[] = [];
-    for (const file of Array.from(files).slice(0, 5)) {
+    for (const file of Array.from(files).slice(0, remaining)) {
       if (file.size > 25 * 1024 * 1024) {
         toast.error(isAr ? `${file.name} أكبر من ٢٥ ميجا` : `${file.name} is larger than 25MB`);
         continue;
@@ -82,6 +93,10 @@ export const VisionReferences = ({ refs, setRefs }: Props) => {
   const addLink = () => {
     const value = link.trim();
     if (!value) return;
+    if (refs.filter((r) => r.kind === "link").length >= MAX_LINKS) {
+      toast.error(isAr ? "تقدر تضيف رابطين كحد أقصى" : "You can add up to 2 links");
+      return;
+    }
     const url = /^https?:\/\//i.test(value) ? value : `https://${value}`;
     try {
       const host = new URL(url).hostname.replace(/^www\./, "");
@@ -122,7 +137,7 @@ export const VisionReferences = ({ refs, setRefs }: Props) => {
           type="button"
           variant="outline"
           onClick={() => fileInput.current?.click()}
-          disabled={uploading}
+          disabled={uploading || fileCount >= MAX_FILES}
           className="min-h-[44px] rounded-full border-primary/30 font-arabic text-[13px]"
         >
           {uploading ? (
@@ -154,6 +169,7 @@ export const VisionReferences = ({ refs, setRefs }: Props) => {
         <Button
           type="button"
           onClick={addLink}
+          disabled={linkCount >= MAX_LINKS}
           className="min-h-[44px] rounded-full px-5 font-arabic text-[13px]"
         >
           {isAr ? "إضافة الرابط" : "Add link"}
