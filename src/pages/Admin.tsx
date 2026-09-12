@@ -78,18 +78,12 @@ const Admin = () => {
   useEffect(() => {
     if (!user) return;
     (async () => {
-      // Hardcoded phone allowlist OR admin role. The primary admin phone is
-      // always granted access; other admins must have the 'admin' role.
-      if (isAllowlistedAdmin(user)) {
-        setIsAdmin(true);
-        // Best-effort self-heal: ensure the role row exists for RLS-protected writes.
-        await supabase.from("user_roles").insert({ user_id: user.id, role: "admin" }).then(() => {}, () => {});
-        return;
-      }
-      const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
-      setIsAdmin(Boolean(data));
+      // Hardcoded phone allowlist OR admin role — resolved by the shared users
+      // domain service so web and future mobile clients agree on the rule.
+      setIsAdmin(await usersService.resolveAdminAccess(user));
     })();
   }, [user]);
+
 
   // Admin dashboard is rendered in dark mode via the route-aware ThemeProvider in App.tsx.
 
