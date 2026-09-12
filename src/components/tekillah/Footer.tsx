@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { usersService } from "@/domain";
 
 export const Footer = () => {
   const { t } = useTranslation();
