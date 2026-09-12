@@ -18,6 +18,9 @@ export const block = (payload: Insert<"vendor_availability">) =>
 export const unblock = (vendorId: string, date: string) =>
   db.from("vendor_availability").delete().eq("vendor_id", vendorId).eq("date", date);
 
+export const deleteAvailabilityById = (id: string) =>
+  db.from("vendor_availability").delete().eq("id", id);
+
 export const listPricingRules = (vendorId: string) =>
   db
     .from("vendor_pricing_rules")
@@ -33,3 +36,23 @@ export const updatePricingRule = (id: string, patch: Update<"vendor_pricing_rule
 
 export const deletePricingRule = (id: string) =>
   db.from("vendor_pricing_rules").delete().eq("id", id);
+
+// ---------------------------------------------------------------------------
+// Realtime helpers
+// ---------------------------------------------------------------------------
+
+export const subscribeToVendorAvailability = (
+  channelName: string,
+  vendorId: string,
+  onChange: () => void,
+) =>
+  db
+    .channel(channelName)
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "vendor_availability", filter: `vendor_id=eq.${vendorId}` },
+      onChange,
+    )
+    .subscribe();
+
+export const unsubscribe = (channel: ReturnType<typeof db.channel>) => db.removeChannel(channel);

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, Upload, X, AlertOctagon } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { incidentsService, storageService } from "@/domain";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -60,15 +60,11 @@ export const ReportIncidentDialog = ({ bookingId, vendorId }: Props) => {
       for (const f of files) {
         const ext = f.name.split(".").pop() ?? "jpg";
         const path = `${user.id}/${Date.now()}-${crypto.randomUUID()}.${ext}`;
-        const { error } = await supabase.storage
-          .from("incident-attachments")
-          .upload(path, f, { upsert: false, contentType: f.type });
+        const { error } = await storageService.upload(storageService.BUCKETS.incidentAttachments, path, f, false);
         if (error) throw error;
         paths.push(path);
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const client = supabase as any;
-      const { error: insErr } = await client.from("incident_reports").insert({
+      const { error: insErr } = await incidentsService.createIncident({
         customer_id: user.id,
         vendor_id: vendorId,
         booking_id: bookingId,

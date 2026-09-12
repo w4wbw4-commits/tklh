@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Circle, Clock, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { eventsService } from "@/domain";
 import type { EventRow, MilestoneRow, MilestoneStatus } from "./types";
 import { useTranslation } from "react-i18next";
 import { fmtNumber, fmtDate } from "@/i18n/format";
@@ -15,8 +15,7 @@ export const EventTimeline = ({ event }: { event: EventRow }) => {
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase.from("timeline_milestones").select("*")
-      .eq("event_id", event.id).order("sort_order", { ascending: true });
+    const { data } = await eventsService.listMilestones(event.id);
     setItems((data ?? []) as MilestoneRow[]);
     setLoading(false);
   };
@@ -24,7 +23,7 @@ export const EventTimeline = ({ event }: { event: EventRow }) => {
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [event.id]);
 
   const updateStatus = async (id: string, status: MilestoneStatus) => {
-    const { error } = await supabase.from("timeline_milestones").update({ status }).eq("id", id);
+    const { error } = await eventsService.updateMilestone(id, { status });
     if (error) { toast.error(t("customer.timeline.updateFailed")); return; }
     setItems((prev) => prev.map((m) => (m.id === id ? { ...m, status } : m)));
   };

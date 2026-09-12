@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, AlertOctagon, ExternalLink, CheckCircle2, XCircle, ImageIcon } from "lucide-react";
+import { incidentsService, storageService } from "@/domain";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,9 +27,7 @@ interface IncidentRow {
 }
 
 const sign = async (path: string) => {
-  const { data } = await supabase.storage
-    .from("incident-attachments")
-    .createSignedUrl(path, 60 * 10);
+  const { data } = await storageService.signedUrl(storageService.BUCKETS.incidentAttachments, path, 60 * 10);
   return data?.signedUrl ?? null;
 };
 
@@ -42,14 +41,7 @@ export const AdminIncidentReports = () => {
 
   const load = async () => {
     setLoading(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const client = supabase as any;
-    const { data } = await client
-      .from("incident_reports")
-      .select(
-        "id, customer_id, vendor_id, booking_id, kind, description, attachments, status, admin_notes, created_at, vendor:vendors(business_name, category)",
-      )
-      .order("created_at", { ascending: false });
+    const { data } = await incidentsService.listIncidentsWithVendor();
 
     const list = (data ?? []) as unknown as IncidentRow[];
     setRows(list);
@@ -70,29 +62,18 @@ export const AdminIncidentReports = () => {
 
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel("admin-incidents")
-      .on("postgres_changes", { event: "*", schema: "public", table: "incident_reports" }, load)
-      .subscribe();
-    return () => {
-      supabase.removeChannel(ch);
-    };
+    return incidentsService.subscribeIncidents(load);
   }, []);
 
   const updateStatus = async (id: string, status: IncidentStatus) => {
     setBusyId(id);
     const { data: u } = await supabase.auth.getUser();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const client = supabase as any;
-    const { error } = await client
-      .from("incident_reports")
-      .update({
-        status,
-        admin_notes: notes[id] ?? null,
-        resolved_at: status === "resolved" || status === "dismissed" ? new Date().toISOString() : null,
-        resolved_by: u?.user?.id ?? null,
-      })
-      .eq("id", id);
+    const { error } = await incidentsService.updateIncident(id, {
+      status,
+      admin_notes: notes[id] ?? null,
+      resolved_at: status === "resolved" || status === "dismissed" ? new Date().toISOString() : null,
+      resolved_by: u?.user?.id ?? null,
+    });
     setBusyId(null);
     if (error) {
       toast.error(error.message);

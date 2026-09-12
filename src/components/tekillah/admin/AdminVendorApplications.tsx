@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Loader2, Inbox, Building2, User, MessageSquare, Mail, ChevronDown } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { leadsService } from "@/domain";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -59,12 +59,7 @@ export const AdminVendorApplications = () => {
 
   const load = async () => {
     setLoading(true);
-    const query = supabase
-      .from("vendor_applications")
-      .select("id, full_name, phone, email, entity_type, service_type, city, notes, status, created_at")
-      .order("created_at", { ascending: false })
-      .limit(200);
-    const { data, error } = filter === "all" ? await query : await query.eq("status", filter);
+    const { data, error } = await leadsService.listVendorApplicationsForAdmin(filter);
     if (error) {
       toast.error(error.message);
       setRows([]);
@@ -76,19 +71,12 @@ export const AdminVendorApplications = () => {
 
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel("admin-vendor-applications")
-      .on("postgres_changes", { event: "*", schema: "public", table: "vendor_applications" }, load)
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    return leadsService.subscribeVendorApplications(load);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   const updateStatus = async (id: string, next: AppStatus) => {
-    const { error } = await supabase
-      .from("vendor_applications")
-      .update({ status: next, reviewed_at: new Date().toISOString() })
-      .eq("id", id);
+    const { error } = await leadsService.updateVendorApplicationStatus(id, next);
     if (error) { toast.error(error.message); return; }
     toast.success("تم تحديث حالة الطلب");
     load();

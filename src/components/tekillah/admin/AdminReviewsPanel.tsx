@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, Trash2, MessageSquareText, Star } from "lucide-react";
+import { reviewsService } from "@/domain";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -42,10 +43,7 @@ export const AdminReviewsPanel = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("reviews")
-      .select("id, rating, communication, punctuality, quality, comment, created_at, vendor_id, customer_id, vendor:vendors(business_name)")
-      .order("created_at", { ascending: false });
+    const { data } = await reviewsService.listAllForAdmin();
     const list = (data ?? []) as unknown as AdminReview[];
     setReviews(list);
     const ids = Array.from(new Set(list.map((r) => r.customer_id)));
@@ -58,10 +56,7 @@ export const AdminReviewsPanel = () => {
     }
     const reviewIds = list.map((r) => r.id);
     if (reviewIds.length) {
-      const { data: reps } = await supabase
-        .from("review_replies" as never)
-        .select("id, review_id, body, created_at, updated_at")
-        .in("review_id", reviewIds);
+      const { data: reps } = await reviewsService.listRepliesByReviewIds(reviewIds);
       const map: Record<string, ReplyRow> = {};
       ((reps ?? []) as unknown as ReplyRow[]).forEach((r) => { map[r.review_id] = r; });
       setReplies(map);
@@ -74,14 +69,14 @@ export const AdminReviewsPanel = () => {
   useEffect(() => { load(); }, []);
 
   const remove = async (id: string) => {
-    const { error } = await supabase.from("reviews").delete().eq("id", id);
+    const { error } = await reviewsService.remove(id);
     if (error) { toast.error(error.message); return; }
     toast.success(t("reviews.success.deleted"));
     load();
   };
 
   const removeReply = async (id: string) => {
-    const { error } = await supabase.from("review_replies" as never).delete().eq("id", id);
+    const { error } = await reviewsService.removeReply(id);
     if (error) { toast.error(error.message); return; }
     toast.success(t("reviews.success.replyDeleted"));
     load();

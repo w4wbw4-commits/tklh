@@ -5,7 +5,7 @@
 // function. The browser never generates, stores or validates codes, and no
 // password-derivation secret ships in the client bundle.
 // ---------------------------------------------------------------------------
-import { supabase } from "@/integrations/supabase/client";
+import { functionsService } from "@/domain";
 
 const SAUDI_DIAL_CODE = "+966";
 
@@ -30,7 +30,7 @@ export const formatSaudiLocal = (raw: string): string => {
 };
 
 const invokeOtp = async <T>(body: Record<string, unknown>): Promise<T> => {
-  const { data, error } = await supabase.functions.invoke("phone-otp", { body });
+  const { data, error } = await functionsService.invokePhoneOtp(body);
   if (error) throw error;
   const payload = data as (T & { error?: string }) | null;
   if (!payload || payload.error) throw new Error(payload?.error ?? "otp_failed");

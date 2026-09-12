@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Loader2, ShieldCheck, Check, X } from "lucide-react";
 import { Logo } from "@/components/tekillah/Logo";
-import { supabase } from "@/integrations/supabase/client";
+import { authService } from "@/domain";
 import { PasswordInput } from "@/components/tekillah/PasswordInput";
 
 const ResetPassword = () => {
@@ -22,12 +22,12 @@ const ResetPassword = () => {
 
   // The recovery link will create a session via the URL hash automatically.
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: sub } = authService.onAuthStateChange((event, session) => {
       if (event === "PASSWORD_RECOVERY" || (event === "SIGNED_IN" && session)) {
         setValidSession(true);
       }
     });
-    supabase.auth.getSession().then(({ data }) => {
+    authService.getSession().then(({ data }) => {
       if (data.session) setValidSession(true);
       else if (validSession === null) setValidSession(false);
     });
@@ -46,13 +46,13 @@ const ResetPassword = () => {
     e.preventDefault();
     if (!canSubmit) return;
     setSubmitting(true);
-    const { error } = await supabase.auth.updateUser({ password: pwd });
+    const { error } = await authService.updatePassword(pwd);
     setSubmitting(false);
     if (error) {
       toast.error(error.message);
       return;
     }
-    await supabase.auth.signOut();
+    await authService.signOut();
     toast.success(t("auth.reset.success"));
     navigate("/auth", { replace: true });
   };

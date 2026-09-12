@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------
 
 import { supabase } from "@/integrations/supabase/client";
+import { eventsService } from "@/domain";
 import type { PendingPlan } from "@/lib/pendingPlan";
 import type { TFunction } from "i18next";
 
@@ -45,7 +46,7 @@ export const finalisePlan = async ({
   const platformPackageId =
     plan.packageSelection?.kind === "admin" ? plan.packageSelection.key : null;
 
-  const { data: ev, error: evErr } = await supabase.from("events").insert({
+  const { data: ev, error: evErr } = await eventsService.createEventReturningId({
     customer_id: userId,
     title: plan.eventType
       ? t(`eventTypes.${plan.eventType}`)
@@ -57,7 +58,7 @@ export const finalisePlan = async ({
     theme: plan.selectedChips?.[0] || plan.packageSelection?.name || null,
     notes: composedNotes,
     platform_package_id: platformPackageId,
-  }).select("id").single();
+  });
 
   if (evErr || !ev) throw new Error(evErr?.message ?? "event_insert_failed");
 

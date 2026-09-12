@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Loader2, Inbox, Phone as PhoneIcon, MessageSquare, BadgeCheck, ChevronDown, Mail } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { supabase } from "@/integrations/supabase/client";
+import { leadsService } from "@/domain";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -46,14 +46,7 @@ export const AdminLeadsPanel = () => {
 
   const load = async () => {
     setLoading(true);
-    const query = supabase
-      .from("customer_leads")
-      .select("id, phone, display_name, contact_email, status, source, event_id, booking_id, created_at, notes")
-      .order("created_at", { ascending: false })
-      .limit(200);
-    const { data, error } = filter === "all"
-      ? await query
-      : await query.eq("status", filter);
+    const { data, error } = await leadsService.listCustomerLeads(filter);
     if (error) {
       toast.error(error.message);
       setLeads([]);
@@ -65,19 +58,12 @@ export const AdminLeadsPanel = () => {
 
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel("admin-leads")
-      .on("postgres_changes", { event: "*", schema: "public", table: "customer_leads" }, load)
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    return leadsService.subscribeCustomerLeads(load);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   const updateStatus = async (id: string, next: LeadStatus) => {
-    const { error } = await supabase
-      .from("customer_leads")
-      .update({ status: next })
-      .eq("id", id);
+    const { error } = await leadsService.updateLeadStatus(id, next);
     if (error) { toast.error(error.message); return; }
     toast.success(t("admin.leads.statusUpdated"));
   };

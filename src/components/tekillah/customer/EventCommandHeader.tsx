@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
+import { eventsService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { fmtNumber, fmtDate } from "@/i18n/format";
 import chairMark from "/tklh-chair-mark.png";
@@ -130,10 +131,9 @@ export const EventCommandHeader = ({
   useEffect(() => {
     (async () => {
       const [guests, bookings, milestones] = await Promise.all([
-        supabase.from("guests").select("rsvp_status").eq("event_id", event.id),
+        eventsService.listGuestRsvpStatuses(event.id),
         supabase.from("bookings").select("status, total_price, paid_amount").eq("event_id", event.id),
-        supabase.from("timeline_milestones").select("id, title, status, due_date").eq("event_id", event.id)
-          .order("due_date", { ascending: true }),
+        eventsService.listMilestoneSummaries(event.id),
       ]);
       const g = guests.data ?? [];
       const b = bookings.data ?? [];

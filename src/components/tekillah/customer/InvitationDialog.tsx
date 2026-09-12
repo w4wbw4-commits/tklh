@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { supabase } from "@/integrations/supabase/client";
+import { functionsService } from "@/domain";
 import type { EventRow } from "./types";
 import { useTranslation } from "react-i18next";
 import { fmtDateTime } from "@/i18n/format";
@@ -30,11 +30,9 @@ export const InvitationDialog = ({ open, onOpenChange, event }: Props) => {
     setGenerating(true);
     setAiImage(null);
     try {
-      const { data, error } = await supabase.functions.invoke("generate-invitation", {
-        body: {
-          title: event.title, date: dateLabel, city: event.city ?? "",
-          theme: event.theme ?? "luxury olive green and beige Saudi wedding",
-        },
+      const { data, error } = await functionsService.invokeGenerateInvitation({
+        title: event.title, date: dateLabel, city: event.city ?? "",
+        theme: event.theme ?? "luxury olive green and beige Saudi wedding",
       });
       if (error) throw error;
       if (data?.image) { setAiImage(data.image); toast.success(t("customer.invitation.designed")); }

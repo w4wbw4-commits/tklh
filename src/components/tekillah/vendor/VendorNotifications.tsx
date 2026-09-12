@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 import { ar } from "date-fns/locale";
-import { supabase } from "@/integrations/supabase/client";
+import { notificationsService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Bell, BellRing, Check, CalendarCheck, CreditCard, Clock, Inbox } from "lucide-react";
@@ -27,9 +27,7 @@ export const VendorNotifications = ({ userId }: Props) => {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("notifications").select("*").eq("user_id", userId)
-      .order("created_at", { ascending: false }).limit(50);
+    const { data, error } = await notificationsService.listForUser(userId, 50);
     if (error) toast.error(error.message);
     setItems((data ?? []) as NotificationRow[]);
     setLoading(false);
@@ -37,21 +35,14 @@ export const VendorNotifications = ({ userId }: Props) => {
 
   useEffect(() => {
     load();
-    const channel = supabase
-      .channel(`notif-${userId}`)
-      .on("postgres_changes",
-        { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${userId}` },
-        load
-      )
-      .subscribe();
-    return () => { supabase.removeChannel(channel); };
+    return notificationsService.subscribe(userId, load);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const markAllRead = async () => {
     const ids = items.filter((i) => !i.read).map((i) => i.id);
     if (ids.length === 0) return;
-    const { error } = await supabase.from("notifications").update({ read: true }).in("id", ids);
+    const { error } = await notificationsService.markManyRead(ids);
     if (error) { toast.error(error.message); return; }
     load();
   };

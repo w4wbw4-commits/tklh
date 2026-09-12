@@ -6,6 +6,7 @@ import {
   MessageCircle, ArrowRight, CheckCircle2, Circle, Clock, Mail,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { eventsService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { fmtNumber, fmtDate } from "@/i18n/format";
 import { buildWhatsappLink } from "@/lib/whatsapp";
@@ -49,9 +50,7 @@ export const OverviewSummary = ({
   useEffect(() => {
     (async () => {
       const [m, b] = await Promise.all([
-        supabase.from("timeline_milestones")
-          .select("id, title, status, due_date").eq("event_id", event.id)
-          .order("due_date", { ascending: true }),
+        eventsService.listMilestoneSummaries(event.id),
         supabase.from("bookings")
           .select("id, status, total_price, vendor:vendors(business_name, category)")
           .eq("event_id", event.id).order("created_at", { ascending: true }),

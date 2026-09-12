@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, Trash2, MessageSquareText, Reply, Pencil, Flag } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { reviewsService } from "@/domain";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -59,7 +59,7 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase.rpc("get_vendor_reviews" as never, { _vendor_id: vendorId } as never);
+    const { data } = await reviewsService.listForVendor(vendorId);
     const rows = (data ?? []) as unknown as Array<ReviewItem & { reviewer_name: string | null }>;
     setReviews(rows);
 
@@ -68,7 +68,7 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
     setProfiles(nameMap);
 
     if (rows.length) {
-      const { data: reps } = await supabase.rpc("get_vendor_review_replies" as never, { _vendor_id: vendorId } as never);
+      const { data: reps } = await reviewsService.listRepliesForVendor(vendorId);
       const repMap: Record<string, ReplyItem> = {};
       ((reps ?? []) as unknown as ReplyItem[]).forEach((r) => { repMap[r.review_id] = r; });
       setReplies(repMap);
@@ -81,7 +81,7 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [vendorId]);
 
   const removeReview = async (id: string) => {
-    const { error } = await supabase.from("reviews").delete().eq("id", id);
+    const { error } = await reviewsService.remove(id);
     if (error) { toast.error(error.message); return; }
     toast.success(t("reviews.success.deleted"));
     load();
@@ -102,8 +102,8 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
     setBusyId(reviewId);
     const existing = replies[reviewId];
     const { error } = existing
-      ? await supabase.from("review_replies").update({ body }).eq("id", existing.id)
-      : await supabase.from("review_replies").insert({
+      ? await reviewsService.updateReply(existing.id, body)
+      : await reviewsService.reply({
           review_id: reviewId, vendor_id: vendorId, vendor_user_id: vendorUserId, body,
         });
     setBusyId(null);
@@ -114,7 +114,7 @@ export const ReviewsList = ({ vendorId, isAdmin, canReply, vendorUserId }: Props
   };
 
   const deleteReply = async (replyId: string) => {
-    const { error } = await supabase.from("review_replies").delete().eq("id", replyId);
+    const { error } = await reviewsService.removeReply(replyId);
     if (error) { toast.error(error.message); return; }
     toast.success(t("reviews.success.replyDeleted"));
     load();

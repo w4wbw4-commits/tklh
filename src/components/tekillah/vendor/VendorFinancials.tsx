@@ -22,7 +22,8 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
-import { supabase } from "@/integrations/supabase/client";
+import { bookingsService } from "@/domain";
+import { db } from "@/domain/client";
 import { fmtDate, fmtNumber } from "@/i18n/format";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/tekillah/EmptyState";
@@ -53,17 +54,13 @@ export const VendorFinancials = ({ vendorId }: { vendorId: string }) => {
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("bookings")
-      .select("id, event_date, status, total_price, paid_amount, customer_id, package:packages(name)")
-      .eq("vendor_id", vendorId)
-      .order("event_date", { ascending: false });
+    const { data } = await bookingsService.listForVendorFinancials(vendorId);
     const rows = (data ?? []) as unknown as BookingRow[];
     setBookings(rows);
 
     const ids = Array.from(new Set(rows.map((b) => b.customer_id)));
     if (ids.length) {
-      const { data: ps } = await supabase
+      const { data: ps } = await db
         .from("public_profiles" as any)
         .select("user_id, display_name")
         .in("user_id", ids);
@@ -80,16 +77,9 @@ export const VendorFinancials = ({ vendorId }: { vendorId: string }) => {
 
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel(`vendor-financials-${vendorId}`)
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "bookings", filter: `vendor_id=eq.${vendorId}` },
-        load,
-      )
-      .subscribe();
+    const unsubscribe = bookingsService.subscribeVendorFinancials(vendorId, load);
     return () => {
-      supabase.removeChannel(ch);
+      unsubscribe();
     };
     // eslint-disable-next-line
   }, [vendorId]);

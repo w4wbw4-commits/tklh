@@ -14,7 +14,7 @@ import {
 import { ArrowRight, CheckCircle2, Loader2, Phone, MessageSquareLock, Pencil, UserRound, Mail } from "lucide-react";
 import { Logo } from "@/components/tekillah/Logo";
 import { SEO } from "@/components/SEO";
-import { supabase } from "@/integrations/supabase/client";
+import { authService, usersService } from "@/domain";
 import { useAuth } from "@/hooks/useAuth";
 import {
   formatSaudiLocal,
@@ -147,7 +147,7 @@ const Auth = () => {
       setOtpVerified(true);
       if (needsProfile) holdForProfileRef.current = true;
 
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      const { data: signInData, error: signInError } = await authService.signInWithPassword(email, password);
       if (signInError || !signInData.user) throw signInError ?? new Error("Sign-in failed");
 
       const uid = userId ?? signInData.user.id;
@@ -206,14 +206,13 @@ const Auth = () => {
     setProfileError(null);
     setSubmitting(true);
     try {
-      const { data: sessionData } = await supabase.auth.getUser();
+      const { data: sessionData } = await authService.getUser();
       const uid = signedUserId ?? sessionData.user?.id;
       if (!uid) throw new Error("No session");
 
-      const { error } = await supabase
-        .from("profiles")
-        .update({ display_name: name, contact_email: mail, phone: phoneE164 })
-        .eq("user_id", uid);
+      const { error } = await usersService.updateProfile(uid, {
+        display_name: name, contact_email: mail, phone: phoneE164,
+      });
       if (error) throw error;
 
       await upsertCustomerLead({

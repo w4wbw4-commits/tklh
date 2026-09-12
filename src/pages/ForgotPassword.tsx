@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Loader2, MailCheck, KeyRound } from "lucide-react";
 import { Logo } from "@/components/tekillah/Logo";
-import { supabase } from "@/integrations/supabase/client";
+import { authService } from "@/domain";
 
 const ForgotPassword = () => {
   const { t } = useTranslation();
@@ -27,9 +27,7 @@ const ForgotPassword = () => {
       return;
     }
     setSubmitting(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
+    const { error } = await authService.resetPasswordForEmail(email, `${window.location.origin}/reset-password`);
     setSubmitting(false);
     if (error) {
       toast.error(error.message);
