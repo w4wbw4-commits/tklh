@@ -45,11 +45,22 @@ export const VisionReferences = ({ refs, setRefs }: Props) => {
       ? crypto.randomUUID()
       : `${Date.now()}-${Math.random()}`;
 
+  const MAX_FILES = 5;
+  const MAX_LINKS = 2;
+  const fileCount = refs.filter((r) => r.kind === "file").length;
+  const linkCount = refs.filter((r) => r.kind === "link").length;
+
   const handleFiles = async (files: FileList | null) => {
     if (!files?.length) return;
+    const remaining = MAX_FILES - refs.filter((r) => r.kind === "file").length;
+    if (remaining <= 0) {
+      toast.error(isAr ? "تقدر تضيف ٥ صور أو فيديو كحد أقصى" : "You can add up to 5 photos or videos");
+      if (fileInput.current) fileInput.current.value = "";
+      return;
+    }
     setUploading(true);
     const added: VisionRef[] = [];
-    for (const file of Array.from(files).slice(0, 5)) {
+    for (const file of Array.from(files).slice(0, remaining)) {
       if (file.size > 25 * 1024 * 1024) {
         toast.error(isAr ? `${file.name} أكبر من ٢٥ ميجا` : `${file.name} is larger than 25MB`);
         continue;
