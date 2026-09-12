@@ -175,3 +175,6 @@ export const subscribeVendorApplications = (onChange: () => void) => {
 /** Public, unauthenticated planner-interest submission (planning wizard fallback). */
 export const submitPlannerInterest = (payload: { full_name: string; phone: string; details: unknown }) =>
   db.from("planner_interest").insert(payload as never);
+
+export const createVendorApplication = (payload: Insert<"vendor_applications">) =>
+  db.from("vendor_applications").insert(payload);

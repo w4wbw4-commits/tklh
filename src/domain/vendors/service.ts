@@ -215,3 +215,20 @@ export const subscribeToPublicVendorsListing = (channelName: string, onChange: (
     .subscribe();
 
 export const unsubscribe = (channel: ReturnType<typeof db.channel>) => db.removeChannel(channel);
+
+/** Narrow existence/status projection for the partner onboarding page. */
+export const getMyVendorStatus = (userId: string) =>
+  db
+    .from("vendors")
+    .select("id, user_id, business_name, approval_status, active")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+/** Approved+active public vendors by id, used for auto-filling package slots. */
+export const listApprovedPublicVendorsByIds = (ids: string[]) =>
+  db
+    .from("vendors_public")
+    .select("id, category")
+    .in("id", ids)
+    .eq("approval_status", "approved")
+    .eq("active", true);

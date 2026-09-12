@@ -90,3 +90,11 @@ export const subscribeToAdminPackagesTables = (channelName: string, onChange: ()
     .subscribe();
 
 export const unsubscribe = (channel: ReturnType<typeof db.channel>) => db.removeChannel(channel);
+
+/** Slot/eligibility projection used by the planner finalisation flow. */
+export const getPlatformPackageSlots = (id: string) =>
+  db
+    .from("platform_packages")
+    .select("slots, eligible_vendor_ids, price")
+    .eq("id", id)
+    .maybeSingle();
