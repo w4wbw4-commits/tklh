@@ -31,7 +31,7 @@ import { AdminPendingBookings } from "@/components/tekillah/admin/AdminPendingBo
 import { AdminVendorApplications } from "@/components/tekillah/admin/AdminVendorApplications";
 import { AdminLayout } from "@/components/tekillah/admin/AdminLayout";
 import { EmptyState } from "@/components/tekillah/EmptyState";
-import { isAllowlistedAdmin } from "@/lib/admins";
+import { usersService } from "@/domain";
 
 
 interface PaymentRow {
