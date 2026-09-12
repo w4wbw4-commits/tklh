@@ -9,7 +9,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  * no heavy shadows, no scattered blocks.
  */
 
-const PAY = ["mada", "applepay", "visa", "mastercard", "tabby", "tamara"] as const;
+
 
 const GOLD = "hsl(var(--gold))";
 const goldHair = "1px solid hsl(var(--gold) / 0.45)";
