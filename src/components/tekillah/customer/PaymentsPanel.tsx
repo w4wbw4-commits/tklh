@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { bookingsService, functionsService } from "@/domain";
 import type { EventRow, BookingWithVendor } from "./types";
 import { useTranslation } from "react-i18next";
 import { fmtNumber } from "@/i18n/format";
@@ -32,9 +33,7 @@ export const PaymentsPanel = ({ event }: { event: EventRow }) => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const { data } = await supabase.from("bookings")
-        .select("*, vendor:vendors(business_name, category, city), package:packages(name, tier)")
-        .eq("event_id", event.id).order("created_at", { ascending: false });
+      const { data } = await bookingsService.listForEventWithVendorTier(event.id);
       const list = (data ?? []) as unknown as BookingWithVendor[];
       setBookings(list);
       await refreshReviewed(list.map((b) => b.id));
@@ -50,7 +49,7 @@ export const PaymentsPanel = ({ event }: { event: EventRow }) => {
   const downloadInvoice = async (booking: BookingWithVendor) => {
     setDownloadingId(booking.id);
     try {
-      const { data, error } = await supabase.functions.invoke("generate-invoice", {
+      const { data, error } = await functionsService.invokeGenerateInvoice({
         body: {
           eventTitle: event.title, eventDate: event.event_date, city: event.city,
           customerName: t("customer.payments.customer"),
