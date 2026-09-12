@@ -120,7 +120,7 @@ export const EventDayMode = ({ event }: { event: EventRow }) => {
       </div>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <a href="tel:+966500000000"
+        <a href="tel:+966564343704"
           className="group flex items-center gap-4 rounded-2xl border border-primary/30 bg-primary/5 p-5 shadow-card transition hover:bg-primary/10">
           <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary text-primary-foreground">
             <Phone className="h-5 w-5" />
