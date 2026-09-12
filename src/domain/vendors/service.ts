@@ -1,5 +1,5 @@
 import { db } from "@/domain/client";
-import type { Insert, Update, VendorRow } from "@/domain/types";
+import type { Insert, Update, VendorCategory, VendorRow } from "@/domain/types";
 
 // ---------------------------------------------------------------------------
 // vendors domain.
