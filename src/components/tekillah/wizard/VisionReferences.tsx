@@ -93,6 +93,10 @@ export const VisionReferences = ({ refs, setRefs }: Props) => {
   const addLink = () => {
     const value = link.trim();
     if (!value) return;
+    if (refs.filter((r) => r.kind === "link").length >= MAX_LINKS) {
+      toast.error(isAr ? "تقدر تضيف رابطين كحد أقصى" : "You can add up to 2 links");
+      return;
+    }
     const url = /^https?:\/\//i.test(value) ? value : `https://${value}`;
     try {
       const host = new URL(url).hostname.replace(/^www\./, "");
