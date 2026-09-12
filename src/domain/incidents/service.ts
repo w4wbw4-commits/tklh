@@ -42,3 +42,20 @@ export const listEmergenciesForBooking = (bookingId: string) =>
     .select("*")
     .eq("booking_id", bookingId)
     .order("created_at", { ascending: false });
+
+// ---- Emergency requests (customer-facing timeline + dialog) ---------------
+
+export const listEmergenciesForEvent = (eventId: string) =>
+  db.from("emergency_requests").select("id, booking_id, status").eq("event_id", eventId);
+
+/** Subscribe to bookings + emergency_requests changes for one event (timeline tab). */
+export const subscribeEventTimeline = (eventId: string, onChange: () => void) => {
+  const channel = db
+    .channel(`bookings-timeline-${eventId}`)
+    .on("postgres_changes", { event: "*", schema: "public", table: "bookings", filter: `event_id=eq.${eventId}` }, onChange)
+    .on("postgres_changes", { event: "*", schema: "public", table: "emergency_requests", filter: `event_id=eq.${eventId}` }, onChange)
+    .subscribe();
+  return () => {
+    db.removeChannel(channel);
+  };
+};

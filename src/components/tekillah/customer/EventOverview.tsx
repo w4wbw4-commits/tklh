@@ -4,7 +4,7 @@ import {
   Calendar, CheckCircle2, Clock, CreditCard, Building2,
   UtensilsCrossed, Camera, Music2, Flower2, Car, Sparkles,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { bookingsService } from "@/domain";
 import type { EventRow, BookingWithVendor } from "./types";
 import { useTranslation } from "react-i18next";
 import { fmtNumber, fmtDateTime } from "@/i18n/format";
@@ -40,9 +40,7 @@ export const EventOverview = ({ event }: { event: EventRow }) => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const { data } = await supabase.from("bookings")
-        .select("*, vendor:vendors(business_name, category, city), package:packages(name, tier)")
-        .eq("event_id", event.id).order("event_date", { ascending: true });
+      const { data } = await bookingsService.listForEventWithVendorTierAsc(event.id);
       setBookings((data ?? []) as unknown as BookingWithVendor[]);
       setLoading(false);
     })();

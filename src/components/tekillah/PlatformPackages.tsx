@@ -18,7 +18,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { supabase } from "@/integrations/supabase/client";
+import { packagesService } from "@/domain";
 import { fmtNumber } from "@/i18n/format";
 import { pickLocalized, pickLocalizedArray } from "@/i18n/localized";
 import type { PlatformPackageRow } from "./admin/AdminPackageDialog";
@@ -142,21 +142,13 @@ export const PlatformPackages = () => {
 
   useEffect(() => {
     const load = async () => {
-      const { data } = await supabase
-        .from("platform_packages")
-        .select("*")
-        .eq("published", true)
-        .order("sort_order", { ascending: false })
-        .order("created_at", { ascending: false });
+      const { data } = await packagesService.listPublishedPlatformPackagesForHome();
       setItems((data ?? []) as unknown as PlatformPackageRow[]);
       setLoading(false);
     };
     load();
-    const ch = supabase
-      .channel("public-platform-packages")
-      .on("postgres_changes", { event: "*", schema: "public", table: "platform_packages" }, load)
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    const ch = packagesService.subscribeToPlatformPackagesTable("public-platform-packages", load);
+    return () => { packagesService.unsubscribe(ch); };
   }, []);
 
   // Hide section entirely when no published packages

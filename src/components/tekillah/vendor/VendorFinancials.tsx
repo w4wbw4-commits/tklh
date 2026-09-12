@@ -22,8 +22,7 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
-import { bookingsService } from "@/domain";
-import { db } from "@/domain/client";
+import { bookingsService, usersService } from "@/domain";
 import { fmtDate, fmtNumber } from "@/i18n/format";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/tekillah/EmptyState";
@@ -60,10 +59,7 @@ export const VendorFinancials = ({ vendorId }: { vendorId: string }) => {
 
     const ids = Array.from(new Set(rows.map((b) => b.customer_id)));
     if (ids.length) {
-      const { data: ps } = await db
-        .from("public_profiles" as any)
-        .select("user_id, display_name")
-        .in("user_id", ids);
+      const { data: ps } = await usersService.listPublicProfilesByIds(ids);
       const map: Record<string, string> = {};
       ((ps ?? []) as unknown as CustomerProfile[]).forEach((p) => {
         if (p.user_id) map[p.user_id] = p.display_name ?? "—";

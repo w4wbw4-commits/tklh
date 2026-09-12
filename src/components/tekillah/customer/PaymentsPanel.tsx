@@ -5,8 +5,7 @@ import { Download, Loader2, Wallet, ReceiptText, TrendingUp, CreditCard, FileTex
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import { bookingsService, functionsService } from "@/domain";
+import { bookingsService, functionsService, reviewsService } from "@/domain";
 import type { EventRow, BookingWithVendor } from "./types";
 import { useTranslation } from "react-i18next";
 import { fmtNumber } from "@/i18n/format";
@@ -26,7 +25,7 @@ export const PaymentsPanel = ({ event }: { event: EventRow }) => {
 
   const refreshReviewed = async (bookingIds: string[]) => {
     if (!bookingIds.length) { setReviewedIds(new Set()); return; }
-    const { data } = await supabase.from("reviews").select("booking_id").in("booking_id", bookingIds);
+    const { data } = await reviewsService.listReviewedBookingIds(bookingIds);
     setReviewedIds(new Set((data ?? []).map((r) => r.booking_id)));
   };
 
@@ -50,15 +49,13 @@ export const PaymentsPanel = ({ event }: { event: EventRow }) => {
     setDownloadingId(booking.id);
     try {
       const { data, error } = await functionsService.invokeGenerateInvoice({
-        body: {
-          eventTitle: event.title, eventDate: event.event_date, city: event.city,
-          customerName: t("customer.payments.customer"),
-          vendorName: booking.vendor?.business_name ?? t("customer.overview.vendorFallback"),
-          packageName: booking.package?.name ?? t("customer.overview.serviceFallback"),
-          totalPrice: Number(booking.total_price ?? 0),
-          paidAmount: Number(booking.paid_amount ?? 0),
-          bookingId: booking.id,
-        },
+        eventTitle: event.title, eventDate: event.event_date, city: event.city,
+        customerName: t("customer.payments.customer"),
+        vendorName: booking.vendor?.business_name ?? t("customer.overview.vendorFallback"),
+        packageName: booking.package?.name ?? t("customer.overview.serviceFallback"),
+        totalPrice: Number(booking.total_price ?? 0),
+        paidAmount: Number(booking.paid_amount ?? 0),
+        bookingId: booking.id,
       });
       if (error) throw error;
       if (!data?.pdf) throw new Error(t("customer.payments.noInvoice"));

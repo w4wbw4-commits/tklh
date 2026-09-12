@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, AlertOctagon, ExternalLink, CheckCircle2, XCircle, ImageIcon } from "lucide-react";
-import { incidentsService, storageService } from "@/domain";
-import { supabase } from "@/integrations/supabase/client";
+import { incidentsService, storageService, authService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -67,7 +66,7 @@ export const AdminIncidentReports = () => {
 
   const updateStatus = async (id: string, status: IncidentStatus) => {
     setBusyId(id);
-    const { data: u } = await supabase.auth.getUser();
+    const { data: u } = await authService.getUser();
     const { error } = await incidentsService.updateIncident(id, {
       status,
       admin_notes: notes[id] ?? null,

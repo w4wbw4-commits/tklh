@@ -15,8 +15,7 @@ import {
   Loader2, Inbox, Phone, MessageCircle, Package, Sparkles,
   Calendar, Users, ClipboardList, Bell,
 } from "lucide-react";
-import { bookingsService, notificationsService } from "@/domain";
-import { db } from "@/domain/client";
+import { bookingsService, notificationsService, usersService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -97,10 +96,7 @@ export const AdminPendingBookings = () => {
     // Lookup customer profiles in bulk
     const customerIds = Array.from(new Set(list.map((r) => r.customer_id)));
     const { data: profiles } = customerIds.length
-      ? await db
-          .from("profiles")
-          .select("user_id, display_name, phone")
-          .in("user_id", customerIds)
+      ? await usersService.listProfilesByIds(customerIds, "user_id, display_name, phone")
       : { data: [] as Array<{ user_id: string; display_name: string | null; phone: string | null }> };
     const profileMap = new Map(
       (profiles ?? []).map((p) => [p.user_id, p]),

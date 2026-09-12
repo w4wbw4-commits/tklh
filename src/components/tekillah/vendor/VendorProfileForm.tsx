@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { z } from "zod";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { vendorsService, usersService, storageService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -120,10 +120,10 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
     if (file.size > 5 * 1024 * 1024) { toast.error("الحد الأقصى 5 ميجا"); return; }
     setUploading(true);
     const path = `${userId}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, "_")}`;
-    const { error } = await supabase.storage.from("vendor-portfolios").upload(path, file);
+    const { error } = await storageService.upload(storageService.BUCKETS.vendorPortfolios, path, file, false);
     if (error) { setUploading(false); toast.error("فشل الرفع: " + error.message); return; }
-    const { data } = supabase.storage.from("vendor-portfolios").getPublicUrl(path);
-    setPortfolioUrls((prev) => [...prev, data.publicUrl]);
+    const publicUrl = storageService.publicUrl(storageService.BUCKETS.vendorPortfolios, path);
+    setPortfolioUrls((prev) => [...prev, publicUrl]);
     setUploading(false);
     toast.success("تم رفع الصورة");
   };
@@ -132,7 +132,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
     if (file.size > 10 * 1024 * 1024) { toast.error("الحد الأقصى 10 ميجا"); return; }
     setUploading(true);
     const path = `${userId}/cr-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, "_")}`;
-    const { error } = await supabase.storage.from("vendor-documents").upload(path, file, { upsert: true });
+    const { error } = await storageService.upload(storageService.BUCKETS.vendorDocuments, path, file);
     setUploading(false);
     if (error) { toast.error("فشل الرفع: " + error.message); return; }
     setDocUrl(path);
@@ -143,7 +143,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
     if (file.size > 10 * 1024 * 1024) { toast.error("الحد الأقصى 10 ميجا"); return; }
     setUploading(true);
     const path = `${userId}/iban-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, "_")}`;
-    const { error } = await supabase.storage.from("iban-documents").upload(path, file, { upsert: true });
+    const { error } = await storageService.upload(storageService.BUCKETS.ibanDocuments, path, file);
     setUploading(false);
     if (error) { toast.error("فشل الرفع: " + error.message); return; }
     setIbanCertUrl(path);
@@ -221,10 +221,10 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       "id, user_id, business_name, category, bio, bio_en, city, region, region_en, district, district_en, portfolio_urls, google_maps_url, daily_capacity, starting_price, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, extra_services, extra_services_en, verified, active, approval_status, rejection_reason";
     let result;
     if (vendor) {
-      result = await supabase.from("vendors").update(payload).eq("id", vendor.id).select(RETURN_COLS).single();
+      result = await vendorsService.updateVendorReturning(vendor.id, payload, RETURN_COLS);
     } else {
-      result = await supabase.from("vendors").insert(payload).select(RETURN_COLS).single();
-      await supabase.from("user_roles").insert({ user_id: userId, role: "vendor" });
+      result = await vendorsService.insertVendorReturning(payload, RETURN_COLS);
+      await usersService.ensureRole(userId, "vendor");
       if (!result.error) {
         await recordTermsAcceptance(userId, "vendor_onboarding", (result.data as VendorRow).id);
       }

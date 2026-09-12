@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { availabilityService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Badge } from "@/components/ui/badge";
@@ -104,11 +104,7 @@ export const VendorCalendar = ({ vendorId }: Props) => {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("vendor_availability")
-      .select("*")
-      .eq("vendor_id", vendorId)
-      .order("date");
+    const { data, error } = await availabilityService.listForVendor(vendorId);
     if (error) toast.error(error.message);
     setItems((data ?? []) as Row[]);
     setLoading(false);
@@ -116,16 +112,9 @@ export const VendorCalendar = ({ vendorId }: Props) => {
 
   useEffect(() => {
     load();
-    const channel = supabase
-      .channel(`avail-${vendorId}`)
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "vendor_availability", filter: `vendor_id=eq.${vendorId}` },
-        load,
-      )
-      .subscribe();
+    const channel = availabilityService.subscribeToVendorAvailability(`avail-${vendorId}`, vendorId, load);
     return () => {
-      supabase.removeChannel(channel);
+      availabilityService.unsubscribe(channel);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vendorId]);
@@ -177,9 +166,7 @@ export const VendorCalendar = ({ vendorId }: Props) => {
       status: form.status,
       note: JSON.stringify(meta),
     };
-    const { error } = await supabase
-      .from("vendor_availability")
-      .upsert(payload, { onConflict: "vendor_id,date" });
+    const { error } = await availabilityService.block(payload);
     setSubmitting(false);
     if (error) {
       toast.error(error.message);
@@ -198,7 +185,7 @@ export const VendorCalendar = ({ vendorId }: Props) => {
       return;
     }
     setSubmitting(true);
-    const { error } = await supabase.from("vendor_availability").delete().eq("id", existingForPicked.id);
+    const { error } = await availabilityService.deleteAvailabilityById(existingForPicked.id);
     setSubmitting(false);
     if (error) {
       toast.error(error.message);
@@ -216,7 +203,7 @@ export const VendorCalendar = ({ vendorId }: Props) => {
       toast.error("لا يمكن حذف حجز قادم من المنصة.");
       return;
     }
-    const { error } = await supabase.from("vendor_availability").delete().eq("id", id);
+    const { error } = await availabilityService.deleteAvailabilityById(id);
     if (error) {
       toast.error(error.message);
       return;

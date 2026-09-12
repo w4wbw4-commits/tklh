@@ -171,3 +171,7 @@ export const subscribeVendorApplications = (onChange: () => void) => {
     db.removeChannel(channel);
   };
 };
+
+/** Public, unauthenticated planner-interest submission (planning wizard fallback). */
+export const submitPlannerInterest = (payload: { full_name: string; phone: string; details: unknown }) =>
+  db.from("planner_interest").insert(payload as never);

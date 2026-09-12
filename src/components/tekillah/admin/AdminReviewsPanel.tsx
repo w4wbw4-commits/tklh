@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, Trash2, MessageSquareText, Star } from "lucide-react";
 import { reviewsService } from "@/domain";
-import { supabase } from "@/integrations/supabase/client";
+import { usersService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
@@ -48,8 +48,7 @@ export const AdminReviewsPanel = () => {
     setReviews(list);
     const ids = Array.from(new Set(list.map((r) => r.customer_id)));
     if (ids.length) {
-      const { data: profs } = await supabase
-        .from("profiles").select("user_id, display_name").in("user_id", ids);
+      const { data: profs } = await usersService.listProfilesByIds(ids, "user_id, display_name");
       const map: Record<string, string> = {};
       (profs ?? []).forEach((p) => { map[p.user_id] = p.display_name ?? "—"; });
       setProfiles(map);

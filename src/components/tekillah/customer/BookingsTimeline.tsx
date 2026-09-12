@@ -15,8 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { supabase } from "@/integrations/supabase/client";
-import { bookingsService, authService } from "@/domain";
+import { bookingsService, authService, incidentsService } from "@/domain";
 import { fmtDate, fmtTime, toLatinDigits } from "@/i18n/format";
 import type { EventRow } from "./types";
 import { Link } from "react-router-dom";
@@ -87,10 +86,7 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
     setLoading(true);
     const [{ data: bookings }, { data: ers }] = await Promise.all([
       bookingsService.listTimelineForEvent(event.id),
-      supabase
-        .from("emergency_requests")
-        .select("id, booking_id, status")
-        .eq("event_id", event.id),
+      incidentsService.listEmergenciesForEvent(event.id),
     ]);
     setItems((bookings ?? []) as unknown as BookingItem[]);
     setEmergencies((ers ?? []) as EmergencyRow[]);
@@ -99,12 +95,7 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
 
   useEffect(() => {
     load();
-    const ch = supabase
-      .channel(`bookings-timeline-${event.id}`)
-      .on("postgres_changes", { event: "*", schema: "public", table: "bookings", filter: `event_id=eq.${event.id}` }, load)
-      .on("postgres_changes", { event: "*", schema: "public", table: "emergency_requests", filter: `event_id=eq.${event.id}` }, load)
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    return incidentsService.subscribeEventTimeline(event.id, load);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [event.id]);
 
@@ -129,7 +120,7 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
     setSubmitting(true);
     const { data: auth } = await authService.getUser();
     if (!auth?.user) { setSubmitting(false); return; }
-    const { error } = await supabase.from("emergency_requests").insert({
+    const { error } = await incidentsService.createEmergency({
       customer_id: auth.user.id,
       booking_id: dialogBooking.id,
       vendor_id: dialogBooking.vendor_id,

@@ -37,6 +37,9 @@ export const getById = (id: string) =>
 export const create = (payload: Insert<"bookings">) =>
   db.from("bookings").insert(payload).select("*").single();
 
+export const createMany = (payloads: Insert<"bookings">[]) =>
+  db.from("bookings").insert(payloads).select("id");
+
 export const setStatus = (id: string, status: BookingStatus) =>
   db.from("bookings").update({ status }).eq("id", id);
 
@@ -205,3 +208,67 @@ export const subscribeAdminPending = (onChange: () => void) => {
     db.removeChannel(channel);
   };
 };
+
+export const listConfirmedAwaitingAttendance = (uptoDate: string) =>
+  db
+    .from("bookings")
+    .select("id, event_date, attendance_confirmed_at, status, notes, customer_id, vendor:vendors(business_name, category, phone)")
+    .eq("status", "confirmed")
+    .is("attendance_confirmed_at", null)
+    .lte("event_date", uptoDate)
+    .order("event_date", { ascending: false });
+
+/** Subscribe to any change on the bookings table (admin late-alerts screen). */
+export const subscribeAllBookings = (onChange: () => void) => {
+  const channel = db
+    .channel("admin-late-alerts")
+    .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, onChange)
+    .subscribe();
+  return () => {
+    db.removeChannel(channel);
+  };
+};
+
+/** Full admin bookings feed for the Admin.tsx "bookings" tab. */
+export const listAllForAdmin = () =>
+  db
+    .from("bookings")
+    .select("id, event_date, status, total_price, paid_amount, created_at, vendor:vendors(business_name, category)")
+    .order("created_at", { ascending: false });
+
+/** Subscribe to bookings + payments + planner_interest for the admin dashboard shell. */
+export const subscribeAdminDashboard = (onChange: () => void, onSignupChange: () => void) => {
+  const channel = db
+    .channel("admin-realtime")
+    .on("postgres_changes", { event: "*", schema: "public", table: "payments" }, onChange)
+    .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, onChange)
+    .on("postgres_changes", { event: "*", schema: "public", table: "planner_interest" }, onSignupChange)
+    .subscribe();
+  return () => {
+    db.removeChannel(channel);
+  };
+};
+
+export const listConfirmedForEventWithVendorTier = (eventId: string) =>
+  db
+    .from("bookings")
+    .select("*, vendor:vendors(business_name, category, city), package:packages(name, tier)")
+    .eq("event_id", eventId)
+    .eq("status", "confirmed");
+
+export const listForEventWithVendorTierAsc = (eventId: string) =>
+  db
+    .from("bookings")
+    .select("*, vendor:vendors(business_name, category, city), package:packages(name, tier)")
+    .eq("event_id", eventId)
+    .order("event_date", { ascending: true });
+
+export const listStatusPriceForEvent = (eventId: string) =>
+  db.from("bookings").select("status, total_price, paid_amount").eq("event_id", eventId);
+
+export const listSummaryForEventAsc = (eventId: string) =>
+  db
+    .from("bookings")
+    .select("id, status, total_price, vendor:vendors(business_name, category)")
+    .eq("event_id", eventId)
+    .order("created_at", { ascending: true });

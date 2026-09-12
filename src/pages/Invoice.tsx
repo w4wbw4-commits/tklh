@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Loader2, Printer, Download, ArrowLeft, ArrowRight, ShieldCheck, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
-import { supabase } from "@/integrations/supabase/client";
+import { bookingsService, paymentsService, functionsService } from "@/domain";
 import { useAuth } from "@/hooks/useAuth";
 import { fmtDate, fmtNumber } from "@/i18n/format";
 import type { Database } from "@/integrations/supabase/types";
@@ -38,20 +38,15 @@ const Invoice = () => {
     (async () => {
       setLoading(true);
       const [{ data: b }, { data: s }] = await Promise.all([
-        supabase
-          .from("bookings")
-          .select("*, vendor:vendors(business_name, category, city), package:packages(name, description), event:events(title, city, guest_count)")
-          .eq("id", bookingId)
-          .maybeSingle(),
-        supabase.from("platform_settings_public").select("vat_percent").maybeSingle(),
+        bookingsService.getByIdInvoiceDetail(bookingId),
+        paymentsService.getPublicSettings(),
       ]);
       const booking = b as unknown as Booking | null;
       setBooking(booking);
       if (s) setVatPct(Number(s.vat_percent));
       const subtotal = Number(booking?.total_price ?? 0);
       if (subtotal > 0) {
-        const { data: parts } = await supabase.rpc("compute_payment_split", { _amount: subtotal });
-        const row = Array.isArray(parts) ? parts[0] : parts;
+        const { split: row } = await paymentsService.computeSplit(subtotal);
         if (row) setFee(Number(row.platform_fee ?? 0));
       }
       setLoading(false);
@@ -74,20 +69,18 @@ const Invoice = () => {
     if (!booking) return;
     setDownloading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("generate-invoice", {
-        body: {
-          eventTitle: booking.event?.title ?? t("customer.create.defaultTitle"),
-          eventDate: booking.event_date,
-          city: booking.event?.city,
-          customerName: t("customer.payments.customer"),
-          vendorName: booking.vendor?.business_name ?? "—",
-          packageName: booking.package?.name ?? "—",
-          totalPrice: split.subtotal,
-          paidAmount: split.paid,
-          bookingId: booking.id,
-          vatPercent: vatPct,
-          platformFee: split.fee,
-        },
+      const { data, error } = await functionsService.invokeGenerateInvoice({
+        eventTitle: booking.event?.title ?? t("customer.create.defaultTitle"),
+        eventDate: booking.event_date,
+        city: booking.event?.city,
+        customerName: t("customer.payments.customer"),
+        vendorName: booking.vendor?.business_name ?? "—",
+        packageName: booking.package?.name ?? "—",
+        totalPrice: split.subtotal,
+        paidAmount: split.paid,
+        bookingId: booking.id,
+        vatPercent: vatPct,
+        platformFee: split.fee,
       });
       if (error) throw error;
       if (!data?.pdf) throw new Error(t("customer.payments.noInvoice"));

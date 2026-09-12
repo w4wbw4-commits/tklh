@@ -28,6 +28,14 @@ export const listPricingRules = (vendorId: string) =>
     .eq("vendor_id", vendorId)
     .order("created_at", { ascending: false });
 
+/** Ascending order — used by the partner pricing page. */
+export const listPricingRulesAsc = (vendorId: string) =>
+  db
+    .from("vendor_pricing_rules")
+    .select("*")
+    .eq("vendor_id", vendorId)
+    .order("created_at", { ascending: true });
+
 export const createPricingRule = (payload: Insert<"vendor_pricing_rules">) =>
   db.from("vendor_pricing_rules").insert(payload).select("*").single();
 

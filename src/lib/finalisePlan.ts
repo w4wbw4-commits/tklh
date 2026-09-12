@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------
 
 import { supabase } from "@/integrations/supabase/client";
-import { eventsService } from "@/domain";
+import { eventsService, bookingsService } from "@/domain";
 import type { PendingPlan } from "@/lib/pendingPlan";
 import type { TFunction } from "i18next";
 
@@ -129,10 +129,7 @@ export const finalisePlan = async ({
     return { eventId: ev.id, bookingIds: [] };
   }
 
-  const { data: createdBookings, error: bErr } = await supabase
-    .from("bookings")
-    .insert(bookingsToInsert)
-    .select("id");
+  const { data: createdBookings, error: bErr } = await bookingsService.createMany(bookingsToInsert);
 
   if (bErr || !createdBookings) {
     throw new Error(bErr?.message ?? "bookings_insert_failed");

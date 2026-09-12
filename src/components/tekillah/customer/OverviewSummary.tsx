@@ -5,8 +5,7 @@ import {
   Building2, UtensilsCrossed, Camera, Music2, Flower2, Car,
   MessageCircle, ArrowRight, CheckCircle2, Circle, Clock, Mail,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { eventsService } from "@/domain";
+import { eventsService, bookingsService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { fmtNumber, fmtDate } from "@/i18n/format";
 import { buildWhatsappLink } from "@/lib/whatsapp";
@@ -51,9 +50,7 @@ export const OverviewSummary = ({
     (async () => {
       const [m, b] = await Promise.all([
         eventsService.listMilestoneSummaries(event.id),
-        supabase.from("bookings")
-          .select("id, status, total_price, vendor:vendors(business_name, category)")
-          .eq("event_id", event.id).order("created_at", { ascending: true }),
+        bookingsService.listSummaryForEventAsc(event.id),
       ]);
       setMilestones((m.data ?? []) as Milestone[]);
       setBookings((b.data ?? []) as unknown as Booking[]);

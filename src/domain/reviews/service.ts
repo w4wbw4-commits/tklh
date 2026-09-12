@@ -112,3 +112,14 @@ export const getRatingsSummary = (vendorId: string) =>
     .select("*")
     .eq("vendor_id", vendorId)
     .maybeSingle();
+
+// ---- Admin grand-control widget -------------------------------------------
+
+export const listFlaggedReviewsPreview = () =>
+  db.from("reviews").select("id, comment").eq("flagged", true).limit(10);
+
+export const listFlaggedRepliesPreview = () =>
+  db.from("review_replies").select("id, body").eq("flagged", true).limit(10);
+
+export const listReviewedBookingIds = (bookingIds: string[]) =>
+  db.from("reviews").select("booking_id").in("booking_id", bookingIds);

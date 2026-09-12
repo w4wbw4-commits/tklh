@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { availabilityService } from "@/domain";
 import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
 import { StatusBanner } from "@/components/tekillah/vendor/StatusBanner";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
@@ -27,28 +27,28 @@ const PartnerPricingPage = () => {
 
   const fetchRules = async () => {
     if (!vendor) return;
-    const { data } = await supabase.from("vendor_pricing_rules" as never).select("*").eq("vendor_id", vendor.id).order("created_at");
+    const { data } = await availabilityService.listPricingRulesAsc(vendor.id);
     setRules(((data as unknown) as Rule[]) || []);
   };
   useEffect(() => { fetchRules(); /* eslint-disable-next-line */ }, [vendor?.id]);
 
   const toggleActive = async (r: Rule) => {
-    const { error } = await supabase.from("vendor_pricing_rules" as never).update({ active: !r.active } as never).eq("id", r.id);
+    const { error } = await availabilityService.updatePricingRule(r.id, { active: !r.active });
     if (error) toast.error(error.message); else fetchRules();
   };
 
   const remove = async (id: string) => {
-    const { error } = await supabase.from("vendor_pricing_rules" as never).delete().eq("id", id);
+    const { error } = await availabilityService.deletePricingRule(id);
     if (error) toast.error(error.message); else { toast.success("تم الحذف"); fetchRules(); }
   };
 
   const addRule = async () => {
     if (!vendor) return;
-    const { error } = await supabase.from("vendor_pricing_rules" as never).insert({
+    const { error } = await availabilityService.createPricingRule({
       vendor_id: vendor.id, rule_type: newRule.rule_type, label: newRule.label || null,
       adjustment_percent: Number(newRule.adjustment_percent) || 0,
       start_date: newRule.start_date || null, end_date: newRule.end_date || null, active: true,
-    } as never);
+    });
     if (error) { toast.error(error.message); return; }
     toast.success("تمت إضافة القاعدة");
     setNewRule({ rule_type: "weekend", label: "", adjustment_percent: "20", start_date: "", end_date: "" });
