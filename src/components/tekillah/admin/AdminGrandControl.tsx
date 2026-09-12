@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2, FileSearch, FileText, Flag, Users, Briefcase, CalendarCheck, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { bookingsService } from "@/domain";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -53,7 +54,7 @@ export const AdminGrandControl = ({ onJump }: { onJump?: (tab: string) => void }
     ] = await Promise.all([
       supabase.from("user_roles").select("*", { count: "exact", head: true }).eq("role", "customer"),
       supabase.from("user_roles").select("*", { count: "exact", head: true }).eq("role", "vendor"),
-      supabase.from("bookings").select("*", { count: "exact", head: true }).in("status", ["pending", "confirmed"]),
+      bookingsService.countActive(),
       // Sensitive certificate URLs are revoked from `authenticated`; fetch
       // via the admin-only SECURITY DEFINER RPC.
       supabase.rpc("admin_list_pending_vendor_docs"),
