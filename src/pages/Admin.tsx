@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
 import { fmtNumber, fmtDate } from "@/i18n/format";
 import { Badge } from "@/components/ui/badge";
@@ -31,7 +30,7 @@ import { AdminPendingBookings } from "@/components/tekillah/admin/AdminPendingBo
 import { AdminVendorApplications } from "@/components/tekillah/admin/AdminVendorApplications";
 import { AdminLayout } from "@/components/tekillah/admin/AdminLayout";
 import { EmptyState } from "@/components/tekillah/EmptyState";
-import { usersService } from "@/domain";
+import { usersService, bookingsService, paymentsService, leadsService } from "@/domain";
 
 
 interface PaymentRow {
@@ -89,20 +88,15 @@ const Admin = () => {
 
 
   const loadSignupBadge = async () => {
-    const { count } = await supabase
-      .from("planner_interest")
-      .select("id", { count: "exact", head: true })
-      .eq("status", "new");
+    const { count } = await leadsService.countNewPlannerInterest();
     setNewSignups(count ?? 0);
   };
 
   const load = async () => {
     setLoading(true);
     const [{ data: p }, { data: b }] = await Promise.all([
-      supabase.from("payments").select("*").order("created_at", { ascending: false }),
-      supabase.from("bookings")
-        .select("id, event_date, status, total_price, paid_amount, created_at, vendor:vendors(business_name, category)")
-        .order("created_at", { ascending: false }),
+      paymentsService.listAll(),
+      bookingsService.listAllForAdmin(),
     ]);
     setPayments((p ?? []) as unknown as PaymentRow[]);
     setBookings((b ?? []) as unknown as BookingRow[]);
@@ -114,21 +108,13 @@ const Admin = () => {
     load();
     void loadSignupBadge();
     // realtime subscription on payments, bookings and planner signups
-    const ch = supabase
-      .channel("admin-realtime")
-      .on("postgres_changes", { event: "*", schema: "public", table: "payments" }, load)
-      .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, load)
-      .on("postgres_changes", { event: "*", schema: "public", table: "planner_interest" }, () => void loadSignupBadge())
-      .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    return bookingsService.subscribeAdminDashboard(load, () => void loadSignupBadge());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAdmin]);
 
   const releasePayment = async (id: string) => {
     setReleasingId(id);
-    const { error } = await supabase.from("payments")
-      .update({ status: "released", released_at: new Date().toISOString(), released_by: user?.id })
-      .eq("id", id);
+    const { error } = await paymentsService.release(id, user?.id as string);
     setReleasingId(null);
     if (error) { toast.error(error.message); return; }
     toast.success(t("admin.releaseSuccess"));
