@@ -9,7 +9,7 @@
 // Returns the first booking id so the caller can redirect to /checkout/:id.
 // ---------------------------------------------------------------------------
 
-import { supabase } from "@/integrations/supabase/client";
+
 import { eventsService, bookingsService } from "@/domain";
 import type { PendingPlan } from "@/lib/pendingPlan";
 import type { TFunction } from "i18next";
@@ -73,22 +73,13 @@ export const finalisePlan = async ({
   }> = [];
 
   if (plan.packageSelection?.kind === "admin" && pickList.length === 0) {
-    const { data: pkgRow } = await supabase
-      .from("platform_packages")
-      .select("slots, eligible_vendor_ids, price")
-      .eq("id", plan.packageSelection.key)
-      .maybeSingle();
+    const { data: pkgRow } = await packagesService.getPlatformPackageSlots(plan.packageSelection.key);
 
     const slots = ((pkgRow?.slots as unknown as Array<{ category: string; count: number }>) ?? []);
     const eligibleIds = (pkgRow?.eligible_vendor_ids as string[] | null) ?? [];
 
     if (slots.length > 0 && eligibleIds.length > 0) {
-      const { data: vendorRows } = await supabase
-        .from("vendors_public")
-        .select("id, category")
-        .in("id", eligibleIds)
-        .eq("approval_status", "approved")
-        .eq("active", true);
+      const { data: vendorRows } = await vendorsService.listApprovedPublicVendorsByIds(eligibleIds);
 
       const used = new Set<string>();
       const slotPrice = slots.length > 0 ? Number(pkgRow?.price ?? 0) / slots.reduce((s, x) => s + x.count, 0) : 0;

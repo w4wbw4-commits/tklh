@@ -1,5 +1,5 @@
 import { db } from "@/domain/client";
-import type { LeadStatus } from "@/domain/types";
+import type { Insert, LeadStatus } from "@/domain/types";
 import type { Database } from "@/integrations/supabase/types";
 
 type PlannerInterestStatus = Database["public"]["Enums"]["planner_interest_status"];

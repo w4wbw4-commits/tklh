@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
 import { LogOut, User, Calendar, Bell, Loader2, ListChecks, Star, TrendingUp, Clock, XCircle, ShieldCheck, LayoutDashboard, Home } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
+import { vendorsService } from "@/domain";
 import { VendorProfileForm } from "@/components/tekillah/vendor/VendorProfileForm";
 import { VendorCalendar } from "@/components/tekillah/vendor/VendorCalendar";
 import { VendorBookings } from "@/components/tekillah/vendor/VendorBookings";
@@ -40,11 +40,7 @@ const VendorPage = () => {
       setVendorLoading(true);
       // Sensitive PII columns (iban, phone, *_url) are revoked from authenticated;
       // we only need existence + status here, so a narrow projection is enough.
-      const { data } = await supabase
-        .from("vendors")
-        .select("id, user_id, business_name, approval_status, active")
-        .eq("user_id", user.id)
-        .maybeSingle();
+      const { data } = await vendorsService.getMyVendorStatus(user.id);
       const v = data as VendorRow | null;
       setVendor(v);
       setVendorLoading(false);
