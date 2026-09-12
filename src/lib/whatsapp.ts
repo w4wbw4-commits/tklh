@@ -8,7 +8,7 @@
 
 // E.164 without the leading "+", per WhatsApp's wa.me spec.
 // TODO: replace placeholder with the real Tekillah concierge number.
-export const PLATFORM_WHATSAPP_NUMBER = "966530466460";
+export const PLATFORM_WHATSAPP_NUMBER = "966564343704";
 
 interface BuildLinkArgs {
   message: string;
