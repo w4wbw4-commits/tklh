@@ -87,7 +87,7 @@ export const UpcomingFeatures = () => {
           </div>
 
           {/* Bento grid */}
-          <div className="grid gap-3 sm:gap-5 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-3 sm:gap-5 max-w-2xl mx-auto">
             {/* 01 — Installments */}
             <motion.div
               {...reveal(0.1)}
@@ -195,94 +195,6 @@ export const UpcomingFeatures = () => {
             </motion.div>
 
 
-            {/* 02 — Invitations */}
-            <motion.div
-              {...reveal(0.2)}
-              className="relative flex flex-col rounded-2xl p-4 sm:p-6"
-              style={{ border: creamHair, backgroundColor: "hsl(var(--green) / 0.35)" }}
-            >
-              <div className="flex items-start justify-between gap-2">
-                <Num n="02" />
-                <Badge />
-              </div>
-              <h3 className="font-display mt-3 text-lg font-black leading-snug">
-                {t("upcoming.items.invitations.title")}
-              </h3>
-              <p className="mt-2 hidden text-[13px] leading-[1.75] text-[hsl(var(--cream)/0.72)] sm:block">
-                {t("upcoming.items.invitations.desc")}
-              </p>
-
-              <div className="mt-5 hidden flex-1 items-end justify-center sm:flex">
-                <div
-                  className="w-full max-w-[230px] overflow-hidden rounded-t-[110px] px-5 pb-5 pt-8 text-center"
-                  style={{ backgroundColor: "hsl(var(--cream))", color: "hsl(var(--green))" }}
-                >
-                  <span
-                    className="text-[9px] font-bold uppercase tracking-[0.3em]"
-                    style={{ color: GOLD }}
-                  >
-                    {t("upcoming.demo.invite.eyebrow")}
-                  </span>
-                  <p className="font-display mt-2 text-[17px] font-black leading-tight">
-                    {t("upcoming.demo.invite.names")}
-                  </p>
-                  <div className="mt-3 flex items-center justify-center gap-2" aria-hidden>
-                    <span className="h-px w-7" style={{ backgroundColor: "hsl(var(--gold) / 0.6)" }} />
-                    <span
-                      className="inline-flex h-5 w-5 items-center justify-center rounded-full text-[8px] font-black"
-                      style={{ border: goldHair, color: GOLD }}
-                    >
-                      ✦
-                    </span>
-                    <span className="h-px w-7" style={{ backgroundColor: "hsl(var(--gold) / 0.6)" }} />
-                  </div>
-                  <p className="mt-2.5 text-[10px] font-bold tracking-[0.06em] text-[hsl(var(--brown))]">
-                    {t("upcoming.demo.invite.date")}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* 03 — Payments */}
-            <motion.div
-              {...reveal(0.3)}
-              className="relative flex flex-col rounded-2xl p-4 sm:p-6"
-              style={{ border: creamHair, backgroundColor: "hsl(var(--green) / 0.35)" }}
-            >
-              <div className="flex items-start justify-between gap-2">
-                <Num n="03" />
-                <Badge />
-              </div>
-              <h3 className="font-display mt-3 text-lg font-black leading-snug">
-                {t("payments.label")}
-              </h3>
-              <p className="mt-2 hidden text-[13px] leading-[1.75] text-[hsl(var(--cream)/0.72)] sm:block">
-                {t("upcoming.demo.oneplace")}
-              </p>
-
-              <div className="mt-5 grid flex-1 grid-cols-3 content-end gap-2.5" aria-label={t("payments.aria")}>
-                {PAY.map((key, j) => (
-                  <motion.span
-                    key={key}
-                    initial={{ opacity: 0, y: 4 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.35, ease: EASE, delay: 0.35 + j * 0.04 }}
-                    className={`pay-chip font-display flex items-center justify-center rounded-lg px-2 py-3 text-center text-[11px] font-black ${j > 3 ? "hidden sm:flex" : ""}`}
-                    style={{ border: creamHair, color: "hsl(var(--cream))" }}
-                  >
-                    {t(`payments.providers.${key}`)}
-                  </motion.span>
-                ))}
-              </div>
-              <p
-                className="mt-3 text-[10px] font-bold uppercase tracking-[0.14em]"
-                style={{ color: "hsl(var(--gold) / 0.85)" }}
-              >
-                {t("upcoming.demo.payLabel")}
-              </p>
-
-            </motion.div>
           </div>
         </motion.div>
       </div>
