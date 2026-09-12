@@ -137,7 +137,7 @@ export const VisionReferences = ({ refs, setRefs }: Props) => {
           type="button"
           variant="outline"
           onClick={() => fileInput.current?.click()}
-          disabled={uploading}
+          disabled={uploading || fileCount >= MAX_FILES}
           className="min-h-[44px] rounded-full border-primary/30 font-arabic text-[13px]"
         >
           {uploading ? (
@@ -169,6 +169,7 @@ export const VisionReferences = ({ refs, setRefs }: Props) => {
         <Button
           type="button"
           onClick={addLink}
+          disabled={linkCount >= MAX_LINKS}
           className="min-h-[44px] rounded-full px-5 font-arabic text-[13px]"
         >
           {isAr ? "إضافة الرابط" : "Add link"}
