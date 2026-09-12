@@ -185,7 +185,7 @@ export const deleteVendorCascade = async (
 // Public catalog (wizard) — vendors_public view joined with packages.
 // ---------------------------------------------------------------------------
 
-export const listPublicVendorsForWizard = (categories: string[]) =>
+export const listPublicVendorsForWizard = (categories: VendorCategory[] | string[]) =>
   db
     .from("vendors_public")
     .select(

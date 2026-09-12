@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
+import { bookingsService, authService } from "@/domain";
 import { fmtDate, fmtTime, toLatinDigits } from "@/i18n/format";
 import type { EventRow } from "./types";
 import { Link } from "react-router-dom";
@@ -85,11 +86,7 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
   const load = async () => {
     setLoading(true);
     const [{ data: bookings }, { data: ers }] = await Promise.all([
-      supabase
-        .from("bookings")
-        .select("id, status, event_date, attendance_confirmed_at, vendor_id, vendor:vendors(business_name, category, phone), package:packages(name)")
-        .eq("event_id", event.id)
-        .order("event_date", { ascending: true }),
+      bookingsService.listTimelineForEvent(event.id),
       supabase
         .from("emergency_requests")
         .select("id, booking_id, status")
@@ -130,7 +127,7 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
   const submitReport = async () => {
     if (!dialogBooking) return;
     setSubmitting(true);
-    const { data: auth } = await supabase.auth.getUser();
+    const { data: auth } = await authService.getUser();
     if (!auth?.user) { setSubmitting(false); return; }
     const { error } = await supabase.from("emergency_requests").insert({
       customer_id: auth.user.id,
