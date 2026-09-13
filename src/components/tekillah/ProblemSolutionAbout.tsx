@@ -42,11 +42,11 @@ const SpeedSection = () => {
       id="speed"
       data-navbar-theme="light"
       aria-label={t("speed.ariaLabel")}
-       className="bg-paper relative overflow-hidden px-5 py-16 sm:px-8 sm:py-24 lg:py-28"
+       className="bg-paper relative overflow-hidden px-5 py-16 sm:px-8 sm:py-24"
     >
       <div className="relative z-10 mx-auto max-w-4xl">
         <h2
-          className="font-display font-bold text-green"
+          className="font-display font-black text-green text-[22px] sm:text-4xl"
           style={{
             lineHeight: 1.35,
             maxWidth: "24ch",
@@ -199,13 +199,13 @@ const SpeedSection = () => {
           style={{ borderTop: HAIR }}
         >
           <p
-            className="font-display text-center text-[24px] font-bold sm:text-3xl"
+            className="font-display text-center text-[24px] font-black sm:text-3xl"
             style={{ color: "hsl(var(--brown) / 0.9)", lineHeight: 1.3 }}
           >
             {t("speed.traditional.value")}
           </p>
           <p
-            className="font-display text-center text-[24px] font-bold text-green sm:text-3xl"
+            className="font-display text-center text-[24px] font-black text-green sm:text-3xl"
             style={{ lineHeight: 1.3 }}
           >
             {t("speed.tekillah.value")}

@@ -42,7 +42,7 @@ export const OccasionsSection = () => {
           <div>
             {/* asymmetry: the title runs long, the icon row sits under it */}
             <h2
-               className={`font-display mt-5 max-w-2xl text-balance font-bold text-green ${ar}`}
+               className={`font-display mt-5 max-w-2xl text-balance text-2xl font-black leading-[1.4] text-green sm:text-4xl md:text-5xl ${ar}`}
             >
               {t("occasions.titlePrefix")} {t("occasions.titleHighlight")}
             </h2>

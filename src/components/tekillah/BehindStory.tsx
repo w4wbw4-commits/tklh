@@ -7,7 +7,7 @@
 import { useTranslation } from "react-i18next";
 import { Reveal } from "./Reveal";
 
-const INK = "hsl(var(--green))";
+const INK = "#163726";
 const HAIR = "1px solid hsl(var(--green) / 0.16)";
 
 type Step = { n: string; title: string; desc: string };
@@ -68,10 +68,10 @@ export const BehindStory = () => {
   const steps = t("speed.behind.steps", { returnObjects: true }) as Step[];
 
   return (
-    <section className="home-section-alt relative px-5 py-16 sm:px-8 lg:py-24">
+    <section className="relative bg-cream px-5 py-16 sm:px-8 lg:py-24">
       <div className="mx-auto max-w-4xl">
         <Reveal>
-          <h2 className="font-display mb-10 text-right font-bold text-green sm:mb-14">
+          <h2 className="font-display mb-10 text-right text-2xl font-black leading-[1.3] text-green sm:mb-14 sm:text-4xl">
             {t("speed.behind.title")}
           </h2>
         </Reveal>
