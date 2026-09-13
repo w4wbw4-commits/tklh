@@ -89,7 +89,7 @@ export const Mission = () => {
       id="mission"
       data-navbar-theme="light"
       dir={isAr ? "rtl" : "ltr"}
-      className="bg-paper relative overflow-hidden px-5 py-24 sm:px-8 sm:py-36"
+       className="bg-paper relative overflow-hidden px-5 py-20 sm:px-8 sm:py-32"
     >
       <img
         src={chairMark}
@@ -113,7 +113,7 @@ export const Mission = () => {
 
         <motion.div {...reveal} transition={{ duration: 0.75, ease: EASE, delay: 0.05 }}>
           <h2
-            className={`font-display text-balance text-2xl font-black leading-[1.4] sm:text-4xl md:text-5xl ${ar}`}
+             className={`font-display text-balance font-bold ${ar}`}
             style={{ color: "hsl(var(--green))" }}
           >
             {t("mission.title")}
@@ -177,7 +177,7 @@ export const Mission = () => {
         <motion.p
           {...reveal}
           transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
-          className={`font-display mt-14 text-balance text-xl font-black leading-[1.5] sm:text-3xl md:text-4xl ${ar}`}
+          className={`font-display mt-14 text-balance text-xl font-bold leading-[1.5] sm:text-3xl md:text-4xl ${ar}`}
           style={{ color: "hsl(var(--green))" }}
         >
           {t("mission.tagline")}

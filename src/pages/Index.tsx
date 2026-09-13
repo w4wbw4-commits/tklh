@@ -8,6 +8,7 @@ import { LazyVisible } from "@/components/tekillah/LazyVisible";
 import { Preloader } from "@/components/tekillah/Preloader";
 import { WhatsAppFab } from "@/components/tekillah/WhatsAppFab";
 import { SEO } from "@/components/SEO";
+import "@/styles/home.css";
 
 
 
@@ -64,7 +65,7 @@ const SectionSkeleton = ({ minHeight = "40vh" }: { minHeight?: string }) => (
 
 const Index = () => {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="customer-home min-h-screen bg-background">
       <Preloader />
       <SEO
         title="خطط لزواجك ومناسباتك واحجزها في مكان واحد"

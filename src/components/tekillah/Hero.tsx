@@ -57,14 +57,13 @@ export const Hero = () => {
       dir={isAr ? "rtl" : "ltr"}
       lang={i18n.language}
       className="relative w-full overflow-hidden scroll-smooth"
-      style={{ backgroundColor: "hsl(var(--cream))" }}
     >
       {/* === Foreground — one calm, centered editorial column === */}
       <motion.div
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative z-10 mx-auto flex min-h-[78svh] max-w-4xl flex-col items-center justify-center px-5 pb-14 pt-24 text-center sm:min-h-[80vh] sm:px-8 sm:pb-16 sm:pt-20"
+        className="relative z-10 mx-auto flex min-h-[76svh] max-w-4xl flex-col items-center justify-center px-5 pb-14 pt-24 text-center sm:min-h-[78vh] sm:px-8 sm:pb-16 sm:pt-24"
       >
         {/* Wordmark */}
         <motion.img
@@ -84,8 +83,7 @@ export const Hero = () => {
           className="mt-5 flex flex-wrap items-baseline justify-center gap-x-2 gap-y-0.5 sm:gap-x-3"
         >
           <span
-            className="font-display shrink-0 text-lg font-black tracking-tight sm:text-xl md:text-2xl"
-            style={{ color: "#163726" }}
+           className="font-display shrink-0 text-lg font-bold text-green sm:text-xl md:text-2xl"
           >
             {t("hero.forPrefix")}
           </span>
@@ -99,8 +97,7 @@ export const Hero = () => {
                   animate={{ y: "0%", opacity: 1 }}
                   exit={{ y: "-45%", opacity: 0 }}
                   transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="font-display block whitespace-nowrap text-2xl font-black leading-none tracking-tight sm:text-3xl md:text-4xl"
-                  style={{ color: "#163726" }}
+                   className="font-display block whitespace-nowrap text-2xl font-bold leading-none text-green sm:text-3xl md:text-4xl"
                 >
                   {word}
                 </motion.span>
@@ -120,12 +117,11 @@ export const Hero = () => {
         {/* Headline */}
         <motion.h1
           variants={rise}
-          className="font-display mt-7 font-black tracking-[-0.005em]"
+          className="font-display mt-7 font-bold text-green"
           style={{
-            color: "#163726",
             fontFeatureSettings: '"kern","liga","calt","dlig"',
-            fontSize: "clamp(1rem, 2.75vw, 2.125rem)",
-            lineHeight: 1.3,
+            fontSize: "clamp(1.875rem, 4.4vw, 3.5rem)",
+            lineHeight: 1.28,
             maxWidth: "20ch",
             marginInline: "auto",
             textWrap: "balance",
@@ -157,12 +153,7 @@ export const Hero = () => {
         <motion.div variants={rise} className="mt-10 flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
           <a
             href="/planner"
-            className="group inline-flex w-1/2 items-center justify-center gap-2.5 rounded-full px-8 py-4 text-sm font-black transition-colors duration-500 sm:w-auto sm:text-base"
-            style={{
-              backgroundColor: "hsl(var(--green))",
-              color: "hsl(var(--cream))",
-              boxShadow: "0 2px 0 0 hsl(var(--gold) / 0.55)",
-            }}
+            className="home-cta group inline-flex w-1/2 items-center justify-center gap-2.5 rounded-full px-8 py-3.5 text-sm font-bold transition-colors duration-500 sm:w-auto sm:min-w-48 sm:text-base"
           >
             <span>{t("hero.ctaTitle")}</span>
             <Arrow className="h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1" />

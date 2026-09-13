@@ -49,7 +49,7 @@ export const UpcomingFeatures = () => {
     <section
       data-navbar-theme="dark"
       dir={dir}
-      className="relative overflow-hidden px-4 py-10 sm:px-8 sm:py-20"
+      className="relative overflow-hidden px-4 py-14 sm:px-8 sm:py-24"
       style={{ backgroundColor: "hsl(var(--green-deep))", color: "hsl(var(--cream))" }}
     >
       <span
@@ -66,13 +66,13 @@ export const UpcomingFeatures = () => {
       <div className="relative mx-auto w-full max-w-7xl">
         <motion.div
           {...reveal(0)}
-          className="rounded-3xl p-4 sm:p-10"
+          className="rounded-lg p-4 sm:p-10"
           style={{ border: creamHair, backgroundColor: "hsl(var(--green) / 0.55)" }}
         >
           {/* Header */}
           <div className="mb-5 flex flex-col sm:mb-8 gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 className="font-display max-w-2xl text-balance text-2xl font-black leading-[1.3] sm:text-3xl">
+              <h2 className="font-display max-w-2xl text-balance font-bold">
                 {t("upcoming.title")}
               </h2>
               <p className="mt-3 hidden max-w-xl text-sm leading-[1.8] text-[hsl(var(--cream)/0.75)] sm:block">
@@ -91,7 +91,7 @@ export const UpcomingFeatures = () => {
             {/* 01 — Installments */}
             <motion.div
               {...reveal(0.1)}
-              className="relative flex flex-col rounded-2xl p-4 sm:p-6"
+              className="relative flex flex-col rounded-lg p-5 sm:p-7"
               style={{ border: creamHair, backgroundColor: "hsl(var(--green) / 0.35)" }}
             >
               <div className="flex items-start justify-between gap-2">
