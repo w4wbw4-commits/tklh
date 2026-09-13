@@ -48,7 +48,7 @@ const SpeedSection = () => {
         <h2
           className="font-display font-black text-green text-[22px] sm:text-4xl"
           style={{
-            lineHeight: 1.35,
+            lineHeight: 1.18,
             maxWidth: "24ch",
             marginInline: "auto",
             textWrap: "balance",
