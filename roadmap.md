@@ -10,3 +10,6 @@
 - [x] Remove DashboardPreview section from homepage.
 - [x] Refine only the `/` customer home visual identity, typography, and responsive sizing.
 - [x] Verify the `/` home page at 375px, 768px, and 1440px in Arabic and English; pass build/typecheck.
+- [x] Match the Customer Home typography hierarchy to the verified Cerimonia reference system.
+- [x] Apply the new warm-stone Customer Home palette while preserving Tklh green.
+- [x] Re-verify `/` at 375px, 768px, and 1440px in Arabic and English; pass build/typecheck.

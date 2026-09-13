@@ -117,11 +117,9 @@ export const Hero = () => {
         {/* Headline */}
         <motion.h1
           variants={rise}
-          className="font-display mt-7 font-bold text-green"
+          className="home-hero-title font-display mt-7 text-green"
           style={{
             fontFeatureSettings: '"kern","liga","calt","dlig"',
-            fontSize: "clamp(1.875rem, 4.4vw, 3.5rem)",
-            lineHeight: 1.28,
             maxWidth: "20ch",
             marginInline: "auto",
             textWrap: "balance",
@@ -134,10 +132,9 @@ export const Hero = () => {
         {/* Sub-headline */}
         <motion.p
           variants={rise}
-          className="font-tagline mt-5 text-[15px] sm:text-base"
+          className="home-hero-subtitle font-tagline mt-5"
           style={{
             color: "hsl(var(--brown))",
-            lineHeight: 1.8,
             maxWidth: "44ch",
             marginInline: "auto",
             textWrap: "pretty",
