@@ -290,7 +290,7 @@
     "stat3Value": "4.9",
     "stat3Label": "Customer rating",
     "imgAlt": "Luxury wedding hall with warm lighting",
-    "slogan": "Plan and book all your events in one place",
+    "slogan": "Plan and book all your events\nin one place",
     "brand": "Tklh",
     "subheadPrefix": "Skip the endless errands and weeks of arrangements —",
     "subheadSuffix": "an intelligent platform that brings every event essential together in one place.",
@@ -1767,7 +1767,7 @@
     ]
   },
   "preloader": {
-    "slogan": "Plan and book all your events in one place"
+    "slogan": "Plan and book all your events\nin one place"
   },
   "speed": {
     "badge": "The difference that gives you peace of mind",

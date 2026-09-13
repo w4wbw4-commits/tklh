@@ -117,7 +117,7 @@ export const Hero = () => {
         {/* Headline */}
         <motion.h1
           variants={rise}
-          className="home-hero-title font-display mt-7 text-green"
+          className="home-hero-title font-display mt-7 whitespace-pre-line text-green"
           style={{
             fontFeatureSettings: '"kern","liga","calt","dlig"',
             maxWidth: "20ch",
