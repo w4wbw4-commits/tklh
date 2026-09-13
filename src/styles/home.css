@@ -119,9 +119,9 @@ html[lang="en"] .customer-home .font-serif {
 }
 
 .customer-home .home-hero-title {
-  font-size: 2.25rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.35;
 }
 
 .customer-home .home-hero-subtitle {
@@ -184,8 +184,8 @@ html[lang="en"] .customer-home .font-serif {
 @media (min-width: 768px) {
   .customer-home h1,
   .customer-home .home-hero-title {
-    font-size: 3.75rem;
-    line-height: 1;
+    font-size: 2.25rem;
+    line-height: 1.1;
   }
 
   .customer-home h2,
@@ -226,7 +226,7 @@ html[lang="en"] .customer-home .font-serif {
 @media (min-width: 1024px) {
   .customer-home h1,
   .customer-home .home-hero-title {
-    font-size: 4.5rem;
+    font-size: 2.7rem;
   }
 
   .customer-home h2,
