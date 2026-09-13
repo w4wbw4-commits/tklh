@@ -1,0 +1,141 @@
+/* Customer home only — scoped beneath .customer-home. */
+.customer-home {
+  --home-canvas: 42 36% 94%;
+  --home-surface: 40 31% 91%;
+  --home-surface-raised: 42 42% 96%;
+  --home-ink: 28 20% 16%;
+  --home-muted: 30 12% 34%;
+  --home-border: 151 13% 77%;
+  --home-brand: 149 43% 15%;
+  --home-brand-deep: 155 41% 9%;
+  --home-gold: 39 32% 48%;
+
+  --background: var(--home-canvas);
+  --surface: var(--home-surface-raised);
+  --cream: var(--home-canvas);
+  --foreground: var(--home-ink);
+  --text-muted: var(--home-muted);
+  --brown: var(--home-muted);
+  --brown-soft: 30 10% 42%;
+  --green: var(--home-brand);
+  --green-deep: var(--home-brand-deep);
+  --green-mid: var(--home-brand);
+  --green-light: var(--home-brand);
+  --primary: var(--home-brand);
+  --primary-foreground: var(--home-canvas);
+  --border: var(--home-border);
+  --muted: var(--home-surface);
+  --muted-foreground: var(--home-muted);
+  --card: var(--home-surface-raised);
+  --card-foreground: var(--home-ink);
+
+  background-color: hsl(var(--home-canvas));
+  color: hsl(var(--home-ink));
+  font-family: 'Thmanyah Sans', 'Tajawal', system-ui, sans-serif;
+  font-feature-settings: "kern", "liga", "calt";
+  letter-spacing: 0;
+}
+
+html[lang="en"] .customer-home {
+  font-family: 'Inter', 'Thmanyah Sans', system-ui, sans-serif;
+}
+
+.customer-home .font-display,
+.customer-home .font-tagline,
+.customer-home .font-arabic,
+.customer-home .font-serif {
+  font-family: 'Thmanyah Sans', 'Tajawal', system-ui, sans-serif;
+  letter-spacing: 0;
+}
+
+html[lang="en"] .customer-home .font-display,
+html[lang="en"] .customer-home .font-tagline,
+html[lang="en"] .customer-home .font-arabic,
+html[lang="en"] .customer-home .font-serif {
+  font-family: 'Inter', 'Thmanyah Sans', system-ui, sans-serif;
+}
+
+.customer-home section[data-navbar-theme="light"] {
+  background-color: hsl(var(--home-canvas));
+}
+
+.customer-home .home-section-alt {
+  background-color: hsl(var(--home-surface));
+}
+
+.customer-home #speed + section {
+  background-color: hsl(var(--home-surface));
+}
+
+.customer-home #speed h2,
+.customer-home #speed + section h2,
+.customer-home #occasions h2 {
+  font-size: clamp(1.65rem, 4.4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.32;
+}
+
+.customer-home #speed [class*="font-black"],
+.customer-home #speed + section [class*="font-black"],
+.customer-home #occasions [class*="font-black"] {
+  font-weight: 700;
+}
+
+.customer-home h1 {
+  font-size: clamp(1.875rem, 5.8vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.28;
+}
+
+.customer-home h2 {
+  font-size: clamp(1.65rem, 4.4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.32;
+}
+
+.customer-home h3 {
+  font-size: clamp(1.125rem, 2.1vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.customer-home p {
+  color: hsl(var(--home-muted));
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  line-height: 1.9;
+}
+
+.customer-home .home-shell {
+  width: min(100% - 2.5rem, 72rem);
+  margin-inline: auto;
+}
+
+.customer-home .home-hairline {
+  border-color: hsl(var(--home-border));
+}
+
+.customer-home .home-cta {
+  min-height: 3.25rem;
+  background-color: hsl(var(--home-brand));
+  color: hsl(var(--home-canvas));
+  box-shadow: 0 2px 0 hsl(var(--home-gold) / 0.48);
+}
+
+.customer-home .home-cta:hover {
+  background-color: hsl(var(--home-brand-deep));
+}
+
+@media (max-width: 640px) {
+  .customer-home .home-shell {
+    width: min(100% - 2rem, 72rem);
+  }
+
+  .customer-home section {
+    scroll-margin-top: 4.5rem;
+  }
+
+  .customer-home .home-cta {
+    min-height: 3rem;
+    font-size: 0.9375rem;
+  }
+}

@@ -42,7 +42,7 @@ const SpeedSection = () => {
       id="speed"
       data-navbar-theme="light"
       aria-label={t("speed.ariaLabel")}
-      className="bg-paper relative overflow-hidden px-5 py-16 sm:px-8 sm:py-24"
+       className="bg-paper relative overflow-hidden px-5 py-16 sm:px-8 sm:py-24"
     >
       <div className="relative z-10 mx-auto max-w-4xl">
         <h2

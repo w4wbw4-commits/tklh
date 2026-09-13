@@ -8,3 +8,5 @@
 - [x] Reduce Navbar height by ~25% on mobile only.
 - [x] Copy ProblemSolutionAbout and OccasionsSection content/style into the About page.
 - [x] Remove DashboardPreview section from homepage.
+- [x] Refine only the `/` customer home visual identity, typography, and responsive sizing.
+- [x] Verify the `/` home page at 375px, 768px, and 1440px in Arabic and English; pass build/typecheck.
