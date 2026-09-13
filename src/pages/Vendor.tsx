@@ -179,7 +179,7 @@ const VendorPage = () => {
                 className="rounded-full border-gold/60 text-primary-deep hover:bg-gold/10"
               >
                 <Link to="/auth?redirect=/partner&role=vendor">
-                  {t("vendor.signIn", { defaultValue: "تسجيل دخول الشركاء" })}
+                  {t("vendor.signIn", { defaultValue: "دخول الشركاء" })}
                 </Link>
               </Button>
             )}
