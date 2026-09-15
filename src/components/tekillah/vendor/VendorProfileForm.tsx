@@ -112,6 +112,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       setDocUrl(vendor.commercial_register_url);
       setIban(vendor.iban ?? "");
       setIbanCertUrl(vendor.iban_certificate_url);
+      setVatNumber(vendor.vat_number ?? "");
       setMapsUrl(vendor.google_maps_url ?? "");
     }
   }, [vendor]);
