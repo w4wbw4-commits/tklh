@@ -511,6 +511,20 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
               placeholder="SA0000000000000000000000" dir="ltr" maxLength={34} />
           </div>
           <div className="space-y-2 sm:col-span-2">
+            <Label>الرقم الضريبي للمؤسسة (15 رقماً)</Label>
+            <Input
+              value={vatNumber}
+              onChange={(e) => setVatNumber(e.target.value.replace(/\D/g, "").slice(0, 15))}
+              placeholder="300000000000003"
+              dir="ltr"
+              inputMode="numeric"
+              maxLength={15}
+            />
+            <p className="text-[11px] text-foreground/55">
+              يظهر هذا الرقم تلقائياً في كل فاتورة ضريبية تُصدرها.
+            </p>
+          </div>
+          <div className="space-y-2 sm:col-span-2">
             <Label>شهادة الآيبان (PDF/صورة)</Label>
             <div className="flex items-center gap-3">
               <label className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-border bg-secondary/40 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-secondary">
