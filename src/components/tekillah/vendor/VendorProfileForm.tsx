@@ -226,7 +226,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
     // are revoked from the authenticated role. Project owner-safe columns
     // explicitly; the form re-merges sensitive values via `get_vendor_private`.
     const RETURN_COLS =
-      "id, user_id, business_name, category, bio, bio_en, city, region, region_en, district, district_en, portfolio_urls, google_maps_url, daily_capacity, starting_price, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, extra_services, extra_services_en, verified, active, approval_status, rejection_reason";
+      "id, user_id, business_name, category, bio, bio_en, city, region, region_en, district, district_en, portfolio_urls, google_maps_url, daily_capacity, starting_price, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, extra_services, extra_services_en, vat_number, verified, active, approval_status, rejection_reason";
     let result;
     if (vendor) {
       result = await vendorsService.updateVendorReturning(vendor.id, payload, RETURN_COLS);
