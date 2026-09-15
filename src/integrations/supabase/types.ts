@@ -1195,7 +1195,7 @@ export type Database = {
           total?: number
           updated_at?: string
           vat_amount?: number
-          vendor_vat_number: string | null
+          vendor_vat_number?: string | null
           vendor_id: string
         }
         Update: {
