@@ -193,6 +193,21 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
+        {/* Persistent notifications bell — top-left of every partner page */}
+        <Link
+          to="/partner/notifications"
+          className="fixed left-4 top-4 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105"
+          aria-label={t("portal.nav.notifications", { defaultValue: "الإشعارات" })}
+          title={t("portal.nav.notifications", { defaultValue: "الإشعارات" })}
+        >
+          <Bell className="h-5 w-5" />
+          {unread > 0 && (
+            <span className="absolute -left-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-black text-destructive-foreground">
+              {unread > 99 ? "99+" : unread}
+            </span>
+          )}
+        </Link>
+
         {/* Mobile top bar */}
         <header className="sticky top-0 z-10 flex items-center justify-between bg-primary p-4 text-primary-foreground md:hidden">
           <Link to="/" className="flex items-center gap-2">
