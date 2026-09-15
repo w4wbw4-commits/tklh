@@ -48,7 +48,9 @@ const PartnerInvoicesPage = () => {
       vendor_id: vendor.id, invoice_number: numData as unknown as string,
       customer_name: form.customer_name || null, customer_phone: form.customer_phone || null,
       subtotal, vat_amount: vat, total: amt, notes: form.notes || null, source: "manual",
-    });
+      // Snapshot the vendor's tax number so every invoice carries it automatically
+      vendor_vat_number: vendor.vat_number ?? null,
+    } as never);
     if (error) { toast.error(error.message); return; }
     toast.success("تم إصدار الفاتورة");
     setForm({ customer_name: "", customer_phone: "", amount: "", notes: "" });
