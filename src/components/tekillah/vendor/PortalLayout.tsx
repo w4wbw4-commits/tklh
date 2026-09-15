@@ -217,6 +217,19 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
             </span>
           </Link>
           <div className="flex items-center gap-1">
+          <Link
+            to="/partner/notifications"
+            className="relative flex h-9 w-9 items-center justify-center rounded-md text-primary-foreground hover:bg-primary-foreground/10"
+            aria-label={t("portal.nav.notifications", { defaultValue: "الإشعارات" })}
+            title={t("portal.nav.notifications", { defaultValue: "الإشعارات" })}
+          >
+            <Bell className="h-4 w-4" />
+            {unread > 0 && (
+              <span className="absolute -left-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-0.5 text-[9px] font-black text-destructive-foreground">
+                {unread > 99 ? "99+" : unread}
+              </span>
+            )}
+          </Link>
           <Button
             size="sm"
             variant="ghost"
