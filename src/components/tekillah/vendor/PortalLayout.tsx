@@ -37,7 +37,6 @@ const partnerNav: NavItem[] = [
   { to: "/partner/sales", labelKey: "portal.nav.sales", fallback: "المبيعات", Icon: FileSpreadsheet },
   { to: "/partner/analytics", labelKey: "portal.nav.analytics", fallback: "التحليلات", Icon: BarChart3 },
   { to: "/partner/pricing", labelKey: "portal.nav.pricing", fallback: "إدارة التسعير", Icon: Tag },
-  { to: "/partner/checklists", labelKey: "portal.nav.checklists", fallback: "قوائم المهام", Icon: ListChecks },
   { to: "/partner/reviews", labelKey: "portal.nav.reviews", fallback: "التقييمات", Icon: Star },
   { to: "/partner/notifications", labelKey: "portal.nav.notifications", fallback: "الإشعارات", Icon: Bell },
   { to: "/partner/profile", labelKey: "portal.nav.profile", fallback: "بياناتي", Icon: Building2 },
