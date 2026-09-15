@@ -21,6 +21,34 @@ export const listForUserFields = (userId: string, limit = 30) =>
     .order("created_at", { ascending: false })
     .limit(limit);
 
+// ---------------------------------------------------------------------------
+// Partner scope: notifications that belong to the vendor's own services and
+// bookings. A user may also hold admin/customer roles, so platform-wide and
+// customer-side notices are excluded from the partner portal feed.
+// ---------------------------------------------------------------------------
+
+const NON_PARTNER_TITLES = new Set<string>([
+  // admin-wide
+  "📥 حجز جديد على المنصة",
+  "📨 طلب انضمام مزود خدمة جديد",
+  "تسجيل جديد في رحلة التخطيط",
+  "🚨 بلاغ جودة جديد",
+  "🚨 بلاغ طارئ من عميل",
+  // customer-side
+  "✅ تم استلام طلبك بنجاح",
+  "✅ تم استلام الدفعة بنجاح",
+  "✅ وصل المزوّد",
+]);
+
+export const isPartnerNotification = (n: { title: string }) => !NON_PARTNER_TITLES.has(n.title);
+
+/** Vendor-only feed for the partner portal. */
+export const listForVendorUser = async (userId: string, limit = 50) => {
+  const res = await listForUser(userId, limit);
+  if (res.error || !res.data) return res;
+  return { ...res, data: res.data.filter(isPartnerNotification) };
+};
+
 export const countUnread = (userId: string) =>
   db
     .from("notifications")
