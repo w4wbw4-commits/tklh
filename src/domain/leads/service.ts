@@ -162,6 +162,10 @@ export const updateVendorApplicationStatus = (id: string, status: VendorApplicat
     .update({ status, reviewed_at: new Date().toISOString() })
     .eq("id", id);
 
+/** Remove a handled (approved/rejected) application from the admin list. */
+export const deleteVendorApplication = (id: string) =>
+  db.from("vendor_applications").delete().eq("id", id);
+
 export const subscribeVendorApplications = (onChange: () => void) => {
   const channel = db
     .channel("admin-vendor-applications")
