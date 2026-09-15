@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
 import { notificationsService } from "@/domain";
+import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import chairMark from "@/assets/tklh-chair.png";
 
 // Sidebar layout for the partner (vendor) portal — inspired by Ahad Laila
@@ -63,6 +64,13 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
   }, [collapsed]);
 
   const toggleSidebar = () => setCollapsed((v) => !v);
+
+  // Account status light: green when the profile is approved, red otherwise.
+  const { vendor } = usePartnerVendor();
+  const isApproved = vendor?.approval_status === "approved";
+  const statusLabel = isApproved
+    ? t("portal.status.active", { defaultValue: "حسابك مفعل ويظهر للعملاء" })
+    : t("portal.status.inactive", { defaultValue: "حسابك غير مفعل" });
 
   const [unread, setUnread] = useState(0);
   useEffect(() => {
