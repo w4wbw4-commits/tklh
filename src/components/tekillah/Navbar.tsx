@@ -158,40 +158,6 @@ export const Navbar = () => {
 
           </nav>
           <div className="flex items-center gap-1 sm:gap-2 rtl:flex-row-reverse">
-            {/* Primary CTA — compact pill in the top corner. */}
-            <Button
-              size="sm"
-              asChild
-              className="h-8 rounded-full px-3 text-xs font-semibold !min-h-8 sm:h-8 sm:px-4 sm:text-sm"
-              style={{
-                background: "transparent",
-                color: navbarTheme === "cream" ? "hsl(var(--green))" : "hsl(var(--cream))",
-              }}
-            >
-              <Link to="/planner">
-                <CalendarCheck className="h-3.5 w-3.5 sm:me-1.5" />
-                <span>{t("common.planAndBook")}</span>
-              </Link>
-            </Button>
-
-
-            {/* Follow-up plan — icon-only on mobile, labelled on desktop. */}
-            <Button
-              variant="ghost"
-              size="sm"
-              asChild
-              aria-label={t("nav.myDashboard")}
-              className={
-                navbarTheme === "cream"
-                  ? "hidden h-6 w-6 rounded-full p-0 text-[hsl(var(--green))] hover:bg-black/5 sm:inline-flex sm:h-8 sm:w-auto sm:px-3 sm:text-xs"
-                  : "hidden h-6 w-6 rounded-full p-0 text-[hsl(var(--cream))] hover:bg-white/10 sm:inline-flex sm:h-8 sm:w-auto sm:px-3 sm:text-xs"
-              }
-            >
-              <Link to="/dashboard">
-                <LayoutDashboard className="h-4 w-4 sm:me-1 sm:h-3.5 sm:w-3.5" />
-                <span className="hidden sm:inline">{t("nav.myDashboard")}</span>
-              </Link>
-            </Button>
 
 
             {isPrimaryAdmin && (
