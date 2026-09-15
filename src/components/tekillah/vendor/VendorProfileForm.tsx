@@ -70,6 +70,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [dailyCapacity, setDailyCapacity] = useState(1);
   const [weekdayPrice, setWeekdayPrice] = useState(0);
   const [weekendPrice, setWeekendPrice] = useState(0);
+  // Hall-only section pricing: men's hall alone, women's hall alone.
+  // weekdayPrice/weekendPrice stay as the price for BOTH sections together.
+  const [menWeekdayPrice, setMenWeekdayPrice] = useState(0);
+  const [menWeekendPrice, setMenWeekendPrice] = useState(0);
+  const [womenWeekdayPrice, setWomenWeekdayPrice] = useState(0);
+  const [womenWeekendPrice, setWomenWeekendPrice] = useState(0);
   const [minDeposit, setMinDeposit] = useState(0);
   const [menCapacity, setMenCapacity] = useState<number | "">("");
   const [womenCapacity, setWomenCapacity] = useState<number | "">("");
