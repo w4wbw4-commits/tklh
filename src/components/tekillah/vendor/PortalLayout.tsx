@@ -66,6 +66,23 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
 
   const toggleSidebar = () => setCollapsed((v) => !v);
 
+  const [unread, setUnread] = useState(0);
+  useEffect(() => {
+    if (!user?.id) return;
+    let alive = true;
+    const refresh = async () => {
+      const res = await notificationsService.listForVendorUser(user.id, 50);
+      if (!alive) return;
+      if (!res.error && res.data) setUnread(res.data.filter((n) => !n.read).length);
+    };
+    refresh();
+    const unsubscribe = notificationsService.subscribeUnique(user.id, () => refresh());
+    return () => {
+      alive = false;
+      unsubscribe();
+    };
+  }, [user?.id]);
+
   const handleLogout = async () => {
     await signOut();
     navigate("/");
