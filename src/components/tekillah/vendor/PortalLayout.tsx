@@ -10,7 +10,7 @@ import {
   ListChecks,
   Building2,
   LogOut,
-  Sparkles,
+  
   Receipt,
   FileSpreadsheet,
   Bell,
@@ -158,7 +158,7 @@ export const PortalHeader = ({
     <div>
       {badge && (
         <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-black text-primary-deep">
-          <Sparkles className="h-3 w-3" />
+          <span aria-label="partner">🤝</span>
           {badge}
         </span>
       )}
