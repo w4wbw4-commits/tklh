@@ -242,6 +242,11 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
             <span className="text-[10px] font-bold text-secondary">
               {t("portal.partnerShort", { defaultValue: "شريك" })}
             </span>
+            <span
+              className={`h-2 w-2 shrink-0 rounded-full ${isApproved ? "bg-emerald-400" : "bg-red-500"}`}
+              title={statusLabel}
+              aria-label={statusLabel}
+            />
           </Link>
           <div className="flex items-center gap-1">
           <Link
