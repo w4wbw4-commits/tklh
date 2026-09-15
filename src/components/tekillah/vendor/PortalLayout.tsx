@@ -40,7 +40,7 @@ const partnerNav: NavItem[] = [
   { to: "/partner/checklists", labelKey: "portal.nav.checklists", fallback: "قوائم المهام", Icon: ListChecks },
   { to: "/partner/reviews", labelKey: "portal.nav.reviews", fallback: "التقييمات", Icon: Star },
   { to: "/partner/notifications", labelKey: "portal.nav.notifications", fallback: "الإشعارات", Icon: Bell },
-  { to: "/partner/profile", labelKey: "portal.nav.profile", fallback: "بيانات قاعتي", Icon: Building2 },
+  { to: "/partner/profile", labelKey: "portal.nav.profile", fallback: "بياناتي", Icon: Building2 },
 ];
 
 export const PortalLayout = ({ children }: { children: ReactNode }) => {
