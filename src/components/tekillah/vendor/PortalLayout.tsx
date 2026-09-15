@@ -58,15 +58,7 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
       {/* Desktop sidebar */}
       <aside className="sticky top-0 hidden h-screen w-64 flex-col bg-primary p-5 text-primary-foreground md:flex">
         <Link to="/" className="mb-8 flex items-center gap-3">
-          <span className="grid h-10 w-10 place-items-center rounded-full bg-primary-foreground text-xl font-black text-primary">
-            ت
-          </span>
-          <div>
-            <div className="text-lg font-black leading-none">تِكله</div>
-            <div className="mt-1 text-[10px] font-bold text-secondary">
-              {t("portal.partnerPortal", { defaultValue: "بوابة الشركاء" })}
-            </div>
-          </div>
+          <Logo variant="light" />
         </Link>
 
         <nav className="flex-1 space-y-1 overflow-y-auto">
