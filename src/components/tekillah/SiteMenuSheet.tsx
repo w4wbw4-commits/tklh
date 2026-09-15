@@ -18,7 +18,6 @@ import {
   Phone,
   FileText,
   Building2,
-  LogIn,
   LogOut,
   Languages,
 } from "lucide-react";
