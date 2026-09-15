@@ -41,7 +41,6 @@ const partnerNav: NavItem[] = [
   { to: "/partner/sales", labelKey: "portal.nav.sales", fallback: "المبيعات", Icon: FileSpreadsheet },
   { to: "/partner/analytics", labelKey: "portal.nav.analytics", fallback: "التحليلات", Icon: BarChart3 },
   { to: "/partner/reviews", labelKey: "portal.nav.reviews", fallback: "التقييمات", Icon: Star },
-  { to: "/partner/notifications", labelKey: "portal.nav.notifications", fallback: "الإشعارات", Icon: Bell },
   { to: "/partner/profile", labelKey: "portal.nav.profile", fallback: "بياناتي", Icon: Building2 },
 ];
 
