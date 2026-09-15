@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
+import { notificationsService } from "@/domain";
 import chairMark from "@/assets/tklh-chair.png";
 
 // Sidebar layout for the partner (vendor) portal — inspired by Ahad Laila
@@ -64,6 +65,23 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
   }, [collapsed]);
 
   const toggleSidebar = () => setCollapsed((v) => !v);
+
+  const [unread, setUnread] = useState(0);
+  useEffect(() => {
+    if (!user?.id) return;
+    let alive = true;
+    const refresh = async () => {
+      const res = await notificationsService.listForVendorUser(user.id, 50);
+      if (!alive) return;
+      if (!res.error && res.data) setUnread(res.data.filter((n) => !n.read).length);
+    };
+    refresh();
+    const unsubscribe = notificationsService.subscribeUnique(user.id, () => refresh());
+    return () => {
+      alive = false;
+      unsubscribe();
+    };
+  }, [user?.id]);
 
   const handleLogout = async () => {
     await signOut();
@@ -175,6 +193,21 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
+        {/* Persistent notifications bell — top-left of every partner page */}
+        <Link
+          to="/partner/notifications"
+          className="fixed left-4 top-4 z-40 hidden h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 md:flex"
+          aria-label={t("portal.nav.notifications", { defaultValue: "الإشعارات" })}
+          title={t("portal.nav.notifications", { defaultValue: "الإشعارات" })}
+        >
+          <Bell className="h-5 w-5" />
+          {unread > 0 && (
+            <span className="absolute -left-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-black text-destructive-foreground">
+              {unread > 99 ? "99+" : unread}
+            </span>
+          )}
+        </Link>
+
         {/* Mobile top bar */}
         <header className="sticky top-0 z-10 flex items-center justify-between bg-primary p-4 text-primary-foreground md:hidden">
           <Link to="/" className="flex items-center gap-2">
@@ -184,6 +217,19 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
             </span>
           </Link>
           <div className="flex items-center gap-1">
+          <Link
+            to="/partner/notifications"
+            className="relative flex h-9 w-9 items-center justify-center rounded-md text-primary-foreground hover:bg-primary-foreground/10"
+            aria-label={t("portal.nav.notifications", { defaultValue: "الإشعارات" })}
+            title={t("portal.nav.notifications", { defaultValue: "الإشعارات" })}
+          >
+            <Bell className="h-4 w-4" />
+            {unread > 0 && (
+              <span className="absolute -left-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-0.5 text-[9px] font-black text-destructive-foreground">
+                {unread > 99 ? "99+" : unread}
+              </span>
+            )}
+          </Link>
           <Button
             size="sm"
             variant="ghost"
