@@ -11,7 +11,7 @@ import { fmtDate, fmtNumber } from "@/i18n/format";
 import type { Database } from "@/integrations/supabase/types";
 
 type Booking = Database["public"]["Tables"]["bookings"]["Row"] & {
-  vendor: { business_name: string; category: string; city: string | null } | null;
+  vendor: { business_name: string; category: string; city: string | null; vat_number: string | null } | null;
   package: { name: string; description: string | null } | null;
   event: { title: string; city: string | null; guest_count: number | null } | null;
 };
@@ -204,6 +204,11 @@ const Invoice = () => {
                 <div className="text-xs text-foreground/65">
                   {booking.vendor?.category ? t(`categories.${booking.vendor.category}`) : ""} · {booking.package?.name ?? "—"}
                 </div>
+                {booking.vendor?.vat_number && (
+                  <div className="mt-1 text-[11px] text-foreground/55">
+                    {t("checkout.vatNumber")}: <span className="font-mono" dir="ltr">{booking.vendor.vat_number}</span>
+                  </div>
+                )}
                 {booking.package?.description && (
                   <div className="mt-1 text-xs text-foreground/55">{booking.package.description}</div>
                 )}
