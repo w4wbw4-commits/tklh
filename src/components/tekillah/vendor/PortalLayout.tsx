@@ -198,6 +198,7 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
           <Button size="sm" variant="ghost" onClick={handleLogout} className="text-primary-foreground hover:bg-primary-foreground/10">
             <LogOut className="h-4 w-4" />
           </Button>
+          </div>
         </header>
 
         {/* Mobile bottom nav */}
