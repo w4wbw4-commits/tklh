@@ -218,6 +218,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       commercial_register_url: docUrl,
       iban: iban.toUpperCase(),
       iban_certificate_url: ibanCertUrl,
+      vat_number: vat || null,
       google_maps_url: mapsUrl || null,
     };
 
