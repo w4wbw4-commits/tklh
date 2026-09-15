@@ -167,6 +167,27 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
         </nav>
 
         <div className={`mt-6 space-y-3 border-t border-primary-foreground/15 pt-5 ${collapsed ? "flex flex-col items-center" : ""}`}>
+          <div
+            className={`flex items-center ${collapsed ? "justify-center" : "gap-2"}`}
+            title={statusLabel}
+            aria-label={statusLabel}
+          >
+            <span className="relative flex h-2.5 w-2.5 shrink-0">
+              <span
+                className={`absolute inline-flex h-full w-full rounded-full opacity-60 ${
+                  isApproved ? "bg-emerald-400" : "bg-red-400"
+                } animate-ping`}
+              />
+              <span
+                className={`relative inline-flex h-2.5 w-2.5 rounded-full ${
+                  isApproved ? "bg-emerald-400" : "bg-red-500"
+                }`}
+              />
+            </span>
+            {!collapsed && (
+              <span className="truncate text-xs font-bold text-primary-foreground/75">{statusLabel}</span>
+            )}
+          </div>
           {!collapsed && (
             <div className="truncate text-xs text-primary-foreground/60" title={user?.email ?? ""}>
               {user?.email}
