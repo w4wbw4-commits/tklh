@@ -107,10 +107,7 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
         {/* Mobile top bar */}
         <header className="sticky top-0 z-10 flex items-center justify-between bg-primary p-4 text-primary-foreground md:hidden">
           <Link to="/" className="flex items-center gap-2">
-            <span className="grid h-8 w-8 place-items-center rounded-full bg-primary-foreground font-black text-primary">
-              ت
-            </span>
-            <span className="font-black">تِكله</span>
+            <Logo variant="light" />
             <span className="text-[10px] font-bold text-secondary">
               {t("portal.partnerShort", { defaultValue: "شريك" })}
             </span>
