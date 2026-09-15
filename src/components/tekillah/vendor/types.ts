@@ -38,6 +38,10 @@ export interface VendorRow {
   starting_price: number;
   weekday_price: number;
   weekend_price: number;
+  men_weekday_price: number | null;
+  men_weekend_price: number | null;
+  women_weekday_price: number | null;
+  women_weekend_price: number | null;
   min_deposit: number;
   men_capacity: number | null;
   women_capacity: number | null;

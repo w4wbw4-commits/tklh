@@ -70,6 +70,12 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [dailyCapacity, setDailyCapacity] = useState(1);
   const [weekdayPrice, setWeekdayPrice] = useState(0);
   const [weekendPrice, setWeekendPrice] = useState(0);
+  // Hall-only section pricing: men's hall alone, women's hall alone.
+  // weekdayPrice/weekendPrice stay as the price for BOTH sections together.
+  const [menWeekdayPrice, setMenWeekdayPrice] = useState(0);
+  const [menWeekendPrice, setMenWeekendPrice] = useState(0);
+  const [womenWeekdayPrice, setWomenWeekdayPrice] = useState(0);
+  const [womenWeekendPrice, setWomenWeekendPrice] = useState(0);
   const [minDeposit, setMinDeposit] = useState(0);
   const [menCapacity, setMenCapacity] = useState<number | "">("");
   const [womenCapacity, setWomenCapacity] = useState<number | "">("");
@@ -103,6 +109,10 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       setDailyCapacity(vendor.daily_capacity);
       setWeekdayPrice(Number(vendor.weekday_price ?? vendor.starting_price ?? 0));
       setWeekendPrice(Number(vendor.weekend_price ?? vendor.starting_price ?? 0));
+      setMenWeekdayPrice(Number(vendor.men_weekday_price ?? 0));
+      setMenWeekendPrice(Number(vendor.men_weekend_price ?? 0));
+      setWomenWeekdayPrice(Number(vendor.women_weekday_price ?? 0));
+      setWomenWeekendPrice(Number(vendor.women_weekend_price ?? 0));
       setMinDeposit(Number(vendor.min_deposit ?? 0));
       setMenCapacity(vendor.men_capacity ?? "");
       setWomenCapacity(vendor.women_capacity ?? "");
@@ -190,7 +200,18 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       return;
     }
     setSaving(true);
-    const startingPrice = Math.min(Number(weekdayPrice), Number(weekendPrice));
+    const isHall = category === "hall";
+    // Section prices are hall-only extras; "starting price" is the cheapest
+    // option the customer can actually book (any section, any day type).
+    const sectionPrices = isHall
+      ? [menWeekdayPrice, menWeekendPrice, womenWeekdayPrice, womenWeekendPrice]
+          .map(Number)
+          .filter((n) => n > 0)
+      : [];
+    const startingPrice = Math.min(
+      ...[Number(weekdayPrice), Number(weekendPrice), ...sectionPrices].filter((n) => n > 0),
+      Number(weekdayPrice),
+    );
     const payload = {
       user_id: userId,
       business_name: businessName,
@@ -208,6 +229,10 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       weekday_price: Number(weekdayPrice),
       weekend_price: Number(weekendPrice),
       min_deposit: Number(minDeposit),
+      men_weekday_price: isHall && Number(menWeekdayPrice) > 0 ? Number(menWeekdayPrice) : null,
+      men_weekend_price: isHall && Number(menWeekendPrice) > 0 ? Number(menWeekendPrice) : null,
+      women_weekday_price: isHall && Number(womenWeekdayPrice) > 0 ? Number(womenWeekdayPrice) : null,
+      women_weekend_price: isHall && Number(womenWeekendPrice) > 0 ? Number(womenWeekendPrice) : null,
       men_capacity: category === "hall" && menCapacity !== "" ? Number(menCapacity) : null,
       women_capacity: category === "hall" && womenCapacity !== "" ? Number(womenCapacity) : null,
       // Manual service tags apply to ALL categories. Optional EN list shown to
@@ -226,7 +251,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
     // are revoked from the authenticated role. Project owner-safe columns
     // explicitly; the form re-merges sensitive values via `get_vendor_private`.
     const RETURN_COLS =
-      "id, user_id, business_name, category, bio, bio_en, city, region, region_en, district, district_en, portfolio_urls, google_maps_url, daily_capacity, starting_price, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, extra_services, extra_services_en, vat_number, verified, active, approval_status, rejection_reason";
+      "id, user_id, business_name, category, bio, bio_en, city, region, region_en, district, district_en, portfolio_urls, google_maps_url, daily_capacity, starting_price, weekday_price, weekend_price, men_weekday_price, men_weekend_price, women_weekday_price, women_weekend_price, min_deposit, men_capacity, women_capacity, extra_services, extra_services_en, vat_number, verified, active, approval_status, rejection_reason";
     let result;
     if (vendor) {
       result = await vendorsService.updateVendorReturning(vendor.id, payload, RETURN_COLS);
@@ -403,6 +428,60 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           <Wallet className="h-4 w-4 text-primary" /> {t("vendor.profile.pricingTitle")}
           <Badge variant="secondary" className="ms-1 text-[10px]">{t("vendor.profile.required") ?? "إلزامي"}</Badge>
         </div>
+        {isVenue && (
+          <p className="mb-4 text-xs text-foreground/60">
+            حدّد سعر كل قسم على حدة، وسعر القسمين معاً — لكل من وسط الأسبوع ونهاية الأسبوع.
+          </p>
+        )}
+        {isVenue && (
+          <div className="mb-6 space-y-6">
+            <div className="rounded-2xl border border-border bg-secondary/25 p-4 sm:p-5">
+              <div className="mb-4 text-xs font-bold text-foreground">قسم الرجال فقط</div>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <SmartPriceField
+                  id="men-weekday-price"
+                  label="وسط الأسبوع (الأحد–الأربعاء)"
+                  icon={CalendarDays}
+                  value={menWeekdayPrice}
+                  onChange={setMenWeekdayPrice}
+                  presets={PRICE_PRESETS[category]?.weekday}
+                />
+                <SmartPriceField
+                  id="men-weekend-price"
+                  label="نهاية الأسبوع (الخميس–السبت)"
+                  icon={CalendarRange}
+                  value={menWeekendPrice}
+                  onChange={setMenWeekendPrice}
+                  presets={PRICE_PRESETS[category]?.weekend}
+                />
+              </div>
+            </div>
+            <div className="rounded-2xl border border-border bg-secondary/25 p-4 sm:p-5">
+              <div className="mb-4 text-xs font-bold text-foreground">قسم النساء فقط</div>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <SmartPriceField
+                  id="women-weekday-price"
+                  label="وسط الأسبوع (الأحد–الأربعاء)"
+                  icon={CalendarDays}
+                  value={womenWeekdayPrice}
+                  onChange={setWomenWeekdayPrice}
+                  presets={PRICE_PRESETS[category]?.weekday}
+                />
+                <SmartPriceField
+                  id="women-weekend-price"
+                  label="نهاية الأسبوع (الخميس–السبت)"
+                  icon={CalendarRange}
+                  value={womenWeekendPrice}
+                  onChange={setWomenWeekendPrice}
+                  presets={PRICE_PRESETS[category]?.weekend}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+        {isVenue && (
+          <div className="mb-4 text-xs font-bold text-foreground">القسمان معاً (القاعة كاملة)</div>
+        )}
         <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
           <SmartPriceField
             id="weekday-price"

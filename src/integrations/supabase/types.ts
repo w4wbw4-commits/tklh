@@ -1176,8 +1176,8 @@ export type Database = {
           total: number
           updated_at: string
           vat_amount: number
-          vendor_vat_number: string | null
           vendor_id: string
+          vendor_vat_number: string | null
         }
         Insert: {
           booking_id?: string | null
@@ -1195,8 +1195,8 @@ export type Database = {
           total?: number
           updated_at?: string
           vat_amount?: number
-          vendor_vat_number?: string | null
           vendor_id: string
+          vendor_vat_number?: string | null
         }
         Update: {
           booking_id?: string | null
@@ -1214,8 +1214,8 @@ export type Database = {
           total?: number
           updated_at?: string
           vat_amount?: number
-          vendor_vat_number?: string | null
           vendor_id?: string
+          vendor_vat_number?: string | null
         }
         Relationships: []
       }
@@ -1317,6 +1317,8 @@ export type Database = {
           iban_certificate_url: string | null
           id: string
           men_capacity: number | null
+          men_weekday_price: number | null
+          men_weekend_price: number | null
           min_deposit: number
           phone: string | null
           portfolio_urls: string[]
@@ -1333,6 +1335,8 @@ export type Database = {
           weekday_price: number
           weekend_price: number
           women_capacity: number | null
+          women_weekday_price: number | null
+          women_weekend_price: number | null
         }
         Insert: {
           active?: boolean
@@ -1356,6 +1360,8 @@ export type Database = {
           iban_certificate_url?: string | null
           id?: string
           men_capacity?: number | null
+          men_weekday_price?: number | null
+          men_weekend_price?: number | null
           min_deposit?: number
           phone?: string | null
           portfolio_urls?: string[]
@@ -1372,6 +1378,8 @@ export type Database = {
           weekday_price?: number
           weekend_price?: number
           women_capacity?: number | null
+          women_weekday_price?: number | null
+          women_weekend_price?: number | null
         }
         Update: {
           active?: boolean
@@ -1395,6 +1403,8 @@ export type Database = {
           iban_certificate_url?: string | null
           id?: string
           men_capacity?: number | null
+          men_weekday_price?: number | null
+          men_weekend_price?: number | null
           min_deposit?: number
           phone?: string | null
           portfolio_urls?: string[]
@@ -1411,6 +1421,8 @@ export type Database = {
           weekday_price?: number
           weekend_price?: number
           women_capacity?: number | null
+          women_weekday_price?: number | null
+          women_weekend_price?: number | null
         }
         Relationships: []
       }
