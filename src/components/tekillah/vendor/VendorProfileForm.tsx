@@ -229,6 +229,10 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       weekday_price: Number(weekdayPrice),
       weekend_price: Number(weekendPrice),
       min_deposit: Number(minDeposit),
+      men_weekday_price: isHall && Number(menWeekdayPrice) > 0 ? Number(menWeekdayPrice) : null,
+      men_weekend_price: isHall && Number(menWeekendPrice) > 0 ? Number(menWeekendPrice) : null,
+      women_weekday_price: isHall && Number(womenWeekdayPrice) > 0 ? Number(womenWeekdayPrice) : null,
+      women_weekend_price: isHall && Number(womenWeekendPrice) > 0 ? Number(womenWeekendPrice) : null,
       men_capacity: category === "hall" && menCapacity !== "" ? Number(menCapacity) : null,
       women_capacity: category === "hall" && womenCapacity !== "" ? Number(womenCapacity) : null,
       // Manual service tags apply to ALL categories. Optional EN list shown to
