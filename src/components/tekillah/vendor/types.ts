@@ -32,6 +32,7 @@ export interface VendorRow {
   commercial_register_url: string | null;
   iban: string | null;
   iban_certificate_url: string | null;
+  vat_number: string | null;
   google_maps_url: string | null;
   daily_capacity: number;
   starting_price: number;
