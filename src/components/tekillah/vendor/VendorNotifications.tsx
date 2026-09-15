@@ -27,7 +27,7 @@ export const VendorNotifications = ({ userId }: Props) => {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await notificationsService.listForUser(userId, 50);
+    const { data, error } = await notificationsService.listForVendorUser(userId, 50);
     if (error) toast.error(error.message);
     setItems((data ?? []) as NotificationRow[]);
     setLoading(false);
