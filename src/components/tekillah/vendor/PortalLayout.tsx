@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
@@ -10,7 +10,8 @@ import {
   ListChecks,
   Building2,
   LogOut,
-  
+  PanelRightClose,
+  PanelRightOpen,
   Receipt,
   FileSpreadsheet,
   Bell,
@@ -18,6 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
+import chairMark from "@/assets/tklh-chair.png";
 
 // Sidebar layout for the partner (vendor) portal — inspired by Ahad Laila
 // Uses our semantic tokens (primary = olive, secondary = warm beige).
@@ -42,10 +44,22 @@ const partnerNav: NavItem[] = [
   { to: "/partner/profile", labelKey: "portal.nav.profile", fallback: "بياناتي", Icon: Building2 },
 ];
 
+const SIDEBAR_COLLAPSE_KEY = "tklh_partner_sidebar_collapsed";
+
 export const PortalLayout = ({ children }: { children: ReactNode }) => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [collapsed, setCollapsed] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.localStorage.getItem(SIDEBAR_COLLAPSE_KEY) === "true";
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem(SIDEBAR_COLLAPSE_KEY, String(collapsed));
+  }, [collapsed]);
+
+  const toggleSidebar = () => setCollapsed((v) => !v);
 
   const handleLogout = async () => {
     await signOut();
