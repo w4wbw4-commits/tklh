@@ -183,6 +183,18 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
               {t("portal.partnerShort", { defaultValue: "شريك" })}
             </span>
           </Link>
+          <div className="flex items-center gap-1">
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={toggleLang}
+            title={langLabel}
+            aria-label={langLabel}
+            className="text-primary-foreground hover:bg-primary-foreground/10"
+          >
+            <Languages className="h-4 w-4" />
+            <span className="ms-1 text-[11px] font-bold">{isAr ? "EN" : "ع"}</span>
+          </Button>
           <Button size="sm" variant="ghost" onClick={handleLogout} className="text-primary-foreground hover:bg-primary-foreground/10">
             <LogOut className="h-4 w-4" />
           </Button>
