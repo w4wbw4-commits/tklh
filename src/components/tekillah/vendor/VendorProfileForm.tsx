@@ -165,6 +165,11 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       toast.error("لا يمكن إكمال التسجيل بدون رفع شهادة الآيبان");
       return;
     }
+    const vat = vatNumber.replace(/\D/g, "");
+    if (vat && vat.length !== 15) {
+      toast.error("الرقم الضريبي يجب أن يكون 15 رقماً");
+      return;
+    }
     if (!vendor && !acceptedTos) {
       toast.error(t("terms.mustAccept"));
       return;
