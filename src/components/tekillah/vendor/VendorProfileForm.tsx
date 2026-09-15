@@ -428,6 +428,60 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
           <Wallet className="h-4 w-4 text-primary" /> {t("vendor.profile.pricingTitle")}
           <Badge variant="secondary" className="ms-1 text-[10px]">{t("vendor.profile.required") ?? "إلزامي"}</Badge>
         </div>
+        {isVenue && (
+          <p className="mb-4 text-xs text-foreground/60">
+            حدّد سعر كل قسم على حدة، وسعر القسمين معاً — لكل من وسط الأسبوع ونهاية الأسبوع.
+          </p>
+        )}
+        {isVenue && (
+          <div className="mb-6 space-y-6">
+            <div className="rounded-2xl border border-border bg-secondary/25 p-4 sm:p-5">
+              <div className="mb-4 text-xs font-bold text-foreground">قسم الرجال فقط</div>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <SmartPriceField
+                  id="men-weekday-price"
+                  label="وسط الأسبوع (الأحد–الأربعاء)"
+                  icon={CalendarDays}
+                  value={menWeekdayPrice}
+                  onChange={setMenWeekdayPrice}
+                  presets={PRICE_PRESETS[category]?.weekday}
+                />
+                <SmartPriceField
+                  id="men-weekend-price"
+                  label="نهاية الأسبوع (الخميس–السبت)"
+                  icon={CalendarRange}
+                  value={menWeekendPrice}
+                  onChange={setMenWeekendPrice}
+                  presets={PRICE_PRESETS[category]?.weekend}
+                />
+              </div>
+            </div>
+            <div className="rounded-2xl border border-border bg-secondary/25 p-4 sm:p-5">
+              <div className="mb-4 text-xs font-bold text-foreground">قسم النساء فقط</div>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <SmartPriceField
+                  id="women-weekday-price"
+                  label="وسط الأسبوع (الأحد–الأربعاء)"
+                  icon={CalendarDays}
+                  value={womenWeekdayPrice}
+                  onChange={setWomenWeekdayPrice}
+                  presets={PRICE_PRESETS[category]?.weekday}
+                />
+                <SmartPriceField
+                  id="women-weekend-price"
+                  label="نهاية الأسبوع (الخميس–السبت)"
+                  icon={CalendarRange}
+                  value={womenWeekendPrice}
+                  onChange={setWomenWeekendPrice}
+                  presets={PRICE_PRESETS[category]?.weekend}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+        {isVenue && (
+          <div className="mb-4 text-xs font-bold text-foreground">القسمان معاً (القاعة كاملة)</div>
+        )}
         <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
           <SmartPriceField
             id="weekday-price"
