@@ -79,6 +79,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [docUrl, setDocUrl] = useState<string | null>(null);
   const [iban, setIban] = useState("");
   const [ibanCertUrl, setIbanCertUrl] = useState<string | null>(null);
+  const [vatNumber, setVatNumber] = useState("");
   const [mapsUrl, setMapsUrl] = useState("");
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -111,6 +112,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       setDocUrl(vendor.commercial_register_url);
       setIban(vendor.iban ?? "");
       setIbanCertUrl(vendor.iban_certificate_url);
+      setVatNumber(vendor.vat_number ?? "");
       setMapsUrl(vendor.google_maps_url ?? "");
     }
   }, [vendor]);
@@ -163,6 +165,11 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       toast.error("لا يمكن إكمال التسجيل بدون رفع شهادة الآيبان");
       return;
     }
+    const vat = vatNumber.replace(/\D/g, "");
+    if (vat && vat.length !== 15) {
+      toast.error("الرقم الضريبي يجب أن يكون 15 رقماً");
+      return;
+    }
     if (!vendor && !acceptedTos) {
       toast.error(t("terms.mustAccept"));
       return;
@@ -211,6 +218,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       commercial_register_url: docUrl,
       iban: iban.toUpperCase(),
       iban_certificate_url: ibanCertUrl,
+      vat_number: vat || null,
       google_maps_url: mapsUrl || null,
     };
 
@@ -218,7 +226,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
     // are revoked from the authenticated role. Project owner-safe columns
     // explicitly; the form re-merges sensitive values via `get_vendor_private`.
     const RETURN_COLS =
-      "id, user_id, business_name, category, bio, bio_en, city, region, region_en, district, district_en, portfolio_urls, google_maps_url, daily_capacity, starting_price, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, extra_services, extra_services_en, verified, active, approval_status, rejection_reason";
+      "id, user_id, business_name, category, bio, bio_en, city, region, region_en, district, district_en, portfolio_urls, google_maps_url, daily_capacity, starting_price, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, extra_services, extra_services_en, vat_number, verified, active, approval_status, rejection_reason";
     let result;
     if (vendor) {
       result = await vendorsService.updateVendorReturning(vendor.id, payload, RETURN_COLS);
@@ -501,6 +509,20 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
             <Label>رقم الآيبان (IBAN)</Label>
             <Input value={iban} onChange={(e) => setIban(e.target.value.toUpperCase().replace(/\s/g, ""))}
               placeholder="SA0000000000000000000000" dir="ltr" maxLength={34} />
+          </div>
+          <div className="space-y-2 sm:col-span-2">
+            <Label>الرقم الضريبي للمؤسسة (15 رقماً)</Label>
+            <Input
+              value={vatNumber}
+              onChange={(e) => setVatNumber(e.target.value.replace(/\D/g, "").slice(0, 15))}
+              placeholder="300000000000003"
+              dir="ltr"
+              inputMode="numeric"
+              maxLength={15}
+            />
+            <p className="text-[11px] text-foreground/55">
+              يظهر هذا الرقم تلقائياً في كل فاتورة ضريبية تُصدرها.
+            </p>
           </div>
           <div className="space-y-2 sm:col-span-2">
             <Label>شهادة الآيبان (PDF/صورة)</Label>

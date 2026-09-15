@@ -1176,6 +1176,7 @@ export type Database = {
           total: number
           updated_at: string
           vat_amount: number
+          vendor_vat_number: string | null
           vendor_id: string
         }
         Insert: {
@@ -1194,6 +1195,7 @@ export type Database = {
           total?: number
           updated_at?: string
           vat_amount?: number
+          vendor_vat_number?: string | null
           vendor_id: string
         }
         Update: {
@@ -1212,6 +1214,7 @@ export type Database = {
           total?: number
           updated_at?: string
           vat_amount?: number
+          vendor_vat_number?: string | null
           vendor_id?: string
         }
         Relationships: []
@@ -1325,6 +1328,7 @@ export type Database = {
           starting_price: number
           updated_at: string
           user_id: string
+          vat_number: string | null
           verified: boolean
           weekday_price: number
           weekend_price: number
@@ -1363,6 +1367,7 @@ export type Database = {
           starting_price?: number
           updated_at?: string
           user_id: string
+          vat_number?: string | null
           verified?: boolean
           weekday_price?: number
           weekend_price?: number
@@ -1401,6 +1406,7 @@ export type Database = {
           starting_price?: number
           updated_at?: string
           user_id?: string
+          vat_number?: string | null
           verified?: boolean
           weekday_price?: number
           weekend_price?: number

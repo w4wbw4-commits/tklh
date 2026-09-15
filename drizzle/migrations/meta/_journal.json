@@ -8,6 +8,13 @@
       "when": 1789170778523,
       "tag": "0000_vision_refs_upload_policy",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789508226352,
+      "tag": "0001_add_vendor_vat_number",
+      "breakpoints": true
     }
   ]
 }

@@ -17,6 +17,7 @@ const fmt = (n: number) => Math.round(n).toLocaleString("en-US");
 type Invoice = {
   id: string; invoice_number: string; customer_name: string | null; customer_phone: string | null;
   issue_date: string; subtotal: number; vat_amount: number; total: number; status: string; source: string; notes: string | null;
+  vendor_vat_number?: string | null;
 };
 
 const PartnerInvoicesPage = () => {
@@ -47,7 +48,9 @@ const PartnerInvoicesPage = () => {
       vendor_id: vendor.id, invoice_number: numData as unknown as string,
       customer_name: form.customer_name || null, customer_phone: form.customer_phone || null,
       subtotal, vat_amount: vat, total: amt, notes: form.notes || null, source: "manual",
-    });
+      // Snapshot the vendor's tax number so every invoice carries it automatically
+      vendor_vat_number: vendor.vat_number ?? null,
+    } as never);
     if (error) { toast.error(error.message); return; }
     toast.success("تم إصدار الفاتورة");
     setForm({ customer_name: "", customer_phone: "", amount: "", notes: "" });
@@ -62,9 +65,10 @@ const PartnerInvoicesPage = () => {
     doc.text(`Invoice #: ${inv.invoice_number}`, 14, 35);
     doc.text(`Date: ${inv.issue_date}`, 14, 42);
     doc.text(`Vendor: ${vendor?.business_name ?? ""}`, 14, 49);
-    doc.text(`Customer: ${inv.customer_name ?? "-"}`, 14, 56);
+    doc.text(`VAT No: ${inv.vendor_vat_number || vendor?.vat_number || "-"}`, 14, 56);
+    doc.text(`Customer: ${inv.customer_name ?? "-"}`, 14, 63);
     autoTable(doc, {
-      startY: 70,
+      startY: 75,
       head: [["Description", "Subtotal (SAR)", "VAT 15%", "Total (SAR)"]],
       body: [["Venue booking service", fmt(inv.subtotal), fmt(inv.vat_amount), fmt(inv.total)]],
       theme: "grid", headStyles: { fillColor: [82, 92, 50] },
@@ -107,6 +111,16 @@ const PartnerInvoicesPage = () => {
           </Dialog>
         }
       />
+      <Card className="mb-4 flex flex-wrap items-center gap-2 p-4 text-xs">
+        <span className="font-bold text-muted-foreground">الرقم الضريبي للمؤسسة</span>
+        {vendor?.vat_number ? (
+          <span dir="ltr" className="font-mono font-black text-primary">{vendor.vat_number}</span>
+        ) : (
+          <span className="text-muted-foreground">
+            غير مسجّل — أضِفه من صفحة «بياناتي» ليظهر تلقائياً في كل فاتورة.
+          </span>
+        )}
+      </Card>
       <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="p-5"><Receipt className="h-5 w-5 text-primary" /><div className="mt-3 text-2xl font-black">{fmt(stats.count)}</div><div className="mt-1 text-xs font-bold text-muted-foreground">إجمالي الفواتير</div></Card>
         <Card className="border-primary bg-primary p-5 text-primary-foreground"><TrendingUp className="h-5 w-5 text-secondary" /><div className="mt-3 text-2xl font-black">{fmt(stats.total)} </div><div className="mt-1 text-xs font-bold text-primary-foreground/70">إجمالي القيمة</div></Card>

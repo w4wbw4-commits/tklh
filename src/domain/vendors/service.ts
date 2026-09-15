@@ -11,7 +11,7 @@ import type { Insert, Update, VendorCategory, VendorRow } from "@/domain/types";
 // ---------------------------------------------------------------------------
 
 export const VENDOR_PUBLIC_COLUMNS =
-  "id, user_id, business_name, category, bio, bio_en, city, region, region_en, district, district_en, portfolio_urls, google_maps_url, daily_capacity, starting_price, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, extra_services, extra_services_en, verified, active, approval_status, rejection_reason";
+  "id, user_id, business_name, category, bio, bio_en, city, region, region_en, district, district_en, portfolio_urls, google_maps_url, daily_capacity, starting_price, weekday_price, weekend_price, min_deposit, men_capacity, women_capacity, extra_services, extra_services_en, vat_number, verified, active, approval_status, rejection_reason";
 
 export const getVendorPrivate = async (vendorId: string) => {
   const { data } = await db.rpc("get_vendor_private", { _vendor_id: vendorId });

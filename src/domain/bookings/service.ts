@@ -156,7 +156,7 @@ export const getByIdInvoiceDetail = (id: string) =>
   db
     .from("bookings")
     .select(
-      "*, vendor:vendors(business_name, category, city), package:packages(name, description), event:events(title, city, guest_count)",
+      "*, vendor:vendors(business_name, category, city, vat_number), package:packages(name, description), event:events(title, city, guest_count)",
     )
     .eq("id", id)
     .maybeSingle();
