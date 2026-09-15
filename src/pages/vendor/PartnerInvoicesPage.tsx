@@ -17,6 +17,7 @@ const fmt = (n: number) => Math.round(n).toLocaleString("en-US");
 type Invoice = {
   id: string; invoice_number: string; customer_name: string | null; customer_phone: string | null;
   issue_date: string; subtotal: number; vat_amount: number; total: number; status: string; source: string; notes: string | null;
+  vendor_vat_number?: string | null;
 };
 
 const PartnerInvoicesPage = () => {
