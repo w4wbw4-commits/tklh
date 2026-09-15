@@ -109,6 +109,10 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       setDailyCapacity(vendor.daily_capacity);
       setWeekdayPrice(Number(vendor.weekday_price ?? vendor.starting_price ?? 0));
       setWeekendPrice(Number(vendor.weekend_price ?? vendor.starting_price ?? 0));
+      setMenWeekdayPrice(Number(vendor.men_weekday_price ?? 0));
+      setMenWeekendPrice(Number(vendor.men_weekend_price ?? 0));
+      setWomenWeekdayPrice(Number(vendor.women_weekday_price ?? 0));
+      setWomenWeekendPrice(Number(vendor.women_weekend_price ?? 0));
       setMinDeposit(Number(vendor.min_deposit ?? 0));
       setMenCapacity(vendor.men_capacity ?? "");
       setWomenCapacity(vendor.women_capacity ?? "");
