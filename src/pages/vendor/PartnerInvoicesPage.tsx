@@ -65,9 +65,10 @@ const PartnerInvoicesPage = () => {
     doc.text(`Invoice #: ${inv.invoice_number}`, 14, 35);
     doc.text(`Date: ${inv.issue_date}`, 14, 42);
     doc.text(`Vendor: ${vendor?.business_name ?? ""}`, 14, 49);
-    doc.text(`Customer: ${inv.customer_name ?? "-"}`, 14, 56);
+    doc.text(`VAT No: ${inv.vendor_vat_number || vendor?.vat_number || "-"}`, 14, 56);
+    doc.text(`Customer: ${inv.customer_name ?? "-"}`, 14, 63);
     autoTable(doc, {
-      startY: 70,
+      startY: 75,
       head: [["Description", "Subtotal (SAR)", "VAT 15%", "Total (SAR)"]],
       body: [["Venue booking service", fmt(inv.subtotal), fmt(inv.vat_amount), fmt(inv.total)]],
       theme: "grid", headStyles: { fillColor: [82, 92, 50] },
