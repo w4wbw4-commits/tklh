@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { Loader2, Inbox, Building2, User, MessageSquare, Mail, ChevronDown } from "lucide-react";
+import { Loader2, Inbox, Building2, User, MessageSquare, Mail, ChevronDown, Trash2 } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { leadsService } from "@/domain";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -170,6 +175,37 @@ export const AdminVendorApplications = () => {
                       واتساب
                     </a>
                   </Button>
+                  {(r.status === "approved" || r.status === "rejected") && (
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="rounded-full border-destructive/30 text-destructive hover:bg-destructive/10"
+                        >
+                          <Trash2 className="me-1 h-3.5 w-3.5" />
+                          حذف
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>حذف الطلب من القائمة</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            سيُحذف طلب «{r.full_name}» من قائمة طلبات الانضمام نهائياً. لا يؤثر ذلك على أي حساب مزود خدمة تم إنشاؤه.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>إلغاء</AlertDialogCancel>
+                          <AlertDialogAction
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            onClick={() => removeApplication(r.id)}
+                          >
+                            حذف
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
                 </div>
               </div>
             </div>
