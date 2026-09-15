@@ -82,6 +82,13 @@ export const AdminVendorApplications = () => {
     load();
   };
 
+  const removeApplication = async (id: string) => {
+    const { error } = await leadsService.deleteVendorApplication(id);
+    if (error) { toast.error(error.message); return; }
+    toast.success("تم حذف الطلب من القائمة");
+    load();
+  };
+
   if (loading) {
     return (
       <div className="grid place-items-center rounded-2xl border border-border bg-card p-12">
