@@ -7,7 +7,6 @@ import {
   LayoutDashboard,
   Calendar,
   BarChart3,
-  Tag,
   ListChecks,
   Building2,
   LogOut,
