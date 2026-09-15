@@ -200,7 +200,18 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
       return;
     }
     setSaving(true);
-    const startingPrice = Math.min(Number(weekdayPrice), Number(weekendPrice));
+    const isHall = category === "hall";
+    // Section prices are hall-only extras; "starting price" is the cheapest
+    // option the customer can actually book (any section, any day type).
+    const sectionPrices = isHall
+      ? [menWeekdayPrice, menWeekendPrice, womenWeekdayPrice, womenWeekendPrice]
+          .map(Number)
+          .filter((n) => n > 0)
+      : [];
+    const startingPrice = Math.min(
+      ...[Number(weekdayPrice), Number(weekendPrice), ...sectionPrices].filter((n) => n > 0),
+      Number(weekdayPrice),
+    );
     const payload = {
       user_id: userId,
       business_name: businessName,
