@@ -50,7 +50,10 @@ const SIDEBAR_COLLAPSE_KEY = "tklh_partner_sidebar_collapsed";
 export const PortalLayout = ({ children }: { children: ReactNode }) => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isAr = i18n.language?.startsWith("ar");
+  const toggleLang = () => i18n.changeLanguage(isAr ? "en" : "ar");
+  const langLabel = isAr ? "English" : "العربية";
   const [collapsed, setCollapsed] = useState(() => {
     if (typeof window === "undefined") return false;
     return window.localStorage.getItem(SIDEBAR_COLLAPSE_KEY) === "true";
