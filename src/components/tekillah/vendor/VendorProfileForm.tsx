@@ -79,6 +79,7 @@ export const VendorProfileForm = ({ userId, vendor, onSaved }: Props) => {
   const [docUrl, setDocUrl] = useState<string | null>(null);
   const [iban, setIban] = useState("");
   const [ibanCertUrl, setIbanCertUrl] = useState<string | null>(null);
+  const [vatNumber, setVatNumber] = useState("");
   const [mapsUrl, setMapsUrl] = useState("");
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
