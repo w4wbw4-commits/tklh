@@ -33,7 +33,7 @@ const PartnerProfilePage = () => {
 
   return (
     <PortalLayout>
-      <PortalHeader title="بيانات قاعتي" subtitle="معلومات الشركة، السجل التجاري، والباقات" />
+      <PortalHeader title="بياناتي" subtitle="معلومات الشركة، السجل التجاري، والباقات" />
       {loading || !user ? (
         <div className="grid place-items-center py-24 text-muted-foreground">جارٍ التحميل…</div>
       ) : (
