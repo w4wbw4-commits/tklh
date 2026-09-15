@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { paymentsService } from "@/domain";
 import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
-import { StatusBanner } from "@/components/tekillah/vendor/StatusBanner";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -108,7 +107,6 @@ const PartnerInvoicesPage = () => {
           </Dialog>
         }
       />
-      <StatusBanner vendor={vendor} />
       <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="p-5"><Receipt className="h-5 w-5 text-primary" /><div className="mt-3 text-2xl font-black">{fmt(stats.count)}</div><div className="mt-1 text-xs font-bold text-muted-foreground">إجمالي الفواتير</div></Card>
         <Card className="border-primary bg-primary p-5 text-primary-foreground"><TrendingUp className="h-5 w-5 text-secondary" /><div className="mt-3 text-2xl font-black">{fmt(stats.total)} </div><div className="mt-1 text-xs font-bold text-primary-foreground/70">إجمالي القيمة</div></Card>

@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { bookingsService } from "@/domain";
 import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
-import { StatusBanner } from "@/components/tekillah/vendor/StatusBanner";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import {
   TrendingUp,
@@ -134,7 +133,6 @@ const PartnerOverview = () => {
         subtitle="نظرة لحظية على أداء قاعتك — العوائد، الحجوزات، والتقويم"
         badge="لوحة الشريك"
       />
-      <StatusBanner vendor={vendor} />
 
       {loading ? (
         <div className="grid place-items-center py-24 text-muted-foreground">جارٍ التحميل…</div>

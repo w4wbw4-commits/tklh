@@ -1,5 +1,4 @@
 import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
-import { StatusBanner } from "@/components/tekillah/vendor/StatusBanner";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { VendorBookings } from "@/components/tekillah/vendor/VendorBookings";
 
@@ -10,7 +9,6 @@ const PartnerBookingsPage = () => {
   return (
     <PortalLayout>
       <PortalHeader title="الحجوزات" subtitle="إدارة كل طلبات الحجز الواردة لقاعتك" />
-      <StatusBanner vendor={vendor} />
       {loading ? (
         <div className="grid place-items-center py-24 text-muted-foreground">جارٍ التحميل…</div>
       ) : !vendor ? (
