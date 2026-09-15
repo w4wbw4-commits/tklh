@@ -17,6 +17,7 @@ import {
   Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/tekillah/Logo";
 
 // Sidebar layout for the partner (vendor) portal — inspired by Ahad Laila
 // Uses our semantic tokens (primary = olive, secondary = warm beige).
