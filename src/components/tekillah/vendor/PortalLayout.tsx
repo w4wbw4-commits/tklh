@@ -153,6 +153,18 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
             className={`border-0 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20 ${
               collapsed ? "h-9 w-9 justify-center rounded-full p-0" : "w-full"
             }`}
+            onClick={toggleLang}
+            title={langLabel}
+            aria-label={langLabel}
+          >
+            <Languages className={`h-4 w-4 ${collapsed ? "" : "ml-2"}`} />
+            {!collapsed && langLabel}
+          </Button>
+          <Button
+            variant="secondary"
+            className={`border-0 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20 ${
+              collapsed ? "h-9 w-9 justify-center rounded-full p-0" : "w-full"
+            }`}
             onClick={handleLogout}
             title={t("common.logout", { defaultValue: "تسجيل الخروج" })}
           >
