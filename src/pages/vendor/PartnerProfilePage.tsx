@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
-import { StatusBanner } from "@/components/tekillah/vendor/StatusBanner";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { VendorProfileForm } from "@/components/tekillah/vendor/VendorProfileForm";
 import { WelcomeDialog } from "@/components/tekillah/vendor/WelcomeDialog";
@@ -35,7 +34,6 @@ const PartnerProfilePage = () => {
   return (
     <PortalLayout>
       <PortalHeader title="بيانات قاعتي" subtitle="معلومات الشركة، السجل التجاري، والباقات" />
-      <StatusBanner vendor={vendor} />
       {loading || !user ? (
         <div className="grid place-items-center py-24 text-muted-foreground">جارٍ التحميل…</div>
       ) : (
