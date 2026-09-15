@@ -196,7 +196,7 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
         {/* Persistent notifications bell — top-left of every partner page */}
         <Link
           to="/partner/notifications"
-          className="fixed left-4 top-4 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105"
+          className="fixed left-4 top-4 z-40 hidden h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 md:flex"
           aria-label={t("portal.nav.notifications", { defaultValue: "الإشعارات" })}
           title={t("portal.nav.notifications", { defaultValue: "الإشعارات" })}
         >
