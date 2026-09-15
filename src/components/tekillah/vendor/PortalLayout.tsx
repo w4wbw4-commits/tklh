@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
+import { notificationsService } from "@/domain";
 import chairMark from "@/assets/tklh-chair.png";
 
 // Sidebar layout for the partner (vendor) portal — inspired by Ahad Laila
