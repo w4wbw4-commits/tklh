@@ -233,6 +233,15 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
                     )}
                   </>
                 )}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => openCancel(b, "cancel")}
+                  disabled={acting === b.id}
+                  className="rounded-full border-destructive/30 text-destructive hover:bg-destructive/10"
+                >
+                  <Ban className="me-1 h-4 w-4" /> إلغاء الحجز
+                </Button>
               </div>
             )}
           </motion.div>
