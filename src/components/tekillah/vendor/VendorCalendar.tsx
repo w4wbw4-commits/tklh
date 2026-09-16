@@ -489,47 +489,44 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
               />
             </div>
 
-            {/* Footer actions */}
-            <div className="flex items-center justify-between gap-2 border-t border-border pt-4">
-              {existingForPicked && !isPlatformBooking ? (
-                <Button
-                  variant="ghost"
-                  onClick={remove}
-                  disabled={submitting}
-                  className="text-destructive hover:bg-destructive/10"
-                >
-                  <Trash2 className="me-2 h-4 w-4" /> حذف
-                </Button>
+            {existingForPicked && !isPlatformBooking && (
+              <Button
+                variant="ghost"
+                onClick={remove}
+                disabled={submitting}
+                className="w-full text-destructive hover:bg-destructive/10"
+              >
+                <Trash2 className="me-2 h-4 w-4" /> حذف الحدث وفتح اليوم
+              </Button>
+            )}
+          </div>
+
+          {/* Sticky confirm bar — always visible at the bottom */}
+          <div className="shrink-0 space-y-2 border-t border-border bg-card p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+            <Button
+              onClick={save}
+              disabled={submitting || isPlatformBooking}
+              className="h-12 w-full rounded-xl bg-primary text-base font-bold text-primary-foreground hover:bg-primary/90"
+            >
+              {submitting ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : isPlatformBooking ? (
+                <>
+                  <Lock className="me-2 h-4 w-4" /> غير قابل للتعديل
+                </>
+              ) : existingForPicked ? (
+                <>
+                  <Unlock className="me-2 h-4 w-4" /> تأكيد التحديث
+                </>
               ) : (
-                <span />
+                <>
+                  <CheckCircle2 className="me-2 h-5 w-5" /> تأكيد وحفظ الحدث
+                </>
               )}
-              <div className="flex items-center gap-2">
-                <Button variant="outline" onClick={() => setSheetOpen(false)}>
-                  إلغاء
-                </Button>
-                <Button
-                  onClick={save}
-                  disabled={submitting || isPlatformBooking}
-                  className="bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  {submitting ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : isPlatformBooking ? (
-                    <>
-                      <Lock className="me-2 h-4 w-4" /> غير قابل للتعديل
-                    </>
-                  ) : existingForPicked ? (
-                    <>
-                      <Unlock className="me-2 h-4 w-4" /> تحديث
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="me-2 h-4 w-4" /> حفظ الحدث
-                    </>
-                  )}
-                </Button>
-              </div>
-            </div>
+            </Button>
+            <Button variant="outline" onClick={() => setSheetOpen(false)} className="h-10 w-full rounded-xl">
+              إلغاء
+            </Button>
           </div>
         </SheetContent>
       </Sheet>
