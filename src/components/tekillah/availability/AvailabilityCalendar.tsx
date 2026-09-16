@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import type { DayContentProps } from "react-day-picker";
+import type { DayContentProps, DayPickerSingleProps } from "react-day-picker";
 import type { VendorCategory } from "@/domain/types";
-import { Calendar, type CalendarProps } from "@/components/ui/calendar";
+import { Calendar } from "@/components/ui/calendar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
@@ -104,11 +104,11 @@ const LegendSwatch = ({ state, dual }: { state: VisualState; dual: boolean }) =>
   </span>
 );
 
-export interface AvailabilityCalendarProps extends Omit<CalendarProps, "components"> {
+export type AvailabilityCalendarProps = Omit<DayPickerSingleProps, "components"> & {
   vendorCategory: VendorCategory;
   availability: AvailabilityDayRecord[];
   showLegend?: boolean;
-}
+};
 
 export const AvailabilityCalendar = ({
   vendorCategory,
