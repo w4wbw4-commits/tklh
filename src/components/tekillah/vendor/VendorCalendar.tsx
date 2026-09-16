@@ -265,15 +265,15 @@ export const VendorCalendar = ({ vendorId }: Props) => {
             selected={picked}
             onSelect={(d) => d && openDate(d)}
             disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
-            modifiers={{
-              blocked: items.filter((i) => i.status === "blocked").map((i) => new Date(i.date)),
-              booked: items.filter((i) => i.status === "booked").map((i) => new Date(i.date)),
-              pending: items.filter((i) => i.status === "pending").map((i) => new Date(i.date)),
-            }}
+            modifiers={dayModifiers}
             modifiersClassNames={{
               blocked: "!bg-foreground/15 !text-foreground line-through",
               booked: "!bg-primary !text-primary-foreground font-bold",
               pending: "!bg-amber-500/80 !text-white font-bold",
+              menBooked: "!bg-gradient-to-l !from-blue-500 !from-50% !to-transparent !to-50% font-bold",
+              womenBooked: "!bg-gradient-to-r !from-purple-500 !from-50% !to-transparent !to-50% font-bold",
+              menPending: "!bg-gradient-to-l !from-amber-500 !from-50% !to-transparent !to-50% font-bold",
+              womenPending: "!bg-gradient-to-r !from-orange-400 !from-50% !to-transparent !to-50% font-bold",
             }}
             className="pointer-events-auto rounded-2xl border border-border/60 bg-background p-3"
           />
