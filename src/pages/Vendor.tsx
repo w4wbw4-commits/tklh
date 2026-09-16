@@ -307,7 +307,7 @@ const VendorPage = () => {
                   {vendor && isApproved && <VendorBookings vendorId={vendor.id} />}
                 </TabsContent>
                 <TabsContent value="calendar">
-                  {vendor && isApproved && <VendorCalendar vendorId={vendor.id} vendorCategory={vendor.category} />}
+                  {vendor && isApproved && <VendorCalendar vendorId={vendor.id} />}
                 </TabsContent>
                 <TabsContent value="financials">
                   {vendor && isApproved && <VendorFinancials vendorId={vendor.id} />}

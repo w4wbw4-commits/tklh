@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { availabilityService } from "@/domain";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,16 +31,9 @@ import {
   Lock,
   Unlock,
 } from "lucide-react";
-import type { VendorCategory } from "@/domain/types";
-import {
-  AvailabilityCalendar,
-  isDualSectionCategory,
-} from "@/components/tekillah/availability/AvailabilityCalendar";
-import { useVendorAvailability, type VendorAvailabilityRow } from "@/hooks/useVendorAvailability";
 
 interface Props {
   vendorId: string;
-  vendorCategory: VendorCategory;
 }
 
 // We piggy-back on `vendor_availability.note` to store rich event metadata
@@ -54,7 +48,14 @@ type ManualMeta = {
   text?: string;
 };
 
-type Row = VendorAvailabilityRow;
+type Row = {
+  id: string;
+  vendor_id: string;
+  date: string;
+  status: "blocked" | "booked" | "pending";
+  note: string | null;
+  booking_id: string | null;
+};
 
 const formatDate = (d: Date) => {
   const y = d.getFullYear();
@@ -84,8 +85,9 @@ const parseMeta = (note: string | null): ManualMeta | null => {
   return null;
 };
 
-export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
-  const { items, loading, error: availabilityError, refresh } = useVendorAvailability(vendorId);
+export const VendorCalendar = ({ vendorId }: Props) => {
+  const [items, setItems] = useState<Row[]>([]);
+  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [picked, setPicked] = useState<Date | undefined>();
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -98,13 +100,24 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
     amount: "",
     label: "",
     text: "",
-    section: "both" as "men" | "women" | "both",
   });
-  const dual = isDualSectionCategory(vendorCategory);
+
+  const load = async () => {
+    setLoading(true);
+    const { data, error } = await availabilityService.listForVendor(vendorId);
+    if (error) toast.error(error.message);
+    setItems((data ?? []) as Row[]);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    if (availabilityError) toast.error(availabilityError.message);
-  }, [availabilityError]);
+    load();
+    const channel = availabilityService.subscribeToVendorAvailability(`avail-${vendorId}`, vendorId, load);
+    return () => {
+      availabilityService.unsubscribe(channel);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vendorId]);
 
   const byDate = useMemo(() => {
     const m = new Map<string, Row>();
@@ -127,7 +140,6 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
       amount: meta?.amount ? String(meta.amount) : "",
       label: meta?.label ?? "",
       text: meta?.text ?? (!meta && row?.note ? row.note : ""),
-      section: row?.men_status && row?.women_status ? "both" : row?.men_status ? "men" : row?.women_status ? "women" : "both",
     });
     setSheetOpen(true);
   };
@@ -153,8 +165,6 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
       date: formatDate(picked),
       status: form.status,
       note: JSON.stringify(meta),
-      men_status: dual && (form.status === "pending" || form.section !== "women") ? form.status : null,
-      women_status: dual && (form.status === "pending" || form.section !== "men") ? form.status : null,
     };
     const { error } = await availabilityService.block(payload);
     setSubmitting(false);
@@ -164,7 +174,7 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
     }
     toast.success(existingForPicked ? "تم تحديث اليوم" : "تمت إضافة الحدث");
     setSheetOpen(false);
-    void refresh();
+    load();
   };
 
   // Delete an entry — only allowed for non-platform rows.
@@ -183,7 +193,7 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
     }
     toast.success("تم فتح اليوم");
     setSheetOpen(false);
-    void refresh();
+    load();
   };
 
   // Quick-block from list view
@@ -199,7 +209,7 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
       return;
     }
     toast.success("تم فتح التاريخ");
-    void refresh();
+    load();
   };
 
   // Stats for the small header chips
@@ -246,20 +256,40 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
             <CalendarDays className="h-4 w-4 text-primary" />
             اختر اليوم لإدارته
           </div>
-          <AvailabilityCalendar
-            vendorCategory={vendorCategory}
-            availability={items}
+          <Calendar
             mode="single"
             selected={picked}
             onSelect={(d) => d && openDate(d)}
             disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+            modifiers={{
+              blocked: items.filter((i) => i.status === "blocked").map((i) => new Date(i.date)),
+              booked: items.filter((i) => i.status === "booked").map((i) => new Date(i.date)),
+              pending: items.filter((i) => i.status === "pending").map((i) => new Date(i.date)),
+            }}
+            modifiersClassNames={{
+              blocked: "!bg-foreground/15 !text-foreground line-through",
+              booked: "!bg-primary !text-primary-foreground font-bold",
+              pending: "!bg-amber-500/80 !text-white font-bold",
+            }}
+            className="pointer-events-auto rounded-2xl border border-border/60 bg-background p-3"
           />
           <Button
             onClick={() => openDate(new Date())}
             className="mt-4 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
           >
-            <Plus className="me-2 h-4 w-4" />أضف حجز 
+            <Plus className="me-2 h-4 w-4" /> أضف حدثاً اليوم
           </Button>
+          <div className="mt-4 space-y-1.5 text-xs text-foreground/70">
+            <div className="flex items-center gap-2">
+              <span className="h-3 w-3 rounded-sm bg-primary" /> مؤكد (محجوز)
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-3 w-3 rounded-sm bg-amber-500/80" /> محتمل (بانتظار التأكيد)
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-3 w-3 rounded-sm bg-foreground/20" /> محجوب يدوياً
+            </div>
+          </div>
         </div>
 
         {/* Upcoming list */}
@@ -343,12 +373,8 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
 
       {/* Day editor sheet */}
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent
-          side="right"
-          className="flex h-full w-full max-w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-md"
-          dir="rtl"
-        >
-          <SheetHeader className="shrink-0 border-b border-border p-5 pb-4 text-start">
+        <SheetContent side="right" className="w-full sm:max-w-md" dir="rtl">
+          <SheetHeader className="text-start">
             <SheetTitle className="flex items-center gap-2 font-arabic text-xl">
               <CalendarDays className="h-5 w-5 text-primary" />
               {picked ? fmtAr(formatDate(picked)) : "إدارة اليوم"}
@@ -360,7 +386,7 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
             </SheetDescription>
           </SheetHeader>
 
-          <div className="flex-1 space-y-5 overflow-y-auto p-5">
+          <div className="mt-6 space-y-5">
             {/* Status picker */}
             <div>
               <Label className="mb-2 block text-xs font-semibold text-foreground/70">نوع اليوم</Label>
@@ -388,30 +414,6 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
                 })}
               </div>
             </div>
-
-            {dual && form.status !== "pending" && (
-              <div>
-                <Label className="mb-2 block text-xs font-semibold text-foreground/70">القسم</Label>
-                <div className="grid grid-cols-3 gap-2">
-                  {([
-                    ["men", "الرجال"],
-                    ["women", "النساء"],
-                    ["both", "القسمان"],
-                  ] as const).map(([section, label]) => (
-                    <Button
-                      key={section}
-                      type="button"
-                      variant={form.section === section ? "default" : "outline"}
-                      disabled={isPlatformBooking}
-                      onClick={() => setForm((current) => ({ ...current, section }))}
-                      className="h-10 rounded-xl"
-                    >
-                      {label}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {/* Customer details — hidden when blocked */}
             {form.status !== "blocked" && (
@@ -489,44 +491,47 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
               />
             </div>
 
-            {existingForPicked && !isPlatformBooking && (
-              <Button
-                variant="ghost"
-                onClick={remove}
-                disabled={submitting}
-                className="w-full text-destructive hover:bg-destructive/10"
-              >
-                <Trash2 className="me-2 h-4 w-4" /> حذف الحدث وفتح اليوم
-              </Button>
-            )}
-          </div>
-
-          {/* Sticky confirm bar — always visible at the bottom */}
-          <div className="shrink-0 space-y-2 border-t border-border bg-card p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-            <Button
-              onClick={save}
-              disabled={submitting || isPlatformBooking}
-              className="h-12 w-full rounded-xl bg-primary text-base font-bold text-primary-foreground hover:bg-primary/90"
-            >
-              {submitting ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : isPlatformBooking ? (
-                <>
-                  <Lock className="me-2 h-4 w-4" /> غير قابل للتعديل
-                </>
-              ) : existingForPicked ? (
-                <>
-                  <Unlock className="me-2 h-4 w-4" /> تأكيد التحديث
-                </>
+            {/* Footer actions */}
+            <div className="flex items-center justify-between gap-2 border-t border-border pt-4">
+              {existingForPicked && !isPlatformBooking ? (
+                <Button
+                  variant="ghost"
+                  onClick={remove}
+                  disabled={submitting}
+                  className="text-destructive hover:bg-destructive/10"
+                >
+                  <Trash2 className="me-2 h-4 w-4" /> حذف
+                </Button>
               ) : (
-                <>
-                  <CheckCircle2 className="me-2 h-5 w-5" /> تأكيد وحفظ الحدث
-                </>
+                <span />
               )}
-            </Button>
-            <Button variant="outline" onClick={() => setSheetOpen(false)} className="h-10 w-full rounded-xl">
-              إلغاء
-            </Button>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" onClick={() => setSheetOpen(false)}>
+                  إلغاء
+                </Button>
+                <Button
+                  onClick={save}
+                  disabled={submitting || isPlatformBooking}
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                >
+                  {submitting ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : isPlatformBooking ? (
+                    <>
+                      <Lock className="me-2 h-4 w-4" /> غير قابل للتعديل
+                    </>
+                  ) : existingForPicked ? (
+                    <>
+                      <Unlock className="me-2 h-4 w-4" /> تحديث
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="me-2 h-4 w-4" /> حفظ الحدث
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
           </div>
         </SheetContent>
       </Sheet>

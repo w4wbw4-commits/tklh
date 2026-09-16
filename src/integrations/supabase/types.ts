@@ -54,7 +54,6 @@ export type Database = {
         Row: {
           attendance_confirmed_at: string | null
           attendance_confirmed_by: string | null
-          booking_section: Database["public"]["Enums"]["booking_section"] | null
           created_at: string
           customer_id: string
           event_date: string
@@ -73,9 +72,6 @@ export type Database = {
         Insert: {
           attendance_confirmed_at?: string | null
           attendance_confirmed_by?: string | null
-          booking_section?:
-            | Database["public"]["Enums"]["booking_section"]
-            | null
           created_at?: string
           customer_id: string
           event_date: string
@@ -94,9 +90,6 @@ export type Database = {
         Update: {
           attendance_confirmed_at?: string | null
           attendance_confirmed_by?: string | null
-          booking_section?:
-            | Database["public"]["Enums"]["booking_section"]
-            | null
           created_at?: string
           customer_id?: string
           event_date?: string
@@ -1120,39 +1113,27 @@ export type Database = {
           created_at: string
           date: string
           id: string
-          men_status: Database["public"]["Enums"]["availability_status"] | null
           note: string | null
           status: Database["public"]["Enums"]["availability_status"]
           vendor_id: string
-          women_status:
-            | Database["public"]["Enums"]["availability_status"]
-            | null
         }
         Insert: {
           booking_id?: string | null
           created_at?: string
           date: string
           id?: string
-          men_status?: Database["public"]["Enums"]["availability_status"] | null
           note?: string | null
           status: Database["public"]["Enums"]["availability_status"]
           vendor_id: string
-          women_status?:
-            | Database["public"]["Enums"]["availability_status"]
-            | null
         }
         Update: {
           booking_id?: string | null
           created_at?: string
           date?: string
           id?: string
-          men_status?: Database["public"]["Enums"]["availability_status"] | null
           note?: string | null
           status?: Database["public"]["Enums"]["availability_status"]
           vendor_id?: string
-          women_status?:
-            | Database["public"]["Enums"]["availability_status"]
-            | null
         }
         Relationships: [
           {
@@ -1673,17 +1654,12 @@ export type Database = {
         }
         Returns: boolean
       }
-      refresh_booking_availability: {
-        Args: { _event_date: string; _vendor_id: string }
-        Returns: undefined
-      }
     }
     Enums: {
       app_role: "customer" | "vendor" | "admin"
       applicant_entity_type: "company" | "individual"
       approval_status: "pending_approval" | "approved" | "rejected"
       availability_status: "blocked" | "booked" | "pending"
-      booking_section: "men" | "women" | "both"
       booking_status:
         | "pending"
         | "confirmed"
@@ -1877,7 +1853,6 @@ export const Constants = {
       applicant_entity_type: ["company", "individual"],
       approval_status: ["pending_approval", "approved", "rejected"],
       availability_status: ["blocked", "booked", "pending"],
-      booking_section: ["men", "women", "both"],
       booking_status: [
         "pending",
         "confirmed",

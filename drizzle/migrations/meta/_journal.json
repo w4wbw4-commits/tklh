@@ -22,20 +22,6 @@
       "when": 1789508296377,
       "tag": "0002_add_vendor_section_prices",
       "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1789557052009,
-      "tag": "0003_add_section_aware_availability",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1789557179986,
-      "tag": "0004_complete_section_availability_sync",
-      "breakpoints": true
     }
   ]
 }
