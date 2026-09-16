@@ -5,14 +5,11 @@ import { useTranslation } from "react-i18next";
 import { Languages } from "lucide-react";
 import {
   LayoutDashboard,
-  Calendar,
-  BarChart3,
   ListChecks,
   Building2,
   LogOut,
   PanelRightClose,
   PanelRightOpen,
-  Receipt,
   FileSpreadsheet,
   Bell,
   Star,
