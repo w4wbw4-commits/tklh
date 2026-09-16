@@ -718,6 +718,21 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
               />
             </div>
 
+            {/* Mandatory invoice for manual bookings — download only, no sending */}
+            {lastInvoice && (
+              <div className="rounded-2xl border border-primary/25 bg-primary/5 p-4">
+                <div className="text-xs font-bold text-primary">
+                  الفاتورة {lastInvoice.invoice_number} صادرة بمبلغ {Math.round(lastInvoice.total).toLocaleString("en-US")}
+                </div>
+                <p className="mt-1 text-[11px] text-foreground/60">
+                  حمّل ملف PDF وأرسله للعميل عبر واتساب يدوياً.
+                </p>
+                <Button onClick={downloadInvoicePDF} className="mt-3 w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                  تحميل الفاتورة PDF
+                </Button>
+              </div>
+            )}
+
             {/* Footer actions */}
             <div className="flex items-center justify-between gap-2 border-t border-border pt-4">
               {existingForPicked && !isPlatformBooking ? (
