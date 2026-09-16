@@ -354,6 +354,28 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
     load();
   };
 
+  // Confirm a pending (محتمل) manual booking in one tap — flips the day and
+  // its section statuses from pending to booked, without touching the invoice.
+  const confirmById = async (id: string) => {
+    const row = items.find((r) => r.id === id);
+    if (!row) return;
+    if (row.booking_id) {
+      toast.error("حجوزات المنصة تُؤكد من قائمة الطلبات.");
+      return;
+    }
+    if (row.status !== "pending") return;
+    const patch: Record<string, unknown> = { status: "booked" };
+    if (row.men_status === "pending") patch.men_status = "booked";
+    if (row.women_status === "pending") patch.women_status = "booked";
+    const { error } = await availabilityService.updateAvailabilityById(id, patch as never);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("تم تأكيد الحجز");
+    load();
+  };
+
   // Stats for the small header chips
   const stats = useMemo(() => {
     const today = formatDate(new Date());
@@ -550,6 +572,16 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
                       </button>
                       <div className="flex items-center gap-1.5">
                         <Badge className={`rounded-full font-normal ${meta.color}`}>{meta.label}</Badge>
+                        {!fromPlatform && it.status === "pending" && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => confirmById(it.id)}
+                            className="h-8 rounded-full border-primary/40 px-3 text-xs text-primary hover:bg-primary/10"
+                          >
+                            <CheckCircle2 className="me-1 h-3.5 w-3.5" /> تأكيد الحجز
+                          </Button>
+                        )}
                         {!fromPlatform && (
                           <Button
                             variant="ghost"
@@ -748,6 +780,19 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
                 <span />
               )}
               <div className="flex items-center gap-2">
+                {existingForPicked && !isPlatformBooking && existingForPicked.status === "pending" && (
+                  <Button
+                    variant="outline"
+                    onClick={async () => {
+                      await confirmById(existingForPicked.id);
+                      setSheetOpen(false);
+                    }}
+                    disabled={submitting}
+                    className="border-primary/40 text-primary hover:bg-primary/10"
+                  >
+                    <CheckCircle2 className="me-2 h-4 w-4" /> تأكيد الحجز
+                  </Button>
+                )}
                 <Button variant="outline" onClick={() => setSheetOpen(false)}>
                   إلغاء
                 </Button>
