@@ -46,24 +46,52 @@ const PartnerReportsPage = () => {
   // Monthly roll-up: revenue counts confirmed + completed bookings only, so a
   // cancelled booking drops out of the report automatically.
   const rows = useMemo(() => {
-    const map = new Map<string, { month: string; revenue: number; bookings: number; guests: number; operating: number; depreciation: number }>();
-    const touch = (m: string) => {
-      if (!map.has(m)) map.set(m, { month: m, revenue: 0, bookings: 0, guests: 0, operating: 0, depreciation: 0 });
+    type Row = {
+      month: string; revenue: number; bookings: number; guests: number;
+      operating: number; depreciation: number;
+      confirmed: number; completed: number; cancelled: number; pending: number;
+      bookedDays: Set<string>;
+    };
+    const map = new Map<string, Row>();
+    const touch = (m: string): Row => {
+      if (!map.has(m)) {
+        map.set(m, {
+          month: m, revenue: 0, bookings: 0, guests: 0, operating: 0, depreciation: 0,
+          confirmed: 0, completed: 0, cancelled: 0, pending: 0, bookedDays: new Set<string>(),
+        });
+      }
       return map.get(m)!;
     };
     bookings.forEach((b) => {
-      if (!["confirmed", "completed"].includes(b.status)) return;
       const r = touch(monthKey(b.event_date));
+      if (b.status === "pending") r.pending += 1;
+      if (b.status === "cancelled" || b.status === "rejected") r.cancelled += 1;
+      if (b.status === "confirmed") r.confirmed += 1;
+      if (b.status === "completed") r.completed += 1;
+      if (!["confirmed", "completed"].includes(b.status)) return;
+      // Revenue only counts confirmed + completed, so a cancelled booking drops
+      // out of the report (and out of occupancy) automatically.
       r.revenue += Number(b.total_price ?? 0);
       r.bookings += 1;
       r.guests += Number(b.guest_count ?? 0);
+      r.bookedDays.add(b.event_date);
     });
     expenses.forEach((x) => {
       const r = touch(monthKey(x.month));
       if (x.kind === "depreciation") r.depreciation += Number(x.amount);
       else r.operating += Number(x.amount);
     });
-    return [...map.values()].sort((a, b) => (a.month < b.month ? 1 : -1));
+    return [...map.values()]
+      .map((r) => {
+        const [y, m] = r.month.split("-").map(Number);
+        const daysInMonth = new Date(y, m, 0).getDate();
+        return {
+          ...r,
+          avgValue: r.bookings > 0 ? r.revenue / r.bookings : 0,
+          occupancy: Math.round((r.bookedDays.size / daysInMonth) * 100),
+        };
+      })
+      .sort((a, b) => (a.month < b.month ? 1 : -1));
   }, [bookings, expenses]);
 
   const totals = rows.reduce(
