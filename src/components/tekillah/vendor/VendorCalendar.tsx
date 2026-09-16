@@ -354,6 +354,28 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
     load();
   };
 
+  // Confirm a pending (محتمل) manual booking in one tap — flips the day and
+  // its section statuses from pending to booked, without touching the invoice.
+  const confirmById = async (id: string) => {
+    const row = items.find((r) => r.id === id);
+    if (!row) return;
+    if (row.booking_id) {
+      toast.error("حجوزات المنصة تُؤكد من قائمة الطلبات.");
+      return;
+    }
+    if (row.status !== "pending") return;
+    const patch: Record<string, unknown> = { status: "booked" };
+    if (row.men_status === "pending") patch.men_status = "booked";
+    if (row.women_status === "pending") patch.women_status = "booked";
+    const { error } = await availabilityService.updateAvailabilityById(id, patch as never);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("تم تأكيد الحجز");
+    load();
+  };
+
   // Stats for the small header chips
   const stats = useMemo(() => {
     const today = formatDate(new Date());
