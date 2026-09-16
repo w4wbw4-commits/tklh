@@ -343,8 +343,12 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
 
       {/* Day editor sheet */}
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent side="right" className="w-full sm:max-w-md" dir="rtl">
-          <SheetHeader className="text-start">
+        <SheetContent
+          side="right"
+          className="flex h-full w-full max-w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-md"
+          dir="rtl"
+        >
+          <SheetHeader className="shrink-0 border-b border-border p-5 pb-4 text-start">
             <SheetTitle className="flex items-center gap-2 font-arabic text-xl">
               <CalendarDays className="h-5 w-5 text-primary" />
               {picked ? fmtAr(formatDate(picked)) : "إدارة اليوم"}
@@ -356,7 +360,7 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
             </SheetDescription>
           </SheetHeader>
 
-          <div className="mt-6 space-y-5">
+          <div className="flex-1 space-y-5 overflow-y-auto p-5">
             {/* Status picker */}
             <div>
               <Label className="mb-2 block text-xs font-semibold text-foreground/70">نوع اليوم</Label>
@@ -485,47 +489,44 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
               />
             </div>
 
-            {/* Footer actions */}
-            <div className="flex items-center justify-between gap-2 border-t border-border pt-4">
-              {existingForPicked && !isPlatformBooking ? (
-                <Button
-                  variant="ghost"
-                  onClick={remove}
-                  disabled={submitting}
-                  className="text-destructive hover:bg-destructive/10"
-                >
-                  <Trash2 className="me-2 h-4 w-4" /> حذف
-                </Button>
+            {existingForPicked && !isPlatformBooking && (
+              <Button
+                variant="ghost"
+                onClick={remove}
+                disabled={submitting}
+                className="w-full text-destructive hover:bg-destructive/10"
+              >
+                <Trash2 className="me-2 h-4 w-4" /> حذف الحدث وفتح اليوم
+              </Button>
+            )}
+          </div>
+
+          {/* Sticky confirm bar — always visible at the bottom */}
+          <div className="shrink-0 space-y-2 border-t border-border bg-card p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+            <Button
+              onClick={save}
+              disabled={submitting || isPlatformBooking}
+              className="h-12 w-full rounded-xl bg-primary text-base font-bold text-primary-foreground hover:bg-primary/90"
+            >
+              {submitting ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : isPlatformBooking ? (
+                <>
+                  <Lock className="me-2 h-4 w-4" /> غير قابل للتعديل
+                </>
+              ) : existingForPicked ? (
+                <>
+                  <Unlock className="me-2 h-4 w-4" /> تأكيد التحديث
+                </>
               ) : (
-                <span />
+                <>
+                  <CheckCircle2 className="me-2 h-5 w-5" /> تأكيد وحفظ الحدث
+                </>
               )}
-              <div className="flex items-center gap-2">
-                <Button variant="outline" onClick={() => setSheetOpen(false)}>
-                  إلغاء
-                </Button>
-                <Button
-                  onClick={save}
-                  disabled={submitting || isPlatformBooking}
-                  className="bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  {submitting ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : isPlatformBooking ? (
-                    <>
-                      <Lock className="me-2 h-4 w-4" /> غير قابل للتعديل
-                    </>
-                  ) : existingForPicked ? (
-                    <>
-                      <Unlock className="me-2 h-4 w-4" /> تحديث
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="me-2 h-4 w-4" /> حفظ الحدث
-                    </>
-                  )}
-                </Button>
-              </div>
-            </div>
+            </Button>
+            <Button variant="outline" onClick={() => setSheetOpen(false)} className="h-10 w-full rounded-xl">
+              إلغاء
+            </Button>
           </div>
         </SheetContent>
       </Sheet>
