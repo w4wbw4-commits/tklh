@@ -206,7 +206,7 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
                   className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
                   <Check className="me-1 h-4 w-4" /> {t("vendor.bookings.accept")}
                 </Button>
-                <Button size="sm" variant="outline" onClick={() => setStatus(b.id, "rejected")} disabled={acting === b.id}
+                <Button size="sm" variant="outline" onClick={() => openCancel(b, "reject")} disabled={acting === b.id}
                   className="rounded-full text-destructive hover:bg-destructive/10">
                   <X className="me-1 h-4 w-4" /> {t("vendor.bookings.reject")}
                 </Button>
