@@ -300,6 +300,63 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
           </div>
         </Tabs>
       )}
+
+      {/* Cancellation / rejection confirmation — reason is mandatory */}
+      <Dialog open={!!cancelTarget} onOpenChange={(o) => !o && setCancelTarget(null)}>
+        <DialogContent dir="rtl" className="sm:max-w-md">
+          <DialogHeader className="text-start">
+            <DialogTitle>{cancelMode === "cancel" ? "إلغاء الحجز" : "رفض الطلب"}</DialogTitle>
+            <DialogDescription>
+              {cancelTarget?.booking_section
+                ? `سيعود ${SECTION_LABEL[cancelTarget.booking_section] ?? ""} متاحاً في ${fmtDate(cancelTarget.event_date)}.`
+                : "سيعود هذا التاريخ متاحاً للعملاء فوراً."}{" "}
+              لن يُحذف الحجز — تبقى بياناته محفوظة في السجل.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div>
+              <Label className="mb-2 block text-xs font-bold">سبب الإلغاء (إلزامي)</Label>
+              <div className="grid gap-2">
+                {CANCEL_REASONS.map((r) => (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => setReasonChoice(r)}
+                    className={`rounded-xl border px-3 py-2 text-start text-xs font-bold transition-colors ${
+                      reasonChoice === r
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border text-foreground/70 hover:border-primary/40"
+                    }`}
+                  >
+                    {r}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {reasonChoice === "سبب آخر" && (
+              <Textarea
+                value={reasonText}
+                onChange={(e) => setReasonText(e.target.value)}
+                placeholder="اكتب السبب بالتفصيل"
+                rows={3}
+              />
+            )}
+          </div>
+          <DialogFooter className="gap-2 sm:justify-start">
+            <Button
+              onClick={submitCancel}
+              disabled={!finalReason || acting === cancelTarget?.id}
+              className="rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {acting === cancelTarget?.id && <Loader2 className="me-1 h-4 w-4 animate-spin" />}
+              {cancelMode === "cancel" ? "تأكيد الإلغاء" : "تأكيد الرفض"}
+            </Button>
+            <Button variant="outline" className="rounded-full" onClick={() => setCancelTarget(null)}>
+              تراجع
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
