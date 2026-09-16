@@ -104,7 +104,7 @@ const parseMeta = (note: string | null): ManualMeta | null => {
   return null;
 };
 
-export const VendorCalendar = ({ vendorId }: Props) => {
+export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props) => {
   const [items, setItems] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -119,7 +119,22 @@ export const VendorCalendar = ({ vendorId }: Props) => {
     amount: "",
     label: "",
     text: "",
+    section: "both" as ManualSection,
   });
+
+  // Last invoice issued from this sheet — enables the PDF download button.
+  // No WhatsApp/API sending: the partner downloads the file and sends it.
+  const [lastInvoice, setLastInvoice] = useState<{
+    invoice_number: string;
+    issue_date: string;
+    customer_name: string | null;
+    customer_phone: string | null;
+    subtotal: number;
+    vat_amount: number;
+    total: number;
+    event_date: string;
+    section: ManualSection;
+  } | null>(null);
 
   const load = async () => {
     setLoading(true);
