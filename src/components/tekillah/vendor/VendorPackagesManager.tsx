@@ -50,12 +50,49 @@ const APPROVAL: Record<string, string> = {
  * Packages + seasonal offers for one partner. Both live inside the bookings
  * experience so the sidebar stays short.
  */
-export const VendorPackagesManager = ({ vendorId, basePrice }: { vendorId: string; basePrice: number }) => {
+export const VendorPackagesManager = ({
+  vendorId,
+  basePrice,
+  userId,
+}: { vendorId: string; basePrice: number; userId?: string | null }) => {
   const [packages, setPackages] = useState<Pkg[]>([]);
   const [rules, setRules] = useState<Rule[]>([]);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ name: "", tier: "basic" as Tier, price: "", description: "", includes: "" });
   const [offer, setOffer] = useState({ label: "", adjustment_percent: "-10", start_date: "", end_date: "" });
+  const [editing, setEditing] = useState<Pkg | null>(null);
+  const [editForm, setEditForm] = useState({ name: "", tier: "basic" as Tier, price: "", description: "", includes: "" });
+
+  const openEdit = (p: Pkg) => {
+    setEditing(p);
+    setEditForm({
+      name: p.name,
+      tier: p.tier,
+      price: String(p.price),
+      description: p.description ?? "",
+      includes: (p.includes ?? []).join("\n"),
+    });
+  };
+
+  const saveEdit = async () => {
+    if (!editing) return;
+    const price = parseFloat(editForm.price);
+    if (!editForm.name.trim()) { toast.error("أدخل اسم الباقة"); return; }
+    if (!price || price <= 0) { toast.error("أدخل سعراً صحيحاً"); return; }
+    setSaving(true);
+    const { error } = await packagesService.updateVendorPackage(editing.id, {
+      name: editForm.name.trim(),
+      tier: editForm.tier,
+      price,
+      description: editForm.description.trim() || null,
+      includes: editForm.includes.split("\n").map((s) => s.trim()).filter(Boolean),
+    });
+    setSaving(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success("تم تحديث الباقة — تعديل باقة معتمدة يعيدها للمراجعة");
+    setEditing(null);
+    load();
+  };
 
   const load = async () => {
     const [p, r] = await Promise.all([
