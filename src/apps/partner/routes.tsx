@@ -31,4 +31,5 @@ export const partnerRoutes = [
   <Route key="/partner/reviews" path="/partner/reviews" element={<PartnerReviewsPage />} />,
   <Route key="/partner/notifications" path="/partner/notifications" element={<PartnerNotificationsPage />} />,
   <Route key="/partner/profile" path="/partner/profile" element={<PartnerProfilePage />} />,
+  <Route key="/partner/reports" path="/partner/reports" element={<PartnerReportsPage />} />,
 ];
