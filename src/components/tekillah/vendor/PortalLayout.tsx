@@ -33,14 +33,13 @@ interface NavItem {
   fallback: string;
 }
 
+// Five entries only. Calendar, manual booking and packages live inside the
+// bookings experience; invoices and sales live inside the reports experience.
 const partnerNav: NavItem[] = [
   { to: "/partner", labelKey: "portal.nav.overview", fallback: "النظرة العامة", Icon: LayoutDashboard },
   { to: "/partner/bookings", labelKey: "portal.nav.bookings", fallback: "الحجوزات", Icon: ListChecks },
-  { to: "/partner/calendar", labelKey: "portal.nav.calendar", fallback: "التقويم", Icon: Calendar },
-  { to: "/partner/invoices", labelKey: "portal.nav.invoices", fallback: "الفواتير", Icon: Receipt },
-  { to: "/partner/sales", labelKey: "portal.nav.sales", fallback: "المبيعات", Icon: FileSpreadsheet },
-  { to: "/partner/analytics", labelKey: "portal.nav.analytics", fallback: "التحليلات", Icon: BarChart3 },
   { to: "/partner/reviews", labelKey: "portal.nav.reviews", fallback: "التقييمات", Icon: Star },
+  { to: "/partner/reports", labelKey: "portal.nav.reports", fallback: "التقارير", Icon: FileSpreadsheet },
   { to: "/partner/profile", labelKey: "portal.nav.profile", fallback: "بياناتي", Icon: Building2 },
 ];
 
