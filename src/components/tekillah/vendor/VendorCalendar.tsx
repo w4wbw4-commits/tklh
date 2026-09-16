@@ -343,8 +343,12 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
 
       {/* Day editor sheet */}
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent side="right" className="w-full sm:max-w-md" dir="rtl">
-          <SheetHeader className="text-start">
+        <SheetContent
+          side="right"
+          className="flex h-full w-full max-w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-md"
+          dir="rtl"
+        >
+          <SheetHeader className="shrink-0 border-b border-border p-5 pb-4 text-start">
             <SheetTitle className="flex items-center gap-2 font-arabic text-xl">
               <CalendarDays className="h-5 w-5 text-primary" />
               {picked ? fmtAr(formatDate(picked)) : "إدارة اليوم"}
@@ -356,7 +360,7 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
             </SheetDescription>
           </SheetHeader>
 
-          <div className="mt-6 space-y-5">
+          <div className="flex-1 space-y-5 overflow-y-auto p-5">
             {/* Status picker */}
             <div>
               <Label className="mb-2 block text-xs font-semibold text-foreground/70">نوع اليوم</Label>
