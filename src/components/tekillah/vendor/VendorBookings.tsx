@@ -3,10 +3,20 @@ import { RiyalSymbol } from "../RiyalSymbol";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { Loader2, Check, X, CalendarDays, Users, Inbox, CheckCircle2 } from "lucide-react";
+import { Loader2, Check, X, CalendarDays, Users, Inbox, CheckCircle2, Ban } from "lucide-react";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { bookingsService, authService } from "@/domain";
 import { fmtDate, fmtNumber } from "@/i18n/format";
@@ -20,8 +30,26 @@ interface BookingRow {
   guest_count: number | null;
   customer_id: string;
   attendance_confirmed_at: string | null;
+  booking_section: "men" | "women" | "both" | null;
+  cancellation_reason: string | null;
+  cancelled_by_role: string | null;
+  cancelled_at: string | null;
   package: { name: string } | null;
 }
+
+const SECTION_LABEL: Record<string, string> = {
+  men: "قسم الرجال",
+  women: "قسم النساء",
+  both: "القسمان معاً",
+};
+
+const CANCEL_REASONS = [
+  "طلب العميل الإلغاء",
+  "تعارض في التاريخ",
+  "عدم اكتمال الدفع",
+  "ظرف طارئ لدى المزود",
+  "سبب آخر",
+];
 
 const isToday = (iso: string) => {
   const d = new Date(iso);
