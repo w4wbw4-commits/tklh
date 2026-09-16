@@ -285,10 +285,23 @@ export const VendorCalendar = ({ vendorId }: Props) => {
           </Button>
           <div className="mt-4 space-y-1.5 text-xs text-foreground/70">
             <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-sm bg-primary" /> مؤكد (محجوز)
+              <span className="h-3 w-3 rounded-sm border border-border bg-background" /> متاح
             </div>
             <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-sm bg-amber-500/80" /> محتمل (بانتظار التأكيد)
+              <span className="h-3 w-3 rounded-sm bg-primary" /> القسمان محجوزان
+            </div>
+            {hasSections && (
+              <>
+                <div className="flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-sm bg-gradient-to-l from-blue-500 from-50% to-transparent to-50% ring-1 ring-border" /> قسم الرجال محجوز
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-sm bg-gradient-to-r from-purple-500 from-50% to-transparent to-50% ring-1 ring-border" /> قسم النساء محجوز
+                </div>
+              </>
+            )}
+            <div className="flex items-center gap-2">
+              <span className="h-3 w-3 rounded-sm bg-amber-500/80" /> طلب غير مؤكد
             </div>
             <div className="flex items-center gap-2">
               <span className="h-3 w-3 rounded-sm bg-foreground/20" /> محجوب يدوياً
