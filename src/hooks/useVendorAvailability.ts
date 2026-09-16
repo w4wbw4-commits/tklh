@@ -9,13 +9,14 @@ export interface VendorAvailabilityRow extends AvailabilityDayRecord {
   booking_id: string | null;
 }
 
-export const useVendorAvailability = (vendorId: string) => {
+export const useVendorAvailability = (vendorId: string, enabled = true) => {
   const channelId = useId().replace(/:/g, "");
   const [items, setItems] = useState<VendorAvailabilityRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   const refresh = useCallback(async () => {
+    if (!enabled) return;
     const { data, error: queryError } = await availabilityService.listForVendor(vendorId);
     if (queryError) {
       setError(queryError);
@@ -24,9 +25,10 @@ export const useVendorAvailability = (vendorId: string) => {
       setError(null);
     }
     setLoading(false);
-  }, [vendorId]);
+  }, [enabled, vendorId]);
 
   useEffect(() => {
+    if (!enabled) return;
     setLoading(true);
     void refresh();
     const channel = availabilityService.subscribeToVendorAvailability(
@@ -37,7 +39,7 @@ export const useVendorAvailability = (vendorId: string) => {
     return () => {
       void availabilityService.unsubscribe(channel);
     };
-  }, [channelId, refresh, vendorId]);
+  }, [channelId, enabled, refresh, vendorId]);
 
   return { items, loading, error, refresh };
 };

@@ -18,6 +18,7 @@ describe("availability calendar states", () => {
     expect(getAvailabilityVisualState({ date: "2026-09-16", status: "booked", men_status: "booked" }, true)).toBe("men");
     expect(getAvailabilityVisualState({ date: "2026-09-16", status: "booked", women_status: "booked" }, true)).toBe("women");
     expect(getAvailabilityVisualState({ date: "2026-09-16", status: "booked", men_status: "booked", women_status: "booked" }, true)).toBe("both");
+    expect(getAvailabilityVisualState({ date: "2026-09-16", status: "blocked" }, true)).toBe("both");
   });
 
   it("uses a full-cell state for simple bookings", () => {

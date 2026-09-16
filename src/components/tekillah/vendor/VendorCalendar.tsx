@@ -153,8 +153,8 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
       date: formatDate(picked),
       status: form.status,
       note: JSON.stringify(meta),
-      men_status: dual && form.section !== "women" ? form.status : null,
-      women_status: dual && form.section !== "men" ? form.status : null,
+      men_status: dual && (form.status === "pending" || form.section !== "women") ? form.status : null,
+      women_status: dual && (form.status === "pending" || form.section !== "men") ? form.status : null,
     };
     const { error } = await availabilityService.block(payload);
     setSubmitting(false);

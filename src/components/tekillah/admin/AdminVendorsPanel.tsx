@@ -11,7 +11,6 @@ import {
 import {
   Tabs, TabsContent, TabsList, TabsTrigger,
 } from "@/components/ui/tabs";
-import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -21,6 +20,8 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 import { AdminEditVendorDialog } from "./AdminEditVendorDialog";
+import { AvailabilityCalendar } from "@/components/tekillah/availability/AvailabilityCalendar";
+import { useVendorAvailability } from "@/hooks/useVendorAvailability";
 
 type Category = "hall" | "catering" | "photography" | "dj" | "decor" | "cars";
 const CATEGORIES: Category[] = ["hall", "catering", "photography", "dj", "decor", "cars"];
@@ -207,6 +208,8 @@ export const AdminVendorsPanel = () => {
                           </Button>
                         ) : (
                           <HideDialog
+                            vendorId={v.id}
+                            vendorCategory={v.category}
                             onConfirm={(hu) => setVisibility(v.id, { hidden: true, hidden_until: hu })}
                           />
                         )}
@@ -235,12 +238,21 @@ export const AdminVendorsPanel = () => {
 };
 
 // Modal for choosing how to hide: permanent / by date / by duration.
-const HideDialog = ({ onConfirm }: { onConfirm: (hiddenUntilIso: string | null) => void }) => {
+const HideDialog = ({
+  vendorId,
+  vendorCategory,
+  onConfirm,
+}: {
+  vendorId: string;
+  vendorCategory: Category;
+  onConfirm: (hiddenUntilIso: string | null) => void;
+}) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"permanent" | "date" | "duration">("permanent");
   const [date, setDate] = useState<Date | undefined>();
   const [duration, setDuration] = useState<"1w" | "2w" | "1m" | "3m">("1w");
+  const { items: availability } = useVendorAvailability(vendorId, open && mode === "date");
 
   const handleConfirm = () => {
     let until: string | null = null;
@@ -306,7 +318,9 @@ const HideDialog = ({ onConfirm }: { onConfirm: (hiddenUntilIso: string | null) 
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
+                  <AvailabilityCalendar
+                    vendorCategory={vendorCategory}
+                    availability={availability}
                     mode="single"
                     selected={date}
                     onSelect={setDate}
