@@ -46,24 +46,52 @@ const PartnerReportsPage = () => {
   // Monthly roll-up: revenue counts confirmed + completed bookings only, so a
   // cancelled booking drops out of the report automatically.
   const rows = useMemo(() => {
-    const map = new Map<string, { month: string; revenue: number; bookings: number; guests: number; operating: number; depreciation: number }>();
-    const touch = (m: string) => {
-      if (!map.has(m)) map.set(m, { month: m, revenue: 0, bookings: 0, guests: 0, operating: 0, depreciation: 0 });
+    type Row = {
+      month: string; revenue: number; bookings: number; guests: number;
+      operating: number; depreciation: number;
+      confirmed: number; completed: number; cancelled: number; pending: number;
+      bookedDays: Set<string>;
+    };
+    const map = new Map<string, Row>();
+    const touch = (m: string): Row => {
+      if (!map.has(m)) {
+        map.set(m, {
+          month: m, revenue: 0, bookings: 0, guests: 0, operating: 0, depreciation: 0,
+          confirmed: 0, completed: 0, cancelled: 0, pending: 0, bookedDays: new Set<string>(),
+        });
+      }
       return map.get(m)!;
     };
     bookings.forEach((b) => {
-      if (!["confirmed", "completed"].includes(b.status)) return;
       const r = touch(monthKey(b.event_date));
+      if (b.status === "pending") r.pending += 1;
+      if (b.status === "cancelled" || b.status === "rejected") r.cancelled += 1;
+      if (b.status === "confirmed") r.confirmed += 1;
+      if (b.status === "completed") r.completed += 1;
+      if (!["confirmed", "completed"].includes(b.status)) return;
+      // Revenue only counts confirmed + completed, so a cancelled booking drops
+      // out of the report (and out of occupancy) automatically.
       r.revenue += Number(b.total_price ?? 0);
       r.bookings += 1;
       r.guests += Number(b.guest_count ?? 0);
+      r.bookedDays.add(b.event_date);
     });
     expenses.forEach((x) => {
       const r = touch(monthKey(x.month));
       if (x.kind === "depreciation") r.depreciation += Number(x.amount);
       else r.operating += Number(x.amount);
     });
-    return [...map.values()].sort((a, b) => (a.month < b.month ? 1 : -1));
+    return [...map.values()]
+      .map((r) => {
+        const [y, m] = r.month.split("-").map(Number);
+        const daysInMonth = new Date(y, m, 0).getDate();
+        return {
+          ...r,
+          avgValue: r.bookings > 0 ? r.revenue / r.bookings : 0,
+          occupancy: Math.round((r.bookedDays.size / daysInMonth) * 100),
+        };
+      })
+      .sort((a, b) => (a.month < b.month ? 1 : -1));
   }, [bookings, expenses]);
 
   const totals = rows.reduce(
@@ -72,10 +100,16 @@ const PartnerReportsPage = () => {
       operating: acc.operating + r.operating,
       depreciation: acc.depreciation + r.depreciation,
       bookings: acc.bookings + r.bookings,
+      confirmed: acc.confirmed + r.confirmed,
+      completed: acc.completed + r.completed,
+      cancelled: acc.cancelled + r.cancelled,
+      pending: acc.pending + r.pending,
     }),
-    { revenue: 0, operating: 0, depreciation: 0, bookings: 0 },
+    { revenue: 0, operating: 0, depreciation: 0, bookings: 0, confirmed: 0, completed: 0, cancelled: 0, pending: 0 },
   );
   const net = totals.revenue - totals.operating - totals.depreciation;
+  const avgValue = totals.bookings > 0 ? totals.revenue / totals.bookings : 0;
+  const avgOccupancy = rows.length > 0 ? Math.round(rows.reduce((a, r) => a + r.occupancy, 0) / rows.length) : 0;
 
   const addExpense = async () => {
     if (!vendor) return;
@@ -110,6 +144,12 @@ const PartnerReportsPage = () => {
           "الشهر": r.month,
           "الإيرادات": Math.round(r.revenue),
           "عدد الحجوزات": r.bookings,
+          "مؤكدة": r.confirmed,
+          "مكتملة": r.completed,
+          "ملغاة/مرفوضة": r.cancelled,
+          "بانتظار التأكيد": r.pending,
+          "متوسط قيمة الحجز": Math.round(r.avgValue),
+          "نسبة الإشغال %": r.occupancy,
           "عدد الضيوف": r.guests,
           "المصاريف التشغيلية": Math.round(r.operating),
           "الإهلاك": Math.round(r.depreciation),
@@ -181,6 +221,22 @@ const PartnerReportsPage = () => {
         </Card>
       </div>
 
+      <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-6">
+        {[
+          { label: "مؤكدة", value: totals.confirmed },
+          { label: "مكتملة", value: totals.completed },
+          { label: "بانتظار التأكيد", value: totals.pending },
+          { label: "ملغاة/مرفوضة", value: totals.cancelled },
+          { label: "متوسط قيمة الحجز", value: fmt(avgValue) },
+          { label: "متوسط الإشغال", value: `${avgOccupancy}%` },
+        ].map((s) => (
+          <Card key={s.label} className="p-4">
+            <div className="text-lg font-black">{s.value}</div>
+            <div className="mt-1 text-[11px] font-bold text-muted-foreground">{s.label}</div>
+          </Card>
+        ))}
+      </div>
+
       <div className="grid gap-5 lg:grid-cols-3">
         <Card className="overflow-hidden lg:col-span-2">
           <div className="overflow-x-auto">
@@ -190,6 +246,9 @@ const PartnerReportsPage = () => {
                   <th className="p-4">الشهر</th>
                   <th className="p-4">الإيرادات</th>
                   <th className="p-4">الحجوزات</th>
+                  <th className="p-4">ملغاة</th>
+                  <th className="p-4">متوسط الحجز</th>
+                  <th className="p-4">الإشغال</th>
                   <th className="p-4">تشغيلية</th>
                   <th className="p-4">إهلاك</th>
                   <th className="p-4">صافي</th>
@@ -197,13 +256,16 @@ const PartnerReportsPage = () => {
               </thead>
               <tbody>
                 {rows.length === 0 && (
-                  <tr><td colSpan={6} className="p-10 text-center text-muted-foreground">لا توجد بيانات بعد.</td></tr>
+                  <tr><td colSpan={9} className="p-10 text-center text-muted-foreground">لا توجد بيانات بعد.</td></tr>
                 )}
                 {rows.map((r) => (
                   <tr key={r.month} className="border-b border-border last:border-0 hover:bg-muted/40">
                     <td data-label="الشهر" className="p-4 font-mono font-bold text-primary" dir="ltr">{r.month}</td>
                     <td data-label="الإيرادات" className="p-4 font-black">{fmt(r.revenue)}</td>
                     <td data-label="الحجوزات" className="p-4">{r.bookings}</td>
+                    <td data-label="ملغاة" className="p-4 text-muted-foreground">{r.cancelled}</td>
+                    <td data-label="متوسط الحجز" className="p-4 text-muted-foreground">{fmt(r.avgValue)}</td>
+                    <td data-label="الإشغال" className="p-4 text-muted-foreground">{r.occupancy}%</td>
                     <td data-label="تشغيلية" className="p-4 text-muted-foreground">{fmt(r.operating)}</td>
                     <td data-label="إهلاك" className="p-4 text-muted-foreground">{fmt(r.depreciation)}</td>
                     <td data-label="صافي" className="p-4 font-black">{fmt(r.revenue - r.operating - r.depreciation)}</td>

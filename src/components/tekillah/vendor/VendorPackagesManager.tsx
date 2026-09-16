@@ -8,8 +8,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Package, Plus, Trash2, Tag } from "lucide-react";
+import { Package, Plus, Trash2, Tag, Pencil, Images } from "lucide-react";
 import { toast } from "sonner";
+import {
+  Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,
+} from "@/components/ui/dialog";
+import { VendorPortfolioManager } from "@/components/tekillah/vendor/VendorPortfolioManager";
 
 const fmt = (n: number) => Math.round(n).toLocaleString("en-US");
 
@@ -46,12 +50,49 @@ const APPROVAL: Record<string, string> = {
  * Packages + seasonal offers for one partner. Both live inside the bookings
  * experience so the sidebar stays short.
  */
-export const VendorPackagesManager = ({ vendorId, basePrice }: { vendorId: string; basePrice: number }) => {
+export const VendorPackagesManager = ({
+  vendorId,
+  basePrice,
+  userId,
+}: { vendorId: string; basePrice: number; userId?: string | null }) => {
   const [packages, setPackages] = useState<Pkg[]>([]);
   const [rules, setRules] = useState<Rule[]>([]);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ name: "", tier: "basic" as Tier, price: "", description: "", includes: "" });
   const [offer, setOffer] = useState({ label: "", adjustment_percent: "-10", start_date: "", end_date: "" });
+  const [editing, setEditing] = useState<Pkg | null>(null);
+  const [editForm, setEditForm] = useState({ name: "", tier: "basic" as Tier, price: "", description: "", includes: "" });
+
+  const openEdit = (p: Pkg) => {
+    setEditing(p);
+    setEditForm({
+      name: p.name,
+      tier: p.tier,
+      price: String(p.price),
+      description: p.description ?? "",
+      includes: (p.includes ?? []).join("\n"),
+    });
+  };
+
+  const saveEdit = async () => {
+    if (!editing) return;
+    const price = parseFloat(editForm.price);
+    if (!editForm.name.trim()) { toast.error("أدخل اسم الباقة"); return; }
+    if (!price || price <= 0) { toast.error("أدخل سعراً صحيحاً"); return; }
+    setSaving(true);
+    const { error } = await packagesService.updateVendorPackage(editing.id, {
+      name: editForm.name.trim(),
+      tier: editForm.tier,
+      price,
+      description: editForm.description.trim() || null,
+      includes: editForm.includes.split("\n").map((s) => s.trim()).filter(Boolean),
+    });
+    setSaving(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success("تم تحديث الباقة — تعديل باقة معتمدة يعيدها للمراجعة");
+    setEditing(null);
+    load();
+  };
 
   const load = async () => {
     const [p, r] = await Promise.all([
@@ -156,9 +197,14 @@ export const VendorPackagesManager = ({ vendorId, basePrice }: { vendorId: strin
                         <Badge variant="secondary" className="mt-2 text-[10px]">{APPROVAL[p.approval_status] ?? p.approval_status}</Badge>
                       </div>
                     </div>
-                    <Button variant="ghost" size="sm" onClick={() => removePackage(p.id)} className="text-destructive hover:bg-destructive/10">
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <div className="flex items-center gap-1">
+                      <Button variant="ghost" size="sm" onClick={() => openEdit(p)}>
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={() => removePackage(p.id)} className="text-destructive hover:bg-destructive/10">
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -245,6 +291,40 @@ export const VendorPackagesManager = ({ vendorId, basePrice }: { vendorId: strin
           </div>
         </Card>
       </div>
+
+      {userId && (
+        <Card className="p-5">
+          <h3 className="mb-4 flex items-center gap-2 font-black">
+            <Images className="h-4 w-4 text-primary" /> صور وفيديو الباقات
+          </h3>
+          <VendorPortfolioManager vendorId={vendorId} userId={userId} />
+        </Card>
+      )}
+
+      <Dialog open={!!editing} onOpenChange={(v) => !v && setEditing(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader><DialogTitle>تعديل الباقة</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div><Label>اسم الباقة</Label><Input value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} className="mt-1.5" /></div>
+            <div>
+              <Label>الفئة</Label>
+              <Select value={editForm.tier} onValueChange={(v) => setEditForm({ ...editForm, tier: v as Tier })}>
+                <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {Object.entries(TIERS).map(([k, label]) => <SelectItem key={k} value={k}>{label}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div><Label>السعر</Label><Input type="number" dir="ltr" value={editForm.price} onChange={(e) => setEditForm({ ...editForm, price: e.target.value })} className="mt-1.5" /></div>
+            <div><Label>الوصف</Label><Textarea rows={2} value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} className="mt-1.5" /></div>
+            <div><Label>المحتويات (سطر لكل عنصر)</Label><Textarea rows={4} value={editForm.includes} onChange={(e) => setEditForm({ ...editForm, includes: e.target.value })} className="mt-1.5" /></div>
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setEditing(null)}>إلغاء</Button>
+            <Button onClick={saveEdit} disabled={saving}>حفظ التعديل</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

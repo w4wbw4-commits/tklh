@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import {
-  CheckCircle2, Clock, AlertTriangle, Loader2, Building2,
+  CheckCircle2, Clock, AlertTriangle, Loader2, Building2, Ban,
   UtensilsCrossed, Camera, Music2, Flower2, Car, MessageCircle, Phone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,17 @@ const categoryIcons: Record<string, typeof Building2> = {
 };
 
 type EmergencyKind = "delay" | "cancellation" | "no_show" | "other";
+
+// Cancelling never deletes the booking: it stores the reason, the timestamp and
+// the actor, and the database trigger frees the calendar section again.
+const CANCEL_REASONS = [
+  "تغيّر تاريخ المناسبة",
+  "تغيّر عدد الضيوف",
+  "اخترت مزوداً آخر",
+  "أسباب مالية",
+  "إلغاء المناسبة",
+  "سبب آخر",
+];
 
 interface BookingItem {
   id: string;
@@ -82,6 +93,11 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
   const [needsReplacement, setNeedsReplacement] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
+  const [cancelTarget, setCancelTarget] = useState<BookingItem | null>(null);
+  const [reasonChoice, setReasonChoice] = useState<string>(CANCEL_REASONS[0]);
+  const [reasonText, setReasonText] = useState("");
+  const [cancelling, setCancelling] = useState(false);
+
   const load = async () => {
     setLoading(true);
     const [{ data: bookings }, { data: ers }] = await Promise.all([
@@ -133,6 +149,29 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
     if (error) { toast.error(t("customer.bookingsTimeline.submitFailed")); return; }
     toast.success(t("customer.bookingsTimeline.submitted"));
     setDialogBooking(null);
+    load();
+  };
+
+  const openCancel = (b: BookingItem) => {
+    setCancelTarget(b);
+    setReasonChoice(CANCEL_REASONS[0]);
+    setReasonText("");
+  };
+
+  const confirmCancel = async () => {
+    if (!cancelTarget) return;
+    const isOther = reasonChoice === CANCEL_REASONS[CANCEL_REASONS.length - 1];
+    const finalReason = isOther ? reasonText.trim() : reasonChoice;
+    if (!finalReason) { toast.error("اكتب سبب الإلغاء"); return; }
+    setCancelling(true);
+    const { data: auth } = await authService.getUser();
+    const { error } = await bookingsService.cancel(
+      cancelTarget.id, finalReason, auth?.user?.id ?? null, "customer",
+    );
+    setCancelling(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success("تم إلغاء الحجز وإعادة التاريخ متاحاً");
+    setCancelTarget(null);
     load();
   };
 
@@ -224,6 +263,17 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
                         <AlertTriangle className="me-1 h-4 w-4" />
                         {t("customer.bookingsTimeline.reportTrigger")}
                       </Button>
+                      {(
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => openCancel(b)}
+                          className="rounded-full text-destructive hover:bg-destructive/10"
+                        >
+                          <Ban className="me-1 h-4 w-4" />
+                          إلغاء الحجز
+                        </Button>
+                      )}
                       {b.vendor?.phone && (
                         <Button
                           size="sm"
@@ -310,6 +360,46 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
             >
               {submitting && <Loader2 className="me-1 h-4 w-4 animate-spin" />}
               {t("customer.bookingsTimeline.submit")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Cancellation — a reason is mandatory and the record is kept */}
+      <Dialog open={!!cancelTarget} onOpenChange={(v) => !v && setCancelTarget(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-arabic">إلغاء الحجز</DialogTitle>
+            <DialogDescription>
+              الحجز لن يُحذف — يُسجَّل كملغى ويعود التاريخ متاحاً لهذا القسم فقط.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <Label className="font-arabic text-sm">سبب الإلغاء (إلزامي)</Label>
+            <RadioGroup value={reasonChoice} onValueChange={setReasonChoice} className="grid gap-2">
+              {CANCEL_REASONS.map((r) => (
+                <label key={r} className="flex cursor-pointer items-center gap-2 rounded-xl border border-border bg-card p-3 text-sm hover:bg-secondary">
+                  <RadioGroupItem value={r} />
+                  <span className="font-arabic">{r}</span>
+                </label>
+              ))}
+            </RadioGroup>
+            {reasonChoice === CANCEL_REASONS[CANCEL_REASONS.length - 1] && (
+              <Textarea
+                value={reasonText}
+                onChange={(e) => setReasonText(e.target.value)}
+                placeholder="اكتب السبب"
+                className="min-h-[72px]"
+              />
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setCancelTarget(null)} className="rounded-full">
+              رجوع
+            </Button>
+            <Button onClick={confirmCancel} disabled={cancelling} variant="destructive" className="rounded-full">
+              {cancelling && <Loader2 className="me-1 h-4 w-4 animate-spin" />}
+              تأكيد الإلغاء
             </Button>
           </DialogFooter>
         </DialogContent>
