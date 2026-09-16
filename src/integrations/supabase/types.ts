@@ -55,6 +55,10 @@ export type Database = {
           attendance_confirmed_at: string | null
           attendance_confirmed_by: string | null
           booking_section: Database["public"]["Enums"]["booking_section"] | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          cancelled_by_role: string | null
           created_at: string
           customer_id: string
           event_date: string
@@ -76,6 +80,10 @@ export type Database = {
           booking_section?:
             | Database["public"]["Enums"]["booking_section"]
             | null
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
+          cancelled_by_role?: string | null
           created_at?: string
           customer_id: string
           event_date: string
@@ -97,6 +105,10 @@ export type Database = {
           booking_section?:
             | Database["public"]["Enums"]["booking_section"]
             | null
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
+          cancelled_by_role?: string | null
           created_at?: string
           customer_id?: string
           event_date?: string
