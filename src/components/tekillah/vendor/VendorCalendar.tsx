@@ -48,6 +48,8 @@ type ManualMeta = {
   text?: string;
 };
 
+type SectionStatus = "blocked" | "booked" | "pending" | null;
+
 type Row = {
   id: string;
   vendor_id: string;
@@ -55,6 +57,8 @@ type Row = {
   status: "blocked" | "booked" | "pending";
   note: string | null;
   booking_id: string | null;
+  men_status?: SectionStatus;
+  women_status?: SectionStatus;
 };
 
 const formatDate = (d: Date) => {
