@@ -41,7 +41,11 @@ const PartnerBookingsPage = () => {
               <VendorCalendar vendorId={vendor.id} vendorName={vendor.business_name} vendorVatNumber={vendor.vat_number ?? null} />
             </TabsContent>
             <TabsContent value="packages">
-              <VendorPackagesManager vendorId={vendor.id} basePrice={Number(vendor.starting_price || 0)} />
+              <VendorPackagesManager
+                vendorId={vendor.id}
+                basePrice={Number(vendor.starting_price || 0)}
+                userId={vendor.user_id}
+              />
             </TabsContent>
           </div>
         </Tabs>
