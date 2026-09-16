@@ -439,7 +439,8 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
       else if (women === "pending") womenPending.push(d(r));
     });
 
-    return { blocked, booked, pending, menBooked, womenBooked, menPending, womenPending };
+    return { blocked, booked, pending, menBooked, womenBooked, menPending, womenPending, freeToday };
+
   }, [items]);
 
   return (
