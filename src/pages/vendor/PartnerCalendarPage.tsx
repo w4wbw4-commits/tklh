@@ -14,10 +14,10 @@ const PartnerCalendarPage = () => {
       {loading ? (
         <div className="grid place-items-center py-24 text-muted-foreground">جارٍ التحميل…</div>
       ) : vendor ? (
-        <VendorCalendar vendorId={vendor.id} />
+        <VendorCalendar vendorId={vendor.id} vendorCategory={vendor.category} />
       ) : (
         <div className="rounded-2xl border border-border bg-card p-8 text-center text-muted-foreground">
-          أكمل بياناتك أولاً من «بيانات قاعتي» للبدء بإدارة التقويم.
+          أكمل بياناتك أولاً من «بياناتي» للبدء بإدارة التقويم.
         </div>
       )}
     </PortalLayout>
