@@ -114,6 +114,8 @@ export interface AvailabilityRow {
   status: "blocked" | "booked" | "pending";
   note: string | null;
   booking_id: string | null;
+  men_status: "blocked" | "booked" | "pending" | null;
+  women_status: "blocked" | "booked" | "pending" | null;
 }
 
 export interface NotificationRow {
