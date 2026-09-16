@@ -59,6 +59,8 @@ type ManualMeta = {
   customer_phone?: string;
   amount?: number;
   text?: string;
+  section?: ManualSection;
+  invoice_number?: string;
 };
 
 type SectionStatus = "blocked" | "booked" | "pending" | null;
