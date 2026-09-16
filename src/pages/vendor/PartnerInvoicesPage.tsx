@@ -66,9 +66,16 @@ const PartnerInvoicesPage = () => {
     doc.text(`Date: ${inv.issue_date}`, 14, 42);
     doc.text(`Vendor: ${vendor?.business_name ?? ""}`, 14, 49);
     doc.text(`VAT No: ${inv.vendor_vat_number || vendor?.vat_number || "-"}`, 14, 56);
-    doc.text(`Customer: ${inv.customer_name ?? "-"}`, 14, 63);
+    doc.text(`CR / Freelance Doc: ${vendor?.commercial_register_url ? "On file" : "-"}`, 14, 63);
+    doc.text(`Customer: ${inv.customer_name ?? "-"}`, 14, 70);
+    doc.text(`Customer Phone: ${inv.customer_phone ?? "-"}`, 14, 77);
+    doc.text(`Payment status: ${inv.status || "-"}`, 140, 35);
+    // Provider name in the invoice corner
+    doc.setFontSize(9);
+    doc.text(`${vendor?.business_name ?? ""}`, 196, 12, { align: "right" });
+    doc.setFontSize(11);
     autoTable(doc, {
-      startY: 75,
+      startY: 88,
       head: [["Description", "Subtotal (SAR)", "VAT 15%", "Total (SAR)"]],
       body: [["Venue booking service", fmt(inv.subtotal), fmt(inv.vat_amount), fmt(inv.total)]],
       theme: "grid", headStyles: { fillColor: [82, 92, 50] },
