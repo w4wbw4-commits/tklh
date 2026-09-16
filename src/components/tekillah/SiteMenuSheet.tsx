@@ -67,7 +67,7 @@ export const SiteMenuSheet = ({ isPrimaryAdmin, triggerTheme = "green" }: Props)
   ];
 
   const accountLinks: NavLinkItem[] = [
-    { type: "route", href: "/dashboard", icon: LayoutDashboard, labelKey: "nav.myDashboard", fallback: { ar: "متابعة الخطة", en: "Follow-up Plan" } },
+    { type: "route", href: "/dashboard", icon: LayoutDashboard, labelKey: "nav.myDashboard", fallback: { ar: "متابعة الخطة", en: "Follow-up Plan" }, disabled: true, badge: { ar: "قريبًا", en: "Soon" } },
     { type: "route", href: "/vendor", icon: Building2, labelKey: "nav.joinAsVendor", fallback: { ar: "سجل دخول كمزود خدمة", en: "Join as Vendor" } },
     ...(isPrimaryAdmin
       ? [{ type: "route" as const, href: "/admin", icon: ShieldCheck, labelKey: "nav.admin", fallback: { ar: "الإدارة", en: "Admin" } }]
