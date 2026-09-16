@@ -12,6 +12,7 @@ const PartnerChecklistsPage = lazyWithRetry(() => import("@/pages/vendor/Partner
 const PartnerReviewsPage = lazyWithRetry(() => import("@/pages/vendor/PartnerReviewsPage.tsx"));
 const PartnerNotificationsPage = lazyWithRetry(() => import("@/pages/vendor/PartnerNotificationsPage.tsx"));
 const PartnerProfilePage = lazyWithRetry(() => import("@/pages/vendor/PartnerProfilePage.tsx"));
+const PartnerReportsPage = lazyWithRetry(() => import("@/pages/vendor/PartnerReportsPage.tsx"));
 
 /**
  * Partner portal (partner.tklh.sa). Paths stay `/partner/*` so every existing
