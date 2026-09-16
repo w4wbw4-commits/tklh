@@ -221,6 +221,22 @@ const PartnerReportsPage = () => {
         </Card>
       </div>
 
+      <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-6">
+        {[
+          { label: "مؤكدة", value: totals.confirmed },
+          { label: "مكتملة", value: totals.completed },
+          { label: "بانتظار التأكيد", value: totals.pending },
+          { label: "ملغاة/مرفوضة", value: totals.cancelled },
+          { label: "متوسط قيمة الحجز", value: fmt(avgValue) },
+          { label: "متوسط الإشغال", value: `${avgOccupancy}%` },
+        ].map((s) => (
+          <Card key={s.label} className="p-4">
+            <div className="text-lg font-black">{s.value}</div>
+            <div className="mt-1 text-[11px] font-bold text-muted-foreground">{s.label}</div>
+          </Card>
+        ))}
+      </div>
+
       <div className="grid gap-5 lg:grid-cols-3">
         <Card className="overflow-hidden lg:col-span-2">
           <div className="overflow-x-auto">
@@ -230,6 +246,9 @@ const PartnerReportsPage = () => {
                   <th className="p-4">الشهر</th>
                   <th className="p-4">الإيرادات</th>
                   <th className="p-4">الحجوزات</th>
+                  <th className="p-4">ملغاة</th>
+                  <th className="p-4">متوسط الحجز</th>
+                  <th className="p-4">الإشغال</th>
                   <th className="p-4">تشغيلية</th>
                   <th className="p-4">إهلاك</th>
                   <th className="p-4">صافي</th>
@@ -237,13 +256,16 @@ const PartnerReportsPage = () => {
               </thead>
               <tbody>
                 {rows.length === 0 && (
-                  <tr><td colSpan={6} className="p-10 text-center text-muted-foreground">لا توجد بيانات بعد.</td></tr>
+                  <tr><td colSpan={9} className="p-10 text-center text-muted-foreground">لا توجد بيانات بعد.</td></tr>
                 )}
                 {rows.map((r) => (
                   <tr key={r.month} className="border-b border-border last:border-0 hover:bg-muted/40">
                     <td data-label="الشهر" className="p-4 font-mono font-bold text-primary" dir="ltr">{r.month}</td>
                     <td data-label="الإيرادات" className="p-4 font-black">{fmt(r.revenue)}</td>
                     <td data-label="الحجوزات" className="p-4">{r.bookings}</td>
+                    <td data-label="ملغاة" className="p-4 text-muted-foreground">{r.cancelled}</td>
+                    <td data-label="متوسط الحجز" className="p-4 text-muted-foreground">{fmt(r.avgValue)}</td>
+                    <td data-label="الإشغال" className="p-4 text-muted-foreground">{r.occupancy}%</td>
                     <td data-label="تشغيلية" className="p-4 text-muted-foreground">{fmt(r.operating)}</td>
                     <td data-label="إهلاك" className="p-4 text-muted-foreground">{fmt(r.depreciation)}</td>
                     <td data-label="صافي" className="p-4 font-black">{fmt(r.revenue - r.operating - r.depreciation)}</td>
