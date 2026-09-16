@@ -110,7 +110,7 @@ export const setChecklistDone = (id: string, done: boolean) =>
 // ---------------------------------------------------------------------------
 
 export const BOOKING_WITH_PACKAGE_FULL =
-  "id, event_date, status, total_price, paid_amount, guest_count, customer_id, attendance_confirmed_at, package:packages(name)";
+  "id, event_date, status, total_price, paid_amount, guest_count, customer_id, attendance_confirmed_at, booking_section, cancellation_reason, cancelled_by_role, cancelled_at, package:packages(name)";
 
 export const listForVendorWithPackageAsc = (vendorId: string) =>
   db
