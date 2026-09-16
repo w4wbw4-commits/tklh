@@ -572,6 +572,16 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
                       </button>
                       <div className="flex items-center gap-1.5">
                         <Badge className={`rounded-full font-normal ${meta.color}`}>{meta.label}</Badge>
+                        {!fromPlatform && it.status === "pending" && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => confirmById(it.id)}
+                            className="h-8 rounded-full border-primary/40 px-3 text-xs text-primary hover:bg-primary/10"
+                          >
+                            <CheckCircle2 className="me-1 h-3.5 w-3.5" /> تأكيد الحجز
+                          </Button>
+                        )}
                         {!fromPlatform && (
                           <Button
                             variant="ghost"
