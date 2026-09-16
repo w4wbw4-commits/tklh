@@ -615,6 +615,33 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
               </div>
             </div>
 
+            {/* Section picker — only for vendors serving men and women separately */}
+            {hasSections && form.status !== "blocked" && (
+              <div>
+                <Label className="mb-2 block text-xs font-semibold text-foreground/70">القسم</Label>
+                <div className="grid grid-cols-3 gap-2">
+                  {(["men", "women", "both"] as const).map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      disabled={isPlatformBooking}
+                      onClick={() => setForm((f) => ({ ...f, section: s }))}
+                      className={`rounded-2xl border p-3 text-xs font-bold transition-all ${
+                        form.section === s
+                          ? "border-transparent bg-primary text-primary-foreground shadow-md"
+                          : "border-border bg-background text-foreground/70 hover:border-primary/50"
+                      } disabled:cursor-not-allowed disabled:opacity-60`}
+                    >
+                      {SECTION_LABEL[s]}
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-1.5 text-[11px] text-foreground/55">
+                  حجز قسم واحد يترك القسم الآخر متاحاً للعملاء في نفس التاريخ.
+                </p>
+              </div>
+            )}
+
             {/* Customer details — hidden when blocked */}
             {form.status !== "blocked" && (
               <>
