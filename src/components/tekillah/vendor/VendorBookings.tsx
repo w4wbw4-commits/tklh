@@ -65,6 +65,11 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
   const [loading, setLoading] = useState(true);
   const [acting, setActing] = useState<string | null>(null);
   const [tab, setTab] = useState<TabKey>("new");
+  // Cancellation dialog — a reason is mandatory before we release the date.
+  const [cancelTarget, setCancelTarget] = useState<BookingRow | null>(null);
+  const [cancelMode, setCancelMode] = useState<"cancel" | "reject">("cancel");
+  const [reasonChoice, setReasonChoice] = useState<string>(CANCEL_REASONS[0]);
+  const [reasonText, setReasonText] = useState("");
 
   const load = async () => {
     setLoading(true);
