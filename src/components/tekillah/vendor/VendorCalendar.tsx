@@ -408,6 +408,14 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
     const womenBooked: Date[] = [];
     const menPending: Date[] = [];
     const womenPending: Date[] = [];
+    // Today, when nothing is on it: shown in cream with a yellow outline.
+    const freeToday: Date[] = [];
+    const todayKey = formatDate(new Date());
+    if (!items.some((r) => r.date === todayKey)) {
+      freeToday.push(new Date(new Date().setHours(0, 0, 0, 0)));
+    }
+
+
 
     items.forEach((r) => {
       if (r.status === "blocked") {
