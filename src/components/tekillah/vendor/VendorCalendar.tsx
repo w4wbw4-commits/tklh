@@ -780,6 +780,19 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
                 <span />
               )}
               <div className="flex items-center gap-2">
+                {existingForPicked && !isPlatformBooking && existingForPicked.status === "pending" && (
+                  <Button
+                    variant="outline"
+                    onClick={async () => {
+                      await confirmById(existingForPicked.id);
+                      setSheetOpen(false);
+                    }}
+                    disabled={submitting}
+                    className="border-primary/40 text-primary hover:bg-primary/10"
+                  >
+                    <CheckCircle2 className="me-2 h-4 w-4" /> تأكيد الحجز
+                  </Button>
+                )}
                 <Button variant="outline" onClick={() => setSheetOpen(false)}>
                   إلغاء
                 </Button>
