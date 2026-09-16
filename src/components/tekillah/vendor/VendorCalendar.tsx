@@ -36,7 +36,18 @@ import {
 
 interface Props {
   vendorId: string;
+  /** Used on the mandatory invoice created for every manual booking. */
+  vendorName?: string;
+  vendorVatNumber?: string | null;
 }
+
+type ManualSection = "both" | "men" | "women";
+
+const SECTION_LABEL: Record<ManualSection, string> = {
+  both: "القسمان معاً",
+  men: "قسم الرجال",
+  women: "قسم النساء",
+};
 
 // We piggy-back on `vendor_availability.note` to store rich event metadata
 // (customer name, phone, price, free-form note) as JSON, so a "manual booking"
