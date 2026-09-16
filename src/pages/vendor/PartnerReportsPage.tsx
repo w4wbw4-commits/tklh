@@ -100,10 +100,16 @@ const PartnerReportsPage = () => {
       operating: acc.operating + r.operating,
       depreciation: acc.depreciation + r.depreciation,
       bookings: acc.bookings + r.bookings,
+      confirmed: acc.confirmed + r.confirmed,
+      completed: acc.completed + r.completed,
+      cancelled: acc.cancelled + r.cancelled,
+      pending: acc.pending + r.pending,
     }),
-    { revenue: 0, operating: 0, depreciation: 0, bookings: 0 },
+    { revenue: 0, operating: 0, depreciation: 0, bookings: 0, confirmed: 0, completed: 0, cancelled: 0, pending: 0 },
   );
   const net = totals.revenue - totals.operating - totals.depreciation;
+  const avgValue = totals.bookings > 0 ? totals.revenue / totals.bookings : 0;
+  const avgOccupancy = rows.length > 0 ? Math.round(rows.reduce((a, r) => a + r.occupancy, 0) / rows.length) : 0;
 
   const addExpense = async () => {
     if (!vendor) return;
