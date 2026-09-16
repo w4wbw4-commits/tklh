@@ -107,6 +107,39 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
     if (status === "confirmed") setTab("active");
   };
 
+  const openCancel = (b: BookingRow, mode: "cancel" | "reject") => {
+    setCancelTarget(b);
+    setCancelMode(mode);
+    setReasonChoice(CANCEL_REASONS[0]);
+    setReasonText("");
+  };
+
+  const finalReason = reasonChoice === "سبب آخر" ? reasonText.trim() : reasonChoice;
+
+  const submitCancel = async () => {
+    if (!cancelTarget) return;
+    if (!finalReason) {
+      toast.error("يجب إدخال سبب الإلغاء");
+      return;
+    }
+    setActing(cancelTarget.id);
+    const { data: auth } = await authService.getUser();
+    const uid = auth?.user?.id ?? null;
+    const { error } =
+      cancelMode === "cancel"
+        ? await bookingsService.cancel(cancelTarget.id, finalReason, uid, "vendor")
+        : await bookingsService.rejectWithReason(cancelTarget.id, finalReason, uid, "vendor");
+    setActing(null);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success(cancelMode === "cancel" ? "تم إلغاء الحجز وإعادة التاريخ متاحاً" : "تم رفض الطلب وتحرير التاريخ");
+    setCancelTarget(null);
+    setTab("completed");
+    load();
+  };
+
   const confirmAttendance = async (b: BookingRow) => {
     if (!isToday(b.event_date)) return;
     setActing(b.id);
