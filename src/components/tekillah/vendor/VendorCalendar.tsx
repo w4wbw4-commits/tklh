@@ -258,7 +258,7 @@ export const VendorCalendar = ({ vendorId, vendorCategory }: Props) => {
             onClick={() => openDate(new Date())}
             className="mt-4 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
           >
-            <Plus className="me-2 h-4 w-4" /> أضف حدثاً اليوم
+            <Plus className="me-2 h-4 w-4" />أضف حجز 
           </Button>
         </div>
 
