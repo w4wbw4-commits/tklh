@@ -263,7 +263,7 @@ export const BookingsTimeline = ({ event }: { event: EventRow }) => {
                         <AlertTriangle className="me-1 h-4 w-4" />
                         {t("customer.bookingsTimeline.reportTrigger")}
                       </Button>
-                      {status !== "arrived" && (
+                      {(
                         <Button
                           size="sm"
                           variant="outline"
