@@ -488,7 +488,10 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
               womenBooked: "!bg-gradient-to-r !from-purple-500 !from-50% !to-transparent !to-50% font-bold",
               menPending: "!bg-gradient-to-l !from-amber-500 !from-50% !to-transparent !to-50% font-bold",
               womenPending: "!bg-gradient-to-r !from-orange-400 !from-50% !to-transparent !to-50% font-bold",
+              freeToday: "!bg-cream !text-foreground ring-2 ring-inset ring-amber-400 font-bold",
             }}
+            classNames={{ day_today: "font-bold" }}
+
             className="pointer-events-auto rounded-2xl border border-border/60 bg-background p-3"
           />
           <Button
