@@ -1190,6 +1190,64 @@ export type Database = {
           },
         ]
       }
+      vendor_expenses: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          kind: string
+          label: string
+          month: string
+          notes: string | null
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          id?: string
+          kind?: string
+          label: string
+          month: string
+          notes?: string | null
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          kind?: string
+          label?: string
+          month?: string
+          notes?: string | null
+          updated_at?: string
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_expenses_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_ratings_summary"
+            referencedColumns: ["vendor_id"]
+          },
+          {
+            foreignKeyName: "vendor_expenses_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_expenses_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       vendor_invoices: {
         Row: {
           booking_id: string | null

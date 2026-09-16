@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { availabilityService } from "@/domain";
+import { availabilityService, paymentsService } from "@/domain";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Badge } from "@/components/ui/badge";
@@ -34,7 +36,18 @@ import {
 
 interface Props {
   vendorId: string;
+  /** Used on the mandatory invoice created for every manual booking. */
+  vendorName?: string;
+  vendorVatNumber?: string | null;
 }
+
+type ManualSection = "both" | "men" | "women";
+
+const SECTION_LABEL: Record<ManualSection, string> = {
+  both: "القسمان معاً",
+  men: "قسم الرجال",
+  women: "قسم النساء",
+};
 
 // We piggy-back on `vendor_availability.note` to store rich event metadata
 // (customer name, phone, price, free-form note) as JSON, so a "manual booking"
@@ -46,6 +59,8 @@ type ManualMeta = {
   customer_phone?: string;
   amount?: number;
   text?: string;
+  section?: ManualSection;
+  invoice_number?: string;
 };
 
 type SectionStatus = "blocked" | "booked" | "pending" | null;
@@ -89,7 +104,7 @@ const parseMeta = (note: string | null): ManualMeta | null => {
   return null;
 };
 
-export const VendorCalendar = ({ vendorId }: Props) => {
+export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props) => {
   const [items, setItems] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -104,7 +119,22 @@ export const VendorCalendar = ({ vendorId }: Props) => {
     amount: "",
     label: "",
     text: "",
+    section: "both" as ManualSection,
   });
+
+  // Last invoice issued from this sheet — enables the PDF download button.
+  // No WhatsApp/API sending: the partner downloads the file and sends it.
+  const [lastInvoice, setLastInvoice] = useState<{
+    invoice_number: string;
+    issue_date: string;
+    customer_name: string | null;
+    customer_phone: string | null;
+    subtotal: number;
+    vat_amount: number;
+    total: number;
+    event_date: string;
+    section: ManualSection;
+  } | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -144,41 +174,149 @@ export const VendorCalendar = ({ vendorId }: Props) => {
       amount: meta?.amount ? String(meta.amount) : "",
       label: meta?.label ?? "",
       text: meta?.text ?? (!meta && row?.note ? row.note : ""),
+      section: meta?.section ?? "both",
     });
+    setLastInvoice(null);
     setSheetOpen(true);
   };
 
-  // Save (insert or update) a manual entry on a date.
+  // Save (insert or update) a manual entry on a date. A manual booking always
+  // produces a tax invoice — the partner then downloads the PDF and sends it.
   const save = async () => {
     if (!picked) return;
     if (isPlatformBooking) {
       toast.error("هذا اليوم محجوز عبر المنصة — لا يمكن تعديله يدوياً.");
       return;
     }
+    const isBooking = form.status !== "blocked";
+    const amount = form.amount ? Number(form.amount) : 0;
+    const alreadyInvoiced = !!parseMeta(existingForPicked?.note ?? null)?.invoice_number;
+    if (isBooking && !alreadyInvoiced) {
+      if (!form.customer_name.trim()) {
+        toast.error("اسم العميل مطلوب لإصدار الفاتورة");
+        return;
+      }
+      if (!amount || amount <= 0) {
+        toast.error("المبلغ مطلوب — الفاتورة إلزامية لكل حجز يدوي");
+        return;
+      }
+    }
+
     setSubmitting(true);
+
+    // 1) Mandatory invoice first, so we can store its number on the day.
+    let invoiceNumber = parseMeta(existingForPicked?.note ?? null)?.invoice_number;
+    let issued: typeof lastInvoice = null;
+    if (isBooking && !alreadyInvoiced) {
+      const subtotal = +(amount / 1.15).toFixed(2);
+      const vat = +(amount - subtotal).toFixed(2);
+      const { data: numData } = await paymentsService.nextInvoiceNumber();
+      const number = (numData as unknown as string) ?? "";
+      const { error: invErr } = await paymentsService.createVendorInvoice({
+        vendor_id: vendorId,
+        invoice_number: number,
+        customer_name: form.customer_name.trim() || null,
+        customer_phone: form.customer_phone.trim() || null,
+        subtotal,
+        vat_amount: vat,
+        total: amount,
+        notes: `حجز يدوي · ${formatDate(picked)} · ${SECTION_LABEL[form.section]}`,
+        source: "manual",
+        vendor_vat_number: vendorVatNumber ?? null,
+      } as never);
+      if (invErr) {
+        setSubmitting(false);
+        toast.error(`لم يتم إصدار الفاتورة: ${invErr.message}`);
+        return;
+      }
+      invoiceNumber = number;
+      issued = {
+        invoice_number: number,
+        issue_date: new Date().toISOString().slice(0, 10),
+        customer_name: form.customer_name.trim() || null,
+        customer_phone: form.customer_phone.trim() || null,
+        subtotal,
+        vat_amount: vat,
+        total: amount,
+        event_date: formatDate(picked),
+        section: form.section,
+      };
+    }
+
+    // 2) Block the day (and the specific section when the vendor serves both).
     const meta: ManualMeta = {
       kind: "manual",
       label: form.label || (form.status === "blocked" ? "محجوب يدوياً" : "حجز يدوي"),
       customer_name: form.customer_name || undefined,
       customer_phone: form.customer_phone || undefined,
-      amount: form.amount ? Number(form.amount) : undefined,
+      amount: amount || undefined,
       text: form.text || undefined,
+      section: isBooking ? form.section : undefined,
+      invoice_number: invoiceNumber,
     };
-    const payload = {
+    const payload: Record<string, unknown> = {
       vendor_id: vendorId,
       date: formatDate(picked),
       status: form.status,
       note: JSON.stringify(meta),
     };
-    const { error } = await availabilityService.block(payload);
+    if (hasSections && isBooking) {
+      payload.men_status = form.section === "women" ? null : form.status;
+      payload.women_status = form.section === "men" ? null : form.status;
+    }
+    const { error } = await availabilityService.block(payload as never);
     setSubmitting(false);
     if (error) {
       toast.error(error.message);
       return;
     }
-    toast.success(existingForPicked ? "تم تحديث اليوم" : "تمت إضافة الحدث");
-    setSheetOpen(false);
+    if (issued) {
+      setLastInvoice(issued);
+      toast.success(`تم الحجز وإصدار الفاتورة ${issued.invoice_number} — حمّل ملف PDF وأرسله للعميل`);
+    } else {
+      toast.success(existingForPicked ? "تم تحديث اليوم" : "تمت إضافة الحدث");
+      setSheetOpen(false);
+    }
     load();
+  };
+
+  // Download the invoice PDF (no automatic sending anywhere).
+  const downloadInvoicePDF = () => {
+    if (!lastInvoice) return;
+    const money = (n: number) => Math.round(n).toLocaleString("en-US");
+    const doc = new jsPDF();
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(20);
+    doc.text("TAX INVOICE", 105, 20, { align: "center" });
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Invoice #: ${lastInvoice.invoice_number}`, 14, 35);
+    doc.text(`Date: ${lastInvoice.issue_date}`, 14, 42);
+    doc.text(`Vendor: ${vendorName ?? ""}`, 14, 49);
+    doc.text(`VAT No: ${vendorVatNumber || "-"}`, 14, 56);
+    doc.text(`Customer: ${lastInvoice.customer_name ?? "-"}`, 14, 63);
+    doc.text(`Phone: ${lastInvoice.customer_phone ?? "-"}`, 14, 70);
+    doc.text(`Event date: ${lastInvoice.event_date}`, 14, 77);
+    autoTable(doc, {
+      startY: 88,
+      head: [["Description", "Subtotal (SAR)", "VAT 15%", "Total (SAR)"]],
+      body: [[
+        `Manual booking (${lastInvoice.section})`,
+        money(lastInvoice.subtotal),
+        money(lastInvoice.vat_amount),
+        money(lastInvoice.total),
+      ]],
+      theme: "grid",
+      headStyles: { fillColor: [82, 92, 50] },
+    });
+    const finalY = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
+    doc.setFont("helvetica", "bold");
+    doc.text(`TOTAL: ${money(lastInvoice.total)} SAR`, 196, finalY, { align: "right" });
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+    doc.text(vendorName ?? "", 14, 285);
+    doc.text("Generated by TKLH", 196, 285, { align: "right" });
+    doc.save(`${lastInvoice.invoice_number}.pdf`);
   };
 
   // Delete an entry — only allowed for non-platform rows.
@@ -477,6 +615,33 @@ export const VendorCalendar = ({ vendorId }: Props) => {
               </div>
             </div>
 
+            {/* Section picker — only for vendors serving men and women separately */}
+            {hasSections && form.status !== "blocked" && (
+              <div>
+                <Label className="mb-2 block text-xs font-semibold text-foreground/70">القسم</Label>
+                <div className="grid grid-cols-3 gap-2">
+                  {(["men", "women", "both"] as const).map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      disabled={isPlatformBooking}
+                      onClick={() => setForm((f) => ({ ...f, section: s }))}
+                      className={`rounded-2xl border p-3 text-xs font-bold transition-all ${
+                        form.section === s
+                          ? "border-transparent bg-primary text-primary-foreground shadow-md"
+                          : "border-border bg-background text-foreground/70 hover:border-primary/50"
+                      } disabled:cursor-not-allowed disabled:opacity-60`}
+                    >
+                      {SECTION_LABEL[s]}
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-1.5 text-[11px] text-foreground/55">
+                  حجز قسم واحد يترك القسم الآخر متاحاً للعملاء في نفس التاريخ.
+                </p>
+              </div>
+            )}
+
             {/* Customer details — hidden when blocked */}
             {form.status !== "blocked" && (
               <>
@@ -552,6 +717,21 @@ export const VendorCalendar = ({ vendorId }: Props) => {
                 disabled={isPlatformBooking}
               />
             </div>
+
+            {/* Mandatory invoice for manual bookings — download only, no sending */}
+            {lastInvoice && (
+              <div className="rounded-2xl border border-primary/25 bg-primary/5 p-4">
+                <div className="text-xs font-bold text-primary">
+                  الفاتورة {lastInvoice.invoice_number} صادرة بمبلغ {Math.round(lastInvoice.total).toLocaleString("en-US")}
+                </div>
+                <p className="mt-1 text-[11px] text-foreground/60">
+                  حمّل ملف PDF وأرسله للعميل عبر واتساب يدوياً.
+                </p>
+                <Button onClick={downloadInvoicePDF} className="mt-3 w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                  تحميل الفاتورة PDF
+                </Button>
+              </div>
+            )}
 
             {/* Footer actions */}
             <div className="flex items-center justify-between gap-2 border-t border-border pt-4">
