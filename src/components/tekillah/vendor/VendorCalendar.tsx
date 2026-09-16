@@ -48,6 +48,8 @@ type ManualMeta = {
   text?: string;
 };
 
+type SectionStatus = "blocked" | "booked" | "pending" | null;
+
 type Row = {
   id: string;
   vendor_id: string;
@@ -55,6 +57,8 @@ type Row = {
   status: "blocked" | "booked" | "pending";
   note: string | null;
   booking_id: string | null;
+  men_status?: SectionStatus;
+  women_status?: SectionStatus;
 };
 
 const formatDate = (d: Date) => {
@@ -225,6 +229,51 @@ export const VendorCalendar = ({ vendorId }: Props) => {
 
   const sortedItems = useMemo(() => [...items].sort((a, b) => a.date.localeCompare(b.date)), [items]);
 
+  // Does this vendor serve men/women sections independently? The database only
+  // fills men_status/women_status for dual-section categories (halls,
+  // photographers), so the split view follows the data, never a UI guess.
+  const hasSections = useMemo(
+    () => items.some((i) => i.men_status != null || i.women_status != null),
+    [items],
+  );
+
+  // Day colouring is derived only from vendor_availability, which the database
+  // recomputes whenever a booking is created, confirmed, rejected or cancelled.
+  const dayModifiers = useMemo(() => {
+    const d = (r: Row) => new Date(r.date);
+    const blocked: Date[] = [];
+    const booked: Date[] = [];
+    const pending: Date[] = [];
+    const menBooked: Date[] = [];
+    const womenBooked: Date[] = [];
+    const menPending: Date[] = [];
+    const womenPending: Date[] = [];
+
+    items.forEach((r) => {
+      if (r.status === "blocked") {
+        blocked.push(d(r));
+        return;
+      }
+      const men = r.men_status ?? null;
+      const women = r.women_status ?? null;
+      const split = men != null || women != null;
+      if (!split) {
+        (r.status === "booked" ? booked : pending).push(d(r));
+        return;
+      }
+      if (men === "booked" && women === "booked") {
+        booked.push(d(r));
+        return;
+      }
+      if (men === "booked") menBooked.push(d(r));
+      else if (men === "pending") menPending.push(d(r));
+      if (women === "booked") womenBooked.push(d(r));
+      else if (women === "pending") womenPending.push(d(r));
+    });
+
+    return { blocked, booked, pending, menBooked, womenBooked, menPending, womenPending };
+  }, [items]);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -261,15 +310,15 @@ export const VendorCalendar = ({ vendorId }: Props) => {
             selected={picked}
             onSelect={(d) => d && openDate(d)}
             disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
-            modifiers={{
-              blocked: items.filter((i) => i.status === "blocked").map((i) => new Date(i.date)),
-              booked: items.filter((i) => i.status === "booked").map((i) => new Date(i.date)),
-              pending: items.filter((i) => i.status === "pending").map((i) => new Date(i.date)),
-            }}
+            modifiers={dayModifiers}
             modifiersClassNames={{
               blocked: "!bg-foreground/15 !text-foreground line-through",
               booked: "!bg-primary !text-primary-foreground font-bold",
               pending: "!bg-amber-500/80 !text-white font-bold",
+              menBooked: "!bg-gradient-to-l !from-blue-500 !from-50% !to-transparent !to-50% font-bold",
+              womenBooked: "!bg-gradient-to-r !from-purple-500 !from-50% !to-transparent !to-50% font-bold",
+              menPending: "!bg-gradient-to-l !from-amber-500 !from-50% !to-transparent !to-50% font-bold",
+              womenPending: "!bg-gradient-to-r !from-orange-400 !from-50% !to-transparent !to-50% font-bold",
             }}
             className="pointer-events-auto rounded-2xl border border-border/60 bg-background p-3"
           />
@@ -281,10 +330,23 @@ export const VendorCalendar = ({ vendorId }: Props) => {
           </Button>
           <div className="mt-4 space-y-1.5 text-xs text-foreground/70">
             <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-sm bg-primary" /> مؤكد (محجوز)
+              <span className="h-3 w-3 rounded-sm border border-border bg-background" /> متاح
             </div>
             <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-sm bg-amber-500/80" /> محتمل (بانتظار التأكيد)
+              <span className="h-3 w-3 rounded-sm bg-primary" /> القسمان محجوزان
+            </div>
+            {hasSections && (
+              <>
+                <div className="flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-sm bg-gradient-to-l from-blue-500 from-50% to-transparent to-50% ring-1 ring-border" /> قسم الرجال محجوز
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-sm bg-gradient-to-r from-purple-500 from-50% to-transparent to-50% ring-1 ring-border" /> قسم النساء محجوز
+                </div>
+              </>
+            )}
+            <div className="flex items-center gap-2">
+              <span className="h-3 w-3 rounded-sm bg-amber-500/80" /> طلب غير مؤكد
             </div>
             <div className="flex items-center gap-2">
               <span className="h-3 w-3 rounded-sm bg-foreground/20" /> محجوب يدوياً

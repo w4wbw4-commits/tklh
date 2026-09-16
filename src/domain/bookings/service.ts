@@ -46,6 +46,48 @@ export const setStatus = (id: string, status: BookingStatus) =>
 export const update = (id: string, patch: Update<"bookings">) =>
   db.from("bookings").update(patch).eq("id", id);
 
+/**
+ * Cancel a booking without deleting it. The row stays for history; the
+ * `cancelled` status makes the database trigger recompute
+ * `vendor_availability` for that vendor/date, so the calendar and the
+ * customer-facing search free up the exact sections that were held.
+ * A reason is mandatory — callers must validate before invoking.
+ */
+export const cancel = (
+  id: string,
+  reason: string,
+  byUserId: string | null,
+  byRole: "vendor" | "customer" | "admin",
+) =>
+  db
+    .from("bookings")
+    .update({
+      status: "cancelled",
+      cancellation_reason: reason,
+      cancelled_at: new Date().toISOString(),
+      cancelled_by: byUserId,
+      cancelled_by_role: byRole,
+    } as Update<"bookings">)
+    .eq("id", id);
+
+/** Reject a pending request with a stored reason (no phantom hold left behind). */
+export const rejectWithReason = (
+  id: string,
+  reason: string,
+  byUserId: string | null,
+  byRole: "vendor" | "admin",
+) =>
+  db
+    .from("bookings")
+    .update({
+      status: "rejected",
+      cancellation_reason: reason,
+      cancelled_at: new Date().toISOString(),
+      cancelled_by: byUserId,
+      cancelled_by_role: byRole,
+    } as Update<"bookings">)
+    .eq("id", id);
+
 export const confirmAttendance = (id: string, byUserId: string) =>
   db
     .from("bookings")
@@ -68,7 +110,7 @@ export const setChecklistDone = (id: string, done: boolean) =>
 // ---------------------------------------------------------------------------
 
 export const BOOKING_WITH_PACKAGE_FULL =
-  "id, event_date, status, total_price, paid_amount, guest_count, customer_id, attendance_confirmed_at, package:packages(name)";
+  "id, event_date, status, total_price, paid_amount, guest_count, customer_id, attendance_confirmed_at, booking_section, cancellation_reason, cancelled_by_role, cancelled_at, package:packages(name)";
 
 export const listForVendorWithPackageAsc = (vendorId: string) =>
   db

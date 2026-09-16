@@ -3,10 +3,20 @@ import { RiyalSymbol } from "../RiyalSymbol";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { Loader2, Check, X, CalendarDays, Users, Inbox, CheckCircle2 } from "lucide-react";
+import { Loader2, Check, X, CalendarDays, Users, Inbox, CheckCircle2, Ban } from "lucide-react";
 import { EmptyState } from "@/components/tekillah/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { bookingsService, authService } from "@/domain";
 import { fmtDate, fmtNumber } from "@/i18n/format";
@@ -20,8 +30,26 @@ interface BookingRow {
   guest_count: number | null;
   customer_id: string;
   attendance_confirmed_at: string | null;
+  booking_section: "men" | "women" | "both" | null;
+  cancellation_reason: string | null;
+  cancelled_by_role: string | null;
+  cancelled_at: string | null;
   package: { name: string } | null;
 }
+
+const SECTION_LABEL: Record<string, string> = {
+  men: "قسم الرجال",
+  women: "قسم النساء",
+  both: "القسمان معاً",
+};
+
+const CANCEL_REASONS = [
+  "طلب العميل الإلغاء",
+  "تعارض في التاريخ",
+  "عدم اكتمال الدفع",
+  "ظرف طارئ لدى المزود",
+  "سبب آخر",
+];
 
 const isToday = (iso: string) => {
   const d = new Date(iso);
@@ -37,6 +65,11 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
   const [loading, setLoading] = useState(true);
   const [acting, setActing] = useState<string | null>(null);
   const [tab, setTab] = useState<TabKey>("new");
+  // Cancellation dialog — a reason is mandatory before we release the date.
+  const [cancelTarget, setCancelTarget] = useState<BookingRow | null>(null);
+  const [cancelMode, setCancelMode] = useState<"cancel" | "reject">("cancel");
+  const [reasonChoice, setReasonChoice] = useState<string>(CANCEL_REASONS[0]);
+  const [reasonText, setReasonText] = useState("");
 
   const load = async () => {
     setLoading(true);
@@ -72,6 +105,39 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
     }
     toast.success(t(`vendor.bookings.${status === "confirmed" ? "confirmed" : "rejected"}`));
     if (status === "confirmed") setTab("active");
+  };
+
+  const openCancel = (b: BookingRow, mode: "cancel" | "reject") => {
+    setCancelTarget(b);
+    setCancelMode(mode);
+    setReasonChoice(CANCEL_REASONS[0]);
+    setReasonText("");
+  };
+
+  const finalReason = reasonChoice === "سبب آخر" ? reasonText.trim() : reasonChoice;
+
+  const submitCancel = async () => {
+    if (!cancelTarget) return;
+    if (!finalReason) {
+      toast.error("يجب إدخال سبب الإلغاء");
+      return;
+    }
+    setActing(cancelTarget.id);
+    const { data: auth } = await authService.getUser();
+    const uid = auth?.user?.id ?? null;
+    const { error } =
+      cancelMode === "cancel"
+        ? await bookingsService.cancel(cancelTarget.id, finalReason, uid, "vendor")
+        : await bookingsService.rejectWithReason(cancelTarget.id, finalReason, uid, "vendor");
+    setActing(null);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success(cancelMode === "cancel" ? "تم إلغاء الحجز وإعادة التاريخ متاحاً" : "تم رفض الطلب وتحرير التاريخ");
+    setCancelTarget(null);
+    setTab("completed");
+    load();
   };
 
   const confirmAttendance = async (b: BookingRow) => {
@@ -110,8 +176,25 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
                 </div>
                 <div className="text-[11px] text-foreground/55">{b.package?.name ?? "—"}</div>
               </div>
-              <Badge className={badgeFor(b.status)}>{t(`customer.bookingStatus.${b.status}`)}</Badge>
+              <div className="flex flex-wrap items-center gap-2">
+                {b.booking_section && (
+                  <Badge variant="outline" className="rounded-full text-[10px]">
+                    {SECTION_LABEL[b.booking_section] ?? b.booking_section}
+                  </Badge>
+                )}
+                <Badge className={badgeFor(b.status)}>{t(`customer.bookingStatus.${b.status}`)}</Badge>
+              </div>
             </div>
+            {(b.status === "cancelled" || b.status === "rejected") && b.cancellation_reason && (
+              <div className="mt-3 rounded-xl border border-destructive/20 bg-destructive/5 p-3 text-[11px] text-foreground/70">
+                <span className="font-bold text-destructive">سبب الإلغاء: </span>
+                {b.cancellation_reason}
+                <span className="ms-2 text-foreground/50">
+                  ({b.cancelled_by_role === "customer" ? "بواسطة العميل" : b.cancelled_by_role === "admin" ? "بواسطة الإدارة" : "بواسطة مزود الخدمة"}
+                  {b.cancelled_at ? ` · ${fmtDate(b.cancelled_at)}` : ""})
+                </span>
+              </div>
+            )}
             <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
               <Stat icon={CalendarDays} label={t("vendor.bookings.eventDate")} value={fmtDate(b.event_date)} />
               <Stat icon={Users} label={t("vendor.bookings.guests")} value={fmtNumber(Number(b.guest_count ?? 0))} />
@@ -123,7 +206,7 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
                   className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
                   <Check className="me-1 h-4 w-4" /> {t("vendor.bookings.accept")}
                 </Button>
-                <Button size="sm" variant="outline" onClick={() => setStatus(b.id, "rejected")} disabled={acting === b.id}
+                <Button size="sm" variant="outline" onClick={() => openCancel(b, "reject")} disabled={acting === b.id}
                   className="rounded-full text-destructive hover:bg-destructive/10">
                   <X className="me-1 h-4 w-4" /> {t("vendor.bookings.reject")}
                 </Button>
@@ -150,6 +233,15 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
                     )}
                   </>
                 )}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => openCancel(b, "cancel")}
+                  disabled={acting === b.id}
+                  className="rounded-full border-destructive/30 text-destructive hover:bg-destructive/10"
+                >
+                  <Ban className="me-1 h-4 w-4" /> إلغاء الحجز
+                </Button>
               </div>
             )}
           </motion.div>
@@ -208,6 +300,63 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
           </div>
         </Tabs>
       )}
+
+      {/* Cancellation / rejection confirmation — reason is mandatory */}
+      <Dialog open={!!cancelTarget} onOpenChange={(o) => !o && setCancelTarget(null)}>
+        <DialogContent dir="rtl" className="sm:max-w-md">
+          <DialogHeader className="text-start">
+            <DialogTitle>{cancelMode === "cancel" ? "إلغاء الحجز" : "رفض الطلب"}</DialogTitle>
+            <DialogDescription>
+              {cancelTarget?.booking_section
+                ? `سيعود ${SECTION_LABEL[cancelTarget.booking_section] ?? ""} متاحاً في ${fmtDate(cancelTarget.event_date)}.`
+                : "سيعود هذا التاريخ متاحاً للعملاء فوراً."}{" "}
+              لن يُحذف الحجز — تبقى بياناته محفوظة في السجل.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div>
+              <Label className="mb-2 block text-xs font-bold">سبب الإلغاء (إلزامي)</Label>
+              <div className="grid gap-2">
+                {CANCEL_REASONS.map((r) => (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => setReasonChoice(r)}
+                    className={`rounded-xl border px-3 py-2 text-start text-xs font-bold transition-colors ${
+                      reasonChoice === r
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border text-foreground/70 hover:border-primary/40"
+                    }`}
+                  >
+                    {r}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {reasonChoice === "سبب آخر" && (
+              <Textarea
+                value={reasonText}
+                onChange={(e) => setReasonText(e.target.value)}
+                placeholder="اكتب السبب بالتفصيل"
+                rows={3}
+              />
+            )}
+          </div>
+          <DialogFooter className="gap-2 sm:justify-start">
+            <Button
+              onClick={submitCancel}
+              disabled={!finalReason || acting === cancelTarget?.id}
+              className="rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {acting === cancelTarget?.id && <Loader2 className="me-1 h-4 w-4 animate-spin" />}
+              {cancelMode === "cancel" ? "تأكيد الإلغاء" : "تأكيد الرفض"}
+            </Button>
+            <Button variant="outline" className="rounded-full" onClick={() => setCancelTarget(null)}>
+              تراجع
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
