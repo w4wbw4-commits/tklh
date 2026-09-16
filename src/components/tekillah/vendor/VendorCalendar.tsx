@@ -408,6 +408,14 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
     const womenBooked: Date[] = [];
     const menPending: Date[] = [];
     const womenPending: Date[] = [];
+    // Today, when nothing is on it: shown in cream with a yellow outline.
+    const freeToday: Date[] = [];
+    const todayKey = formatDate(new Date());
+    if (!items.some((r) => r.date === todayKey)) {
+      freeToday.push(new Date(new Date().setHours(0, 0, 0, 0)));
+    }
+
+
 
     items.forEach((r) => {
       if (r.status === "blocked") {
@@ -431,7 +439,8 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
       else if (women === "pending") womenPending.push(d(r));
     });
 
-    return { blocked, booked, pending, menBooked, womenBooked, menPending, womenPending };
+    return { blocked, booked, pending, menBooked, womenBooked, menPending, womenPending, freeToday };
+
   }, [items]);
 
   return (
@@ -479,7 +488,10 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
               womenBooked: "!bg-gradient-to-r !from-purple-500 !from-50% !to-transparent !to-50% font-bold",
               menPending: "!bg-gradient-to-l !from-amber-500 !from-50% !to-transparent !to-50% font-bold",
               womenPending: "!bg-gradient-to-r !from-orange-400 !from-50% !to-transparent !to-50% font-bold",
+              freeToday: "!bg-cream !text-foreground ring-2 ring-inset ring-amber-400 font-bold",
             }}
+            classNames={{ day_today: "font-bold" }}
+
             className="pointer-events-auto rounded-2xl border border-border/60 bg-background p-3"
           />
           <Button
