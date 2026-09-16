@@ -176,8 +176,25 @@ export const VendorBookings = ({ vendorId }: { vendorId: string }) => {
                 </div>
                 <div className="text-[11px] text-foreground/55">{b.package?.name ?? "—"}</div>
               </div>
-              <Badge className={badgeFor(b.status)}>{t(`customer.bookingStatus.${b.status}`)}</Badge>
+              <div className="flex flex-wrap items-center gap-2">
+                {b.booking_section && (
+                  <Badge variant="outline" className="rounded-full text-[10px]">
+                    {SECTION_LABEL[b.booking_section] ?? b.booking_section}
+                  </Badge>
+                )}
+                <Badge className={badgeFor(b.status)}>{t(`customer.bookingStatus.${b.status}`)}</Badge>
+              </div>
             </div>
+            {(b.status === "cancelled" || b.status === "rejected") && b.cancellation_reason && (
+              <div className="mt-3 rounded-xl border border-destructive/20 bg-destructive/5 p-3 text-[11px] text-foreground/70">
+                <span className="font-bold text-destructive">سبب الإلغاء: </span>
+                {b.cancellation_reason}
+                <span className="ms-2 text-foreground/50">
+                  ({b.cancelled_by_role === "customer" ? "بواسطة العميل" : b.cancelled_by_role === "admin" ? "بواسطة الإدارة" : "بواسطة مزود الخدمة"}
+                  {b.cancelled_at ? ` · ${fmtDate(b.cancelled_at)}` : ""})
+                </span>
+              </div>
+            )}
             <div className="mt-3 grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
               <Stat icon={CalendarDays} label={t("vendor.bookings.eventDate")} value={fmtDate(b.event_date)} />
               <Stat icon={Users} label={t("vendor.bookings.guests")} value={fmtNumber(Number(b.guest_count ?? 0))} />
