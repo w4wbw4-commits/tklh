@@ -13,3 +13,12 @@
 - [x] Match the Customer Home typography hierarchy to the verified Cerimonia reference system.
 - [x] Apply the new warm-stone Customer Home palette while preserving Tklh green.
 - [x] Re-verify `/` at 375px, 768px, and 1440px in Arabic and English; pass build/typecheck.
+
+## Partner portal — cancellation & invoices (this round)
+- [x] Booking cancellation with mandatory reason, actor and timestamp (migration 0003).
+- [x] Cancelled/rejected bookings release the exact section they held (DB `refresh_booking_availability` is the single source of truth).
+- [x] Section-aware calendar colours: cream available, blue half men, purple half women, green both, amber unconfirmed.
+- [x] Manual invoice PDF download includes CR/freelance doc, VAT number, customer, payment status, provider name in the corner. No WhatsApp sending.
+- [ ] Partner sidebar reduced to Overview / Bookings / Reviews / Reports / My data, with packages + manual booking folded into Bookings.
+- [ ] Monthly report page (revenue, expenses, depreciation) with detailed Excel export.
+- [ ] Phone + password partner login and "join as provider" form under the login (needs a real SMS provider).
