@@ -21,6 +21,9 @@ export const unblock = (vendorId: string, date: string) =>
 export const deleteAvailabilityById = (id: string) =>
   db.from("vendor_availability").delete().eq("id", id);
 
+export const updateAvailabilityById = (id: string, patch: Update<"vendor_availability">) =>
+  db.from("vendor_availability").update(patch).eq("id", id);
+
 export const listPricingRules = (vendorId: string) =>
   db
     .from("vendor_pricing_rules")
