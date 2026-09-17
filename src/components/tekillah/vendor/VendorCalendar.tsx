@@ -793,8 +793,58 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber, vendorCr
                     />
                   </div>
                   <div>
+                    <Label htmlFor="event-time" className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-foreground/70">
+                      <Clock className="h-3.5 w-3.5" /> وقت المناسبة
+                    </Label>
+                    <Input
+                      id="event-time"
+                      type="time"
+                      dir="ltr"
+                      value={form.event_time}
+                      onChange={(e) => setForm((f) => ({ ...f, event_time: e.target.value }))}
+                      disabled={isPlatformBooking}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label className="mb-2 block text-xs font-semibold text-foreground/70">نوع المناسبة</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {EVENT_TYPES.map((t) => (
+                      <button
+                        key={t}
+                        type="button"
+                        disabled={isPlatformBooking}
+                        onClick={() => setForm((f) => ({ ...f, event_type: t }))}
+                        className={`rounded-full border px-3 py-1.5 text-xs font-bold transition-all ${
+                          form.event_type === t
+                            ? "border-transparent bg-primary text-primary-foreground"
+                            : "border-border bg-background text-foreground/70 hover:border-primary/50"
+                        } disabled:cursor-not-allowed disabled:opacity-60`}
+                      >
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="pkg" className="mb-1.5 block text-xs font-semibold text-foreground/70">
+                    الباقة / الخدمة
+                  </Label>
+                  <Input
+                    id="pkg"
+                    value={form.package_label}
+                    onChange={(e) => setForm((f) => ({ ...f, package_label: e.target.value }))}
+                    placeholder="مثال: باقة رويال + ضيافة"
+                    disabled={isPlatformBooking}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
                     <Label htmlFor="amount" className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-foreground/70">
-                      <Banknote className="h-3.5 w-3.5" /> المبلغ ()
+                      <Banknote className="h-3.5 w-3.5" /> السعر
                     </Label>
                     <Input
                       id="amount"
@@ -806,7 +856,65 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber, vendorCr
                       disabled={isPlatformBooking}
                     />
                   </div>
+                  <div>
+                    <Label htmlFor="discount" className="mb-1.5 block text-xs font-semibold text-foreground/70">
+                      الخصم
+                    </Label>
+                    <Input
+                      id="discount"
+                      type="number"
+                      inputMode="numeric"
+                      value={form.discount}
+                      onChange={(e) => setForm((f) => ({ ...f, discount: e.target.value }))}
+                      placeholder="0"
+                      disabled={isPlatformBooking}
+                    />
+                  </div>
                 </div>
+
+                <div>
+                  <Label className="mb-2 block text-xs font-semibold text-foreground/70">حالة الدفع</Label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {(["unpaid", "deposit", "paid"] as const).map((p) => (
+                      <button
+                        key={p}
+                        type="button"
+                        disabled={isPlatformBooking}
+                        onClick={() => setForm((f) => ({ ...f, payment_status: p }))}
+                        className={`rounded-2xl border p-2.5 text-xs font-bold transition-all ${
+                          form.payment_status === p
+                            ? "border-transparent bg-primary text-primary-foreground shadow-md"
+                            : "border-border bg-background text-foreground/70 hover:border-primary/50"
+                        } disabled:cursor-not-allowed disabled:opacity-60`}
+                      >
+                        {PAYMENT_LABEL[p]}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <label className="flex items-center gap-2 text-xs font-semibold text-foreground/70">
+                  <input
+                    type="checkbox"
+                    checked={form.vat_applicable}
+                    disabled={isPlatformBooking}
+                    onChange={(e) => setForm((f) => ({ ...f, vat_applicable: e.target.checked }))}
+                    className="h-4 w-4 accent-primary"
+                  />
+                  المبلغ شامل ضريبة القيمة المضافة 15%
+                </label>
+
+                {pricing.gross > 0 && (
+                  <div className="rounded-2xl border border-border bg-muted/40 p-3 text-[11px] font-semibold text-foreground/70">
+                    <div className="flex justify-between"><span>السعر</span><span>{pricing.gross.toLocaleString("en-US")}</span></div>
+                    <div className="flex justify-between"><span>الخصم</span><span>-{pricing.discount.toLocaleString("en-US")}</span></div>
+                    <div className="flex justify-between"><span>الصافي قبل الضريبة</span><span>{pricing.subtotal.toLocaleString("en-US")}</span></div>
+                    <div className="flex justify-between"><span>ضريبة 15%</span><span>{pricing.vat.toLocaleString("en-US")}</span></div>
+                    <div className="mt-1 flex justify-between border-t border-border pt-1 text-xs font-black text-primary">
+                      <span>الإجمالي</span><span>{pricing.net.toLocaleString("en-US")}</span>
+                    </div>
+                  </div>
+                )}
               </>
             )}
 
