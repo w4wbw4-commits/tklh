@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { availabilityService, paymentsService } from "@/domain";
+import { dayBuckets, vendorHasSections } from "@/domain/availability/rules";
+
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { Button } from "@/components/ui/button";
@@ -392,56 +394,12 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
   // Does this vendor serve men/women sections independently? The database only
   // fills men_status/women_status for dual-section categories (halls,
   // photographers), so the split view follows the data, never a UI guess.
-  const hasSections = useMemo(
-    () => items.some((i) => i.men_status != null || i.women_status != null),
-    [items],
-  );
+  const hasSections = useMemo(() => vendorHasSections(items), [items]);
 
-  // Day colouring is derived only from vendor_availability, which the database
-  // recomputes whenever a booking is created, confirmed, rejected or cancelled.
-  const dayModifiers = useMemo(() => {
-    const d = (r: Row) => new Date(r.date);
-    const blocked: Date[] = [];
-    const booked: Date[] = [];
-    const pending: Date[] = [];
-    const menBooked: Date[] = [];
-    const womenBooked: Date[] = [];
-    const menPending: Date[] = [];
-    const womenPending: Date[] = [];
-    // Today, when nothing is on it: shown in cream with a yellow outline.
-    const freeToday: Date[] = [];
-    const todayKey = formatDate(new Date());
-    if (!items.some((r) => r.date === todayKey)) {
-      freeToday.push(new Date(new Date().setHours(0, 0, 0, 0)));
-    }
+  // Day colouring is derived only from vendor_availability, through the shared
+  // availability rules the customer catalog uses — no duplicated logic here.
+  const dayModifiers = useMemo(() => dayBuckets(items, formatDate(new Date())), [items]);
 
-
-
-    items.forEach((r) => {
-      if (r.status === "blocked") {
-        blocked.push(d(r));
-        return;
-      }
-      const men = r.men_status ?? null;
-      const women = r.women_status ?? null;
-      const split = men != null || women != null;
-      if (!split) {
-        (r.status === "booked" ? booked : pending).push(d(r));
-        return;
-      }
-      if (men === "booked" && women === "booked") {
-        booked.push(d(r));
-        return;
-      }
-      if (men === "booked") menBooked.push(d(r));
-      else if (men === "pending") menPending.push(d(r));
-      if (women === "booked") womenBooked.push(d(r));
-      else if (women === "pending") womenPending.push(d(r));
-    });
-
-    return { blocked, booked, pending, menBooked, womenBooked, menPending, womenPending, freeToday };
-
-  }, [items]);
 
   return (
     <div className="space-y-6">

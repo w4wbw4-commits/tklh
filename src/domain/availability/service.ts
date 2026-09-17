@@ -12,6 +12,20 @@ export const listForVendor = (vendorId: string) =>
     .eq("vendor_id", vendorId)
     .order("date", { ascending: true });
 
+/**
+ * Availability state for every vendor over a date range, through the
+ * SECURITY DEFINER `availability_for_dates` RPC. This is what the customer
+ * catalog reads: the vendor_availability table itself is restricted to the
+ * owning vendor / booking customer / admin, and the RPC returns availability
+ * state only (no booking ids, no PII).
+ */
+export const listAvailabilityForDates = (from: string, to: string) =>
+  db.rpc("availability_for_dates", { _from: from, _to: to });
+
+export const listAvailabilityForDate = (date: string) =>
+  listAvailabilityForDates(date, date);
+
+
 export const block = (payload: Insert<"vendor_availability">) =>
   db.from("vendor_availability").upsert(payload, { onConflict: "vendor_id,date" });
 

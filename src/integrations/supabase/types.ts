@@ -1690,6 +1690,16 @@ export type Database = {
           starting_price: number
         }[]
       }
+      availability_for_dates: {
+        Args: { _from: string; _to: string }
+        Returns: {
+          date: string
+          men_status: Database["public"]["Enums"]["availability_status"]
+          status: Database["public"]["Enums"]["availability_status"]
+          vendor_id: string
+          women_status: Database["public"]["Enums"]["availability_status"]
+        }[]
+      }
       compute_payment_split: {
         Args: { _amount: number }
         Returns: {

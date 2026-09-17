@@ -23,7 +23,14 @@ import {
   CalendarDays,
   CalendarRange,
 } from "lucide-react";
-import { vendorsService } from "@/domain";
+import { vendorsService, availabilityService } from "@/domain";
+import {
+  indexByVendor,
+  isSectionAvailable,
+  type AvailabilityDay,
+  type SectionKey,
+} from "@/domain/availability/rules";
+
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { tierForBudget, type BudgetTier, type ServiceKey } from "./types";
@@ -86,7 +93,16 @@ interface Props {
    * the confirmation/checkout step.
    */
   onBookNow?: (pick: VendorPick) => void;
+  /**
+   * Event date (YYYY-MM-DD). When provided, vendors with no availability left
+   * on that date are hidden. The decision comes from the availability domain
+   * rules — the same rules the partner calendar renders.
+   */
+  eventDate?: string | null;
+  /** Requested section, for vendors that serve men/women independently. */
+  section?: SectionKey;
 }
+
 
 // Matches the package_tier enum on the DB. Indexed by total-budget tier.
 const TIER_TO_PACKAGE_TIERS: Record<BudgetTier, string[]> = {
@@ -113,7 +129,17 @@ type RawPortfolioItem = {
   sort_order: number | null;
 };
 
-export const StepVendors = ({ selectedServices, picks, setPick, budget, allocations, onBookNow }: Props) => {
+export const StepVendors = ({
+  selectedServices,
+  picks,
+  setPick,
+  budget,
+  allocations,
+  onBookNow,
+  eventDate = null,
+  section = "both",
+}: Props) => {
+
   const { t } = useTranslation();
   const [vendors, setVendors] = useState<VendorOption[]>([]);
   const [loading, setLoading] = useState(true);
@@ -240,9 +266,21 @@ export const StepVendors = ({ selectedServices, picks, setPick, budget, allocati
       } satisfies VendorOption;
     });
 
-    setVendors(mapped);
+    // Availability filter — one source of truth. `vendor_availability` is
+    // recomputed by the database on every booking create/confirm/reject/cancel,
+    // so a cancelled booking frees the exact section it held and the vendor
+    // reappears here immediately.
+    let visible = mapped;
+    if (eventDate) {
+      const { data: avail } = await availabilityService.listAvailabilityForDate(eventDate);
+      const byVendor = indexByVendor((avail ?? []) as AvailabilityDay[]);
+      visible = mapped.filter((v) => isSectionAvailable(byVendor.get(v.id), section));
+    }
+
+    setVendors(visible);
     setLoading(false);
-  }, [selectedServices]);
+  }, [selectedServices, eventDate, section]);
+
 
   useEffect(() => {
     refetch();
