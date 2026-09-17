@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Package, Plus, Trash2, Tag, Pencil, Images, ArrowUp, ArrowDown, Archive, RotateCcw } from "lucide-react";
+import { Package, Plus, Trash2, Tag, Pencil, Images, ArrowUp, ArrowDown, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,
@@ -467,7 +467,7 @@ export const VendorPackagesManager = ({
                         </Button>
                       ) : (
                         <Button variant="ghost" size="sm" onClick={() => removePackage(p)} className="text-destructive hover:bg-destructive/10" aria-label="حذف">
-                          {p.includes ? <Trash2 className="h-4 w-4" /> : <Archive className="h-4 w-4" />}
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       )}
                     </div>
