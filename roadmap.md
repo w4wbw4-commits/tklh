@@ -53,7 +53,18 @@
 - [x] Friendly conflict message instead of a raw database error.
 - [x] DB scenarios run inside a rolled-back transaction — no test data left behind (verified 0 rows).
 
-## Phase 6+ (later, in order)
-- [ ] Manual booking + mandatory invoice review, then remaining phases through final audit.
+## Phase 6 — manual booking + mandatory invoice
+- [x] Manual booking is partner-only, scoped to the signed-in partner's own vendor id (RLS on `vendor_availability` / `vendor_invoices`).
+- [x] Full field set: customer name + phone, event type, date, time, section (men/women/both), package/service, price, discount, VAT toggle, final total, payment status, notes.
+- [x] Invoice is mandatory: no manual booking is saved without an issued invoice number; name, phone, event type and a positive price are required.
+- [x] Invoice PDF carries provider establishment name, VAT number, CR/freelance on-file flag, customer name/phone, booking + invoice number, event type/date/time/section, package, price/discount/subtotal/VAT/total and payment status.
+- [x] Provider name printed in the invoice corner (top-right) and footer.
+- [x] Download-only PDF — no WhatsApp/SMS automation.
+- [x] Availability stays the single source of truth; section statuses follow the chosen section, and the DB double-booking guard (0009) still blocks conflicts.
+- [x] Typecheck, tests (8/8) and build pass.
+
+## Phase 7+ (later, in order)
+- [ ] Packages / seasonal offers / reports / reviews review, then remaining phases through final audit.
 - [ ] Domain/DNS wiring deferred to the very end per user request.
+
 
