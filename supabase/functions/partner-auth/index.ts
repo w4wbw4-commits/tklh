@@ -146,8 +146,11 @@ Deno.serve(async (req) => {
         .update({ attempts: (challenge.attempts ?? 0) + 1 }).eq("id", challenge.id);
       return json({ error: "invalid_code" }, 400);
     }
-    await admin.from("phone_otp_challenges")
-      .update({ consumed_at: new Date().toISOString() }).eq("id", challenge.id);
+    // The challenge is consumed only after the account operation succeeds, so a
+    // rejected password does not force the partner to request a new code.
+    const consumeChallenge = () =>
+      admin.from("phone_otp_challenges")
+        .update({ consumed_at: new Date().toISOString() }).eq("id", challenge.id);
 
     const user = await findUser();
 
@@ -171,6 +174,7 @@ Deno.serve(async (req) => {
         { user_id: newUser.id, phone, display_name: phone },
         { onConflict: "user_id" },
       );
+      await consumeChallenge();
       // Deliberately NO vendor role here — approval grants it.
       return json({ ok: true, userId: newUser.id, email });
     }
@@ -186,6 +190,7 @@ Deno.serve(async (req) => {
       }
       throw updateError;
     }
+    await consumeChallenge();
     return json({ ok: true, userId: user.id, email });
   } catch (error) {
     console.error("partner-auth failed:", error);
