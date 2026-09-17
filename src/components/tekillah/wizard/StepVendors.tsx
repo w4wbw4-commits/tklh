@@ -23,7 +23,14 @@ import {
   CalendarDays,
   CalendarRange,
 } from "lucide-react";
-import { vendorsService } from "@/domain";
+import { vendorsService, availabilityService } from "@/domain";
+import {
+  indexByVendor,
+  isSectionAvailable,
+  type AvailabilityDay,
+  type SectionKey,
+} from "@/domain/availability/rules";
+
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { tierForBudget, type BudgetTier, type ServiceKey } from "./types";
@@ -86,7 +93,16 @@ interface Props {
    * the confirmation/checkout step.
    */
   onBookNow?: (pick: VendorPick) => void;
+  /**
+   * Event date (YYYY-MM-DD). When provided, vendors with no availability left
+   * on that date are hidden. The decision comes from the availability domain
+   * rules — the same rules the partner calendar renders.
+   */
+  eventDate?: string | null;
+  /** Requested section, for vendors that serve men/women independently. */
+  section?: SectionKey;
 }
+
 
 // Matches the package_tier enum on the DB. Indexed by total-budget tier.
 const TIER_TO_PACKAGE_TIERS: Record<BudgetTier, string[]> = {
