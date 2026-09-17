@@ -10,7 +10,7 @@ import { PartnerAuthShell } from "@/components/tekillah/vendor/PartnerAuthShell"
 type Status = "new" | "contacted" | "approved" | "rejected";
 
 /**
- * Landing page for a signed-in partner whose account is not активated yet:
+ * Landing page for a signed-in partner whose account is not activated yet:
  * shows where the application stands (submitted / changes requested / rejected)
  * and never grants portal access — the vendor role does that.
  */

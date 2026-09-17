@@ -19,6 +19,7 @@ export * as availabilityService from "@/domain/availability/service";
 export * as reviewsService from "@/domain/reviews/service";
 export * as notificationsService from "@/domain/notifications/service";
 export * as leadsService from "@/domain/leads/service";
+export * as partnerService from "@/domain/partner/service";
 export * as incidentsService from "@/domain/incidents/service";
 export * as expensesService from "@/domain/expenses/service";
 export * as storageService from "@/domain/storage/service";
