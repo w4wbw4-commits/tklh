@@ -41,12 +41,10 @@ const Auth = () => {
   // - else: go home.
   const computeRedirect = (emailHint?: string | null, phoneHint?: string | null) => {
     if (explicitRedirect) return explicitRedirect;
-    // Primary admin allowlist — always route to /admin after login.
+    // Navigation hint only — /admin itself is gated by RequireAdmin + RLS.
     const email = emailHint ?? user?.email;
     const phone = phoneHint ?? user?.phone;
-    if (email === "966554430196@phone.tekillah.app" || phone === "+966554430196") {
-      return "/admin";
-    }
+    if (isAllowlistedAdmin({ id: "", email, phone })) return "/admin";
     return isPendingPlanReady(loadPendingPlan()) ? "/dashboard" : "/";
   };
 
