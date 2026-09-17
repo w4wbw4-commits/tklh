@@ -215,17 +215,34 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber, vendorCr
     const row = byDate.get(formatDate(d));
     const meta = parseMeta(row?.note ?? null);
     setForm({
+      ...EMPTY_FORM,
       status: row?.status ?? "pending",
       customer_name: meta?.customer_name ?? "",
       customer_phone: meta?.customer_phone ?? "",
       amount: meta?.amount ? String(meta.amount) : "",
+      discount: meta?.discount ? String(meta.discount) : "",
       label: meta?.label ?? "",
       text: meta?.text ?? (!meta && row?.note ? row.note : ""),
       section: meta?.section ?? "both",
+      event_type: meta?.event_type ?? EMPTY_FORM.event_type,
+      event_time: meta?.event_time ?? EMPTY_FORM.event_time,
+      package_label: meta?.package_label ?? "",
+      vat_applicable: meta?.vat_applicable ?? true,
+      payment_status: meta?.payment_status ?? "unpaid",
     });
     setLastInvoice(null);
     setSheetOpen(true);
   };
+
+  // Pricing preview for the sheet — gross price, discount, VAT, final total.
+  const pricing = useMemo(() => {
+    const gross = form.amount ? Number(form.amount) : 0;
+    const discount = form.discount ? Number(form.discount) : 0;
+    const net = Math.max(0, gross - discount);
+    const subtotal = form.vat_applicable ? +(net / 1.15).toFixed(2) : net;
+    const vat = +(net - subtotal).toFixed(2);
+    return { gross, discount, net, subtotal, vat };
+  }, [form.amount, form.discount, form.vat_applicable]);
 
   // Save (insert or update) a manual entry on a date. A manual booking always
   // produces a tax invoice — the partner then downloads the PDF and sends it.
@@ -236,15 +253,26 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber, vendorCr
       return;
     }
     const isBooking = form.status !== "blocked";
-    const amount = form.amount ? Number(form.amount) : 0;
     const alreadyInvoiced = !!parseMeta(existingForPicked?.note ?? null)?.invoice_number;
     if (isBooking && !alreadyInvoiced) {
       if (!form.customer_name.trim()) {
         toast.error("اسم العميل مطلوب لإصدار الفاتورة");
         return;
       }
-      if (!amount || amount <= 0) {
+      if (!form.customer_phone.trim()) {
+        toast.error("جوال العميل مطلوب لإصدار الفاتورة");
+        return;
+      }
+      if (!form.event_type.trim()) {
+        toast.error("نوع المناسبة مطلوب");
+        return;
+      }
+      if (!pricing.gross || pricing.gross <= 0) {
         toast.error("المبلغ مطلوب — الفاتورة إلزامية لكل حجز يدوي");
+        return;
+      }
+      if (pricing.discount < 0 || pricing.discount >= pricing.gross) {
+        toast.error("الخصم يجب أن يكون أقل من المبلغ");
         return;
       }
     }
@@ -255,8 +283,6 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber, vendorCr
     let invoiceNumber = parseMeta(existingForPicked?.note ?? null)?.invoice_number;
     let issued: typeof lastInvoice = null;
     if (isBooking && !alreadyInvoiced) {
-      const subtotal = +(amount / 1.15).toFixed(2);
-      const vat = +(amount - subtotal).toFixed(2);
       const { data: numData } = await paymentsService.nextInvoiceNumber();
       const number = (numData as unknown as string) ?? "";
       const { error: invErr } = await paymentsService.createVendorInvoice({
@@ -264,10 +290,20 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber, vendorCr
         invoice_number: number,
         customer_name: form.customer_name.trim() || null,
         customer_phone: form.customer_phone.trim() || null,
-        subtotal,
-        vat_amount: vat,
-        total: amount,
-        notes: `حجز يدوي · ${formatDate(picked)} · ${SECTION_LABEL[form.section]}`,
+        subtotal: pricing.subtotal,
+        vat_amount: pricing.vat,
+        total: pricing.net,
+        status: form.payment_status,
+        notes: [
+          `حجز يدوي · ${formatDate(picked)} ${form.event_time}`,
+          `${form.event_type} · ${SECTION_LABEL[form.section]}`,
+          form.package_label ? `الباقة/الخدمة: ${form.package_label}` : null,
+          pricing.discount ? `خصم: ${pricing.discount}` : null,
+          `حالة الدفع: ${PAYMENT_LABEL[form.payment_status]}`,
+          form.text || null,
+        ]
+          .filter(Boolean)
+          .join(" · "),
         source: "manual",
         vendor_vat_number: vendorVatNumber ?? null,
       } as never);
@@ -282,10 +318,16 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber, vendorCr
         issue_date: new Date().toISOString().slice(0, 10),
         customer_name: form.customer_name.trim() || null,
         customer_phone: form.customer_phone.trim() || null,
-        subtotal,
-        vat_amount: vat,
-        total: amount,
+        subtotal: pricing.subtotal,
+        vat_amount: pricing.vat,
+        total: pricing.net,
+        discount: pricing.discount,
+        gross: pricing.gross,
         event_date: formatDate(picked),
+        event_time: form.event_time,
+        event_type: form.event_type,
+        package_label: form.package_label,
+        payment_status: form.payment_status,
         section: form.section,
       };
     }
@@ -296,10 +338,16 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber, vendorCr
       label: form.label || (form.status === "blocked" ? "محجوب يدوياً" : "حجز يدوي"),
       customer_name: form.customer_name || undefined,
       customer_phone: form.customer_phone || undefined,
-      amount: amount || undefined,
+      amount: pricing.gross || undefined,
+      discount: pricing.discount || undefined,
       text: form.text || undefined,
       section: isBooking ? form.section : undefined,
       invoice_number: invoiceNumber,
+      event_type: isBooking ? form.event_type : undefined,
+      event_time: isBooking ? form.event_time : undefined,
+      package_label: form.package_label || undefined,
+      vat_applicable: isBooking ? form.vat_applicable : undefined,
+      payment_status: isBooking ? form.payment_status : undefined,
     };
     const payload: Record<string, unknown> = {
       vendor_id: vendorId,
@@ -326,6 +374,7 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber, vendorCr
     }
     load();
   };
+
 
   // Download the invoice PDF (no automatic sending anywhere).
   const downloadInvoicePDF = () => {
