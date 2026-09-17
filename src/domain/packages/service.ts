@@ -43,7 +43,12 @@ export const deletePlatformPackage = (id: string) =>
   db.from("platform_packages").delete().eq("id", id);
 
 export const listVendorPackages = (vendorId: string) =>
-  db.from("packages").select("*").eq("vendor_id", vendorId).order("price", { ascending: true });
+  db
+    .from("packages")
+    .select("*")
+    .eq("vendor_id", vendorId)
+    .order("sort_order", { ascending: true })
+    .order("price", { ascending: true });
 
 export const listLegacyPackagesForAdmin = () =>
   db.from("packages").select("id,name,price,vendor_id,created_at").order("created_at", { ascending: false });
@@ -59,6 +64,24 @@ export const deleteVendorPackage = (id: string) =>
 
 export const deleteVendorPackages = (ids: string[]) =>
   db.from("packages").delete().in("id", ids);
+
+/**
+ * How many bookings reference a package. A package with history is archived
+ * (hidden from customers) instead of deleted, so past bookings stay intact.
+ */
+export const countBookingsForPackage = (packageId: string) =>
+  db.from("bookings").select("id", { count: "exact", head: true }).eq("package_id", packageId);
+
+/** Soft delete: hidden from customers, kept for historical bookings. */
+export const archiveVendorPackage = (id: string) =>
+  db.from("packages").update({ archived: true, active: false }).eq("id", id);
+
+export const restoreVendorPackage = (id: string) =>
+  db.from("packages").update({ archived: false }).eq("id", id);
+
+/** Manual ordering of the partner's own packages. */
+export const setPackageSortOrder = (id: string, sortOrder: number) =>
+  db.from("packages").update({ sort_order: sortOrder }).eq("id", id);
 
 /**
  * Average price of `basic`-tier packages per vendor category — the realistic
