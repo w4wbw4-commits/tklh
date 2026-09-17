@@ -41,6 +41,8 @@ interface Props {
   /** Used on the mandatory invoice created for every manual booking. */
   vendorName?: string;
   vendorVatNumber?: string | null;
+  /** CR / freelance certificate reference — printed on the invoice. */
+  vendorCrUrl?: string | null;
 }
 
 type ManualSection = "both" | "men" | "women";
@@ -49,6 +51,28 @@ const SECTION_LABEL: Record<ManualSection, string> = {
   both: "القسمان معاً",
   men: "قسم الرجال",
   women: "قسم النساء",
+};
+
+const SECTION_EN: Record<ManualSection, string> = {
+  both: "Men + Women",
+  men: "Men",
+  women: "Women",
+};
+
+const EVENT_TYPES = ["زواج", "خطوبة", "تخرج", "مؤتمر", "عقد قران", "مناسبة عامة"] as const;
+
+type PaymentStatus = "unpaid" | "deposit" | "paid";
+
+const PAYMENT_LABEL: Record<PaymentStatus, string> = {
+  unpaid: "غير مدفوع",
+  deposit: "عربون مدفوع",
+  paid: "مدفوع بالكامل",
+};
+
+const PAYMENT_EN: Record<PaymentStatus, string> = {
+  unpaid: "Unpaid",
+  deposit: "Deposit paid",
+  paid: "Paid in full",
 };
 
 // We piggy-back on `vendor_availability.note` to store rich event metadata
@@ -63,6 +87,12 @@ type ManualMeta = {
   text?: string;
   section?: ManualSection;
   invoice_number?: string;
+  event_type?: string;
+  event_time?: string;
+  package_label?: string;
+  discount?: number;
+  vat_applicable?: boolean;
+  payment_status?: PaymentStatus;
 };
 
 type SectionStatus = "blocked" | "booked" | "pending" | null;
