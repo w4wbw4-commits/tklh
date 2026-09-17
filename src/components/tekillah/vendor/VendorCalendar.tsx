@@ -381,29 +381,52 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber, vendorCr
     if (!lastInvoice) return;
     const money = (n: number) => Math.round(n).toLocaleString("en-US");
     const doc = new jsPDF();
+    // Provider name always in the invoice corner.
+    doc.setFontSize(9);
     doc.setFont("helvetica", "bold");
+    doc.text(vendorName ?? "", 196, 12, { align: "right" });
     doc.setFontSize(20);
-    doc.text("TAX INVOICE", 105, 20, { align: "center" });
-    doc.setFontSize(11);
+    doc.text("TAX INVOICE", 105, 22, { align: "center" });
+    doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
-    doc.text(`Invoice #: ${lastInvoice.invoice_number}`, 14, 35);
-    doc.text(`Date: ${lastInvoice.issue_date}`, 14, 42);
-    doc.text(`Vendor: ${vendorName ?? ""}`, 14, 49);
-    doc.text(`VAT No: ${vendorVatNumber || "-"}`, 14, 56);
-    doc.text(`Customer: ${lastInvoice.customer_name ?? "-"}`, 14, 63);
-    doc.text(`Phone: ${lastInvoice.customer_phone ?? "-"}`, 14, 70);
-    doc.text(`Event date: ${lastInvoice.event_date}`, 14, 77);
+
+    // Provider block
+    doc.setFont("helvetica", "bold");
+    doc.text("Provider", 14, 34);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Establishment: ${vendorName ?? "-"}`, 14, 40);
+    doc.text(`VAT No: ${vendorVatNumber || "-"}`, 14, 46);
+    doc.text(`CR / Freelance Doc: ${vendorCrUrl ? "On file" : "-"}`, 14, 52);
+
+    // Customer + booking block
+    doc.setFont("helvetica", "bold");
+    doc.text("Customer & Booking", 110, 34);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Invoice #: ${lastInvoice.invoice_number}`, 110, 40);
+    doc.text(`Booking #: ${lastInvoice.invoice_number}`, 110, 46);
+    doc.text(`Issued: ${lastInvoice.issue_date}`, 110, 52);
+    doc.text(`Customer: ${lastInvoice.customer_name ?? "-"}`, 110, 58);
+    doc.text(`Phone: ${lastInvoice.customer_phone ?? "-"}`, 110, 64);
+
+    doc.text(`Event: ${lastInvoice.event_type}`, 14, 64);
+    doc.text(`Date / Time: ${lastInvoice.event_date} ${lastInvoice.event_time}`, 14, 70);
+    doc.text(`Section: ${SECTION_EN[lastInvoice.section]}`, 14, 76);
+    doc.text(`Payment status: ${PAYMENT_EN[lastInvoice.payment_status]}`, 110, 70);
+
     autoTable(doc, {
-      startY: 88,
-      head: [["Description", "Subtotal (SAR)", "VAT 15%", "Total (SAR)"]],
+      startY: 86,
+      head: [["Description", "Price", "Discount", "Subtotal", "VAT 15%", "Total (SAR)"]],
       body: [[
-        `Manual booking (${lastInvoice.section})`,
+        lastInvoice.package_label || `Manual booking (${SECTION_EN[lastInvoice.section]})`,
+        money(lastInvoice.gross),
+        money(lastInvoice.discount),
         money(lastInvoice.subtotal),
         money(lastInvoice.vat_amount),
         money(lastInvoice.total),
       ]],
       theme: "grid",
-      headStyles: { fillColor: [82, 92, 50] },
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [22, 55, 38] },
     });
     const finalY = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
     doc.setFont("helvetica", "bold");
