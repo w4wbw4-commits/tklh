@@ -129,8 +129,15 @@ export const finalisePlan = async ({
   const { data: createdBookings, error: bErr } = await bookingsService.createMany(bookingsToInsert);
 
   if (bErr || !createdBookings) {
-    throw new Error(bErr?.message ?? "bookings_insert_failed");
+    // The database refuses a request whose date/section is already held, so the
+    // customer gets a clear message instead of a raw constraint error.
+    const raw = bErr?.message ?? "bookings_insert_failed";
+    if (raw.includes("booking_conflict") || raw.includes("date_blocked")) {
+      throw new Error("هذا التاريخ لم يبقَ متاحاً لدى أحد المزوّدين المختارين. الرجاء اختيار تاريخ أو مزوّد آخر.");
+    }
+    throw new Error(raw);
   }
+
 
   return {
     eventId: ev.id,
