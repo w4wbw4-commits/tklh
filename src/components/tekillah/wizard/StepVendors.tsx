@@ -685,7 +685,9 @@ export const StepVendors = ({
                                             packageId: null,
                                             category: cat,
                                             price: indicativePrice,
+                                            section,
                                           };
+
                                           handlePick(newPick);
                                           onBookNow?.(newPick);
                                         }}
