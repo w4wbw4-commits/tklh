@@ -70,7 +70,9 @@ export const finalisePlan = async ({
     customer_id: string; vendor_id: string; package_id: string | null;
     platform_package_id: string | null; event_id: string; event_date: string;
     guest_count: number; total_price: number; status: "pending";
+    booking_section?: "men" | "women" | "both" | null;
   }> = [];
+
 
   if (plan.packageSelection?.kind === "admin" && pickList.length === 0) {
     const { data: pkgRow } = await packagesService.getPlatformPackageSlots(plan.packageSelection.key);
@@ -113,7 +115,11 @@ export const finalisePlan = async ({
       guest_count: guests,
       total_price: p.price,
       status: "pending" as const,
+      // The section the customer actually asked for. Without it the database
+      // treats the request as "both" and holds the whole venue.
+      booking_section: p.section ?? null,
     }));
+
   }
 
   if (bookingsToInsert.length === 0) {
@@ -123,8 +129,15 @@ export const finalisePlan = async ({
   const { data: createdBookings, error: bErr } = await bookingsService.createMany(bookingsToInsert);
 
   if (bErr || !createdBookings) {
-    throw new Error(bErr?.message ?? "bookings_insert_failed");
+    // The database refuses a request whose date/section is already held, so the
+    // customer gets a clear message instead of a raw constraint error.
+    const raw = bErr?.message ?? "bookings_insert_failed";
+    if (raw.includes("booking_conflict") || raw.includes("date_blocked")) {
+      throw new Error("هذا التاريخ لم يبقَ متاحاً لدى أحد المزوّدين المختارين. الرجاء اختيار تاريخ أو مزوّد آخر.");
+    }
+    throw new Error(raw);
   }
+
 
   return {
     eventId: ev.id,

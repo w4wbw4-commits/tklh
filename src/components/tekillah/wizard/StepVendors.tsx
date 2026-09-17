@@ -77,7 +77,10 @@ export interface VendorPick {
   packageId: string | null;
   category: ServiceKey;
   price: number;
+  /** Section requested for venues that serve men/women independently. */
+  section?: SectionKey | null;
 }
+
 
 interface Props {
   selectedServices: ServiceKey[];
@@ -682,7 +685,9 @@ export const StepVendors = ({
                                             packageId: null,
                                             category: cat,
                                             price: indicativePrice,
+                                            section,
                                           };
+
                                           handlePick(newPick);
                                           onBookNow?.(newPick);
                                         }}
@@ -704,7 +709,7 @@ export const StepVendors = ({
                                             handlePick(
                                               isPickedPkg
                                                 ? null
-                                                : { vendorId: v.id, packageId: p.id, category: cat, price: Number(p.price) },
+                                                : { vendorId: v.id, packageId: p.id, category: cat, price: Number(p.price), section },
                                             )
                                           }
                                           className={`flex items-center justify-between rounded-xl border p-3 text-start transition-all ${
