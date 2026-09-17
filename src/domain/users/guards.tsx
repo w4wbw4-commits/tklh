@@ -59,9 +59,15 @@ export const useRoles = (): RolesState => {
 const AuthGate = ({
   allow,
   children,
+  loginPath = "/auth",
+  deniedPath = "/",
 }: {
   allow: (roles: RolesState) => boolean;
   children: React.ReactNode;
+  /** Where an anonymous visitor is sent to sign in. */
+  loginPath?: string;
+  /** Where a signed-in user without the required role is sent. */
+  deniedPath?: string;
 }) => {
   const roles = useRoles();
   const location = useLocation();
@@ -69,9 +75,9 @@ const AuthGate = ({
   // Same soft cream wash the router uses — never a spinner flash.
   if (roles.loading) return <div className="min-h-screen bg-background" aria-hidden />;
   if (!roles.user) {
-    return <Navigate to={`/auth?redirect=${encodeURIComponent(location.pathname)}`} replace />;
+    return <Navigate to={`${loginPath}?redirect=${encodeURIComponent(location.pathname)}`} replace />;
   }
-  if (!allow(roles)) return <Navigate to="/" replace />;
+  if (!allow(roles)) return <Navigate to={deniedPath} replace />;
   return <>{children}</>;
 };
 
@@ -80,9 +86,19 @@ export const RequireCustomer = ({ children }: { children: React.ReactNode }) => 
   <AuthGate allow={() => true}>{children}</AuthGate>
 );
 
-/** Partner portal: vendor role or admin (admins can inspect partner pages). */
+/**
+ * Partner portal: vendor role or admin (admins can inspect partner pages).
+ * The vendor role is granted only by `approve_vendor_application`, so an
+ * applicant still under review lands on the status page instead of the portal.
+ */
 export const RequirePartner = ({ children }: { children: React.ReactNode }) => (
-  <AuthGate allow={(r) => r.isVendor || r.isAdmin}>{children}</AuthGate>
+  <AuthGate
+    allow={(r) => r.isVendor || r.isAdmin}
+    loginPath="/partner/login"
+    deniedPath="/partner/status"
+  >
+    {children}
+  </AuthGate>
 );
 
 /** Admin console: allowlisted phone or `admin` role. */

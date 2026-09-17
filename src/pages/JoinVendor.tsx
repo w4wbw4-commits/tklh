@@ -320,8 +320,12 @@ const JoinVendor = () => {
 
             <p className="mt-6 text-center text-sm text-foreground/60">
               {label("لديك حساب شريك بالفعل؟", "Already a partner?")}{" "}
-              <Link to="/auth?redirect=/partner&role=vendor" className="font-semibold text-primary underline-offset-4 hover:underline">
+              <Link to="/partner/login" className="font-semibold text-primary underline-offset-4 hover:underline">
                 {label("تسجيل الدخول", "Sign in")}
+              </Link>
+              {" · "}
+              <Link to="/partner/register" className="font-semibold text-primary underline-offset-4 hover:underline">
+                {label("التسجيل الكامل بالمستندات", "Full application with documents")}
               </Link>
             </p>
           </>

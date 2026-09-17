@@ -1077,52 +1077,109 @@ export type Database = {
       }
       vendor_applications: {
         Row: {
+          address: string | null
+          business_name: string | null
           city: string | null
+          commercial_register_url: string | null
+          contact_whatsapp: string | null
           created_at: string
+          description: string | null
           email: string
           entity_type: Database["public"]["Enums"]["applicant_entity_type"]
           full_name: string
+          gallery_urls: string[]
           id: string
+          identity_document_url: string | null
           notes: string | null
           phone: string
+          portfolio_urls: string[]
+          region: string | null
           review_notes: string | null
           reviewed_at: string | null
           reviewed_by: string | null
+          sections_independent: boolean
+          service_areas: string[]
           service_type: Database["public"]["Enums"]["vendor_category"]
+          services: string[]
+          social_links: Json
+          starting_price: number | null
           status: Database["public"]["Enums"]["vendor_application_status"]
+          supports_men: boolean
+          supports_women: boolean
           updated_at: string
+          user_id: string | null
+          vat_number: string | null
+          vendor_id: string | null
         }
         Insert: {
+          address?: string | null
+          business_name?: string | null
           city?: string | null
+          commercial_register_url?: string | null
+          contact_whatsapp?: string | null
           created_at?: string
+          description?: string | null
           email: string
           entity_type: Database["public"]["Enums"]["applicant_entity_type"]
           full_name: string
+          gallery_urls?: string[]
           id?: string
+          identity_document_url?: string | null
           notes?: string | null
           phone: string
+          portfolio_urls?: string[]
+          region?: string | null
           review_notes?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          sections_independent?: boolean
+          service_areas?: string[]
           service_type: Database["public"]["Enums"]["vendor_category"]
+          services?: string[]
+          social_links?: Json
+          starting_price?: number | null
           status?: Database["public"]["Enums"]["vendor_application_status"]
+          supports_men?: boolean
+          supports_women?: boolean
           updated_at?: string
+          user_id?: string | null
+          vat_number?: string | null
+          vendor_id?: string | null
         }
         Update: {
+          address?: string | null
+          business_name?: string | null
           city?: string | null
+          commercial_register_url?: string | null
+          contact_whatsapp?: string | null
           created_at?: string
+          description?: string | null
           email?: string
           entity_type?: Database["public"]["Enums"]["applicant_entity_type"]
           full_name?: string
+          gallery_urls?: string[]
           id?: string
+          identity_document_url?: string | null
           notes?: string | null
           phone?: string
+          portfolio_urls?: string[]
+          region?: string | null
           review_notes?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          sections_independent?: boolean
+          service_areas?: string[]
           service_type?: Database["public"]["Enums"]["vendor_category"]
+          services?: string[]
+          social_links?: Json
+          starting_price?: number | null
           status?: Database["public"]["Enums"]["vendor_application_status"]
+          supports_men?: boolean
+          supports_women?: boolean
           updated_at?: string
+          user_id?: string | null
+          vat_number?: string | null
+          vendor_id?: string | null
         }
         Relationships: []
       }
@@ -1689,6 +1746,10 @@ export type Database = {
           rejection_reason: string
           starting_price: number
         }[]
+      }
+      approve_vendor_application: {
+        Args: { _application_id: string }
+        Returns: string
       }
       availability_for_dates: {
         Args: { _from: string; _to: string }

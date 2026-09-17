@@ -5,7 +5,7 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { leadsService } from "@/domain";
+import { leadsService, partnerService } from "@/domain";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -81,6 +81,22 @@ export const AdminVendorApplications = () => {
   }, [filter]);
 
   const updateStatus = async (id: string, next: AppStatus) => {
+    // Approval is the only path that creates the vendor profile and grants the
+    // vendor role — it runs as an admin-checked database function.
+    if (next === "approved") {
+      const { error } = await partnerService.approveApplication(id);
+      if (error) {
+        toast.error(
+          error.message.includes("application_has_no_account")
+            ? "هذا الطلب غير مرتبط بحساب — اطلب من المزود التسجيل عبر صفحة الشركاء"
+            : error.message,
+        );
+        return;
+      }
+      toast.success("تم قبول الطلب وتفعيل حساب المزود");
+      load();
+      return;
+    }
     const { error } = await leadsService.updateVendorApplicationStatus(id, next);
     if (error) { toast.error(error.message); return; }
     toast.success("تم تحديث حالة الطلب");
