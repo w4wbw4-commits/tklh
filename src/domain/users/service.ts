@@ -12,7 +12,11 @@ export const hasRole = async (userId: string, role: AppRole) => {
   return Boolean(data);
 };
 
-/** Best-effort self-heal so RLS-protected writes work for allowlisted admins. */
+/**
+ * Best-effort self-heal for allowlisted admins. RLS only lets an existing
+ * admin insert into `user_roles`, so this can never escalate privileges — the
+ * authoritative grant is the database trigger `auto_grant_primary_admin`.
+ */
 export const ensureRole = async (userId: string, role: AppRole) => {
   await db.from("user_roles").insert({ user_id: userId, role }).then(
     () => {},
@@ -21,18 +25,24 @@ export const ensureRole = async (userId: string, role: AppRole) => {
 };
 
 /**
- * Resolves admin access exactly as before: hardcoded phone allowlist first
- * (with a role self-heal), otherwise the `has_role` security-definer RPC.
+ * Resolves admin access from the database only: `has_role` (SECURITY DEFINER,
+ * reading `user_roles`) is the single source of truth. The frontend allowlist
+ * is never a source of authority — it only triggers a best-effort self-heal
+ * that RLS itself must approve.
  */
 export const resolveAdminAccess = async (
   user: { id: string; email?: string | null; phone?: string | null } | null,
 ) => {
   if (!user) return false;
+  const isAdmin = await hasRole(user.id, "admin");
+  if (isAdmin) return true;
   if (isAllowlistedAdmin(user)) {
+    // Attempt the self-heal, then re-check the database. If RLS refuses the
+    // insert (the normal case for a non-admin), access stays denied.
     await ensureRole(user.id, "admin");
-    return true;
+    return hasRole(user.id, "admin");
   }
-  return hasRole(user.id, "admin");
+  return false;
 };
 
 export const getProfile = async (userId: string) =>

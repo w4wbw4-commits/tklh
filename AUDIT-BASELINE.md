@@ -84,3 +84,13 @@ Legend: ✅ COMPLETED · 🟡 PARTIAL · ❌ MISSING
 5. Manual invoice PDF: add CR/freelance document + payment status.
 6. Cleanup: fold or remove the six unlinked partner routes.
 7. Customer Home: brand hue to `151 43% 15%`, optional `clamp()` pass.
+
+---
+## PHASE 1 — Security & structure (applied 2026-09-17)
+- `generate-invoice`: bearer validated in code; only booking customer / owning vendor / admin (401 · 403 verified); all figures now read from the database, request body ignored except `bookingId`.
+- `generate-invitation`: bearer validated; event ownership required before any AI credit is spent; prompt inputs length-capped.
+- New shared module `supabase/functions/_shared/auth.ts` (caller resolution, admin check, CORS, validation helpers).
+- Migration `0005`: EXECUTE revoked from anon on `admin_list_*`, `compute_payment_split`, `generate_vendor_invoice_number`; `refresh_booking_availability` restricted to service_role.
+- Migration `0006`: EXECUTE revoked from anon+authenticated on all 23 trigger-only functions (triggers verified working).
+- `resolveAdminAccess` now returns the `has_role` result — the frontend allowlist is no longer a source of authority.
+- Linter: 60 → 12 findings (remaining are intentionally client-callable helpers + the locked `phone_otp_challenges` table).
