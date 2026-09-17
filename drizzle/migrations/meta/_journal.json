@@ -57,6 +57,13 @@
       "when": 1789608101954,
       "tag": "0007_availability_for_date_rpc",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789613364253,
+      "tag": "0008_partner_application_intake",
+      "breakpoints": true
     }
   ]
 }
