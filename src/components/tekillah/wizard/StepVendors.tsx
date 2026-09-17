@@ -77,7 +77,10 @@ export interface VendorPick {
   packageId: string | null;
   category: ServiceKey;
   price: number;
+  /** Section requested for venues that serve men/women independently. */
+  section?: SectionKey | null;
 }
+
 
 interface Props {
   selectedServices: ServiceKey[];
