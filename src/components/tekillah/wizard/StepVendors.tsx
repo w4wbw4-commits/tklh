@@ -266,9 +266,21 @@ export const StepVendors = ({
       } satisfies VendorOption;
     });
 
-    setVendors(mapped);
+    // Availability filter — one source of truth. `vendor_availability` is
+    // recomputed by the database on every booking create/confirm/reject/cancel,
+    // so a cancelled booking frees the exact section it held and the vendor
+    // reappears here immediately.
+    let visible = mapped;
+    if (eventDate) {
+      const { data: avail } = await availabilityService.listAvailabilityForDate(eventDate);
+      const byVendor = indexByVendor((avail ?? []) as AvailabilityDay[]);
+      visible = mapped.filter((v) => isSectionAvailable(byVendor.get(v.id), section));
+    }
+
+    setVendors(visible);
     setLoading(false);
-  }, [selectedServices]);
+  }, [selectedServices, eventDate, section]);
+
 
   useEffect(() => {
     refetch();
