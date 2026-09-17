@@ -40,7 +40,12 @@ const PartnerBookingsPage = () => {
           <div className="mt-6">
             <TabsContent value="requests"><VendorBookings vendorId={vendor.id} /></TabsContent>
             <TabsContent value="calendar">
-              <VendorCalendar vendorId={vendor.id} vendorName={vendor.business_name} vendorVatNumber={vendor.vat_number ?? null} />
+              <VendorCalendar
+                vendorId={vendor.id}
+                vendorName={vendor.business_name}
+                vendorVatNumber={vendor.vat_number ?? null}
+                vendorCrUrl={vendor.commercial_register_url ?? null}
+              />
             </TabsContent>
             <TabsContent value="packages">
               <VendorPackagesManager
