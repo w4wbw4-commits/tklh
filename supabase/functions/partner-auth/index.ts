@@ -159,7 +159,12 @@ Deno.serve(async (req) => {
         email_confirm: true,
         user_metadata: { phone, display_name: phone },
       });
-      if (createError) throw createError;
+      if (createError) {
+        if ((createError as { code?: string }).code === "weak_password") {
+          return json({ error: "pwned_password" }, 400);
+        }
+        throw createError;
+      }
       const newUser = created.user;
       if (!newUser) throw new Error("Unable to create account");
       await admin.from("profiles").upsert(
@@ -175,7 +180,12 @@ Deno.serve(async (req) => {
       password: body.password,
       ...(user.email_confirmed_at ? {} : { email_confirm: true }),
     });
-    if (updateError) throw updateError;
+    if (updateError) {
+      if ((updateError as { code?: string }).code === "weak_password") {
+        return json({ error: "pwned_password" }, 400);
+      }
+      throw updateError;
+    }
     return json({ ok: true, userId: user.id, email });
   } catch (error) {
     console.error("partner-auth failed:", error);
