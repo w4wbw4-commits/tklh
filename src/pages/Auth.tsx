@@ -15,6 +15,7 @@ import { ArrowRight, CheckCircle2, Loader2, Phone, MessageSquareLock, Pencil, Us
 import { Logo } from "@/components/tekillah/Logo";
 import { SEO } from "@/components/SEO";
 import { authService, usersService } from "@/domain";
+import { isAllowlistedAdmin } from "@/lib/admins";
 import { useAuth } from "@/hooks/useAuth";
 import {
   formatSaudiLocal,
