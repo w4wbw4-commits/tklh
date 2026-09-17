@@ -33,17 +33,27 @@
 - [x] Application intake + admin-only approval RPC (0008).
 - [x] Private document storage verified; cross-partner reads blocked.
 - [x] Fix role-resolution race that bounced approved partners off portal pages.
-- [ ] Delete all test accounts / applications / storage objects created during verification.
+- [x] Delete all test accounts / applications / storage objects created during verification.
 - [ ] Real SMS provider (blocked: external integration; devCode is NOT SMS).
 
 ## Phase 4 — partner core portal
-- [ ] Unified partner shell: logo + chair + «لوحة تحكم الشريك» on every partner page.
-- [ ] Persistent notifications bell top-left across the portal.
-- [ ] Sidebar limited to Overview / Bookings / Reviews / Reports / My data; other tools folded into sections.
-- [ ] Overview metrics: occupancy %, monthly revenue, confirmed bookings, rating, upcoming + pending bookings, compact calendar.
-- [ ] Partner data isolation verified end to end; legacy routes kept as aliases.
-- [ ] Mobile/desktop smoke, build/typecheck/tests/lint.
+- [x] Unified partner shell: logo + chair + «لوحة تحكم الشريك» on every partner page.
+- [x] Persistent notifications bell top-left across the portal.
+- [x] Sidebar limited to Overview / Bookings / Reviews / Reports / My data; other tools folded into sections.
+- [x] Overview metrics: occupancy %, monthly revenue, confirmed bookings, rating, upcoming + pending bookings, compact calendar.
+- [x] Partner data isolation verified end to end; legacy routes kept as aliases.
+- [x] Mobile/desktop smoke, build/typecheck/tests/lint.
 
-## Phase 5+ (later, in order)
-- [ ] Booking engine & cancellation, then remaining phases through final audit.
+## Phase 5 — booking engine & cancellation
+- [x] Full lifecycle verified: pending → confirmed/rejected → completed/cancelled, rows never deleted.
+- [x] Cancellation = status change with mandatory reason, timestamp, actor and actor role (customer/vendor/admin).
+- [x] Cancelling releases only the held section; rejected/cancelled pending leaves no ghost availability (DB scenarios 1–8).
+- [x] Double-booking blocked in the database (migration 0009 `prevent_double_booking`): same section, `both`, pending vs confirmed, and the vendor's own manual blocks.
+- [x] Requested section now stored on customer bookings so a men-only request no longer holds the whole venue.
+- [x] Friendly conflict message instead of a raw database error.
+- [x] DB scenarios run inside a rolled-back transaction — no test data left behind (verified 0 rows).
+
+## Phase 6+ (later, in order)
+- [ ] Manual booking + mandatory invoice review, then remaining phases through final audit.
 - [ ] Domain/DNS wiring deferred to the very end per user request.
+
