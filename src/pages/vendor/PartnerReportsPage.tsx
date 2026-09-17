@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { bookingsService, expensesService } from "@/domain";
-import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
+import { PortalLayout, PortalHeader, PortalSubnav, REPORTS_SUBNAV } from "@/components/tekillah/vendor/PortalLayout";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -197,6 +197,7 @@ const PartnerReportsPage = () => {
           </Button>
         }
       />
+      <PortalSubnav items={REPORTS_SUBNAV} />
 
       <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4">
         <Card className="p-5">

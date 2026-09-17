@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { bookingsService } from "@/domain";
-import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
+import { PortalLayout, PortalHeader, PortalSubnav, REPORTS_SUBNAV } from "@/components/tekillah/vendor/PortalLayout";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { Card } from "@/components/ui/card";
 import { Wallet, Clock, TrendingUp } from "lucide-react";
@@ -49,6 +49,7 @@ const PartnerAnalyticsPage = () => {
   return (
     <PortalLayout>
       <PortalHeader title="التحليلات والإيرادات" subtitle="نظرة شاملة على أداء قاعتك المالي" />
+      <PortalSubnav items={REPORTS_SUBNAV} />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="border-primary bg-primary p-5 text-primary-foreground"><Wallet className="h-5 w-5 text-secondary" /><div className="mt-3 text-3xl font-black">{fmt(data.totalEarnings)}</div><div className="mt-1 text-xs font-bold text-primary-foreground/70">إجمالي الإيرادات ()</div></Card>
         <Card className="p-5"><Clock className="h-5 w-5 text-secondary" /><div className="mt-3 text-3xl font-black">{fmt(data.pendingPayments)}</div><div className="mt-1 text-xs font-bold text-muted-foreground">مدفوعات معلقة ()</div></Card>

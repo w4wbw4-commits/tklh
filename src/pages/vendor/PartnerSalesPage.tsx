@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { bookingsService } from "@/domain";
-import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
+import { PortalLayout, PortalHeader, PortalSubnav, REPORTS_SUBNAV } from "@/components/tekillah/vendor/PortalLayout";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -75,6 +75,7 @@ const PartnerSalesPage = () => {
   return (
     <PortalLayout>
       <PortalHeader title="استيراد وتصدير المبيعات" subtitle="اربط مبيعاتك السابقة وصدر تقاريرك بضغطة" badge="ربط شغلك الحالي" />
+      <PortalSubnav items={REPORTS_SUBNAV} />
       <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-3">
         <Card className="p-5"><div className="text-xs font-bold text-muted-foreground">إجمالي الحجوزات</div><div className="mt-2 text-3xl font-black">{fmt(totals.count)}</div></Card>
         <Card className="border-primary bg-primary p-5 text-primary-foreground"><div className="text-xs font-bold text-primary-foreground/70">إجمالي الإيرادات</div><div className="mt-2 text-3xl font-black">{fmt(totals.revenue)} </div></Card>

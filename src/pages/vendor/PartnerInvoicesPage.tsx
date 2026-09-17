@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { paymentsService } from "@/domain";
-import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
+import { PortalLayout, PortalHeader, PortalSubnav, REPORTS_SUBNAV } from "@/components/tekillah/vendor/PortalLayout";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -118,6 +118,7 @@ const PartnerInvoicesPage = () => {
           </Dialog>
         }
       />
+      <PortalSubnav items={REPORTS_SUBNAV} />
       <Card className="mb-4 flex flex-wrap items-center gap-2 p-4 text-xs">
         <span className="font-bold text-muted-foreground">الرقم الضريبي للمؤسسة</span>
         {vendor?.vat_number ? (

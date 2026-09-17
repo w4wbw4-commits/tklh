@@ -1,4 +1,4 @@
-import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
+import { PortalLayout, PortalHeader, PortalSubnav, BOOKINGS_SUBNAV } from "@/components/tekillah/vendor/PortalLayout";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { VendorBookings } from "@/components/tekillah/vendor/VendorBookings";
 import { VendorCalendar } from "@/components/tekillah/vendor/VendorCalendar";
@@ -12,6 +12,7 @@ const PartnerBookingsPage = () => {
   return (
     <PortalLayout>
       <PortalHeader title="الحجوزات" subtitle="الطلبات الواردة، التقويم والحجز اليدوي، والباقات والعروض" />
+      <PortalSubnav items={BOOKINGS_SUBNAV} />
       {loading ? (
         <div className="grid place-items-center py-24 text-muted-foreground">جارٍ التحميل…</div>
       ) : !vendor ? (
