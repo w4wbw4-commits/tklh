@@ -31,6 +31,7 @@ export const InvitationDialog = ({ open, onOpenChange, event }: Props) => {
     setAiImage(null);
     try {
       const { data, error } = await functionsService.invokeGenerateInvitation({
+        eventId: event.id,
         title: event.title, date: dateLabel, city: event.city ?? "",
         theme: event.theme ?? "luxury olive green and beige Saudi wedding",
       });
