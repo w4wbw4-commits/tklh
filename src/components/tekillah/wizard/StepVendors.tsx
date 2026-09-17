@@ -129,7 +129,17 @@ type RawPortfolioItem = {
   sort_order: number | null;
 };
 
-export const StepVendors = ({ selectedServices, picks, setPick, budget, allocations, onBookNow }: Props) => {
+export const StepVendors = ({
+  selectedServices,
+  picks,
+  setPick,
+  budget,
+  allocations,
+  onBookNow,
+  eventDate = null,
+  section = "both",
+}: Props) => {
+
   const { t } = useTranslation();
   const [vendors, setVendors] = useState<VendorOption[]>([]);
   const [loading, setLoading] = useState(true);
