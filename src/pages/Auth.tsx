@@ -45,7 +45,7 @@ const Auth = () => {
     // Navigation hint only — /admin itself is gated by RequireAdmin + RLS.
     const email = emailHint ?? user?.email;
     const phone = phoneHint ?? user?.phone;
-    if (isAllowlistedAdmin({ id: "", email, phone })) return "/admin";
+    if (isAllowlistedAdmin({ email: email ?? undefined, phone: phone ?? undefined })) return "/admin";
     return isPendingPlanReady(loadPendingPlan()) ? "/dashboard" : "/";
   };
 
