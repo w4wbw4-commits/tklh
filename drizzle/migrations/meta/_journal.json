@@ -43,6 +43,13 @@
       "when": 1789605627907,
       "tag": "0005_restrict_security_definer_execute",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1789605793977,
+      "tag": "0006_restrict_trigger_function_execute",
+      "breakpoints": true
     }
   ]
 }
