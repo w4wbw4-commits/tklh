@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { bookingsService } from "@/domain";
-import { PortalLayout, PortalHeader, PortalSubnav, REPORTS_SUBNAV } from "@/components/tekillah/vendor/PortalLayout";
+import { PortalLayout, PortalHeader, PortalSubnav } from "@/components/tekillah/vendor/PortalLayout";
+import { REPORTS_SUBNAV } from "@/components/tekillah/vendor/portalSubnav";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { Card } from "@/components/ui/card";
 import { Wallet, Clock, TrendingUp } from "lucide-react";

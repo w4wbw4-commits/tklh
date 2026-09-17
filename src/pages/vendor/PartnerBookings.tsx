@@ -1,4 +1,5 @@
-import { PortalLayout, PortalHeader, PortalSubnav, BOOKINGS_SUBNAV } from "@/components/tekillah/vendor/PortalLayout";
+import { PortalLayout, PortalHeader, PortalSubnav } from "@/components/tekillah/vendor/PortalLayout";
+import { BOOKINGS_SUBNAV } from "@/components/tekillah/vendor/portalSubnav";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { VendorBookings } from "@/components/tekillah/vendor/VendorBookings";
 import { VendorCalendar } from "@/components/tekillah/vendor/VendorCalendar";

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { availabilityService } from "@/domain";
-import { PortalLayout, PortalHeader, PortalSubnav, BOOKINGS_SUBNAV } from "@/components/tekillah/vendor/PortalLayout";
+import { PortalLayout, PortalHeader, PortalSubnav } from "@/components/tekillah/vendor/PortalLayout";
+import { BOOKINGS_SUBNAV } from "@/components/tekillah/vendor/portalSubnav";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
