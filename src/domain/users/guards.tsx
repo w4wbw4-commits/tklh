@@ -25,7 +25,11 @@ export const useRoles = (): RolesState => {
   const { user, loading: authLoading } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isVendor, setIsVendor] = useState(false);
-  const [loading, setLoading] = useState(true);
+  // Which user the flags above were resolved for. Keeping this instead of a
+  // plain boolean closes a race where the session arrives one render before the
+  // role lookup starts: for that render the flags still belonged to "no user",
+  // and a guard would wrongly deny an approved partner on a hard reload.
+  const [resolvedFor, setResolvedFor] = useState<string | null | undefined>(undefined);
 
   useEffect(() => {
     let cancelled = false;
@@ -34,11 +38,10 @@ export const useRoles = (): RolesState => {
         if (!cancelled) {
           setIsAdmin(false);
           setIsVendor(false);
-          setLoading(false);
+          setResolvedFor(null);
         }
         return;
       }
-      setLoading(true);
       const [admin, vendor] = await Promise.all([
         usersService.resolveAdminAccess(user),
         usersService.hasRole(user.id, "vendor" as AppRole),
@@ -46,14 +49,16 @@ export const useRoles = (): RolesState => {
       if (cancelled) return;
       setIsAdmin(admin);
       setIsVendor(vendor);
-      setLoading(false);
+      setResolvedFor(user.id);
     })();
     return () => {
       cancelled = true;
     };
   }, [user]);
 
-  return { loading: authLoading || loading, isAdmin, isVendor, user };
+  const loading = authLoading || resolvedFor !== (user?.id ?? null);
+
+  return { loading, isAdmin, isVendor, user };
 };
 
 const AuthGate = ({

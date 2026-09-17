@@ -99,8 +99,18 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
       >
         <div className={`mb-6 flex items-center ${collapsed ? "justify-center" : "justify-between"}`}>
           {!collapsed && (
-            <Link to="/" className="flex items-center gap-3">
+            <Link to="/partner" className="flex items-center gap-2.5">
               <Logo variant="light" />
+              <img
+                src={chairMark}
+                alt=""
+                aria-hidden
+                className="h-7 w-7 shrink-0 rounded-md object-contain"
+                draggable={false}
+              />
+              <span className="text-[11px] font-black leading-tight text-secondary">
+                {t("portal.title", { defaultValue: "لوحة تحكم الشريك" })}
+              </span>
             </Link>
           )}
           {collapsed && (
@@ -232,10 +242,17 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
 
         {/* Mobile top bar */}
         <header className="sticky top-0 z-10 flex items-center justify-between bg-primary p-4 text-primary-foreground md:hidden">
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/partner" className="flex items-center gap-2">
             <Logo variant="light" />
-            <span className="text-[10px] font-bold text-secondary">
-              {t("portal.partnerShort", { defaultValue: "شريك" })}
+            <img
+              src={chairMark}
+              alt=""
+              aria-hidden
+              className="h-6 w-6 shrink-0 rounded-md object-contain"
+              draggable={false}
+            />
+            <span className="text-[10px] font-black leading-tight text-secondary">
+              {t("portal.title", { defaultValue: "لوحة تحكم الشريك" })}
             </span>
             <span
               className={`h-2 w-2 shrink-0 rounded-full ${isApproved ? "bg-emerald-400" : "bg-red-500"}`}
@@ -324,3 +341,34 @@ export const PortalHeader = ({
     {action}
   </div>
 );
+
+/**
+ * Section sub-navigation. The sidebar stays at five entries, so tools that used
+ * to own a sidebar row (invoices, sales, analytics, pricing, checklists, the
+ * full calendar) are reached from the section they belong to.
+ */
+export const PortalSubnav = ({
+  items,
+}: {
+  items: { to: string; label: string }[];
+}) => (
+  <div className="-mt-3 mb-6 flex flex-wrap gap-2">
+    {items.map(({ to, label }) => (
+      <NavLink
+        key={to}
+        to={to}
+        end
+        className={({ isActive }) =>
+          `rounded-full border px-3.5 py-1.5 text-xs font-bold transition-colors ${
+            isActive
+              ? "border-primary bg-primary text-primary-foreground"
+              : "border-border bg-card text-foreground/70 hover:border-primary hover:text-primary"
+          }`
+        }
+      >
+        {label}
+      </NavLink>
+    ))}
+  </div>
+);
+

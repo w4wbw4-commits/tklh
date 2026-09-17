@@ -1,4 +1,5 @@
-import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
+import { PortalLayout, PortalHeader, PortalSubnav } from "@/components/tekillah/vendor/PortalLayout";
+import { BOOKINGS_SUBNAV } from "@/components/tekillah/vendor/portalSubnav";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { VendorCalendar } from "@/components/tekillah/vendor/VendorCalendar";
 
@@ -11,6 +12,7 @@ const PartnerCalendarPage = () => {
         subtitle="إدارة الأيام المحجوزة والمحتملة والمتاحة — اضغط أي يوم لإضافة حدث"
         badge="تفاعلي"
       />
+      <PortalSubnav items={BOOKINGS_SUBNAV} />
       {loading ? (
         <div className="grid place-items-center py-24 text-muted-foreground">جارٍ التحميل…</div>
       ) : vendor ? (

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { availabilityService } from "@/domain";
-import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
+import { PortalLayout, PortalHeader, PortalSubnav } from "@/components/tekillah/vendor/PortalLayout";
+import { BOOKINGS_SUBNAV } from "@/components/tekillah/vendor/portalSubnav";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -59,6 +60,7 @@ const PartnerPricingPage = () => {
   return (
     <PortalLayout>
       <PortalHeader title="إدارة التسعير الديناميكي" subtitle="فعل عروضاً موسمية وأسعاراً خاصة لزيادة إيراداتك" />
+      <PortalSubnav items={BOOKINGS_SUBNAV} />
       <div className="grid gap-5 lg:grid-cols-3">
         <Card className="p-5 lg:col-span-2">
           <h3 className="mb-4 flex items-center gap-2 font-black"><Tag className="h-4 w-4 text-primary" /> القواعد الحالية</h3>

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { RiyalSymbol } from "@/components/tekillah/RiyalSymbol";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { bookingsService } from "@/domain";
+import { bookingsService, reviewsService } from "@/domain";
 import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import {
@@ -24,19 +24,42 @@ type BookingLite = {
   status: string;
 };
 
+const ACTIVE = ["pending", "confirmed", "completed"];
+
 const monthLabel = (d: Date) => d.toLocaleDateString("ar-SA", { month: "short" });
 
 const PartnerOverview = () => {
   const { vendor, loading } = usePartnerVendor();
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<BookingLite[]>([]);
+  const [rating, setRating] = useState<{ avg: number; count: number }>({ avg: 0, count: 0 });
 
+  // Every read below is scoped to this partner's own vendor id, and RLS keeps
+  // that scoping authoritative on the server.
   useEffect(() => {
     if (!vendor) return;
+    let alive = true;
     (async () => {
-      const { data } = await bookingsService.listForVendorOverview(vendor.id);
-      setBookings((data as BookingLite[] | null) ?? []);
+      const [bk, rv] = await Promise.all([
+        bookingsService.listForVendorOverview(vendor.id),
+        reviewsService.listForVendor(vendor.id),
+      ]);
+      if (!alive) return;
+      setBookings((bk.data as BookingLite[] | null) ?? []);
+      const rows = (rv.data as { rating: number }[] | null) ?? [];
+      setRating({
+        avg: rows.length ? rows.reduce((s, r) => s + Number(r.rating || 0), 0) / rows.length : 0,
+        count: rows.length,
+      });
     })();
+    const unsubscribe = bookingsService.subscribeVendorBookings(vendor.id, async () => {
+      const { data } = await bookingsService.listForVendorOverview(vendor.id);
+      if (alive) setBookings((data as BookingLite[] | null) ?? []);
+    });
+    return () => {
+      alive = false;
+      unsubscribe();
+    };
   }, [vendor]);
 
   // === KPIs ===
@@ -52,7 +75,11 @@ const PartnerOverview = () => {
       .reduce((s, b) => s + Number(b.total_price ?? 0), 0);
     const confirmedCount = monthBookings.filter((b) => b.status === "confirmed").length;
     const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-    const occupancy = Math.min(100, Math.round((monthBookings.length / daysInMonth) * 100));
+    // Occupancy counts distinct held days (a day booked twice is still one day).
+    const heldDays = new Set(
+      monthBookings.filter((b) => ACTIVE.includes(b.status)).map((b) => b.event_date),
+    ).size;
+    const occupancy = Math.min(100, Math.round((heldDays / daysInMonth) * 100));
 
     // 7-month chart data (current + previous 6)
     const chart: { month: string; v: number }[] = [];
@@ -79,6 +106,25 @@ const PartnerOverview = () => {
 
     return { monthRevenue, confirmedCount, occupancy, chart, mom };
   }, [bookings]);
+
+  // Upcoming (next held dates) and pending (waiting on the partner's answer).
+  const today = new Date().toISOString().slice(0, 10);
+  const upcoming = useMemo(
+    () =>
+      bookings
+        .filter((b) => b.event_date >= today && ["pending", "confirmed"].includes(b.status))
+        .sort((a, b) => a.event_date.localeCompare(b.event_date))
+        .slice(0, 5),
+    [bookings, today],
+  );
+  const pending = useMemo(
+    () =>
+      bookings
+        .filter((b) => b.status === "pending")
+        .sort((a, b) => a.event_date.localeCompare(b.event_date))
+        .slice(0, 5),
+    [bookings],
+  );
 
   // === Calendar grid (current month) ===
   const calendar = useMemo(() => {
@@ -122,8 +168,9 @@ const PartnerOverview = () => {
     ` L ${xAt(stats.chart.length - 1)} ${chartH - pad} Z`;
 
   const quickActions = [
-    { Icon: Plus, label: "إضافة عرض موسمي", to: "/vendor/pricing" },
-    { Icon: CreditCard, label: "إدارة الباقات", to: "/vendor/profile" },
+    { Icon: Plus, label: "حجز يدوي وتقويم", to: "/partner/bookings" },
+    { Icon: CreditCard, label: "الباقات والعروض", to: "/partner/bookings" },
+    { Icon: FileText, label: "التقارير والفواتير", to: "/partner/reports" },
   ];
 
   return (
@@ -148,7 +195,12 @@ const PartnerOverview = () => {
             <Kpi label="عوائد الشهر" value={`${fmtMoney(stats.monthRevenue)} `} trend={`${stats.mom >= 0 ? "+" : ""}${stats.mom}%`} />
             <Kpi label="حجوزات مؤكدة" value={String(stats.confirmedCount)} trend={`+${stats.confirmedCount}`} />
             <Kpi label="معدل الإشغال" value={`${stats.occupancy}%`} trend={`${stats.occupancy}%`} />
-            <Kpi label="تقييم العملاء" value="—" trend="مرتفع" soft />
+            <Kpi
+              label="تقييم العملاء"
+              value={rating.count ? rating.avg.toFixed(1) : "—"}
+              trend={rating.count ? `${rating.count} تقييم` : "لا تقييمات بعد"}
+              soft
+            />
           </div>
 
           <div className="grid gap-5 lg:grid-cols-5">
@@ -238,6 +290,24 @@ const PartnerOverview = () => {
             </div>
           </div>
 
+          {/* Upcoming & pending bookings */}
+          <div className="grid gap-5 md:grid-cols-2">
+            <BookingList
+              title="الحجوزات القادمة"
+              hint="أقرب المناسبات المحجوزة أو المعلقة"
+              rows={upcoming}
+              emptyText="لا توجد حجوزات قادمة."
+              onOpen={() => navigate("/partner/bookings")}
+            />
+            <BookingList
+              title="طلبات بانتظار ردك"
+              hint="أكّد أو اعتذر عن الطلبات المعلقة"
+              rows={pending}
+              emptyText="لا طلبات معلقة."
+              onOpen={() => navigate("/partner/bookings")}
+            />
+          </div>
+
           {/* Quick actions */}
           <div className="grid gap-5 md:grid-cols-5">
             <div className="rounded-2xl border border-border bg-card p-5 md:col-span-3">
@@ -292,6 +362,64 @@ const Kpi = ({ label, value, trend, soft = false }: { label: string; value: stri
     >
       {trend}
     </div>
+  </div>
+);
+
+const STATUS_LABEL: Record<string, string> = {
+  pending: "بانتظار التأكيد",
+  confirmed: "مؤكد",
+  completed: "مكتمل",
+};
+
+const BookingList = ({
+  title,
+  hint,
+  rows,
+  emptyText,
+  onOpen,
+}: {
+  title: string;
+  hint: string;
+  rows: BookingLite[];
+  emptyText: string;
+  onOpen: () => void;
+}) => (
+  <div className="rounded-2xl border border-border bg-card p-5">
+    <div className="flex items-start justify-between gap-3">
+      <div>
+        <h3 className="font-black text-primary">{title}</h3>
+        <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
+      </div>
+      <button
+        type="button"
+        onClick={onOpen}
+        className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary transition-colors hover:bg-primary/20"
+      >
+        عرض الكل
+      </button>
+    </div>
+    {rows.length === 0 ? (
+      <p className="mt-5 text-sm text-muted-foreground">{emptyText}</p>
+    ) : (
+      <ul className="mt-4 space-y-2">
+        {rows.map((b) => (
+          <li
+            key={b.id}
+            className="flex items-center justify-between gap-3 rounded-xl border border-border bg-background px-3 py-2.5"
+          >
+            <span className="text-sm font-bold text-foreground">{b.event_date}</span>
+            <span className="flex items-center gap-2 text-xs">
+              <span className="rounded-full bg-secondary px-2 py-0.5 font-bold text-primary-deep">
+                {STATUS_LABEL[b.status] ?? b.status}
+              </span>
+              <span className="font-bold text-primary">
+                {fmtMoney(Number(b.total_price ?? 0))} <RiyalSymbol />
+              </span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    )}
   </div>
 );
 

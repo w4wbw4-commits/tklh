@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { bookingsService } from "@/domain";
-import { PortalLayout, PortalHeader } from "@/components/tekillah/vendor/PortalLayout";
+import { PortalLayout, PortalHeader, PortalSubnav } from "@/components/tekillah/vendor/PortalLayout";
+import { BOOKINGS_SUBNAV } from "@/components/tekillah/vendor/portalSubnav";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -77,6 +78,7 @@ const PartnerChecklistsPage = () => {
   return (
     <PortalLayout>
       <PortalHeader title="قوائم مهام التشغيل" subtitle="مهام تحضير لكل مناسبة لتضمن جاهزية الفريق" />
+      <PortalSubnav items={BOOKINGS_SUBNAV} />
       <div className="grid gap-5 lg:grid-cols-12">
         <Card className="p-4 lg:col-span-4">
           <h3 className="mb-3 px-2 font-black">المناسبات القادمة</h3>
