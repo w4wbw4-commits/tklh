@@ -63,8 +63,17 @@
 - [x] Availability stays the single source of truth; section statuses follow the chosen section, and the DB double-booking guard (0009) still blocks conflicts.
 - [x] Typecheck, tests (8/8) and build pass.
 
-## Phase 7+ (later, in order)
-- [ ] Packages / seasonal offers / reports / reviews review, then remaining phases through final audit.
+## Phase 7 — packages / seasonal offers / reports / reviews
+- [x] Migration 0010: packages gain sort_order, section, duration_hours, cancellation_policy, available_days, image_url, archived; pricing rules gain old_price, offer_price, terms, section, available_days, image_url.
+- [x] Packages: create/edit/activate/deactivate/reorder; delete only when no booking references the package, otherwise archive (history preserved) with restore.
+- [x] Seasonal offers: create + edit + activate/stop with old/offer price, auto discount %, section, available days, terms, image.
+- [x] Reports already compute revenue/expenses/net/bookings/avg value/occupancy from real data with Excel export; partner-scoped.
+- [x] Reviews: partner sees only own vendor reviews via SECURITY DEFINER RPC (display name only), reply/edit/delete under ownership RLS, reports go to admin moderation, profanity filter (no AI claim).
+- [x] RLS verified in DB: another partner sees 0 rows and updates 0 rows on a partner's package; test row cleaned up.
+- [x] Typecheck clean, tests 8/8, lint clean (pre-existing warnings only), build OK.
+
+## Phase 8+ (later, in order)
+- [ ] Notifications, then remaining phases through final audit.
 - [ ] Domain/DNS wiring deferred to the very end per user request.
 
 

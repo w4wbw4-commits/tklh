@@ -510,10 +510,15 @@ export type Database = {
         Row: {
           active: boolean
           approval_status: Database["public"]["Enums"]["approval_status"]
+          archived: boolean
+          available_days: string[]
+          cancellation_policy: string | null
           created_at: string
           description: string | null
           description_en: string | null
+          duration_hours: number | null
           id: string
+          image_url: string | null
           includes: string[]
           includes_en: string[]
           name: string
@@ -522,6 +527,8 @@ export type Database = {
           rejection_reason: string | null
           reviewed_at: string | null
           reviewed_by: string | null
+          section: Database["public"]["Enums"]["booking_section"]
+          sort_order: number
           tier: Database["public"]["Enums"]["package_tier"]
           updated_at: string
           vendor_id: string
@@ -529,10 +536,15 @@ export type Database = {
         Insert: {
           active?: boolean
           approval_status?: Database["public"]["Enums"]["approval_status"]
+          archived?: boolean
+          available_days?: string[]
+          cancellation_policy?: string | null
           created_at?: string
           description?: string | null
           description_en?: string | null
+          duration_hours?: number | null
           id?: string
+          image_url?: string | null
           includes?: string[]
           includes_en?: string[]
           name: string
@@ -541,6 +553,8 @@ export type Database = {
           rejection_reason?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          section?: Database["public"]["Enums"]["booking_section"]
+          sort_order?: number
           tier?: Database["public"]["Enums"]["package_tier"]
           updated_at?: string
           vendor_id: string
@@ -548,10 +562,15 @@ export type Database = {
         Update: {
           active?: boolean
           approval_status?: Database["public"]["Enums"]["approval_status"]
+          archived?: boolean
+          available_days?: string[]
+          cancellation_policy?: string | null
           created_at?: string
           description?: string | null
           description_en?: string | null
+          duration_hours?: number | null
           id?: string
+          image_url?: string | null
           includes?: string[]
           includes_en?: string[]
           name?: string
@@ -560,6 +579,8 @@ export type Database = {
           rejection_reason?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          section?: Database["public"]["Enums"]["booking_section"]
+          sort_order?: number
           tier?: Database["public"]["Enums"]["package_tier"]
           updated_at?: string
           vendor_id?: string
@@ -1405,36 +1426,54 @@ export type Database = {
         Row: {
           active: boolean
           adjustment_percent: number
+          available_days: string[]
           created_at: string
           end_date: string | null
           id: string
+          image_url: string | null
           label: string | null
+          offer_price: number | null
+          old_price: number | null
           rule_type: Database["public"]["Enums"]["pricing_rule_type"]
+          section: Database["public"]["Enums"]["booking_section"]
           start_date: string | null
+          terms: string | null
           updated_at: string
           vendor_id: string
         }
         Insert: {
           active?: boolean
           adjustment_percent?: number
+          available_days?: string[]
           created_at?: string
           end_date?: string | null
           id?: string
+          image_url?: string | null
           label?: string | null
+          offer_price?: number | null
+          old_price?: number | null
           rule_type: Database["public"]["Enums"]["pricing_rule_type"]
+          section?: Database["public"]["Enums"]["booking_section"]
           start_date?: string | null
+          terms?: string | null
           updated_at?: string
           vendor_id: string
         }
         Update: {
           active?: boolean
           adjustment_percent?: number
+          available_days?: string[]
           created_at?: string
           end_date?: string | null
           id?: string
+          image_url?: string | null
           label?: string | null
+          offer_price?: number | null
+          old_price?: number | null
           rule_type?: Database["public"]["Enums"]["pricing_rule_type"]
+          section?: Database["public"]["Enums"]["booking_section"]
           start_date?: string | null
+          terms?: string | null
           updated_at?: string
           vendor_id?: string
         }
