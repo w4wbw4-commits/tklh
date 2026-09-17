@@ -709,7 +709,7 @@ export const StepVendors = ({
                                             handlePick(
                                               isPickedPkg
                                                 ? null
-                                                : { vendorId: v.id, packageId: p.id, category: cat, price: Number(p.price) },
+                                                : { vendorId: v.id, packageId: p.id, category: cat, price: Number(p.price), section },
                                             )
                                           }
                                           className={`flex items-center justify-between rounded-xl border p-3 text-start transition-all ${
