@@ -41,6 +41,8 @@ interface Props {
   /** Used on the mandatory invoice created for every manual booking. */
   vendorName?: string;
   vendorVatNumber?: string | null;
+  /** CR / freelance certificate reference — printed on the invoice. */
+  vendorCrUrl?: string | null;
 }
 
 type ManualSection = "both" | "men" | "women";
@@ -49,6 +51,28 @@ const SECTION_LABEL: Record<ManualSection, string> = {
   both: "القسمان معاً",
   men: "قسم الرجال",
   women: "قسم النساء",
+};
+
+const SECTION_EN: Record<ManualSection, string> = {
+  both: "Men + Women",
+  men: "Men",
+  women: "Women",
+};
+
+const EVENT_TYPES = ["زواج", "خطوبة", "تخرج", "مؤتمر", "عقد قران", "مناسبة عامة"] as const;
+
+type PaymentStatus = "unpaid" | "deposit" | "paid";
+
+const PAYMENT_LABEL: Record<PaymentStatus, string> = {
+  unpaid: "غير مدفوع",
+  deposit: "عربون مدفوع",
+  paid: "مدفوع بالكامل",
+};
+
+const PAYMENT_EN: Record<PaymentStatus, string> = {
+  unpaid: "Unpaid",
+  deposit: "Deposit paid",
+  paid: "Paid in full",
 };
 
 // We piggy-back on `vendor_availability.note` to store rich event metadata
@@ -63,6 +87,12 @@ type ManualMeta = {
   text?: string;
   section?: ManualSection;
   invoice_number?: string;
+  event_type?: string;
+  event_time?: string;
+  package_label?: string;
+  discount?: number;
+  vat_applicable?: boolean;
+  payment_status?: PaymentStatus;
 };
 
 type SectionStatus = "blocked" | "booked" | "pending" | null;
@@ -106,7 +136,23 @@ const parseMeta = (note: string | null): ManualMeta | null => {
   return null;
 };
 
-export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props) => {
+const EMPTY_FORM = {
+  status: "pending" as Row["status"],
+  customer_name: "",
+  customer_phone: "",
+  amount: "",
+  discount: "",
+  label: "",
+  text: "",
+  section: "both" as ManualSection,
+  event_type: EVENT_TYPES[0] as string,
+  event_time: "20:00",
+  package_label: "",
+  vat_applicable: true,
+  payment_status: "unpaid" as PaymentStatus,
+};
+
+export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber, vendorCrUrl }: Props) => {
   const [items, setItems] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -114,15 +160,7 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
   const [sheetOpen, setSheetOpen] = useState(false);
 
   // Form state for adding / editing a manual entry
-  const [form, setForm] = useState({
-    status: "pending" as Row["status"],
-    customer_name: "",
-    customer_phone: "",
-    amount: "",
-    label: "",
-    text: "",
-    section: "both" as ManualSection,
-  });
+  const [form, setForm] = useState(EMPTY_FORM);
 
   // Last invoice issued from this sheet — enables the PDF download button.
   // No WhatsApp/API sending: the partner downloads the file and sends it.
@@ -134,9 +172,16 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
     subtotal: number;
     vat_amount: number;
     total: number;
+    discount: number;
+    gross: number;
     event_date: string;
+    event_time: string;
+    event_type: string;
+    package_label: string;
+    payment_status: PaymentStatus;
     section: ManualSection;
   } | null>(null);
+
 
   const load = async () => {
     setLoading(true);
@@ -170,17 +215,34 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
     const row = byDate.get(formatDate(d));
     const meta = parseMeta(row?.note ?? null);
     setForm({
+      ...EMPTY_FORM,
       status: row?.status ?? "pending",
       customer_name: meta?.customer_name ?? "",
       customer_phone: meta?.customer_phone ?? "",
       amount: meta?.amount ? String(meta.amount) : "",
+      discount: meta?.discount ? String(meta.discount) : "",
       label: meta?.label ?? "",
       text: meta?.text ?? (!meta && row?.note ? row.note : ""),
       section: meta?.section ?? "both",
+      event_type: meta?.event_type ?? EMPTY_FORM.event_type,
+      event_time: meta?.event_time ?? EMPTY_FORM.event_time,
+      package_label: meta?.package_label ?? "",
+      vat_applicable: meta?.vat_applicable ?? true,
+      payment_status: meta?.payment_status ?? "unpaid",
     });
     setLastInvoice(null);
     setSheetOpen(true);
   };
+
+  // Pricing preview for the sheet — gross price, discount, VAT, final total.
+  const pricing = useMemo(() => {
+    const gross = form.amount ? Number(form.amount) : 0;
+    const discount = form.discount ? Number(form.discount) : 0;
+    const net = Math.max(0, gross - discount);
+    const subtotal = form.vat_applicable ? +(net / 1.15).toFixed(2) : net;
+    const vat = +(net - subtotal).toFixed(2);
+    return { gross, discount, net, subtotal, vat };
+  }, [form.amount, form.discount, form.vat_applicable]);
 
   // Save (insert or update) a manual entry on a date. A manual booking always
   // produces a tax invoice — the partner then downloads the PDF and sends it.
@@ -191,15 +253,26 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
       return;
     }
     const isBooking = form.status !== "blocked";
-    const amount = form.amount ? Number(form.amount) : 0;
     const alreadyInvoiced = !!parseMeta(existingForPicked?.note ?? null)?.invoice_number;
     if (isBooking && !alreadyInvoiced) {
       if (!form.customer_name.trim()) {
         toast.error("اسم العميل مطلوب لإصدار الفاتورة");
         return;
       }
-      if (!amount || amount <= 0) {
+      if (!form.customer_phone.trim()) {
+        toast.error("جوال العميل مطلوب لإصدار الفاتورة");
+        return;
+      }
+      if (!form.event_type.trim()) {
+        toast.error("نوع المناسبة مطلوب");
+        return;
+      }
+      if (!pricing.gross || pricing.gross <= 0) {
         toast.error("المبلغ مطلوب — الفاتورة إلزامية لكل حجز يدوي");
+        return;
+      }
+      if (pricing.discount < 0 || pricing.discount >= pricing.gross) {
+        toast.error("الخصم يجب أن يكون أقل من المبلغ");
         return;
       }
     }
@@ -210,8 +283,6 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
     let invoiceNumber = parseMeta(existingForPicked?.note ?? null)?.invoice_number;
     let issued: typeof lastInvoice = null;
     if (isBooking && !alreadyInvoiced) {
-      const subtotal = +(amount / 1.15).toFixed(2);
-      const vat = +(amount - subtotal).toFixed(2);
       const { data: numData } = await paymentsService.nextInvoiceNumber();
       const number = (numData as unknown as string) ?? "";
       const { error: invErr } = await paymentsService.createVendorInvoice({
@@ -219,10 +290,20 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
         invoice_number: number,
         customer_name: form.customer_name.trim() || null,
         customer_phone: form.customer_phone.trim() || null,
-        subtotal,
-        vat_amount: vat,
-        total: amount,
-        notes: `حجز يدوي · ${formatDate(picked)} · ${SECTION_LABEL[form.section]}`,
+        subtotal: pricing.subtotal,
+        vat_amount: pricing.vat,
+        total: pricing.net,
+        status: form.payment_status,
+        notes: [
+          `حجز يدوي · ${formatDate(picked)} ${form.event_time}`,
+          `${form.event_type} · ${SECTION_LABEL[form.section]}`,
+          form.package_label ? `الباقة/الخدمة: ${form.package_label}` : null,
+          pricing.discount ? `خصم: ${pricing.discount}` : null,
+          `حالة الدفع: ${PAYMENT_LABEL[form.payment_status]}`,
+          form.text || null,
+        ]
+          .filter(Boolean)
+          .join(" · "),
         source: "manual",
         vendor_vat_number: vendorVatNumber ?? null,
       } as never);
@@ -237,10 +318,16 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
         issue_date: new Date().toISOString().slice(0, 10),
         customer_name: form.customer_name.trim() || null,
         customer_phone: form.customer_phone.trim() || null,
-        subtotal,
-        vat_amount: vat,
-        total: amount,
+        subtotal: pricing.subtotal,
+        vat_amount: pricing.vat,
+        total: pricing.net,
+        discount: pricing.discount,
+        gross: pricing.gross,
         event_date: formatDate(picked),
+        event_time: form.event_time,
+        event_type: form.event_type,
+        package_label: form.package_label,
+        payment_status: form.payment_status,
         section: form.section,
       };
     }
@@ -251,10 +338,16 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
       label: form.label || (form.status === "blocked" ? "محجوب يدوياً" : "حجز يدوي"),
       customer_name: form.customer_name || undefined,
       customer_phone: form.customer_phone || undefined,
-      amount: amount || undefined,
+      amount: pricing.gross || undefined,
+      discount: pricing.discount || undefined,
       text: form.text || undefined,
       section: isBooking ? form.section : undefined,
       invoice_number: invoiceNumber,
+      event_type: isBooking ? form.event_type : undefined,
+      event_time: isBooking ? form.event_time : undefined,
+      package_label: form.package_label || undefined,
+      vat_applicable: isBooking ? form.vat_applicable : undefined,
+      payment_status: isBooking ? form.payment_status : undefined,
     };
     const payload: Record<string, unknown> = {
       vendor_id: vendorId,
@@ -282,34 +375,58 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
     load();
   };
 
+
   // Download the invoice PDF (no automatic sending anywhere).
   const downloadInvoicePDF = () => {
     if (!lastInvoice) return;
     const money = (n: number) => Math.round(n).toLocaleString("en-US");
     const doc = new jsPDF();
+    // Provider name always in the invoice corner.
+    doc.setFontSize(9);
     doc.setFont("helvetica", "bold");
+    doc.text(vendorName ?? "", 196, 12, { align: "right" });
     doc.setFontSize(20);
-    doc.text("TAX INVOICE", 105, 20, { align: "center" });
-    doc.setFontSize(11);
+    doc.text("TAX INVOICE", 105, 22, { align: "center" });
+    doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
-    doc.text(`Invoice #: ${lastInvoice.invoice_number}`, 14, 35);
-    doc.text(`Date: ${lastInvoice.issue_date}`, 14, 42);
-    doc.text(`Vendor: ${vendorName ?? ""}`, 14, 49);
-    doc.text(`VAT No: ${vendorVatNumber || "-"}`, 14, 56);
-    doc.text(`Customer: ${lastInvoice.customer_name ?? "-"}`, 14, 63);
-    doc.text(`Phone: ${lastInvoice.customer_phone ?? "-"}`, 14, 70);
-    doc.text(`Event date: ${lastInvoice.event_date}`, 14, 77);
+
+    // Provider block
+    doc.setFont("helvetica", "bold");
+    doc.text("Provider", 14, 34);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Establishment: ${vendorName ?? "-"}`, 14, 40);
+    doc.text(`VAT No: ${vendorVatNumber || "-"}`, 14, 46);
+    doc.text(`CR / Freelance Doc: ${vendorCrUrl ? "On file" : "-"}`, 14, 52);
+
+    // Customer + booking block
+    doc.setFont("helvetica", "bold");
+    doc.text("Customer & Booking", 110, 34);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Invoice #: ${lastInvoice.invoice_number}`, 110, 40);
+    doc.text(`Booking #: ${lastInvoice.invoice_number}`, 110, 46);
+    doc.text(`Issued: ${lastInvoice.issue_date}`, 110, 52);
+    doc.text(`Customer: ${lastInvoice.customer_name ?? "-"}`, 110, 58);
+    doc.text(`Phone: ${lastInvoice.customer_phone ?? "-"}`, 110, 64);
+
+    doc.text(`Event: ${lastInvoice.event_type}`, 14, 64);
+    doc.text(`Date / Time: ${lastInvoice.event_date} ${lastInvoice.event_time}`, 14, 70);
+    doc.text(`Section: ${SECTION_EN[lastInvoice.section]}`, 14, 76);
+    doc.text(`Payment status: ${PAYMENT_EN[lastInvoice.payment_status]}`, 110, 70);
+
     autoTable(doc, {
-      startY: 88,
-      head: [["Description", "Subtotal (SAR)", "VAT 15%", "Total (SAR)"]],
+      startY: 86,
+      head: [["Description", "Price", "Discount", "Subtotal", "VAT 15%", "Total (SAR)"]],
       body: [[
-        `Manual booking (${lastInvoice.section})`,
+        lastInvoice.package_label || `Manual booking (${SECTION_EN[lastInvoice.section]})`,
+        money(lastInvoice.gross),
+        money(lastInvoice.discount),
         money(lastInvoice.subtotal),
         money(lastInvoice.vat_amount),
         money(lastInvoice.total),
       ]],
       theme: "grid",
-      headStyles: { fillColor: [82, 92, 50] },
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [22, 55, 38] },
     });
     const finalY = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
     doc.setFont("helvetica", "bold");
@@ -676,8 +793,58 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
                     />
                   </div>
                   <div>
+                    <Label htmlFor="event-time" className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-foreground/70">
+                      <Clock className="h-3.5 w-3.5" /> وقت المناسبة
+                    </Label>
+                    <Input
+                      id="event-time"
+                      type="time"
+                      dir="ltr"
+                      value={form.event_time}
+                      onChange={(e) => setForm((f) => ({ ...f, event_time: e.target.value }))}
+                      disabled={isPlatformBooking}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label className="mb-2 block text-xs font-semibold text-foreground/70">نوع المناسبة</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {EVENT_TYPES.map((t) => (
+                      <button
+                        key={t}
+                        type="button"
+                        disabled={isPlatformBooking}
+                        onClick={() => setForm((f) => ({ ...f, event_type: t }))}
+                        className={`rounded-full border px-3 py-1.5 text-xs font-bold transition-all ${
+                          form.event_type === t
+                            ? "border-transparent bg-primary text-primary-foreground"
+                            : "border-border bg-background text-foreground/70 hover:border-primary/50"
+                        } disabled:cursor-not-allowed disabled:opacity-60`}
+                      >
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="pkg" className="mb-1.5 block text-xs font-semibold text-foreground/70">
+                    الباقة / الخدمة
+                  </Label>
+                  <Input
+                    id="pkg"
+                    value={form.package_label}
+                    onChange={(e) => setForm((f) => ({ ...f, package_label: e.target.value }))}
+                    placeholder="مثال: باقة رويال + ضيافة"
+                    disabled={isPlatformBooking}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
                     <Label htmlFor="amount" className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-foreground/70">
-                      <Banknote className="h-3.5 w-3.5" /> المبلغ ()
+                      <Banknote className="h-3.5 w-3.5" /> السعر
                     </Label>
                     <Input
                       id="amount"
@@ -689,7 +856,65 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
                       disabled={isPlatformBooking}
                     />
                   </div>
+                  <div>
+                    <Label htmlFor="discount" className="mb-1.5 block text-xs font-semibold text-foreground/70">
+                      الخصم
+                    </Label>
+                    <Input
+                      id="discount"
+                      type="number"
+                      inputMode="numeric"
+                      value={form.discount}
+                      onChange={(e) => setForm((f) => ({ ...f, discount: e.target.value }))}
+                      placeholder="0"
+                      disabled={isPlatformBooking}
+                    />
+                  </div>
                 </div>
+
+                <div>
+                  <Label className="mb-2 block text-xs font-semibold text-foreground/70">حالة الدفع</Label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {(["unpaid", "deposit", "paid"] as const).map((p) => (
+                      <button
+                        key={p}
+                        type="button"
+                        disabled={isPlatformBooking}
+                        onClick={() => setForm((f) => ({ ...f, payment_status: p }))}
+                        className={`rounded-2xl border p-2.5 text-xs font-bold transition-all ${
+                          form.payment_status === p
+                            ? "border-transparent bg-primary text-primary-foreground shadow-md"
+                            : "border-border bg-background text-foreground/70 hover:border-primary/50"
+                        } disabled:cursor-not-allowed disabled:opacity-60`}
+                      >
+                        {PAYMENT_LABEL[p]}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <label className="flex items-center gap-2 text-xs font-semibold text-foreground/70">
+                  <input
+                    type="checkbox"
+                    checked={form.vat_applicable}
+                    disabled={isPlatformBooking}
+                    onChange={(e) => setForm((f) => ({ ...f, vat_applicable: e.target.checked }))}
+                    className="h-4 w-4 accent-primary"
+                  />
+                  المبلغ شامل ضريبة القيمة المضافة 15%
+                </label>
+
+                {pricing.gross > 0 && (
+                  <div className="rounded-2xl border border-border bg-muted/40 p-3 text-[11px] font-semibold text-foreground/70">
+                    <div className="flex justify-between"><span>السعر</span><span>{pricing.gross.toLocaleString("en-US")}</span></div>
+                    <div className="flex justify-between"><span>الخصم</span><span>-{pricing.discount.toLocaleString("en-US")}</span></div>
+                    <div className="flex justify-between"><span>الصافي قبل الضريبة</span><span>{pricing.subtotal.toLocaleString("en-US")}</span></div>
+                    <div className="flex justify-between"><span>ضريبة 15%</span><span>{pricing.vat.toLocaleString("en-US")}</span></div>
+                    <div className="mt-1 flex justify-between border-t border-border pt-1 text-xs font-black text-primary">
+                      <span>الإجمالي</span><span>{pricing.net.toLocaleString("en-US")}</span>
+                    </div>
+                  </div>
+                )}
               </>
             )}
 

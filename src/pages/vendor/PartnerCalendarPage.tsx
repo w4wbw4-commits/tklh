@@ -16,7 +16,12 @@ const PartnerCalendarPage = () => {
       {loading ? (
         <div className="grid place-items-center py-24 text-muted-foreground">جارٍ التحميل…</div>
       ) : vendor ? (
-        <VendorCalendar vendorId={vendor.id} vendorName={vendor.business_name} vendorVatNumber={vendor.vat_number ?? null} />
+        <VendorCalendar
+          vendorId={vendor.id}
+          vendorName={vendor.business_name}
+          vendorVatNumber={vendor.vat_number ?? null}
+          vendorCrUrl={vendor.commercial_register_url ?? null}
+        />
       ) : (
         <div className="rounded-2xl border border-border bg-card p-8 text-center text-muted-foreground">
           أكمل بياناتك أولاً من «بيانات قاعتي» للبدء بإدارة التقويم.
