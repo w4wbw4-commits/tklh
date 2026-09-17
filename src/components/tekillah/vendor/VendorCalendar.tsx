@@ -136,7 +136,23 @@ const parseMeta = (note: string | null): ManualMeta | null => {
   return null;
 };
 
-export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props) => {
+const EMPTY_FORM = {
+  status: "pending" as Row["status"],
+  customer_name: "",
+  customer_phone: "",
+  amount: "",
+  discount: "",
+  label: "",
+  text: "",
+  section: "both" as ManualSection,
+  event_type: EVENT_TYPES[0] as string,
+  event_time: "20:00",
+  package_label: "",
+  vat_applicable: true,
+  payment_status: "unpaid" as PaymentStatus,
+};
+
+export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber, vendorCrUrl }: Props) => {
   const [items, setItems] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -144,15 +160,7 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
   const [sheetOpen, setSheetOpen] = useState(false);
 
   // Form state for adding / editing a manual entry
-  const [form, setForm] = useState({
-    status: "pending" as Row["status"],
-    customer_name: "",
-    customer_phone: "",
-    amount: "",
-    label: "",
-    text: "",
-    section: "both" as ManualSection,
-  });
+  const [form, setForm] = useState(EMPTY_FORM);
 
   // Last invoice issued from this sheet — enables the PDF download button.
   // No WhatsApp/API sending: the partner downloads the file and sends it.
@@ -164,9 +172,16 @@ export const VendorCalendar = ({ vendorId, vendorName, vendorVatNumber }: Props)
     subtotal: number;
     vat_amount: number;
     total: number;
+    discount: number;
+    gross: number;
     event_date: string;
+    event_time: string;
+    event_type: string;
+    package_label: string;
+    payment_status: PaymentStatus;
     section: ManualSection;
   } | null>(null);
+
 
   const load = async () => {
     setLoading(true);
