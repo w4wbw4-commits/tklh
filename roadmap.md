@@ -80,6 +80,11 @@
 - [x] Isolation verified in DB: another user's notification is invisible (0 rows) under RLS; partner data of a foreign vendor returns 0 across packages/offers/bookings/expenses/invoices/reviews.
 - [x] No WhatsApp/SMS. Customer/Admin design untouched. Partner sidebar still five entries.
 - [x] All QA data removed (temp vendor, booking, notifications, role) and vendor ownership restored.
+- [x] Offer-expiry, calendar (confirmed events ≤ 7 days) and financial (uncollected balance) alerts added to the persistent partner alert strip, each linking to its section.
+- [x] `getMyVendor` now takes the oldest profile deterministically instead of failing when an account owns several vendor profiles.
+- [x] Gates re-run after last edit: typecheck clean, vitest 8/8, build OK, eslint 42 (6 pre-existing errors). Browser smoke desktop 1440 + mobile 375 with a real signed-in session: all partner pages load, alert strip renders all four alert types, alert navigates to /partner/bookings, no horizontal overflow.
+
+
 
 ## Phase 9+ (later, in order)
 - [ ] Remaining phases through final audit.
