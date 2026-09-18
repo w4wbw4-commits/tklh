@@ -81,3 +81,18 @@ export const subscribeToVendorAvailability = (
     .subscribe();
 
 export const unsubscribe = (channel: ReturnType<typeof db.channel>) => db.removeChannel(channel);
+
+/**
+ * Active seasonal offers whose end date has already passed — the partner is
+ * still advertising a price they no longer intend to honour, so the portal
+ * raises an alert until the offer is edited or stopped.
+ */
+export const listExpiredActiveOffers = (vendorId: string, today: string) =>
+  db
+    .from("vendor_pricing_rules")
+    .select("id, label, end_date")
+    .eq("vendor_id", vendorId)
+    .eq("active", true)
+    .not("end_date", "is", null)
+    .lt("end_date", today)
+    .order("end_date", { ascending: true });

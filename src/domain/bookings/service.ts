@@ -369,3 +369,26 @@ export const subscribeAdminGrandControl = (onChange: () => void) => {
     db.removeChannel(channel);
   };
 };
+
+/** Confirmed events for this vendor inside a date window — calendar alerts. */
+export const listConfirmedBetween = (vendorId: string, from: string, to: string) =>
+  db
+    .from("bookings")
+    .select("id, event_date, booking_section")
+    .eq("vendor_id", vendorId)
+    .eq("status", "confirmed")
+    .gte("event_date", from)
+    .lte("event_date", to)
+    .order("event_date", { ascending: true });
+
+/**
+ * Confirmed bookings whose collected amount is still below the agreed price —
+ * the financial alert in the partner portal.
+ */
+export const listOutstandingForVendor = (vendorId: string) =>
+  db
+    .from("bookings")
+    .select("id, event_date, total_price, paid_amount")
+    .eq("vendor_id", vendorId)
+    .eq("status", "confirmed")
+    .not("total_price", "is", null);
