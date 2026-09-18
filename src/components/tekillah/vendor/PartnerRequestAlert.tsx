@@ -120,15 +120,15 @@ export const PartnerRequestAlert = ({ vendorId }: { vendorId: string }) => {
 
   if (pending === 0) return <>{sideStrip}</>;
 
-
-
   return (
+    <>
     <Link
       to="/partner/bookings"
       role="alert"
       aria-live="polite"
       className="mb-5 flex items-center gap-3 rounded-2xl border-2 border-destructive/60 bg-destructive/10 px-4 py-3 transition-colors hover:bg-destructive/15"
     >
+
       <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-destructive text-destructive-foreground">
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-destructive/50" />
         <BellRing className="relative h-4 w-4 animate-bounce" />
