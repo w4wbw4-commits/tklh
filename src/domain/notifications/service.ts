@@ -42,6 +42,23 @@ const NON_PARTNER_TITLES = new Set<string>([
 
 export const isPartnerNotification = (n: { title: string }) => !NON_PARTNER_TITLES.has(n.title);
 
+/**
+ * Where a partner notification should take you. Titles are the stable signal
+ * (the DB triggers write them), so the mapping lives next to the filter above.
+ */
+export const partnerLinkFor = (n: { type?: string | null; title: string }): string => {
+  const t = n.title;
+  if (t.includes("تقييم")) return "/partner/reviews";
+  if (t.includes("دفعة") || t.includes("تحويل") || t.includes("مالي") || t.includes("فاتورة"))
+    return "/partner/reports";
+  if (t.includes("عرض") || t.includes("باقة") || t.includes("تسعير")) return "/partner/pricing";
+  if (t.includes("ملف") || t.includes("توثيق") || t.includes("اعتماد")) return "/partner/profile";
+  if (t.includes("تقويم") || t.includes("تذكير") || t.includes("موعد")) return "/partner/calendar";
+  if (n.type === "payment_confirmed") return "/partner/reports";
+  if (n.type === "event_reminder") return "/partner/calendar";
+  return "/partner/bookings";
+};
+
 /** Vendor-only feed for the partner portal. */
 export const listForVendorUser = async (userId: string, limit = 50) => {
   const res = await listForUser(userId, limit);
