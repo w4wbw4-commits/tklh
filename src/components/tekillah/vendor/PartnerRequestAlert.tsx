@@ -147,5 +147,8 @@ export const PartnerRequestAlert = ({ vendorId }: { vendorId: string }) => {
         </div>
       </div>
     </Link>
+    {sideStrip}
+    </>
   );
+
 };
