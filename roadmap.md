@@ -72,8 +72,17 @@
 - [x] RLS verified in DB: another partner sees 0 rows and updates 0 rows on a partner's package; test row cleaned up.
 - [x] Typecheck clean, tests 8/8, lint clean (pre-existing warnings only), build OK.
 
-## Phase 8+ (later, in order)
-- [ ] Notifications, then remaining phases through final audit.
+## Phase 8 — notifications
+- [x] Partner-scoped feed (own vendor bookings/payments/reviews/profile/packages only); admin + customer notices filtered out.
+- [x] New booking request = persistent ringing alert on every partner page, derived from `bookings.status = 'pending'` (not read state) — clears only on accept/reject. Verified in browser: visible while pending, gone after rejection.
+- [x] Every notification links to its record (`partnerLinkFor`): bookings / reviews / reports / pricing / profile / calendar; clicking marks it read.
+- [x] Unread counts + timestamps kept, realtime inserts on unique channels (layout + page listeners coexist).
+- [x] Isolation verified in DB: another user's notification is invisible (0 rows) under RLS; partner data of a foreign vendor returns 0 across packages/offers/bookings/expenses/invoices/reviews.
+- [x] No WhatsApp/SMS. Customer/Admin design untouched. Partner sidebar still five entries.
+- [x] All QA data removed (temp vendor, booking, notifications, role) and vendor ownership restored.
+
+## Phase 9+ (later, in order)
+- [ ] Remaining phases through final audit.
 - [ ] Domain/DNS wiring deferred to the very end per user request.
 
 
