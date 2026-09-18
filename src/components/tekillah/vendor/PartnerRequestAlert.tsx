@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { BellRing } from "lucide-react";
+import { BellRing, CalendarClock, TagIcon, Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { bookingsService } from "@/domain";
+import { availabilityService, bookingsService } from "@/domain";
+
+type SideAlert = { key: string; to: string; icon: typeof Wallet; title: string };
+
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+
+
 
 /**
  * Persistent "new booking request" alert for the partner portal.
