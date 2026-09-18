@@ -87,20 +87,26 @@ export const VendorNotifications = ({ userId }: Props) => {
               const Icon = meta.icon;
               return (
                 <motion.li key={n.id} layout
-                  className={`flex items-start gap-4 p-5 transition-colors ${!n.read ? "bg-primary/[0.03]" : ""}`}>
-                  <span className={`mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-xl ${meta.color}`}>
-                    <Icon className="h-4 w-4" />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <div className="font-arabic font-semibold text-foreground">{n.title}</div>
-                      {!n.read && <span className="h-2 w-2 rounded-full bg-primary" />}
+                  className={`transition-colors ${!n.read ? "bg-primary/[0.03]" : ""}`}>
+                  <Link
+                    to={notificationsService.partnerLinkFor(n)}
+                    onClick={() => { if (!n.read) void notificationsService.markRead(n.id).then(load); }}
+                    className="flex items-start gap-4 p-5 hover:bg-muted/40"
+                  >
+                    <span className={`mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-xl ${meta.color}`}>
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <div className="font-arabic font-semibold text-foreground">{n.title}</div>
+                        {!n.read && <span className="h-2 w-2 rounded-full bg-primary" />}
+                      </div>
+                      {n.body && <div className="mt-1 text-sm text-foreground/70">{n.body}</div>}
+                      <div className="mt-1 text-xs text-foreground/50">
+                        {formatDistanceToNow(new Date(n.created_at), { addSuffix: true, locale: ar })}
+                      </div>
                     </div>
-                    {n.body && <div className="mt-1 text-sm text-foreground/70">{n.body}</div>}
-                    <div className="mt-1 text-xs text-foreground/50">
-                      {formatDistanceToNow(new Date(n.created_at), { addSuffix: true, locale: ar })}
-                    </div>
-                  </div>
+                  </Link>
                 </motion.li>
               );
             })}
