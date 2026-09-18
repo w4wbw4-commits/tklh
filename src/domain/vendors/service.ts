@@ -20,11 +20,17 @@ export const getVendorPrivate = async (vendorId: string) => {
 
 /** The signed-in user's own vendor profile, with private fields merged in. */
 export const getMyVendor = async (userId: string): Promise<VendorRow | null> => {
-  const { data } = await db
+  // An account normally owns a single vendor profile, but never fail closed if
+  // it owns more than one: take the oldest profile deterministically.
+  const { data: rows } = await db
     .from("vendors")
     .select(VENDOR_PUBLIC_COLUMNS)
     .eq("user_id", userId)
-    .maybeSingle();
+    .order("created_at", { ascending: true })
+    .limit(1);
+  const data = rows?.[0] ?? null;
+
+
 
   let merged = (data as VendorRow | null) ?? null;
   if (merged) {
