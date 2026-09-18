@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Bell, BellRing, Check, CalendarCheck, CreditCard, Clock, Inbox } from "lucide-react";
 import type { NotificationRow } from "./types";
 
-const TYPE_META: Record<string, { icon: any; color: string }> = {
+const TYPE_META: Record<string, { icon: typeof Bell; color: string }> = {
   booking_request: { icon: CalendarCheck, color: "bg-primary/10 text-primary" },
   booking_confirmed: { icon: Check, color: "bg-primary/15 text-primary" },
   payment_confirmed: { icon: CreditCard, color: "bg-secondary text-foreground" },
