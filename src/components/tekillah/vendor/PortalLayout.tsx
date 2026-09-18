@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/tekillah/Logo";
 import { notificationsService } from "@/domain";
 import { usePartnerVendor } from "@/hooks/usePartnerVendor";
+import { PartnerRequestAlert } from "@/components/tekillah/vendor/PartnerRequestAlert";
 import chairMark from "@/assets/tklh-chair.png";
 
 // Sidebar layout for the partner (vendor) portal — inspired by Ahad Laila
@@ -310,7 +311,10 @@ export const PortalLayout = ({ children }: { children: ReactNode }) => {
           ))}
         </nav>
 
-        <main className="flex-1 p-5 pb-24 md:p-8 md:pb-8">{children}</main>
+        <main className="flex-1 p-5 pb-24 md:p-8 md:pb-8">
+          {vendor?.id && <PartnerRequestAlert vendorId={vendor.id} />}
+          {children}
+        </main>
       </div>
     </div>
   );

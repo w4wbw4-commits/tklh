@@ -168,6 +168,29 @@ export const listPendingWithDetails = () =>
     .eq("status", "pending")
     .order("created_at", { ascending: false });
 
+/**
+ * How many booking requests are still waiting on this vendor's answer. Drives
+ * the portal's persistent "new request" alert: the alert clears only when the
+ * request is actually accepted or rejected, never by reading a notification.
+ */
+export const countPendingForVendor = (vendorId: string) =>
+  db
+    .from("bookings")
+    .select("id", { count: "exact", head: true })
+    .eq("vendor_id", vendorId)
+    .eq("status", "pending");
+
+/** Oldest pending request for this vendor — used to deep-link the alert. */
+export const firstPendingForVendor = (vendorId: string) =>
+  db
+    .from("bookings")
+    .select("id, event_date, booking_section, created_at")
+    .eq("vendor_id", vendorId)
+    .eq("status", "pending")
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+
 export const countActive = () =>
   db.from("bookings").select("*", { count: "exact", head: true }).in("status", ["pending", "confirmed"]);
 
@@ -213,6 +236,24 @@ export const insertChecklists = (items: Insert<"booking_checklists">[]) =>
 export const subscribeVendorBookings = (vendorId: string, onChange: () => void) => {
   const channel = db
     .channel(`vendor-bookings-${vendorId}`)
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "bookings", filter: `vendor_id=eq.${vendorId}` },
+      onChange,
+    )
+    .subscribe();
+  return () => {
+    db.removeChannel(channel);
+  };
+};
+
+/**
+ * Same as subscribeVendorBookings but on a uniquely named channel, so a
+ * layout-level listener and a page-level listener can coexist.
+ */
+export const subscribeVendorBookingsUnique = (vendorId: string, onChange: () => void) => {
+  const channel = db
+    .channel(`vendor-bookings-${vendorId}-${Math.random().toString(36).slice(2, 8)}`)
     .on(
       "postgres_changes",
       { event: "*", schema: "public", table: "bookings", filter: `vendor_id=eq.${vendorId}` },
