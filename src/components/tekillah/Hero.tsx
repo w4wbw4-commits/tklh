@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -90,18 +90,15 @@ export const Hero = () => {
 
           <span className="relative inline-flex flex-col items-center pb-1">
             <span className="relative flex h-[2.35rem] items-center overflow-hidden sm:h-[2.9rem] md:h-[3.4rem]">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span
-                  key={word}
-                  initial={{ y: "45%", opacity: 0 }}
-                  animate={{ y: "0%", opacity: 1 }}
-                  exit={{ y: "-45%", opacity: 0 }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                   className="font-display block whitespace-nowrap text-2xl font-bold leading-none text-green sm:text-3xl md:text-4xl"
-                >
-                  {word}
-                </motion.span>
-              </AnimatePresence>
+              <motion.span
+                key={word}
+                initial={{ y: "45%", opacity: 0 }}
+                animate={{ y: "0%", opacity: 1 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="font-display block whitespace-nowrap text-2xl font-bold leading-none text-green sm:text-3xl md:text-4xl"
+              >
+                {word}
+              </motion.span>
             </span>
 
             {/* hairline underline */}
