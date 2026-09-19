@@ -88,6 +88,16 @@
 
 ## Phase 9+ (later, in order)
 - [x] Phase 9 — Customer Home visual refinement and full verification; Arabic/English browser smoke passed at 375/768/1440 with no overflow or home-page console/runtime errors.
+- [x] Phase 10 — Full QA / Red Team.
+  - [x] Booking engine DB scenarios: duplicate men blocked, `both` blocked over a booked men section, women section allowed same day, availability recomputed per section, cancelled men section re-bookable. All test data rolled back (row counts unchanged).
+  - [x] Red Team as a signed-in customer: foreign vendor/package/booking/invoice reads return 0 rows, foreign updates affect 0 rows, role escalation insert 403, platform_settings write 403, admin RPC forbidden, `get_vendor_private` of a foreign vendor empty.
+  - [x] Anon REST sweep: only `vendors_public`, `vendor_ratings_summary`, `platform_settings_public` readable; `platform_settings`, `reviews`, `vendor_pricing_rules` 401; all owner-scoped tables return empty.
+  - [x] Bug fixed: public views `platform_settings_public` and `vendor_ratings_summary` were unreachable for guests/customers (VAT, currency, rating averages). Migration `0011_phase10_fix_public_views.sql` set `security_invoker = false` + SELECT grants; verified 200 via REST.
+  - [x] Footer social icons and the home section placeholder made ref-safe (`forwardRef`).
+  - [x] Gates after last edit: typecheck clean, vitest 8/8, build OK, eslint 42 problems (6 pre-existing errors, 36 warnings) — no new findings.
+  - [x] Browser smoke with a real signed-in session at 1440 and 375 over 13 routes (customer, partner, admin, checkout): no page errors, no horizontal overflow, guards redirect correctly (`/auth` → `/`, `/partner/*` → `/partner/status` for a non-partner account).
+  - [x] Known pre-existing dev-only console warning: framer-motion 12 on React 18 emits "Function components cannot be given refs" across all pages; no runtime impact, no production effect.
+- [ ] Phase 11 / Final Audit.
 - [ ] Remaining phases through final audit.
 - [ ] Domain/DNS wiring deferred to the very end per user request.
 
