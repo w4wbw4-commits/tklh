@@ -57,11 +57,14 @@ const Footer = lazyWithRetry(() =>
 
 
 // Reserves vertical space so lazy-loaded sections don't cause layout shift.
-const SectionSkeleton = ({ minHeight = "40vh" }: { minHeight?: string }) => (
-  <div style={{ minHeight }} className="mx-auto flex w-full max-w-5xl items-center justify-center px-6 py-10" aria-label="جارٍ التحميل">
-    <div className="h-full w-full animate-pulse rounded-3xl bg-muted/40" style={{ minHeight }} />
-  </div>
+const SectionSkeleton = React.forwardRef<HTMLDivElement, { minHeight?: string }>(
+  ({ minHeight = "40vh" }, ref) => (
+    <div ref={ref} style={{ minHeight }} className="mx-auto flex w-full max-w-5xl items-center justify-center px-6 py-10" aria-label="جارٍ التحميل">
+      <div className="h-full w-full animate-pulse rounded-3xl bg-muted/40" style={{ minHeight }} />
+    </div>
+  ),
 );
+SectionSkeleton.displayName = "SectionSkeleton";
 
 const Index = () => {
   return (
