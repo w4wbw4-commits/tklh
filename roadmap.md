@@ -87,7 +87,7 @@
 
 
 ## Phase 9+ (later, in order)
-- [ ] Phase 9 — Customer Home visual refinement and full verification (current; Phase 10 not started).
+- [x] Phase 9 — Customer Home visual refinement and full verification; Arabic/English browser smoke passed at 375/768/1440 with no overflow or home-page console/runtime errors.
 - [ ] Remaining phases through final audit.
 - [ ] Domain/DNS wiring deferred to the very end per user request.
 
