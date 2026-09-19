@@ -78,6 +78,13 @@
       "when": 1789688376194,
       "tag": "0010_packages_offers_phase7",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1789858941826,
+      "tag": "0011_phase10_fix_public_views",
+      "breakpoints": true
     }
   ]
 }
