@@ -87,6 +87,7 @@
 
 
 ## Phase 9+ (later, in order)
+- [ ] Phase 9 — Customer Home visual refinement and full verification (current; Phase 10 not started).
 - [ ] Remaining phases through final audit.
 - [ ] Domain/DNS wiring deferred to the very end per user request.
 
