@@ -1,12 +1,12 @@
 /* Customer home only — scoped beneath .customer-home. */
 .customer-home {
-  /* Warm stone system: deliberately distinct from white and paper cream. */
-  --home-canvas: 40 16% 89%;
-  --home-surface: 38 18% 93%;
-  --home-surface-raised: 40 25% 96%;
-  --home-ink: 36 10% 15%;
-  --home-muted: 34 7% 36%;
-  --home-border: 37 14% 76%;
+  /* Warm stone system: calm contrast without introducing bright white. */
+  --home-canvas: 40 18% 90%;
+  --home-surface: 36 16% 86%;
+  --home-surface-raised: 42 24% 94%;
+  --home-ink: 33 12% 16%;
+  --home-muted: 32 8% 35%;
+  --home-border: 37 16% 72%;
   --home-brand: 149 43% 15%;
   --home-brand-deep: 155 41% 9%;
   --home-gold: 39 32% 48%;
@@ -32,23 +32,23 @@
 
   background-color: hsl(var(--home-canvas));
   color: hsl(var(--home-ink));
-  /* Cerimonia uses the commercial Year of the Camel for body copy.
-     Thmanyah Sans is Tklh's metrically compatible, licensed local face. */
+  /* The locally loaded Thmanyah family leads Arabic; Tajawal is its web fallback. */
   font-family: 'Thmanyah Sans', 'Tajawal', system-ui, sans-serif;
   font-feature-settings: "kern", "liga", "calt";
   letter-spacing: 0;
+  line-height: 1.7;
+  text-rendering: optimizeLegibility;
 }
 
 html[lang="en"] .customer-home {
-  font-family: 'Thmanyah Sans', 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', 'Thmanyah Sans', system-ui, sans-serif;
 }
 
 .customer-home .font-display,
 .customer-home .font-tagline,
 .customer-home .font-arabic,
 .customer-home .font-serif {
-  /* Cerimonia's display roles are ITF Waha / Iwan Zaza. Keep the same
-     compact Arabic rhythm with Tklh's owned Thmanyah family. */
+  /* A compact editorial rhythm inspired by the verified reference hierarchy. */
   font-family: 'Thmanyah Sans', 'Tajawal', system-ui, sans-serif;
   letter-spacing: 0;
 }
@@ -57,11 +57,19 @@ html[lang="en"] .customer-home .font-display,
 html[lang="en"] .customer-home .font-tagline,
 html[lang="en"] .customer-home .font-arabic,
 html[lang="en"] .customer-home .font-serif {
-  font-family: 'Thmanyah Sans', 'Inter', system-ui, sans-serif;
+  font-family: 'Inter', 'Thmanyah Sans', system-ui, sans-serif;
 }
 
-.customer-home :where(h1, h2, h3, p, a, button, span) {
+.customer-home :where(h1, h2, h3, p, a, button, span, input, textarea) {
   letter-spacing: 0;
+}
+
+.customer-home :where(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+.customer-home :where(p) {
+  text-wrap: pretty;
 }
 
 .customer-home section[data-navbar-theme="light"] {
@@ -79,39 +87,42 @@ html[lang="en"] .customer-home .font-serif {
 .customer-home #speed h2,
 .customer-home #speed + section h2,
 .customer-home #occasions h2 {
-  font-size: 1.875rem;
-  font-weight: 500;
-  line-height: 1.18;
+  font-size: clamp(1.75rem, 1.35rem + 1.7vw, 3.1rem);
+  font-weight: 600;
+  line-height: 1.22;
 }
 
 .customer-home #speed [class*="font-black"],
 .customer-home #speed + section [class*="font-black"],
 .customer-home #occasions [class*="font-black"] {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .customer-home h1 {
-  font-size: 2.25rem;
+  font-size: clamp(2rem, 1.6rem + 1.8vw, 3.25rem);
   font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.24;
 }
 
 .customer-home h2 {
-  font-size: 1.875rem;
-  font-weight: 500;
-  line-height: 1.18;
+  font-size: clamp(1.75rem, 1.35rem + 1.7vw, 3.1rem);
+  font-weight: 600;
+  line-height: 1.22;
 }
 
 .customer-home h3 {
-  font-size: 1.125rem;
-  font-weight: 700;
-  line-height: 1.375;
+  font-size: clamp(1.0625rem, 0.98rem + 0.35vw, 1.375rem);
+  font-weight: 600;
+  line-height: 1.45;
 }
 
 .customer-home p {
+  font-size: clamp(0.9375rem, 0.9rem + 0.18vw, 1.0625rem);
+  line-height: 1.85;
+}
+
+.customer-home section[data-navbar-theme="light"] p {
   color: hsl(var(--home-muted));
-  font-size: 0.9375rem;
-  line-height: 1.95;
 }
 
 .customer-home :where(a, button) {
@@ -119,28 +130,29 @@ html[lang="en"] .customer-home .font-serif {
 }
 
 .customer-home .home-hero-title {
-  font-size: 1.35rem;
+  font-size: clamp(1.35rem, 1.05rem + 1.25vw, 2.7rem);
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.42;
 }
 
 .customer-home .home-hero-subtitle {
-  font-size: 1rem;
+  font-size: clamp(0.9375rem, 0.88rem + 0.25vw, 1.0625rem);
   font-weight: 400;
-  line-height: 1.625;
+  line-height: 1.85;
 }
 
 .customer-home .stat-number {
-  font-size: 1.875rem;
-  font-weight: 500;
+  font-family: 'Inter', 'Thmanyah Sans', system-ui, sans-serif;
+  font-size: clamp(2rem, 1.5rem + 2.1vw, 3.75rem);
+  font-weight: 600;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 
 .customer-home .stat-label {
-  font-size: 0.75rem;
-  font-weight: 500;
-  line-height: 1.5;
+  font-size: clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem);
+  font-weight: 600;
+  line-height: 1.6;
 }
 
 .customer-home .home-shell {
@@ -156,8 +168,8 @@ html[lang="en"] .customer-home .font-serif {
   min-height: 3.25rem;
   background-color: hsl(var(--home-brand));
   color: hsl(var(--home-surface-raised));
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: clamp(0.875rem, 0.82rem + 0.2vw, 1rem);
+  font-weight: 600;
   line-height: 1.25rem;
   box-shadow: 0 2px 0 hsl(var(--home-gold) / 0.48);
 }
@@ -182,61 +194,7 @@ html[lang="en"] .customer-home .font-serif {
 }
 
 @media (min-width: 768px) {
-  .customer-home h1,
   .customer-home .home-hero-title {
-    font-size: 2.25rem;
-    line-height: 1.1;
-  }
-
-  .customer-home h2,
-  .customer-home #speed h2,
-  .customer-home #speed + section h2,
-  .customer-home #occasions h2 {
-    font-size: 3rem;
-    line-height: 1.18;
-  }
-
-  .customer-home h3 {
-    font-size: 1.25rem;
-  }
-
-  .customer-home p {
-    font-size: 1.125rem;
-  }
-
-  .customer-home .home-hero-subtitle {
-    font-size: 1rem;
-    line-height: 1.625;
-  }
-
-  .customer-home .home-cta {
-    font-size: 1rem;
-    line-height: 1.5rem;
-  }
-
-  .customer-home .stat-number {
-    font-size: 3rem;
-  }
-
-  .customer-home .stat-label {
-    font-size: 0.875rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .customer-home h1,
-  .customer-home .home-hero-title {
-    font-size: 2.7rem;
-  }
-
-  .customer-home h2,
-  .customer-home #speed h2,
-  .customer-home #speed + section h2,
-  .customer-home #occasions h2 {
-    font-size: 3.1rem;
-  }
-
-  .customer-home .stat-number {
-    font-size: 3.75rem;
+    line-height: 1.28;
   }
 }
