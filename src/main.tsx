@@ -46,6 +46,21 @@ import "./i18n";
   window.location.replace(`https://tklh.sa${pathname}${search}${hash}`);
 })();
 
+// The partner and admin hosts are private back-office surfaces: keep them out
+// of search results. index.html ships the public storefront's robots tag, so on
+// those hosts we replace it at runtime before the first paint.
+(() => {
+  if (typeof window === "undefined") return;
+  const host = window.location.hostname.toLowerCase();
+  if (!host.startsWith("partner.") && !host.startsWith("admin.")) return;
+  document.querySelectorAll('meta[name="robots"], meta[name="googlebot"]').forEach((el) => el.remove());
+  const meta = document.createElement("meta");
+  meta.setAttribute("name", "robots");
+  meta.setAttribute("content", "noindex, nofollow");
+  document.head.appendChild(meta);
+})();
+
+
 // Auto-recover from stale dynamic-import chunks after a redeploy.
 // When Vite rebuilds, old chunk filenames (hashed) disappear from the CDN.
 // A user with the previous index.js still cached will throw
