@@ -96,7 +96,7 @@ const AppRoutes = () => {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <HelmetProvider>
+        <>
           <BrowserRouter>
             <AuthProvider>
               <RouteAwareTheme>
@@ -108,7 +108,7 @@ const AppRoutes = () => {
               </RouteAwareTheme>
             </AuthProvider>
           </BrowserRouter>
-        </HelmetProvider>
+        </>
       </QueryClientProvider>
     </>
   );
