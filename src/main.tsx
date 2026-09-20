@@ -14,9 +14,14 @@ import "./i18n";
   if (typeof window === "undefined") return;
   const { hostname, pathname, search, hash, protocol } = window.location;
 
-  const isCanonicalHost = hostname === "tklh.sa";
+  // Production hosts, one per audience. Each one serves its own shell (see
+  // src/apps/shell.ts) and must NOT be folded into the customer domain,
+  // otherwise the partner and admin subdomains would bounce to the storefront.
+  const PRODUCTION_HOSTS = ["tklh.sa", "partner.tklh.sa", "admin.tklh.sa"];
+  const isProductionHost = PRODUCTION_HOSTS.includes(hostname);
+
   // Only true local development is exempt. Lovable preview/published domains
-  // are redirected so all traffic consolidates on the official domain.
+  // are redirected so all traffic consolidates on the official domains.
   const isLocal =
     hostname === "localhost" ||
     hostname === "127.0.0.1" ||
@@ -27,16 +32,17 @@ import "./i18n";
     hostname.endsWith(".lovableproject.com") ||
     hostname.endsWith(".lovable.dev");
 
-  if (isCanonicalHost) {
-    // Force HTTPS on the canonical host.
+  if (isProductionHost) {
+    // Force HTTPS, staying on the same audience host.
     if (protocol !== "https:") {
-      window.location.replace(`https://tklh.sa${pathname}${search}${hash}`);
+      window.location.replace(`https://${hostname}${pathname}${search}${hash}`);
     }
     return;
   }
 
   if (isLocal) return;
 
+  // www.tklh.sa and any other host consolidate on the canonical customer domain.
   window.location.replace(`https://tklh.sa${pathname}${search}${hash}`);
 })();
 
