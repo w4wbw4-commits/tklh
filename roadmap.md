@@ -113,3 +113,23 @@
 - Code: 6 pre-existing eslint errors + 36 warnings (unused directives / missing hook deps) — cosmetic, tracked, no functional impact.
 
 
+
+
+## Production readiness + domain/DNS preparation (no new features)
+- [x] Host routing prepared for three audiences: `tklh.sa` → customer, `partner.tklh.sa` → partner, `admin.tklh.sa` → admin; `www.tklh.sa` and every other host consolidate on `tklh.sa`; localhost and Lovable preview still mount all shells. Covered by `src/test/shell.test.ts` (4 assertions).
+- [x] Production bug fixed: the canonical-domain redirect in `src/main.tsx` treated only `tklh.sa` as canonical, so `partner.tklh.sa` and `admin.tklh.sa` would have bounced visitors to the storefront and the subdomains could never have worked. It now keeps traffic on whichever production host was requested and only forces HTTPS.
+- [x] The partner and admin hosts now emit `noindex, nofollow` at runtime so the back-office surfaces stay out of search results; the public storefront keeps its indexable tags, robots.txt and sitemap.
+- [x] Environment: `.env` holds the Cloud URL, project id and publishable key (public by design, protected by RLS); no private key in client code. Backend secrets present: LOVABLE_API_KEY, Supabase URL/keys, Google Search Console connector.
+- [x] Auth redirects use `window.location.origin`, so password reset works from whichever host the user started on — no hardcoded domain. Partner sign-in/registration goes through the phone-OTP edge function and needs no email redirect.
+- [x] Project is published, visibility public, backend live (single Cloud instance for preview and production).
+- [x] Gates after last edit: typecheck clean, vitest 12/12, build OK, eslint 42 problems (6 pre-existing errors, 36 warnings) — nothing new. Browser smoke at 1440 and 375 over 7 routes: no page errors, no horizontal overflow, guards redirect correctly.
+
+### Manual steps for the owner (not done from inside the project)
+- DNS for the two new subdomains, at the domain registrar / DNS provider:
+  - `A` record, name `partner`, value `185.158.133.1`
+  - `A` record, name `admin`, value `185.158.133.1`
+  - plus the `TXT` verification record Lovable shows when each subdomain is added in Project Settings → Domains.
+- Add `partner.tklh.sa` and `admin.tklh.sa` in Project Settings → Domains (Connect Domain), then wait for verification and SSL.
+- Keep `tklh.sa` as the Primary domain; `www.tklh.sa` already redirects to it.
+- After the subdomains go live, confirm password-reset links from those hosts are accepted by the auth redirect allowlist.
+- Connect a real SMS provider (still the only external-integration blocker).
