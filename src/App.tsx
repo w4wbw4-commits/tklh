@@ -99,13 +99,13 @@ const AppRoutes = () => {
         <>
           <BrowserRouter>
             <AuthProvider>
-              <RouteAwareTheme>
-                <TooltipProvider>
+              <>
+                <>
                   <Suspense fallback={<RouteFallback />}>
                     <ShellRoutes />
                   </Suspense>
-                </TooltipProvider>
-              </RouteAwareTheme>
+                </>
+              </>
             </AuthProvider>
           </BrowserRouter>
         </>
