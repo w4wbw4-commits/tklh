@@ -85,6 +85,13 @@
       "when": 1789858941826,
       "tag": "0011_phase10_fix_public_views",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1789862820779,
+      "tag": "0012_phase11_final_audit_hardening",
+      "breakpoints": true
     }
   ]
 }
