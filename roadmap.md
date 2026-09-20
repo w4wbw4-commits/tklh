@@ -97,8 +97,19 @@
   - [x] Gates after last edit: typecheck clean, vitest 8/8, build OK, eslint 42 problems (6 pre-existing errors, 36 warnings) — no new findings.
   - [x] Browser smoke with a real signed-in session at 1440 and 375 over 13 routes (customer, partner, admin, checkout): no page errors, no horizontal overflow, guards redirect correctly (`/auth` → `/`, `/partner/*` → `/partner/status` for a non-partner account).
   - [x] Known pre-existing dev-only console warning: framer-motion 12 on React 18 emits "Function components cannot be given refs" across all pages; no runtime impact, no production effect.
-- [ ] Phase 11 / Final Audit.
-- [ ] Remaining phases through final audit.
-- [ ] Domain/DNS wiring deferred to the very end per user request.
+- [x] Phase 11 — Final Audit (last phase).
+  - [x] Architecture: no UI file imports the database client (only `src/domain/*`); customer shell imports no partner/admin screens; host-based shells (`resolveShell`) + path aliases intact. Same domain services back a future iOS/Android client with no data migration.
+  - [x] Security: every sensitive public table has RLS policies (`phone_otp_challenges` intentionally policy-less, edge-function only); all 6 storage buckets have policies; no secrets in client code; admin access resolved by the DB (`has_role`), the client allowlist only triggers a self-heal that RLS can refuse.
+  - [x] Business logic re-verified live then rolled back: duplicate men section blocked, `both` blocked over a booked men section, women section allowed same day, availability `booked/pending` per section, cancelled men section returns to free. Zero leftover rows.
+  - [x] Data integrity: migrations 0000-0012 applied in order; no test/seed data (12 real approved vendors, 1 booking, 1 invoice, 1 payment, 0 packages).
+  - [x] Bug fixed: `/admin` was the only protected route without the shared guard — a non-admin reached the console URL (page-level check blocked the data, but the redirect was missing). Now wrapped in `RequireAdmin`; verified in browser that a non-admin session is redirected to `/`.
+  - [x] Hardening migration `0012_phase11_final_audit_hardening.sql`: revoked anon EXECUTE on `approve_vendor_application`; added the 4 missing foreign-key indexes (`bookings.package_id`, `customer_leads.booking_id`, `customer_leads.event_id`, `timeline_milestones.event_id`).
+  - [x] Gates after last edit: typecheck clean, vitest 8/8, build OK, eslint 42 problems (6 pre-existing errors, 36 warnings) — nothing new. Browser smoke at 1440 and 375 across 13 public + 10 authenticated routes: no page errors, no horizontal overflow, guards redirect correctly.
+  - [x] The "Function components cannot be given refs" console warning was traced by elimination (toasters, RoleSwitcher, MotionConfig, HelmetProvider, ThemeProvider, TooltipProvider, AuthProvider all removed in turn and it persisted): it originates outside app code in the dev preview layer. Dev-only, no production effect.
+
+## Remaining blockers
+- External integration: no real SMS provider connected (needs an account from the owner). The code path is isolated in `supabase/functions/_shared/sms.ts`.
+- Production setup: domain/DNS wiring still deferred to the very end per user request.
+- Code: 6 pre-existing eslint errors + 36 warnings (unused directives / missing hook deps) — cosmetic, tracked, no functional impact.
 
 
