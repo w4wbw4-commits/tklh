@@ -94,7 +94,7 @@ const AppRoutes = () => {
   // skip animations and jump to final state. This kills infinite loops in our
   // illustrated sketches that otherwise burn CPU continuously on phones.
   return (
-    <MotionConfig reducedMotion={isMobile ? "always" : "user"}>
+    <>
       <QueryClientProvider client={queryClient}>
         <HelmetProvider>
           <BrowserRouter>
@@ -110,7 +110,7 @@ const AppRoutes = () => {
           </BrowserRouter>
         </HelmetProvider>
       </QueryClientProvider>
-    </MotionConfig>
+    </>
   );
 };
 
