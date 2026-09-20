@@ -98,7 +98,7 @@ const AppRoutes = () => {
       <QueryClientProvider client={queryClient}>
         <>
           <BrowserRouter>
-            <AuthProvider>
+            <>
               <>
                 <>
                   <Suspense fallback={<RouteFallback />}>
@@ -106,7 +106,7 @@ const AppRoutes = () => {
                   </Suspense>
                 </>
               </>
-            </AuthProvider>
+            </>
           </BrowserRouter>
         </>
       </QueryClientProvider>
