@@ -101,12 +101,9 @@ const AppRoutes = () => {
             <AuthProvider>
               <RouteAwareTheme>
                 <TooltipProvider>
-                  <Toaster />
-                  <Sonner />
                   <Suspense fallback={<RouteFallback />}>
                     <ShellRoutes />
                   </Suspense>
-                  <RoleSwitcher />
                 </TooltipProvider>
               </RouteAwareTheme>
             </AuthProvider>
